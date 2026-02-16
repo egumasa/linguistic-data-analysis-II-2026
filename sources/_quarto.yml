@@ -1,0 +1,334 @@
+project:
+  type: website
+  title: "Linguistic Data Analysis II (Summer 2026)"
+  output-dir: docs
+
+website:
+  title: "Linguistic Data Analysis II (Summer 2026)"
+  description: "Applying Large Language Models for Linguistic Analysis"
+  site-url: "https://egumasa.github.io/linguistic-data-analysis-II-2026/"
+  repo-url: "https://github.com/egumasa/linguistic-data-analysis-II-2026"
+  repo-actions: [edit, issue]
+  
+  navbar:
+    pinned: true
+    background: primary
+    # left:
+    right:
+      - text: "Syllabus"
+        menu:
+          - text: "Overview"
+            href: 2025/syllabus/index.md
+      - text: "Sessions"
+        menu:
+          - text: "Schedule"
+            href: 2025/syllabus/schedule.md
+          - text: "Day 1"
+            href: 2025/sessions/day1/index.md
+          - text: "Day 2"
+            href: 2025/sessions/day2/index.md
+          - text: "Day 3"
+            href: 2025/sessions/day3/index.md
+          - text: "Day 4"
+            href: 2025/sessions/day4/index.md
+          - text: "Day 5"
+            href: 2025/sessions/day5/index.md
+      - text: "Assignments"
+        menu:
+          - text: "Overview"
+            href: 2025/assignments/index.md
+          - text: "---"
+          - text: "Corpus Lab 1"
+            href: 2025/assignments/hands-on-1/index.md
+          - text: "Corpus Lab 2"
+            href: 2025/assignments/hands-on-2/index.md
+          - text: "Corpus Lab 3"
+            href: 2025/assignments/hands-on-3/index.md
+          - text: "Corpus Lab 4"
+            href: 2025/assignments/hands-on-4/index.md
+          - text: "---"
+          - text: "Final Project"
+            href: 2025/assignments/final-project/index.md
+      - text: "Resources"
+        menu:
+          - text: "All Resources"
+            href: resources/index.md
+          - text: "---"
+          - text: "Tools"
+            href: resources/tools/index.md
+          - text: "Corpora"
+            href: resources/corpora/index.md
+          - text: "Code Examples"
+            href: resources/code-examples/index.md
+      - icon: github
+        href: "https://github.com/egumasa/linguistic-data-analysis-II-2026"
+        aria-label: GitHub
+
+  sidebar:
+    - title: "Syllabus"
+      style: docked
+      collapse-level: 1
+      search: true
+      contents:
+        - section: "Syllabus"
+          contents:
+            - 2025/syllabus/index.md
+            - 2025/syllabus/schedule.md
+        - section: "Sessions"
+          collapsed: true
+          contents:
+            - 2025/syllabus/schedule.md
+            - section: "Day 1" #: Introduction & Corpus Basics"
+              contents:
+                - 2025/sessions/day1/index.md
+                - 2025/sessions/day1/session1.md
+                - 2025/sessions/day1/session2.md
+                - 2025/sessions/day1/session3.md
+            - section: "Day 2" #: Vocabulary and Multiword Units (1)"
+              contents:
+                - 2025/sessions/day2/index.md
+                - 2025/sessions/day2/session4.md
+                - 2025/sessions/day2/session5.md
+                - 2025/sessions/day2/session6.md
+            - section: "Day 3" #: Vocabulary and Multiword Units (2)"
+              contents:
+                - 2025/sessions/day3/index.md
+                - 2025/sessions/day3/session7.md
+                - 2025/sessions/day3/session8.md
+                - 2025/sessions/day3/session9.md
+            - section: "Day 4" #: Grammar"
+              contents:
+                - 2025/sessions/day4/index.md
+                - 2025/sessions/day4/session10.md
+                - 2025/sessions/day4/session11.md
+                - 2025/sessions/day4/session12.md
+            - section: "Day 5" #: Advanced Topics & Wrap-up"
+              contents:
+                - 2025/sessions/day5/index.md
+                - 2025/sessions/day5/session13.md
+                - 2025/sessions/day5/session14.md
+                - 2025/sessions/day5/session15.md
+        - section: "Assignments"
+          collapsed: true
+          contents:
+            - 2025/assignments/index.md
+            - 2025/assignments/hands-on-1/index.md
+            - 2025/assignments/hands-on-2/index.md
+            - 2025/assignments/hands-on-3/index.md
+            - 2025/assignments/hands-on-4/index.md
+            - 2025/assignments/final-project/index.md
+        - section: "Resources"
+          collapsed: true
+          contents:
+            - resources/index.md
+            - section: "Tools"
+              contents:
+                - resources/tools/index.md
+                - resources/tools/antconc-guide.md
+                - resources/tools/byu-corpora-guide.md
+                - resources/tools/python-setup.md
+                - resources/tools/jasp-guide.md
+            - section: "Corpora"
+              contents:
+                - resources/corpora/index.md
+                - resources/corpora/available-corpora.md
+                - resources/corpora/learner-corpora.md
+            - resources/code-examples/index.md
+
+    - title: "Syllabus"
+      style: docked
+      search: true
+      collapse-level: 1
+      contents:
+        - section: "Syllabus"
+          collapsed: true
+          contents:
+            - 2025/syllabus/index.md
+            - 2025/syllabus/schedule.md
+        - section: "Sessions"
+          collapsed: true
+          contents:
+            - 2025/syllabus/schedule.md
+            - section: "Day 1" #: Introduction & Corpus Basics"
+              contents:
+                - 2025/sessions/day1/index.md
+                - 2025/sessions/day1/session1-intro/session1.md
+            - section: "Day 2" #: Vocabulary and Multiword Units (1)"
+              contents:
+                - 2025/sessions/day2/index.md
+            - section: "Day 3" #: Vocabulary and Multiword Units (2)"
+              contents:
+                - 2025/sessions/day3/index.md
+            - section: "Day 4" #: Grammar"
+              contents:
+                - 2025/sessions/day4/index.md
+            - section: "Day 5" #: Advanced Topics & Wrap-up"
+              contents:
+                - 2025/sessions/day5/index.md
+        - section: "Assignments"
+          collapsed: true
+          contents:
+            - 2025/assignments/index.md
+            - 2025/assignments/hands-on-1/index.md
+            - 2025/assignments/hands-on-2/index.md
+            - 2025/assignments/hands-on-3/index.md
+            - 2025/assignments/hands-on-4/index.md
+            - 2025/assignments/final-project/index.md
+        - section: "Resources"
+          collapsed: true
+          contents:
+            - resources/index.md
+            - section: "Tools"
+              contents:
+                - resources/tools/index.md
+                - resources/tools/antconc-guide.md
+                - resources/tools/byu-corpora-guide.md
+                - resources/tools/python-setup.md
+                - resources/tools/jasp-guide.md
+            - section: "Corpora"
+              contents:
+                - resources/corpora/index.md
+                - resources/corpora/available-corpora.md
+                - resources/corpora/learner-corpora.md
+            - resources/code-examples/index.md
+
+    - title: "Sessions"
+      style: docked
+      search: true
+      collapse-level: 1
+      contents:
+        - section: "Syllabus"
+          collapsed: true
+          contents:
+            - 2025/syllabus/index.md
+            - 2025/syllabus/schedule.md
+        - section: "Sessions"
+          contents:
+            - 2025/syllabus/schedule.md
+            - section: "Day 1" #: Introduction & Corpus Basics"
+              contents:
+                - 2025/sessions/day1/index.md
+                - 2025/sessions/day1/session1-intro/session1.md
+            - section: "Day 2" #: Vocabulary and Multiword Units (1)"
+              contents:
+                - 2025/sessions/day2/index.md
+            - section: "Day 3" #: Vocabulary and Multiword Units (2)"
+              contents:
+                - 2025/sessions/day3/index.md
+            - section: "Day 4" #: Grammar"
+              contents:
+                - 2025/sessions/day4/index.md
+            - section: "Day 5" #: Advanced Topics & Wrap-up"
+              contents:
+                - 2025/sessions/day5/index.md
+        - section: "Assignments"
+          collapsed: true
+          contents:
+            - 2025/assignments/index.md
+            - 2025/assignments/hands-on-1/index.md
+            - 2025/assignments/hands-on-2/index.md
+            - 2025/assignments/hands-on-3/index.md
+            - 2025/assignments/hands-on-4/index.md
+            - 2025/assignments/final-project/index.md
+        - section: "Resources"
+          collapsed: true
+          contents:
+            - resources/index.md
+            - section: "Tools"
+              contents:
+                - resources/tools/index.md
+                - resources/tools/antconc-guide.md
+                - resources/tools/byu-corpora-guide.md
+                - resources/tools/python-setup.md
+                - resources/tools/jasp-guide.md
+            - section: "Corpora"
+              contents:
+                - resources/corpora/index.md
+                - resources/corpora/available-corpora.md
+                - resources/corpora/learner-corpora.md
+            - resources/code-examples/index.md
+            
+
+    - title: "Assignments"
+      style: docked
+      search: true
+      collapse-level: 2
+      contents:
+        - section: "Syllabus"
+          collapsed: true
+          contents:
+            - 2025/syllabus/index.md
+            - 2025/syllabus/schedule.md
+        - section: "Sessions"
+          collapsed: true
+          contents:
+            - 2025/syllabus/schedule.md
+            - section: "Day 1" #: Introduction & Corpus Basics"
+              contents:
+                - 2025/sessions/day1/index.md
+                - 2025/sessions/day1/session1-intro/session1.md
+            - section: "Day 2" #: Vocabulary and Multiword Units (1)"
+              contents:
+                - 2025/sessions/day2/index.md
+            - section: "Day 3" #: Vocabulary and Multiword Units (2)"
+              contents:
+                - 2025/sessions/day3/index.md
+            - section: "Day 4" #: Grammar"
+              contents:
+                - 2025/sessions/day4/index.md
+            - section: "Day 5" #: Advanced Topics & Wrap-up"
+              contents:
+                - 2025/sessions/day5/index.md
+        - section: "Assignments"
+          contents:
+            - 2025/assignments/index.md
+            - 2025/assignments/hands-on-1/index.md
+            - 2025/assignments/hands-on-2/index.md
+            - 2025/assignments/hands-on-3/index.md
+            - 2025/assignments/hands-on-4/index.md
+            - 2025/assignments/final-project/index.md
+        - section: "Resources"
+          collapsed: true
+          contents:
+            - resources/index.md
+            - section: "Tools"
+              contents:
+                - resources/tools/index.md
+                - resources/tools/antconc-guide.md
+                - resources/tools/byu-corpora-guide.md
+                - resources/tools/python-setup.md
+                - resources/tools/jasp-guide.md
+            - section: "Corpora"
+              contents:
+                - resources/corpora/index.md
+                - resources/corpora/available-corpora.md
+                - resources/corpora/learner-corpora.md
+            - resources/code-examples/index.md
+
+
+
+format:
+  html:
+    theme:
+      - litera
+      - css/style.scss
+
+    # css: css/styles.css
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    code-fold: true
+    code-summary: "Show code"
+    code-tools: true
+    smooth-scroll: true
+    link-external-icon: true
+    link-external-newwindow: true
+
+
+execute:
+  freeze: auto
+  engine: jupyter  # or python
+  python: uv run python  # This tells Quarto to use uv's Python
+
+metadata-files:
+  - _metadata.yml
