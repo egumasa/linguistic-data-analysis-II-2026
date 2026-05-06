@@ -1,0 +1,40 @@
+---
+title: "Japanese NLP"
+subtitle: "how to analyze Japanese with NLP resources"
+toc: true
+---
+
+
+# Overview
+
+This page provides some advanced resources on Japanese NLP.
+
+
+# NLP Tools for Japanese
+
+There are several open-source NLP tools for Japanese language analysis.
+
+- [MeCab](https://taku910.github.io/mecab/)
+  - [fugashi](https://github.com/polm/fugashi): A Python package to use MeCab. A demo is available [here](https://fugashi.streamlit.app/)
+- [SudachiPy](https://github.com/WorksApplications/SudachiPy)
+- [GiNZA](https://github.com/megagonlabs/ginza)
+
+
+## Demo pages
+
+- [Spacy GiNZA morphological analysis](https://chai3.github.io/spacy-ginza-online-demonstration/)
+- [Web app for UniDic morphological analysis](https://chamame.ninjal.ac.jp/index.html)
+
+
+## Using Unidic with Fugashi
+
+- 
+- [Fugashi](https://github.com/polm/fugashi)
+
+```bash
+# Core tools
+pip install fugashi unidic-lite  # quick start (smaller)
+# OR for full UniDic (larger, closer to BCCWJ)
+pip install fugashi unidic
+python -m unidic download  # downloads the full UniDic dictionary
+```
