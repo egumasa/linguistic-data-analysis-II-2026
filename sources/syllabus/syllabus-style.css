@@ -1,0 +1,206 @@
+/* Academic Syllabus Style for Markdown PDF */
+
+/* Base document styling */
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Headers */
+h1 {
+    font-size: 24pt;
+    font-weight: bold;
+    color: #1a252f;
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 18pt;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #bdc3c7;
+    padding-bottom: 5px;
+}
+
+h3 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #34495e;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Course information section */
+h2 + p strong {
+    display: inline-block;
+    min-width: 180px;
+    color: #2c3e50;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 10pt;
+}
+
+th {
+    background-color: #34495e;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+td {
+    padding: 8px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Lists */
+ul, ol {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+/* Session headings */
+h3[id*="session"] {
+    background-color: #ecf0f1;
+    padding: 10px;
+    border-left: 4px solid #3498db;
+    margin-top: 25px;
+    page-break-before: auto;
+}
+
+/* Objectives sections */
+p strong:contains("Objectives:") {
+    color: #2980b9;
+    font-size: 12pt;
+}
+
+/* Required readings */
+p:contains("Required Reading"),
+p:contains("Reading:") {
+    background-color: #fff3cd;
+    padding: 10px;
+    border-left: 3px solid #ffc107;
+    margin: 15px 0;
+}
+
+/* Links */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Code blocks */
+code {
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 9pt;
+}
+
+pre {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+/* Page breaks */
+h2 {
+    page-break-before: auto;
+}
+
+h1, h2, h3 {
+    page-break-after: avoid;
+}
+
+table, ul, ol {
+    page-break-inside: avoid;
+}
+
+/* Print-specific styles */
+@media print {
+    body {
+        font-size: 10pt;
+        line-height: 1.4;
+    }
+    
+    h1 {
+        font-size: 20pt;
+    }
+    
+    h2 {
+        font-size: 16pt;
+    }
+    
+    h3 {
+        font-size: 12pt;
+    }
+    
+    /* Ensure course schedule doesn't break awkwardly */
+    h3[id*="day"] {
+        page-break-before: auto;
+        page-break-after: avoid;
+    }
+}
+
+/* Custom highlighting for important information */
+strong {
+    color: #2c3e50;
+}
+
+/* Course schedule specific styling */
+h3:contains("Day") {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* Assessment table enhancement */
+table:has(th:contains("Component")) {
+    border: 2px solid #34495e;
+}
+
+/* Notes and optional readings */
+p:contains("Notes:"),
+p:contains("Optional Reading") {
+    font-style: italic;
+    color: #7f8c8d;
+    margin-left: 20px;
+}
+
+/* Updated date styling */
+.updated-date {
+    text-align: right;
+    font-size: 10pt;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+}
