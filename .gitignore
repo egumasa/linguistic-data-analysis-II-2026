@@ -3,3 +3,16 @@ todo.md
 preparation
 
 .DS_Store
+
+# Internal course-design notes (not published)
+planning/
+
+# Copyrighted / source material — do not publish
+papers/
+
+# Regenerable source corpora (see data/SOURCES.md)
+sources/resources/code-examples/data/raw/
+
+# Python bytecode
+__pycache__/
+*.pyc

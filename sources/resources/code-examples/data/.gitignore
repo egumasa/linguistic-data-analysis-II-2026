@@ -1,0 +1,5 @@
+# Datasets are NOT committed — regenerate with prep_datasets.py / the download
+# notebooks (see SOURCES.md). Only the prep code and notebooks are tracked.
+raw/
+gold/
+__pycache__/
