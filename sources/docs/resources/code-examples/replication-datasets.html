@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Replication Datasets – Linguistic Data Analysis II (Summer 2026)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-dad871b8bdfeb60e68a6a2e646796a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Linguistic Data Analysis II (Summer 2026)</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-syllabus" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Syllabus</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-syllabus">    
+        <li>
+    <a class="dropdown-item" href="../../2025/syllabus/index.md">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-sessions" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Sessions</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-sessions">    
+        <li>
+    <a class="dropdown-item" href="../../2025/syllabus/schedule.md">
+ <span class="dropdown-text">Schedule</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../2025/sessions/day1/index.md">
+ <span class="dropdown-text">Day 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../2025/sessions/day2/index.md">
+ <span class="dropdown-text">Day 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../2025/sessions/day3/index.md">
+ <span class="dropdown-text">Day 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../2025/sessions/day4/index.md">
+ <span class="dropdown-text">Day 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../2025/sessions/day5/index.md">
+ <span class="dropdown-text">Day 5</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-assignments">    
+        <li>
+    <a class="dropdown-item" href="../../2025/assignments/index.md">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../../2025/assignments/hands-on-1/index.md">
+ <span class="dropdown-text">Corpus Lab 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../2025/assignments/hands-on-2/index.md">
+ <span class="dropdown-text">Corpus Lab 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../2025/assignments/hands-on-3/index.md">
+ <span class="dropdown-text">Corpus Lab 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../2025/assignments/hands-on-4/index.md">
+ <span class="dropdown-text">Corpus Lab 4</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../../2025/assignments/final-project/index.md">
+ <span class="dropdown-text">Final Project</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../../resources/index.html">
+ <span class="dropdown-text">All Resources</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../../resources/tools/index.html">
+ <span class="dropdown-text">Tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/corpora/index.html">
+ <span class="dropdown-text">Corpora</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/code-examples/index.html">
+ <span class="dropdown-text">Code Examples</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/code-examples/replication-datasets.html">
+ <span class="dropdown-text">Replication Datasets</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/egumasa/linguistic-data-analysis-II-2026"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/index.html">Resources</a></li><li class="breadcrumb-item"><a href="../../resources/code-examples/index.html">Code Examples</a></li><li class="breadcrumb-item"><a href="../../resources/code-examples/replication-datasets.html">Replication Datasets</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Syllabus</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">2025/syllabus/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/syllabus/schedule.md</span>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Sessions</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">2025/syllabus/schedule.md</span>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Day 1</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day1/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day1/session1.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day1/session2.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day1/session3.md</span>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Day 2</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day2/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day2/session4.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day2/session5.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day2/session6.md</span>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Day 3</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day3/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day3/session7.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day3/session8.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day3/session9.md</span>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Day 4</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day4/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day4/session10.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day4/session11.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day4/session12.md</span>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Day 5</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day5/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day5/session13.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day5/session14.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/sessions/day5/session15.md</span>
+  </li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
+ <span class="menu-text">Assignments</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">2025/assignments/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/assignments/hands-on-1/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/assignments/hands-on-2/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/assignments/hands-on-3/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/assignments/hands-on-4/index.md</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">2025/assignments/final-project/index.md</span>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text">Resources</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Resources</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">Tools</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tools and Software</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/antconc-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AntConc Guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/byu-corpora-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">English Corpora Guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/python-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python (Colaboratory) Setup Guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/jasp-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">JASP Statistical Software Guide</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false">
+ <span class="menu-text">Corpora</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/corpora/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Corpora Resources</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/corpora/available-corpora.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Available Corpora</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/corpora/learner-corpora.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learner Corpora</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text">Code Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/code-examples/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Code Examples</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/code-examples/replication-datasets.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Replication Datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/code-examples/tutorial-day2-annotation-eval.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 2 Tutorial — Annotation, Gold Standards &amp; Evaluation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/code-examples/tutorial-day3-move-replication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 3 Tutorial — Replicating Kim &amp; Lu with Open Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/code-examples/mini-project-datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mini-Project Starter Tracks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#why-these-datasets" id="toc-why-these-datasets" class="nav-link active" data-scroll-target="#why-these-datasets">Why these datasets</a></li>
+  <li><a href="#the-motivating-study" id="toc-the-motivating-study" class="nav-link" data-scroll-target="#the-motivating-study">The motivating study</a></li>
+  <li><a href="#dataset-catalog" id="toc-dataset-catalog" class="nav-link" data-scroll-target="#dataset-catalog">Dataset catalog</a>
+  <ul class="collapse">
+  <li><a href="#cefr-sp-the-on-ramp-to-judge" id="toc-cefr-sp-the-on-ramp-to-judge" class="nav-link" data-scroll-target="#cefr-sp-the-on-ramp-to-judge">CEFR-SP — the on-ramp (★☆☆ to judge)</a></li>
+  <li><a href="#raamove-discourse-moves-clean-data-to-judge" id="toc-raamove-discourse-moves-clean-data-to-judge" class="nav-link" data-scroll-target="#raamove-discourse-moves-clean-data-to-judge">RAAMove — discourse moves, clean data (★★★ to judge)</a></li>
+  <li><a href="#cars-50-the-kim-lu-replication-to-judge" id="toc-cars-50-the-kim-lu-replication-to-judge" class="nav-link" data-scroll-target="#cars-50-the-kim-lu-replication-to-judge">CaRS-50 — the Kim &amp; Lu replication (★★★ to judge)</a></li>
+  <li><a href="#autoerroranalyzer-l2-error-annotation-to-judge" id="toc-autoerroranalyzer-l2-error-annotation-to-judge" class="nav-link" data-scroll-target="#autoerroranalyzer-l2-error-annotation-to-judge">AutoErrorAnalyzer — L2 error annotation (★★★ to judge)</a></li>
+  <li><a href="#icnale-gra-automated-writing-evaluation-to-judge" id="toc-icnale-gra-automated-writing-evaluation-to-judge" class="nav-link" data-scroll-target="#icnale-gra-automated-writing-evaluation-to-judge">ICNALE GRA — automated writing evaluation (★★☆ to judge)</a></li>
+  </ul></li>
+  <li><a href="#building-the-gold-files-yourself" id="toc-building-the-gold-files-yourself" class="nav-link" data-scroll-target="#building-the-gold-files-yourself">Building the gold files yourself</a></li>
+  <li><a href="#worked-tutorials-mini-project-tracks" id="toc-worked-tutorials-mini-project-tracks" class="nav-link" data-scroll-target="#worked-tutorials-mini-project-tracks">Worked tutorials &amp; mini-project tracks</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/code-examples/replication-datasets.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/index.html">Resources</a></li><li class="breadcrumb-item"><a href="../../resources/code-examples/index.html">Code Examples</a></li><li class="breadcrumb-item"><a href="../../resources/code-examples/replication-datasets.html">Replication Datasets</a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Replication Datasets</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Open, annotated datasets for LLM annotation &amp; evaluation</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="why-these-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="why-these-datasets">Why these datasets</h2>
+<p>Across Days 2–5 you will use a large language model (LLM) to <strong>annotate</strong> linguistic data and then <strong>evaluate</strong> it against a human gold standard (precision / recall / F1 / confusion matrix). To make that practice real, this course draws on <strong>openly licensed, expert-annotated datasets</strong> from published applied-linguistics and NLP research.</p>
+<p>Every dataset is reshaped into one <strong>canonical schema</strong> so that the same notebook works for all of them — you only ever change the <em>prompt</em>, the <em>label set</em>, and the <em>gold file</em>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span><span class="dt">"id"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">"text"</span><span class="fu">:</span> <span class="st">"However, little is known about ..."</span><span class="fu">,</span> <span class="dt">"label"</span><span class="fu">:</span> <span class="st">"Gap"</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span><span class="dt">"id"</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span> <span class="dt">"text"</span><span class="fu">:</span> <span class="st">"We therefore investigated ..."</span><span class="fu">,</span>      <span class="dt">"label"</span><span class="fu">:</span> <span class="st">"Purpose"</span><span class="fu">}</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The gold files are <strong>not distributed with this repo</strong> — rebuild them into <code>data/gold/</code> reproducibly with <a href="./data/prep_datasets.py"><code>data/prep_datasets.py</code></a> (or the per-dataset download notebooks below) from the original sources. Licenses and citations are in <a href="../../resources/code-examples/data/SOURCES.html"><code>data/SOURCES.md</code></a>. <strong>Always cite the original dataset.</strong></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Two kinds of difficulty
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A task can be hard to <em>prepare</em> (messy source data) or hard to <em>judge</em> (the labeling decision itself is subjective). They are independent. We deliberately <strong>start with an easy-to-judge task</strong> (CEFR level) to learn the pipeline, then move to <strong>hard-to-judge</strong> research tasks (discourse moves, L2 errors) where even expert annotators disagree — which is exactly what makes them interesting.</p>
+</div>
+</div>
+</section>
+<section id="the-motivating-study" class="level2">
+<h2 class="anchored" data-anchor-id="the-motivating-study">The motivating study</h2>
+<p>This strand of the course replicates the <em>idea</em> of <strong>Kim &amp; Lu (2024)</strong>, who tested how well ChatGPT can annotate <strong>rhetorical move-steps</strong> in research-article introductions, and how prompt refinement, few-shot examples, and fine-tuning change its accuracy.</p>
+<blockquote class="blockquote">
+<p>Kim, M., &amp; Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. <em>Journal of English for Academic Purposes, 71,</em> 101422.</p>
+</blockquote>
+<p>Their annotated corpus is <strong>not</strong> publicly available, so we use <strong>CaRS-50</strong> — an open dataset that annotates the <em>same</em> phenomenon (Swales’ CARS moves in article introductions) — as the stand-in.</p>
+</section>
+<section id="dataset-catalog" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-catalog">Dataset catalog</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 25%">
+<col style="width: 18%">
+<col style="width: 11%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Phenomenon</th>
+<th>Labels</th>
+<th style="text-align: center;">Judge difficulty</th>
+<th>Gold files</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>CEFR-SP</strong></td>
+<td>Sentence proficiency level</td>
+<td>A1–C2 (6)</td>
+<td style="text-align: center;">★☆☆</td>
+<td><code>cefr_sentences.json</code> (72), <code>cefr_pool.json</code> (3,183)</td>
+</tr>
+<tr class="even">
+<td><strong>RAAMove</strong></td>
+<td>Moves in RA abstracts</td>
+<td>8 moves</td>
+<td style="text-align: center;">★★★</td>
+<td><code>raamove_moves.json</code> (64), <code>raamove_pool.json</code> (3,069)</td>
+</tr>
+<tr class="odd">
+<td><strong>CaRS-50</strong></td>
+<td>Move-steps in RA intros</td>
+<td>Move (3) / Step (11)</td>
+<td style="text-align: center;">★★★</td>
+<td><code>cars50_moves.json</code> (60), <code>cars50_pool.json</code>, <code>cars50_step_pool.json</code></td>
+</tr>
+<tr class="even">
+<td><strong>AutoErrorAnalyzer</strong></td>
+<td>L2 written errors</td>
+<td>category (4) / detection (2)</td>
+<td style="text-align: center;">★★★</td>
+<td><code>l2_errors.json</code> (60), <code>l2_error_detection.json</code> (60), <code>l2_errors_pool.json</code></td>
+</tr>
+<tr class="odd">
+<td><strong>ICNALE GRA</strong></td>
+<td>Holistic essay rating (AWE)</td>
+<td>Low/Mid/High</td>
+<td style="text-align: center;">★★☆</td>
+<td><em>(manual download — see below)</em></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>*_moves.json</code> / <code>*_sentences.json</code> files are <strong>balanced ~60–72 item gold sets</strong> for the worked tutorials. The <code>*_pool.json</code> files are the <strong>full datasets</strong> for mini-projects (build your own larger or differently-balanced gold set from them).</p>
+<section id="cefr-sp-the-on-ramp-to-judge" class="level3">
+<h3 class="anchored" data-anchor-id="cefr-sp-the-on-ramp-to-judge">CEFR-SP — the on-ramp (★☆☆ to judge)</h3>
+<p>Single sentences labeled with their CEFR difficulty level (A1–C2) by language-education professionals. We keep only sentences where <strong>both annotators agreed</strong>, so the labels are unambiguous — perfect for learning the annotate → evaluate pipeline before tackling harder tasks. Built from the openly-shipped <strong>Wiki-Auto</strong> portion (CC BY-SA 3.0). Source: Arase, Uchida &amp; Kajiwara (2022), <em>EMNLP</em> — <a href="https://github.com/yukiar/CEFR-SP">github.com/yukiar/CEFR-SP</a>.</p>
+</section>
+<section id="raamove-discourse-moves-clean-data-to-judge" class="level3">
+<h3 class="anchored" data-anchor-id="raamove-discourse-moves-clean-data-to-judge">RAAMove — discourse moves, clean data (★★★ to judge)</h3>
+<p>Sentences from research-article <strong>abstracts</strong> labeled with one of <strong>8 rhetorical moves</strong> (Background, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication). Ships as tidy JSON, so it is the easiest <em>discourse</em> dataset to start with. Inter-annotator κ = 0.785. CC BY 4.0. Source: Liu et al.&nbsp;(2024), <em>LREC-COLING</em> — <a href="https://github.com/ljk1228/RAAMove">github.com/ljk1228/RAAMove</a>.</p>
+</section>
+<section id="cars-50-the-kim-lu-replication-to-judge" class="level3">
+<h3 class="anchored" data-anchor-id="cars-50-the-kim-lu-replication-to-judge">CaRS-50 — the Kim &amp; Lu replication (★★★ to judge)</h3>
+<p>Sentences from 50 BioRxiv article <strong>introductions</strong> labeled with Swales’ <strong>CARS Move (1–3)</strong> and <strong>Step (a–d)</strong> — the same scheme Kim &amp; Lu used. Start with the 3-class <strong>Move</strong> version (<code>cars50_moves.json</code>); the 11-class <strong>Move+Step</strong> version (<code>cars50_step_pool.json</code>) is a stretch goal. Note: the dataset’s own expert inter-rater agreement is only <strong>κ ≈ 0.43</strong> — a built-in lesson that this task is genuinely hard. CC BY 4.0. Source: Lam &amp; Nnamoko (2025), Mendeley Data — <a href="https://data.mendeley.com/datasets/kwr9s5c4nk/1">doi:10.17632/kwr9s5c4nk.1</a>.</p>
+</section>
+<section id="autoerroranalyzer-l2-error-annotation-to-judge" class="level3">
+<h3 class="anchored" data-anchor-id="autoerroranalyzer-l2-error-annotation-to-judge">AutoErrorAnalyzer — L2 error annotation (★★★ to judge)</h3>
+<p>Sentences from Japanese-EFL essays with <strong>human gold</strong> error labels. We collapse the 23-code taxonomy into 4 broader classes (Grammatical / Lexical / Mechanical / No error); a binary <strong>error-detection</strong> version is also provided. Bonus: the source file also contains the <strong>published tool’s own predictions</strong>, so you can compare your LLM both to the human gold <em>and</em> to the original system. Source: Mizumoto (2025), <em>SSLA</em> 47(3) — <a href="https://github.com/mizumot/AutoErrorAnalyzer">github.com/mizumot/AutoErrorAnalyzer</a> + <a href="https://osf.io/jyf3r/">OSF</a>.</p>
+</section>
+<section id="icnale-gra-automated-writing-evaluation-to-judge" class="level3">
+<h3 class="anchored" data-anchor-id="icnale-gra-automated-writing-evaluation-to-judge">ICNALE GRA — automated writing evaluation (★★☆ to judge)</h3>
+<p>Asian-learner English essays rated holistically by many trained raters — the basis for an <strong>automated writing evaluation</strong> task (predict a Low/Mid/High score band). The archive is <strong>password-gated</strong>: register at the <a href="https://language.sakura.ne.jp/icnale/download.html">ICNALE download page</a>, then follow the instructions in <a href="../../resources/code-examples/data/SOURCES.html"><code>data/SOURCES.md</code></a> to build the gold file.</p>
+</section>
+</section>
+<section id="building-the-gold-files-yourself" class="level2">
+<h2 class="anchored" data-anchor-id="building-the-gold-files-yourself">Building the gold files yourself</h2>
+<p><strong>Getting raw data and shaping it into a gold standard is itself a core skill in this course</strong> — not just a chore done for you. So each dataset has a <strong>student notebook</strong> (Colab-ready, no setup) that walks through <em>download → inspect the raw format → reshape to the canonical schema → check the label balance → save</em>. The point you will feel: <strong>every dataset’s raw format is different</strong>, and getting it into one clean shape is half the work of building a gold standard.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Student notebook</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CEFR-SP</td>
+<td><a href="../../resources/code-examples/data/notebooks/download_cefr_sp.html"><code>download_cefr_sp.ipynb</code></a></td>
+</tr>
+<tr class="even">
+<td>RAAMove</td>
+<td><a href="../../resources/code-examples/data/notebooks/download_raamove.html"><code>download_raamove.ipynb</code></a></td>
+</tr>
+<tr class="odd">
+<td>CaRS-50</td>
+<td><a href="../../resources/code-examples/data/notebooks/download_cars50.html"><code>download_cars50.ipynb</code></a></td>
+</tr>
+<tr class="even">
+<td>AutoErrorAnalyzer</td>
+<td><a href="../../resources/code-examples/data/notebooks/download_autoerroranalyzer.html"><code>download_autoerroranalyzer.ipynb</code></a></td>
+</tr>
+<tr class="odd">
+<td>ICNALE GRA</td>
+<td><a href="../../resources/code-examples/data/notebooks/download_icnale_gra.html"><code>download_icnale_gra.ipynb</code></a> (gated — upload your own download)</td>
+</tr>
+</tbody>
+</table>
+<p>Instructors can rebuild everything at once with the script behind those notebooks:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> sources/resources/code-examples/data</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run <span class="at">--no-project</span> python prep_datasets.py          <span class="co"># build all available datasets</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run <span class="at">--no-project</span> python prep_datasets.py raamove  <span class="co"># or just one</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Neither the raw downloads nor the derived <code>gold/*.json</code> are distributed with this repo — rebuild them locally with the notebooks or the script above. See <a href="./data/prep_datasets.ipynb"><code>data/prep_datasets.ipynb</code></a> for the instructor build + a schema validator.</p>
+</section>
+<section id="worked-tutorials-mini-project-tracks" class="level2">
+<h2 class="anchored" data-anchor-id="worked-tutorials-mini-project-tracks">Worked tutorials &amp; mini-project tracks</h2>
+<ul>
+<li><a href="../../resources/code-examples/tutorial-day2-annotation-eval.html">Day 2 tutorial — Annotation, gold standards &amp; evaluation</a> (on-ramp with CEFR-SP)</li>
+<li><a href="../../resources/code-examples/tutorial-day3-move-replication.html">Day 3 tutorial — Replicating Kim &amp; Lu with open data</a> (RAAMove → CaRS-50)</li>
+<li><a href="../../resources/code-examples/mini-project-datasets.html">Mini-project starter tracks</a></li>
+</ul>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/egumasa\.github\.io\/linguistic-data-analysis-II-2026\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Replication Datasets"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Open, annotated datasets for LLM annotation &amp; evaluation"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why these datasets</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>Across Days 2–5 you will use a large language model (LLM) to **annotate** linguistic data and</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>then **evaluate** it against a human gold standard (precision / recall / F1 / confusion matrix).</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>To make that practice real, this course draws on **openly licensed, expert-annotated datasets**</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>from published applied-linguistics and NLP research.</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>Every dataset is reshaped into one **canonical schema** so that the same notebook works for all of</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>them — you only ever change the *prompt*, the *label set*, and the *gold file*:</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="in">```json</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>[</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"id"</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="st">"text"</span><span class="op">:</span> <span class="st">"However, little is known about ..."</span><span class="op">,</span> <span class="st">"label"</span><span class="op">:</span> <span class="st">"Gap"</span>}<span class="op">,</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  {<span class="st">"id"</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="st">"text"</span><span class="op">:</span> <span class="st">"We therefore investigated ..."</span><span class="op">,</span>      <span class="st">"label"</span><span class="op">:</span> <span class="st">"Purpose"</span>}</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>The gold files are **not distributed with this repo** — rebuild them into <span class="in">`data/gold/`</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>reproducibly with <span class="co">[</span><span class="ot">`data/prep_datasets.py`</span><span class="co">](./data/prep_datasets.py)</span> (or the per-dataset download</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>notebooks below) from the original sources. Licenses and citations are in</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`data/SOURCES.md`</span><span class="co">](./data/SOURCES.md)</span>. **Always cite the original dataset.**</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two kinds of difficulty</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>A task can be hard to *prepare* (messy source data) or hard to *judge* (the labeling decision</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>itself is subjective). They are independent. We deliberately **start with an easy-to-judge task**</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>(CEFR level) to learn the pipeline, then move to **hard-to-judge** research tasks (discourse moves,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>L2 errors) where even expert annotators disagree — which is exactly what makes them interesting.</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## The motivating study</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>This strand of the course replicates the *idea* of **Kim &amp; Lu (2024)**, who tested how well</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>ChatGPT can annotate **rhetorical move-steps** in research-article introductions, and how prompt</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>refinement, few-shot examples, and fine-tuning change its accuracy.</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Kim, M., &amp; Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; analysis: The impact of prompt refinement, few-shot learning, and fine-tuning.</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; *Journal of English for Academic Purposes, 71,* 101422.</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>Their annotated corpus is **not** publicly available, so we use **CaRS-50** — an open dataset that</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>annotates the *same* phenomenon (Swales' CARS moves in article introductions) — as the stand-in.</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dataset catalog</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dataset <span class="pp">|</span> Phenomenon <span class="pp">|</span> Labels <span class="pp">|</span> Judge difficulty <span class="pp">|</span> Gold files <span class="pp">|</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="pp">|---------|-----------|--------|:---:|-----------|</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **CEFR-SP** <span class="pp">|</span> Sentence proficiency level <span class="pp">|</span> A1–C2 (6) <span class="pp">|</span> ★☆☆ <span class="pp">|</span> <span class="in">`cefr_sentences.json`</span> (72), <span class="in">`cefr_pool.json`</span> (3,183) <span class="pp">|</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **RAAMove** <span class="pp">|</span> Moves in RA abstracts <span class="pp">|</span> 8 moves <span class="pp">|</span> ★★★ <span class="pp">|</span> <span class="in">`raamove_moves.json`</span> (64), <span class="in">`raamove_pool.json`</span> (3,069) <span class="pp">|</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **CaRS-50** <span class="pp">|</span> Move-steps in RA intros <span class="pp">|</span> Move (3) / Step (11) <span class="pp">|</span> ★★★ <span class="pp">|</span> <span class="in">`cars50_moves.json`</span> (60), <span class="in">`cars50_pool.json`</span>, <span class="in">`cars50_step_pool.json`</span> <span class="pp">|</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **AutoErrorAnalyzer** <span class="pp">|</span> L2 written errors <span class="pp">|</span> category (4) / detection (2) <span class="pp">|</span> ★★★ <span class="pp">|</span> <span class="in">`l2_errors.json`</span> (60), <span class="in">`l2_error_detection.json`</span> (60), <span class="in">`l2_errors_pool.json`</span> <span class="pp">|</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **ICNALE GRA** <span class="pp">|</span> Holistic essay rating (AWE) <span class="pp">|</span> Low/Mid/High <span class="pp">|</span> ★★☆ <span class="pp">|</span> *(manual download — see below)* <span class="pp">|</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>The <span class="in">`*_moves.json`</span> / <span class="in">`*_sentences.json`</span> files are **balanced ~60–72 item gold sets** for the worked</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>tutorials. The <span class="in">`*_pool.json`</span> files are the **full datasets** for mini-projects (build your own larger</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>or differently-balanced gold set from them).</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="fu">### CEFR-SP — the on-ramp (★☆☆ to judge)</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>Single sentences labeled with their CEFR difficulty level (A1–C2) by language-education</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>professionals. We keep only sentences where **both annotators agreed**, so the labels are</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>unambiguous — perfect for learning the annotate → evaluate pipeline before tackling harder tasks.</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>Built from the openly-shipped **Wiki-Auto** portion (CC BY-SA 3.0).</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>Source: Arase, Uchida &amp; Kajiwara (2022), *EMNLP* — <span class="co">[</span><span class="ot">github.com/yukiar/CEFR-SP</span><span class="co">](https://github.com/yukiar/CEFR-SP)</span>.</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="fu">### RAAMove — discourse moves, clean data (★★★ to judge)</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>Sentences from research-article **abstracts** labeled with one of **8 rhetorical moves**</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>(Background, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication). Ships as tidy</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>JSON, so it is the easiest *discourse* dataset to start with. Inter-annotator κ = 0.785.</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>CC BY 4.0. Source: Liu et al. (2024), *LREC-COLING* — <span class="co">[</span><span class="ot">github.com/ljk1228/RAAMove</span><span class="co">](https://github.com/ljk1228/RAAMove)</span>.</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="fu">### CaRS-50 — the Kim &amp; Lu replication (★★★ to judge)</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>Sentences from 50 BioRxiv article **introductions** labeled with Swales' **CARS Move (1–3)** and</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>**Step (a–d)** — the same scheme Kim &amp; Lu used. Start with the 3-class **Move** version</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>(<span class="in">`cars50_moves.json`</span>); the 11-class **Move+Step** version (<span class="in">`cars50_step_pool.json`</span>) is a stretch</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>goal. Note: the dataset's own expert inter-rater agreement is only **κ ≈ 0.43** — a built-in lesson</span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>that this task is genuinely hard. CC BY 4.0.</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>Source: Lam &amp; Nnamoko (2025), Mendeley Data — <span class="co">[</span><span class="ot">doi:10.17632/kwr9s5c4nk.1</span><span class="co">](https://data.mendeley.com/datasets/kwr9s5c4nk/1)</span>.</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="fu">### AutoErrorAnalyzer — L2 error annotation (★★★ to judge)</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>Sentences from Japanese-EFL essays with **human gold** error labels. We collapse the 23-code</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>taxonomy into 4 broader classes (Grammatical / Lexical / Mechanical / No error); a binary</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>**error-detection** version is also provided. Bonus: the source file also contains the **published</span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>tool's own predictions**, so you can compare your LLM both to the human gold *and* to the original</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>system. Source: Mizumoto (2025), *SSLA* 47(3) — <span class="co">[</span><span class="ot">github.com/mizumot/AutoErrorAnalyzer</span><span class="co">](https://github.com/mizumot/AutoErrorAnalyzer)</span></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span><span class="co">[</span><span class="ot">OSF</span><span class="co">](https://osf.io/jyf3r/)</span>.</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="fu">### ICNALE GRA — automated writing evaluation (★★☆ to judge)</span></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>Asian-learner English essays rated holistically by many trained raters — the basis for an</span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>**automated writing evaluation** task (predict a Low/Mid/High score band). The archive is</span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>**password-gated**: register at the</span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">ICNALE download page</span><span class="co">](https://language.sakura.ne.jp/icnale/download.html)</span>, then follow the</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>instructions in <span class="co">[</span><span class="ot">`data/SOURCES.md`</span><span class="co">](./data/SOURCES.md)</span> to build the gold file.</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Building the gold files yourself</span></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>**Getting raw data and shaping it into a gold standard is itself a core skill in this course** — not</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>just a chore done for you. So each dataset has a **student notebook** (Colab-ready, no setup) that</span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>walks through *download → inspect the raw format → reshape to the canonical schema → check the label</span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>balance → save*. The point you will feel: **every dataset's raw format is different**, and getting</span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>it into one clean shape is half the work of building a gold standard.</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dataset <span class="pp">|</span> Student notebook <span class="pp">|</span></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="pp">|---------|------------------|</span></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> CEFR-SP <span class="pp">|</span> <span class="co">[</span><span class="ot">`download_cefr_sp.ipynb`</span><span class="co">](./data/notebooks/download_cefr_sp.ipynb)</span> <span class="pp">|</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> RAAMove <span class="pp">|</span> <span class="co">[</span><span class="ot">`download_raamove.ipynb`</span><span class="co">](./data/notebooks/download_raamove.ipynb)</span> <span class="pp">|</span></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> CaRS-50 <span class="pp">|</span> <span class="co">[</span><span class="ot">`download_cars50.ipynb`</span><span class="co">](./data/notebooks/download_cars50.ipynb)</span> <span class="pp">|</span></span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> AutoErrorAnalyzer <span class="pp">|</span> <span class="co">[</span><span class="ot">`download_autoerroranalyzer.ipynb`</span><span class="co">](./data/notebooks/download_autoerroranalyzer.ipynb)</span> <span class="pp">|</span></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ICNALE GRA <span class="pp">|</span> <span class="co">[</span><span class="ot">`download_icnale_gra.ipynb`</span><span class="co">](./data/notebooks/download_icnale_gra.ipynb)</span> (gated — upload your own download) <span class="pp">|</span></span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>Instructors can rebuild everything at once with the script behind those notebooks:</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> sources/resources/code-examples/data</span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run <span class="at">--no-project</span> python prep_datasets.py          <span class="co"># build all available datasets</span></span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run <span class="at">--no-project</span> python prep_datasets.py raamove  <span class="co"># or just one</span></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>Neither the raw downloads nor the derived <span class="in">`gold/*.json`</span> are distributed with this repo — rebuild</span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>them locally with the notebooks or the script above. See</span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`data/prep_datasets.ipynb`</span><span class="co">](./data/prep_datasets.ipynb)</span> for the instructor build + a schema</span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>validator.</span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Worked tutorials &amp; mini-project tracks</span></span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Day 2 tutorial — Annotation, gold standards &amp; evaluation</span><span class="co">](./tutorial-day2-annotation-eval.md)</span></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>  (on-ramp with CEFR-SP)</span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Day 3 tutorial — Replicating Kim &amp; Lu with open data</span><span class="co">](./tutorial-day3-move-replication.md)</span></span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>  (RAAMove → CaRS-50)</span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Mini-project starter tracks</span><span class="co">](./mini-project-datasets.md)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/code-examples/replication-datasets.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

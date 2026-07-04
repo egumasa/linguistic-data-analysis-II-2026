@@ -10,8 +10,13 @@ planning/
 # Copyrighted / source material — do not publish
 papers/
 
-# Regenerable source corpora (see data/SOURCES.md)
+# Regenerable datasets (raw corpora + derived gold; see data/SOURCES.md).
+# Students rebuild these with prep_datasets.py / the download notebooks.
 sources/resources/code-examples/data/raw/
+sources/resources/code-examples/data/gold/
+# ...and never let a render leak them into the published site
+sources/docs/resources/code-examples/data/raw/
+sources/docs/resources/code-examples/data/gold/
 
 # Python bytecode
 __pycache__/
