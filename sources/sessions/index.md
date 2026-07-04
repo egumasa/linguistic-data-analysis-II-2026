@@ -5,36 +5,32 @@ toc: true
 # toc-depth: 3
 # toc-location: right
 ---
-
 ## Overview
 
-This course covers foundational concepts in corpus linguistics, corpus analysis methods, and their research applications across the following four areas: vocabulary, multiword units, and grammar.
+This intensive 5-day course covers LLM-based linguistic data analysis — annotation and gold-standard construction, prompt design, and evaluation (precision/recall/F1, confusion matrices) — through lectures, tutorials, and hands-on practice, culminating in a group mini-project presentation.
 
-
-| Day                   | Session No. | Session title                                        |
-|-----------------------|-------------|------------------------------------------------------|
-| Day 1 (Aug. 2nd, Sat) |             | [**Introduction to Linguistic Data Analysis**](../sessions/day1/index.md)               |
-|                       | Session 1   | [Getting Started with Corpus Linguistics](../sessions/day1/session1.md)              |
-|                       | Session 2   | [Foundations of Corpus Linguistics](../sessions/day1/session2.md)                    |
-|                       | Session 3   | [Basic Corpus Search](../sessions/day1/session3.md)                                  |
-| Day 2 (Aug. 4th, Mon) |             | [**Analyzing Vocabulary**](../sessions/day2/index.md)                             |
-|                       | Session 4   | [Conceptual overview](../sessions/day2/session4.md)                                  |
-|                       | Session 5   | [Frequency lists & Lexical profiling](../sessions/day2/session5.md)                  |
-|                       | Session 6   | [Lexical diversity & Sophistication](../sessions/day2/session6.md)                   |
-| Day 3 (Aug. 5th, Tue) |             | [**Analyzing Multiword Units**](../sessions/day3/index.md)                        |
-|                       | Session 7   | [Conceptual overview](../sessions/day3/session7.md)                                  |
-|                       | Session 8   | [Collocations & N-grams](../sessions/day3/session8.md)                               |
-|                       | Session 9   | [Mini-research & Final project overview](../sessions/day3/session9.md)               |
-| Day 4 (Aug. 6th, Wed) |             | [**Analyzing Grammar**](../sessions/day4/index.md)                                |
-|                       | Session 10  | [Conceptual overview](../sessions/day4/session10.md)                                  |
-|                       | Session 11  | [POS-tagging and Dependency Parsing](../sessions/day4/session11.md)                   |
-|                       | Session 12  | [Syntactic Complexity](../sessions/day4/session12.md)                                 |
-| Day 5 (Aug. 7th, Thu) |             | [**Advanced Topics & Wrap-up**](../sessions/day5/index.md)                        |
-|                       | Session 13  | [Using large language models for language annotation](../sessions/day5/session13.md)  |
-|                       | Session 14  | [Final project preparation time](../sessions/day5/session14.md)                       |
-|                       | Session 15  | [Final project presentation](../sessions/day5/session15.md)                           |
-
-
+| Day                   | Session No. | Session title                                                                 |
+| --------------------- | ----------- | ----------------------------------------------------------------------------- |
+| Day 1 (Aug. 3rd, Mon) |             | **Introduction & First Experience**                                     |
+|                       | Session 1   | [Introduction to LLMs as Tools for Linguistic Data Analysis](day1/session1.md) |
+|                       | Session 2   | [Linguistic Analyses &amp; LLM Fundamentals](day1/session2.md)                 |
+|                       | Session 3   | [Colab Onboarding &amp; Mini-Project Setup](day1/session3.md)                  |
+| Day 2 (Aug. 4th, Tue) |             | **Annotation, Gold Standards & Metrics**                                |
+|                       | Session 4   | [Annotation Principles &amp; Inter-Annotator Agreement](day2/session4.md)      |
+|                       | Session 5   | [Hands-on: Gold-Standard Annotation &amp; Agreement](day2/session5.md)         |
+|                       | Session 6   | [Gold Standards &amp; Evaluation Metrics](day2/session6.md)                    |
+| Day 3 (Aug. 5th, Wed) |             | **Prompt Design & Iteration**                                           |
+|                       | Session 7   | [Prompt Design: Zero-shot vs Few-shot](day3/session7.md)                       |
+|                       | Session 8   | [Hands-on: LLM Classification &amp; Prompt Iteration](day3/session8.md)        |
+|                       | Session 9   | [Error Analysis &amp; Under-the-Hood Walkthrough](day3/session9.md)            |
+| Day 4 (Aug. 6th, Thu) |             | **Methodology & Pipeline Assembly**                                     |
+|                       | Session 10  | [Methodology: Reproducibility, LLM Limits &amp; Ethics](day4/session10.md)     |
+|                       | Session 11  | [Plenary Pipeline Assembly](day4/session11.md)                                 |
+|                       | Session 12  | [Project Work: Sample &amp; QC the Gold Set](day4/session12.md)                |
+| Day 5 (Aug. 7th, Fri) |             | **Project Finalization & Presentations**                                |
+|                       | Session 13  | [Project Work: Prompt Iteration &amp; Final Evaluation](day5/session13.md)     |
+|                       | Session 14  | [Project Work: Finalize Report &amp; Notebook](day5/session14.md)              |
+|                       | Session 15  | [Final Presentations &amp; Wrap-up](day5/session15.md)                         |
 
 ---
 
