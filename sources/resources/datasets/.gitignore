@@ -1,5 +1,11 @@
 # Datasets are NOT committed — regenerate with prep_datasets.py / the download
 # notebooks (see SOURCES.md). Only the prep code and notebooks are tracked.
 raw/
-gold/
+gold/*
 __pycache__/
+
+# Exception: the CEFR on-ramp gold set IS committed so the Day-2 worked tutorial
+# (02_gold_and_eval.ipynb) loads it by URL with zero setup. Redistributable under
+# CC BY-SA 3.0 (CEFR-SP, Wiki-Auto portion) — see SOURCES.md. Students learn the
+# download→build→house-in-Drive workflow separately (mini-project).
+!gold/cefr_sentences.json
