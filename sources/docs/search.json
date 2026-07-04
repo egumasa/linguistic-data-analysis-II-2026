@@ -648,7 +648,7 @@
     "href": "resources/datasets/index.html",
     "title": "Replication Datasets",
     "section": "",
-    "text": "Across Days 2–5 you will use a large language model (LLM) to annotate linguistic data and then evaluate it against a human gold standard (precision / recall / F1 / confusion matrix). To make that practice real, this course draws on openly licensed, expert-annotated datasets from published applied-linguistics and NLP research.\nEvery dataset is reshaped into one canonical schema so that the same notebook works for all of them — you only ever change the prompt, the label set, and the gold file:\n[\n  {\"id\": 1, \"text\": \"However, little is known about ...\", \"label\": \"Gap\"},\n  {\"id\": 2, \"text\": \"We therefore investigated ...\",      \"label\": \"Purpose\"}\n]\nThe gold files are not distributed with this repo — rebuild them into gold/ reproducibly with prep_datasets.py (or the per-dataset download notebooks below) from the original sources. Licenses and citations are in SOURCES.md. Always cite the original dataset.\n\n\n\n\n\n\nNoteTwo kinds of difficulty\n\n\n\nA task can be hard to prepare (messy source data) or hard to judge (the labeling decision itself is subjective). They are independent. We deliberately start with an easy-to-judge task (CEFR level) to learn the pipeline, then move to hard-to-judge research tasks (discourse moves, L2 errors) where even expert annotators disagree — which is exactly what makes them interesting.",
+    "text": "Across Days 2–5 you will use a large language model (LLM) to annotate linguistic data and then evaluate it against a human gold standard (precision / recall / F1 / confusion matrix). To make that practice real, this course draws on openly licensed, expert-annotated datasets from published applied-linguistics and NLP research.\nEvery dataset is reshaped into one canonical schema so that the same notebook works for all of them — you only ever change the prompt, the label set, and the gold file:\n[\n  {\"id\": 1, \"text\": \"However, little is known about ...\", \"label\": \"Gap\"},\n  {\"id\": 2, \"text\": \"We therefore investigated ...\",      \"label\": \"Purpose\"}\n]\nThe gold files are not distributed with this repo — rebuild them into gold/ reproducibly with prep_datasets.py (or the per-dataset download notebooks below) from the original sources. Licenses and citations are in SOURCES.md. Always cite the original dataset. Once you’ve rebuilt a gold set, keep it in your Google Drive — see Housing Your Data in Google Drive.\n\n\n\n\n\n\nNoteTwo kinds of difficulty\n\n\n\nA task can be hard to prepare (messy source data) or hard to judge (the labeling decision itself is subjective). They are independent. We deliberately start with an easy-to-judge task (CEFR level) to learn the pipeline, then move to hard-to-judge research tasks (discourse moves, L2 errors) where even expert annotators disagree — which is exactly what makes them interesting.",
     "crumbs": [
       "Resources",
       "Datasets",
@@ -660,7 +660,7 @@
     "href": "resources/datasets/index.html#why-these-datasets",
     "title": "Replication Datasets",
     "section": "",
-    "text": "Across Days 2–5 you will use a large language model (LLM) to annotate linguistic data and then evaluate it against a human gold standard (precision / recall / F1 / confusion matrix). To make that practice real, this course draws on openly licensed, expert-annotated datasets from published applied-linguistics and NLP research.\nEvery dataset is reshaped into one canonical schema so that the same notebook works for all of them — you only ever change the prompt, the label set, and the gold file:\n[\n  {\"id\": 1, \"text\": \"However, little is known about ...\", \"label\": \"Gap\"},\n  {\"id\": 2, \"text\": \"We therefore investigated ...\",      \"label\": \"Purpose\"}\n]\nThe gold files are not distributed with this repo — rebuild them into gold/ reproducibly with prep_datasets.py (or the per-dataset download notebooks below) from the original sources. Licenses and citations are in SOURCES.md. Always cite the original dataset.\n\n\n\n\n\n\nNoteTwo kinds of difficulty\n\n\n\nA task can be hard to prepare (messy source data) or hard to judge (the labeling decision itself is subjective). They are independent. We deliberately start with an easy-to-judge task (CEFR level) to learn the pipeline, then move to hard-to-judge research tasks (discourse moves, L2 errors) where even expert annotators disagree — which is exactly what makes them interesting.",
+    "text": "Across Days 2–5 you will use a large language model (LLM) to annotate linguistic data and then evaluate it against a human gold standard (precision / recall / F1 / confusion matrix). To make that practice real, this course draws on openly licensed, expert-annotated datasets from published applied-linguistics and NLP research.\nEvery dataset is reshaped into one canonical schema so that the same notebook works for all of them — you only ever change the prompt, the label set, and the gold file:\n[\n  {\"id\": 1, \"text\": \"However, little is known about ...\", \"label\": \"Gap\"},\n  {\"id\": 2, \"text\": \"We therefore investigated ...\",      \"label\": \"Purpose\"}\n]\nThe gold files are not distributed with this repo — rebuild them into gold/ reproducibly with prep_datasets.py (or the per-dataset download notebooks below) from the original sources. Licenses and citations are in SOURCES.md. Always cite the original dataset. Once you’ve rebuilt a gold set, keep it in your Google Drive — see Housing Your Data in Google Drive.\n\n\n\n\n\n\nNoteTwo kinds of difficulty\n\n\n\nA task can be hard to prepare (messy source data) or hard to judge (the labeling decision itself is subjective). They are independent. We deliberately start with an easy-to-judge task (CEFR level) to learn the pipeline, then move to hard-to-judge research tasks (discourse moves, L2 errors) where even expert annotators disagree — which is exactly what makes them interesting.",
     "crumbs": [
       "Resources",
       "Datasets",
@@ -828,7 +828,7 @@
     "href": "resources/tools/index.html",
     "title": "Tools and Software",
     "section": "",
-    "text": "The course’s primary platform is Google Colab — set that up first.\n\nPython (Google Colab) Setup\nEnglish-Corpora.org Guide\nAntConc Guide\nJASP Guide\n\n\n\nThese are the rule-based / feature-based tools from LDA I. We contrast the features they quantify (lexical diversity, syntactic complexity) with the classifications an LLM judges in context.\n\nTAALED, TAALES, TAASSC Setup\nJapanese NLP",
+    "text": "The course’s primary platform is Google Colab — set that up first.\n\nPython (Google Colab) Setup\nHousing Your Data in Google Drive\nEnglish-Corpora.org Guide\nAntConc Guide\nJASP Guide\n\n\n\nThese are the rule-based / feature-based tools from LDA I. We contrast the features they quantify (lexical diversity, syntactic complexity) with the classifications an LLM judges in context.\n\nTAALED, TAALES, TAASSC Setup\nJapanese NLP",
     "crumbs": [
       "Resources",
       "Setup & Tools",
@@ -840,7 +840,7 @@
     "href": "resources/tools/index.html#available-guides",
     "title": "Tools and Software",
     "section": "",
-    "text": "The course’s primary platform is Google Colab — set that up first.\n\nPython (Google Colab) Setup\nEnglish-Corpora.org Guide\nAntConc Guide\nJASP Guide\n\n\n\nThese are the rule-based / feature-based tools from LDA I. We contrast the features they quantify (lexical diversity, syntactic complexity) with the classifications an LLM judges in context.\n\nTAALED, TAALES, TAASSC Setup\nJapanese NLP",
+    "text": "The course’s primary platform is Google Colab — set that up first.\n\nPython (Google Colab) Setup\nHousing Your Data in Google Drive\nEnglish-Corpora.org Guide\nAntConc Guide\nJASP Guide\n\n\n\nThese are the rule-based / feature-based tools from LDA I. We contrast the features they quantify (lexical diversity, syntactic complexity) with the classifications an LLM judges in context.\n\nTAALED, TAALES, TAASSC Setup\nJapanese NLP",
     "crumbs": [
       "Resources",
       "Setup & Tools",
@@ -929,6 +929,78 @@
     "title": "Final Project",
     "section": "Grading",
     "text": "Grading\nSee the Course Syllabus for the full breakdown (mini-project presentation + Q&A and the in-class report are weighted components; the completed notebook is graded under hands-on)."
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html",
+    "href": "resources/tools/google-drive-data.html",
+    "title": "Housing Your Data in Google Drive",
+    "section": "",
+    "text": "In the worked tutorials, the course hands you data over a URL — e.g. Day 2’s 02_gold_and_eval.ipynb loads a committed CEFR gold set straight from GitHub, so it just runs. That is the instructor’s distribution channel.\nFor the mini-project you flip roles: you build your own gold set (download → reshape → sample a subset) and you need somewhere to keep it. That place is your Google Drive — not GitHub.\n\n\n\n\n\n\nNoteGitHub is ours, Drive is yours\n\n\n\nGitHub is how we ship read-only course data to everyone. Your own rebuilt/sampled data lives in your Drive because it:\n\npersists across Colab sessions — a Colab VM wipes /content/ when it disconnects, but your Drive files survive;\nneeds no git push — save and it’s there;\nstays private and license-clean — some source datasets can’t be redistributed, so committing them to a repo would be a licensing problem. Keeping your copy in your Drive avoids that.\n\n\n\nWe’ll learn the pattern on the CEFR data you already know from Day 2, then reuse the exact same four steps for your mini-project dataset.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#why-this-guide",
+    "href": "resources/tools/google-drive-data.html#why-this-guide",
+    "title": "Housing Your Data in Google Drive",
+    "section": "",
+    "text": "In the worked tutorials, the course hands you data over a URL — e.g. Day 2’s 02_gold_and_eval.ipynb loads a committed CEFR gold set straight from GitHub, so it just runs. That is the instructor’s distribution channel.\nFor the mini-project you flip roles: you build your own gold set (download → reshape → sample a subset) and you need somewhere to keep it. That place is your Google Drive — not GitHub.\n\n\n\n\n\n\nNoteGitHub is ours, Drive is yours\n\n\n\nGitHub is how we ship read-only course data to everyone. Your own rebuilt/sampled data lives in your Drive because it:\n\npersists across Colab sessions — a Colab VM wipes /content/ when it disconnects, but your Drive files survive;\nneeds no git push — save and it’s there;\nstays private and license-clean — some source datasets can’t be redistributed, so committing them to a repo would be a licensing problem. Keeping your copy in your Drive avoids that.\n\n\n\nWe’ll learn the pattern on the CEFR data you already know from Day 2, then reuse the exact same four steps for your mini-project dataset.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#the-pattern-in-four-steps",
+    "href": "resources/tools/google-drive-data.html#the-pattern-in-four-steps",
+    "title": "Housing Your Data in Google Drive",
+    "section": "The pattern, in four steps",
+    "text": "The pattern, in four steps\n\n1. Mount your Drive\nRun this in a Colab cell. It pops up a Google auth window the first time — approve it, and your Drive appears under /content/drive/MyDrive/.\nfrom google.colab import drive\ndrive.mount('/content/drive')\n\n\n2. Make a project folder\nKeep everything for this course in one place so paths stay predictable.\nimport os\n\nDATA_DIR = \"/content/drive/MyDrive/lda2/gold\"\nos.makedirs(DATA_DIR, exist_ok=True)\nprint(\"Your data folder:\", DATA_DIR)\n\n\n3. Save your gold set into Drive\nAfter you’ve built a gold set — e.g. by running the CEFR download notebook download_cefr_sp.ipynb, which produces a list of {\"id\", \"text\", \"label\"} items — write it to Drive:\nimport json\n\n# `gold` is the list your download/build notebook produced\nout_path = f\"{DATA_DIR}/cefr_sentences.json\"\nwith open(out_path, \"w\", encoding=\"utf-8\") as f:\n    json.dump(gold, f, ensure_ascii=False, indent=2)\n\nprint(f\"Saved {len(gold)} items to {out_path}\")\n\n\n4. Load it back — from any future session\nThis is the payoff: once it’s in Drive, any notebook can read it with a local path instead of a URL. The tutorials’ load_gold() already accepts either:\nGOLD_PATH = \"/content/drive/MyDrive/lda2/gold/cefr_sentences.json\"\ngold = load_gold(GOLD_PATH)      # same function, path instead of URL\nprint(len(gold), \"items loaded from Drive\")\nThat’s the whole round-trip: mount → folder → save → load. Nothing is lost when Colab disconnects, and you never touch GitHub.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#reusing-this-for-your-mini-project",
+    "href": "resources/tools/google-drive-data.html#reusing-this-for-your-mini-project",
+    "title": "Housing Your Data in Google Drive",
+    "section": "Reusing this for your mini-project",
+    "text": "Reusing this for your mini-project\nThe four steps don’t change — you only swap which dataset you build and what you name the file. Pick your track in mini-project-tracks.md, run that track’s download notebook, then:\n\nMount your Drive (step 1).\nSave your track’s gold set — e.g. f\"{DATA_DIR}/raamove_moves.json\" (step 3).\nLoad it by path in your evaluation notebook (step 4).\n\nOne dataset, one mechanic, learned once on familiar CEFR data — now applied to your own.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#troubleshooting",
+    "href": "resources/tools/google-drive-data.html#troubleshooting",
+    "title": "Housing Your Data in Google Drive",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\n\n\n\n\n\n\nSymptom\nFix\n\n\n\n\ndrive.mount does nothing / asks again\nYou disconnected the runtime. Re-run the mount cell and re-approve.\n\n\nFileNotFoundError on load\nCheck the path spelling — it’s MyDrive (no space), and the folder must exist (re-run step 2).\n\n\nSaved file isn’t in Drive\nConfirm the cell printed a /content/drive/MyDrive/... path, then look under My Drive → lda2 → gold in the Drive web UI.\n\n\n“Mountpoint must not already contain files”\nRun drive.flush_and_unmount() once, then mount again.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#see-also",
+    "href": "resources/tools/google-drive-data.html#see-also",
+    "title": "Housing Your Data in Google Drive",
+    "section": "See also",
+    "text": "See also\n\nPython (Colaboratory) Setup Guide — get Colab working in the first place.\nReplication Datasets — the download notebooks that build the gold sets you house here.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
   },
   {
     "objectID": "resources/tools/japanese-nlp.html",
