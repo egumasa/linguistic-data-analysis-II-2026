@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Corpora Resources – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Day 2 Tutorial — Annotation, Gold Standards &amp; Evaluation – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -156,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/corpora/index.html">Corpora</a></li><li class="breadcrumb-item"><a href="../../resources/corpora/index.html">Corpora Resources</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tutorials/index.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../../resources/tutorials/tutorial-day2-annotation-eval.html">Day 2 Tutorial — Annotation, Gold Standards &amp; Evaluation</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -237,16 +237,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">Corpora</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../resources/corpora/index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../resources/corpora/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Corpora Resources</span></a>
   </div>
 </li>
@@ -289,13 +289,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">Tutorials</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../resources/tutorials/index.html" class="sidebar-item-text sidebar-link">
@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../resources/tutorials/tutorial-day2-annotation-eval.html" class="sidebar-item-text sidebar-link">
+  <a href="../../resources/tutorials/tutorial-day2-annotation-eval.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Day 2 Tutorial — Annotation, Gold Standards &amp; Evaluation</span></a>
   </div>
 </li>
@@ -377,17 +377,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#resources" id="toc-resources" class="nav-link active" data-scroll-target="#resources">Resources</a></li>
+  <li><a href="#the-task" id="toc-the-task" class="nav-link active" data-scroll-target="#the-task">The task</a></li>
+  <li><a href="#step-1-look-at-the-gold-standard" id="toc-step-1-look-at-the-gold-standard" class="nav-link" data-scroll-target="#step-1-look-at-the-gold-standard">Step 1 — Look at the gold standard</a></li>
+  <li><a href="#step-2-run-a-fixed-prompt-the-pipeline" id="toc-step-2-run-a-fixed-prompt-the-pipeline" class="nav-link" data-scroll-target="#step-2-run-a-fixed-prompt-the-pipeline">Step 2 — Run a fixed prompt (the pipeline)</a></li>
+  <li><a href="#step-3-read-the-evaluation" id="toc-step-3-read-the-evaluation" class="nav-link" data-scroll-target="#step-3-read-the-evaluation">Step 3 — Read the evaluation</a></li>
+  <li><a href="#step-4-error-analysis" id="toc-step-4-error-analysis" class="nav-link" data-scroll-target="#step-4-error-analysis">Step 4 — Error analysis</a></li>
+  <li><a href="#what-to-take-to-day-3" id="toc-what-to-take-to-day-3" class="nav-link" data-scroll-target="#what-to-take-to-day-3">What to take to Day 3</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/corpora/index.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tutorials/tutorial-day2-annotation-eval.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/corpora/index.html">Corpora</a></li><li class="breadcrumb-item"><a href="../../resources/corpora/index.html">Corpora Resources</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tutorials/index.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../../resources/tutorials/tutorial-day2-annotation-eval.html">Day 2 Tutorial — Annotation, Gold Standards &amp; Evaluation</a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Corpora Resources</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Available Corpora and Access Information</p>
+<div class="quarto-title-block"><div><h1 class="title">Day 2 Tutorial — Annotation, Gold Standards &amp; Evaluation</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Learn the pipeline on an easy-to-judge task (CEFR-SP)</p>
 </div>
 
 
@@ -404,12 +409,94 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="resources" class="level2">
-<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<blockquote class="blockquote">
+<p><strong>Goal.</strong> By the end of this tutorial you can take an annotated dataset, run an LLM over it with a fixed prompt, and read the precision / recall / F1 / confusion-matrix output. We use an <em>easy-to-judge</em> task first — CEFR sentence levels — so the mechanics, not the labeling, are the challenge. The hard, research-style task comes in the <a href="../../resources/tutorials/tutorial-day3-move-replication.html">Day 3 tutorial</a>.</p>
+</blockquote>
+<p><strong>Companion notebook:</strong> <code>02_gold_and_eval.ipynb</code> — open it directly in Colab (Tohoku Google account, no setup):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/02_gold_and_eval.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<figcaption>Open In Colab</figcaption>
+</figure>
+</div>
+<section id="the-task" class="level2">
+<h2 class="anchored" data-anchor-id="the-task">The task</h2>
+<p>Each item is one English sentence; the label is its <strong>CEFR level</strong> (A1–C2). The gold labels were assigned by language-education professionals, and we kept only sentences where <strong>two annotators agreed</strong> — so there is a defensible “right answer” for every item.</p>
+<p>Dataset: <code>gold/cefr_sentences.json</code> (72 items, 12 per level) — build it with the <a href="../../resources/datasets/notebooks/download_cefr_sp.html">CEFR-SP download notebook</a>. See the <a href="../../resources/datasets/index.html#cefr-sp-the-on-ramp-to-judge">dataset catalog</a> for provenance.</p>
+</section>
+<section id="step-1-look-at-the-gold-standard" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-look-at-the-gold-standard">Step 1 — Look at the gold standard</h2>
+<p>Open the gold file. Notice the canonical schema — this is the <em>only</em> data shape you will see all week:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="fu">{</span><span class="dt">"id"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">"text"</span><span class="fu">:</span> <span class="st">"He died on 6 October 1837 in Paris."</span><span class="fu">,</span> <span class="dt">"label"</span><span class="fu">:</span> <span class="st">"A1"</span><span class="fu">}</span><span class="ot">,</span> <span class="er">...</span><span class="ot">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Annotate a few yourself first
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Before running the model, label ~10 sentences by hand (cover the <code>label</code> column). Compare with a partner and compute simple agreement. For CEFR you will mostly agree — hold on to that feeling, then notice how different it is for the Day 3 discourse task.</p>
+</div>
+</div>
+</section>
+<section id="step-2-run-a-fixed-prompt-the-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-run-a-fixed-prompt-the-pipeline">Step 2 — Run a fixed prompt (the pipeline)</h2>
+<p>In the <code>02_gold_and_eval</code> notebook the pipeline is four named cells. You do <strong>not</strong> edit them — you just run them:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 70%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Cell</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>load_gold(path)</code></td>
+<td>reads the JSON gold file → <code>gold</code></td>
+</tr>
+<tr class="even">
+<td><code>run_prompt(prompt, gold)</code></td>
+<td>sends each <code>text</code> to the LLM → <code>predictions</code></td>
+</tr>
+<tr class="odd">
+<td><code>evaluate(gold, predictions)</code></td>
+<td>prints precision / recall / F1 + a confusion matrix</td>
+</tr>
+<tr class="even">
+<td><code>show_errors(gold, predictions)</code></td>
+<td>lists the items the model got wrong</td>
+</tr>
+</tbody>
+</table>
+<p>A minimal starting prompt:</p>
+<pre class="text"><code>You are an expert rater of English sentence difficulty using the CEFR scale.
+Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.
+Answer with the level only.
+
+Sentence: {text}</code></pre>
+</section>
+<section id="step-3-read-the-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-read-the-evaluation">Step 3 — Read the evaluation</h2>
 <ul>
-<li><a href="../../resources/corpora/available-corpora.html">Available Corpora</a></li>
-<li><a href="../../resources/corpora/learner-corpora.html">Learner Corpora</a></li>
+<li><strong>Precision / recall / F1</strong> per level, plus a macro average.</li>
+<li>The <strong>confusion matrix</strong> shows <em>which</em> levels get mixed up. For CEFR you will usually see confusions between <em>adjacent</em> levels (B1 ↔︎ B2), rarely between far-apart ones (A1 ↔︎ C2) — a sign the model has the right idea but imprecise thresholds.</li>
 </ul>
+</section>
+<section id="step-4-error-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-error-analysis">Step 4 — Error analysis</h2>
+<p>Run <code>show_errors</code>. For each miss, ask: is the <em>gold</em> defensible, or is this a genuinely borderline sentence? This question — “is the disagreement the model’s fault or the scheme’s?” — is the heart of annotation work, and it returns with force in the Day 3 task.</p>
+</section>
+<section id="what-to-take-to-day-3" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-take-to-day-3">What to take to Day 3</h2>
+<p>You now know the full loop: <strong>load gold → format prompt → call model → evaluate → inspect errors.</strong> On Day 3 the loop is identical; only the <em>task</em> gets harder.</p>
+<p>➡️ <a href="../../resources/tutorials/tutorial-day3-move-replication.html">Day 3 Tutorial — Replicating Kim &amp; Lu with open data</a></p>
 
 
 <!-- -->
@@ -875,20 +962,93 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Corpora Resources"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Available Corpora and Access Information"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## Resources</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Available Corpora</span><span class="co">](available-corpora.md)</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Learner Corpora</span><span class="co">](learner-corpora.md)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Day 2 Tutorial — Annotation, Gold Standards &amp; Evaluation"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Learn the pipeline on an easy-to-judge task (CEFR-SP)"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Goal.** By the end of this tutorial you can take an annotated dataset, run an LLM over it with a</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; fixed prompt, and read the precision / recall / F1 / confusion-matrix output. We use an</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; *easy-to-judge* task first — CEFR sentence levels — so the mechanics, not the labeling, are the</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; challenge. The hard, research-style task comes in the </span><span class="co">[</span><span class="ot">Day 3 tutorial</span><span class="co">](./tutorial-day3-move-replication.md)</span><span class="at">.</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>**Companion notebook:** <span class="in">`02_gold_and_eval.ipynb`</span> — open it directly in Colab (Tohoku Google account, no setup):</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/02_gold_and_eval.ipynb)</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## The task</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>Each item is one English sentence; the label is its **CEFR level** (A1–C2). The gold labels were</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>assigned by language-education professionals, and we kept only sentences where **two annotators</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>agreed** — so there is a defensible "right answer" for every item.</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>Dataset: <span class="in">`gold/cefr_sentences.json`</span> (72 items, 12 per level) — build it with the</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">CEFR-SP download notebook</span><span class="co">](../datasets/notebooks/download_cefr_sp.ipynb)</span>.</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>See the <span class="co">[</span><span class="ot">dataset catalog</span><span class="co">](../datasets/index.md#cefr-sp-the-on-ramp-to-judge)</span> for provenance.</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 1 — Look at the gold standard</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>Open the gold file. Notice the canonical schema — this is the *only* data shape you will see all</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>week:</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="in">```json</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>[{<span class="st">"id"</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="st">"text"</span><span class="op">:</span> <span class="st">"He died on 6 October 1837 in Paris."</span><span class="op">,</span> <span class="st">"label"</span><span class="op">:</span> <span class="st">"A1"</span>}<span class="op">,</span> <span class="op">...</span>]</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Annotate a few yourself first</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>Before running the model, label ~10 sentences by hand (cover the <span class="in">`label`</span> column). Compare with a</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>partner and compute simple agreement. For CEFR you will mostly agree — hold on to that feeling, then</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>notice how different it is for the Day 3 discourse task.</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 2 — Run a fixed prompt (the pipeline)</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>In the <span class="in">`02_gold_and_eval`</span> notebook the pipeline is four named cells. You do **not** edit them — you</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>just run them:</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Cell <span class="pp">|</span> What it does <span class="pp">|</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|------|--------------|</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`load_gold(path)`</span> <span class="pp">|</span> reads the JSON gold file → <span class="in">`gold`</span> <span class="pp">|</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`run_prompt(prompt, gold)`</span> <span class="pp">|</span> sends each <span class="in">`text`</span> to the LLM → <span class="in">`predictions`</span> <span class="pp">|</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`evaluate(gold, predictions)`</span> <span class="pp">|</span> prints precision / recall / F1 + a confusion matrix <span class="pp">|</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`show_errors(gold, predictions)`</span> <span class="pp">|</span> lists the items the model got wrong <span class="pp">|</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>A minimal starting prompt:</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="in">```text</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="in">You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="in">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="in">Answer with the level only.</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="in">Sentence: {text}</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 3 — Read the evaluation</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Precision / recall / F1** per level, plus a macro average.</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **confusion matrix** shows *which* levels get mixed up. For CEFR you will usually see</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>  confusions between *adjacent* levels (B1 ↔ B2), rarely between far-apart ones (A1 ↔ C2) — a sign</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>  the model has the right idea but imprecise thresholds.</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 4 — Error analysis</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>Run <span class="in">`show_errors`</span>. For each miss, ask: is the *gold* defensible, or is this a genuinely borderline</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>sentence? This question — "is the disagreement the model's fault or the scheme's?" — is the heart of</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>annotation work, and it returns with force in the Day 3 task.</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to take to Day 3</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>You now know the full loop: **load gold → format prompt → call model → evaluate → inspect errors.**</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>On Day 3 the loop is identical; only the *task* gets harder.</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>➡️ <span class="co">[</span><span class="ot">Day 3 Tutorial — Replicating Kim &amp; Lu with open data</span><span class="co">](./tutorial-day3-move-replication.md)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/corpora/index.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tutorials/tutorial-day2-annotation-eval.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

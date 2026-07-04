@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Corpora Resources – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Day 3 Tutorial — Replicating Kim &amp; Lu with Open Data – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -156,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/corpora/index.html">Corpora</a></li><li class="breadcrumb-item"><a href="../../resources/corpora/index.html">Corpora Resources</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tutorials/index.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../../resources/tutorials/tutorial-day3-move-replication.html">Day 3 Tutorial — Replicating Kim &amp; Lu with Open Data</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -237,16 +237,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">Corpora</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../resources/corpora/index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../resources/corpora/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Corpora Resources</span></a>
   </div>
 </li>
@@ -289,13 +289,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">Tutorials</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../resources/tutorials/index.html" class="sidebar-item-text sidebar-link">
@@ -310,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../resources/tutorials/tutorial-day3-move-replication.html" class="sidebar-item-text sidebar-link">
+  <a href="../../resources/tutorials/tutorial-day3-move-replication.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Day 3 Tutorial — Replicating Kim &amp; Lu with Open Data</span></a>
   </div>
 </li>
@@ -377,17 +377,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#resources" id="toc-resources" class="nav-link active" data-scroll-target="#resources">Resources</a></li>
+  <li><a href="#why-this-task-is-hard-and-why-thats-the-point" id="toc-why-this-task-is-hard-and-why-thats-the-point" class="nav-link active" data-scroll-target="#why-this-task-is-hard-and-why-thats-the-point">Why this task is hard (and why that’s the point)</a></li>
+  <li><a href="#step-1-start-clean-raamove-8-moves" id="toc-step-1-start-clean-raamove-8-moves" class="nav-link" data-scroll-target="#step-1-start-clean-raamove-8-moves">Step 1 — Start clean: RAAMove (8 moves)</a>
+  <ul class="collapse">
+  <li><a href="#iteration-0-zero-shot" id="toc-iteration-0-zero-shot" class="nav-link" data-scroll-target="#iteration-0-zero-shot">Iteration 0 — zero-shot</a></li>
+  <li><a href="#iteration-1-prompt-refinement" id="toc-iteration-1-prompt-refinement" class="nav-link" data-scroll-target="#iteration-1-prompt-refinement">Iteration 1 — prompt refinement</a></li>
+  <li><a href="#iteration-2-few-shot" id="toc-iteration-2-few-shot" class="nav-link" data-scroll-target="#iteration-2-few-shot">Iteration 2 — few-shot</a></li>
+  </ul></li>
+  <li><a href="#step-2-the-real-replication-cars-50-cars-moves" id="toc-step-2-the-real-replication-cars-50-cars-moves" class="nav-link" data-scroll-target="#step-2-the-real-replication-cars-50-cars-moves">Step 2 — The real replication: CaRS-50 (CARS moves)</a></li>
+  <li><a href="#step-3-error-analysis-next-prompt" id="toc-step-3-error-analysis-next-prompt" class="nav-link" data-scroll-target="#step-3-error-analysis-next-prompt">Step 3 — Error analysis → next prompt</a></li>
+  <li><a href="#discussion-ties-back-to-kim-lu" id="toc-discussion-ties-back-to-kim-lu" class="nav-link" data-scroll-target="#discussion-ties-back-to-kim-lu">Discussion (ties back to Kim &amp; Lu)</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/corpora/index.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tutorials/tutorial-day3-move-replication.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/corpora/index.html">Corpora</a></li><li class="breadcrumb-item"><a href="../../resources/corpora/index.html">Corpora Resources</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tutorials/index.html">Tutorials</a></li><li class="breadcrumb-item"><a href="../../resources/tutorials/tutorial-day3-move-replication.html">Day 3 Tutorial — Replicating Kim &amp; Lu with Open Data</a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Corpora Resources</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Available Corpora and Access Information</p>
+<div class="quarto-title-block"><div><h1 class="title">Day 3 Tutorial — Replicating Kim &amp; Lu with Open Data</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Prompt design &amp; iteration for discourse-move annotation</p>
 </div>
 
 
@@ -404,12 +413,92 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="resources" class="level2">
-<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<blockquote class="blockquote">
+<p><strong>Goal.</strong> Replicate the core idea of <strong>Kim &amp; Lu (2024)</strong> — using an LLM to annotate rhetorical <strong>moves</strong> — and see how <em>prompt refinement</em> and <em>few-shot examples</em> change accuracy. Same pipeline as <a href="../../resources/tutorials/tutorial-day2-annotation-eval.html">Day 2</a>; a much harder <em>judgment</em>.</p>
+</blockquote>
+<section id="why-this-task-is-hard-and-why-thats-the-point" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-task-is-hard-and-why-thats-the-point">Why this task is hard (and why that’s the point)</h2>
+<p>Deciding a sentence’s <strong>move</strong> (“is this <em>Background</em> or a <em>Gap</em>?”) requires reading rhetorical intent in context. Even trained experts disagree: the CaRS-50 annotators reached only <strong>κ ≈ 0.43</strong>. So do not expect CEFR-level F1 here. The research question is not “can the model be perfect?” but “<strong>how much does better prompting help, and where does it still fail?</strong>” — exactly Kim &amp; Lu’s question.</p>
+</section>
+<section id="step-1-start-clean-raamove-8-moves" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-start-clean-raamove-8-moves">Step 1 — Start clean: RAAMove (8 moves)</h2>
+<p>Begin with <code>gold/raamove_moves.json</code> (64 sentences from RA abstracts, balanced across 8 moves: Background, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication) — build it with the <a href="../../resources/datasets/notebooks/download_raamove.html">RAAMove download notebook</a>. It is tidy JSON, so you can focus on the <em>prompt</em>.</p>
+<section id="iteration-0-zero-shot" class="level3">
+<h3 class="anchored" data-anchor-id="iteration-0-zero-shot">Iteration 0 — zero-shot</h3>
+<pre class="text"><code>Classify the move of this sentence from a research abstract into exactly one of:
+Background, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication.
+Answer with the move only.
+
+Sentence: {text}</code></pre>
+<p>Run <code>evaluate</code>. Note the macro-F1 and the confusion matrix — which moves collapse into each other? (Implication ↔︎ Conclusion and Background ↔︎ Gap are common.)</p>
+</section>
+<section id="iteration-1-prompt-refinement" class="level3">
+<h3 class="anchored" data-anchor-id="iteration-1-prompt-refinement">Iteration 1 — prompt refinement</h3>
+<p>Add <strong>short definitions</strong> of each move (one line each) to the prompt. Re-run. Did F1 rise? Which confusions shrank?</p>
+</section>
+<section id="iteration-2-few-shot" class="level3">
+<h3 class="anchored" data-anchor-id="iteration-2-few-shot">Iteration 2 — few-shot</h3>
+<p>Add <strong>one or two example sentences per move</strong> (drawn from <code>raamove_pool.json</code>, <em>not</em> from your gold set). Re-run. This mirrors Kim &amp; Lu’s finding that few-shot examples and prompt refinement each give real but modest gains.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Keep examples out of your test set
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Few-shot examples must come from the <strong>pool</strong> file, never from the gold file you are scoring on — otherwise you are testing on training data.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="step-2-the-real-replication-cars-50-cars-moves" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-the-real-replication-cars-50-cars-moves">Step 2 — The real replication: CaRS-50 (CARS moves)</h2>
+<p>Now switch the gold file to <code>gold/cars50_moves.json</code> (build it with the <a href="../../resources/datasets/notebooks/download_cars50.html">CaRS-50 download notebook</a>) — Swales’ <strong>CARS Move 1/2/3</strong> in article <em>introductions</em>, the same scheme Kim &amp; Lu used. Re-use your best prompt (adapt the label set and definitions to Moves 1–3). Compare:</p>
 <ul>
-<li><a href="../../resources/corpora/available-corpora.html">Available Corpora</a></li>
-<li><a href="../../resources/corpora/learner-corpora.html">Learner Corpora</a></li>
+<li>How does F1 on CaRS-50 compare to RAAMove? Why might introductions be harder than abstracts?</li>
+<li>Stretch: switch to the 11-class <strong>Move+Step</strong> labels (<code>cars50_step_pool.json</code>) — build a small balanced gold set from the pool and watch F1 drop as the label set gets finer.</li>
 </ul>
+</section>
+<section id="step-3-error-analysis-next-prompt" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-error-analysis-next-prompt">Step 3 — Error analysis → next prompt</h2>
+<p>Run <code>show_errors</code> and sort the misses by gold label. For the worst class, write <strong>one concrete prompt change</strong> you predict will help, then test it. Log each iteration’s macro-F1 so you can show the improvement curve — this table <em>is</em> your mini-result.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Iteration</th>
+<th>Prompt change</th>
+<th style="text-align: center;">Macro-F1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>zero-shot</td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>+ move definitions</td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>+ few-shot examples</td>
+<td style="text-align: center;">…</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="discussion-ties-back-to-kim-lu" class="level2">
+<h2 class="anchored" data-anchor-id="discussion-ties-back-to-kim-lu">Discussion (ties back to Kim &amp; Lu)</h2>
+<ul>
+<li>Did prompt refinement or few-shot help more? Kim &amp; Lu found both helped, but <strong>fine-tuning</strong> (which we do not do here) gave the biggest jump.</li>
+<li>Where the model fails, is it the <em>model</em> or the <em>scheme</em> (recall κ ≈ 0.43)? How would you report that honestly in your presentation?</li>
+</ul>
+<p>➡️ Ready to run your own study? <a href="../../resources/datasets/mini-project-tracks.html">Mini-project starter tracks</a></p>
 
 
 <!-- -->
@@ -875,20 +964,98 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Corpora Resources"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Available Corpora and Access Information"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## Resources</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Available Corpora</span><span class="co">](available-corpora.md)</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Learner Corpora</span><span class="co">](learner-corpora.md)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Day 3 Tutorial — Replicating Kim &amp; Lu with Open Data"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Prompt design &amp; iteration for discourse-move annotation"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Goal.** Replicate the core idea of **Kim &amp; Lu (2024)** — using an LLM to annotate rhetorical</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **moves** — and see how *prompt refinement* and *few-shot examples* change accuracy. Same pipeline</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; as </span><span class="co">[</span><span class="ot">Day 2</span><span class="co">](./tutorial-day2-annotation-eval.md)</span><span class="at">; a much harder *judgment*.</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why this task is hard (and why that's the point)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>Deciding a sentence's **move** ("is this *Background* or a *Gap*?") requires reading rhetorical</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>intent in context. Even trained experts disagree: the CaRS-50 annotators reached only</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>**κ ≈ 0.43**. So do not expect CEFR-level F1 here. The research question is not "can the model be</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>perfect?" but "**how much does better prompting help, and where does it still fail?**" — exactly</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>Kim &amp; Lu's question.</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 1 — Start clean: RAAMove (8 moves)</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>Begin with <span class="in">`gold/raamove_moves.json`</span> (64 sentences from RA abstracts, balanced across 8 moves:</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>Background, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication) — build it with the</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">RAAMove download notebook</span><span class="co">](../datasets/notebooks/download_raamove.ipynb)</span>. It is tidy JSON, so you can</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>focus on the *prompt*.</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">### Iteration 0 — zero-shot</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="in">```text</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="in">Classify the move of this sentence from a research abstract into exactly one of:</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="in">Background, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication.</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="in">Answer with the move only.</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="in">Sentence: {text}</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>Run <span class="in">`evaluate`</span>. Note the macro-F1 and the confusion matrix — which moves collapse into each other?</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>(Implication ↔ Conclusion and Background ↔ Gap are common.)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### Iteration 1 — prompt refinement</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>Add **short definitions** of each move (one line each) to the prompt. Re-run. Did F1 rise? Which</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>confusions shrank?</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="fu">### Iteration 2 — few-shot</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>Add **one or two example sentences per move** (drawn from <span class="in">`raamove_pool.json`</span>, *not* from your gold</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>set). Re-run. This mirrors Kim &amp; Lu's finding that few-shot examples and prompt refinement each give</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>real but modest gains.</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Keep examples out of your test set</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>Few-shot examples must come from the **pool** file, never from the gold file you are scoring on —</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>otherwise you are testing on training data.</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 2 — The real replication: CaRS-50 (CARS moves)</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>Now switch the gold file to <span class="in">`gold/cars50_moves.json`</span> (build it with the</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">CaRS-50 download notebook</span><span class="co">](../datasets/notebooks/download_cars50.ipynb)</span>) — Swales'</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>**CARS Move 1/2/3** in article *introductions*, the same scheme Kim &amp; Lu used. Re-use your best</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>prompt (adapt the label set and definitions to Moves 1–3). Compare:</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>How does F1 on CaRS-50 compare to RAAMove? Why might introductions be harder than abstracts?</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Stretch: switch to the 11-class **Move+Step** labels</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>  (<span class="in">`cars50_step_pool.json`</span>) — build a small balanced gold set</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  from the pool and watch F1 drop as the label set gets finer.</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 3 — Error analysis → next prompt</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>Run <span class="in">`show_errors`</span> and sort the misses by gold label. For the worst class, write **one concrete</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>prompt change** you predict will help, then test it. Log each iteration's macro-F1 so you can show</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>the improvement curve — this table *is* your mini-result.</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Iteration <span class="pp">|</span> Prompt change <span class="pp">|</span> Macro-F1 <span class="pp">|</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|-----------|---------------|:--------:|</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 0 <span class="pp">|</span> zero-shot <span class="pp">|</span> … <span class="pp">|</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> + move definitions <span class="pp">|</span> … <span class="pp">|</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> + few-shot examples <span class="pp">|</span> … <span class="pp">|</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion (ties back to Kim &amp; Lu)</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Did prompt refinement or few-shot help more? Kim &amp; Lu found both helped, but **fine-tuning** (which</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>  we do not do here) gave the biggest jump.</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Where the model fails, is it the *model* or the *scheme* (recall κ ≈ 0.43)? How would you report</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>  that honestly in your presentation?</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>➡️ Ready to run your own study? <span class="co">[</span><span class="ot">Mini-project starter tracks</span><span class="co">](../datasets/mini-project-tracks.md)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/corpora/index.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tutorials/tutorial-day3-move-replication.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>
