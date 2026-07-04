@@ -18,8 +18,8 @@ track is the same:
 
 Each track rebuilds a ready gold file **and** a full pool to sample your own subset from.
 
-Rebuild the gold files: [`data/README.md`](./data/README.md) · provenance & licenses: [`data/SOURCES.md`](./data/SOURCES.md) ·
-the pipeline: [Day 2](./tutorial-day2-annotation-eval.md) & [Day 3](./tutorial-day3-move-replication.md) tutorials.
+Rebuild the gold files: [`README.md`](./README.md) · provenance & licenses: [`SOURCES.md`](./SOURCES.md) ·
+the pipeline: [Day 2](../tutorials/tutorial-day2-annotation-eval.md) & [Day 3](../tutorials/tutorial-day3-move-replication.md) tutorials.
 
 ## Tracks
 
@@ -32,7 +32,7 @@ Extensions: collapse to 3 bands (A/B/C); test whether the model confuses only *a
 
 ### ★★★ Discourse moves (RAAMove / CaRS-50)
 
-Annotate rhetorical **moves**. This is the [Kim & Lu (2024)](./replication-datasets.md#the-motivating-study)
+Annotate rhetorical **moves**. This is the [Kim & Lu (2024)](./index.md#the-motivating-study)
 replication track.
 Gold: `raamove_moves.json` (8 moves, abstracts) or `cars50_moves.json` (CARS Moves, introductions).
 Pools: `raamove_pool.json`, `cars50_pool.json`, `cars50_step_pool.json` (11-class stretch).
@@ -51,7 +51,7 @@ Extensions: try the finer 23-code taxonomy; analyze which error types the LLM ov
 
 Predict a holistic essay score band (Low / Mid / High). Requires
 [registering for the ICNALE GRA](https://language.sakura.ne.jp/icnale/download.html) and building the
-gold file per [`data/SOURCES.md`](./data/SOURCES.md).
+gold file per [`SOURCES.md`](./SOURCES.md).
 Extensions: compare holistic vs. a single analytic dimension; check whether the LLM rewards length.
 
 ## Deliverables

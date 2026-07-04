@@ -1,0 +1,4 @@
+# These are student-facing notebooks meant to run in Google Colab (they import
+# google.colab). Quarto should render them as pages WITHOUT executing the cells.
+execute:
+  enabled: false

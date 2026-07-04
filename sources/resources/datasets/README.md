@@ -4,7 +4,7 @@ This directory holds the **open, expert-annotated datasets** used in the LLM ann
 strand of the course (Days 2–5), reshaped into one schema so a single notebook works for all of
 them. This README documents what was prepared, why, and how to rebuild it.
 
-> Student-facing catalog & tutorials: [`../replication-datasets.md`](../replication-datasets.md).
+> Student-facing catalog & tutorials: [`index.md`](./index.md).
 > Licenses & citations: [`SOURCES.md`](./SOURCES.md).
 
 ## Why this exists
@@ -30,7 +30,7 @@ Every gold file is a flat list in the course's single schema — students only e
 ## Directory layout
 
 ```
-data/
+datasets/
 ├── README.md                     ← this file
 ├── SOURCES.md                    ← per-dataset licenses, citations, download steps
 ├── prep_datasets.py              ← instructor builder: rebuild ALL gold files (stdlib only)
@@ -92,7 +92,7 @@ data/
 ## How to rebuild
 
 ```bash
-cd sources/resources/code-examples/data
+cd sources/resources/datasets
 uv run --no-project python prep_datasets.py            # build all available datasets
 uv run --no-project python prep_datasets.py raamove    # build just one
 ```

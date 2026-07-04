@@ -18,9 +18,9 @@ Kim & Lu's question.
 
 ## Step 1 — Start clean: RAAMove (8 moves)
 
-Begin with `data/gold/raamove_moves.json` (64 sentences from RA abstracts, balanced across 8 moves:
+Begin with `gold/raamove_moves.json` (64 sentences from RA abstracts, balanced across 8 moves:
 Background, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication) — build it with the
-[RAAMove download notebook](./data/notebooks/download_raamove.ipynb). It is tidy JSON, so you can
+[RAAMove download notebook](../datasets/notebooks/download_raamove.ipynb). It is tidy JSON, so you can
 focus on the *prompt*.
 
 ### Iteration 0 — zero-shot
@@ -55,8 +55,8 @@ otherwise you are testing on training data.
 
 ## Step 2 — The real replication: CaRS-50 (CARS moves)
 
-Now switch the gold file to `data/gold/cars50_moves.json` (build it with the
-[CaRS-50 download notebook](./data/notebooks/download_cars50.ipynb)) — Swales'
+Now switch the gold file to `gold/cars50_moves.json` (build it with the
+[CaRS-50 download notebook](../datasets/notebooks/download_cars50.ipynb)) — Swales'
 **CARS Move 1/2/3** in article *introductions*, the same scheme Kim & Lu used. Re-use your best
 prompt (adapt the label set and definitions to Moves 1–3). Compare:
 
@@ -84,4 +84,4 @@ the improvement curve — this table *is* your mini-result.
 - Where the model fails, is it the *model* or the *scheme* (recall κ ≈ 0.43)? How would you report
   that honestly in your presentation?
 
-➡️ Ready to run your own study? [Mini-project starter tracks](./mini-project-datasets.md)
+➡️ Ready to run your own study? [Mini-project starter tracks](../datasets/mini-project-tracks.md)

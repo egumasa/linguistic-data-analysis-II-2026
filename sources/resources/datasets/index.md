@@ -21,10 +21,10 @@ them — you only ever change the *prompt*, the *label set*, and the *gold file*
 ]
 ```
 
-The gold files are **not distributed with this repo** — rebuild them into `data/gold/`
-reproducibly with [`data/prep_datasets.py`](./data/prep_datasets.py) (or the per-dataset download
+The gold files are **not distributed with this repo** — rebuild them into `gold/`
+reproducibly with [`prep_datasets.py`](./prep_datasets.py) (or the per-dataset download
 notebooks below) from the original sources. Licenses and citations are in
-[`data/SOURCES.md`](./data/SOURCES.md). **Always cite the original dataset.**
+[`SOURCES.md`](./SOURCES.md). **Always cite the original dataset.**
 
 ::: {.callout-note}
 ## Two kinds of difficulty
@@ -100,7 +100,7 @@ Asian-learner English essays rated holistically by many trained raters — the b
 **automated writing evaluation** task (predict a Low/Mid/High score band). The archive is
 **password-gated**: register at the
 [ICNALE download page](https://language.sakura.ne.jp/icnale/download.html), then follow the
-instructions in [`data/SOURCES.md`](./data/SOURCES.md) to build the gold file.
+instructions in [`SOURCES.md`](./SOURCES.md) to build the gold file.
 
 ## Building the gold files yourself
 
@@ -112,29 +112,29 @@ it into one clean shape is half the work of building a gold standard.
 
 | Dataset | Student notebook |
 |---------|------------------|
-| CEFR-SP | [`download_cefr_sp.ipynb`](./data/notebooks/download_cefr_sp.ipynb) |
-| RAAMove | [`download_raamove.ipynb`](./data/notebooks/download_raamove.ipynb) |
-| CaRS-50 | [`download_cars50.ipynb`](./data/notebooks/download_cars50.ipynb) |
-| AutoErrorAnalyzer | [`download_autoerroranalyzer.ipynb`](./data/notebooks/download_autoerroranalyzer.ipynb) |
-| ICNALE GRA | [`download_icnale_gra.ipynb`](./data/notebooks/download_icnale_gra.ipynb) (gated — upload your own download) |
+| CEFR-SP | [`download_cefr_sp.ipynb`](./notebooks/download_cefr_sp.ipynb) |
+| RAAMove | [`download_raamove.ipynb`](./notebooks/download_raamove.ipynb) |
+| CaRS-50 | [`download_cars50.ipynb`](./notebooks/download_cars50.ipynb) |
+| AutoErrorAnalyzer | [`download_autoerroranalyzer.ipynb`](./notebooks/download_autoerroranalyzer.ipynb) |
+| ICNALE GRA | [`download_icnale_gra.ipynb`](./notebooks/download_icnale_gra.ipynb) (gated — upload your own download) |
 
 Instructors can rebuild everything at once with the script behind those notebooks:
 
 ```bash
-cd sources/resources/code-examples/data
+cd sources/resources/datasets
 uv run --no-project python prep_datasets.py          # build all available datasets
 uv run --no-project python prep_datasets.py raamove  # or just one
 ```
 
 Neither the raw downloads nor the derived `gold/*.json` are distributed with this repo — rebuild
 them locally with the notebooks or the script above. See
-[`data/prep_datasets.ipynb`](./data/prep_datasets.ipynb) for the instructor build + a schema
+[`prep_datasets.ipynb`](./prep_datasets.ipynb) for the instructor build + a schema
 validator.
 
 ## Worked tutorials & mini-project tracks
 
-- [Day 2 tutorial — Annotation, gold standards & evaluation](./tutorial-day2-annotation-eval.md)
+- [Day 2 tutorial — Annotation, gold standards & evaluation](../tutorials/tutorial-day2-annotation-eval.md)
   (on-ramp with CEFR-SP)
-- [Day 3 tutorial — Replicating Kim & Lu with open data](./tutorial-day3-move-replication.md)
+- [Day 3 tutorial — Replicating Kim & Lu with open data](../tutorials/tutorial-day3-move-replication.md)
   (RAAMove → CaRS-50)
-- [Mini-project starter tracks](./mini-project-datasets.md)
+- [Mini-project starter tracks](./mini-project-tracks.md)

@@ -9,15 +9,19 @@ toc: true
 > *easy-to-judge* task first — CEFR sentence levels — so the mechanics, not the labeling, are the
 > challenge. The hard, research-style task comes in the [Day 3 tutorial](./tutorial-day3-move-replication.md).
 
+**Companion notebook:** `02_gold_and_eval.ipynb` — open it directly in Colab (Tohoku Google account, no setup):
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/02_gold_and_eval.ipynb)
+
 ## The task
 
 Each item is one English sentence; the label is its **CEFR level** (A1–C2). The gold labels were
 assigned by language-education professionals, and we kept only sentences where **two annotators
 agreed** — so there is a defensible "right answer" for every item.
 
-Dataset: `data/gold/cefr_sentences.json` (72 items, 12 per level) — build it with the
-[CEFR-SP download notebook](./data/notebooks/download_cefr_sp.ipynb).
-See the [dataset catalog](./replication-datasets.md#cefr-sp-the-on-ramp-to-judge) for provenance.
+Dataset: `gold/cefr_sentences.json` (72 items, 12 per level) — build it with the
+[CEFR-SP download notebook](../datasets/notebooks/download_cefr_sp.ipynb).
+See the [dataset catalog](../datasets/index.md#cefr-sp-the-on-ramp-to-judge) for provenance.
 
 ## Step 1 — Look at the gold standard
 
