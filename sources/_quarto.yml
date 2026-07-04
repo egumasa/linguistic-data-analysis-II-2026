@@ -60,6 +60,8 @@ website:
             href: resources/corpora/index.md
           - text: "Code Examples"
             href: resources/code-examples/index.md
+          - text: "Replication Datasets"
+            href: resources/code-examples/replication-datasets.md
       - icon: github
         href: "https://github.com/egumasa/linguistic-data-analysis-II-2026"
         aria-label: GitHub
@@ -133,7 +135,13 @@ website:
                 - resources/corpora/index.md
                 - resources/corpora/available-corpora.md
                 - resources/corpora/learner-corpora.md
-            - resources/code-examples/index.md
+            - section: "Code Examples"
+              contents:
+                - resources/code-examples/index.md
+                - resources/code-examples/replication-datasets.md
+                - resources/code-examples/tutorial-day2-annotation-eval.md
+                - resources/code-examples/tutorial-day3-move-replication.md
+                - resources/code-examples/mini-project-datasets.md
 
     - title: "Syllabus"
       style: docked
@@ -190,7 +198,13 @@ website:
                 - resources/corpora/index.md
                 - resources/corpora/available-corpora.md
                 - resources/corpora/learner-corpora.md
-            - resources/code-examples/index.md
+            - section: "Code Examples"
+              contents:
+                - resources/code-examples/index.md
+                - resources/code-examples/replication-datasets.md
+                - resources/code-examples/tutorial-day2-annotation-eval.md
+                - resources/code-examples/tutorial-day3-move-replication.md
+                - resources/code-examples/mini-project-datasets.md
 
     - title: "Sessions"
       style: docked
@@ -246,7 +260,13 @@ website:
                 - resources/corpora/index.md
                 - resources/corpora/available-corpora.md
                 - resources/corpora/learner-corpora.md
-            - resources/code-examples/index.md
+            - section: "Code Examples"
+              contents:
+                - resources/code-examples/index.md
+                - resources/code-examples/replication-datasets.md
+                - resources/code-examples/tutorial-day2-annotation-eval.md
+                - resources/code-examples/tutorial-day3-move-replication.md
+                - resources/code-examples/mini-project-datasets.md
             
 
     - title: "Assignments"
@@ -303,7 +323,13 @@ website:
                 - resources/corpora/index.md
                 - resources/corpora/available-corpora.md
                 - resources/corpora/learner-corpora.md
-            - resources/code-examples/index.md
+            - section: "Code Examples"
+              contents:
+                - resources/code-examples/index.md
+                - resources/code-examples/replication-datasets.md
+                - resources/code-examples/tutorial-day2-annotation-eval.md
+                - resources/code-examples/tutorial-day3-move-replication.md
+                - resources/code-examples/mini-project-datasets.md
 
 
 
