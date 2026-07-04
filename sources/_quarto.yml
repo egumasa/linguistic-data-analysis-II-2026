@@ -71,6 +71,7 @@ website:
           contents:
             - resources/tools/index.md
             - resources/tools/python-setup.md
+            - resources/tools/google-drive-data.md
             - resources/tools/byu-corpora-guide.md
             - resources/tools/antconc-guide.md
             - resources/tools/jasp-guide.md

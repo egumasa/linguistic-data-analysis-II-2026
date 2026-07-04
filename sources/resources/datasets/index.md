@@ -24,7 +24,8 @@ them — you only ever change the *prompt*, the *label set*, and the *gold file*
 The gold files are **not distributed with this repo** — rebuild them into `gold/`
 reproducibly with [`prep_datasets.py`](./prep_datasets.py) (or the per-dataset download
 notebooks below) from the original sources. Licenses and citations are in
-[`SOURCES.md`](./SOURCES.md). **Always cite the original dataset.**
+[`SOURCES.md`](./SOURCES.md). **Always cite the original dataset.** Once you've rebuilt a gold set,
+keep it in *your* Google Drive — see [Housing Your Data in Google Drive](../tools/google-drive-data.md).
 
 ::: {.callout-note}
 ## Two kinds of difficulty

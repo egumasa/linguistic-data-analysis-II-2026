@@ -21,6 +21,14 @@ Each track rebuilds a ready gold file **and** a full pool to sample your own sub
 Rebuild the gold files: [`README.md`](./README.md) · provenance & licenses: [`SOURCES.md`](./SOURCES.md) ·
 the pipeline: [Day 2](../tutorials/tutorial-day2-annotation-eval.md) & [Day 3](../tutorials/tutorial-day3-move-replication.md) tutorials.
 
+::: {.callout-tip}
+## Keep your data in your own Drive
+Unlike the worked tutorials (which load a URL we ship for you), you build your own gold set here —
+so **house it in your Google Drive**, not GitHub. See
+[Housing Your Data in Google Drive](../tools/google-drive-data.md) for the mount → save → load
+round-trip, worked on the familiar CEFR data and reused unchanged for your track.
+:::
+
 ## Tracks
 
 ### ★☆☆ Proficiency level (CEFR-SP) — easiest

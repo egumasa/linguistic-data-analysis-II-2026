@@ -8,6 +8,7 @@ subtitle: "Installation and Usage Guides"
 The course's primary platform is Google Colab — set that up first.
 
 - [Python (Google Colab) Setup](python-setup.md)
+- [Housing Your Data in Google Drive](google-drive-data.md)
 - [English-Corpora.org Guide](byu-corpora-guide.md)
 - [AntConc Guide](antconc-guide.md)
 - [JASP Guide](jasp-guide.md)
