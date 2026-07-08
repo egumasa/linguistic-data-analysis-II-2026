@@ -7,6 +7,13 @@ preparation
 # Internal course-design notes (not published)
 planning/
 
+# Instructor private end-to-end run-through of the final mini-project
+project-runthrough/
+
+# Answer key for the metrics exercise — instructor-only, never publish (students fetch
+# metrics_exercise.py + check_metrics.py by URL, so the solution must stay out of the repo)
+sources/resources/code-examples/python/metrics_solution.py
+
 # Copyrighted / source material — do not publish
 papers/
 
@@ -21,3 +28,6 @@ sources/docs/resources/code-examples/data/gold/
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Local API keys for running the tutorials outside Colab — never commit
+.env
