@@ -6,11 +6,13 @@ toc-depth: 2
 ---
 ## Course Information
 
-**Course Title**: Linguistic Data Analysis II
-**Credits**: 2
-**Format**: Intensive 5-day course (15 sessions)
-**Language**: English
-**Classroom**: 113 Lecture room
+|                        |                                      |
+| ---------------------- | ------------------------------------ |
+| **Course Title** | Linguistic Data Analysis II          |
+| **Credits**      | 2                                    |
+| **Format**       | Intensive 5-day course (15 sessions) |
+| **Language**     | English                              |
+| **Classroom**    | To be announced                      |
 
 ## Instructor Information
 
@@ -18,11 +20,28 @@ toc-depth: 2
 
 ## Course Description
 
+Large Language Models (LLMs) — generative AI technologies that produce human-like language — have become one of the common tools people rely on to get things done. Linguistic research is no exception: more and more researchers are exploring the potential of this technology to support various stages of their work. One promising application of LLMs is linguistic annotation, a task that can be highly resource-intensive. If the annotation process can be supported by LLMs, the research community can benefit from greater scalability. Lowering the barriers to linguistic annotation is especially important for graduate research, where individual student researchers often have limited resources. Yet, while LLMs hold promise for linguistic research, the adequacy of model outputs must be critically evaluated rather than assumed. We must therefore be equipped with approaches to critically appraise what they can and cannot offer in order to make meaningful contributions to the field. In this course, we cover the foundational concepts and methods for evaluating LLM outputs in linguistic research projects.
+
 <!-- This course introduces the foundations of corpus linguistics and the analysis of learner language through corpus linguistic approaches. It covers key concepts in corpus linguistics, including what corpora are, how they are used to answer (applied) linguistic research questions, and how to design corpus-based analyses to address substantive research questions in second language research. The primary language of analysis in this course is English, but students are encouraged to apply the concepts introduced to the languages they work with in their own research. -->
 
 ## Learning Objectives
 
+::: {.callout-note}
+
+## Learning objectives
+
 By the end of this course, students will be able to:
+
+| Area                               | Objective                                                                                                                                    |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Critical appraisal**       | Explain the strengths and limitations of Large Language Models for linguistic analysis, and judge when an LLM-based approach is appropriate. |
+| **Annotation scheme design** | Design an annotation scheme and coding guidelines for a linguistic construct of interest.                                                    |
+| **Gold-standard datasets**   | Construct a gold-standard dataset, including operationalizing categories and assessing inter-annotator agreement.                            |
+| **Prompt design**            | Design, tune, and document prompts that elicit reliable linguistic annotations from an LLM.                                                  |
+| **Evaluation**               | Evaluate model performance using precision, recall, F1, and confusion matrices, and interpret the results critically.                        |
+| **Reproducibility**          | Communicate methods and findings transparently and reproducibly, following responsible research practices.                                   |
+
+:::
 
 <!-- - Explain what corpus linguistics is and how corpus linguistics can help learn linguistic phenomena
 - Search for and select available corpora relevant to their own research
@@ -61,7 +80,8 @@ Other required/Optional readings are provided through Google Classroom.
 
 #### Others
 
-- **Google Colaboratory**: Follow the instruction [here to enable the tool](../../resources/tools/python-setup.md).
+- **Google Colaboratory**: Follow the instruction [here to enable the tool](../resources/tools/google-colab-setup.md).
+- **Visual Studio Code / Positron (Optional)**: If you would like to learn how to run the code on your computer, please follow instruction at [page].
 
 ## Assignments and Grading
 

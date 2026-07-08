@@ -8,7 +8,8 @@ toc: true
 <!-- to be added -->
 
 ## Reading
-<!-- to be added -->
+
+- Abdurahman, S., Salkhordeh Ziabari, A., Moore, A. K., Bartels, D. M., & Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <https://doi.org/10.1177/25152459251325174>
 
 ## Slides & Colab
 
