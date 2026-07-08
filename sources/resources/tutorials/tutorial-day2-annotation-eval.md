@@ -13,6 +13,26 @@ toc: true
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/02_gold_and_eval.ipynb)
 
+::: {.callout-note collapse="true"}
+## Prefer to run outside Colab? (optional)
+
+**In class you need nothing but Colab** — the notebook uses Colab's free built-in Gemini, no API
+key, no install. This box is only for those who want to run the *same* notebook on their own
+machine. The notebook auto-detects it isn't in Colab and calls a real LLM API instead; it picks the
+provider from whichever key you set (`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, or `OPENAI_API_KEY`).
+
+Quick version — install the libraries, set one key, launch Jupyter:
+
+```bash
+pip install jupyterlab scikit-learn pandas seaborn matplotlib google-genai anthropic openai
+export GEMINI_API_KEY=your-key-here      # or ANTHROPIC_API_KEY / OPENAI_API_KEY
+jupyter lab                              # then open 02_gold_and_eval.ipynb and Run All
+```
+
+Full step-by-step (install `uv`, virtual environment, getting an API key):
+[Python Setup — Run Locally](../tools/python-setup.md).
+:::
+
 ## The task
 
 Each item is one English sentence; the label is its **CEFR level** (A1–C2). The gold labels were

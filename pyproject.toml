@@ -5,3 +5,19 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
+
+# Local-only deps for running the tutorial notebooks outside Colab (dev + advanced
+# students). NOT needed to build the site — keep [project].dependencies empty so the
+# Quarto render stays light. Install with:  uv sync --group dev
+[dependency-groups]
+dev = [
+    "jupyterlab",
+    "scikit-learn",
+    "pandas",
+    "seaborn",
+    "matplotlib",
+    "google-genai",
+    "anthropic",
+    "openai",
+    "python-dotenv",
+]
