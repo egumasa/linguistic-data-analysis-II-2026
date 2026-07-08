@@ -107,5 +107,5 @@ One dataset, one mechanic, learned once on familiar CEFR data — now applied to
 
 ## See also
 
-- [Python (Colaboratory) Setup Guide](./python-setup.md) — get Colab working in the first place.
+- [Google Colab Setup Guide](./google-colab-setup.md) — get Colab working in the first place.
 - [Replication Datasets](../datasets/index.md) — the download notebooks that *build* the gold sets you house here.

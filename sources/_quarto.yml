@@ -70,13 +70,9 @@ website:
         - section: "Setup & Tools"
           contents:
             - resources/tools/index.md
+            - resources/tools/google-colab-setup.md
             - resources/tools/python-setup.md
             - resources/tools/google-drive-data.md
-            - resources/tools/byu-corpora-guide.md
-            - resources/tools/antconc-guide.md
-            - resources/tools/jasp-guide.md
-            - resources/tools/taales-taassc.md
-            - resources/tools/japanese-nlp.qmd
         - section: "Corpora"
           contents:
             - resources/corpora/index.md
