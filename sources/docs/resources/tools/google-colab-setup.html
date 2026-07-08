@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>JASP Statistical Software Guide – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Google Colab Setup Guide – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -156,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/jasp-guide.html">JASP Statistical Software Guide</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/google-colab-setup.html">Google Colab Setup Guide</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -199,44 +199,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/google-colab-setup.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Google Colab Setup Guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../resources/tools/python-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python (Colaboratory) Setup Guide</span></a>
+ <span class="menu-text">Python Setup — Run Locally</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../resources/tools/google-drive-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Housing Your Data in Google Drive</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/byu-corpora-guide.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">English Corpora Guide</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/antconc-guide.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">AntConc Guide</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/jasp-guide.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">JASP Statistical Software Guide</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/taales-taassc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">TAALED, TAALES, TAASSC set-up guide</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/japanese-nlp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Japanese NLP</span></a>
   </div>
 </li>
       </ul>
@@ -384,16 +360,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#log-in-to-your-google-account." id="toc-log-in-to-your-google-account." class="nav-link" data-scroll-target="#log-in-to-your-google-account.">Log in to your google account.</a></li>
+  <li><a href="#go-to-google-drive" id="toc-go-to-google-drive" class="nav-link" data-scroll-target="#go-to-google-drive">Go to Google Drive</a></li>
+  <li><a href="#hit-new-and-find-connect-more-apps" id="toc-hit-new-and-find-connect-more-apps" class="nav-link" data-scroll-target="#hit-new-and-find-connect-more-apps">Hit <code>new</code> and find <code>connect more apps</code></a></li>
+  <li><a href="#search-colaboratory-on-the-marketplace" id="toc-search-colaboratory-on-the-marketplace" class="nav-link" data-scroll-target="#search-colaboratory-on-the-marketplace">Search <code>Colaboratory</code> on the marketplace</a></li>
+  <li><a href="#install-colaboratory" id="toc-install-colaboratory" class="nav-link" data-scroll-target="#install-colaboratory">Install <code>Colaboratory</code></a></li>
+  <li><a href="#installation-success" id="toc-installation-success" class="nav-link" data-scroll-target="#installation-success">Installation success!!</a></li>
+  <li><a href="#now-you-can-create-google-colab-notebook-from-google-drive." id="toc-now-you-can-create-google-colab-notebook-from-google-drive." class="nav-link" data-scroll-target="#now-you-can-create-google-colab-notebook-from-google-drive.">Now you can create <code>google colab notebook</code> from Google Drive.</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tools/jasp-guide.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tools/google-colab-setup.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/jasp-guide.html">JASP Statistical Software Guide</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/google-colab-setup.html">Google Colab Setup Guide</a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">JASP Statistical Software Guide</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Free and User-Friendly Statistics</p>
+<div class="quarto-title-block"><div><h1 class="title">Google Colab Setup Guide</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Using Google Colab for Text Analysis</p>
 </div>
 
 
@@ -412,6 +395,74 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>In this 5-day intensive course, we will use Python through Google colaboratory, browser based environment that requires no installation on your local computer.</p>
+<p>You can follow the step here to enable <code>Colaboratory</code> through your Tohoku Univ. gmail account.</p>
+<p>The following steps should be completed <strong>before we start grammar analysis on Day 4</strong>.</p>
+</section>
+<section id="log-in-to-your-google-account." class="level2">
+<h2 class="anchored" data-anchor-id="log-in-to-your-google-account.">Log in to your google account.</h2>
+<p>You will need a google account, so log in to your google account.</p>
+</section>
+<section id="go-to-google-drive" class="level2">
+<h2 class="anchored" data-anchor-id="go-to-google-drive">Go to Google Drive</h2>
+<p>Go to google drive.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/python-colab-setup/google-drive.png" class="img-fluid figure-img"></p>
+<figcaption>google drive</figcaption>
+</figure>
+</div>
+</section>
+<section id="hit-new-and-find-connect-more-apps" class="level2">
+<h2 class="anchored" data-anchor-id="hit-new-and-find-connect-more-apps">Hit <code>new</code> and find <code>connect more apps</code></h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/python-colab-setup/connect-more-apps.gif" class="img-fluid figure-img"></p>
+<figcaption>connect-more-app</figcaption>
+</figure>
+</div>
+</section>
+<section id="search-colaboratory-on-the-marketplace" class="level2">
+<h2 class="anchored" data-anchor-id="search-colaboratory-on-the-marketplace">Search <code>Colaboratory</code> on the marketplace</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/python-colab-setup/colab-on-marketplace.png" class="img-fluid figure-img"></p>
+<figcaption>search-market-place</figcaption>
+</figure>
+</div>
+</section>
+<section id="install-colaboratory" class="level2">
+<h2 class="anchored" data-anchor-id="install-colaboratory">Install <code>Colaboratory</code></h2>
+<p>Click on Colaboratory, and hit <code>install</code> button. <img src="../../assets/python-colab-setup/colab-install.png" class="img-fluid" alt="search-market-place"></p>
+<p>Hit continue when it prompts permission.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/python-colab-setup/hit-continue.png" class="img-fluid figure-img"></p>
+<figcaption>search-market-place</figcaption>
+</figure>
+</div>
+<p><strong>Follow the instruction of the pop-up instruction.</strong></p>
+</section>
+<section id="installation-success" class="level2">
+<h2 class="anchored" data-anchor-id="installation-success">Installation success!!</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/python-colab-setup/success.png" class="img-fluid figure-img"></p>
+<figcaption>success</figcaption>
+</figure>
+</div>
+</section>
+<section id="now-you-can-create-google-colab-notebook-from-google-drive." class="level2">
+<h2 class="anchored" data-anchor-id="now-you-can-create-google-colab-notebook-from-google-drive.">Now you can create <code>google colab notebook</code> from Google Drive.</h2>
+<p>Now you can create a new google colab notebook.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/python-colab-setup/open-and-print.gif" class="img-fluid figure-img"></p>
+<figcaption>create a note</figcaption>
+</figure>
+</div>
+<hr>
+<p>Prefer to run on your own machine instead? See <a href="../../resources/tools/python-setup.html">Python Setup — Run Locally</a>.</p>
 
 
 <!-- -->
@@ -878,17 +929,70 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "JASP Statistical Software Guide"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Free and User-Friendly Statistics"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Google Colab Setup Guide"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Using Google Colab for Text Analysis"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>In this 5-day intensive course, we will use Python through Google colaboratory, browser based environment that requires no installation on your local computer.</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>You can follow the step here to enable <span class="in">`Colaboratory`</span> through your Tohoku Univ. gmail account.</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>The following steps should be completed **before we start grammar analysis on Day 4**.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Log in to your google account.</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>You will need a google account, so log in to your google account.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Go to Google Drive</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>Go to google drive.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="al">![google drive](../../assets/python-colab-setup/google-drive.png)</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Hit `new` and find `connect more apps`</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="al">![connect-more-app](../../assets/python-colab-setup/connect-more-apps.gif)</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Search `Colaboratory` on the marketplace</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="al">![search-market-place](../../assets/python-colab-setup/colab-on-marketplace.png)</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Install `Colaboratory`</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>Click on Colaboratory, and hit <span class="in">`install`</span> button.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="al">![search-market-place](../../assets/python-colab-setup/colab-install.png)</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>Hit continue when it prompts permission.</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="al">![search-market-place](../../assets/python-colab-setup/hit-continue.png)</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>**Follow the instruction of the pop-up instruction.**</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Installation success!!</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="al">![success](../../assets/python-colab-setup/success.png)</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Now you can create `google colab notebook` from Google Drive.</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>Now you can create a new google colab notebook.</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="al">![create a note](../../assets/python-colab-setup/open-and-print.gif)</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>Prefer to run on your own machine instead? See <span class="co">[</span><span class="ot">Python Setup — Run Locally</span><span class="co">](python-setup.md)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tools/jasp-guide.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tools/google-colab-setup.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

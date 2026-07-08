@@ -199,17 +199,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="cell-3" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Imports + the gold-file location. No pip install needed in Colab.</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json, re, urllib.request</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> ai            <span class="co"># Colab's built-in Gemini — no API key</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, seaborn <span class="im">as</span> sns, matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>GOLD_URL <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json"</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>LEVELS <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"C1"</span>, <span class="st">"C2"</span>]</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Setup done. Gemini + scikit-learn ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }# Imports + the gold-file location. No pip install needed in Colab.import json, re, urllib.request, osfrom sklearn.metrics import classification_report, confusion_matriximport pandas as pd, seaborn as sns, matplotlib.pyplot as pltdef _make_local_backend():    """Not in Colab → pick a provider by whichever API key is set.    Add a provider = add a block. (See the 'run locally' guide.)"""    model = os.environ.get("LLM_MODEL")  # optional override    if os.environ.get("GEMINI_API_KEY"):        from google import genai        client = genai.Client()        m = model or "gemini-2.5-flash"        return (lambda p: client.models.generate_content(model=m, contents=p).text,                f"Gemini API ({m})")    if os.environ.get("ANTHROPIC_API_KEY"):        import anthropic        client = anthropic.Anthropic()        m = model or "claude-haiku-4-5"        return (lambda p: client.messages.create(                    model=m, max_tokens=64,                    messages=[{"role": "user", "content": p}]).content[0].text,                f"Anthropic ({m})")    if os.environ.get("OPENAI_API_KEY"):        from openai import OpenAI        client = OpenAI()        m = model or "gpt-4o-mini"        return (lambda p: client.chat.completions.create(                    model=m, messages=[{"role": "user", "content": p}]                ).choices[0].message.content,                f"OpenAI ({m})")    raise RuntimeError(        "No LLM backend found. Run this notebook in Google Colab (free built-in "        "Gemini, no key needed), or — to run locally — set one of GEMINI_API_KEY / "        "ANTHROPIC_API_KEY / OPENAI_API_KEY. See the 'Running locally' guide.")# LLM backend: Colab's built-in Gemini if available, else a local API.try:    from google.colab import ai            # Colab's built-in Gemini — no API key    generate_text, _backend = (lambda p: ai.generate_text(p)), "Colab Gemini"except ImportError:    generate_text, _backend = _make_local_backend()# CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.GOLD_URL = "https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json"LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]print(f"Setup done. LLM backend: {_backend}. scikit-learn ready.")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="cell-4" class="cell">
@@ -230,22 +220,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="cell-5" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: "form" }</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _extract_level(text):</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply."""</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.search(<span class="vs">r"</span><span class="dv">\b</span><span class="kw">(</span><span class="pp">[ABC][12]</span><span class="kw">)</span><span class="dv">\b</span><span class="vs">"</span>, <span class="bu">str</span>(text).upper())</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> m.group(<span class="dv">1</span>) <span class="cf">if</span> m <span class="cf">else</span> <span class="st">"??"</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_prompt(prompt, gold):</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Send each item's `text` to Gemini via {text}, collect predicted labels."""</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> []</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(gold, <span class="dv">1</span>):</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        reply <span class="op">=</span> ai.generate_text(prompt.<span class="bu">format</span>(text<span class="op">=</span>item[<span class="st">"text"</span>]))</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        predictions.append(_extract_level(reply))</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">12</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  ...</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> done"</span>)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Got </span><span class="sc">{</span><span class="bu">len</span>(predictions)<span class="sc">}</span><span class="ss"> predictions."</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: "form" }def _extract_level(text):    """Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply."""    m = re.search(r"\b([ABC][12])\b", str(text).upper())    return m.group(1) if m else "??"def run_prompt(prompt, gold):    """Send each item's `text` to the LLM via {text}, collect predicted labels."""    predictions = []    for i, item in enumerate(gold, 1):        reply = generate_text(prompt.format(text=item["text"]))        predictions.append(_extract_level(reply))        if i % 12 == 0:            print(f"  ...{i}/{len(gold)} done")    print(f"Got {len(predictions)} predictions.")    return predictions</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="cell-6" class="cell">
@@ -323,6 +298,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <hr>
 <p>You now know the full loop: <strong>load gold → format prompt → call model → evaluate → inspect errors.</strong> On Day 3 the loop is identical; only the <em>task</em> gets harder.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Go deeper: code the metrics yourself
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>evaluate()</code> printed precision, recall, F1 and Cohen’s κ for you. Before the final project, implement those formulas by hand in the <a href="../../resources/code-examples/python/index.html">Coding the metrics from scratch</a> exercise, then check your work against scikit-learn.</p>
+</div>
+</div>
 
 
 </section>

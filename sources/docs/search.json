@@ -4,14 +4,14 @@
     "href": "index.html",
     "title": "Linguistic Data Analysis II",
     "section": "",
-    "text": "Linguistic Data Analysis II is a five-day intensive graduate course (Tohoku University, Graduate School of International Cultural Studies, Summer 2026) on using and critically evaluating Large Language Models for linguistic analysis — annotation scheme design, gold-standard dataset construction, prompt design, and evaluation (precision/recall/F1, confusion matrices). It is the sequel to Linguistic Data Analysis I.\n\n\n\n\n\n\nTipStart here\n\n\n\n\n📋 Course info — syllabus, grading, policies, and required materials\n📅 Sessions — the daily schedule and all 15 session pages\n🎓 Final Project — the group mini-research project\n🛠️ Resources — setup guides, corpora, and code examples"
+    "text": "Linguistic Data Analysis II is a five-day intensive master-level graduate course on critically evaluating Large Language Models (LLMs) for linguistic analysis, offered at the Graduate School of International Cultural Studies, Tohoku University, in Summer 2026.\nAmong broad applications of LLMs, we cover topics that allows one to empirically evaluate LLMs performance on tasks at hand. To this end, we explore annotation scheme design, gold-standard dataset construction, prompt design/tuning, and evaluation.\nGiven the intensive nature of the 5-day course, we focus on the core concepts, methodology, and hands-on applications, instead of helping you to fully develop your own research agenda in this domain. However, the course aims to equip the students to explore further issues in LLM through applied linguistics lens, and plan and execute research studies of their own if they are interested.\n\n\n\n\n\n\nTipStart here\n\n\n\n\n📋 Course info — syllabus, grading, policies, and required materials\n📅 Sessions — the daily schedule and all 15 session pages\n🎓 Final Project — the group mini-research project\n🛠️ Resources — setup guides, corpora, and code examples"
   },
   {
     "objectID": "index.html#welcome",
     "href": "index.html#welcome",
     "title": "Linguistic Data Analysis II",
     "section": "",
-    "text": "Linguistic Data Analysis II is a five-day intensive graduate course (Tohoku University, Graduate School of International Cultural Studies, Summer 2026) on using and critically evaluating Large Language Models for linguistic analysis — annotation scheme design, gold-standard dataset construction, prompt design, and evaluation (precision/recall/F1, confusion matrices). It is the sequel to Linguistic Data Analysis I.\n\n\n\n\n\n\nTipStart here\n\n\n\n\n📋 Course info — syllabus, grading, policies, and required materials\n📅 Sessions — the daily schedule and all 15 session pages\n🎓 Final Project — the group mini-research project\n🛠️ Resources — setup guides, corpora, and code examples"
+    "text": "Linguistic Data Analysis II is a five-day intensive master-level graduate course on critically evaluating Large Language Models (LLMs) for linguistic analysis, offered at the Graduate School of International Cultural Studies, Tohoku University, in Summer 2026.\nAmong broad applications of LLMs, we cover topics that allows one to empirically evaluate LLMs performance on tasks at hand. To this end, we explore annotation scheme design, gold-standard dataset construction, prompt design/tuning, and evaluation.\nGiven the intensive nature of the 5-day course, we focus on the core concepts, methodology, and hands-on applications, instead of helping you to fully develop your own research agenda in this domain. However, the course aims to equip the students to explore further issues in LLM through applied linguistics lens, and plan and execute research studies of their own if they are interested.\n\n\n\n\n\n\nTipStart here\n\n\n\n\n📋 Course info — syllabus, grading, policies, and required materials\n📅 Sessions — the daily schedule and all 15 session pages\n🎓 Final Project — the group mini-research project\n🛠️ Resources — setup guides, corpora, and code examples"
   },
   {
     "objectID": "sessions/day1/session3.html#reading",
@@ -123,7 +123,7 @@
     "href": "sessions/day2/session6.html#reading",
     "title": "Session 6: Gold Standards & Evaluation Metrics",
     "section": "Reading",
-    "text": "Reading",
+    "text": "Reading\n\nAbdurahman, S., Salkhordeh Ziabari, A., Moore, A. K., Bartels, D. M., & Dehghani, M. (2025). A primer for evaluating large language models in social-science research. Advances in Methods and Practices in Psychological Science, 8(2). https://doi.org/10.1177/25152459251325174",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -718,182 +718,229 @@
   {
     "objectID": "resources/tools/python-setup.html",
     "href": "resources/tools/python-setup.html",
-    "title": "Python (Colaboratory) Setup Guide",
+    "title": "Python Setup — Run Locally",
     "section": "",
-    "text": "In this 5-day intensive course, we will use Python through Google colaboratory, browser based environment that requires no installation on your local computer.\nYou can follow the step here to enable Colaboratory through your gmail account.\nThe following steps should be completed before we start grammar analysis on Day 4.",
+    "text": "Note\n\n\n\nColab is the course default and needs zero setup — if you just want to follow along in class, use the Google Colab setup instead. This guide is the local alternative: a step up in involvement, but worth it if you want to keep working after the course ends or use a paid LLM API instead of Colab’s built-in Gemini. It assumes you’re comfortable with a terminal.\nThe LLM tutorial notebook (02_gold_and_eval.ipynb) is written to work both in Colab and locally. In Colab it uses the free built-in Gemini. Run locally, it detects it is not in Colab and calls a real LLM API instead, picking the provider from whichever API key you have set. Here is how to go from nothing to a running notebook.",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Python (Colaboratory) Setup Guide"
+      "Python Setup — Run Locally"
     ]
   },
   {
-    "objectID": "resources/tools/python-setup.html#overview",
-    "href": "resources/tools/python-setup.html#overview",
-    "title": "Python (Colaboratory) Setup Guide",
-    "section": "",
-    "text": "In this 5-day intensive course, we will use Python through Google colaboratory, browser based environment that requires no installation on your local computer.\nYou can follow the step here to enable Colaboratory through your gmail account.\nThe following steps should be completed before we start grammar analysis on Day 4.",
+    "objectID": "resources/tools/python-setup.html#install-uv",
+    "href": "resources/tools/python-setup.html#install-uv",
+    "title": "Python Setup — Run Locally",
+    "section": "1. Install uv",
+    "text": "1. Install uv\nuv is a single tool that installs Python and manages packages — it replaces pip, venv, and pyenv, so it’s the only thing you need to install.\n\nmacOS / Linux:\ncurl -LsSf https://astral.sh/uv/install.sh | sh\nWindows (PowerShell):\npowershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"\n\nClose and reopen your terminal, then check it works: uv --version.",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Python (Colaboratory) Setup Guide"
+      "Python Setup — Run Locally"
     ]
   },
   {
-    "objectID": "resources/tools/python-setup.html#log-in-to-your-google-account.",
-    "href": "resources/tools/python-setup.html#log-in-to-your-google-account.",
-    "title": "Python (Colaboratory) Setup Guide",
+    "objectID": "resources/tools/python-setup.html#get-the-course-project",
+    "href": "resources/tools/python-setup.html#get-the-course-project",
+    "title": "Python Setup — Run Locally",
+    "section": "2. Get the course project",
+    "text": "2. Get the course project\nDownload the course repository (you need git, or use the green Code → Download ZIP button on GitHub and unzip it):\ngit clone https://github.com/egumasa/linguistic-data-analysis-II-2026.git\ncd linguistic-data-analysis-II-2026",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Python Setup — Run Locally"
+    ]
+  },
+  {
+    "objectID": "resources/tools/python-setup.html#create-the-virtual-environment",
+    "href": "resources/tools/python-setup.html#create-the-virtual-environment",
+    "title": "Python Setup — Run Locally",
+    "section": "3. Create the virtual environment",
+    "text": "3. Create the virtual environment\nA virtual environment is a private, per-project copy of Python and its packages, so what you install for this course can’t collide with anything else on your computer. uv builds one (a .venv folder) and installs everything the notebooks need in a single command:\nuv sync --group dev",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Python Setup — Run Locally"
+    ]
+  },
+  {
+    "objectID": "resources/tools/python-setup.html#get-an-api-key",
+    "href": "resources/tools/python-setup.html#get-an-api-key",
+    "title": "Python Setup — Run Locally",
+    "section": "4. Get an API key",
+    "text": "4. Get an API key\nRunning locally, the notebook needs an LLM to call. Get a key from one provider:\n\nGoogle Gemini (closest to what Colab gives you): Google AI Studio\nAnthropic (Claude): console.anthropic.com\nOpenAI: platform.openai.com\n\nThen set it as an environment variable in the same terminal (use the name matching your provider):\n# macOS / Linux\nexport GEMINI_API_KEY=your-key-here        # or ANTHROPIC_API_KEY / OPENAI_API_KEY\n# Windows (PowerShell) — setx persists it for new terminals\nsetx GEMINI_API_KEY \"your-key-here\"\n\n\n\n\n\n\nWarning\n\n\n\nAn API key is a secret — it’s tied to billing. Never paste it into a notebook cell, never commit it to git, never share it. (This project’s .gitignore already ignores a .env file if you prefer to keep keys there.)",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Python Setup — Run Locally"
+    ]
+  },
+  {
+    "objectID": "resources/tools/python-setup.html#open-and-run-the-notebook",
+    "href": "resources/tools/python-setup.html#open-and-run-the-notebook",
+    "title": "Python Setup — Run Locally",
+    "section": "5. Open and run the notebook",
+    "text": "5. Open and run the notebook\nuv run jupyter lab\nIn the browser tab that opens, navigate to sources/resources/tutorials/02_gold_and_eval.ipynb and choose Run → Run All Cells. The first cell prints which backend it chose, e.g. LLM backend: Gemini API (gemini-2.5-flash). Everything else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Python Setup — Run Locally"
+    ]
+  },
+  {
+    "objectID": "resources/tools/python-setup.html#troubleshooting",
+    "href": "resources/tools/python-setup.html#troubleshooting",
+    "title": "Python Setup — Run Locally",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\nNo LLM backend found ... — you’re running locally but no key is set. Set one of GEMINI_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY (step 4) and restart the notebook kernel (Kernel → Restart) so it picks up the new environment variable.\nSwitch provider — set a different key (unset the others), or pin a specific model with the LLM_MODEL variable, e.g. export LLM_MODEL=gemini-2.5-pro.\nModuleNotFoundError — you launched Jupyter outside the project env. Always start it with uv run jupyter lab from the project folder so it uses the .venv from step 3.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Python Setup — Run Locally"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-colab-setup.html",
+    "href": "resources/tools/google-colab-setup.html",
+    "title": "Google Colab Setup Guide",
+    "section": "",
+    "text": "In this 5-day intensive course, we will use Python through Google colaboratory, browser based environment that requires no installation on your local computer.\nYou can follow the step here to enable Colaboratory through your Tohoku Univ. gmail account.\nThe following steps should be completed before we start grammar analysis on Day 4.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Google Colab Setup Guide"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-colab-setup.html#overview",
+    "href": "resources/tools/google-colab-setup.html#overview",
+    "title": "Google Colab Setup Guide",
+    "section": "",
+    "text": "In this 5-day intensive course, we will use Python through Google colaboratory, browser based environment that requires no installation on your local computer.\nYou can follow the step here to enable Colaboratory through your Tohoku Univ. gmail account.\nThe following steps should be completed before we start grammar analysis on Day 4.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Google Colab Setup Guide"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-colab-setup.html#log-in-to-your-google-account.",
+    "href": "resources/tools/google-colab-setup.html#log-in-to-your-google-account.",
+    "title": "Google Colab Setup Guide",
     "section": "Log in to your google account.",
     "text": "Log in to your google account.\nYou will need a google account, so log in to your google account.",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Python (Colaboratory) Setup Guide"
+      "Google Colab Setup Guide"
     ]
   },
   {
-    "objectID": "resources/tools/python-setup.html#go-to-google-drive",
-    "href": "resources/tools/python-setup.html#go-to-google-drive",
-    "title": "Python (Colaboratory) Setup Guide",
+    "objectID": "resources/tools/google-colab-setup.html#go-to-google-drive",
+    "href": "resources/tools/google-colab-setup.html#go-to-google-drive",
+    "title": "Google Colab Setup Guide",
     "section": "Go to Google Drive",
     "text": "Go to Google Drive\nGo to google drive.\n\n\n\ngoogle drive",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Python (Colaboratory) Setup Guide"
+      "Google Colab Setup Guide"
     ]
   },
   {
-    "objectID": "resources/tools/python-setup.html#hit-new-and-find-connect-more-apps",
-    "href": "resources/tools/python-setup.html#hit-new-and-find-connect-more-apps",
-    "title": "Python (Colaboratory) Setup Guide",
+    "objectID": "resources/tools/google-colab-setup.html#hit-new-and-find-connect-more-apps",
+    "href": "resources/tools/google-colab-setup.html#hit-new-and-find-connect-more-apps",
+    "title": "Google Colab Setup Guide",
     "section": "Hit new and find connect more apps",
     "text": "Hit new and find connect more apps\n\n\n\nconnect-more-app",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Python (Colaboratory) Setup Guide"
+      "Google Colab Setup Guide"
     ]
   },
   {
-    "objectID": "resources/tools/python-setup.html#search-colaboratory-on-the-marketplace",
-    "href": "resources/tools/python-setup.html#search-colaboratory-on-the-marketplace",
-    "title": "Python (Colaboratory) Setup Guide",
+    "objectID": "resources/tools/google-colab-setup.html#search-colaboratory-on-the-marketplace",
+    "href": "resources/tools/google-colab-setup.html#search-colaboratory-on-the-marketplace",
+    "title": "Google Colab Setup Guide",
     "section": "Search Colaboratory on the marketplace",
     "text": "Search Colaboratory on the marketplace\n\n\n\nsearch-market-place",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Python (Colaboratory) Setup Guide"
+      "Google Colab Setup Guide"
     ]
   },
   {
-    "objectID": "resources/tools/python-setup.html#install-colaboratory",
-    "href": "resources/tools/python-setup.html#install-colaboratory",
-    "title": "Python (Colaboratory) Setup Guide",
+    "objectID": "resources/tools/google-colab-setup.html#install-colaboratory",
+    "href": "resources/tools/google-colab-setup.html#install-colaboratory",
+    "title": "Google Colab Setup Guide",
     "section": "Install Colaboratory",
     "text": "Install Colaboratory\nClick on Colaboratory, and hit install button. \nHit continue when it prompts permission.\n\n\n\nsearch-market-place\n\n\nFollow the instruction of the pop-up instruction.",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Python (Colaboratory) Setup Guide"
+      "Google Colab Setup Guide"
     ]
   },
   {
-    "objectID": "resources/tools/python-setup.html#installation-success",
-    "href": "resources/tools/python-setup.html#installation-success",
-    "title": "Python (Colaboratory) Setup Guide",
+    "objectID": "resources/tools/google-colab-setup.html#installation-success",
+    "href": "resources/tools/google-colab-setup.html#installation-success",
+    "title": "Google Colab Setup Guide",
     "section": "Installation success!!",
     "text": "Installation success!!\n\n\n\nsuccess",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Python (Colaboratory) Setup Guide"
+      "Google Colab Setup Guide"
     ]
   },
   {
-    "objectID": "resources/tools/python-setup.html#now-you-can-create-google-colab-notebook-from-google-drive.",
-    "href": "resources/tools/python-setup.html#now-you-can-create-google-colab-notebook-from-google-drive.",
-    "title": "Python (Colaboratory) Setup Guide",
+    "objectID": "resources/tools/google-colab-setup.html#now-you-can-create-google-colab-notebook-from-google-drive.",
+    "href": "resources/tools/google-colab-setup.html#now-you-can-create-google-colab-notebook-from-google-drive.",
+    "title": "Google Colab Setup Guide",
     "section": "Now you can create google colab notebook from Google Drive.",
-    "text": "Now you can create google colab notebook from Google Drive.\nNow you can create a new google colab notebook.\n\n\n\ncreate a note",
+    "text": "Now you can create google colab notebook from Google Drive.\nNow you can create a new google colab notebook.\n\n\n\ncreate a note\n\n\n\nPrefer to run on your own machine instead? See Python Setup — Run Locally.",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Python (Colaboratory) Setup Guide"
+      "Google Colab Setup Guide"
     ]
   },
   {
-    "objectID": "resources/tools/index.html",
-    "href": "resources/tools/index.html",
-    "title": "Tools and Software",
+    "objectID": "resources/code-examples/python/index.html",
+    "href": "resources/code-examples/python/index.html",
+    "title": "Coding the metrics from scratch",
     "section": "",
-    "text": "The course’s primary platform is Google Colab — set that up first.\n\nPython (Google Colab) Setup\nHousing Your Data in Google Drive\nEnglish-Corpora.org Guide\nAntConc Guide\nJASP Guide\n\n\n\nThese are the rule-based / feature-based tools from LDA I. We contrast the features they quantify (lexical diversity, syntactic complexity) with the classifications an LLM judges in context.\n\nTAALED, TAALES, TAASSC Setup\nJapanese NLP",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Tools and Software"
-    ]
+    "text": "In the Day-2 tutorial and the Corpus Lab you called evaluate() and read the numbers it printed. Here you write those numbers yourself. Once you have coded precision, recall, F1, and Cohen’s κ from the raw label lists, the scores scikit-learn reports in the final project will never be a black box — you will know exactly what each one means and when it can mislead you."
   },
   {
-    "objectID": "resources/tools/index.html#available-guides",
-    "href": "resources/tools/index.html#available-guides",
-    "title": "Tools and Software",
-    "section": "",
-    "text": "The course’s primary platform is Google Colab — set that up first.\n\nPython (Google Colab) Setup\nHousing Your Data in Google Drive\nEnglish-Corpora.org Guide\nAntConc Guide\nJASP Guide\n\n\n\nThese are the rule-based / feature-based tools from LDA I. We contrast the features they quantify (lexical diversity, syntactic complexity) with the classifications an LLM judges in context.\n\nTAALED, TAALES, TAASSC Setup\nJapanese NLP",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Tools and Software"
-    ]
+    "objectID": "resources/code-examples/python/index.html#the-files",
+    "href": "resources/code-examples/python/index.html#the-files",
+    "title": "Coding the metrics from scratch",
+    "section": "The files",
+    "text": "The files\n\n\n\nFile\nWhat it is\n\n\n\n\nmetrics_exercise.py\nThe file you edit. Each function has a docstring with the formula and a raise NotImplementedError(...) line for you to replace.\n\n\ncheck_metrics.py\nYour answer key. It runs your functions and scikit-learn on the same small dataset and prints ✅ / ❌ for each metric.\n\n\n\nYou implement six things, all from plain lists of labels — no imports, no numpy:\n\nconfusion_counts(gold, pred, label) → the tp / fp / fn / tn every metric is built from\nprecision, recall, f1 for one label\nmacro_f1 across all labels\npercent_agreement and cohen_kappa for two annotators"
   },
   {
-    "objectID": "resources/tools/index.html#other-useful-corpus-resources",
-    "href": "resources/tools/index.html#other-useful-corpus-resources",
-    "title": "Tools and Software",
-    "section": "Other useful corpus resources",
-    "text": "Other useful corpus resources\n\nCIABATTTA\nCorpus and Repository of Writing",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Tools and Software"
-    ]
+    "objectID": "resources/code-examples/python/index.html#run-it-in-google-colab",
+    "href": "resources/code-examples/python/index.html#run-it-in-google-colab",
+    "title": "Coding the metrics from scratch",
+    "section": "Run it in Google Colab",
+    "text": "Run it in Google Colab\n# Download the two files into the Colab runtime.\nBASE = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/code-examples/python\"\n!wget -q $BASE/metrics_exercise.py -O metrics_exercise.py\n!wget -q $BASE/check_metrics.py    -O check_metrics.py\n\n# Open metrics_exercise.py in Colab's file browser (left sidebar), fill in each function,\n# save (Ctrl/Cmd-S), then run the checker:\n!python check_metrics.py\nEvery line will say ❌ until you implement that function. Fix them until you see:\nAll 15 checks passed ✅  — your metrics match scikit-learn."
   },
   {
-    "objectID": "resources/tools/antconc-guide.html",
-    "href": "resources/tools/antconc-guide.html",
-    "title": "AntConc Guide",
-    "section": "",
-    "text": "We will use AntConc, a one of the most widely used corpus tool developed by Laurence ANTHONY (Waseda University).\nThanksfully, Laurence has shared tutorials on basic features of AntConc on Youtube.\nYou will need AntConc on Day 2 and 3.\nPlease complete the following steps before Day 2.\n\nDownload AntConc\n\n\nVisit AntConc Website; download the software to your computer.\n\n\nWatch the following tutorial videos\n\n\nLaurence Anthony’s intro to AntConc\n\nGetting started (10 mins)\nCorpus manager Basics (18 mins)\nKWIC tool basics (17 mins)\n\n\nIf you are unsure about these steps, do not hesitate to reach out to me through google classroom or through email.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "AntConc Guide"
-    ]
+    "objectID": "resources/code-examples/python/index.html#run-it-locally",
+    "href": "resources/code-examples/python/index.html#run-it-locally",
+    "title": "Coding the metrics from scratch",
+    "section": "Run it locally",
+    "text": "Run it locally\ncd sources/resources/code-examples/python\n# edit metrics_exercise.py, then:\nuv run --group dev python check_metrics.py"
   },
   {
-    "objectID": "resources/tools/antconc-guide.html#overview",
-    "href": "resources/tools/antconc-guide.html#overview",
-    "title": "AntConc Guide",
-    "section": "",
-    "text": "We will use AntConc, a one of the most widely used corpus tool developed by Laurence ANTHONY (Waseda University).\nThanksfully, Laurence has shared tutorials on basic features of AntConc on Youtube.\nYou will need AntConc on Day 2 and 3.\nPlease complete the following steps before Day 2.\n\nDownload AntConc\n\n\nVisit AntConc Website; download the software to your computer.\n\n\nWatch the following tutorial videos\n\n\nLaurence Anthony’s intro to AntConc\n\nGetting started (10 mins)\nCorpus manager Basics (18 mins)\nKWIC tool basics (17 mins)\n\n\nIf you are unsure about these steps, do not hesitate to reach out to me through google classroom or through email.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "AntConc Guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/antconc-guide.html#tagant",
-    "href": "resources/tools/antconc-guide.html#tagant",
-    "title": "AntConc Guide",
-    "section": "TagAnt",
-    "text": "TagAnt\nWe will use another tool called, TagAnt. Please download this from the following website.\n\nTagAnt Website; download the software to your computer.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "AntConc Guide"
-    ]
+    "objectID": "resources/code-examples/python/index.html#why-the-checker-uses-scikit-learn",
+    "href": "resources/code-examples/python/index.html#why-the-checker-uses-scikit-learn",
+    "title": "Coding the metrics from scratch",
+    "section": "Why the checker uses scikit-learn",
+    "text": "Why the checker uses scikit-learn\ncheck_metrics.py is allowed to import sklearn — it is your grader, not your solution. Comparing against a trusted library is exactly how you gain confidence that a formula you wrote by hand is correct. That is the same reason the final project trusts scikit-learn outright: you have already earned the right to."
   },
   {
     "objectID": "final-project/index.html",
@@ -995,7 +1042,7 @@
     "href": "resources/tools/google-drive-data.html#see-also",
     "title": "Housing Your Data in Google Drive",
     "section": "See also",
-    "text": "See also\n\nPython (Colaboratory) Setup Guide — get Colab working in the first place.\nReplication Datasets — the download notebooks that build the gold sets you house here.",
+    "text": "See also\n\nGoogle Colab Setup Guide — get Colab working in the first place.\nReplication Datasets — the download notebooks that build the gold sets you house here.",
     "crumbs": [
       "Resources",
       "Setup & Tools",
@@ -1003,351 +1050,39 @@
     ]
   },
   {
-    "objectID": "resources/tools/japanese-nlp.html",
-    "href": "resources/tools/japanese-nlp.html",
-    "title": "Japanese NLP",
+    "objectID": "resources/tools/index.html",
+    "href": "resources/tools/index.html",
+    "title": "Tools and Software",
     "section": "",
-    "text": "This page provides some advanced resources on Japanese NLP.",
+    "text": "The course’s primary platform is Google Colab — set that up first.\n\nGoogle Colab Setup\nPython Setup — Run Locally (optional)\nHousing Your Data in Google Drive\n\n\n\nThis course contrasts rule-based / feature-based analysis (lexical diversity, syntactic complexity) with the classifications an LLM judges in context. If you took Linguistic Data Analysis I — or want to try those feature-extraction tools (TAALED, TAALES, TAASSC, Japanese NLP) — see the LDA I course website.",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "Japanese NLP"
+      "Tools and Software"
     ]
   },
   {
-    "objectID": "resources/tools/japanese-nlp.html#demo-pages",
-    "href": "resources/tools/japanese-nlp.html#demo-pages",
-    "title": "Japanese NLP",
-    "section": "Demo pages",
-    "text": "Demo pages\n\nSpacy GiNZA morphological analysis\nWeb app for UniDic morphological analysis",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Japanese NLP"
-    ]
-  },
-  {
-    "objectID": "resources/tools/japanese-nlp.html#using-unidic-with-fugashi",
-    "href": "resources/tools/japanese-nlp.html#using-unidic-with-fugashi",
-    "title": "Japanese NLP",
-    "section": "Using Unidic with Fugashi",
-    "text": "Using Unidic with Fugashi\n\n\nFugashi\n\n# Core tools\npip install fugashi unidic-lite  # quick start (smaller)\n# OR for full UniDic (larger, closer to BCCWJ)\npip install fugashi unidic\npython -m unidic download  # downloads the full UniDic dictionary",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Japanese NLP"
-    ]
-  },
-  {
-    "objectID": "resources/tools/byu-corpora-guide.html",
-    "href": "resources/tools/byu-corpora-guide.html",
-    "title": "English Corpora Guide",
+    "objectID": "resources/tools/index.html#available-guides",
+    "href": "resources/tools/index.html#available-guides",
+    "title": "Tools and Software",
     "section": "",
-    "text": "The EnglishCorpora.org, formally BYU (Brigham Young University) corpora, provide web-based interfaces to some of the largest and most widely-used corpora in the world. These include COCA (Corpus of Contemporary American English), BNC (British National Corpus), and many others.\nYou will need a usable account for english-corpora.org on on Day 1.",
+    "text": "The course’s primary platform is Google Colab — set that up first.\n\nGoogle Colab Setup\nPython Setup — Run Locally (optional)\nHousing Your Data in Google Drive\n\n\n\nThis course contrasts rule-based / feature-based analysis (lexical diversity, syntactic complexity) with the classifications an LLM judges in context. If you took Linguistic Data Analysis I — or want to try those feature-extraction tools (TAALED, TAALES, TAASSC, Japanese NLP) — see the LDA I course website.",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "English Corpora Guide"
+      "Tools and Software"
     ]
   },
   {
-    "objectID": "resources/tools/byu-corpora-guide.html#overview",
-    "href": "resources/tools/byu-corpora-guide.html#overview",
-    "title": "English Corpora Guide",
-    "section": "",
-    "text": "The EnglishCorpora.org, formally BYU (Brigham Young University) corpora, provide web-based interfaces to some of the largest and most widely-used corpora in the world. These include COCA (Corpus of Contemporary American English), BNC (British National Corpus), and many others.\nYou will need a usable account for english-corpora.org on on Day 1.",
+    "objectID": "resources/tools/index.html#other-useful-corpus-resources",
+    "href": "resources/tools/index.html#other-useful-corpus-resources",
+    "title": "Tools and Software",
+    "section": "Other useful corpus resources",
+    "text": "Other useful corpus resources\n\nCIABATTTA\nCorpus and Repository of Writing",
     "crumbs": [
       "Resources",
       "Setup & Tools",
-      "English Corpora Guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/byu-corpora-guide.html#available-corpora",
-    "href": "resources/tools/byu-corpora-guide.html#available-corpora",
-    "title": "English Corpora Guide",
-    "section": "Available Corpora",
-    "text": "Available Corpora\n\nMajor English Corpora\n\nCOCA (Corpus of Contemporary American English): 1 billion words, 1990-2019\nBNC (British National Corpus): 100 million words\nGloWbE (Global Web-Based English): 1.9 billion words\nNOW (News on the Web): 14+ billion words, updated daily\nCOHA (Corpus of Historical American English): 400 million words, 1810-2009\n\n\n\nSpecialized Corpora\n\nSOAP (Corpus of American Soap Operas): 100 million words\nTIME (TIME Magazine Corpus): 100 million words, 1920s-2000s\nWikipedia Corpus: 1.9 billion words",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "English Corpora Guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/byu-corpora-guide.html#registration-and-access",
-    "href": "resources/tools/byu-corpora-guide.html#registration-and-access",
-    "title": "English Corpora Guide",
-    "section": "Registration and Access",
-    "text": "Registration and Access\n\nFree Access\n\nVisit english-corpora.org\nClick on desired corpus\nRegister for free account\nLimited to 20 queries per day\n\n\n\nAcademic License (Do not purchase for this class)\n\nExtended query limits\nDownload capabilities\nAvailable through institution\n\n\n\nSearch hints\n\nOverall hint",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "English Corpora Guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/byu-corpora-guide.html#a-list-of-corpora",
-    "href": "resources/tools/byu-corpora-guide.html#a-list-of-corpora",
-    "title": "English Corpora Guide",
-    "section": "A list of corpora",
-    "text": "A list of corpora\n\n\n\nCorpus\nSize\nRegions\nTime\nGenre\n\n\n\n\nIWEB\n13.9b\n6\n2017\nWeb\n\n\nNOW\n16.2b\n20\n2010-now\nWeb: News\n\n\nCORONA\n1.58b\n20\n2020-now\nWeb: News\n\n\nGLOWBE\n1.9b\n20\n2012-13\nWeb/blogs\n\n\nWIKI\n1.9b\n(+)\n2014\nWikipedia\n\n\nCOCA\n1.0b\nAm\n1990-2019\nBalanced\n\n\nCOHA\n400m\nAm\n1810-2009\nBalanced\n\n\nTV\n325m\n6\n1950-2018\nTV shows\n\n\nMOVIES\n200m\n6\n1930-2018\nMovies\n\n\nSOAP\n100m\nAm\n2001-2012\nTV shows\n\n\nHANSARD\n1.6b\nBr\n1803-2005\nParliament\n\n\nEEBO\n755m\nBr\n1470s-1690s\nVarious\n\n\nSUP CRT\n130m\nAm\n1790s-2010s\nLegal\n\n\nTIME\n100m\nAm\n1923-2006\nMagazine\n\n\nBNC\n100m\nBr\n1980s-1993\nBalanced\n\n\nCAN\n50m\nCan\n1970s-2000s\nBalanced\n\n\nCORE\n50m\n6\n2014\nWeb",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "English Corpora Guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html",
-    "href": "resources/tools/taales-taassc.html",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "",
-    "text": "This guide will help you install and set up three powerful linguistic analysis tools:\n\nTAALED (Tool for the Automatic analysis of LExical Diversity) - Version 1.4.1\nTAALES (Tool for the Automatic analysis of Lexical Sophistication) - Version 2.2\n\nTAASSC (Tool for the Automatic analysis of Syntactic Sophistication and Complexity) - Version 1.3.8\n\nAll three tools are Java applications that require proper Java installation and may need security settings adjustments to run properly on your system.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#what-is-java-and-why-do-you-need-it",
-    "href": "resources/tools/taales-taassc.html#what-is-java-and-why-do-you-need-it",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "What is Java and Why Do You Need It?",
-    "text": "What is Java and Why Do You Need It?\nJava is a programming platform that these linguistic analysis tools are built on. You need either the Java Development Kit (JDK) or Java Runtime Environment (JRE) installed on your computer to run these applications.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#recommended-java-versions",
-    "href": "resources/tools/taales-taassc.html#recommended-java-versions",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Recommended Java Versions",
-    "text": "Recommended Java Versions\nFor optimal compatibility with TAALED, TAALES, and TAASSC, we recommend: - Java 8 (JDK 1.8) or Java 11 (LTS) for maximum compatibility - Java 17 (LTS) or Java 21 (LTS) for newer systems",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#java-installation-instructions",
-    "href": "resources/tools/taales-taassc.html#java-installation-instructions",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Java Installation Instructions",
-    "text": "Java Installation Instructions\n\nOption 1: Oracle JDK (Recommended for beginners)\nFor Windows: 1. Visit the Oracle Java Downloads page 2. Select your operating system (Windows) 3. Download the installer (.exe file) for Java 11 or Java 17 4. Run the installer and follow the installation wizard 5. Accept the license agreement and complete installation\nFor macOS: 1. Visit the Oracle Java Downloads page 2. Select macOS and download the .dmg file 3. Double-click the downloaded file and follow installation instructions 4. You may need to allow the installation in System Preferences &gt; Security & Privacy\nFor Linux (Ubuntu/Debian): 1. Download the .deb package from Oracle’s website, or 2. Use the terminal commands:\nsudo apt update\nsudo apt install default-jdk\n\n\nOption 2: OpenJDK (Free and Open Source)\nFor Windows: 1. Visit Microsoft Build of OpenJDK 2. Download the Windows installer 3. Run the installer and follow the setup wizard\nFor macOS: 1. Install using Homebrew (recommended):\nbrew install openjdk@11\n\nOr download from OpenJDK website\n\nFor Linux:\n# Ubuntu/Debian\nsudo apt update\nsudo apt install openjdk-11-jdk\n\n# Fedora/CentOS/RHEL\nsudo yum install java-11-openjdk-devel",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#verifying-java-installation",
-    "href": "resources/tools/taales-taassc.html#verifying-java-installation",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Verifying Java Installation",
-    "text": "Verifying Java Installation\nAfter installation, verify Java is properly installed:\nWindows: 1. Open Command Prompt (Press Win + R, type cmd, press Enter) 2. Type: java -version 3. You should see Java version information\nmacOS/Linux: 1. Open Terminal 2. Type: java -version 3. You should see Java version information\nIf you see version information, Java is successfully installed!",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#setting-java_home-windows-only",
-    "href": "resources/tools/taales-taassc.html#setting-java_home-windows-only",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Setting JAVA_HOME (Windows only)",
-    "text": "Setting JAVA_HOME (Windows only)\nIf you encounter issues, you may need to set the JAVA_HOME environment variable:\n\nFind your Java installation directory (usually C:\\Program Files\\Java\\jdk-[version])\nRight-click “This PC” → Properties → Advanced System Settings\nClick “Environment Variables”\nUnder “System Variables,” click “New”\nVariable name: JAVA_HOME\nVariable value: Your Java installation path\nClick “OK” to save\nFind the “Path” variable, click “Edit”\nAdd a new entry: %JAVA_HOME%\\bin\nClick “OK” to save all changes",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#about-taaled",
-    "href": "resources/tools/taales-taassc.html#about-taaled",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "About TAALED",
-    "text": "About TAALED\nTAALED is an analysis tool designed to calculate a wide variety of lexical diversity indices. Homographs are disambiguated using part of speech tags, and indices are calculated using lemma forms. It processes plain text files and produces CSV output for analysis.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#download-and-installation",
-    "href": "resources/tools/taales-taassc.html#download-and-installation",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Download and Installation",
-    "text": "Download and Installation\n\nDownload TAALED 1.4.1:\n\nVisit: https://www.linguisticanalysistools.org/taaled.html\nClick on “TAALED 1.4.1” download link\nThe file will be downloaded as a .jar or .zip file\n\nExtract the Files:\n\nIf downloaded as .zip, extract all files to a folder (e.g., TAALED_1.4.1)\nIf downloaded as .jar, place it in a dedicated folder\n\nRunning TAALED:\n\nDouble-click the .jar file, or\nOpen Terminal/Command Prompt, navigate to the TAALED folder, and run:\n\njava -jar TAALED_1.4.1.jar",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#security-settings",
-    "href": "resources/tools/taales-taassc.html#security-settings",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Security Settings",
-    "text": "Security Settings\n\nFor macOS Users:\nGatekeeper Security Warning: If you see “TAALED cannot be opened because it is from an unidentified developer”:\n\nMethod 1 - One-time Override:\n\nRight-click (Control+click) on the TAALED .jar file\nSelect “Open” from the context menu\nClick “Open” in the security dialog\n\nMethod 2 - System Preferences:\n\nGo to System Preferences &gt; Security & Privacy &gt; General\nIf you see “TAALED was blocked from use because it is not from an identified developer”\nClick “Open Anyway”\n\nMethod 3 - Terminal Command (Advanced):\nsudo spctl --add /path/to/TAALED_1.4.1.jar\n\n\n\nFor Windows Users:\nWindows Defender SmartScreen: If Windows blocks the application:\n\nWhen you see “Windows protected your PC,” click “More info”\nClick “Run anyway”\nOr temporarily disable SmartScreen:\n\nSettings &gt; Update & Security &gt; Windows Security &gt; App & browser control\nSet “Check apps and files” to “Warn” or “Off”\n\n\nJava Security Settings: 1. Open Java Control Panel: - Windows: Control Panel &gt; Java - Or search “Configure Java” in Start menu 2. Go to Security tab 3. Set Security Level to “Medium” (if available) or “High” 4. Click “Edit Site List” and add local file paths if needed",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#about-taales",
-    "href": "resources/tools/taales-taassc.html#about-taales",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "About TAALES",
-    "text": "About TAALES\nTAALES is a tool that measures over 400 classic and new indices of lexical sophistication, and includes indices related to a wide range of sub-constructs. It provides comprehensive index diagnostics and coverage output.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#download-and-installation-1",
-    "href": "resources/tools/taales-taassc.html#download-and-installation-1",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Download and Installation",
-    "text": "Download and Installation\n\nDownload TAALES 2.2:\n\nVisit: https://www.linguisticanalysistools.org/taales.html\nDownload the version appropriate for your system:\n\nWindows: TAALES 2.2 for Windows (64-bit)\nmacOS: TAALES 2.2 for Mac (Note: Not compatible with Big Sur or later)\nLinux: TAALES 2.2 for Linux\n\n\nInstallation:\n\nWindows: Extract the downloaded .zip file to a folder\nmacOS: Mount the .dmg file and copy the application\nLinux: Extract the .tar.gz file to a directory\n\nRunning TAALES:\n\nWindows/Linux: Double-click the .jar file or run from command line\nmacOS: Double-click the application bundle",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#security-settings-1",
-    "href": "resources/tools/taales-taassc.html#security-settings-1",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Security Settings",
-    "text": "Security Settings\n\nFor macOS Users:\nImportant Note: TAALES 2.2 is not compatible with macOS Big Sur (11.0) or later versions. Use an older macOS version or consider alternatives.\nFollow the same Gatekeeper bypass procedures as described in the TAALED section above.\n\n\nFor Windows Users:\nFollow the same security procedures as described in the TAALED section above.\nAdditional Java Security Settings: 1. After running TAALES for the first time, if you encounter security warnings: 2. Open Java Control Panel &gt; Security 3. Add the TAALES installation directory to the Exception Site List: - Click “Edit Site List” - Click “Add” - Enter: file:///path/to/taales/directory - Click “OK”",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#about-taassc",
-    "href": "resources/tools/taales-taassc.html#about-taassc",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "About TAASSC",
-    "text": "About TAASSC\nTAASSC is an advanced syntactic analysis tool. It measures a number of indices related to syntactic development. Included are classic indices of syntactic complexity (e.g., mean length of T-unit) and fine-grained indices of phrasal (e.g., number of adjectives per noun phrase) and clausal (e.g., number of adverbials per clause) complexity.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#download-and-installation-2",
-    "href": "resources/tools/taales-taassc.html#download-and-installation-2",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Download and Installation",
-    "text": "Download and Installation\n\nDownload TAASSC 1.3.8:\n\nVisit: https://www.linguisticanalysistools.org/taassc.html\nDownload TAASSC version 1.3.8 for your operating system\n\nInstallation:\n\nExtract the downloaded file to a dedicated folder\nEnsure all files are in the same directory\n\nRunning TAASSC:\n\nDouble-click the main .jar file, or\nRun from command line:\n\njava -jar TAASSC_1.3.8.jar",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#security-settings-2",
-    "href": "resources/tools/taales-taassc.html#security-settings-2",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Security Settings",
-    "text": "Security Settings\nFollow the same security setting procedures described for TAALED and TAALES above, adapting the file names and paths as needed.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#java-issues",
-    "href": "resources/tools/taales-taassc.html#java-issues",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Java Issues",
-    "text": "Java Issues\n“Java not found” or “Java is not recognized”: - Ensure Java is properly installed - Check that JAVA_HOME is set correctly (Windows) - Restart your computer after Java installation\n“Unsupported major.minor version” error: - This means the application requires a newer version of Java - Install Java 8 or higher",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#security-issues",
-    "href": "resources/tools/taales-taassc.html#security-issues",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Security Issues",
-    "text": "Security Issues\nApplications won’t start due to security restrictions: - Follow the security bypass procedures for your operating system - Consider temporarily lowering security settings during installation - Add the application directories to your Java security exceptions\nmacOS Gatekeeper repeatedly blocks applications: - Try the sudo spctl --add command for persistent permissions - Consider signing the applications yourself (advanced users)",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#performance-issues",
-    "href": "resources/tools/taales-taassc.html#performance-issues",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Performance Issues",
-    "text": "Performance Issues\nApplications run slowly: - Increase Java memory allocation:\njava -Xmx2g -jar application.jar\n\nClose other applications to free up system resources\n\nLarge file processing issues: - For large text corpora, increase memory further:\njava -Xmx4g -jar application.jar",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#file-organization",
-    "href": "resources/tools/taales-taassc.html#file-organization",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "File Organization",
-    "text": "File Organization\n\nCreate dedicated folders for each tool to avoid conflicts\nKeep input files organized in clearly labeled directories\nSave output files with descriptive names including date and tool used",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#security-management",
-    "href": "resources/tools/taales-taassc.html#security-management",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Security Management",
-    "text": "Security Management\n\nOnly bypass security for trusted applications from official sources\nReturn security settings to default after installation\nKeep Java updated for security patches",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
-    ]
-  },
-  {
-    "objectID": "resources/tools/taales-taassc.html#citations",
-    "href": "resources/tools/taales-taassc.html#citations",
-    "title": "TAALED, TAALES, TAASSC set-up guide",
-    "section": "Citations",
-    "text": "Citations\nWhen using these tools in your research, please cite:\nFor TAALED: Kyle, K., Crossley, S. A., & Jarvis, S. (2021). Assessing the validity of lexical diversity using direct judgements. Language Assessment Quarterly 18(2), pp. 154-170.\nFor TAALES: Kyle, K. & Crossley, S. A. (2015). Automatically assessing lexical sophistication: Indices, tools, findings, and application. TESOL Quarterly 49(4), pp. 757-786.\nKyle, K., Crossley, S. A., & Berger, C. (2018). The tool for the analysis of lexical sophistication (TAALES): Version 2.0. Behavior Research Methods 50(3), pp. 1030-1046.\nFor TAASSC: Kyle, K. (2016). Measuring syntactic development in L2 writing: Fine grained indices of syntactic complexity and usage-based indices of syntactic sophistication (Doctoral Dissertation).",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "TAALED, TAALES, TAASSC set-up guide"
+      "Tools and Software"
     ]
   },
   {
@@ -1668,7 +1403,7 @@
     "href": "resources/tutorials/02_gold_and_eval.html#setup-run-this-first",
     "title": "02 · Gold standards & evaluation",
     "section": "Setup — run this first",
-    "text": "Setup — run this first\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Imports + the gold-file location. No pip install needed in Colab.\nimport json, re, urllib.request\nfrom google.colab import ai            # Colab's built-in Gemini — no API key\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n\n# CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.\nGOLD_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json\"\nLEVELS = [\"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"]\nprint(\"Setup done. Gemini + scikit-learn ready.\")\n\n\n\n\nShow code\n#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: \"form\" }\ndef load_gold(url_or_path):\n    \"\"\"Read the canonical gold JSON: [{'id','text','label'}, ...].\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        gold = json.loads(raw)\n    else:\n        gold = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(gold)} items. First one:\", gold[0])\n    return gold\n\n\n\n\nShow code\n#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: \"form\" }\ndef _extract_level(text):\n    \"\"\"Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply.\"\"\"\n    m = re.search(r\"\\b([ABC][12])\\b\", str(text).upper())\n    return m.group(1) if m else \"??\"\n\ndef run_prompt(prompt, gold):\n    \"\"\"Send each item's `text` to Gemini via {text}, collect predicted labels.\"\"\"\n    predictions = []\n    for i, item in enumerate(gold, 1):\n        reply = ai.generate_text(prompt.format(text=item[\"text\"]))\n        predictions.append(_extract_level(reply))\n        if i % 12 == 0:\n            print(f\"  ...{i}/{len(gold)} done\")\n    print(f\"Got {len(predictions)} predictions.\")\n    return predictions\n\n\n\n\nShow code\n#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + confusion matrix { display-mode: \"form\" }\ndef evaluate(gold, predictions):\n    y_true = [item[\"label\"] for item in gold]\n    y_pred = predictions\n    print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))\n    cm = confusion_matrix(y_true, y_pred, labels=LEVELS)\n    plt.figure(figsize=(5.5, 4.5))\n    sns.heatmap(cm, annot=True, fmt=\"d\", cmap=\"Blues\",\n                xticklabels=LEVELS, yticklabels=LEVELS)\n    plt.xlabel(\"Predicted\"); plt.ylabel(\"Gold\"); plt.title(\"Confusion matrix\")\n    plt.tight_layout(); plt.show()\n\n\n\n\nShow code\n#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: \"form\" }\ndef show_errors(gold, predictions):\n    rows = [{\"id\": g[\"id\"], \"gold\": g[\"label\"], \"pred\": p, \"text\": g[\"text\"]}\n            for g, p in zip(gold, predictions) if g[\"label\"] != p]\n    print(f\"{len(rows)} of {len(gold)} wrong.\")\n    return pd.DataFrame(rows)"
+    "text": "Setup — run this first\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }# Imports + the gold-file location. No pip install needed in Colab.import json, re, urllib.request, osfrom sklearn.metrics import classification_report, confusion_matriximport pandas as pd, seaborn as sns, matplotlib.pyplot as pltdef _make_local_backend():    \"\"\"Not in Colab → pick a provider by whichever API key is set.    Add a provider = add a block. (See the 'run locally' guide.)\"\"\"    model = os.environ.get(\"LLM_MODEL\")  # optional override    if os.environ.get(\"GEMINI_API_KEY\"):        from google import genai        client = genai.Client()        m = model or \"gemini-2.5-flash\"        return (lambda p: client.models.generate_content(model=m, contents=p).text,                f\"Gemini API ({m})\")    if os.environ.get(\"ANTHROPIC_API_KEY\"):        import anthropic        client = anthropic.Anthropic()        m = model or \"claude-haiku-4-5\"        return (lambda p: client.messages.create(                    model=m, max_tokens=64,                    messages=[{\"role\": \"user\", \"content\": p}]).content[0].text,                f\"Anthropic ({m})\")    if os.environ.get(\"OPENAI_API_KEY\"):        from openai import OpenAI        client = OpenAI()        m = model or \"gpt-4o-mini\"        return (lambda p: client.chat.completions.create(                    model=m, messages=[{\"role\": \"user\", \"content\": p}]                ).choices[0].message.content,                f\"OpenAI ({m})\")    raise RuntimeError(        \"No LLM backend found. Run this notebook in Google Colab (free built-in \"        \"Gemini, no key needed), or — to run locally — set one of GEMINI_API_KEY / \"        \"ANTHROPIC_API_KEY / OPENAI_API_KEY. See the 'Running locally' guide.\")# LLM backend: Colab's built-in Gemini if available, else a local API.try:    from google.colab import ai            # Colab's built-in Gemini — no API key    generate_text, _backend = (lambda p: ai.generate_text(p)), \"Colab Gemini\"except ImportError:    generate_text, _backend = _make_local_backend()# CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.GOLD_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json\"LEVELS = [\"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"]print(f\"Setup done. LLM backend: {_backend}. scikit-learn ready.\")\n\n\n\n\nShow code\n#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: \"form\" }\ndef load_gold(url_or_path):\n    \"\"\"Read the canonical gold JSON: [{'id','text','label'}, ...].\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        gold = json.loads(raw)\n    else:\n        gold = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(gold)} items. First one:\", gold[0])\n    return gold\n\n\n\n\nShow code\n#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: \"form\" }def _extract_level(text):    \"\"\"Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply.\"\"\"    m = re.search(r\"\\b([ABC][12])\\b\", str(text).upper())    return m.group(1) if m else \"??\"def run_prompt(prompt, gold):    \"\"\"Send each item's `text` to the LLM via {text}, collect predicted labels.\"\"\"    predictions = []    for i, item in enumerate(gold, 1):        reply = generate_text(prompt.format(text=item[\"text\"]))        predictions.append(_extract_level(reply))        if i % 12 == 0:            print(f\"  ...{i}/{len(gold)} done\")    print(f\"Got {len(predictions)} predictions.\")    return predictions\n\n\n\n\nShow code\n#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + confusion matrix { display-mode: \"form\" }\ndef evaluate(gold, predictions):\n    y_true = [item[\"label\"] for item in gold]\n    y_pred = predictions\n    print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))\n    cm = confusion_matrix(y_true, y_pred, labels=LEVELS)\n    plt.figure(figsize=(5.5, 4.5))\n    sns.heatmap(cm, annot=True, fmt=\"d\", cmap=\"Blues\",\n                xticklabels=LEVELS, yticklabels=LEVELS)\n    plt.xlabel(\"Predicted\"); plt.ylabel(\"Gold\"); plt.title(\"Confusion matrix\")\n    plt.tight_layout(); plt.show()\n\n\n\n\nShow code\n#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: \"form\" }\ndef show_errors(gold, predictions):\n    rows = [{\"id\": g[\"id\"], \"gold\": g[\"label\"], \"pred\": p, \"text\": g[\"text\"]}\n            for g, p in zip(gold, predictions) if g[\"label\"] != p]\n    print(f\"{len(rows)} of {len(gold)} wrong.\")\n    return pd.DataFrame(rows)"
   },
   {
     "objectID": "resources/tutorials/02_gold_and_eval.html#step-1-load-the-gold-standard",
@@ -1696,14 +1431,26 @@
     "href": "resources/tutorials/02_gold_and_eval.html#step-4-error-analysis",
     "title": "02 · Gold standards & evaluation",
     "section": "Step 4 — Error analysis",
-    "text": "Step 4 — Error analysis\nFor each miss, ask: is the gold defensible, or is this a genuinely borderline sentence? “Is the disagreement the model’s fault or the scheme’s?” is the heart of annotation work — and it returns with force in the Day 3 discourse task.\n\n\nShow code\nshow_errors(gold, predictions)\n\n\n\nYou now know the full loop: load gold → format prompt → call model → evaluate → inspect errors. On Day 3 the loop is identical; only the task gets harder."
+    "text": "Step 4 — Error analysis\nFor each miss, ask: is the gold defensible, or is this a genuinely borderline sentence? “Is the disagreement the model’s fault or the scheme’s?” is the heart of annotation work — and it returns with force in the Day 3 discourse task.\n\n\nShow code\nshow_errors(gold, predictions)\n\n\n\nYou now know the full loop: load gold → format prompt → call model → evaluate → inspect errors. On Day 3 the loop is identical; only the task gets harder.\n\n\n\n\n\n\nTipGo deeper: code the metrics yourself\n\n\n\nevaluate() printed precision, recall, F1 and Cohen’s κ for you. Before the final project, implement those formulas by hand in the Coding the metrics from scratch exercise, then check your work against scikit-learn."
   },
   {
     "objectID": "resources/corpus-lab/index.html",
     "href": "resources/corpus-lab/index.html",
     "title": "Corpus Lab",
     "section": "",
-    "text": "Corpus Lab is the set of short, hands-on assignments you complete between sessions — independent practice with the tools and pipeline, distinct from the guided Tutorials.\n\n\n\n\n\n\nNoteComing soon\n\n\n\nThe Corpus Lab assignments are still being prepared. Each will link to its own worked instructions and any starter notebook or data it needs (drawn from Datasets).",
+    "text": "Corpus Lab is the set of short, hands-on assignments you complete between sessions — independent practice with the tools and pipeline, distinct from the guided Tutorials.",
+    "crumbs": [
+      "Resources",
+      "Corpus Lab",
+      "Corpus Lab"
+    ]
+  },
+  {
+    "objectID": "resources/corpus-lab/index.html#available-now",
+    "href": "resources/corpus-lab/index.html#available-now",
+    "title": "Corpus Lab",
+    "section": "Available now",
+    "text": "Available now\n\nCoding the metrics from scratch — implement precision, recall, F1, and Cohen’s κ by hand, then check your work against scikit-learn. The evaluation formulas you rely on in the final project, built from the ground up.",
     "crumbs": [
       "Resources",
       "Corpus Lab",
@@ -1739,14 +1486,14 @@
     "href": "syllabus/index.html",
     "title": "Course Syllabus",
     "section": "",
-    "text": "Course Title: Linguistic Data Analysis II Credits: 2 Format: Intensive 5-day course (15 sessions) Language: English Classroom: 113 Lecture room"
+    "text": "Course Title\nLinguistic Data Analysis II\n\n\nCredits\n2\n\n\nFormat\nIntensive 5-day course (15 sessions)\n\n\nLanguage\nEnglish\n\n\nClassroom\nTo be announced"
   },
   {
     "objectID": "syllabus/index.html#course-information",
     "href": "syllabus/index.html#course-information",
     "title": "Course Syllabus",
     "section": "",
-    "text": "Course Title: Linguistic Data Analysis II Credits: 2 Format: Intensive 5-day course (15 sessions) Language: English Classroom: 113 Lecture room"
+    "text": "Course Title\nLinguistic Data Analysis II\n\n\nCredits\n2\n\n\nFormat\nIntensive 5-day course (15 sessions)\n\n\nLanguage\nEnglish\n\n\nClassroom\nTo be announced"
   },
   {
     "objectID": "syllabus/index.html#instructor-information",
@@ -1760,14 +1507,14 @@
     "href": "syllabus/index.html#course-description",
     "title": "Course Syllabus",
     "section": "Course Description",
-    "text": "Course Description"
+    "text": "Course Description\nLarge Language Models (LLMs) — generative AI technologies that produce human-like language — have become one of the common tools people rely on to get things done. Linguistic research is no exception: more and more researchers are exploring the potential of this technology to support various stages of their work. One promising application of LLMs is linguistic annotation, a task that can be highly resource-intensive. If the annotation process can be supported by LLMs, the research community can benefit from greater scalability. Lowering the barriers to linguistic annotation is especially important for graduate research, where individual student researchers often have limited resources. Yet, while LLMs hold promise for linguistic research, the adequacy of model outputs must be critically evaluated rather than assumed. We must therefore be equipped with approaches to critically appraise what they can and cannot offer in order to make meaningful contributions to the field. In this course, we cover the foundational concepts and methods for evaluating LLM outputs in linguistic research projects."
   },
   {
     "objectID": "syllabus/index.html#learning-objectives",
     "href": "syllabus/index.html#learning-objectives",
     "title": "Course Syllabus",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this course, students will be able to:"
+    "text": "Learning Objectives\n\n\n\n\n\n\nNoteLearning objectives\n\n\n\nBy the end of this course, students will be able to:\n\n\n\n\n\n\n\nArea\nObjective\n\n\n\n\nCritical appraisal\nExplain the strengths and limitations of Large Language Models for linguistic analysis, and judge when an LLM-based approach is appropriate.\n\n\nAnnotation scheme design\nDesign an annotation scheme and coding guidelines for a linguistic construct of interest.\n\n\nGold-standard datasets\nConstruct a gold-standard dataset, including operationalizing categories and assessing inter-annotator agreement.\n\n\nPrompt design\nDesign, tune, and document prompts that elicit reliable linguistic annotations from an LLM.\n\n\nEvaluation\nEvaluate model performance using precision, recall, F1, and confusion matrices, and interpret the results critically.\n\n\nReproducibility\nCommunicate methods and findings transparently and reproducibly, following responsible research practices."
   },
   {
     "objectID": "syllabus/index.html#course-components",
@@ -1781,7 +1528,7 @@
     "href": "syllabus/index.html#required-materials",
     "title": "Course Syllabus",
     "section": "Required Materials",
-    "text": "Required Materials\n\nTextbook\nOther required/Optional readings are provided through Google Classroom.\n\n\nSoftwares (Free)\n\nOthers\n\nGoogle Colaboratory: Follow the instruction here to enable the tool."
+    "text": "Required Materials\n\nTextbook\nOther required/Optional readings are provided through Google Classroom.\n\n\nSoftwares (Free)\n\nOthers\n\nGoogle Colaboratory: Follow the instruction here to enable the tool.\nVisual Studio Code / Positron (Optional): If you would like to learn how to run the code on your computer, please follow instruction at [page]."
   },
   {
     "objectID": "syllabus/index.html#assignments-and-grading",
@@ -1909,7 +1656,7 @@
     "href": "sessions/day2/session4.html#reading",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Reading",
-    "text": "Reading",
+    "text": "Reading\n\nEguchi, M., & Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. Research Methods in Applied Linguistics, 3(3), 100153. https://doi.org/10.1016/j.rmal.2024.100153",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",

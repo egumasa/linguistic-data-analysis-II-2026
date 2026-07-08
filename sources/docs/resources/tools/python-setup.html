@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Python (Colaboratory) Setup Guide – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Python Setup — Run Locally – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -156,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/python-setup.html">Python (Colaboratory) Setup Guide</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/python-setup.html">Python Setup — Run Locally</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -199,44 +199,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/google-colab-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Google Colab Setup Guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../resources/tools/python-setup.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Python (Colaboratory) Setup Guide</span></a>
+ <span class="menu-text">Python Setup — Run Locally</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../resources/tools/google-drive-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Housing Your Data in Google Drive</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/byu-corpora-guide.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">English Corpora Guide</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/antconc-guide.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">AntConc Guide</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/jasp-guide.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">JASP Statistical Software Guide</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/taales-taassc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">TAALED, TAALES, TAASSC set-up guide</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/japanese-nlp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Japanese NLP</span></a>
   </div>
 </li>
       </ul>
@@ -383,24 +359,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#log-in-to-your-google-account." id="toc-log-in-to-your-google-account." class="nav-link" data-scroll-target="#log-in-to-your-google-account.">Log in to your google account.</a></li>
-  <li><a href="#go-to-google-drive" id="toc-go-to-google-drive" class="nav-link" data-scroll-target="#go-to-google-drive">Go to Google Drive</a></li>
-  <li><a href="#hit-new-and-find-connect-more-apps" id="toc-hit-new-and-find-connect-more-apps" class="nav-link" data-scroll-target="#hit-new-and-find-connect-more-apps">Hit <code>new</code> and find <code>connect more apps</code></a></li>
-  <li><a href="#search-colaboratory-on-the-marketplace" id="toc-search-colaboratory-on-the-marketplace" class="nav-link" data-scroll-target="#search-colaboratory-on-the-marketplace">Search <code>Colaboratory</code> on the marketplace</a></li>
-  <li><a href="#install-colaboratory" id="toc-install-colaboratory" class="nav-link" data-scroll-target="#install-colaboratory">Install <code>Colaboratory</code></a></li>
-  <li><a href="#installation-success" id="toc-installation-success" class="nav-link" data-scroll-target="#installation-success">Installation success!!</a></li>
-  <li><a href="#now-you-can-create-google-colab-notebook-from-google-drive." id="toc-now-you-can-create-google-colab-notebook-from-google-drive." class="nav-link" data-scroll-target="#now-you-can-create-google-colab-notebook-from-google-drive.">Now you can create <code>google colab notebook</code> from Google Drive.</a></li>
+  <li><a href="#install-uv" id="toc-install-uv" class="nav-link active" data-scroll-target="#install-uv">1. Install <code>uv</code></a></li>
+  <li><a href="#get-the-course-project" id="toc-get-the-course-project" class="nav-link" data-scroll-target="#get-the-course-project">2. Get the course project</a></li>
+  <li><a href="#create-the-virtual-environment" id="toc-create-the-virtual-environment" class="nav-link" data-scroll-target="#create-the-virtual-environment">3. Create the virtual environment</a></li>
+  <li><a href="#get-an-api-key" id="toc-get-an-api-key" class="nav-link" data-scroll-target="#get-an-api-key">4. Get an API key</a></li>
+  <li><a href="#open-and-run-the-notebook" id="toc-open-and-run-the-notebook" class="nav-link" data-scroll-target="#open-and-run-the-notebook">5. Open and run the notebook</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tools/python-setup.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/python-setup.html">Python (Colaboratory) Setup Guide</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/python-setup.html">Python Setup — Run Locally</a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Python (Colaboratory) Setup Guide</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Using Google Colab for Text Analysis</p>
+<div class="quarto-title-block"><div><h1 class="title">Python Setup — Run Locally</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Running the course notebooks on your own computer</p>
 </div>
 
 
@@ -417,74 +391,81 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>In this 5-day intensive course, we will use Python through Google colaboratory, browser based environment that requires no installation on your local computer.</p>
-<p>You can follow the step here to enable <code>Colaboratory</code> through your gmail account.</p>
-<p>The following steps should be completed <strong>before we start grammar analysis on Day 4</strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Colab is the course default and needs zero setup</strong> — if you just want to follow along in class, use the <a href="../../resources/tools/google-colab-setup.html">Google Colab setup</a> instead. This guide is the <em>local</em> alternative: a step up in involvement, but worth it if you want to keep working after the course ends or use a paid LLM API instead of Colab’s built-in Gemini. It assumes you’re comfortable with a terminal.</p>
+</div>
+</div>
+<p>The LLM tutorial notebook (<code>02_gold_and_eval.ipynb</code>) is written to work <strong>both</strong> in Colab and locally. In Colab it uses the free built-in Gemini. Run locally, it detects it is <em>not</em> in Colab and calls a real LLM API instead, picking the provider from whichever API key you have set. Here is how to go from nothing to a running notebook.</p>
+<section id="install-uv" class="level2">
+<h2 class="anchored" data-anchor-id="install-uv">1. Install <code>uv</code></h2>
+<p><a href="https://docs.astral.sh/uv/"><code>uv</code></a> is a single tool that installs Python <em>and</em> manages packages — it replaces <code>pip</code>, <code>venv</code>, and <code>pyenv</code>, so it’s the only thing you need to install.</p>
+<ul>
+<li><p><strong>macOS / Linux:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>Windows (PowerShell):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>powershell <span class="op">-</span>ExecutionPolicy ByPass <span class="op">-</span>c <span class="st">"irm https://astral.sh/uv/install.ps1 | iex"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+<p>Close and reopen your terminal, then check it works: <code>uv --version</code>.</p>
 </section>
-<section id="log-in-to-your-google-account." class="level2">
-<h2 class="anchored" data-anchor-id="log-in-to-your-google-account.">Log in to your google account.</h2>
-<p>You will need a google account, so log in to your google account.</p>
+<section id="get-the-course-project" class="level2">
+<h2 class="anchored" data-anchor-id="get-the-course-project">2. Get the course project</h2>
+<p>Download the course repository (you need <a href="https://git-scm.com/">git</a>, or use the green <strong>Code → Download ZIP</strong> button on GitHub and unzip it):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/egumasa/linguistic-data-analysis-II-2026.git</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> linguistic-data-analysis-II-2026</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="go-to-google-drive" class="level2">
-<h2 class="anchored" data-anchor-id="go-to-google-drive">Go to Google Drive</h2>
-<p>Go to google drive.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/python-colab-setup/google-drive.png" class="img-fluid figure-img"></p>
-<figcaption>google drive</figcaption>
-</figure>
+<section id="create-the-virtual-environment" class="level2">
+<h2 class="anchored" data-anchor-id="create-the-virtual-environment">3. Create the virtual environment</h2>
+<p>A <strong>virtual environment</strong> is a private, per-project copy of Python and its packages, so what you install for this course can’t collide with anything else on your computer. <code>uv</code> builds one (a <code>.venv</code> folder) and installs everything the notebooks need in a single command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync <span class="at">--group</span> dev</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="get-an-api-key" class="level2">
+<h2 class="anchored" data-anchor-id="get-an-api-key">4. Get an API key</h2>
+<p>Running locally, the notebook needs an LLM to call. Get a key from <strong>one</strong> provider:</p>
+<ul>
+<li><strong>Google Gemini</strong> (closest to what Colab gives you): <a href="https://aistudio.google.com/apikey">Google AI Studio</a></li>
+<li><strong>Anthropic (Claude):</strong> <a href="https://console.anthropic.com/">console.anthropic.com</a></li>
+<li><strong>OpenAI:</strong> <a href="https://platform.openai.com/api-keys">platform.openai.com</a></li>
+</ul>
+<p>Then set it as an environment variable in the same terminal (use the name matching your provider):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GEMINI_API_KEY</span><span class="op">=</span>your-key-here        <span class="co"># or ANTHROPIC_API_KEY / OPENAI_API_KEY</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows (PowerShell) — setx persists it for new terminals</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>setx GEMINI_API_KEY <span class="st">"your-key-here"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An API key is a <strong>secret</strong> — it’s tied to billing. Never paste it into a notebook cell, never commit it to git, never share it. (This project’s <code>.gitignore</code> already ignores a <code>.env</code> file if you prefer to keep keys there.)</p>
+</div>
 </div>
 </section>
-<section id="hit-new-and-find-connect-more-apps" class="level2">
-<h2 class="anchored" data-anchor-id="hit-new-and-find-connect-more-apps">Hit <code>new</code> and find <code>connect more apps</code></h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/python-colab-setup/connect-more-apps.gif" class="img-fluid figure-img"></p>
-<figcaption>connect-more-app</figcaption>
-</figure>
-</div>
+<section id="open-and-run-the-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="open-and-run-the-notebook">5. Open and run the notebook</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run jupyter lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In the browser tab that opens, navigate to <code>sources/resources/tutorials/02_gold_and_eval.ipynb</code> and choose <strong>Run → Run All Cells</strong>. The first cell prints which backend it chose, e.g.&nbsp;<code>LLM backend: Gemini API (gemini-2.5-flash)</code>. Everything else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab.</p>
 </section>
-<section id="search-colaboratory-on-the-marketplace" class="level2">
-<h2 class="anchored" data-anchor-id="search-colaboratory-on-the-marketplace">Search <code>Colaboratory</code> on the marketplace</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/python-colab-setup/colab-on-marketplace.png" class="img-fluid figure-img"></p>
-<figcaption>search-market-place</figcaption>
-</figure>
-</div>
-</section>
-<section id="install-colaboratory" class="level2">
-<h2 class="anchored" data-anchor-id="install-colaboratory">Install <code>Colaboratory</code></h2>
-<p>Click on Colaboratory, and hit <code>install</code> button. <img src="../../assets/python-colab-setup/colab-install.png" class="img-fluid" alt="search-market-place"></p>
-<p>Hit continue when it prompts permission.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/python-colab-setup/hit-continue.png" class="img-fluid figure-img"></p>
-<figcaption>search-market-place</figcaption>
-</figure>
-</div>
-<p><strong>Follow the instruction of the pop-up instruction.</strong></p>
-</section>
-<section id="installation-success" class="level2">
-<h2 class="anchored" data-anchor-id="installation-success">Installation success!!</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/python-colab-setup/success.png" class="img-fluid figure-img"></p>
-<figcaption>success</figcaption>
-</figure>
-</div>
-</section>
-<section id="now-you-can-create-google-colab-notebook-from-google-drive." class="level2">
-<h2 class="anchored" data-anchor-id="now-you-can-create-google-colab-notebook-from-google-drive.">Now you can create <code>google colab notebook</code> from Google Drive.</h2>
-<p>Now you can create a new google colab notebook.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/python-colab-setup/open-and-print.gif" class="img-fluid figure-img"></p>
-<figcaption>create a note</figcaption>
-</figure>
-</div>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong><code>No LLM backend found ...</code></strong> — you’re running locally but no key is set. Set one of <code>GEMINI_API_KEY</code> / <code>ANTHROPIC_API_KEY</code> / <code>OPENAI_API_KEY</code> (step 4) and restart the notebook kernel (<strong>Kernel → Restart</strong>) so it picks up the new environment variable.</li>
+<li><strong>Switch provider</strong> — set a different key (unset the others), or pin a specific model with the <code>LLM_MODEL</code> variable, e.g.&nbsp;<code>export LLM_MODEL=gemini-2.5-pro</code>.</li>
+<li><strong><code>ModuleNotFoundError</code></strong> — you launched Jupyter outside the project env. Always start it with <code>uv run jupyter lab</code> from the project folder so it uses the <code>.venv</code> from step 3.</li>
+</ul>
 
 
 <!-- -->
@@ -950,66 +931,105 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Python (Colaboratory) Setup Guide"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Using Google Colab for Text Analysis"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>In this 5-day intensive course, we will use Python through Google colaboratory, browser based environment that requires no installation on your local computer.</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>You can follow the step here to enable <span class="in">`Colaboratory`</span> through your gmail account.</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>The following steps should be completed **before we start grammar analysis on Day 4**.</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Log in to your google account.</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>You will need a google account, so log in to your google account.</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Go to Google Drive</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>Go to google drive.</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="al">![google drive](../../assets/python-colab-setup/google-drive.png)</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Hit `new` and find `connect more apps`</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="al">![connect-more-app](../../assets/python-colab-setup/connect-more-apps.gif)</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Search `Colaboratory` on the marketplace</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="al">![search-market-place](../../assets/python-colab-setup/colab-on-marketplace.png)</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Install `Colaboratory`</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>Click on Colaboratory, and hit <span class="in">`install`</span> button.</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="al">![search-market-place](../../assets/python-colab-setup/colab-install.png)</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>Hit continue when it prompts permission.</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="al">![search-market-place](../../assets/python-colab-setup/hit-continue.png)</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>**Follow the instruction of the pop-up instruction.**</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Installation success!!</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="al">![success](../../assets/python-colab-setup/success.png)</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Now you can create `google colab notebook` from Google Drive.</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>Now you can create a new google colab notebook.</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="al">![create a note](../../assets/python-colab-setup/open-and-print.gif)</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Python Setup — Run Locally"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Running the course notebooks on your own computer"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>**Colab is the course default and needs zero setup** — if you just want to follow along in class,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>use the <span class="co">[</span><span class="ot">Google Colab setup</span><span class="co">](google-colab-setup.md)</span> instead. This guide is the *local* alternative:</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>a step up in involvement, but worth it if you want to keep working after the course ends or use a</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>paid LLM API instead of Colab's built-in Gemini. It assumes you're comfortable with a terminal.</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>The LLM tutorial notebook (<span class="in">`02_gold_and_eval.ipynb`</span>) is written to work **both** in Colab and</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>locally. In Colab it uses the free built-in Gemini. Run locally, it detects it is *not* in Colab and</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>calls a real LLM API instead, picking the provider from whichever API key you have set. Here is how</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>to go from nothing to a running notebook.</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. Install `uv`</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`uv`</span><span class="co">](https://docs.astral.sh/uv/)</span> is a single tool that installs Python *and* manages packages —</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>it replaces <span class="in">`pip`</span>, <span class="in">`venv`</span>, and <span class="in">`pyenv`</span>, so it's the only thing you need to install.</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**macOS / Linux:**</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="in">```bash</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Windows (PowerShell):**</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="in">```powershell</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="in">  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="in">  ```</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>Close and reopen your terminal, then check it works: <span class="in">`uv --version`</span>.</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. Get the course project</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>Download the course repository (you need <span class="co">[</span><span class="ot">git</span><span class="co">](https://git-scm.com/)</span>, or use the green **Code →</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>Download ZIP** button on GitHub and unzip it):</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/egumasa/linguistic-data-analysis-II-2026.git</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> linguistic-data-analysis-II-2026</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. Create the virtual environment</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>A **virtual environment** is a private, per-project copy of Python and its packages, so what you</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>install for this course can't collide with anything else on your computer. <span class="in">`uv`</span> builds one (a</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="in">`.venv`</span> folder) and installs everything the notebooks need in a single command:</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync <span class="at">--group</span> dev</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. Get an API key</span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>Running locally, the notebook needs an LLM to call. Get a key from **one** provider:</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Google Gemini** (closest to what Colab gives you): <span class="co">[</span><span class="ot">Google AI Studio</span><span class="co">](https://aistudio.google.com/apikey)</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Anthropic (Claude):** <span class="co">[</span><span class="ot">console.anthropic.com</span><span class="co">](https://console.anthropic.com/)</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**OpenAI:** <span class="co">[</span><span class="ot">platform.openai.com</span><span class="co">](https://platform.openai.com/api-keys)</span></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>Then set it as an environment variable in the same terminal (use the name matching your provider):</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GEMINI_API_KEY</span><span class="op">=</span>your-key-here        <span class="co"># or ANTHROPIC_API_KEY / OPENAI_API_KEY</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="in">```powershell</span></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a><span class="in"># Windows (PowerShell) — setx persists it for new terminals</span></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a><span class="in">setx GEMINI_API_KEY "your-key-here"</span></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>An API key is a **secret** — it's tied to billing. Never paste it into a notebook cell, never commit</span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>it to git, never share it. (This project's <span class="in">`.gitignore`</span> already ignores a <span class="in">`.env`</span> file if you prefer</span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>to keep keys there.)</span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. Open and run the notebook</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run jupyter lab</span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>In the browser tab that opens, navigate to</span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="in">`sources/resources/tutorials/02_gold_and_eval.ipynb`</span> and choose **Run → Run All Cells**. The first</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>cell prints which backend it chose, e.g. <span class="in">`LLM backend: Gemini API (gemini-2.5-flash)`</span>. Everything</span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab.</span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## Troubleshooting</span></span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`No LLM backend found ...`** — you're running locally but no key is set. Set one of</span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>  <span class="in">`GEMINI_API_KEY`</span> / <span class="in">`ANTHROPIC_API_KEY`</span> / <span class="in">`OPENAI_API_KEY`</span> (step 4) and restart the notebook kernel</span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>  (**Kernel → Restart**) so it picks up the new environment variable.</span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Switch provider** — set a different key (unset the others), or pin a specific model with the</span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a>  <span class="in">`LLM_MODEL`</span> variable, e.g. <span class="in">`export LLM_MODEL=gemini-2.5-pro`</span>.</span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`ModuleNotFoundError`** — you launched Jupyter outside the project env. Always start it with</span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>  <span class="in">`uv run jupyter lab`</span> from the project folder so it uses the <span class="in">`.venv`</span> from step 3.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
