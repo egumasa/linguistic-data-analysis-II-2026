@@ -11,7 +11,10 @@ toc: true
 <!-- to be added -->
 
 ## Slides & Colab
-<!-- slides link + Colab notebook link -->
+
+- Notebook (tutorial + Corpus Lab): [`day1_python_and_first_llm.ipynb`](../../resources/tutorials/day1_python_and_first_llm.ipynb) — Python basics + your first LLM call —
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/day1_python_and_first_llm.ipynb)
+<!-- slides link: to be added -->
 
 ## Mini-project
 This session includes mini-project track selection and group formation. See the [Final Project](../../final-project/index.md) page.

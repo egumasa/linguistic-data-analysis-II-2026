@@ -12,7 +12,7 @@ toc: true
 
 ## Slides & Colab
 
-- Tutorial: [Day 3 — Replicating Kim & Lu with open data](../../resources/tutorials/tutorial-day3-move-replication.md)
-- Notebook: [`02_gold_and_eval.ipynb`](../../resources/tutorials/02_gold_and_eval.ipynb) (same pipeline, harder task) —
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/02_gold_and_eval.ipynb)
+- Notebook (tutorial + Corpus Lab): [`day3_prompt_design.ipynb`](../../resources/tutorials/day3_prompt_design.ipynb) — zero-shot → few-shot → chain-of-thought on the CEFR task —
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/day3_prompt_design.ipynb)
+- Further reading: [Replicating Kim & Lu with open data](../../resources/tutorials/tutorial-day3-move-replication.md) (the discourse-move mini-project track)
 <!-- slides link: to be added -->

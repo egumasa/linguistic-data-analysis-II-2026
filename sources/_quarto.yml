@@ -82,9 +82,16 @@ website:
           contents:
             - resources/datasets/index.md
             - resources/datasets/mini-project-tracks.md
-        - section: "Tutorials"
+        - section: "Daily Notebooks (Tutorial + Corpus Lab)"
           contents:
             - resources/tutorials/index.md
+            - resources/tutorials/day1_python_and_first_llm.ipynb
+            - resources/tutorials/day2_gold_standards_and_evaluation.ipynb
+            - resources/tutorials/day3_prompt_design.ipynb
+            - resources/tutorials/day4_pipeline_and_sampling.ipynb
+            - resources/tutorials/day5_project_finalization.ipynb
+        - section: "Tutorial notes"
+          contents:
             - resources/tutorials/tutorial-day2-annotation-eval.md
             - resources/tutorials/tutorial-day3-move-replication.md
         - section: "Additional examples"

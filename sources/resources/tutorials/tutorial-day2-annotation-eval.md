@@ -9,9 +9,9 @@ toc: true
 > *easy-to-judge* task first — CEFR sentence levels — so the mechanics, not the labeling, are the
 > challenge. The hard, research-style task comes in the [Day 3 tutorial](./tutorial-day3-move-replication.md).
 
-**Companion notebook:** `02_gold_and_eval.ipynb` — open it directly in Colab (Tohoku Google account, no setup):
+**Companion notebook:** `day2_gold_standards_and_evaluation.ipynb` — open it directly in Colab (Tohoku Google account, no setup):
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/02_gold_and_eval.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/day2_gold_standards_and_evaluation.ipynb)
 
 ::: {.callout-note collapse="true"}
 ## Prefer to run outside Colab? (optional)
@@ -26,7 +26,7 @@ Quick version — install the libraries, set one key, launch Jupyter:
 ```bash
 pip install jupyterlab scikit-learn pandas seaborn matplotlib google-genai anthropic openai
 export GEMINI_API_KEY=your-key-here      # or ANTHROPIC_API_KEY / OPENAI_API_KEY
-jupyter lab                              # then open 02_gold_and_eval.ipynb and Run All
+jupyter lab                              # then open day2_gold_standards_and_evaluation.ipynb and Run All
 ```
 
 Full step-by-step (install `uv`, virtual environment, getting an API key):
@@ -61,7 +61,7 @@ notice how different it is for the Day 3 discourse task.
 
 ## Step 2 — Run a fixed prompt (the pipeline)
 
-In the `02_gold_and_eval` notebook the pipeline is four named cells. You do **not** edit them — you
+In the `day2_gold_standards_and_evaluation` notebook the pipeline is four named cells. You do **not** edit them — you
 just run them:
 
 | Cell | What it does |

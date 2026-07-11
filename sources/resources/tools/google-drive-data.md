@@ -7,7 +7,7 @@ toc: true
 ## Why this guide
 
 In the worked tutorials, the course hands you data over a URL — e.g. Day 2's
-[`02_gold_and_eval.ipynb`](../tutorials/02_gold_and_eval.ipynb) loads a committed CEFR gold set
+[`day2_gold_standards_and_evaluation.ipynb`](../tutorials/day2_gold_standards_and_evaluation.ipynb) loads a committed CEFR gold set
 straight from GitHub, so it *just runs*. That is the **instructor's** distribution channel.
 
 For the **mini-project** you flip roles: you *build your own* gold set (download → reshape →

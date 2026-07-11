@@ -11,7 +11,7 @@ a step up in involvement, but worth it if you want to keep working after the cou
 paid LLM API instead of Colab's built-in Gemini. It assumes you're comfortable with a terminal.
 :::
 
-The LLM tutorial notebook (`02_gold_and_eval.ipynb`) is written to work **both** in Colab and
+The LLM tutorial notebook (`day2_gold_standards_and_evaluation.ipynb`) is written to work **both** in Colab and
 locally. In Colab it uses the free built-in Gemini. Run locally, it detects it is *not* in Colab and
 calls a real LLM API instead, picking the provider from whichever API key you have set. Here is how
 to go from nothing to a running notebook.
@@ -84,7 +84,7 @@ uv run jupyter lab
 ```
 
 In the browser tab that opens, navigate to
-`sources/resources/tutorials/02_gold_and_eval.ipynb` and choose **Run → Run All Cells**. The first
+`sources/resources/tutorials/day2_gold_standards_and_evaluation.ipynb` and choose **Run → Run All Cells**. The first
 cell prints which backend it chose, e.g. `LLM backend: Gemini API (gemini-2.5-flash)`. Everything
 else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab.
 
