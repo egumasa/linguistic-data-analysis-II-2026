@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Day 1 · Python basics &amp; your first LLM call – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Get a free Gemini API key (for Corpus Lab &amp; the final project) – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -167,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tutorials/index.html">Daily Notebooks (Tutorial + Corpus Lab)</a></li><li class="breadcrumb-item"><a href="../../resources/tutorials/day1_python_and_first_llm.html">Day 1 · Python basics &amp; your first LLM call</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/gemini-api-key.html">Get a free Gemini API key (for Corpus Lab &amp; the final project)</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -195,13 +195,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Setup &amp; Tools</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../resources/tools/index.html" class="sidebar-item-text sidebar-link">
@@ -216,7 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../resources/tools/gemini-api-key.html" class="sidebar-item-text sidebar-link">
+  <a href="../../resources/tools/gemini-api-key.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Get a free Gemini API key (for Corpus Lab &amp; the final project)</span></a>
   </div>
 </li>
@@ -288,13 +288,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
  <span class="menu-text">Daily Notebooks (Tutorial + Corpus Lab)</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../resources/tutorials/index.html" class="sidebar-item-text sidebar-link">
@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../resources/tutorials/day1_python_and_first_llm.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../resources/tutorials/day1_python_and_first_llm.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Day 1 · Python basics &amp; your first LLM call</span></a>
   </div>
 </li>
@@ -417,27 +417,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link active" data-scroll-target="#how-to-use-this-notebook">How to use this notebook</a></li>
-  <li><a href="#part-a-tutorial-a-15-minute-python-primer" id="toc-part-a-tutorial-a-15-minute-python-primer" class="nav-link" data-scroll-target="#part-a-tutorial-a-15-minute-python-primer">Part A · Tutorial — a 15-minute Python primer</a>
-  <ul class="collapse">
-  <li><a href="#variables-data-types" id="toc-variables-data-types" class="nav-link" data-scroll-target="#variables-data-types">1. Variables &amp; data types</a></li>
-  <li><a href="#if-statements-make-a-decision" id="toc-if-statements-make-a-decision" class="nav-link" data-scroll-target="#if-statements-make-a-decision">2. <code>if</code> statements — make a decision</a></li>
-  <li><a href="#for-loops-do-something-to-every-item" id="toc-for-loops-do-something-to-every-item" class="nav-link" data-scroll-target="#for-loops-do-something-to-every-item">3. <code>for</code> loops — do something to every item</a></li>
-  <li><a href="#functions-name-a-reusable-piece-of-code" id="toc-functions-name-a-reusable-piece-of-code" class="nav-link" data-scroll-target="#functions-name-a-reusable-piece-of-code">4. Functions — name a reusable piece of code</a></li>
-  <li><a href="#basic-input-output" id="toc-basic-input-output" class="nav-link" data-scroll-target="#basic-input-output">5. Basic input / output</a></li>
-  <li><a href="#meet-the-model-your-first-llm-call" id="toc-meet-the-model-your-first-llm-call" class="nav-link" data-scroll-target="#meet-the-model-your-first-llm-call">6. Meet the model — your first LLM call</a></li>
-  </ul></li>
-  <li><a href="#part-b-corpus-lab-python-practice" id="toc-part-b-corpus-lab-python-practice" class="nav-link" data-scroll-target="#part-b-corpus-lab-python-practice">Part B · Corpus Lab — Python practice</a></li>
-  <li><a href="#before-you-submit" id="toc-before-you-submit" class="nav-link" data-scroll-target="#before-you-submit">✅ Before you submit</a></li>
+  <li><a href="#when-you-need-this" id="toc-when-you-need-this" class="nav-link active" data-scroll-target="#when-you-need-this">When you need this</a></li>
+  <li><a href="#step-1-create-a-free-api-key-ai-studio" id="toc-step-1-create-a-free-api-key-ai-studio" class="nav-link" data-scroll-target="#step-1-create-a-free-api-key-ai-studio">Step 1 — Create a free API key (AI Studio)</a></li>
+  <li><a href="#step-2-add-the-key-to-colab-secrets" id="toc-step-2-add-the-key-to-colab-secrets" class="nav-link" data-scroll-target="#step-2-add-the-key-to-colab-secrets">Step 2 — Add the key to Colab Secrets</a></li>
+  <li><a href="#step-3-the-notebook-uses-it-automatically" id="toc-step-3-the-notebook-uses-it-automatically" class="nav-link" data-scroll-target="#step-3-the-notebook-uses-it-automatically">Step 3 — The notebook uses it automatically</a></li>
+  <li><a href="#about-reproducibility-important-and-a-little-humbling" id="toc-about-reproducibility-important-and-a-little-humbling" class="nav-link" data-scroll-target="#about-reproducibility-important-and-a-little-humbling">About reproducibility (important, and a little humbling)</a></li>
+  <li><a href="#rate-limits-good-manners" id="toc-rate-limits-good-manners" class="nav-link" data-scroll-target="#rate-limits-good-manners">Rate limits &amp; good manners</a></li>
+  <li><a href="#want-to-keep-working-after-the-course-optional-advanced" id="toc-want-to-keep-working-after-the-course-optional-advanced" class="nav-link" data-scroll-target="#want-to-keep-working-after-the-course-optional-advanced">Want to keep working after the course? (optional, advanced)</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/resources/tutorials/day1_python_and_first_llm.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tools/gemini-api-key.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tutorials/index.html">Daily Notebooks (Tutorial + Corpus Lab)</a></li><li class="breadcrumb-item"><a href="../../resources/tutorials/day1_python_and_first_llm.html">Day 1 · Python basics &amp; your first LLM call</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../resources/tools/index.html">Setup &amp; Tools</a></li><li class="breadcrumb-item"><a href="../../resources/tools/gemini-api-key.html">Get a free Gemini API key (for Corpus Lab &amp; the final project)</a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Day 1 · Python basics &amp; your first LLM call</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Get a free Gemini API key (for Corpus Lab &amp; the final project)</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Reproducible LLM results, still 100% inside Colab — no install</p>
 </div>
 
 
@@ -454,231 +450,109 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><em>Day 1 — Linguistic Data Analysis II</em></p>
-<section id="how-to-use-this-notebook" class="level3">
-<h3 class="anchored" data-anchor-id="how-to-use-this-notebook">How to use this notebook</h3>
-<p>This is your <strong>single submission for the day</strong>. It has two parts:</p>
+<section id="when-you-need-this" class="level2">
+<h2 class="anchored" data-anchor-id="when-you-need-this">When you need this</h2>
+<p><strong>You need a key starting on Day 3.</strong> Days 1 and 2 are keyless:</p>
 <ul>
-<li><strong>Part A · Tutorial</strong> — a hands-on Python primer, then your first call to a language model.</li>
-<li><strong>Part B · Corpus Lab</strong> — short Python exercises you complete and self-check.</li>
+<li><strong>Day 1</strong> uses Colab’s built-in Gemini (<code>colab.ai</code>) for your first live call — zero setup. That free backend gives you <strong>no control over randomness</strong> (run the same prompt twice and the answer can change); that’s fine here, and we use it to <em>show</em> you why LLM output varies.</li>
+<li><strong>Day 2</strong> doesn’t call the model at all — it evaluates a <strong>frozen</strong> set of predictions committed to the repo, so everyone’s precision/recall/F1 come out identical while you’re learning the metrics.</li>
 </ul>
-<p>You only edit the cells marked <strong>✏️ YOU EDIT</strong>. Cells marked <strong>🔧 Library cell</strong> are pre-written — run them, don’t change them.</p>
-<p>➡️ Work top to bottom. When you’re done, <strong>Runtime → Run all</strong>, then <strong>File → Download → Download <code>.ipynb</code></strong> and submit that file.</p>
-</section>
-<section id="part-a-tutorial-a-15-minute-python-primer" class="level2">
-<h2 class="anchored" data-anchor-id="part-a-tutorial-a-15-minute-python-primer">Part A · Tutorial — a 15-minute Python primer</h2>
-<p>No prior Python needed. Run each cell, read the output, then change a value and re-run to see what happens. Everything this week is built from these few ideas.</p>
-<section id="variables-data-types" class="level3">
-<h3 class="anchored" data-anchor-id="variables-data-types">1. Variables &amp; data types</h3>
-<p>A <strong>variable</strong> is a name for a value. Python’s core types you’ll use all week: <strong>string</strong> (<code>str</code>, text), <strong>integer</strong> (<code>int</code>) and <strong>float</strong> (decimal number), <strong>list</strong> (an ordered sequence), and <strong>dictionary</strong> (<code>dict</code>, key → value pairs).</p>
-<div id="cell-4" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sentence <span class="op">=</span> <span class="st">"The cat sat on the mat."</span>   <span class="co"># str  — text, in quotes</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>word_count <span class="op">=</span> <span class="dv">6</span>                          <span class="co"># int  — whole number</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> <span class="fl">4.5</span>                             <span class="co"># float — decimal number</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>levels <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>]            <span class="co"># list — ordered, square brackets</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>item <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: sentence, <span class="st">"label"</span>: <span class="st">"A1"</span>}  <span class="co"># dict — key: value</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(sentence), <span class="bu">type</span>(word_count), <span class="bu">type</span>(score))</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"levels[0] ="</span>, levels[<span class="dv">0</span>])         <span class="co"># lists are indexed from 0</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"item['label'] ="</span>, item[<span class="st">"label"</span>])  <span class="co"># look up a dict value by its key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<p><strong>From Day 3 on — the Corpus Lab and the final project — you run the model yourself, and your results have to be stable and reproducible:</strong> your reported precision/recall/F1 shouldn’t change every time you re-run, and (because the Corpus Labs are <strong>autograded</strong>) a grader must be able to re-run your notebook and get the same numbers. For that you switch to the <strong>Gemini API</strong>, where you <em>can</em> pin the randomness (<code>temperature=0</code>, a fixed <code>seed</code>, a pinned model).</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You do <strong>not</strong> install anything or leave Colab. You get a free key, paste it into Colab’s built-in <strong>Secrets</strong> manager once, and the notebook picks it up automatically.</p>
+</div>
 </div>
 </section>
-<section id="if-statements-make-a-decision" class="level3">
-<h3 class="anchored" data-anchor-id="if-statements-make-a-decision">2. <code>if</code> statements — make a decision</h3>
-<p>Run one branch or another depending on a condition. Indentation (4 spaces) is how Python groups the lines that belong to each branch.</p>
-<div id="cell-6" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> <span class="fl">4.5</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> score <span class="op">&lt;</span> <span class="dv">4</span>:</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    band <span class="op">=</span> <span class="st">"Low"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> score <span class="op">&lt;</span> <span class="dv">7</span>:</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    band <span class="op">=</span> <span class="st">"Mid"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    band <span class="op">=</span> <span class="st">"High"</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"score"</span>, score, <span class="st">"→ band"</span>, band)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="for-loops-do-something-to-every-item" class="level3">
-<h3 class="anchored" data-anchor-id="for-loops-do-something-to-every-item">3. <code>for</code> loops — do something to every item</h3>
-<p>Loop over a list, or over a dictionary’s items. This is exactly how we’ll process every sentence in a dataset.</p>
-<div id="cell-8" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> level <span class="kw">in</span> levels:</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"level:"</span>, level)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"---"</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> item.items():</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(key, <span class="st">"→"</span>, value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="functions-name-a-reusable-piece-of-code" class="level3">
-<h3 class="anchored" data-anchor-id="functions-name-a-reusable-piece-of-code">4. Functions — name a reusable piece of code</h3>
-<p>A <strong>function</strong> takes inputs (arguments) and <code>return</code>s a result. Define once, call as often as you like.</p>
-<div id="cell-10" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> band_of(score):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Turn a numeric score into a Low/Mid/High band."""</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> score <span class="op">&lt;</span> <span class="dv">4</span>:</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"Low"</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> score <span class="op">&lt;</span> <span class="dv">7</span>:</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"Mid"</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"High"</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(band_of(<span class="dv">2</span>), band_of(<span class="dv">5</span>), band_of(<span class="dv">9</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="basic-input-output" class="level3">
-<h3 class="anchored" data-anchor-id="basic-input-output">5. Basic input / output</h3>
-<p><code>print(...)</code> shows a value. To read data, we mostly parse <strong>JSON</strong> — the <code>{id, text, label}</code> shape you’ll see all week. (<code>input()</code> also reads from the keyboard, but it pauses <em>Run all</em>, so we avoid it here.)</p>
-<div id="cell-12" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="st">'[{"id": 1, "text": "Hello.", "label": "A1"}, {"id": 2, "text": "Nevertheless, the findings were inconclusive.", "label": "C1"}]'</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> json.loads(raw)          <span class="co"># JSON text → Python list of dicts</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"number of items:"</span>, <span class="bu">len</span>(data))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> data:</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(row[<span class="st">"id"</span>], row[<span class="st">"label"</span>], <span class="st">"|"</span>, row[<span class="st">"text"</span>])</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># (Reading from the keyboard — left commented so Run all does not pause:)</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># name = input("Your name: ")</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># print("Hello,", name)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="meet-the-model-your-first-llm-call" class="level3">
-<h3 class="anchored" data-anchor-id="meet-the-model-your-first-llm-call">6. Meet the model — your first LLM call</h3>
-<p>Run the setup cell (loads the LLM backend — in Colab that’s the free built-in Gemini, no key needed), then send the model a prompt with <code>generate_text(...)</code>.</p>
-<div id="cell-14" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Imports + the LLM backend. No pip install needed in Colab.</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json, re, urllib.request, os</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, seaborn <span class="im">as</span> sns, matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>MODEL_ID <span class="op">=</span> <span class="st">"gemini-2.5-flash"</span>   <span class="co"># pinned model for the reproducible (API) backend</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _resolve_gemini_key():</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env."""</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata      <span class="co"># only exists in Colab</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> userdata.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> key:</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> key</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span>                                    <span class="co"># not in Colab, or secret not set</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.environ.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _make_api_backend(key):</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reproducible backend: Gemini API with temperature=0 + a fixed seed."""</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google <span class="im">import</span> genai</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google.genai <span class="im">import</span> types</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> genai.Client(api_key<span class="op">=</span>key)</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    cfg <span class="op">=</span> types.GenerateContentConfig(temperature<span class="op">=</span><span class="dv">0</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="kw">lambda</span> p: client.models.generate_content(</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>                model<span class="op">=</span>MODEL_ID, contents<span class="op">=</span>p, config<span class="op">=</span>cfg).text,</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Gemini API (</span><span class="sc">{</span>MODEL_ID<span class="sc">}</span><span class="ss">, temperature=0, seed=42)"</span>)</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Prefer the API key when set (reproducible); else fall back to colab.ai (demo).</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>_key <span class="op">=</span> _resolve_gemini_key()</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> _key:</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    generate_text, _backend <span class="op">=</span> _make_api_backend(_key)</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> ai            <span class="co"># Colab's built-in Gemini — no key</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>        generate_text, _backend <span class="op">=</span> (<span class="kw">lambda</span> p: ai.generate_text(p)), <span class="st">"Colab Gemini (demo, non-reproducible)"</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>            <span class="st">"No LLM backend found. Run this notebook in Google Colab (free built-in "</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets "</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>            <span class="st">"panel, or as an environment variable when running locally. "</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>            <span class="st">"See resources/tools/gemini-api-key.md."</span>)</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done. LLM backend: </span><span class="sc">{</span>_backend<span class="sc">}</span><span class="ss">. scikit-learn ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<p><strong>✏️ YOU EDIT</strong> — change the prompt and re-run.</p>
-<div id="cell-16" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-</section>
-<section id="part-b-corpus-lab-python-practice" class="level2">
-<h2 class="anchored" data-anchor-id="part-b-corpus-lab-python-practice">Part B · Corpus Lab — Python practice</h2>
-<p>Fill in each function so it does what its docstring says (replace the <code>raise NotImplementedError(...)</code> line). Then run the <strong>self-check</strong> cell at the bottom until every line prints ✅. No grader needed — the checks <em>are</em> your grader.</p>
-<div id="cell-18" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — replace each NotImplementedError with your code.</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> label_of(item):</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the value stored under the key "label" in the dict `item`.</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: label_of({"id": 1, "text": "Hi", "label": "A1"}) -&gt; "A1".</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return item['label']."</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> long_words(words, n):</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return a LIST of the words whose length is greater than n.</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: long_words(["a", "cat", "elephant"], 3) -&gt; ["elephant"].</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: build a result list; loop with `for w in words:`; keep w if len(w) &gt; n.</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the words longer than n characters."</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_labels(items):</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Given a list of {id, text, label} dicts, return a dict mapping each</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">    label to how many times it appears.</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: count_labels([{"label":"A1"}, {"label":"A1"}, {"label":"B1"}])</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">             -&gt; {"A1": 2, "B1": 1}.</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: start with counts = {}; for each item, add 1 to counts[label]</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       (use counts.get(label, 0) + 1 so the first time starts at 0).</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Count how many items carry each label."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div id="cell-19" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check — run me { display-mode: "form" }</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> [{<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"Hi."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"text"</span>: <span class="st">"Hello there."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"text"</span>: <span class="st">"Nevertheless..."</span>, <span class="st">"label"</span>: <span class="st">"C1"</span>}]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>checks <span class="op">=</span> [</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"label_of"</span>, label_of(sample[<span class="dv">0</span>]) <span class="op">==</span> <span class="st">"A1"</span>),</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"long_words"</span>, long_words([<span class="st">"a"</span>, <span class="st">"cat"</span>, <span class="st">"elephant"</span>], <span class="dv">3</span>) <span class="op">==</span> [<span class="st">"elephant"</span>]),</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"count_labels"</span>, count_labels(sample) <span class="op">==</span> {<span class="st">"A1"</span>: <span class="dv">2</span>, <span class="st">"C1"</span>: <span class="dv">1</span>}),</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, ok <span class="kw">in</span> checks:</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), name)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All passed ✅"</span> <span class="cf">if</span> <span class="bu">all</span>(ok <span class="cf">for</span> _, ok <span class="kw">in</span> checks)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> <span class="st">"Some checks failed — fix them and re-run."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<hr>
-</section>
-<section id="before-you-submit" class="level2">
-<h2 class="anchored" data-anchor-id="before-you-submit">✅ Before you submit</h2>
+<section id="step-1-create-a-free-api-key-ai-studio" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-create-a-free-api-key-ai-studio">Step 1 — Create a free API key (AI Studio)</h2>
 <ol type="1">
-<li><strong>Runtime → Run all</strong> and check every cell ran without error.</li>
-<li>Part A outputs are visible (tables / charts / the model’s answers).</li>
-<li>Part B self-check prints ✅ (or your TODO answers are filled in).</li>
-<li><strong>File → Download → Download <code>.ipynb</code></strong> and upload that one file.</li>
+<li>Go to <strong><a href="https://aistudio.google.com/apikey" class="uri">https://aistudio.google.com/apikey</a></strong> and sign in with your <strong>Tohoku Google account</strong>.</li>
+<li>Click <strong>Create API key</strong>.</li>
+<li>Copy the key (a long string starting with <code>AIza…</code>). Treat it like a password.</li>
 </ol>
+<p>This is the <strong>free tier</strong> — no billing, no credit card. It has rate limits (a cap on requests per minute / per day), which are plenty for one student’s coursework.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Never paste your key into a notebook cell
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Anyone who sees your notebook (or the committed <code>.ipynb</code>) would get your key. Always use Colab <strong>Secrets</strong> (Step 2) so the key stays out of the code and out of what you submit.</p>
+</div>
+</div>
+</section>
+<section id="step-2-add-the-key-to-colab-secrets" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-add-the-key-to-colab-secrets">Step 2 — Add the key to Colab Secrets</h2>
+<ol type="1">
+<li>Open your Corpus-Lab / project notebook in Colab.</li>
+<li>In the <strong>left sidebar</strong>, click the <strong>🔑 key icon</strong> (“Secrets”).</li>
+<li>Click <strong>+ Add new secret</strong>.</li>
+<li>Name it exactly <code>GEMINI_API_KEY</code>.</li>
+<li>Paste your key into the <strong>Value</strong> box.</li>
+<li>Turn on the <strong>Notebook access</strong> toggle for this secret.</li>
+</ol>
+<p>You only do this once per Google account — the secret is remembered across your notebooks.</p>
+</section>
+<section id="step-3-the-notebook-uses-it-automatically" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-the-notebook-uses-it-automatically">Step 3 — The notebook uses it automatically</h2>
+<p>When <code>GEMINI_API_KEY</code> is set, the notebook’s setup cell reads it from Secrets and routes calls through the Gemini API instead of <code>colab.ai</code>. You don’t change any code. Under the hood it does this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google <span class="im">import</span> genai</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.genai <span class="im">import</span> types</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull the key from Colab Secrets (never hard-code it).</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"GEMINI_API_KEY"</span>] <span class="op">=</span> userdata.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> genai.Client()   <span class="co"># reads GEMINI_API_KEY from the environment</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text(p):</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> client.models.generate_content(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span><span class="st">"gemini-2.5-flash"</span>,                    <span class="co"># pinned model</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        contents<span class="op">=</span>p,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        config<span class="op">=</span>types.GenerateContentConfig(</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            temperature<span class="op">=</span><span class="dv">0</span>,   <span class="co"># greedy decoding — removes sampling randomness</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            seed<span class="op">=</span><span class="dv">42</span>,         <span class="co"># fixed random state</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    ).text</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The setup cell prints which backend it chose, e.g. <code>LLM backend: Gemini API (gemini-2.5-flash)</code>. If it still says <code>Colab Gemini</code>, your secret isn’t set or its notebook-access toggle is off — recheck Step 2.</p>
+</section>
+<section id="about-reproducibility-important-and-a-little-humbling" class="level2">
+<h2 class="anchored" data-anchor-id="about-reproducibility-important-and-a-little-humbling">About reproducibility (important, and a little humbling)</h2>
+<p><code>temperature=0</code> + <code>seed</code> makes the model <strong>as reproducible as a hosted LLM gets</strong> — but <strong>not perfectly</strong>. Requests are batched with other users’ on Google’s servers, and the resulting floating-point math can differ slightly run to run, which occasionally flips the label on a genuinely borderline item. So expect:</p>
+<ul>
+<li><strong>Clear-cut items</strong> → identical every run.</li>
+<li><strong>Ambiguous items</strong> → the same <em>most of the time</em>, with the odd flip.</li>
+</ul>
+<p>Because of this, your final deliverable <strong>freezes your predictions</strong>: you run the model once, save its raw output to a JSON file, and commit that alongside your analysis. Your evaluation (P/R/F1, confusion matrix, error table) then runs off the <strong>frozen file</strong>, so your submitted numbers are 100% reproducible — and anyone can audit exactly what the model said. (The Corpus-Lab notebook shows you how.)</p>
+</section>
+<section id="rate-limits-good-manners" class="level2">
+<h2 class="anchored" data-anchor-id="rate-limits-good-manners">Rate limits &amp; good manners</h2>
+<p>The free tier limits <strong>requests per minute</strong> and <strong>per day</strong>. If you hit a limit you’ll get a rate-limit error — wait a bit and re-run, or reduce your sample size. Practical tips:</p>
+<ul>
+<li>Develop your prompt on a <strong>small</strong> slice (10–20 items) first; only run the full set once you’re happy.</li>
+<li>Once you’ve frozen your predictions, you don’t need to call the API again — re-run analysis off the JSON.</li>
+</ul>
+</section>
+<section id="want-to-keep-working-after-the-course-optional-advanced" class="level2">
+<h2 class="anchored" data-anchor-id="want-to-keep-working-after-the-course-optional-advanced">Want to keep working after the course? (optional, advanced)</h2>
+<p>Everything above stays in Colab. If you’d rather run locally in your own environment (e.g.&nbsp;Positron + <code>uv</code>), clone the course repo and set the same <code>GEMINI_API_KEY</code> as an environment variable — the notebooks detect they’re <em>not</em> in Colab and use the API automatically. See <a href="../../resources/tools/python-setup.html">Python setup (local)</a>. This is <strong>optional</strong> — not required for the course.</p>
 
+
+<!-- -->
 
 </section>
 
@@ -1140,11 +1014,128 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       }
     }
   });
-  </script>
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Get a free Gemini API key (for Corpus Lab &amp; the final project)"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Reproducible LLM results, still 100% inside Colab — no install"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## When you need this</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>**You need a key starting on Day 3.** Days 1 and 2 are keyless:</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Day 1** uses Colab's built-in Gemini (<span class="in">`colab.ai`</span>) for your first live call — zero setup. That free</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  backend gives you **no control over randomness** (run the same prompt twice and the answer can</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  change); that's fine here, and we use it to *show* you why LLM output varies.</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Day 2** doesn't call the model at all — it evaluates a **frozen** set of predictions committed to</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  the repo, so everyone's precision/recall/F1 come out identical while you're learning the metrics.</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>**From Day 3 on — the Corpus Lab and the final project — you run the model yourself, and your results</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>have to be stable and reproducible:** your reported precision/recall/F1 shouldn't change every time</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>you re-run, and (because the Corpus Labs are **autograded**) a grader must be able to re-run your</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>notebook and get the same numbers. For that you switch to the **Gemini API**, where you *can* pin the</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>randomness (<span class="in">`temperature=0`</span>, a fixed <span class="in">`seed`</span>, a pinned model).</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>You do **not** install anything or leave Colab. You get a free key, paste it into Colab's built-in</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>**Secrets** manager once, and the notebook picks it up automatically.</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 1 — Create a free API key (AI Studio)</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Go to **&lt;https://aistudio.google.com/apikey&gt;** and sign in with your **Tohoku Google account**.</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Click **Create API key**.</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Copy the key (a long string starting with <span class="in">`AIza…`</span>). Treat it like a password.</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>This is the **free tier** — no billing, no credit card. It has rate limits (a cap on requests per</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>minute / per day), which are plenty for one student's coursework.</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Never paste your key into a notebook cell</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>Anyone who sees your notebook (or the committed <span class="in">`.ipynb`</span>) would get your key. Always use Colab</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>**Secrets** (Step 2) so the key stays out of the code and out of what you submit.</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 2 — Add the key to Colab Secrets</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Open your Corpus-Lab / project notebook in Colab.</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>In the **left sidebar**, click the **🔑 key icon** (“Secrets”).</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Click **+ Add new secret**.</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Name it exactly <span class="in">`GEMINI_API_KEY`</span>.</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Paste your key into the **Value** box.</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Turn on the **Notebook access** toggle for this secret.</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>You only do this once per Google account — the secret is remembered across your notebooks.</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 3 — The notebook uses it automatically</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>When <span class="in">`GEMINI_API_KEY`</span> is set, the notebook's setup cell reads it from Secrets and routes calls</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>through the Gemini API instead of <span class="in">`colab.ai`</span>. You don't change any code. Under the hood it does this:</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google <span class="im">import</span> genai</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.genai <span class="im">import</span> types</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull the key from Colab Secrets (never hard-code it).</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"GEMINI_API_KEY"</span>] <span class="op">=</span> userdata.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> genai.Client()   <span class="co"># reads GEMINI_API_KEY from the environment</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text(p):</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> client.models.generate_content(</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span><span class="st">"gemini-2.5-flash"</span>,                    <span class="co"># pinned model</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        contents<span class="op">=</span>p,</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        config<span class="op">=</span>types.GenerateContentConfig(</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>            temperature<span class="op">=</span><span class="dv">0</span>,   <span class="co"># greedy decoding — removes sampling randomness</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>            seed<span class="op">=</span><span class="dv">42</span>,         <span class="co"># fixed random state</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    ).text</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>The setup cell prints which backend it chose, e.g.</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="in">`LLM backend: Gemini API (gemini-2.5-flash)`</span>. If it still says <span class="in">`Colab Gemini`</span>, your secret isn't set</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>or its notebook-access toggle is off — recheck Step 2.</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## About reproducibility (important, and a little humbling)</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="in">`temperature=0`</span> + <span class="in">`seed`</span> makes the model **as reproducible as a hosted LLM gets** — but **not</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>perfectly**. Requests are batched with other users' on Google's servers, and the resulting</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>floating-point math can differ slightly run to run, which occasionally flips the label on a</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>genuinely borderline item. So expect:</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Clear-cut items** → identical every run.</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Ambiguous items** → the same *most of the time*, with the odd flip.</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>Because of this, your final deliverable **freezes your predictions**: you run the model once, save</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>its raw output to a JSON file, and commit that alongside your analysis. Your evaluation (P/R/F1,</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>confusion matrix, error table) then runs off the **frozen file**, so your submitted numbers are</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>100% reproducible — and anyone can audit exactly what the model said. (The Corpus-Lab notebook shows</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>you how.)</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rate limits &amp; good manners</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>The free tier limits **requests per minute** and **per day**. If you hit a limit you'll get a</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>rate-limit error — wait a bit and re-run, or reduce your sample size. Practical tips:</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Develop your prompt on a **small** slice (10–20 items) first; only run the full set once you're</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>  happy.</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Once you've frozen your predictions, you don't need to call the API again — re-run analysis off</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>  the JSON.</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a><span class="fu">## Want to keep working after the course? (optional, advanced)</span></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>Everything above stays in Colab. If you'd rather run locally in your own environment (e.g. Positron</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span><span class="in">`uv`</span>), clone the course repo and set the same <span class="in">`GEMINI_API_KEY`</span> as an environment variable — the</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>notebooks detect they're *not* in Colab and use the API automatically. See</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Python setup (local)</span><span class="co">](./python-setup.md)</span>. This is **optional** — not required for the course.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/resources/tutorials/day1_python_and_first_llm.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tools/gemini-api-key.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

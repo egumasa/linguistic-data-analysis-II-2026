@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dad871b8bdfeb60e68a6a2e646796a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,10 +124,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../syllabus/index.html"> 
-<span class="menu-text">Course info</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../../syllabus/index.html">
+ <span class="dropdown-text">Syllabus</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../syllabus/readings.html">
+ <span class="dropdown-text">Readings</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../../sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
@@ -201,6 +212,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../resources/tools/google-colab-setup.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Colab Setup Guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/gemini-api-key.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Get a free Gemini API key (for Corpus Lab &amp; the final project)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -445,7 +462,7 @@ Note
 <p><strong>Colab is the course default and needs zero setup</strong> — if you just want to follow along in class, use the <a href="../../resources/tools/google-colab-setup.html">Google Colab setup</a> instead. This guide is the <em>local</em> alternative: a step up in involvement, but worth it if you want to keep working after the course ends or use a paid LLM API instead of Colab’s built-in Gemini. It assumes you’re comfortable with a terminal.</p>
 </div>
 </div>
-<p>The LLM tutorial notebook (<code>day2_gold_standards_and_evaluation.ipynb</code>) is written to work <strong>both</strong> in Colab and locally. In Colab it uses the free built-in Gemini. Run locally, it detects it is <em>not</em> in Colab and calls a real LLM API instead, picking the provider from whichever API key you have set. Here is how to go from nothing to a running notebook.</p>
+<p>The LLM notebooks are written to work <strong>both</strong> in Colab and locally. In Colab, Day 1 uses the free built-in Gemini and Day 2 reads frozen predictions (no key); from Day 3 the notebooks call the <strong>Gemini API</strong>. Run locally, they use the Gemini API whenever <code>GEMINI_API_KEY</code> is set (with <code>temperature=0</code> + a fixed seed, so results are reproducible). Here is how to go from nothing to a running notebook.</p>
 <section id="install-uv" class="level2">
 <h2 class="anchored" data-anchor-id="install-uv">1. Install <code>uv</code></h2>
 <p><a href="https://docs.astral.sh/uv/"><code>uv</code></a> is a single tool that installs Python <em>and</em> manages packages — it replaces <code>pip</code>, <code>venv</code>, and <code>pyenv</code>, so it’s the only thing you need to install.</p>
@@ -470,15 +487,10 @@ Note
 </section>
 <section id="get-an-api-key" class="level2">
 <h2 class="anchored" data-anchor-id="get-an-api-key">4. Get an API key</h2>
-<p>Running locally, the notebook needs an LLM to call. Get a key from <strong>one</strong> provider:</p>
-<ul>
-<li><strong>Google Gemini</strong> (closest to what Colab gives you): <a href="https://aistudio.google.com/apikey">Google AI Studio</a></li>
-<li><strong>Anthropic (Claude):</strong> <a href="https://console.anthropic.com/">console.anthropic.com</a></li>
-<li><strong>OpenAI:</strong> <a href="https://platform.openai.com/api-keys">platform.openai.com</a></li>
-</ul>
-<p>Then set it as an environment variable in the same terminal (use the name matching your provider):</p>
+<p>From Day 3 the notebooks call the model, so you need a <strong>Gemini API</strong> key (the course standardizes on Gemini). Get a free one from <a href="https://aistudio.google.com/apikey">Google AI Studio</a> — see <a href="../../resources/tools/gemini-api-key.html">Get a free Gemini API key</a> for details.</p>
+<p>Then set it as an environment variable in the same terminal:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GEMINI_API_KEY</span><span class="op">=</span>your-key-here        <span class="co"># or ANTHROPIC_API_KEY / OPENAI_API_KEY</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GEMINI_API_KEY</span><span class="op">=</span>your-key-here</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows (PowerShell) — setx persists it for new terminals</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>setx GEMINI_API_KEY <span class="st">"your-key-here"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -498,13 +510,13 @@ Warning
 <section id="open-and-run-the-notebook" class="level2">
 <h2 class="anchored" data-anchor-id="open-and-run-the-notebook">5. Open and run the notebook</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run jupyter lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>In the browser tab that opens, navigate to <code>sources/resources/tutorials/day2_gold_standards_and_evaluation.ipynb</code> and choose <strong>Run → Run All Cells</strong>. The first cell prints which backend it chose, e.g.&nbsp;<code>LLM backend: Gemini API (gemini-2.5-flash)</code>. Everything else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab.</p>
+<p>In the browser tab that opens, navigate to a notebook that calls the model — e.g. <code>sources/resources/tutorials/day3_prompt_design.ipynb</code> — and choose <strong>Run → Run All Cells</strong>. The first cell prints which backend it chose, e.g. <code>LLM backend: Gemini API (gemini-2.5-flash, temperature=0, seed=42)</code>. Everything else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab. (The Day-2 notebook needs no key; it reads frozen predictions.)</p>
 </section>
 <section id="troubleshooting" class="level2">
 <h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
 <ul>
-<li><strong><code>No LLM backend found ...</code></strong> — you’re running locally but no key is set. Set one of <code>GEMINI_API_KEY</code> / <code>ANTHROPIC_API_KEY</code> / <code>OPENAI_API_KEY</code> (step 4) and restart the notebook kernel (<strong>Kernel → Restart</strong>) so it picks up the new environment variable.</li>
-<li><strong>Switch provider</strong> — set a different key (unset the others), or pin a specific model with the <code>LLM_MODEL</code> variable, e.g.&nbsp;<code>export LLM_MODEL=gemini-2.5-pro</code>.</li>
+<li><strong><code>No LLM backend found ...</code></strong> — you’re running locally but no key is set. Set <code>GEMINI_API_KEY</code> (step 4) and restart the notebook kernel (<strong>Kernel → Restart</strong>) so it picks up the new environment variable.</li>
+<li><strong>Wrong model</strong> — the pinned model lives in one place (the <code>MODEL_ID</code> constant in the setup cell); edit it there if you need a different Gemini model.</li>
 <li><strong><code>ModuleNotFoundError</code></strong> — you launched Jupyter outside the project env. Always start it with <code>uv run jupyter lab</code> from the project folder so it uses the <code>.venv</code> from step 3.</li>
 </ul>
 
@@ -985,92 +997,93 @@ Warning
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>paid LLM API instead of Colab's built-in Gemini. It assumes you're comfortable with a terminal.</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>The LLM tutorial notebook (<span class="in">`day2_gold_standards_and_evaluation.ipynb`</span>) is written to work **both** in Colab and</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>locally. In Colab it uses the free built-in Gemini. Run locally, it detects it is *not* in Colab and</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>calls a real LLM API instead, picking the provider from whichever API key you have set. Here is how</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>to go from nothing to a running notebook.</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. Install `uv`</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`uv`</span><span class="co">](https://docs.astral.sh/uv/)</span> is a single tool that installs Python *and* manages packages —</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>it replaces <span class="in">`pip`</span>, <span class="in">`venv`</span>, and <span class="in">`pyenv`</span>, so it's the only thing you need to install.</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**macOS / Linux:**</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="in">```bash</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Windows (PowerShell):**</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="in">```powershell</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="in">  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="in">  ```</span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>Close and reopen your terminal, then check it works: <span class="in">`uv --version`</span>.</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. Get the course project</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>Download the course repository (you need <span class="co">[</span><span class="ot">git</span><span class="co">](https://git-scm.com/)</span>, or use the green **Code →</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>Download ZIP** button on GitHub and unzip it):</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/egumasa/linguistic-data-analysis-II-2026.git</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> linguistic-data-analysis-II-2026</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. Create the virtual environment</span></span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>A **virtual environment** is a private, per-project copy of Python and its packages, so what you</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>install for this course can't collide with anything else on your computer. <span class="in">`uv`</span> builds one (a</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="in">`.venv`</span> folder) and installs everything the notebooks need in a single command:</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync <span class="at">--group</span> dev</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. Get an API key</span></span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>Running locally, the notebook needs an LLM to call. Get a key from **one** provider:</span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Google Gemini** (closest to what Colab gives you): <span class="co">[</span><span class="ot">Google AI Studio</span><span class="co">](https://aistudio.google.com/apikey)</span></span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Anthropic (Claude):** <span class="co">[</span><span class="ot">console.anthropic.com</span><span class="co">](https://console.anthropic.com/)</span></span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**OpenAI:** <span class="co">[</span><span class="ot">platform.openai.com</span><span class="co">](https://platform.openai.com/api-keys)</span></span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>Then set it as an environment variable in the same terminal (use the name matching your provider):</span>
-<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux</span></span>
-<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GEMINI_API_KEY</span><span class="op">=</span>your-key-here        <span class="co"># or ANTHROPIC_API_KEY / OPENAI_API_KEY</span></span>
-<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="in">```powershell</span></span>
-<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a><span class="in"># Windows (PowerShell) — setx persists it for new terminals</span></span>
-<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a><span class="in">setx GEMINI_API_KEY "your-key-here"</span></span>
-<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>An API key is a **secret** — it's tied to billing. Never paste it into a notebook cell, never commit</span>
-<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>it to git, never share it. (This project's <span class="in">`.gitignore`</span> already ignores a <span class="in">`.env`</span> file if you prefer</span>
-<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>to keep keys there.)</span>
-<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. Open and run the notebook</span></span>
-<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run jupyter lab</span>
-<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>In the browser tab that opens, navigate to</span>
-<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="in">`sources/resources/tutorials/day2_gold_standards_and_evaluation.ipynb`</span> and choose **Run → Run All Cells**. The first</span>
-<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>cell prints which backend it chose, e.g. <span class="in">`LLM backend: Gemini API (gemini-2.5-flash)`</span>. Everything</span>
-<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab.</span>
-<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## Troubleshooting</span></span>
-<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`No LLM backend found ...`** — you're running locally but no key is set. Set one of</span>
-<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>  <span class="in">`GEMINI_API_KEY`</span> / <span class="in">`ANTHROPIC_API_KEY`</span> / <span class="in">`OPENAI_API_KEY`</span> (step 4) and restart the notebook kernel</span>
-<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>  (**Kernel → Restart**) so it picks up the new environment variable.</span>
-<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Switch provider** — set a different key (unset the others), or pin a specific model with the</span>
-<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a>  <span class="in">`LLM_MODEL`</span> variable, e.g. <span class="in">`export LLM_MODEL=gemini-2.5-pro`</span>.</span>
-<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`ModuleNotFoundError`** — you launched Jupyter outside the project env. Always start it with</span>
-<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>  <span class="in">`uv run jupyter lab`</span> from the project folder so it uses the <span class="in">`.venv`</span> from step 3.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>The LLM notebooks are written to work **both** in Colab and locally. In Colab, Day 1 uses the free</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>built-in Gemini and Day 2 reads frozen predictions (no key); from Day 3 the notebooks call the</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>**Gemini API**. Run locally, they use the Gemini API whenever <span class="in">`GEMINI_API_KEY`</span> is set (with</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="in">`temperature=0`</span> + a fixed seed, so results are reproducible). Here is how to go from nothing to a</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>running notebook.</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. Install `uv`</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`uv`</span><span class="co">](https://docs.astral.sh/uv/)</span> is a single tool that installs Python *and* manages packages —</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>it replaces <span class="in">`pip`</span>, <span class="in">`venv`</span>, and <span class="in">`pyenv`</span>, so it's the only thing you need to install.</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**macOS / Linux:**</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="in">```bash</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Windows (PowerShell):**</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="in">```powershell</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="in">  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="in">  ```</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>Close and reopen your terminal, then check it works: <span class="in">`uv --version`</span>.</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. Get the course project</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>Download the course repository (you need <span class="co">[</span><span class="ot">git</span><span class="co">](https://git-scm.com/)</span>, or use the green **Code →</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>Download ZIP** button on GitHub and unzip it):</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/egumasa/linguistic-data-analysis-II-2026.git</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> linguistic-data-analysis-II-2026</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. Create the virtual environment</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>A **virtual environment** is a private, per-project copy of Python and its packages, so what you</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>install for this course can't collide with anything else on your computer. <span class="in">`uv`</span> builds one (a</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="in">`.venv`</span> folder) and installs everything the notebooks need in a single command:</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync <span class="at">--group</span> dev</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. Get an API key</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>From Day 3 the notebooks call the model, so you need a **Gemini API** key (the course standardizes on</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>Gemini). Get a free one from <span class="co">[</span><span class="ot">Google AI Studio</span><span class="co">](https://aistudio.google.com/apikey)</span> — see</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Get a free Gemini API key</span><span class="co">](gemini-api-key.md)</span> for details.</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>Then set it as an environment variable in the same terminal:</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GEMINI_API_KEY</span><span class="op">=</span>your-key-here</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="in">```powershell</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="in"># Windows (PowerShell) — setx persists it for new terminals</span></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a><span class="in">setx GEMINI_API_KEY "your-key-here"</span></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>An API key is a **secret** — it's tied to billing. Never paste it into a notebook cell, never commit</span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>it to git, never share it. (This project's <span class="in">`.gitignore`</span> already ignores a <span class="in">`.env`</span> file if you prefer</span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>to keep keys there.)</span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. Open and run the notebook</span></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run jupyter lab</span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>In the browser tab that opens, navigate to a notebook that calls the model — e.g.</span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a><span class="in">`sources/resources/tutorials/day3_prompt_design.ipynb`</span> — and choose **Run → Run All Cells**. The</span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>first cell prints which backend it chose, e.g.</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a><span class="in">`LLM backend: Gemini API (gemini-2.5-flash, temperature=0, seed=42)`</span>. Everything else — loading the</span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>gold set, the confusion matrix, the error table — works exactly as in Colab. (The Day-2 notebook</span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>needs no key; it reads frozen predictions.)</span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="fu">## Troubleshooting</span></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`No LLM backend found ...`** — you're running locally but no key is set. Set <span class="in">`GEMINI_API_KEY`</span></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>  (step 4) and restart the notebook kernel (**Kernel → Restart**) so it picks up the new environment</span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>  variable.</span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Wrong model** — the pinned model lives in one place (the <span class="in">`MODEL_ID`</span> constant in the setup cell);</span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a>  edit it there if you need a different Gemini model.</span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`ModuleNotFoundError`** — you launched Jupyter outside the project env. Always start it with</span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>  <span class="in">`uv run jupyter lab`</span> from the project folder so it uses the <span class="in">`.venv`</span> from step 3.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

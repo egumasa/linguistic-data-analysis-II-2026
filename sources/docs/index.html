@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-dad871b8bdfeb60e68a6a2e646796a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,10 +124,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="./syllabus/index.html"> 
-<span class="menu-text">Course info</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="./syllabus/index.html">
+ <span class="dropdown-text">Syllabus</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./syllabus/readings.html">
+ <span class="dropdown-text">Readings</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
@@ -196,10 +207,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>📋 <strong><a href="./syllabus/index.html">Course info</a></strong> — syllabus, grading, policies, and required materials</li>
-<li>📅 <strong><a href="./sessions/index.html">Sessions</a></strong> — the daily schedule and all 15 session pages</li>
-<li>🎓 <strong><a href="./final-project/index.html">Final Project</a></strong> — the group mini-research project</li>
-<li>🛠️ <strong><a href="./resources/index.html">Resources</a></strong> — setup guides, corpora, and code examples</li>
+<li>📋 <strong><a href="./syllabus/index.html">Course info</a></strong> — syllabus, grading, policies, and required materials <em>(ready)</em></li>
+<li>📚 <strong><a href="./syllabus/readings.html">Readings</a></strong> — assigned readings by day <em>(ready)</em></li>
+<li>🛠️ <strong><a href="./resources/tools/index.html">Setup guides</a></strong> — get Google Colab and your Gemini API key ready before Day 1 <em>(ready)</em></li>
+<li>📅 <strong><a href="./sessions/index.html">Sessions</a></strong> — the daily schedule and per-session pages <em>(being finalized)</em></li>
+<li>🎓 <strong><a href="./final-project/index.html">Final Project</a></strong> — the group mini-research project <em>(being finalized)</em></li>
+<li>🛠️ <strong><a href="./resources/index.html">Resources</a></strong> — corpora, datasets, and notebooks <em>(being finalized)</em></li>
 </ul>
 </div>
 </div>
@@ -686,12 +699,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Start here</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>📋 **[Course info](syllabus/index.md)** — syllabus, grading, policies, and required materials</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>📅 **[Sessions](sessions/index.md)** — the daily schedule and all 15 session pages</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>🎓 **[Final Project](final-project/index.md)** — the group mini-research project</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>🛠️ **[Resources](resources/index.md)** — setup guides, corpora, and code examples</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>📋 **[Course info](syllabus/index.md)** — syllabus, grading, policies, and required materials *(ready)*</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>📚 **[Readings](syllabus/readings.md)** — assigned readings by day *(ready)*</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>🛠️ **[Setup guides](resources/tools/index.md)** — get Google Colab and your Gemini API key ready before Day 1 *(ready)*</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>📅 **[Sessions](sessions/index.md)** — the daily schedule and per-session pages *(being finalized)*</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>🎓 **[Final Project](final-project/index.md)** — the group mini-research project *(being finalized)*</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>🛠️ **[Resources](resources/index.md)** — corpora, datasets, and notebooks *(being finalized)*</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

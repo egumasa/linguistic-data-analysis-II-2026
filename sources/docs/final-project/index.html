@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-dad871b8bdfeb60e68a6a2e646796a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,10 +124,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../syllabus/index.html"> 
-<span class="menu-text">Course info</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../syllabus/index.html">
+ <span class="dropdown-text">Syllabus</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../syllabus/readings.html">
+ <span class="dropdown-text">Readings</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
@@ -191,6 +202,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<!-- BEING-PREPARED-BANNER -->
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>🚧 Being prepared
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This page is being finalized ahead of the course (<strong>Aug 3–7, 2026</strong>) and may be incomplete or change before your session. The <a href="../syllabus/index.html">syllabus</a> and <a href="../syllabus/readings.html">readings</a> are ready now.</p>
+</div>
+</div>
 <p>The final project is a <strong>group mini-project</strong> in which you run a small, end-to-end LLM-based analysis on a real annotated dataset and report the results. It is introduced in <a href="../sessions/day1/session3.html">Session 3</a> (track selection + group formation) and carried out across Sessions <a href="../sessions/day4/session12.html">12</a>–<a href="../sessions/day5/session15.html">15</a>.</p>
 <section id="choose-a-track" class="level2">
 <h2 class="anchored" data-anchor-id="choose-a-track">Choose a track</h2>
@@ -202,16 +227,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Sample</strong> a balanced ~40-item gold subset from the provided pool (<code>sample_pool</code>).</li>
 <li><strong>QC / adjudicate</strong> the sampled gold set.</li>
 <li><strong>Iterate</strong> your prompt over 2–3 rounds, re-evaluating each round (P/R/F1, confusion matrix).</li>
+<li><strong>Freeze</strong> your final predictions to JSON (see below).</li>
 <li><strong>Report</strong> in an in-class one-page report.</li>
 <li><strong>Present</strong> to the class with instructor Q&amp;A.</li>
 </ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Run it reproducibly, then freeze
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You run the model through the <strong>Gemini API</strong> with <code>temperature=0</code> + a fixed seed (<a href="../resources/tools/gemini-api-key.html">get a free key</a>). Even so, a hosted LLM is only <em>best-effort</em> reproducible, so once your prompt is final, <strong>run it once and save the predictions to a JSON file</strong>, committed with your notebook. Your evaluation then runs off that frozen file — so your reported F1 is stable, and anyone (including the grader) can re-run your analysis on exactly the outputs you saw.</p>
+</div>
+</div>
 </section>
 <section id="deliverables" class="level2">
 <h2 class="anchored" data-anchor-id="deliverables">Deliverables</h2>
 <ul>
 <li><strong>Presentation + Q&amp;A</strong> — the graded core.</li>
 <li><strong>In-class one-page report</strong> — track/labels · gold + what QC changed · prompt-iteration table (F1 per round) · confusion matrix + error analysis · limitations.</li>
-<li><strong>Completed notebook</strong> — assembled from the cell library and run end-to-end, with your group’s gold subset, prompt, and outputs.</li>
+<li><strong>Completed notebook</strong> — assembled from the cell library and run end-to-end, with your group’s gold subset, prompt, <strong>frozen predictions JSON</strong>, and outputs.</li>
 </ul>
 <p>All deliverables are produced and submitted <strong>during the course</strong> — there is no post-course write-up.</p>
 </section>
@@ -689,31 +728,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>The final project is a **group mini-project** in which you run a small, end-to-end LLM-based analysis on a real annotated dataset and report the results. It is introduced in <span class="co">[</span><span class="ot">Session 3</span><span class="co">](../sessions/day1/session3.md)</span> (track selection + group formation) and carried out across Sessions <span class="co">[</span><span class="ot">12</span><span class="co">](../sessions/day4/session12.md)</span>–<span class="co">[</span><span class="ot">15</span><span class="co">](../sessions/day5/session15.md)</span>.</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Choose a track</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>Pick one of the provided expert-annotated datasets (easy → hard). Details and licensing are on the <span class="co">[</span><span class="ot">Replication Datasets</span><span class="co">](../resources/datasets/index.md)</span> and <span class="co">[</span><span class="ot">Mini-Project Starter Tracks</span><span class="co">](../resources/datasets/mini-project-tracks.md)</span> pages.</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning appearance="simple"}</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🚧 Being prepared</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The <span class="co">[</span><span class="ot">syllabus</span><span class="co">](/syllabus/index.md)</span> and <span class="co">[</span><span class="ot">readings</span><span class="co">](/syllabus/readings.md)</span> are ready now.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Workflow</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Sample** a balanced ~40-item gold subset from the provided pool (<span class="in">`sample_pool`</span>).</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**QC / adjudicate** the sampled gold set.</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Iterate** your prompt over 2–3 rounds, re-evaluating each round (P/R/F1, confusion matrix).</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Report** in an in-class one-page report.</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Present** to the class with instructor Q&amp;A.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deliverables</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Presentation + Q&amp;A** — the graded core.</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**In-class one-page report** — track/labels · gold + what QC changed · prompt-iteration table (F1 per round) · confusion matrix + error analysis · limitations.</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Completed notebook** — assembled from the cell library and run end-to-end, with your group's gold subset, prompt, and outputs.</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>All deliverables are produced and submitted **during the course** — there is no post-course write-up.</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>The final project is a **group mini-project** in which you run a small, end-to-end LLM-based analysis on a real annotated dataset and report the results. It is introduced in <span class="co">[</span><span class="ot">Session 3</span><span class="co">](../sessions/day1/session3.md)</span> (track selection + group formation) and carried out across Sessions <span class="co">[</span><span class="ot">12</span><span class="co">](../sessions/day4/session12.md)</span>–<span class="co">[</span><span class="ot">15</span><span class="co">](../sessions/day5/session15.md)</span>.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Choose a track</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Pick one of the provided expert-annotated datasets (easy → hard). Details and licensing are on the <span class="co">[</span><span class="ot">Replication Datasets</span><span class="co">](../resources/datasets/index.md)</span> and <span class="co">[</span><span class="ot">Mini-Project Starter Tracks</span><span class="co">](../resources/datasets/mini-project-tracks.md)</span> pages.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Workflow</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Sample** a balanced ~40-item gold subset from the provided pool (<span class="in">`sample_pool`</span>).</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**QC / adjudicate** the sampled gold set.</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Iterate** your prompt over 2–3 rounds, re-evaluating each round (P/R/F1, confusion matrix).</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Freeze** your final predictions to JSON (see below).</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Report** in an in-class one-page report.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Present** to the class with instructor Q&amp;A.</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Grading</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>See the <span class="co">[</span><span class="ot">Course Syllabus</span><span class="co">](../syllabus/index.md)</span> for the full breakdown (mini-project presentation + Q&amp;A and the in-class report are weighted components; the completed notebook is graded under hands-on).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Run it reproducibly, then freeze</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>You run the model through the **Gemini API** with <span class="in">`temperature=0`</span> + a fixed seed</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>(<span class="co">[</span><span class="ot">get a free key</span><span class="co">](../resources/tools/gemini-api-key.md)</span>). Even so, a hosted LLM is only *best-effort*</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>reproducible, so once your prompt is final, **run it once and save the predictions to a JSON file**,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>committed with your notebook. Your evaluation then runs off that frozen file — so your reported F1 is</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>stable, and anyone (including the grader) can re-run your analysis on exactly the outputs you saw.</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deliverables</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Presentation + Q&amp;A** — the graded core.</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**In-class one-page report** — track/labels · gold + what QC changed · prompt-iteration table (F1 per round) · confusion matrix + error analysis · limitations.</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Completed notebook** — assembled from the cell library and run end-to-end, with your group's gold subset, prompt, **frozen predictions JSON**, and outputs.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>All deliverables are produced and submitted **during the course** — there is no post-course write-up.</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Grading</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>See the <span class="co">[</span><span class="ot">Course Syllabus</span><span class="co">](../syllabus/index.md)</span> for the full breakdown (mini-project presentation + Q&amp;A and the in-class report are weighted components; the completed notebook is graded under hands-on).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

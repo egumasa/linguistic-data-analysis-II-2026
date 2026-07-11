@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Session 9: Error Analysis &amp; Under-the-Hood Walkthrough – Linguistic Data Analysis II (Summer 2026)</title>
+<title>colab-ai-preflight-readme – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,7 +107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -140,7 +140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="../../sessions/index.html" aria-current="page"> 
+    <a class="nav-link" href="../../sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
   </li>  
   <li class="nav-item">
@@ -162,250 +162,105 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day3/session7.html">Day 3 · Prompt Design &amp; Iteration</a></li><li class="breadcrumb-item"><a href="../../sessions/day3/session9.html">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Schedule</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 1 · Introduction &amp; First Experience</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day1/session1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day1/session2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 2: Linguistic Analyses &amp; LLM Fundamentals</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day1/session3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 3: Colab Onboarding &amp; Mini-Project Setup</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 2 · Annotation, Gold Standards &amp; Metrics</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day2/session4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 4: Annotation Principles &amp; Inter-Annotator Agreement</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day2/session5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 5: Hands-on — Gold-Standard Annotation &amp; Agreement</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day2/session6.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 6: Gold Standards &amp; Evaluation Metrics</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Day 3 · Prompt Design &amp; Iteration</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day3/session7.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 7: Prompt Design — Zero-shot vs Few-shot</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day3/session8.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 8: Hands-on — LLM Classification &amp; Prompt Iteration</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day3/session9.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 4 · Methodology &amp; Pipeline Assembly</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day4/session10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 10: Methodology — Reproducibility, LLM Limits &amp; Ethics</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day4/session11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 11: Plenary Pipeline Assembly</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day4/session12.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 12: Project Work — Sample &amp; QC the Gold Set</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 5 · Project Finalization &amp; Presentations</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day5/session13.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 13: Project Work — Prompt Iteration &amp; Final Evaluation</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day5/session14.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 14: Project Work — Finalize Report &amp; Notebook</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day5/session15.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 15: Final Presentations &amp; Wrap-up</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
-  <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
-  <li><a href="#slides-colab" id="toc-slides-colab" class="nav-link" data-scroll-target="#slides-colab">Slides &amp; Colab</a></li>
+  <li><a href="#google.colab.ai-pre-flight-how-to-run" id="toc-google.colab.ai-pre-flight-how-to-run" class="nav-link active" data-scroll-target="#google.colab.ai-pre-flight-how-to-run"><code>google.colab.ai</code> pre-flight — how to run</a>
+  <ul class="collapse">
+  <li><a href="#option-a-open-in-colab-directly-recommended-no-clone" id="toc-option-a-open-in-colab-directly-recommended-no-clone" class="nav-link" data-scroll-target="#option-a-open-in-colab-directly-recommended-no-clone">Option A — open in Colab directly (recommended, no clone)</a></li>
+  <li><a href="#option-b-clone-the-repo-and-upload" id="toc-option-b-clone-the-repo-and-upload" class="nav-link" data-scroll-target="#option-b-clone-the-repo-and-upload">Option B — clone the repo and upload</a></li>
+  <li><a href="#what-each-step-tells-you" id="toc-what-each-step-tells-you" class="nav-link" data-scroll-target="#what-each-step-tells-you">What each step tells you</a></li>
+  <li><a href="#after-the-run" id="toc-after-the-run" class="nav-link" data-scroll-target="#after-the-run">After the run</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/sessions/day3/session9.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tools/colab-ai-preflight-README.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day3/session7.html">Day 3 · Prompt Design &amp; Iteration</a></li><li class="breadcrumb-item"><a href="../../sessions/day3/session9.html">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</a></li></ol></nav>
-<div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Day 3 · Prompt Design &amp; Iteration (3-3)</p>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7"></h1></header><div class="quarto-title-block"><div class="quarto-title-tools-only"><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<!-- BEING-PREPARED-BANNER -->
-<div class="callout callout-style-simple callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>🚧 Being prepared
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This page is being finalized ahead of the course (<strong>Aug 3–7, 2026</strong>) and may be incomplete or change before your session. The <a href="../../syllabus/index.html">syllabus</a> and <a href="../../syllabus/readings.html">readings</a> are ready now.</p>
-</div>
-</div>
-<section id="learning-objectives" class="level2">
-<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<!-- to be added -->
+<section id="google.colab.ai-pre-flight-how-to-run" class="level1">
+<h1><code>google.colab.ai</code> pre-flight — how to run</h1>
+<p>Instructor-only check to run <strong>once before the course</strong>, on the Tohoku Google account students will use. It confirms Colab’s built-in Gemini (<code>from google.colab import ai</code>) is reachable, finds where it throttles, projects load to ~15 students, and measures how stable the parsed CEFR labels are.</p>
+<p>Notebook: <a href="../../resources/tools/colab-ai-preflight.html"><code>colab-ai-preflight.ipynb</code></a></p>
+<blockquote class="blockquote">
+<p>This notebook only runs <strong>inside Google Colab</strong> — <code>google.colab.ai</code> does not exist on a local machine.</p>
+</blockquote>
+<section id="option-a-open-in-colab-directly-recommended-no-clone" class="level2">
+<h2 class="anchored" data-anchor-id="option-a-open-in-colab-directly-recommended-no-clone">Option A — open in Colab directly (recommended, no clone)</h2>
+<ol type="1">
+<li><p>Make sure the notebook is on GitHub first: <code>git push origin main</code>.</p></li>
+<li><p>Open this link (or paste it into your browser), signed in with the <strong>Tohoku Google account</strong>:</p>
+<p><a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tools/colab-ai-preflight.ipynb" class="uri">https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tools/colab-ai-preflight.ipynb</a></p></li>
+<li><p><strong>Runtime → Run all.</strong> Each step prints its own report; the last cell gives go / no-go.</p></li>
+</ol>
+<p>No GPU/TPU needed — the default CPU runtime is fine.</p>
 </section>
-<section id="reading" class="level2">
-<h2 class="anchored" data-anchor-id="reading">Reading</h2>
-<!-- to be added -->
+<section id="option-b-clone-the-repo-and-upload" class="level2">
+<h2 class="anchored" data-anchor-id="option-b-clone-the-repo-and-upload">Option B — clone the repo and upload</h2>
+<p>Use this if you’d rather not push first, or want to edit locally.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/egumasa/linguistic-data-analysis-II-2026.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> linguistic-data-analysis-II-2026</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># the notebook lives here:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   sources/resources/tools/colab-ai-preflight.ipynb</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then in Colab: <strong>File → Upload notebook →</strong> pick <code>sources/resources/tools/colab-ai-preflight.ipynb</code>, sign in with the Tohoku account, and <strong>Runtime → Run all</strong>.</p>
 </section>
-<section id="slides-colab" class="level2">
-<h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
-<!-- slides link + Colab notebook link -->
+<section id="what-each-step-tells-you" class="level2">
+<h2 class="anchored" data-anchor-id="what-each-step-tells-you">What each step tells you</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Reads</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2 · Smoke test</td>
+<td>Is <code>colab.ai</code> reachable at all?</td>
+<td>Fails → the whole path is unavailable on Tohoku accounts; use the Gemini-API <code>.env</code> fallback (D4).</td>
+</tr>
+<tr class="even">
+<td>3 · 100-call probe</td>
+<td>successes/100, median &amp; p95 latency, first throttle</td>
+<td>Throttles well before 100 → single-user ceiling too low.</td>
+</tr>
+<tr class="odd">
+<td>4 · Class-of-15 projection</td>
+<td>per-student daily model-time; per-account vs shared quota</td>
+<td>Frames whether 15 students is safe (can’t test true concurrency from one account).</td>
+</tr>
+<tr class="even">
+<td>5 · Determinism</td>
+<td>modal-label agreement over 10 repeats</td>
+<td>Low (&lt;~80%) → warn students about F1 wobble; consider majority-vote.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="after-the-run" class="level2">
+<h2 class="anchored" data-anchor-id="after-the-run">After the run</h2>
+<p>Record the numbers (reachable? throttle point? mean agreement?) in <code>planning/course_planning/prep-plan.md</code> — this closes the <strong>07-09</strong> milestone and de-risks the <strong>07-12</strong> end-to-end Colab run.</p>
 
 
 <!-- -->
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -867,32 +722,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Session 9: Error Analysis &amp; Under-the-Hood Walkthrough"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Day 3 · Prompt Design &amp; Iteration (3-3)"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning appearance="simple"}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🚧 Being prepared</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The <span class="co">[</span><span class="ot">syllabus</span><span class="co">](/syllabus/index.md)</span> and <span class="co">[</span><span class="ot">readings</span><span class="co">](/syllabus/readings.md)</span> are ready now.</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- slides link + Colab notebook link --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># `google.colab.ai` pre-flight — how to run</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Instructor-only check to run **once before the course**, on the Tohoku Google</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>account students will use. It confirms Colab's built-in Gemini</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>(<span class="in">`from google.colab import ai`</span>) is reachable, finds where it throttles, projects</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>load to ~15 students, and measures how stable the parsed CEFR labels are.</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>Notebook: <span class="co">[</span><span class="ot">`colab-ai-preflight.ipynb`</span><span class="co">](./colab-ai-preflight.ipynb)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; This notebook only runs **inside Google Colab** — </span><span class="in">`google.colab.ai`</span><span class="at"> does not</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; exist on a local machine.</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Option A — open in Colab directly (recommended, no clone)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Make sure the notebook is on GitHub first: <span class="in">`git push origin main`</span>.</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Open this link (or paste it into your browser), signed in with the **Tohoku</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>   Google account**:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>   <span class="ot">&lt;https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tools/colab-ai-preflight.ipynb&gt;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Runtime → Run all.** Each step prints its own report; the last cell gives</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>   go / no-go.</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>No GPU/TPU needed — the default CPU runtime is fine.</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Option B — clone the repo and upload</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>Use this if you'd rather not push first, or want to edit locally.</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/egumasa/linguistic-data-analysis-II-2026.git</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> linguistic-data-analysis-II-2026</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># the notebook lives here:</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   sources/resources/tools/colab-ai-preflight.ipynb</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>Then in Colab: **File → Upload notebook →** pick</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="in">`sources/resources/tools/colab-ai-preflight.ipynb`</span>, sign in with the Tohoku</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>account, and **Runtime → Run all**.</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## What each step tells you</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Step <span class="pp">|</span> Reads <span class="pp">|</span> Decision <span class="pp">|</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · Smoke test <span class="pp">|</span> Is <span class="in">`colab.ai`</span> reachable at all? <span class="pp">|</span> Fails → the whole path is unavailable on Tohoku accounts; use the Gemini-API <span class="in">`.env`</span> fallback (D4). <span class="pp">|</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 · 100-call probe <span class="pp">|</span> successes/100, median &amp; p95 latency, first throttle <span class="pp">|</span> Throttles well before 100 → single-user ceiling too low. <span class="pp">|</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 · Class-of-15 projection <span class="pp">|</span> per-student daily model-time; per-account vs shared quota <span class="pp">|</span> Frames whether 15 students is safe (can't test true concurrency from one account). <span class="pp">|</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 · Determinism <span class="pp">|</span> modal-label agreement over 10 repeats <span class="pp">|</span> Low (&lt;~80%) → warn students about F1 wobble; consider majority-vote. <span class="pp">|</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## After the run</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>Record the numbers (reachable? throttle point? mean agreement?) in</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="in">`planning/course_planning/prep-plan.md`</span> — this closes the **07-09** milestone and</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>de-risks the **07-12** end-to-end Colab run.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/sessions/day3/session9.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/tools/colab-ai-preflight-README.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

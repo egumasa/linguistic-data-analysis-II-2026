@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dad871b8bdfeb60e68a6a2e646796a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,10 +124,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../syllabus/index.html"> 
-<span class="menu-text">Course info</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../../syllabus/index.html">
+ <span class="dropdown-text">Syllabus</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../syllabus/readings.html">
+ <span class="dropdown-text">Readings</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../../sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
@@ -201,6 +212,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../resources/tools/google-colab-setup.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Colab Setup Guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/gemini-api-key.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Get a free Gemini API key (for Corpus Lab &amp; the final project)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -428,6 +445,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><strong>Corpus Lab</strong> is the hands-on practice you complete each day. It now lives <strong>inside the day’s notebook</strong> as <em>Part B</em> — so the tutorial and its lab are one file you submit together. See the <a href="../../resources/tutorials/index.html">Daily Notebooks</a> index for all five.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>These are autograded — so they must be reproducible
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Corpus Labs are checked automatically, so your results have to come out the same every run. The <strong>Day 1–2 labs are keyless</strong> (Python practice; metrics on <em>frozen</em> predictions). From <strong>Day 3</strong> the labs call the model, so you use the <strong>Gemini API</strong> with <code>temperature=0</code> + a fixed seed and <a href="../../resources/tools/gemini-api-key.html">a free key</a> — and you <strong>freeze your predictions to JSON</strong> so the grader re-runs your analysis on exactly the outputs you saw.</p>
+</div>
+</div>
 <section id="available-now" class="level2">
 <h2 class="anchored" data-anchor-id="available-now">Available now</h2>
 <ul>
@@ -922,22 +952,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>notebook** as *Part B* — so the tutorial and its lab are one file you submit together. See the</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Daily Notebooks</span><span class="co">](../tutorials/index.md)</span> index for all five.</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Available now</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Day 1 · [`day1_python_and_first_llm.ipynb`](../tutorials/day1_python_and_first_llm.ipynb)** —</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  Python practice exercises with a self-check.</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Day 2 · [`day2_gold_standards_and_evaluation.ipynb`](../tutorials/day2_gold_standards_and_evaluation.ipynb)** —</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  **[Coding the metrics from scratch](../code-examples/python/index.md)**: implement precision,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  recall, F1, and Cohen's κ by hand, then check your work against scikit-learn. The evaluation</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  formulas you rely on in the final project, built from the ground up.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## These are autograded — so they must be reproducible</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>Corpus Labs are checked automatically, so your results have to come out the same every run. The</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>**Day 1–2 labs are keyless** (Python practice; metrics on *frozen* predictions). From **Day 3** the</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>labs call the model, so you use the **Gemini API** with <span class="in">`temperature=0`</span> + a fixed seed and</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">a free key</span><span class="co">](../tools/gemini-api-key.md)</span> — and you **freeze your predictions to JSON** so the grader</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>re-runs your analysis on exactly the outputs you saw.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Coming soon</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>The Day 3–5 Corpus Lab sections (your own prompt-iteration study, gold-set QC &amp; adjudication, and</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>the report scaffold) are still being prepared. Each is marked as a **🚧 TODO** section inside its</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>day notebook and draws on <span class="co">[</span><span class="ot">Datasets</span><span class="co">](../datasets/index.md)</span> and the</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">mini-project tracks</span><span class="co">](../datasets/mini-project-tracks.md)</span>.</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Available now</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Day 1 · [`day1_python_and_first_llm.ipynb`](../tutorials/day1_python_and_first_llm.ipynb)** —</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  Python practice exercises with a self-check.</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Day 2 · [`day2_gold_standards_and_evaluation.ipynb`](../tutorials/day2_gold_standards_and_evaluation.ipynb)** —</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  **[Coding the metrics from scratch](../code-examples/python/index.md)**: implement precision,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  recall, F1, and Cohen's κ by hand, then check your work against scikit-learn. The evaluation</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  formulas you rely on in the final project, built from the ground up.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Coming soon</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>The Day 3–5 Corpus Lab sections (your own prompt-iteration study, gold-set QC &amp; adjudication, and</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>the report scaffold) are still being prepared. Each is marked as a **🚧 TODO** section inside its</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>day notebook and draws on <span class="co">[</span><span class="ot">Datasets</span><span class="co">](../datasets/index.md)</span> and the</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">mini-project tracks</span><span class="co">](../datasets/mini-project-tracks.md)</span>.</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

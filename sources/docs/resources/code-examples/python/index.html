@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-dad871b8bdfeb60e68a6a2e646796a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,10 +124,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../../syllabus/index.html"> 
-<span class="menu-text">Course info</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../../../syllabus/index.html">
+ <span class="dropdown-text">Syllabus</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../syllabus/readings.html">
+ <span class="dropdown-text">Readings</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../../../sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
@@ -191,7 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>In the <a href="../../../resources/tutorials/day2_gold_standards_and_evaluation.html">Day-2 notebook</a> and the <a href="../../../resources/corpus-lab/index.html">Corpus Lab</a> you called <code>evaluate()</code> and read the numbers it printed. Here you write those numbers yourself. Once you have coded precision, recall, F1, and Cohen’s κ from the raw label lists, the scores scikit-learn reports in the final project will never be a black box — you will know exactly what each one means and when it can mislead you.</p>
+<p>In the <a href="../../../resources/tutorials/day2_gold_standards_and_evaluation.html">Day-2 notebook</a> and the <a href="../../../resources/corpus-lab/index.html">Corpus Lab</a> you called <code>evaluate()</code> on a set of <em>frozen</em> predictions and read the numbers it printed. Here you write those numbers yourself. Once you have coded precision, recall, F1, and Cohen’s κ from the raw label lists, the scores scikit-learn reports in the final project will never be a black box — you will know exactly what each one means and when it can mislead you.</p>
 <blockquote class="blockquote">
 <p>In the <strong>final mini-project</strong> you go back to using scikit-learn’s implementations (<a href="../../../resources/datasets/mini-project-tracks.html"><code>lda2-final-template</code></a>). The point of <em>this</em> exercise is to understand them first.</p>
 </blockquote>
@@ -717,8 +728,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>In the <span class="co">[</span><span class="ot">Day-2 notebook</span><span class="co">](../../tutorials/day2_gold_standards_and_evaluation.ipynb)</span> and the</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Corpus Lab</span><span class="co">](../../corpus-lab/index.md)</span> you called <span class="in">`evaluate()`</span> and read the numbers it</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>printed. Here you write those numbers yourself. Once you have coded precision, recall, F1,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Corpus Lab</span><span class="co">](../../corpus-lab/index.md)</span> you called <span class="in">`evaluate()`</span> on a set of *frozen* predictions</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>and read the numbers it printed. Here you write those numbers yourself. Once you have coded precision, recall, F1,</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>and Cohen's κ from the raw label lists, the scores scikit-learn reports in the final</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>project will never be a black box — you will know exactly what each one means and when it</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>can mislead you.</span>

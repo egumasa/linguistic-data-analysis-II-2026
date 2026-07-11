@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Session 9: Error Analysis &amp; Under-the-Hood Walkthrough – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Readings – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,23 +58,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,14 +107,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Linguistic Data Analysis II (Summer 2026)</span>
     </a>
   </div>
@@ -130,25 +130,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-course-info">    
         <li>
-    <a class="dropdown-item" href="../../syllabus/index.html">
+    <a class="dropdown-item" href="../syllabus/index.html">
  <span class="dropdown-text">Syllabus</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../syllabus/readings.html">
+    <a class="dropdown-item" href="../syllabus/readings.html">
  <span class="dropdown-text">Readings</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="../../sessions/index.html" aria-current="page"> 
+    <a class="nav-link" href="../sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../final-project/index.html"> 
+    <a class="nav-link" href="../final-project/index.html"> 
 <span class="menu-text">Final Project</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../resources/index.html"> 
+    <a class="nav-link" href="../resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
   <li class="nav-item compact">
@@ -162,205 +162,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day3/session7.html">Day 3 · Prompt Design &amp; Iteration</a></li><li class="breadcrumb-item"><a href="../../sessions/day3/session9.html">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Schedule</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 1 · Introduction &amp; First Experience</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day1/session1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day1/session2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 2: Linguistic Analyses &amp; LLM Fundamentals</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day1/session3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 3: Colab Onboarding &amp; Mini-Project Setup</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 2 · Annotation, Gold Standards &amp; Metrics</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day2/session4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 4: Annotation Principles &amp; Inter-Annotator Agreement</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day2/session5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 5: Hands-on — Gold-Standard Annotation &amp; Agreement</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day2/session6.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 6: Gold Standards &amp; Evaluation Metrics</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Day 3 · Prompt Design &amp; Iteration</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day3/session7.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 7: Prompt Design — Zero-shot vs Few-shot</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day3/session8.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 8: Hands-on — LLM Classification &amp; Prompt Iteration</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day3/session9.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 4 · Methodology &amp; Pipeline Assembly</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day4/session10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 10: Methodology — Reproducibility, LLM Limits &amp; Ethics</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day4/session11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 11: Plenary Pipeline Assembly</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day4/session12.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 12: Project Work — Sample &amp; QC the Gold Set</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 5 · Project Finalization &amp; Presentations</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day5/session13.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 13: Project Work — Prompt Iteration &amp; Final Evaluation</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day5/session14.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 14: Project Work — Finalize Report &amp; Notebook</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../sessions/day5/session15.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 15: Final Presentations &amp; Wrap-up</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
-  <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
-  <li><a href="#slides-colab" id="toc-slides-colab" class="nav-link" data-scroll-target="#slides-colab">Slides &amp; Colab</a></li>
+  <ul class="collapse">
+  <li><a href="#day-1-introduction-first-experience" id="toc-day-1-introduction-first-experience" class="nav-link active" data-scroll-target="#day-1-introduction-first-experience">Day 1 · Introduction &amp; First Experience</a></li>
+  <li><a href="#day-2-annotation-gold-standards-metrics" id="toc-day-2-annotation-gold-standards-metrics" class="nav-link" data-scroll-target="#day-2-annotation-gold-standards-metrics">Day 2 · Annotation, Gold Standards &amp; Metrics</a></li>
+  <li><a href="#day-3-prompt-design-iteration" id="toc-day-3-prompt-design-iteration" class="nav-link" data-scroll-target="#day-3-prompt-design-iteration">Day 3 · Prompt Design &amp; Iteration</a></li>
+  <li><a href="#day-4-methodology-pipeline-assembly" id="toc-day-4-methodology-pipeline-assembly" class="nav-link" data-scroll-target="#day-4-methodology-pipeline-assembly">Day 4 · Methodology &amp; Pipeline Assembly</a></li>
+  <li><a href="#day-5-project-finalization-presentations" id="toc-day-5-project-finalization-presentations" class="nav-link" data-scroll-target="#day-5-project-finalization-presentations">Day 5 · Project Finalization &amp; Presentations</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/sessions/day3/session9.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/syllabus/readings.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day3/session7.html">Day 3 · Prompt Design &amp; Iteration</a></li><li class="breadcrumb-item"><a href="../../sessions/day3/session9.html">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Day 3 · Prompt Design &amp; Iteration (3-3)</p>
+<div class="quarto-title-block"><div><h1 class="title">Readings</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Linguistic Data Analysis II</p>
 </div>
 
 
@@ -377,31 +203,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<!-- BEING-PREPARED-BANNER -->
-<div class="callout callout-style-simple callout-warning callout-titled">
+<p>Readings are assigned by day and should be completed <strong>before</strong> the corresponding day of the intensive course. Each day lists a small <strong>required</strong> reading (marked <em>Skim</em> or <em>Read</em>); <strong>optional</strong> items are provided for those who want to go deeper.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>🚧 Being prepared
+<span class="screen-reader-only">Note</span>Access
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This page is being finalized ahead of the course (<strong>Aug 3–7, 2026</strong>) and may be incomplete or change before your session. The <a href="../../syllabus/index.html">syllabus</a> and <a href="../../syllabus/readings.html">readings</a> are ready now.</p>
+<p>PDFs for readings not freely available online are posted on <strong>Google Classroom</strong>. Where a work is open access, a DOI link is provided below.</p>
 </div>
 </div>
-<section id="learning-objectives" class="level2">
-<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<!-- to be added -->
+<section id="day-1-introduction-first-experience" class="level2">
+<h2 class="anchored" data-anchor-id="day-1-introduction-first-experience">Day 1 · Introduction &amp; First Experience</h2>
+<p><strong>Skim</strong></p>
+<ul>
+<li>Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. <em>Advances in Methods and Practices in Psychological Science, 8</em>(2). <a href="https://doi.org/10.1177/25152459251325174">https://doi.org/10.1177/25152459251325174</a>
+<ul>
+<li>Get a feel for the questions the course tackles; don’t worry about the details yet.</li>
+</ul></li>
+</ul>
 </section>
-<section id="reading" class="level2">
-<h2 class="anchored" data-anchor-id="reading">Reading</h2>
-<!-- to be added -->
+<section id="day-2-annotation-gold-standards-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="day-2-annotation-gold-standards-metrics">Day 2 · Annotation, Gold Standards &amp; Metrics</h2>
+<p><strong>Read</strong></p>
+<ul>
+<li>Eguchi, M., &amp; Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. <em>Research Methods in Applied Linguistics, 3</em>(3), 100153. <a href="https://doi.org/10.1016/j.rmal.2024.100153">https://doi.org/10.1016/j.rmal.2024.100153</a></li>
+</ul>
+<p><strong>Optional / further reading</strong></p>
+<ul>
+<li>Kyle, K., &amp; Eguchi, M. (2024). Evaluating NLP models with written and spoken L2 samples. <em>Research Methods in Applied Linguistics, 3</em>(2), 100120. <a href="https://doi.org/10.1016/j.rmal.2024.100120">https://doi.org/10.1016/j.rmal.2024.100120</a></li>
+<li>Mizumoto, A. (2025). Automated analysis of common errors in L2 learner production: Prototype web application development. <em>Studies in Second Language Acquisition</em>, 1–18. <a href="https://doi.org/10.1017/S0272263125100934">https://doi.org/10.1017/S0272263125100934</a></li>
+<li>Yamashita, T. (2024). An application of many-facet Rasch measurement to evaluate automated essay scoring: A case of ChatGPT-4.0. <em>Research Methods in Applied Linguistics, 3</em>(3), 100133. <a href="https://doi.org/10.1016/j.rmal.2024.100133">https://doi.org/10.1016/j.rmal.2024.100133</a></li>
+</ul>
 </section>
-<section id="slides-colab" class="level2">
-<h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
-<!-- slides link + Colab notebook link -->
+<section id="day-3-prompt-design-iteration" class="level2">
+<h2 class="anchored" data-anchor-id="day-3-prompt-design-iteration">Day 3 · Prompt Design &amp; Iteration</h2>
+<p><strong>Read</strong></p>
+<ul>
+<li>Huang, J., &amp; Mizumoto, A. (2025). Prompt engineering: Enhancing AI-driven language learning and feedback. In L. McCallum &amp; D. Tafazoli (Eds.), <em>The Palgrave Encyclopedia of Computer-Assisted Language Learning</em> (pp.&nbsp;1–8). Springer Nature Switzerland. <a href="https://doi.org/10.1007/978-3-031-51447-0_103-1">https://doi.org/10.1007/978-3-031-51447-0_103-1</a></li>
+<li>Kim, M., &amp; Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. <em>Journal of English for Academic Purposes, 71</em>, 101422. <a href="https://doi.org/10.1016/j.jeap.2024.101422">https://doi.org/10.1016/j.jeap.2024.101422</a></li>
+</ul>
+</section>
+<section id="day-4-methodology-pipeline-assembly" class="level2">
+<h2 class="anchored" data-anchor-id="day-4-methodology-pipeline-assembly">Day 4 · Methodology &amp; Pipeline Assembly</h2>
+<p><strong>Read (in full)</strong> — revisit the Day 1 primer, this time closely, as the checklist behind reproducible, transparent LLM-based reporting; Ready for full discussion of the contents and implication to applied linguistics research.</p>
+<ul>
+<li>Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. <em>Advances in Methods and Practices in Psychological Science, 8</em>(2). <a href="https://doi.org/10.1177/25152459251325174">https://doi.org/10.1177/25152459251325174</a></li>
+</ul>
+</section>
+<section id="day-5-project-finalization-presentations" class="level2">
+<h2 class="anchored" data-anchor-id="day-5-project-finalization-presentations">Day 5 · Project Finalization &amp; Presentations</h2>
+<p>No new reading — project work only.</p>
 
 
 <!-- -->
@@ -868,31 +724,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Session 9: Error Analysis &amp; Under-the-Hood Walkthrough"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Day 3 · Prompt Design &amp; Iteration (3-3)"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Readings"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Linguistic Data Analysis II"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning appearance="simple"}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🚧 Being prepared</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The <span class="co">[</span><span class="ot">syllabus</span><span class="co">](/syllabus/index.md)</span> and <span class="co">[</span><span class="ot">readings</span><span class="co">](/syllabus/readings.md)</span> are ready now.</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">toc-depth:</span><span class="co"> 2</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>Readings are assigned by day and should be completed **before** the corresponding day of the intensive course. Each day lists a small **required** reading (marked *Skim* or *Read*); **optional** items are provided for those who want to go deeper.</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Access</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>PDFs for readings not freely available online are posted on **Google Classroom**. Where a work is open access, a DOI link is provided below.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Day 1 · Introduction &amp; First Experience</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>**Skim**</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- slides link + Colab notebook link --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <span class="co">[</span><span class="ot">https://doi.org/10.1177/25152459251325174</span><span class="co">](https://doi.org/10.1177/25152459251325174)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Get a feel for the questions the course tackles; don't worry about the details yet.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Day 2 · Annotation, Gold Standards &amp; Metrics</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>**Read**</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eguchi, M., &amp; Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. *Research Methods in Applied Linguistics, 3*(3), 100153. <span class="co">[</span><span class="ot">https://doi.org/10.1016/j.rmal.2024.100153</span><span class="co">](https://doi.org/10.1016/j.rmal.2024.100153)</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>**Optional / further reading**</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kyle, K., &amp; Eguchi, M. (2024). Evaluating NLP models with written and spoken L2 samples. *Research Methods in Applied Linguistics, 3*(2), 100120. <span class="co">[</span><span class="ot">https://doi.org/10.1016/j.rmal.2024.100120</span><span class="co">](https://doi.org/10.1016/j.rmal.2024.100120)</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Mizumoto, A. (2025). Automated analysis of common errors in L2 learner production: Prototype web application development. *Studies in Second Language Acquisition*, 1–18. <span class="co">[</span><span class="ot">https://doi.org/10.1017/S0272263125100934</span><span class="co">](https://doi.org/10.1017/S0272263125100934)</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Yamashita, T. (2024). An application of many-facet Rasch measurement to evaluate automated essay scoring: A case of ChatGPT-4.0. *Research Methods in Applied Linguistics, 3*(3), 100133. <span class="co">[</span><span class="ot">https://doi.org/10.1016/j.rmal.2024.100133</span><span class="co">](https://doi.org/10.1016/j.rmal.2024.100133)</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Day 3 · Prompt Design &amp; Iteration</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>**Read** </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Huang, J., &amp; Mizumoto, A. (2025). Prompt engineering: Enhancing AI-driven language learning and feedback. In L. McCallum &amp; D. Tafazoli (Eds.), *The Palgrave Encyclopedia of Computer-Assisted Language Learning* (pp. 1–8). Springer Nature Switzerland. <span class="co">[</span><span class="ot">https://doi.org/10.1007/978-3-031-51447-0_103-1</span><span class="co">](https://doi.org/10.1007/978-3-031-51447-0_103-1)</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kim, M., &amp; Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. *Journal of English for Academic Purposes, 71*, 101422. <span class="co">[</span><span class="ot">https://doi.org/10.1016/j.jeap.2024.101422</span><span class="co">](https://doi.org/10.1016/j.jeap.2024.101422)</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## Day 4 · Methodology &amp; Pipeline Assembly</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>**Read (in full)** — revisit the Day 1 primer, this time closely, as the checklist behind reproducible, transparent LLM-based reporting; Ready for full discussion of the contents and implication to applied linguistics research.</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <span class="co">[</span><span class="ot">https://doi.org/10.1177/25152459251325174</span><span class="co">](https://doi.org/10.1177/25152459251325174)</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="fu">## Day 5 · Project Finalization &amp; Presentations</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>No new reading — project work only.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/sessions/day3/session9.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/syllabus/readings.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dad871b8bdfeb60e68a6a2e646796a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,10 +124,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../syllabus/index.html"> 
-<span class="menu-text">Course info</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../../syllabus/index.html">
+ <span class="dropdown-text">Syllabus</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../syllabus/readings.html">
+ <span class="dropdown-text">Readings</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../../sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
@@ -201,6 +212,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../resources/tools/google-colab-setup.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Colab Setup Guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/gemini-api-key.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Get a free Gemini API key (for Corpus Lab &amp; the final project)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -405,7 +422,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#setup-run-this-first" id="toc-setup-run-this-first" class="nav-link" data-scroll-target="#setup-run-this-first">Setup — run this first</a></li>
   <li><a href="#step-1-load-the-gold-standard" id="toc-step-1-load-the-gold-standard" class="nav-link" data-scroll-target="#step-1-load-the-gold-standard">Step 1 — Load the gold standard</a></li>
-  <li><a href="#step-2-run-a-fixed-prompt-you-edit" id="toc-step-2-run-a-fixed-prompt-you-edit" class="nav-link" data-scroll-target="#step-2-run-a-fixed-prompt-you-edit">Step 2 — Run a fixed prompt ✏️ YOU EDIT</a></li>
+  <li><a href="#step-2-the-prompt-and-the-frozen-predictions-it-produced" id="toc-step-2-the-prompt-and-the-frozen-predictions-it-produced" class="nav-link" data-scroll-target="#step-2-the-prompt-and-the-frozen-predictions-it-produced">Step 2 — The prompt, and the frozen predictions it produced</a></li>
   <li><a href="#step-3-read-the-evaluation" id="toc-step-3-read-the-evaluation" class="nav-link" data-scroll-target="#step-3-read-the-evaluation">Step 3 — Read the evaluation</a></li>
   <li><a href="#step-4-error-analysis" id="toc-step-4-error-analysis" class="nav-link" data-scroll-target="#step-4-error-analysis">Step 4 — Error analysis</a></li>
   </ul></li>
@@ -441,7 +458,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="how-to-use-this-notebook">How to use this notebook</h3>
 <p>This is your <strong>single submission for the day</strong>. It has two parts:</p>
 <ul>
-<li><strong>Part A · Tutorial</strong> — load a gold standard → run an LLM → read precision / recall / F1 + a confusion matrix → inspect the errors, on an easy-to-judge task (CEFR sentence level).</li>
+<li><strong>Part A · Tutorial</strong> — load a gold standard → evaluate a <strong>frozen</strong> set of model predictions → read precision / recall / F1 + a confusion matrix → inspect the errors, on an easy-to-judge task (CEFR sentence level).</li>
 <li><strong>Part B · Corpus Lab</strong> — code the evaluation metrics (precision, recall, F1, Cohen’s κ) by hand, then check them against scikit-learn.</li>
 </ul>
 <p>You only edit the cells marked <strong>✏️ YOU EDIT</strong>. Cells marked <strong>🔧 Library cell</strong> are pre-written — run them, don’t change them.</p>
@@ -450,6 +467,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="part-a-tutorial-the-pipeline-on-cefr-sp" class="level2">
 <h2 class="anchored" data-anchor-id="part-a-tutorial-the-pipeline-on-cefr-sp">Part A · Tutorial — the pipeline on CEFR-SP</h2>
 <p>The task (CEFR sentence level, A1–C2) is easy to judge on purpose — today the <em>mechanics</em> are the lesson, not the labeling.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Today runs on <em>frozen</em> predictions — no API key, no live model
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You met the live model on Day 1 and saw its answers change from run to run. When you’re learning to <em>measure</em> quality, that wobble is just noise fighting the lesson — so today the model’s predictions are <strong>pre-computed and committed</strong> to a file. You load them and everyone’s precision / recall / F1 come out <strong>identical every run</strong>. You’ll run the model yourself (with the key) from Day 3 on.</p>
+</div>
+</div>
 <section id="setup-run-this-first" class="level3">
 <h3 class="anchored" data-anchor-id="setup-run-this-first">Setup — run this first</h3>
 <div id="cell-4" class="cell">
@@ -461,48 +491,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, seaborn <span class="im">as</span> sns, matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _make_local_backend():</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Not in Colab → pick a provider by whichever API key is set.</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Add a provider = add a block. (See the 'run locally' guide.)"""</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> os.environ.get(<span class="st">"LLM_MODEL"</span>)  <span class="co"># optional override</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.environ.get(<span class="st">"GEMINI_API_KEY"</span>):</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google <span class="im">import</span> genai</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        client <span class="op">=</span> genai.Client()</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> model <span class="kw">or</span> <span class="st">"gemini-2.5-flash"</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (<span class="kw">lambda</span> p: client.models.generate_content(model<span class="op">=</span>m, contents<span class="op">=</span>p).text,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"Gemini API (</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">)"</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.environ.get(<span class="st">"ANTHROPIC_API_KEY"</span>):</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="im">import</span> anthropic</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        client <span class="op">=</span> anthropic.Anthropic()</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> model <span class="kw">or</span> <span class="st">"claude-haiku-4-5"</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (<span class="kw">lambda</span> p: client.messages.create(</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                    model<span class="op">=</span>m, max_tokens<span class="op">=</span><span class="dv">256</span>,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                    messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: p}]).content[<span class="dv">0</span>].text,</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"Anthropic (</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">)"</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.environ.get(<span class="st">"OPENAI_API_KEY"</span>):</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        client <span class="op">=</span> OpenAI()</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> model <span class="kw">or</span> <span class="st">"gpt-4o-mini"</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (<span class="kw">lambda</span> p: client.chat.completions.create(</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                    model<span class="op">=</span>m, messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: p}]</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                ).choices[<span class="dv">0</span>].message.content,</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"OpenAI (</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">)"</span>)</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">"No LLM backend found. Run this notebook in Google Colab (free built-in "</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Gemini, no key needed), or — to run locally — set one of GEMINI_API_KEY / "</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ANTHROPIC_API_KEY / OPENAI_API_KEY. See the 'Running locally' guide."</span>)</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># LLM backend: Colab's built-in Gemini if available, else a local API.</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google.colab <span class="im">import</span> ai            <span class="co"># Colab's built-in Gemini — no API key</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    generate_text, _backend <span class="op">=</span> (<span class="kw">lambda</span> p: ai.generate_text(p)), <span class="st">"Colab Gemini"</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    generate_text, _backend <span class="op">=</span> _make_local_backend()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>MODEL_ID <span class="op">=</span> <span class="st">"gemini-2.5-flash"</span>   <span class="co"># pinned model for the reproducible (API) backend</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _resolve_gemini_key():</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env."""</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata      <span class="co"># only exists in Colab</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> userdata.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> key:</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> key</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span>                                    <span class="co"># not in Colab, or secret not set</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.environ.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _make_api_backend(key):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reproducible backend: Gemini API with temperature=0 + a fixed seed."""</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google <span class="im">import</span> genai</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google.genai <span class="im">import</span> types</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> genai.Client(api_key<span class="op">=</span>key)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    cfg <span class="op">=</span> types.GenerateContentConfig(temperature<span class="op">=</span><span class="dv">0</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="kw">lambda</span> p: client.models.generate_content(</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>                model<span class="op">=</span>MODEL_ID, contents<span class="op">=</span>p, config<span class="op">=</span>cfg).text,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Gemini API (</span><span class="sc">{</span>MODEL_ID<span class="sc">}</span><span class="ss">, temperature=0, seed=42)"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Prefer the API key when set (reproducible); else fall back to colab.ai (demo).</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>_key <span class="op">=</span> _resolve_gemini_key()</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> _key:</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    generate_text, _backend <span class="op">=</span> _make_api_backend(_key)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> ai            <span class="co"># Colab's built-in Gemini — no key</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        generate_text, _backend <span class="op">=</span> (<span class="kw">lambda</span> p: ai.generate_text(p)), <span class="st">"Colab Gemini (demo, non-reproducible)"</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>            <span class="st">"No LLM backend found. Run this notebook in Google Colab (free built-in "</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets "</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>            <span class="st">"panel, or as an environment variable when running locally. "</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>            <span class="st">"See resources/tools/gemini-api-key.md."</span>)</span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co"># CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.</span></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>GOLD_URL <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json"</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>LEVELS <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"C1"</span>, <span class="st">"C2"</span>]</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done. LLM backend: </span><span class="sc">{</span>_backend<span class="sc">}</span><span class="ss">. scikit-learn ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>PREDICTIONS_URL <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/predictions_day2.json"</span>   <span class="co"># frozen model predictions</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done. LLM backend: </span><span class="sc">{</span>_backend<span class="sc">}</span><span class="ss">. scikit-learn ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="cell-5" class="cell">
@@ -568,50 +599,73 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<div id="cell-9" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: save_predictions / load_predictions { display-mode: "form" }</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_predictions(predictions, path):</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Freeze a list of predicted labels to JSON."""</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(path, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        json.dump(predictions, f)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Saved </span><span class="sc">{</span><span class="bu">len</span>(predictions)<span class="sc">}</span><span class="ss"> predictions to </span><span class="sc">{</span>path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_predictions(url_or_path):</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read a frozen predictions list — a committed URL or a local path."""</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        predictions <span class="op">=</span> json.loads(raw)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        predictions <span class="op">=</span> json.loads(<span class="bu">open</span>(url_or_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read())</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(predictions)<span class="sc">}</span><span class="ss"> frozen predictions."</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
 <section id="step-1-load-the-gold-standard" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-load-the-gold-standard">Step 1 — Load the gold standard</h3>
 <p>Notice the shape: every dataset this week is <code>{"id", "text", "label"}</code>. That is the <em>only</em> data shape you have to learn.</p>
-<div id="cell-10" class="cell">
+<div id="cell-11" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gold <span class="op">=</span> load_gold(GOLD_URL)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gold <span class="op">=</span> load_gold(GOLD_URL)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="step-2-run-a-fixed-prompt-you-edit" class="level3">
-<h3 class="anchored" data-anchor-id="step-2-run-a-fixed-prompt-you-edit">Step 2 — Run a fixed prompt ✏️ YOU EDIT</h3>
-<p>This is the whole pipeline in one line. Edit the prompt text if you like, then run. <code>{text}</code> is where each sentence gets slotted in.</p>
-<div id="cell-12" class="cell">
+<section id="step-2-the-prompt-and-the-frozen-predictions-it-produced" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-the-prompt-and-the-frozen-predictions-it-produced">Step 2 — The prompt, and the frozen predictions it produced</h3>
+<p>Here is the prompt we sent the model — <code>{text}</code> is where each sentence gets slotted in. We ran it <strong>once</strong> over the gold set and committed the predictions, so today you load that frozen file rather than call the model. (From Day 3 you’ll run prompts like this yourself.)</p>
+<div id="cell-13" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>PROMPT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> run_prompt(PROMPT, gold)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The prompt used to produce the frozen predictions (shown for reference — not run today):</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>PROMPT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the pre-computed predictions (same order as `gold`):</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> load_predictions(PREDICTIONS_URL)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-3-read-the-evaluation" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-read-the-evaluation">Step 3 — Read the evaluation</h3>
-<p>Per-level precision / recall / F1 (plus a macro average), then the confusion matrix. For CEFR you’ll usually see confusions between <em>adjacent</em> levels (B1 ↔︎ B2), rarely far-apart ones (A1 ↔︎ C2) — the model has the right idea, imprecise thresholds.</p>
-<div id="cell-14" class="cell">
+<p>Per-level precision / recall / F1 (plus a macro average), then the confusion matrix. For CEFR you’ll usually see confusions between <em>adjacent</em> levels (B1 ↔︎ B2), rarely far-apart ones (A1 ↔︎ C2) — the model has the right idea, imprecise thresholds. Because the predictions are frozen, these numbers are the same every time you run — that’s the point.</p>
+<div id="cell-15" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>evaluate(gold, predictions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>evaluate(gold, predictions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-4-error-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-error-analysis">Step 4 — Error analysis</h3>
 <p>For each miss, ask: is the <strong>gold</strong> defensible, or is this a genuinely borderline sentence? <em>“Is the disagreement the model’s fault or the scheme’s?”</em> is the heart of annotation work — and it returns with force in the Day 3 discourse task.</p>
-<div id="cell-16" class="cell">
+<div id="cell-17" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>show_errors(gold, predictions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>show_errors(gold, predictions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -620,102 +674,102 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="part-b-corpus-lab-code-the-metrics-from-scratch">Part B · Corpus Lab — code the metrics from scratch</h2>
 <p><code>evaluate()</code> above printed precision, recall, F1 and a confusion matrix <em>for</em> you. Now you write those formulas yourself, from plain lists of labels — no imports, no numpy. Once you have coded them, the numbers scikit-learn reports in your final project will never be a black box.</p>
 <p>Fill in each function (replace its <code>raise NotImplementedError(...)</code>), then run the <strong>self-check</strong> cell — it compares your functions against scikit-learn on a small example and prints ✅ / ❌ for each.</p>
-<div id="cell-18" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — implement each function. All take plain Python lists of labels.</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> confusion_counts(gold, pred, label):</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return {"tp","fp","fn","tn"} for ONE label, treating it as the positive class.</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">        tp: gold IS label AND pred IS label</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">        fp: gold is NOT label BUT pred IS label</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">        fn: gold IS label BUT pred is NOT label</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">        tn: gold is NOT label AND pred is NOT label</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Example (label="B2", gold=["A1","B2","B2"], pred=["A1","B2","C1"]):</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">        {"tp": 1, "fp": 0, "fn": 1, "tn": 1}</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: start tp=fp=fn=tn=0; loop `for g, p in zip(gold, pred):`;</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       if/elif on whether g == label / p == label.</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Count tp, fp, fn, tn and return them in a dict."</span>)</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> precision(gold, pred, label):</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""tp / (tp + fp). Of all items CALLED `label`, what fraction really were?</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 if tp + fp == 0 (never divide by zero)."""</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return tp / (tp + fp), or 0.0 if tp + fp == 0."</span>)</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recall(gold, pred, label):</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""tp / (tp + fn). Of all items that TRULY were `label`, what fraction found?</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 if tp + fn == 0."""</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return tp / (tp + fn), or 0.0 if tp + fn == 0."</span>)</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f1(gold, pred, label):</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Harmonic mean of precision and recall:</span></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="co">        2 * p * r / (p + r).   Return 0.0 if p + r == 0."""</span></span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: reuse precision(...) and recall(...) above.</span></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the harmonic mean of precision and recall."</span>)</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> macro_f1(gold, pred, labels):</span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Plain average of f1(gold, pred, label) over every label in `labels`</span></span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="co">    (every class counts equally, no matter how many items it has)."""</span></span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Average f1 over every label in `labels`."</span>)</span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> percent_agreement(a, b):</span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fraction of positions where two annotators agree: a[i] == b[i]. 0.0–1.0."""</span></span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the fraction of positions where a[i] == b[i]."</span>)</span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cohen_kappa(a, b):</span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Agreement corrected for chance:  (p_o - p_e) / (1 - p_e).</span></span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a><span class="co">        p_o = observed agreement = percent_agreement(a, b)</span></span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a><span class="co">        p_e = chance agreement = sum over labels of prop_a(label) * prop_b(label),</span></span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a><span class="co">              where prop_x(label) = (# times x used label) / N.</span></span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 if 1 - p_e == 0."""</span></span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: labels = set(a) | set(b); N = len(a); a.count(label) counts uses.</span></span>
-<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return (p_o - p_e) / (1 - p_e), or 0.0 if 1 - p_e == 0."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
 <div id="cell-19" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check against scikit-learn — run me { display-mode: "form" }</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (precision_score, recall_score, f1_score,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                             cohen_kappa_score)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A small fixture with imbalance and a few mistakes — enough to catch bugs.</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>LAB <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>]</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>]</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"A2"</span>]</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ann_a <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B2"</span>, <span class="st">"B1"</span>, <span class="st">"A1"</span>]</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>ann_b <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"B2"</span>, <span class="st">"B1"</span>, <span class="st">"A1"</span>]</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>TOL, results <span class="op">=</span> <span class="fl">1e-9</span>, []</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _chk(name, got, exp):</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    ok <span class="op">=</span> <span class="bu">abs</span>(got <span class="op">-</span> exp) <span class="op">&lt;</span> TOL</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    results.append(ok)</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), <span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:&lt;22}</span><span class="ss"> yours=</span><span class="sc">{</span>got<span class="sc">:.6f}</span><span class="ss">  sklearn=</span><span class="sc">{</span>exp<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> LAB:</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    _chk(<span class="ss">f"precision(</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">)"</span>, precision(g, p, label),</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>         precision_score(g, p, labels<span class="op">=</span>[label], average<span class="op">=</span><span class="st">"micro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    _chk(<span class="ss">f"recall(</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">)"</span>, recall(g, p, label),</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>         recall_score(g, p, labels<span class="op">=</span>[label], average<span class="op">=</span><span class="st">"micro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    _chk(<span class="ss">f"f1(</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">)"</span>, f1(g, p, label),</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>         f1_score(g, p, labels<span class="op">=</span>[label], average<span class="op">=</span><span class="st">"micro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"macro_f1"</span>, macro_f1(g, p, LAB),</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>     f1_score(g, p, labels<span class="op">=</span>LAB, average<span class="op">=</span><span class="st">"macro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"percent_agreement"</span>, percent_agreement(ann_a, ann_b),</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>     <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> x, y <span class="kw">in</span> <span class="bu">zip</span>(ann_a, ann_b) <span class="cf">if</span> x <span class="op">==</span> y) <span class="op">/</span> <span class="bu">len</span>(ann_a))</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"cohen_kappa"</span>, cohen_kappa(ann_a, ann_b), cohen_kappa_score(ann_a, ann_b))</span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">55</span>)</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"All </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> checks passed ✅  — your metrics match scikit-learn."</span></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="bu">all</span>(results) <span class="cf">else</span></span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span>results<span class="sc">.</span>count(<span class="va">False</span>)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> checks FAILED — fix and re-run."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — implement each function. All take plain Python lists of labels.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> confusion_counts(gold, pred, label):</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return {"tp","fp","fn","tn"} for ONE label, treating it as the positive class.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">        tp: gold IS label AND pred IS label</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">        fp: gold is NOT label BUT pred IS label</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">        fn: gold IS label BUT pred is NOT label</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">        tn: gold is NOT label AND pred is NOT label</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Example (label="B2", gold=["A1","B2","B2"], pred=["A1","B2","C1"]):</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">        {"tp": 1, "fp": 0, "fn": 1, "tn": 1}</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: start tp=fp=fn=tn=0; loop `for g, p in zip(gold, pred):`;</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       if/elif on whether g == label / p == label.</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Count tp, fp, fn, tn and return them in a dict."</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> precision(gold, pred, label):</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""tp / (tp + fp). Of all items CALLED `label`, what fraction really were?</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 if tp + fp == 0 (never divide by zero)."""</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return tp / (tp + fp), or 0.0 if tp + fp == 0."</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recall(gold, pred, label):</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""tp / (tp + fn). Of all items that TRULY were `label`, what fraction found?</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 if tp + fn == 0."""</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return tp / (tp + fn), or 0.0 if tp + fn == 0."</span>)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f1(gold, pred, label):</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Harmonic mean of precision and recall:</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">        2 * p * r / (p + r).   Return 0.0 if p + r == 0."""</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: reuse precision(...) and recall(...) above.</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the harmonic mean of precision and recall."</span>)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> macro_f1(gold, pred, labels):</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Plain average of f1(gold, pred, label) over every label in `labels`</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co">    (every class counts equally, no matter how many items it has)."""</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Average f1 over every label in `labels`."</span>)</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> percent_agreement(a, b):</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fraction of positions where two annotators agree: a[i] == b[i]. 0.0–1.0."""</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the fraction of positions where a[i] == b[i]."</span>)</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cohen_kappa(a, b):</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Agreement corrected for chance:  (p_o - p_e) / (1 - p_e).</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="co">        p_o = observed agreement = percent_agreement(a, b)</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="co">        p_e = chance agreement = sum over labels of prop_a(label) * prop_b(label),</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="co">              where prop_x(label) = (# times x used label) / N.</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 if 1 - p_e == 0."""</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: labels = set(a) | set(b); N = len(a); a.count(label) counts uses.</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return (p_o - p_e) / (1 - p_e), or 0.0 if 1 - p_e == 0."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-20" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check against scikit-learn — run me { display-mode: "form" }</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (precision_score, recall_score, f1_score,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                             cohen_kappa_score)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A small fixture with imbalance and a few mistakes — enough to catch bugs.</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>LAB <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"A2"</span>]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>ann_a <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B2"</span>, <span class="st">"B1"</span>, <span class="st">"A1"</span>]</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>ann_b <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"B2"</span>, <span class="st">"B1"</span>, <span class="st">"A1"</span>]</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>TOL, results <span class="op">=</span> <span class="fl">1e-9</span>, []</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _chk(name, got, exp):</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    ok <span class="op">=</span> <span class="bu">abs</span>(got <span class="op">-</span> exp) <span class="op">&lt;</span> TOL</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    results.append(ok)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), <span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:&lt;22}</span><span class="ss"> yours=</span><span class="sc">{</span>got<span class="sc">:.6f}</span><span class="ss">  sklearn=</span><span class="sc">{</span>exp<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> LAB:</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    _chk(<span class="ss">f"precision(</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">)"</span>, precision(g, p, label),</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>         precision_score(g, p, labels<span class="op">=</span>[label], average<span class="op">=</span><span class="st">"micro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    _chk(<span class="ss">f"recall(</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">)"</span>, recall(g, p, label),</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>         recall_score(g, p, labels<span class="op">=</span>[label], average<span class="op">=</span><span class="st">"micro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    _chk(<span class="ss">f"f1(</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">)"</span>, f1(g, p, label),</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>         f1_score(g, p, labels<span class="op">=</span>[label], average<span class="op">=</span><span class="st">"micro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"macro_f1"</span>, macro_f1(g, p, LAB),</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>     f1_score(g, p, labels<span class="op">=</span>LAB, average<span class="op">=</span><span class="st">"macro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"percent_agreement"</span>, percent_agreement(ann_a, ann_b),</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>     <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> x, y <span class="kw">in</span> <span class="bu">zip</span>(ann_a, ann_b) <span class="cf">if</span> x <span class="op">==</span> y) <span class="op">/</span> <span class="bu">len</span>(ann_a))</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"cohen_kappa"</span>, cohen_kappa(ann_a, ann_b), cohen_kappa_score(ann_a, ann_b))</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">55</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"All </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> checks passed ✅  — your metrics match scikit-learn."</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="bu">all</span>(results) <span class="cf">else</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span>results<span class="sc">.</span>count(<span class="va">False</span>)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> checks FAILED — fix and re-run."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <hr>

@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dad871b8bdfeb60e68a6a2e646796a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,10 +124,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../syllabus/index.html"> 
-<span class="menu-text">Course info</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../../syllabus/index.html">
+ <span class="dropdown-text">Syllabus</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../syllabus/readings.html">
+ <span class="dropdown-text">Readings</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../../sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
@@ -201,6 +212,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../resources/tools/google-colab-setup.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Google Colab Setup Guide</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/tools/gemini-api-key.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Get a free Gemini API key (for Corpus Lab &amp; the final project)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -445,6 +462,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>load gold → format prompt → call model → evaluate → inspect errors.</strong> Only the <em>task</em> and the <em>prompt</em> change. The datasets behind these notebooks are catalogued under <a href="../../resources/datasets/index.html">Datasets</a>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Which backend each day uses
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Day 1</strong> — Colab’s built-in Gemini (<code>colab.ai</code>), keyless. Your first live call; notice it varies.</li>
+<li><strong>Day 2</strong> — <em>no model call.</em> You evaluate <strong>frozen</strong> predictions so the metrics numbers hold still.</li>
+<li><strong>Day 3 onward</strong> — you run the model yourself via the <strong>Gemini API</strong> (<code>temperature=0</code> + a fixed seed, so results are reproducible for the autograded labs). One-time setup: <a href="../../resources/tools/gemini-api-key.html">get a free key</a>.</li>
+</ul>
 </div>
 </div>
 <section id="the-notebooks" class="level2">
@@ -987,26 +1021,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Datasets</span><span class="co">](../datasets/index.md)</span>.</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## The notebooks</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Day <span class="pp">|</span> Notebook <span class="pp">|</span> Tutorial (Part A) <span class="pp">|</span> Corpus Lab (Part B) <span class="pp">|</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day1_python_and_first_llm.ipynb`</span><span class="co">](./day1_python_and_first_llm.ipynb)</span> <span class="pp">|</span> Python basics + your first LLM call <span class="pp">|</span> Python practice exercises (self-checked) <span class="pp">|</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2_gold_standards_and_evaluation.ipynb`</span><span class="co">](./day2_gold_standards_and_evaluation.ipynb)</span> <span class="pp">|</span> The pipeline on CEFR-SP (P/R/F1 + confusion matrix) <span class="pp">|</span> Code the metrics from scratch, checked vs. scikit-learn <span class="pp">|</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day3_prompt_design.ipynb`</span><span class="co">](./day3_prompt_design.ipynb)</span> <span class="pp">|</span> Zero-shot → few-shot → chain-of-thought on CEFR <span class="pp">|</span> Your own prompt-iteration study *(coming soon)* <span class="pp">|</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day4_pipeline_and_sampling.ipynb`</span><span class="co">](./day4_pipeline_and_sampling.ipynb)</span> <span class="pp">|</span> Sample a balanced gold subset from a pool <span class="pp">|</span> QC &amp; adjudicate your gold set *(coming soon)* <span class="pp">|</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day5_project_finalization.ipynb`</span><span class="co">](./day5_project_finalization.ipynb)</span> <span class="pp">|</span> Assemble the pipeline end-to-end *(coming soon)* | Draft the one-page report *(coming soon)* <span class="pp">|</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deeper notes</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>The prose walkthroughs below expand on the in-notebook narration:</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Day 2 — Annotation, gold standards &amp; evaluation</span><span class="co">](./tutorial-day2-annotation-eval.md)</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Day 3 — Replicating Kim &amp; Lu with open data</span><span class="co">](./tutorial-day3-move-replication.md)</span> — the</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  discourse-move mini-project track.</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>When you are ready to run your own study, move on to the</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">mini-project starter tracks</span><span class="co">](../datasets/mini-project-tracks.md)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Which backend each day uses</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Day 1** — Colab's built-in Gemini (<span class="in">`colab.ai`</span>), keyless. Your first live call; notice it varies.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Day 2** — *no model call.* You evaluate **frozen** predictions so the metrics numbers hold still.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Day 3 onward** — you run the model yourself via the **Gemini API** (<span class="in">`temperature=0`</span> + a fixed</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  seed, so results are reproducible for the autograded labs). One-time setup:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">get a free key</span><span class="co">](../tools/gemini-api-key.md)</span>.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## The notebooks</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Day <span class="pp">|</span> Notebook <span class="pp">|</span> Tutorial (Part A) <span class="pp">|</span> Corpus Lab (Part B) <span class="pp">|</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day1_python_and_first_llm.ipynb`</span><span class="co">](./day1_python_and_first_llm.ipynb)</span> <span class="pp">|</span> Python basics + your first LLM call <span class="pp">|</span> Python practice exercises (self-checked) <span class="pp">|</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2_gold_standards_and_evaluation.ipynb`</span><span class="co">](./day2_gold_standards_and_evaluation.ipynb)</span> <span class="pp">|</span> The pipeline on CEFR-SP (P/R/F1 + confusion matrix) <span class="pp">|</span> Code the metrics from scratch, checked vs. scikit-learn <span class="pp">|</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day3_prompt_design.ipynb`</span><span class="co">](./day3_prompt_design.ipynb)</span> <span class="pp">|</span> Zero-shot → few-shot → chain-of-thought on CEFR <span class="pp">|</span> Your own prompt-iteration study *(coming soon)* <span class="pp">|</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day4_pipeline_and_sampling.ipynb`</span><span class="co">](./day4_pipeline_and_sampling.ipynb)</span> <span class="pp">|</span> Sample a balanced gold subset from a pool <span class="pp">|</span> QC &amp; adjudicate your gold set *(coming soon)* <span class="pp">|</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day5_project_finalization.ipynb`</span><span class="co">](./day5_project_finalization.ipynb)</span> <span class="pp">|</span> Assemble the pipeline end-to-end *(coming soon)* | Draft the one-page report *(coming soon)* <span class="pp">|</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deeper notes</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>The prose walkthroughs below expand on the in-notebook narration:</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Day 2 — Annotation, gold standards &amp; evaluation</span><span class="co">](./tutorial-day2-annotation-eval.md)</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Day 3 — Replicating Kim &amp; Lu with open data</span><span class="co">](./tutorial-day3-move-replication.md)</span> — the</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  discourse-move mini-project track.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>When you are ready to run your own study, move on to the</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">mini-project starter tracks</span><span class="co">](../datasets/mini-project-tracks.md)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
