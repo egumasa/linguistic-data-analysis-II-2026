@@ -1,0 +1,90 @@
+---
+title: "Editable + Runnable Slides"
+subtitle: "Proof of concept — two meanings of \"run\""
+author: "Linguistic Data Analysis II"
+format:
+  live-revealjs:
+    theme: [default, ../../assets/css/slides.scss]
+    slide-number: true
+    incremental: false
+engine: jupyter
+jupyter: lda2-2026
+# quarto-live in-browser runtime (Pyodide). Preload keeps the packages the
+# live cells need ready before the first Run click.
+pyodide:
+  packages:
+    - pandas
+    - scikit-learn
+---
+
+## Two meanings of "run"
+
+A Quarto slide deck can execute code in **two different ways**:
+
+1. **Render-time execution** — code runs once, when *you* build the deck.
+   The audience sees baked-in output. (Standard `{python}` cell, jupyter engine.)
+2. **In-browser, editable, live** — the *viewer* edits the code in the slide
+   and runs it in their browser. No server. (`{pyodide}` cell, `quarto-live`.)
+
+This deck shows one of each.
+
+## 1 · Render-time cell {.smaller}
+
+Computed **once at render time** with the jupyter + `uv` engine. The audience
+cannot change it — the output below is frozen into the HTML.
+
+```{python}
+#| echo: true
+#| output-location: fragment
+from sklearn.metrics import precision_score, recall_score, f1_score
+
+# Tiny hand-labelled example: gold vs. model predictions (1 = "error present")
+gold = [1, 1, 1, 0, 0, 1, 0, 0, 1, 0]
+pred = [1, 0, 1, 0, 1, 1, 0, 0, 1, 0]
+
+print(f"Precision: {precision_score(gold, pred):.2f}")
+print(f"Recall:    {recall_score(gold, pred):.2f}")
+print(f"F1:        {f1_score(gold, pred):.2f}")
+```
+
+## 2 · Live, editable cell {.smaller}
+
+This one runs **in your browser** via Pyodide. Edit a value, click **Run**,
+and watch the output change. First run downloads the runtime (a few seconds).
+
+::: {.callout-tip}
+Try changing a prediction below from `0` to `1` and re-run.
+:::
+
+```{pyodide}
+#| autorun: false
+import pandas as pd
+from sklearn.metrics import precision_score, recall_score, f1_score
+
+gold = [1, 1, 1, 0, 0, 1, 0, 0, 1, 0]
+pred = [1, 0, 1, 0, 1, 1, 0, 0, 1, 0]   # <- edit me, then click Run
+
+df = pd.DataFrame({"gold": gold, "pred": pred})
+df["correct"] = df["gold"] == df["pred"]
+
+print(df.to_string(index=False))
+print()
+print(f"Accuracy:  {df['correct'].mean():.2f}")
+print(f"Precision: {precision_score(gold, pred):.2f}")
+print(f"Recall:    {recall_score(gold, pred):.2f}")
+print(f"F1:        {f1_score(gold, pred):.2f}")
+```
+
+## When to use which {.smaller}
+
+| | Render-time `{python}` | Live `{pyodide}` |
+|---|---|---|
+| Runs where | Your machine, at build | Viewer's browser |
+| Editable by audience | No | **Yes** |
+| Needs a server | No | No |
+| Heavy libs (`spacy`) | ✅ | ⚠️ limited |
+| LLM API calls | ✅ (with keys) | ❌ (no keys / CORS) |
+
+**Takeaway:** use live cells for lightweight, hands-on demos
+(pandas, metrics, small transforms). Keep `spacy` and LLM-API work in the
+Colab notebooks.
