@@ -16,9 +16,11 @@ Given the intensive nature of the 5-day course, we focus on the core concepts, m
 
 ## Start here
 
-- 📋 **[Course info](syllabus/index.md)** — syllabus, grading, policies, and required materials
-- 📅 **[Sessions](sessions/index.md)** — the daily schedule and all 15 session pages
-- 🎓 **[Final Project](final-project/index.md)** — the group mini-research project
-- 🛠️ **[Resources](resources/index.md)** — setup guides, corpora, and code examples
+- 📋 **[Course info](syllabus/index.md)** — syllabus, grading, policies, and required materials *(ready)*
+- 📚 **[Readings](syllabus/readings.md)** — assigned readings by day *(ready)*
+- 🛠️ **[Setup guides](resources/tools/index.md)** — get Google Colab and your Gemini API key ready before Day 1 *(ready)*
+- 📅 **[Sessions](sessions/index.md)** — the daily schedule and per-session pages *(being finalized)*
+- 🎓 **[Final Project](final-project/index.md)** — the group mini-research project *(being finalized)*
+- 🛠️ **[Resources](resources/index.md)** — corpora, datasets, and notebooks *(being finalized)*
 
 :::

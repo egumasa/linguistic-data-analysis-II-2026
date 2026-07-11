@@ -20,7 +20,7 @@ toc-depth: 2
 
 ## Course Description
 
-Large Language Models (LLMs) — generative AI technologies that produce human-like language — have become one of the common tools people rely on to get things done. Linguistic research is no exception: more and more researchers are exploring the potential of this technology to support various stages of their work. One promising application of LLMs is linguistic annotation, a task that can be highly resource-intensive. If the annotation process can be supported by LLMs, the research community can benefit from greater scalability. Lowering the barriers to linguistic annotation is especially important for graduate research, where individual student researchers often have limited resources. Yet, while LLMs hold promise for linguistic research, the adequacy of model outputs must be critically evaluated rather than assumed. We must therefore be equipped with approaches to critically appraise what they can and cannot offer in order to make meaningful contributions to the field. In this course, we cover the foundational concepts and methods for evaluating LLM outputs in linguistic research projects.
+Large Language Models (LLMs) — generative AI technologies that produce human-like language — have become one of the common tools people rely on. Linguistic research is no exception: more and more researchers are exploring the potential of this technology to support various stages of their work. One promising application of LLMs is linguistic annotation, a task that can be highly resource-intensive. If the annotation process can be supported by LLMs, the research community can benefit from greater scalability. Lowering the barriers to linguistic annotation is especially important for graduate research, where individual student researchers often have limited resources. Yet, while LLMs hold promise for linguistic research, the adequacy of model outputs must be critically evaluated rather than assumed. We must therefore be equipped with approaches to critically appraise what they can and cannot offer in order to make meaningful contributions to the field. In this course, we cover the foundational concepts and methods for evaluating LLM outputs in linguistic research projects.
 
 <!-- This course introduces the foundations of corpus linguistics and the analysis of learner language through corpus linguistic approaches. It covers key concepts in corpus linguistics, including what corpora are, how they are used to answer (applied) linguistic research questions, and how to design corpus-based analyses to address substantive research questions in second language research. The primary language of analysis in this course is English, but students are encouraged to apply the concepts introduced to the languages they work with in their own research. -->
 
@@ -61,8 +61,7 @@ By the end of this course, students will be able to:
 ## Navigation
 
 - 📅 [Detailed Schedule](../sessions/index.md)
-
-<!-- - 📚 [Required Readings](readings.md) -->
+- 📚 [Readings](readings.md)
 
 <!-- - 📋 [Course Policies](policies.md) -->
 
@@ -89,13 +88,16 @@ Other required/Optional readings are provided through Google Classroom.
 
 We have two possible choices for the grade distribution for this course. I will explain the details of each choice in the first day of the course. The class as a whole decides which one we will incorporate in this course. Once decided, all students will follow the decided plan. -->
 
-### Grade Distribution
+### Grade Distribution (subject to final review by the start of the course on 3rd, Aug)
 
-| Assignment             |            | Percent |
-| ---------------------- | ---------- | ------- |
-| Corpus Lab Assignments | (4 × 15%) | 60%     |
-| Class Participation    |            | 20%     |
-| Final Project          |            | 20%     |
+| Component                                           |         | Percent |
+| --------------------------------------------------- | ------- | ------- |
+| Attendance / Participation                          |         | 20%     |
+| Hands-on activities (Day 1–3) + completed notebook |         | 40%     |
+| Mini-project group presentation + Q&A               | (Day 5) | 20%     |
+| Mini write-up (individual)                         | (Day 5) | 20%     |
+
+The **completed project notebook** — assembled from the cell library and run end-to-end, with your group's sampled gold subset, prompt, and evaluation outputs — is submitted as evidence that the in-class hands-on work was done, and is graded under the hands-on component. All project deliverables are produced and submitted **during** the course; there is no post-course write-up.
 
 ### Grading Scale
 
@@ -152,9 +154,7 @@ Each day follows this general pattern:
 
 ### Plagiarism
 
-You must present your own write-up. Do not copy each other's work or ask someone to write for you.
-
-About the use of AI tools such as ChatGPT, do not use it to make drafts. You can use it to polish your language.
+Policy to be determined.
 
 ## Technology Policy
 
@@ -180,3 +180,5 @@ About the use of AI tools such as ChatGPT, do not use it to make drafts. You can
 - Materials (e.g., slides) are shared through this website.
 
 ## Accommodations
+
+If you have a disability or any other circumstance that may affect your participation, please contact the instructor as early as possible — ideally before the course begins — so that reasonable accommodations can be arranged. Requests are handled confidentially. Students may also consult Tohoku University's Accessibility Support Room / Student Support Division for additional support.
