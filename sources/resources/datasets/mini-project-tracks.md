@@ -13,8 +13,12 @@ track is the same:
    scheme, flag disagreements with the published label, then discuss and resolve. This is where you
    feel inter-annotator disagreement and start asking *"is a wrong label the model's fault or the
    scheme's?"*
-3. **Iterate** the prompt 2–3 rounds against your gold set.
-4. **Report** precision / recall / F1 + a confusion matrix with an honest discussion of limitations.
+3. **Iterate** the prompt 2–3 rounds against your gold set. Run through the **Gemini API** with
+   `temperature=0` + a fixed seed ([get a free key](../tools/gemini-api-key.md)) so each round is
+   reproducible and differences reflect the *prompt*, not sampling noise.
+4. **Freeze** your final predictions to a JSON file (run the model once, save + commit its output).
+   Your evaluation runs off that frozen file, so your reported F1 is stable and auditable.
+5. **Report** precision / recall / F1 + a confusion matrix with an honest discussion of limitations.
 
 Each track rebuilds a ready gold file **and** a full pool to sample your own subset from.
 

@@ -11,10 +11,11 @@ a step up in involvement, but worth it if you want to keep working after the cou
 paid LLM API instead of Colab's built-in Gemini. It assumes you're comfortable with a terminal.
 :::
 
-The LLM tutorial notebook (`day2_gold_standards_and_evaluation.ipynb`) is written to work **both** in Colab and
-locally. In Colab it uses the free built-in Gemini. Run locally, it detects it is *not* in Colab and
-calls a real LLM API instead, picking the provider from whichever API key you have set. Here is how
-to go from nothing to a running notebook.
+The LLM notebooks are written to work **both** in Colab and locally. In Colab, Day 1 uses the free
+built-in Gemini and Day 2 reads frozen predictions (no key); from Day 3 the notebooks call the
+**Gemini API**. Run locally, they use the Gemini API whenever `GEMINI_API_KEY` is set (with
+`temperature=0` + a fixed seed, so results are reproducible). Here is how to go from nothing to a
+running notebook.
 
 ## 1. Install `uv`
 
@@ -54,17 +55,15 @@ uv sync --group dev
 
 ## 4. Get an API key
 
-Running locally, the notebook needs an LLM to call. Get a key from **one** provider:
+From Day 3 the notebooks call the model, so you need a **Gemini API** key (the course standardizes on
+Gemini). Get a free one from [Google AI Studio](https://aistudio.google.com/apikey) — see
+[Get a free Gemini API key](gemini-api-key.md) for details.
 
-- **Google Gemini** (closest to what Colab gives you): [Google AI Studio](https://aistudio.google.com/apikey)
-- **Anthropic (Claude):** [console.anthropic.com](https://console.anthropic.com/)
-- **OpenAI:** [platform.openai.com](https://platform.openai.com/api-keys)
-
-Then set it as an environment variable in the same terminal (use the name matching your provider):
+Then set it as an environment variable in the same terminal:
 
 ```bash
 # macOS / Linux
-export GEMINI_API_KEY=your-key-here        # or ANTHROPIC_API_KEY / OPENAI_API_KEY
+export GEMINI_API_KEY=your-key-here
 ```
 ```powershell
 # Windows (PowerShell) — setx persists it for new terminals
@@ -83,17 +82,19 @@ to keep keys there.)
 uv run jupyter lab
 ```
 
-In the browser tab that opens, navigate to
-`sources/resources/tutorials/day2_gold_standards_and_evaluation.ipynb` and choose **Run → Run All Cells**. The first
-cell prints which backend it chose, e.g. `LLM backend: Gemini API (gemini-2.5-flash)`. Everything
-else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab.
+In the browser tab that opens, navigate to a notebook that calls the model — e.g.
+`sources/resources/tutorials/day3_prompt_design.ipynb` — and choose **Run → Run All Cells**. The
+first cell prints which backend it chose, e.g.
+`LLM backend: Gemini API (gemini-2.5-flash, temperature=0, seed=42)`. Everything else — loading the
+gold set, the confusion matrix, the error table — works exactly as in Colab. (The Day-2 notebook
+needs no key; it reads frozen predictions.)
 
 ## Troubleshooting
 
-- **`No LLM backend found ...`** — you're running locally but no key is set. Set one of
-  `GEMINI_API_KEY` / `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` (step 4) and restart the notebook kernel
-  (**Kernel → Restart**) so it picks up the new environment variable.
-- **Switch provider** — set a different key (unset the others), or pin a specific model with the
-  `LLM_MODEL` variable, e.g. `export LLM_MODEL=gemini-2.5-pro`.
+- **`No LLM backend found ...`** — you're running locally but no key is set. Set `GEMINI_API_KEY`
+  (step 4) and restart the notebook kernel (**Kernel → Restart**) so it picks up the new environment
+  variable.
+- **Wrong model** — the pinned model lives in one place (the `MODEL_ID` constant in the setup cell);
+  edit it there if you need a different Gemini model.
 - **`ModuleNotFoundError`** — you launched Jupyter outside the project env. Always start it with
   `uv run jupyter lab` from the project folder so it uses the `.venv` from step 3.

@@ -47,62 +47,76 @@ REPO_RAW = ("https://raw.githubusercontent.com/egumasa/"
             "linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold")
 CEFR_GOLD_URL = f"{REPO_RAW}/cefr_sentences.json"
 CEFR_POOL_URL = f"{REPO_RAW}/cefr_pool.json"
+# Frozen CEFR predictions for the Day-2 metrics lesson (instructor generates this
+# once from the fixed Day-2 prompt; committed so Day 2 is keyless & deterministic).
+CEFR_PREDICTIONS_DAY2_URL = f"{REPO_RAW}/predictions_day2.json"
 
 
 # ------------------------------------------------- shared cells (verbatim library)
-# The LLM backend block: Colab Gemini if available, else pick a provider by API key.
+# The LLM backend block. Two backends, chosen by whether a Gemini API key is set:
+#   * DEMO (no key)  → Colab's built-in Gemini (colab.ai). Zero setup, but NON-
+#     reproducible: colab.ai exposes no temperature/seed, so output varies run to run.
+#   * REAL (key set) → the Gemini API with temperature=0 + seed, for reproducible,
+#     autograded work (Corpus Lab from Day 3, and the final project).
+# The key is PREFERRED when present — including inside Colab (via Colab Secrets).
+# See resources/tools/gemini-api-key.md.
+MODEL_ID = "gemini-2.5-flash"   # pinned; confirm against the API pre-flight (see prep-plan)
+
 BACKEND = '''#@title 📦 Setup — run me first { display-mode: "form" }
 # Imports + the LLM backend. No pip install needed in Colab.
 import json, re, urllib.request, os
 from sklearn.metrics import classification_report, confusion_matrix
 import pandas as pd, seaborn as sns, matplotlib.pyplot as plt
 
-def _make_local_backend():
-    """Not in Colab → pick a provider by whichever API key is set.
-    Add a provider = add a block. (See the 'run locally' guide.)"""
-    model = os.environ.get("LLM_MODEL")  # optional override
-    if os.environ.get("GEMINI_API_KEY"):
-        from google import genai
-        client = genai.Client()
-        m = model or "gemini-2.5-flash"
-        return (lambda p: client.models.generate_content(model=m, contents=p).text,
-                f"Gemini API ({m})")
-    if os.environ.get("ANTHROPIC_API_KEY"):
-        import anthropic
-        client = anthropic.Anthropic()
-        m = model or "claude-haiku-4-5"
-        return (lambda p: client.messages.create(
-                    model=m, max_tokens=256,
-                    messages=[{"role": "user", "content": p}]).content[0].text,
-                f"Anthropic ({m})")
-    if os.environ.get("OPENAI_API_KEY"):
-        from openai import OpenAI
-        client = OpenAI()
-        m = model or "gpt-4o-mini"
-        return (lambda p: client.chat.completions.create(
-                    model=m, messages=[{"role": "user", "content": p}]
-                ).choices[0].message.content,
-                f"OpenAI ({m})")
-    raise RuntimeError(
-        "No LLM backend found. Run this notebook in Google Colab (free built-in "
-        "Gemini, no key needed), or — to run locally — set one of GEMINI_API_KEY / "
-        "ANTHROPIC_API_KEY / OPENAI_API_KEY. See the 'Running locally' guide.")
+MODEL_ID = "gemini-2.5-flash"   # pinned model for the reproducible (API) backend
 
-# LLM backend: Colab's built-in Gemini if available, else a local API.
-try:
-    from google.colab import ai            # Colab's built-in Gemini — no API key
-    generate_text, _backend = (lambda p: ai.generate_text(p)), "Colab Gemini"
-except ImportError:
-    generate_text, _backend = _make_local_backend()'''
+def _resolve_gemini_key():
+    """Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env."""
+    try:
+        from google.colab import userdata      # only exists in Colab
+        key = userdata.get("GEMINI_API_KEY")
+        if key:
+            return key
+    except Exception:
+        pass                                    # not in Colab, or secret not set
+    return os.environ.get("GEMINI_API_KEY")
+
+def _make_api_backend(key):
+    """Reproducible backend: Gemini API with temperature=0 + a fixed seed."""
+    from google import genai
+    from google.genai import types
+    client = genai.Client(api_key=key)
+    cfg = types.GenerateContentConfig(temperature=0, seed=42)
+    return (lambda p: client.models.generate_content(
+                model=MODEL_ID, contents=p, config=cfg).text,
+            f"Gemini API ({MODEL_ID}, temperature=0, seed=42)")
+
+# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).
+_key = _resolve_gemini_key()
+if _key:
+    generate_text, _backend = _make_api_backend(_key)
+else:
+    try:
+        from google.colab import ai            # Colab's built-in Gemini — no key
+        generate_text, _backend = (lambda p: ai.generate_text(p)), "Colab Gemini (demo, non-reproducible)"
+    except ImportError:
+        raise RuntimeError(
+            "No LLM backend found. Run this notebook in Google Colab (free built-in "
+            "Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets "
+            "panel, or as an environment variable when running locally. "
+            "See resources/tools/gemini-api-key.md.")'''
 
 
-def setup_cell(gold_url=None, gold_comment=None):
-    """Build the setup cell. With a gold_url, also define GOLD_URL + LEVELS (CEFR)."""
+def setup_cell(gold_url=None, gold_comment=None, predictions_url=None):
+    """Build the setup cell. With a gold_url, also define GOLD_URL + LEVELS (CEFR).
+    With a predictions_url, also define PREDICTIONS_URL (frozen Day-2 predictions)."""
     src = BACKEND
     if gold_url:
         src += (f'\n\n# {gold_comment}\n'
                 f'GOLD_URL = "{gold_url}"\n'
                 'LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]')
+    if predictions_url:
+        src += f'\nPREDICTIONS_URL = "{predictions_url}"   # frozen model predictions'
     src += '\nprint(f"Setup done. LLM backend: {_backend}. scikit-learn ready.")'
     return code(src)
 
@@ -158,7 +172,29 @@ LIB_SHOW_ERRORS = code(
     '    print(f"{len(rows)} of {len(gold)} wrong.")',
     '    return pd.DataFrame(rows)')
 
-PIPELINE_LIB = [LIB_LOAD_GOLD, LIB_RUN_PROMPT, LIB_EVALUATE, LIB_SHOW_ERRORS]
+# Freeze predictions to JSON so evaluation is reproducible: run the model ONCE,
+# save its predictions, then evaluate the saved file (identical numbers every run,
+# no LLM in the loop). Used keyless on Day 2 (metrics lesson) and by the final
+# project (auditable, autogradable deliverable).
+LIB_PREDICTIONS = code(
+    '#@title 🔧 Library cell: save_predictions / load_predictions { display-mode: "form" }',
+    'def save_predictions(predictions, path):',
+    '    """Freeze a list of predicted labels to JSON."""',
+    '    with open(path, "w", encoding="utf-8") as f:',
+    '        json.dump(predictions, f)',
+    '    print(f"Saved {len(predictions)} predictions to {path}")',
+    '',
+    'def load_predictions(url_or_path):',
+    '    """Read a frozen predictions list — a committed URL or a local path."""',
+    '    if str(url_or_path).startswith("http"):',
+    '        raw = urllib.request.urlopen(url_or_path).read().decode("utf-8")',
+    '        predictions = json.loads(raw)',
+    '    else:',
+    '        predictions = json.loads(open(url_or_path, encoding="utf-8").read())',
+    '    print(f"Loaded {len(predictions)} frozen predictions.")',
+    '    return predictions')
+
+PIPELINE_LIB = [LIB_LOAD_GOLD, LIB_RUN_PROMPT, LIB_EVALUATE, LIB_SHOW_ERRORS, LIB_PREDICTIONS]
 
 
 def how_to_use(day, title, part_a, part_b):
@@ -361,8 +397,9 @@ def day1():
 def day2():
     cells = [how_to_use(
         2, "Day 2 · Gold standards & evaluation",
-        "load a gold standard → run an LLM → read precision / recall / F1 + a confusion "
-        "matrix → inspect the errors, on an easy-to-judge task (CEFR sentence level).",
+        "load a gold standard → evaluate a **frozen** set of model predictions → read "
+        "precision / recall / F1 + a confusion matrix → inspect the errors, on an "
+        "easy-to-judge task (CEFR sentence level).",
         "code the evaluation metrics (precision, recall, F1, Cohen's κ) by hand, then "
         "check them against scikit-learn.")]
 
@@ -371,11 +408,21 @@ def day2():
         "## Part A · Tutorial — the pipeline on CEFR-SP",
         "",
         "The task (CEFR sentence level, A1–C2) is easy to judge on purpose — today the "
-        "*mechanics* are the lesson, not the labeling.")]
+        "*mechanics* are the lesson, not the labeling.",
+        "",
+        "::: {.callout-note}",
+        "## Today runs on *frozen* predictions — no API key, no live model",
+        "You met the live model on Day 1 and saw its answers change from run to run. When "
+        "you're learning to *measure* quality, that wobble is just noise fighting the lesson — "
+        "so today the model's predictions are **pre-computed and committed** to a file. You "
+        "load them and everyone's precision / recall / F1 come out **identical every run**. "
+        "You'll run the model yourself (with the key) from Day 3 on.",
+        ":::")]
     cells += [md("### Setup — run this first")]
     cells += [setup_cell(
         CEFR_GOLD_URL,
-        "CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.")]
+        "CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.",
+        predictions_url=CEFR_PREDICTIONS_DAY2_URL)]
     cells += PIPELINE_LIB
     cells += [md(
         "### Step 1 — Load the gold standard",
@@ -384,25 +431,30 @@ def day2():
         "the *only* data shape you have to learn.")]
     cells += [code('gold = load_gold(GOLD_URL)')]
     cells += [md(
-        "### Step 2 — Run a fixed prompt   ✏️ YOU EDIT",
+        "### Step 2 — The prompt, and the frozen predictions it produced",
         "",
-        "This is the whole pipeline in one line. Edit the prompt text if you like, then run. "
-        "`{text}` is where each sentence gets slotted in.")]
+        "Here is the prompt we sent the model — `{text}` is where each sentence gets slotted "
+        "in. We ran it **once** over the gold set and committed the predictions, so today you "
+        "load that frozen file rather than call the model. (From Day 3 you'll run prompts like "
+        "this yourself.)")]
     cells += [code(
+        '# The prompt used to produce the frozen predictions (shown for reference — not run today):',
         'PROMPT = """You are an expert rater of English sentence difficulty using the CEFR scale.',
         'Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.',
         'Answer with the level only.',
         '',
         'Sentence: {text}"""',
         '',
-        'predictions = run_prompt(PROMPT, gold)')]
+        '# Load the pre-computed predictions (same order as `gold`):',
+        'predictions = load_predictions(PREDICTIONS_URL)')]
     cells += [md(
         "### Step 3 — Read the evaluation",
         "",
         "Per-level precision / recall / F1 (plus a macro average), then the confusion "
         "matrix. For CEFR you'll usually see confusions between *adjacent* levels "
         "(B1 ↔ B2), rarely far-apart ones (A1 ↔ C2) — the model has the right idea, "
-        "imprecise thresholds.")]
+        "imprecise thresholds. Because the predictions are frozen, these numbers are the "
+        "same every time you run — that's the point.")]
     cells += [code('evaluate(gold, predictions)')]
     cells += [md(
         "### Step 4 — Error analysis",
@@ -541,6 +593,17 @@ def day3():
         "",
         "Record the macro-F1 (the `macro avg` row of `evaluate`) after each run so you can "
         "tell a story about what helped.")]
+    cells += [md(
+        "::: {.callout-important}",
+        "## From today you run the model yourself — you need a free API key",
+        "Days 1–2 used Colab's built-in Gemini (or a frozen file). From Day 3 on you call the "
+        "model live and need your prompt runs to be **reproducible** (`temperature=0` + a fixed "
+        "seed), so the notebook switches to the **Gemini API**. Get a free key and add it to "
+        "Colab **Secrets** as `GEMINI_API_KEY` — one-time, ~2 minutes, no install. Full steps: "
+        "[Get a free Gemini API key](../tools/gemini-api-key.md). "
+        "When the setup cell prints `LLM backend: Gemini API (...)` you're set; if it still says "
+        "`Colab Gemini`, your secret isn't set or its notebook-access toggle is off.",
+        ":::")]
     cells += [md("### Setup — run this first")]
     cells += [setup_cell(
         CEFR_GOLD_URL,

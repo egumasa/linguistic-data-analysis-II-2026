@@ -4,8 +4,8 @@ subtitle: "Learn the pipeline on an easy-to-judge task (CEFR-SP)"
 toc: true
 ---
 
-> **Goal.** By the end of this tutorial you can take an annotated dataset, run an LLM over it with a
-> fixed prompt, and read the precision / recall / F1 / confusion-matrix output. We use an
+> **Goal.** By the end of this tutorial you can take an annotated dataset, evaluate a set of model
+> predictions against it, and read the precision / recall / F1 / confusion-matrix output. We use an
 > *easy-to-judge* task first — CEFR sentence levels — so the mechanics, not the labeling, are the
 > challenge. The hard, research-style task comes in the [Day 3 tutorial](./tutorial-day3-move-replication.md).
 
@@ -13,24 +13,27 @@ toc: true
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/day2_gold_standards_and_evaluation.ipynb)
 
+::: {.callout-note}
+## Today runs on *frozen* predictions — no API key needed
+Day 2 is about learning to **measure** annotation quality, so it doesn't call the model live (that
+wobble would just be noise). Instead the model's predictions were computed once and committed to the
+repo; the notebook **loads that frozen file**, so everyone's numbers match exactly. You start calling
+the model yourself — with a free key — from [Day 3](./tutorial-day3-move-replication.md). See
+[Get a free Gemini API key](../tools/gemini-api-key.md).
+:::
+
 ::: {.callout-note collapse="true"}
 ## Prefer to run outside Colab? (optional)
-
-**In class you need nothing but Colab** — the notebook uses Colab's free built-in Gemini, no API
-key, no install. This box is only for those who want to run the *same* notebook on their own
-machine. The notebook auto-detects it isn't in Colab and calls a real LLM API instead; it picks the
-provider from whichever key you set (`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, or `OPENAI_API_KEY`).
-
-Quick version — install the libraries, set one key, launch Jupyter:
+This box is only for running the *same* notebook on your own machine. Install the libraries and
+launch Jupyter — no key is needed for Day 2 (it reads the frozen predictions file):
 
 ```bash
-pip install jupyterlab scikit-learn pandas seaborn matplotlib google-genai anthropic openai
-export GEMINI_API_KEY=your-key-here      # or ANTHROPIC_API_KEY / OPENAI_API_KEY
+pip install jupyterlab scikit-learn pandas seaborn matplotlib google-genai
 jupyter lab                              # then open day2_gold_standards_and_evaluation.ipynb and Run All
 ```
 
-Full step-by-step (install `uv`, virtual environment, getting an API key):
-[Python Setup — Run Locally](../tools/python-setup.md).
+For the Day 3+ notebooks (which *do* call the model) set `GEMINI_API_KEY`. Full step-by-step (install
+`uv`, virtual environment, getting a key): [Python Setup — Run Locally](../tools/python-setup.md).
 :::
 
 ## The task
@@ -59,19 +62,20 @@ partner and compute simple agreement. For CEFR you will mostly agree — hold on
 notice how different it is for the Day 3 discourse task.
 :::
 
-## Step 2 — Run a fixed prompt (the pipeline)
+## Step 2 — Load the frozen predictions (the pipeline)
 
-In the `day2_gold_standards_and_evaluation` notebook the pipeline is four named cells. You do **not** edit them — you
-just run them:
+In the `day2_gold_standards_and_evaluation` notebook the pipeline is a few named cells. You do **not**
+edit them — you just run them:
 
 | Cell | What it does |
 |------|--------------|
 | `load_gold(path)` | reads the JSON gold file → `gold` |
-| `run_prompt(prompt, gold)` | sends each `text` to the LLM → `predictions` |
+| `load_predictions(url)` | reads the **frozen** predictions we pre-computed → `predictions` |
 | `evaluate(gold, predictions)` | prints precision / recall / F1 + a confusion matrix |
 | `show_errors(gold, predictions)` | lists the items the model got wrong |
 
-A minimal starting prompt:
+The predictions were produced once with the prompt below (shown so you know what generated them —
+you don't run it today; that's what makes the numbers reproducible):
 
 ```text
 You are an expert rater of English sentence difficulty using the CEFR scale.
@@ -97,6 +101,7 @@ annotation work, and it returns with force in the Day 3 task.
 ## What to take to Day 3
 
 You now know the full loop: **load gold → format prompt → call model → evaluate → inspect errors.**
-On Day 3 the loop is identical; only the *task* gets harder.
+Today you evaluated *frozen* predictions so the numbers held still while you learned the metrics; on
+Day 3 you run the **call model** step yourself (with a free API key), and only the *task* gets harder.
 
 ➡️ [Day 3 Tutorial — Replicating Kim & Lu with open data](./tutorial-day3-move-replication.md)

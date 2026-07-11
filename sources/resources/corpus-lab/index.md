@@ -8,6 +8,15 @@ toc: true
 notebook** as *Part B* — so the tutorial and its lab are one file you submit together. See the
 [Daily Notebooks](../tutorials/index.md) index for all five.
 
+::: {.callout-important}
+## These are autograded — so they must be reproducible
+Corpus Labs are checked automatically, so your results have to come out the same every run. The
+**Day 1–2 labs are keyless** (Python practice; metrics on *frozen* predictions). From **Day 3** the
+labs call the model, so you use the **Gemini API** with `temperature=0` + a fixed seed and
+[a free key](../tools/gemini-api-key.md) — and you **freeze your predictions to JSON** so the grader
+re-runs your analysis on exactly the outputs you saw.
+:::
+
 ## Available now
 
 - **Day 1 · [`day1_python_and_first_llm.ipynb`](../tutorials/day1_python_and_first_llm.ipynb)** —

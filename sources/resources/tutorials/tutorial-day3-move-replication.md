@@ -8,6 +8,17 @@ toc: true
 > **moves** — and see how *prompt refinement* and *few-shot examples* change accuracy. Same pipeline
 > as [Day 2](./tutorial-day2-annotation-eval.md); a much harder *judgment*.
 
+::: {.callout-important}
+## From Day 3 you run the model yourself — with a free key
+Days 1–2 were keyless (Day 1's demo used Colab's built-in Gemini; Day 2 read frozen predictions). Now
+you call the model live, and — because you compare prompts and the Corpus Labs are **autograded** —
+runs must be **reproducible**. The notebooks use the **Gemini API** with `temperature=0` + a fixed
+seed, so re-running gives the same numbers and prompt-to-prompt differences reflect the *prompt*, not
+noise. One-time setup (~2 min, no install): [get a free Gemini API key](../tools/gemini-api-key.md)
+and add it to Colab Secrets. When you settle on a prompt, **freeze its predictions to JSON** so your
+reported F1 is auditable.
+:::
+
 ## Why this task is hard (and why that's the point)
 
 Deciding a sentence's **move** ("is this *Background* or a *Gap*?") requires reading rhetorical

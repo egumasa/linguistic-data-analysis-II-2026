@@ -20,6 +20,15 @@ You open each notebook directly in Colab (Tohoku Google account, no setup), **Ru
 [Datasets](../datasets/index.md).
 :::
 
+::: {.callout-tip}
+## Which backend each day uses
+- **Day 1** — Colab's built-in Gemini (`colab.ai`), keyless. Your first live call; notice it varies.
+- **Day 2** — *no model call.* You evaluate **frozen** predictions so the metrics numbers hold still.
+- **Day 3 onward** — you run the model yourself via the **Gemini API** (`temperature=0` + a fixed
+  seed, so results are reproducible for the autograded labs). One-time setup:
+  [get a free key](../tools/gemini-api-key.md).
+:::
+
 ## The notebooks
 
 | Day | Notebook | Tutorial (Part A) | Corpus Lab (Part B) |
