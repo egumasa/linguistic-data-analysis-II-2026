@@ -15,7 +15,11 @@ website:
     background: primary
     right:
       - text: "Course info"
-        href: syllabus/index.md
+        menu:
+          - text: "Syllabus"
+            href: syllabus/index.md
+          - text: "Readings"
+            href: syllabus/readings.md
       - text: "Sessions"
         href: sessions/index.md
       - text: "Final Project"
@@ -71,6 +75,7 @@ website:
           contents:
             - resources/tools/index.md
             - resources/tools/google-colab-setup.md
+            - resources/tools/gemini-api-key.md
             - resources/tools/python-setup.md
             - resources/tools/google-drive-data.md
         - section: "Corpora"
@@ -110,7 +115,7 @@ format:
   html:
     theme:
       - litera
-      - css/style.scss
+      - ../assets/css/style.scss
 
     # css: css/styles.css
     toc: true
