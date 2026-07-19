@@ -82,6 +82,14 @@ The setup cell prints which backend it chose, e.g.
 `LLM backend: Gemini API (gemini-2.5-flash)`. If it still says `Colab Gemini`, your secret isn't set
 or its notebook-access toggle is off — recheck Step 2.
 
+::: {.callout-tip}
+## If Colab's built-in Gemini (`colab.ai`) is ever unavailable
+The Days 1–3 demos use the keyless `colab.ai` backend. If it's down or unreachable in class, the fix
+is the same steps above: create a free key (Step 1) and add it as the `GEMINI_API_KEY` secret
+(Step 2). The notebook then routes **every** call through the Gemini API automatically — so the API
+key doubles as the fallback whenever the built-in backend isn't working.
+:::
+
 ## About reproducibility (important, and a little humbling)
 
 `temperature=0` + `seed` makes the model **as reproducible as a hosted LLM gets** — but **not

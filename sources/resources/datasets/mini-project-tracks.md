@@ -23,7 +23,7 @@ track is the same:
 Each track rebuilds a ready gold file **and** a full pool to sample your own subset from.
 
 Rebuild the gold files: [`README.md`](./README.md) · provenance & licenses: [`SOURCES.md`](./SOURCES.md) ·
-the pipeline: [Day 2](../tutorials/tutorial-day2-annotation-eval.md) & [Day 3](../tutorials/tutorial-day3-move-replication.md) tutorials.
+the pipeline: [Day 2](../../notebooks/tutorial-day2-annotation-eval.md) & [Day 3](../../notebooks/tutorial-day3-move-replication.md) tutorials.
 
 ::: {.callout-tip}
 ## Keep your data in your own Drive

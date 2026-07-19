@@ -134,8 +134,8 @@ validator.
 
 ## Worked tutorials & mini-project tracks
 
-- [Day 2 tutorial — Annotation, gold standards & evaluation](../tutorials/tutorial-day2-annotation-eval.md)
+- [Day 2 tutorial — Annotation, gold standards & evaluation](../../notebooks/tutorial-day2-annotation-eval.md)
   (on-ramp with CEFR-SP)
-- [Day 3 tutorial — Replicating Kim & Lu with open data](../tutorials/tutorial-day3-move-replication.md)
+- [Day 3 tutorial — Replicating Kim & Lu with open data](../../notebooks/tutorial-day3-move-replication.md)
   (RAAMove → CaRS-50)
 - [Mini-project starter tracks](./mini-project-tracks.md)

@@ -12,5 +12,5 @@ material you can dip into for corpus building and lexical analysis. Each is Cola
 - [Parallel Analysis for lexical diversity](./ld_parallel_analysis.ipynb) — choose the number of
   components for lexical-diversity measurement.
 
-For the guided course notebooks, see [Tutorials](../tutorials/index.md); for the annotated datasets,
+For the guided course notebooks, see [Tutorials](../../notebooks/index.md); for the annotated datasets,
 see [Datasets](../datasets/index.md).

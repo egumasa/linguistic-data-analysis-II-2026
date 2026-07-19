@@ -4,8 +4,8 @@ subtitle: "Implement precision, recall, F1, and Cohen's κ by hand — then chec
 toc: true
 ---
 
-In the [Day-2 notebook](../../tutorials/day2_gold_standards_and_evaluation.ipynb) and the
-[Corpus Lab](../../corpus-lab/index.md) you called `evaluate()` on a set of *frozen* predictions
+In the [Day-2 notebook](../../../notebooks/day2_gold_standards_and_evaluation.ipynb) and the
+[Corpus Lab](../../../notebooks/index.md) you called `evaluate()` on a set of *frozen* predictions
 and read the numbers it printed. Here you write those numbers yourself. Once you have coded precision, recall, F1,
 and Cohen's κ from the raw label lists, the scores scikit-learn reports in the final
 project will never be a black box — you will know exactly what each one means and when it

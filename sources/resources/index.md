@@ -24,8 +24,6 @@ Course resources organized by category. **Setup guides are ready now** — get t
 
 - 📚 [Corpora](corpora/index.md) — available and learner corpora
 - 🗂️ [Replication Datasets](datasets/index.md) — the open, annotated datasets used across Days 2–5
-- 📓 [Daily Notebooks](tutorials/index.md) — one tutorial + Corpus Lab notebook per day
-- 🧪 [Corpus Lab](corpus-lab/index.md) — the daily hands-on practice
 - 🧮 [Coding the metrics from scratch](code-examples/python/index.md)
 - ➕ [Additional Examples](additional-examples/index.md) — optional corpus & lexical notebooks
 - 🐙 [GitHub & Optional Workshops](github/index.md)

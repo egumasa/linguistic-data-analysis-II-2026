@@ -83,7 +83,7 @@ uv run jupyter lab
 ```
 
 In the browser tab that opens, navigate to a notebook that calls the model — e.g.
-`sources/resources/tutorials/day3_prompt_design.ipynb` — and choose **Run → Run All Cells**. The
+`sources/notebooks/day3_prompt_design.ipynb` — and choose **Run → Run All Cells**. The
 first cell prints which backend it chose, e.g.
 `LLM backend: Gemini API (gemini-2.5-flash, temperature=0, seed=42)`. Everything else — loading the
 gold set, the confusion matrix, the error table — works exactly as in Colab. (The Day-2 notebook
