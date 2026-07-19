@@ -1,0 +1,43 @@
+---
+title: "Session 2: First Experience with LLM Classification"
+subtitle: "Day 1 · Introduction & First Experience (1-2)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 2: First Experience with LLM Classification
+
+## 📋 Agenda
+
+- A quick chat-interface demo
+- Google Colab onboarding — sign in, open, run, edit, re-run
+- A short "reading Python" orientation
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Chat-interface demo
+
+## Chat-interface demo
+
+<!-- to be added -->
+
+# Google Colab onboarding
+
+## Google Colab onboarding
+
+<!-- to be added -->
+
+# Reading Python
+
+## Reading Python
+
+<!-- to be added -->
+
+# Any questions?

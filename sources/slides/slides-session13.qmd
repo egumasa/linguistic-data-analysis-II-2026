@@ -1,0 +1,43 @@
+---
+title: "Session 13: Project Work: Prompt Iteration & Final Evaluation"
+subtitle: "Day 5 · Project Finalization & Presentations (5-1)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 13: Project Work: Prompt Iteration & Final Evaluation
+
+## 📋 Agenda
+
+- Iterate your prompt over 2–3 cycles
+- Run the final evaluation
+- Begin the in-class one-page report
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Iterate your prompt
+
+## Iterate your prompt
+
+<!-- to be added -->
+
+# Final evaluation run
+
+## Final evaluation run
+
+<!-- to be added -->
+
+# Begin the one-page report
+
+## Begin the one-page report
+
+<!-- to be added -->
+
+# Any questions?

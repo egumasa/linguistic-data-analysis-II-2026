@@ -14,7 +14,7 @@ Days 1–2 were keyless (Day 1's demo used Colab's built-in Gemini; Day 2 read f
 you call the model live, and — because you compare prompts and the Corpus Labs are **autograded** —
 runs must be **reproducible**. The notebooks use the **Gemini API** with `temperature=0` + a fixed
 seed, so re-running gives the same numbers and prompt-to-prompt differences reflect the *prompt*, not
-noise. One-time setup (~2 min, no install): [get a free Gemini API key](../tools/gemini-api-key.md)
+noise. One-time setup (~2 min, no install): [get a free Gemini API key](../resources/tools/gemini-api-key.md)
 and add it to Colab Secrets. When you settle on a prompt, **freeze its predictions to JSON** so your
 reported F1 is auditable.
 :::
@@ -31,7 +31,7 @@ Kim & Lu's question.
 
 Begin with `gold/raamove_moves.json` (64 sentences from RA abstracts, balanced across 8 moves:
 Background, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication) — build it with the
-[RAAMove download notebook](../datasets/notebooks/download_raamove.ipynb). It is tidy JSON, so you can
+[RAAMove download notebook](../resources/datasets/notebooks/download_raamove.ipynb). It is tidy JSON, so you can
 focus on the *prompt*.
 
 ### Iteration 0 — zero-shot
@@ -67,7 +67,7 @@ otherwise you are testing on training data.
 ## Step 2 — The real replication: CaRS-50 (CARS moves)
 
 Now switch the gold file to `gold/cars50_moves.json` (build it with the
-[CaRS-50 download notebook](../datasets/notebooks/download_cars50.ipynb)) — Swales'
+[CaRS-50 download notebook](../resources/datasets/notebooks/download_cars50.ipynb)) — Swales'
 **CARS Move 1/2/3** in article *introductions*, the same scheme Kim & Lu used. Re-use your best
 prompt (adapt the label set and definitions to Moves 1–3). Compare:
 
@@ -95,4 +95,4 @@ the improvement curve — this table *is* your mini-result.
 - Where the model fails, is it the *model* or the *scheme* (recall κ ≈ 0.43)? How would you report
   that honestly in your presentation?
 
-➡️ Ready to run your own study? [Mini-project starter tracks](../datasets/mini-project-tracks.md)
+➡️ Ready to run your own study? [Mini-project starter tracks](../resources/datasets/mini-project-tracks.md)

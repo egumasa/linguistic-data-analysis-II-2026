@@ -1,0 +1,43 @@
+---
+title: "Session 1: Introduction to LLMs & NLP Tasks"
+subtitle: "Day 1 · Introduction & First Experience (1-1)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 1: Introduction to LLMs & NLP Tasks
+
+## 📋 Agenda
+
+- What LLMs are & how they fit linguistic analysis
+- The NLP tasks we'll tackle in this course
+- Course overview & self-introductions
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# What are LLMs?
+
+## What are LLMs?
+
+<!-- to be added -->
+
+# NLP tasks for linguistic analysis
+
+## NLP tasks for linguistic analysis
+
+<!-- to be added -->
+
+# Course overview & introductions
+
+## Course overview & introductions
+
+<!-- to be added -->
+
+# Any questions?

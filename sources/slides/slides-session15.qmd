@@ -1,0 +1,36 @@
+---
+title: "Session 15: Final Presentations & Wrap-up"
+subtitle: "Day 5 · Project Finalization & Presentations (5-3)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 15: Final Presentations & Wrap-up
+
+## 📋 Agenda
+
+- Group presentations with instructor Q&A
+- Course wrap-up discussion
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Group presentations & Q&A
+
+## Group presentations & Q&A
+
+<!-- to be added -->
+
+# Course wrap-up
+
+## Course wrap-up
+
+<!-- to be added -->
+
+# Any questions?

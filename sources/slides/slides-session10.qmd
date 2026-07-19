@@ -1,0 +1,43 @@
+---
+title: "Session 10: Methodology: Reproducibility, LLM Limits & Ethics"
+subtitle: "Day 4 · Methodology & Pipeline Assembly (4-1)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 10: Methodology: Reproducibility, LLM Limits & Ethics
+
+## 📋 Agenda
+
+- Reproducibility — pin the model, log prompts, set temperature/seed
+- LLM limitations — hallucination, data contamination, stochasticity
+- Ethics — privacy, authorship — and the reporting checklist
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Reproducibility
+
+## Reproducibility
+
+<!-- to be added -->
+
+# LLM limitations
+
+## LLM limitations
+
+<!-- to be added -->
+
+# Ethics & the reporting checklist
+
+## Ethics & the reporting checklist
+
+<!-- to be added -->
+
+# Any questions?

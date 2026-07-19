@@ -1,0 +1,43 @@
+---
+title: "Session 6: Evaluation Metrics"
+subtitle: "Day 2 · Annotation, Gold Standards & Metrics (2-3)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 6: Evaluation Metrics
+
+## 📋 Agenda
+
+- Precision, recall, and F1
+- The confusion matrix
+- Hands-on practice in Colab
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Precision, recall, F1
+
+## Precision, recall, F1
+
+<!-- to be added -->
+
+# The confusion matrix
+
+## The confusion matrix
+
+<!-- to be added -->
+
+# Hands-on in Colab
+
+## Hands-on in Colab
+
+<!-- to be added -->
+
+# Any questions?

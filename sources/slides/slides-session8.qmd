@@ -1,0 +1,43 @@
+---
+title: "Session 8: Hands-on: LLM Classification & Prompt Iteration"
+subtitle: "Day 3 · Prompt Design & Iteration (3-2)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 8: Hands-on: LLM Classification & Prompt Iteration
+
+## 📋 Agenda
+
+- Run LLM-based text classification in Colab
+- Evaluate the outputs with the prepared tools
+- Get your Gemini API key
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Run classification in Colab
+
+## Run classification in Colab
+
+<!-- to be added -->
+
+# Evaluate the outputs
+
+## Evaluate the outputs
+
+<!-- to be added -->
+
+# Your Gemini API key
+
+## Your Gemini API key
+
+<!-- to be added -->
+
+# Any questions?

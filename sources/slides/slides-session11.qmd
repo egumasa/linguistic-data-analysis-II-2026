@@ -1,0 +1,43 @@
+---
+title: "Session 11: Plenary Pipeline Assembly"
+subtitle: "Day 4 · Methodology & Pipeline Assembly (4-2)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 11: Plenary Pipeline Assembly
+
+## 📋 Agenda
+
+- Assemble the project notebook together, step by step
+- Pick a mini-project track
+- Sample a balanced gold subset from the provided pool
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Assemble the notebook
+
+## Assemble the notebook
+
+<!-- to be added -->
+
+# Pick a track
+
+## Pick a track
+
+<!-- to be added -->
+
+# Sample a balanced gold subset
+
+## Sample a balanced gold subset
+
+<!-- to be added -->
+
+# Any questions?

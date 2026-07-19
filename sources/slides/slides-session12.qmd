@@ -1,0 +1,36 @@
+---
+title: "Session 12: Project Work: QC the Gold Set & Baseline"
+subtitle: "Day 4 · Methodology & Pipeline Assembly (4-3)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 12: Project Work: QC the Gold Set & Baseline
+
+## 📋 Agenda
+
+- A quality-control (adjudication) pass on your sampled gold set
+- Run a baseline prompt
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# QC / adjudication pass
+
+## QC / adjudication pass
+
+<!-- to be added -->
+
+# Run a baseline prompt
+
+## Run a baseline prompt
+
+<!-- to be added -->
+
+# Any questions?

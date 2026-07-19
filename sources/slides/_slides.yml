@@ -1,0 +1,40 @@
+# Shared reveal.js config for all session slide decks.
+# Referenced from each deck via `metadata-files: [../_slides.yml]`.
+# Adapted from the LDA I (2025) slide system; theme reuses assets/css/slides.scss.
+author: "Masaki EGUCHI, Ph.D."
+date-modified: last-modified
+lang: en
+highlight-style: github
+code-annotations: hover
+
+footer: "Linguistic Data Analysis II"
+format:
+  revealjs:
+    theme:
+      - default
+      # Path resolves relative to each deck (sources/slides/) → sources/assets/.
+      - ../assets/css/slides.scss
+    background-transition: none
+    slide-number: true
+    chalkboard: true
+    controls: true
+    progress: true
+    hash: true
+    history: false
+    keyboard: true
+    overview: true
+    touch: true
+    loop: false
+    rtl: false
+    fragments: true
+    resource-embed: true
+    help: true
+    showNotes: false
+    autoSlide: 0
+    autoSlideStoppable: true
+    mouseWheel: false
+    hideAddressBar: true
+    previewLinks: false
+    math:
+      method: mathjax
+      url: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_HTML-full"

@@ -1,0 +1,43 @@
+---
+title: "Session 5: Hands-on: Gold-Standard Annotation & Agreement"
+subtitle: "Day 2 · Annotation, Gold Standards & Metrics (2-2)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 5: Hands-on: Gold-Standard Annotation & Agreement
+
+## 📋 Agenda
+
+- Re-annotate a sample using a prepared scheme
+- Compute inter-annotator agreement
+- Compare against the published gold and against LLM annotations
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Re-annotate a sample
+
+## Re-annotate a sample
+
+<!-- to be added -->
+
+# Inter-annotator agreement
+
+## Inter-annotator agreement
+
+<!-- to be added -->
+
+# Compare: gold vs. LLM
+
+## Compare: gold vs. LLM
+
+<!-- to be added -->
+
+# Any questions?

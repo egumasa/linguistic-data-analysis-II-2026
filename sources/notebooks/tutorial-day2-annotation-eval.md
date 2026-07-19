@@ -11,7 +11,7 @@ toc: true
 
 **Companion notebook:** `day2_gold_standards_and_evaluation.ipynb` — open it directly in Colab (Tohoku Google account, no setup):
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tutorials/day2_gold_standards_and_evaluation.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)
 
 ::: {.callout-note}
 ## Today runs on *frozen* predictions — no API key needed
@@ -19,7 +19,7 @@ Day 2 is about learning to **measure** annotation quality, so it doesn't call th
 wobble would just be noise). Instead the model's predictions were computed once and committed to the
 repo; the notebook **loads that frozen file**, so everyone's numbers match exactly. You start calling
 the model yourself — with a free key — from [Day 3](./tutorial-day3-move-replication.md). See
-[Get a free Gemini API key](../tools/gemini-api-key.md).
+[Get a free Gemini API key](../resources/tools/gemini-api-key.md).
 :::
 
 ::: {.callout-note collapse="true"}
@@ -33,7 +33,7 @@ jupyter lab                              # then open day2_gold_standards_and_eva
 ```
 
 For the Day 3+ notebooks (which *do* call the model) set `GEMINI_API_KEY`. Full step-by-step (install
-`uv`, virtual environment, getting a key): [Python Setup — Run Locally](../tools/python-setup.md).
+`uv`, virtual environment, getting a key): [Python Setup — Run Locally](../resources/tools/python-setup.md).
 :::
 
 ## The task
@@ -43,8 +43,8 @@ assigned by language-education professionals, and we kept only sentences where *
 agreed** — so there is a defensible "right answer" for every item.
 
 Dataset: `gold/cefr_sentences.json` (72 items, 12 per level) — build it with the
-[CEFR-SP download notebook](../datasets/notebooks/download_cefr_sp.ipynb).
-See the [dataset catalog](../datasets/index.md#cefr-sp-the-on-ramp-to-judge) for provenance.
+[CEFR-SP download notebook](../resources/datasets/notebooks/download_cefr_sp.ipynb).
+See the [dataset catalog](../resources/datasets/index.md#cefr-sp-the-on-ramp-to-judge) for provenance.
 
 ## Step 1 — Look at the gold standard
 

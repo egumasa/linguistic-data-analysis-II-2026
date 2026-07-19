@@ -1,0 +1,43 @@
+---
+title: "Session 14: Project Work: Finalize Report & Notebook"
+subtitle: "Day 5 · Project Finalization & Presentations (5-2)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 14: Project Work: Finalize Report & Notebook
+
+## 📋 Agenda
+
+- Finalize the one-page report
+- Prepare your presentation
+- Submit the completed notebook
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Finalize the report
+
+## Finalize the report
+
+<!-- to be added -->
+
+# Prepare the presentation
+
+## Prepare the presentation
+
+<!-- to be added -->
+
+# Submit the notebook
+
+## Submit the notebook
+
+<!-- to be added -->
+
+# Any questions?

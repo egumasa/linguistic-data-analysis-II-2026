@@ -1,0 +1,43 @@
+---
+title: "Session 9: Iterative Prompt Improvement & Error Analysis"
+subtitle: "Day 3 · Prompt Design & Iteration (3-3)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 9: Iterative Prompt Improvement & Error Analysis
+
+## 📋 Agenda
+
+- Error analysis of misclassifications
+- Iterate the prompt over 2–3 cycles
+- A short under-the-hood walkthrough
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Error analysis
+
+## Error analysis
+
+<!-- to be added -->
+
+# Iterating the prompt
+
+## Iterating the prompt
+
+<!-- to be added -->
+
+# Under the hood
+
+## Under the hood
+
+<!-- to be added -->
+
+# Any questions?

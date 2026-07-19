@@ -17,7 +17,16 @@ You open each notebook directly in Colab (Tohoku Google account, no setup), **Ru
 ## The pipeline is the same all week
 **load gold → format prompt → call model → evaluate → inspect errors.** Only the *task* and the
 *prompt* change. The datasets behind these notebooks are catalogued under
-[Datasets](../datasets/index.md).
+[Datasets](../resources/datasets/index.md).
+:::
+
+::: {.callout-important}
+## Part B is autograded — so it must be reproducible
+The Corpus Lab sections are checked automatically, so your results have to come out the same every
+run. The **Day 1–2 labs are keyless** (Python practice; metrics on *frozen* predictions). From
+**Day 3** the labs call the model, so you use the **Gemini API** with `temperature=0` + a fixed seed
+and [a free key](../resources/tools/gemini-api-key.md) — and you **freeze your predictions to JSON**
+so the grader re-runs your analysis on exactly the outputs you saw.
 :::
 
 ::: {.callout-tip}
@@ -26,7 +35,7 @@ You open each notebook directly in Colab (Tohoku Google account, no setup), **Ru
 - **Day 2** — *no model call.* You evaluate **frozen** predictions so the metrics numbers hold still.
 - **Day 3 onward** — you run the model yourself via the **Gemini API** (`temperature=0` + a fixed
   seed, so results are reproducible for the autograded labs). One-time setup:
-  [get a free key](../tools/gemini-api-key.md).
+  [get a free key](../resources/tools/gemini-api-key.md).
 :::
 
 ## The notebooks
@@ -48,4 +57,4 @@ The prose walkthroughs below expand on the in-notebook narration:
   discourse-move mini-project track.
 
 When you are ready to run your own study, move on to the
-[mini-project starter tracks](../datasets/mini-project-tracks.md).
+[mini-project starter tracks](../resources/datasets/mini-project-tracks.md).

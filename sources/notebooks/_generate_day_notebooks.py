@@ -9,7 +9,7 @@ The shared LLM backend + pipeline "library cells" are lifted verbatim from the o
 `02_gold_and_eval.ipynb`; only the task-specific bits (GOLD_URL / LEVELS) are
 parameterized. Days whose tutorial or lab is not written yet ship honest TODO scaffolds.
 
-Run:  python sources/resources/tutorials/_generate_day_notebooks.py
+Run:  python sources/notebooks/_generate_day_notebooks.py
 """
 import json
 from pathlib import Path
@@ -600,7 +600,7 @@ def day3():
         "model live and need your prompt runs to be **reproducible** (`temperature=0` + a fixed "
         "seed), so the notebook switches to the **Gemini API**. Get a free key and add it to "
         "Colab **Secrets** as `GEMINI_API_KEY` — one-time, ~2 minutes, no install. Full steps: "
-        "[Get a free Gemini API key](../tools/gemini-api-key.md). "
+        "[Get a free Gemini API key](../resources/tools/gemini-api-key.md). "
         "When the setup cell prints `LLM backend: Gemini API (...)` you're set; if it still says "
         "`Colab Gemini`, your secret isn't set or its notebook-access toggle is off.",
         ":::")]
@@ -711,7 +711,7 @@ def day4():
         "A balanced sample (equal items per label) keeps precision/recall/F1 and the "
         "confusion matrix meaningful. Here we demo it on the familiar CEFR pool; swap "
         "`POOL_URL` for your track's pool. See the "
-        "[mini-project tracks](../datasets/mini-project-tracks.md) for the full list.")]
+        "[mini-project tracks](../resources/datasets/mini-project-tracks.md) for the full list.")]
     cells += [md("### Setup — run this first")]
     cells += [setup_cell(
         CEFR_GOLD_URL,
@@ -751,7 +751,7 @@ def day4():
         "### Save your gold set to Google Drive",
         "",
         "Keep your own gold set in **your** Drive (not the course repo). See "
-        "[Housing your data in Google Drive](../tools/google-drive-data.md) for the "
+        "[Housing your data in Google Drive](../resources/tools/google-drive-data.md) for the "
         "mount → save → load round-trip.")]
     cells += [code(
         '# ✏️ Uncomment in Colab to save to your Drive:',
@@ -807,7 +807,7 @@ def day5():
         "",
         "Your notebook is submitted alongside a one-page report. Draft its five sections "
         "here as you finish each analysis (full guidance: "
-        "[mini-project tracks](../datasets/mini-project-tracks.md)).")]
+        "[mini-project tracks](../resources/datasets/mini-project-tracks.md)).")]
     cells += [todo(
         "Report scaffold (to be expanded):",
         "",

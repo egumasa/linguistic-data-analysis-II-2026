@@ -1,0 +1,43 @@
+---
+title: "Session 4: Annotation Principles & Inter-Annotator Agreement"
+subtitle: "Day 2 · Annotation, Gold Standards & Metrics (2-1)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 4: Annotation Principles & Inter-Annotator Agreement
+
+## 📋 Agenda
+
+- Annotation principles
+- The NLP pipeline for applied linguistics
+- Introduction to gold-standard dataset construction
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Annotation principles
+
+## Annotation principles
+
+<!-- to be added -->
+
+# The NLP pipeline
+
+## The NLP pipeline
+
+<!-- to be added -->
+
+# Gold-standard construction
+
+## Gold-standard construction
+
+<!-- to be added -->
+
+# Any questions?

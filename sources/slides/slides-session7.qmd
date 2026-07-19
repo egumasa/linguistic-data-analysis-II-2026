@@ -1,0 +1,43 @@
+---
+title: "Session 7: Prompt Design: Zero-shot vs Few-shot"
+subtitle: "Day 3 · Prompt Design & Iteration (3-1)"
+format: revealjs
+metadata-files:
+  - _slides.yml
+---
+
+<!-- STUB DECK — structure only; content to be filled in before the course. -->
+
+# Session 7: Prompt Design: Zero-shot vs Few-shot
+
+## 📋 Agenda
+
+- Prompt-design principles
+- Zero-shot vs. few-shot prompting
+- Strategies for effective prompt engineering
+
+## 🎯 Learning Objectives
+
+By the end of this session, you will be able to:
+
+<!-- to be added -->
+
+# Prompt-design principles
+
+## Prompt-design principles
+
+<!-- to be added -->
+
+# Zero-shot vs. few-shot
+
+## Zero-shot vs. few-shot
+
+<!-- to be added -->
+
+# Effective prompting strategies
+
+## Effective prompting strategies
+
+<!-- to be added -->
+
+# Any questions?
