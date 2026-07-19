@@ -32,6 +32,11 @@ Quarto's jupyter engine is wired to use `uv` (see `execute` block in `_quarto.ym
 
 Important: the example notebooks under [sources/resources/code-examples/python/](sources/resources/code-examples/python/) are written to run in **Google Colab** by students (the course assumes no local Python install — see [python-setup.md](sources/resources/tools/python-setup.md)). They import heavy NLP libraries (`spacy`, `taaled`, `pylats`, `lexical-diversity`, `pandas`, `seaborn`). These are not installed locally via `uv` and are not needed to build the site — only to execute notebooks. Do not assume they are available in this environment.
 
+## Coding approach
+
+- use basic functional oriented programming ()
+- 
+
 ## Layout & content authoring
 
 All site content lives under `sources/`:
@@ -51,3 +56,8 @@ All site content lives under `sources/`:
 ## Planning docs (gitignored)
 
 `planning/` is excluded via [.gitignore](.gitignore) and holds course-design notes (mostly in Japanese) — e.g. `planning/course_planning/course-design.md` (the authoritative internal design doc — rationale, delivery plan, status, and tasks), `LDA2_syllabus.md`. These are working/reference material and are not published; treat them as the source of intent behind the course design, not as deliverables.
+
+
+## Commiting
+
+- DO not include any Claude co-author tag such as ``Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>``
