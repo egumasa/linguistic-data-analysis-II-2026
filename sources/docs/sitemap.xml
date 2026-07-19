@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/notebooks/day5_project_finalization.html</loc>
+    <lastmod>2026-07-19T06:01:37.041Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/notebooks/index.html</loc>
+    <lastmod>2026-07-19T05:45:37.705Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/notebooks/day4_pipeline_and_sampling.html</loc>
+    <lastmod>2026-07-19T06:01:37.041Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/notebooks/day2_gold_standards_and_evaluation.html</loc>
+    <lastmod>2026-07-11T05:10:17.749Z</lastmod>
+  </url>
+  <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/index.html</loc>
     <lastmod>2026-07-11T05:59:52.199Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day1/session3.html</loc>
-    <lastmod>2026-07-11T05:59:26.044Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.768Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/index.html</loc>
@@ -14,59 +30,71 @@
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day5/session13.html</loc>
-    <lastmod>2026-07-11T05:59:26.046Z</lastmod>
+    <lastmod>2026-07-19T05:32:57.285Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day5/session14.html</loc>
-    <lastmod>2026-07-11T05:59:26.046Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.771Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day2/session4.html</loc>
-    <lastmod>2026-07-11T05:59:26.044Z</lastmod>
+    <lastmod>2026-07-19T05:32:57.284Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day3/session7.html</loc>
-    <lastmod>2026-07-11T05:59:26.044Z</lastmod>
+    <lastmod>2026-07-19T05:32:57.285Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day3/session9.html</loc>
-    <lastmod>2026-07-11T05:59:26.045Z</lastmod>
+    <lastmod>2026-07-19T05:32:57.285Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day4/session11.html</loc>
-    <lastmod>2026-07-11T05:59:26.046Z</lastmod>
+    <lastmod>2026-07-19T05:32:57.285Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/syllabus/index.html</loc>
     <lastmod>2026-07-11T06:06:24.165Z</lastmod>
   </url>
   <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/corpora/available-corpora.html</loc>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session15.html</loc>
+    <lastmod>2026-07-19T05:30:34.992Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session8.html</loc>
+    <lastmod>2026-07-19T05:30:34.994Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session10.html</loc>
+    <lastmod>2026-07-19T05:30:34.991Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session13.html</loc>
+    <lastmod>2026-07-19T05:30:34.992Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session3.html</loc>
+    <lastmod>2026-07-19T05:30:34.993Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session1.html</loc>
+    <lastmod>2026-07-19T05:30:34.990Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session4.html</loc>
+    <lastmod>2026-07-19T05:30:34.993Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session7.html</loc>
+    <lastmod>2026-07-19T05:30:34.994Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/corpora/learner-corpora.html</loc>
     <lastmod>2026-07-11T05:59:26.048Z</lastmod>
   </url>
   <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/corpora/index.html</loc>
-    <lastmod>2026-07-11T05:59:26.047Z</lastmod>
-  </url>
-  <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tutorials/day5_project_finalization.html</loc>
-    <lastmod>2026-07-11T05:10:17.750Z</lastmod>
-  </url>
-  <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tutorials/index.html</loc>
-    <lastmod>2026-07-11T05:12:19.718Z</lastmod>
-  </url>
-  <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tutorials/day4_pipeline_and_sampling.html</loc>
-    <lastmod>2026-07-11T05:10:17.750Z</lastmod>
-  </url>
-  <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tutorials/day2_gold_standards_and_evaluation.html</loc>
-    <lastmod>2026-07-11T05:10:17.749Z</lastmod>
-  </url>
-  <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/index.html</loc>
-    <lastmod>2026-07-11T05:59:43.723Z</lastmod>
+    <lastmod>2026-07-19T06:02:10.621Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/additional-examples/extracting-collocations.html</loc>
@@ -90,11 +118,11 @@
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/datasets/index.html</loc>
-    <lastmod>2026-07-04T05:53:59.072Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.778Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tools/python-setup.html</loc>
-    <lastmod>2026-07-11T05:13:18.425Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.771Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tools/colab-ai-preflight.html</loc>
@@ -106,7 +134,7 @@
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tools/google-drive-data.html</loc>
-    <lastmod>2026-07-08T13:56:34.633Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.776Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/final-project/index.html</loc>
@@ -114,11 +142,11 @@
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/code-examples/python/index.html</loc>
-    <lastmod>2026-07-11T05:14:19.547Z</lastmod>
+    <lastmod>2026-07-19T05:57:39.340Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tools/gemini-api-key.html</loc>
-    <lastmod>2026-07-11T05:10:43.562Z</lastmod>
+    <lastmod>2026-07-19T05:59:44.726Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tools/index.html</loc>
@@ -134,7 +162,7 @@
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/datasets/mini-project-tracks.html</loc>
-    <lastmod>2026-07-11T05:14:07.966Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.779Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/datasets/notebooks/download_icnale_gra.html</loc>
@@ -150,35 +178,47 @@
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/additional-examples/index.html</loc>
-    <lastmod>2026-07-04T04:49:43.537Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.777Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/github/index.html</loc>
     <lastmod>2026-07-11T05:59:26.048Z</lastmod>
   </url>
   <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tutorials/day3_prompt_design.html</loc>
-    <lastmod>2026-07-11T05:10:17.750Z</lastmod>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/corpora/index.html</loc>
+    <lastmod>2026-07-11T05:59:26.047Z</lastmod>
   </url>
   <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tutorials/tutorial-day3-move-replication.html</loc>
-    <lastmod>2026-07-11T05:13:36.841Z</lastmod>
-  </url>
-  <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tutorials/day1_python_and_first_llm.html</loc>
-    <lastmod>2026-07-11T05:10:17.749Z</lastmod>
-  </url>
-  <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/tutorials/tutorial-day2-annotation-eval.html</loc>
-    <lastmod>2026-07-11T05:12:00.405Z</lastmod>
-  </url>
-  <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/corpus-lab/index.html</loc>
-    <lastmod>2026-07-11T05:12:29.647Z</lastmod>
-  </url>
-  <url>
-    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/corpora/learner-corpora.html</loc>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/resources/corpora/available-corpora.html</loc>
     <lastmod>2026-07-11T05:59:26.048Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session6.html</loc>
+    <lastmod>2026-07-19T05:30:34.994Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session5.html</loc>
+    <lastmod>2026-07-19T05:30:34.994Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session2.html</loc>
+    <lastmod>2026-07-19T05:30:34.993Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session12.html</loc>
+    <lastmod>2026-07-19T05:30:34.991Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session11.html</loc>
+    <lastmod>2026-07-19T05:30:34.991Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session14.html</loc>
+    <lastmod>2026-07-19T05:30:34.992Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/slides/slides-session9.html</loc>
+    <lastmod>2026-07-19T05:30:34.995Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/syllabus/readings.html</loc>
@@ -186,38 +226,54 @@
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day4/session10.html</loc>
-    <lastmod>2026-07-11T05:59:26.045Z</lastmod>
+    <lastmod>2026-07-19T05:32:57.285Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day4/session12.html</loc>
-    <lastmod>2026-07-11T05:59:26.046Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.770Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day3/session8.html</loc>
-    <lastmod>2026-07-11T05:59:26.045Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.770Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day2/session5.html</loc>
-    <lastmod>2026-07-11T05:59:26.044Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.769Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day2/session6.html</loc>
-    <lastmod>2026-07-11T05:59:26.044Z</lastmod>
+    <lastmod>2026-07-19T05:57:12.769Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day5/session15.html</loc>
-    <lastmod>2026-07-11T05:59:26.046Z</lastmod>
+    <lastmod>2026-07-19T05:32:57.285Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/slides-poc.html</loc>
-    <lastmod>2026-07-08T14:25:14.423Z</lastmod>
+    <lastmod>2026-07-19T05:28:15.373Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day1/session1.html</loc>
-    <lastmod>2026-07-11T05:59:26.043Z</lastmod>
+    <lastmod>2026-07-19T05:32:57.284Z</lastmod>
   </url>
   <url>
     <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/sessions/day1/session2.html</loc>
-    <lastmod>2026-07-11T05:59:26.043Z</lastmod>
+    <lastmod>2026-07-19T05:32:57.284Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/notebooks/day3_prompt_design.html</loc>
+    <lastmod>2026-07-19T06:01:37.040Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/notebooks/tutorial-day3-move-replication.html</loc>
+    <lastmod>2026-07-19T06:01:37.039Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/notebooks/day1_python_and_first_llm.html</loc>
+    <lastmod>2026-07-11T05:10:17.749Z</lastmod>
+  </url>
+  <url>
+    <loc>https://egumasa.github.io/linguistic-data-analysis-II-2026/notebooks/tutorial-day2-annotation-eval.html</loc>
+    <lastmod>2026-07-19T06:01:37.043Z</lastmod>
   </url>
 </urlset>
