@@ -312,7 +312,19 @@
     "href": "sessions/day5/session-14.html#slides-colab",
     "title": "Session 14: Project Work — Finalize Report & Notebook",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day5_project_finalization.ipynb — assemble the pipeline end-to-end and draft the report —   ## Mini-project Project work session — see the Final Project page.",
+    "text": "Slides & Colab",
+    "crumbs": [
+      "Sessions",
+      "Day 5 · Project Finalization & Presentations",
+      "Session 14: Project Work — Finalize Report & Notebook"
+    ]
+  },
+  {
+    "objectID": "sessions/day5/session-14.html#mini-project",
+    "href": "sessions/day5/session-14.html#mini-project",
+    "title": "Session 14: Project Work — Finalize Report & Notebook",
+    "section": "Mini-project",
+    "text": "Mini-project\nProject work session — see the Final Project page.",
     "crumbs": [
       "Sessions",
       "Day 5 · Project Finalization & Presentations",
@@ -420,7 +432,7 @@
     "href": "sessions/day2/session-05.html#slides-colab",
     "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nTutorial notes: Day 2 — Annotation, gold standards & evaluation\nNotebook (tutorial + Corpus Lab): day2_gold_standards_and_evaluation.ipynb —",
+    "text": "Slides & Colab\n\nTutorial notes: Day 2 — Annotation, gold standards & evaluation",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -468,7 +480,7 @@
     "href": "sessions/day3/session-08.html#slides-colab",
     "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day3_prompt_design.ipynb — zero-shot → few-shot → chain-of-thought on the CEFR task — \nFurther reading: Replicating Kim & Lu with open data (the discourse-move mini-project track)",
+    "text": "Slides & Colab\n\n\nFurther reading: Replicating Kim & Lu with open data (the discourse-move mini-project track)",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -1414,7 +1426,7 @@
     "href": "resources/tools/google-colab-setup.html#now-you-can-create-google-colab-notebook-from-google-drive.",
     "title": "Google Colab Setup Guide",
     "section": "Now you can create google colab notebook from Google Drive.",
-    "text": "Now you can create google colab notebook from Google Drive.\nNow you can create a new google colab notebook.\n\n\n\ncreate a note\n\n\n\nPrefer to run on your own machine instead? See Python Setup — Run Locally.",
+    "text": "Now you can create google colab notebook from Google Drive.\nNow you can create a new google colab notebook.\n\n\n\ncreate a note",
     "crumbs": [
       "Resources",
       "Setup & Tools",
@@ -2298,7 +2310,19 @@
     "href": "sessions/day4/session-12.html#slides-colab",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day4_pipeline_and_sampling.ipynb — sample a balanced gold subset, then QC it —   ## Mini-project Project work session — see the Final Project page.",
+    "text": "Slides & Colab",
+    "crumbs": [
+      "Sessions",
+      "Day 4 · Methodology & Pipeline Assembly",
+      "Session 12: Project Work — Sample & QC the Gold Set"
+    ]
+  },
+  {
+    "objectID": "sessions/day4/session-12.html#mini-project",
+    "href": "sessions/day4/session-12.html#mini-project",
+    "title": "Session 12: Project Work — Sample & QC the Gold Set",
+    "section": "Mini-project",
+    "text": "Mini-project\nProject work session — see the Final Project page.",
     "crumbs": [
       "Sessions",
       "Day 4 · Methodology & Pipeline Assembly",
@@ -2442,7 +2466,7 @@
     "href": "sessions/day2/session-06.html#slides-colab",
     "title": "Session 6: Gold Standards & Evaluation Metrics",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nTutorial notes: Day 2 — Annotation, gold standards & evaluation\nNotebook (tutorial + Corpus Lab): day2_gold_standards_and_evaluation.ipynb —",
+    "text": "Slides & Colab\n\nTutorial notes: Day 2 — Annotation, gold standards & evaluation",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -2626,7 +2650,19 @@
     "href": "sessions/day1/session-03.html#slides-colab",
     "title": "Session 3: Colab Onboarding & Mini-Project Setup",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day1_python_and_first_llm.ipynb — Python basics + your first LLM call —   ## Mini-project This session includes mini-project track selection and group formation. See the Final Project page.",
+    "text": "Slides & Colab",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 3: Colab Onboarding & Mini-Project Setup"
+    ]
+  },
+  {
+    "objectID": "sessions/day1/session-03.html#mini-project",
+    "href": "sessions/day1/session-03.html#mini-project",
+    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "section": "Mini-project",
+    "text": "Mini-project\nThis session includes mini-project track selection and group formation. See the Final Project page.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -2931,6 +2967,18 @@
       "Sessions",
       "Daily notebooks",
       "Day 2 Tutorial — Annotation, Gold Standards & Evaluation"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-colab-setup.html#try-it-out-open-this-colab-notebook-and-run-it",
+    "href": "resources/tools/google-colab-setup.html#try-it-out-open-this-colab-notebook-and-run-it",
+    "title": "Google Colab Setup Guide",
+    "section": "Try it out — open this Colab notebook and run it",
+    "text": "Try it out — open this Colab notebook and run it\nBefore Day 1, please confirm the built-in LLM works on your Tohoku Google account. Open this Colab notebook and try running these cells:\nhttps://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tools/colab-llm-check.ipynb\n\nOpen the link, signed in with your Tohoku Google account.\nFile → Save a copy in Drive — this gives you your own copy to run (the same thing you’ll do for the real course notebooks).\nIn your copy, choose Runtime → Run all.\nWhen it finishes, copy the final ✅ / ❌ message and report it to the instructor.\n\nIf you see ✅ SUCCESS, you’re all set. If you see ❌ FAILED, paste the whole message (including the error) to the google classroom so we can help.\n\nPrefer to run on your own machine instead? See Python Setup — Run Locally.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Google Colab Setup Guide"
     ]
   }
 ]

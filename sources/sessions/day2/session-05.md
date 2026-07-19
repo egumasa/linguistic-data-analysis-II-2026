@@ -20,6 +20,8 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 ## Slides & Colab
 
 - Tutorial notes: [Day 2 — Annotation, gold standards & evaluation](../../notebooks/tutorial-day2-annotation-eval.md)
+<!-- Notebook not yet finalized:
 - Notebook (tutorial + Corpus Lab): [`day2_gold_standards_and_evaluation.ipynb`](../../notebooks/day2_gold_standards_and_evaluation.ipynb) —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)
+-->
 <!-- Slides: [Session 5 slides](../../slides/slides-session-05.html){target="_blank"} -->

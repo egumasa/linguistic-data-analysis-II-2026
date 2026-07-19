@@ -19,8 +19,11 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 
 ## Slides & Colab
 
+<!-- Notebook not yet finalized:
 - Notebook (tutorial + Corpus Lab): [`day4_pipeline_and_sampling.ipynb`](../../notebooks/day4_pipeline_and_sampling.ipynb) — sample a balanced gold subset, then QC it —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb)
+-->
 <!-- Slides: [Session 12 slides](../../slides/slides-session-12.html){target="_blank"} -->
+
 ## Mini-project
 Project work session — see the [Final Project](../../final-project/index.md) page.
