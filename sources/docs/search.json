@@ -1284,46 +1284,278 @@
     ]
   },
   {
-    "objectID": "resources/tools/colab-ai-preflight.html",
-    "href": "resources/tools/colab-ai-preflight.html",
-    "title": "google.colab.ai pre-flight",
+    "objectID": "resources/tools/colab-ai-preflight-README.html",
+    "href": "resources/tools/colab-ai-preflight-README.html",
+    "title": "",
     "section": "",
-    "text": "Linguistic Data Analysis II — instructor pre-course check (run once, on the Tohoku Google account students will use).\nPurpose. Before building more on top of Colab’s built-in Gemini, confirm the backend the day-notebooks call — from google.colab import ai; ai.generate_text(p) — is reachable on the Tohoku account, find where (if anywhere) it throttles, and measure how stable the parsed CEFR labels are run-to-run.\nRun Runtime → Run all. Each step prints a compact report; the final cell summarizes go / no-go.\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Reuses the SAME label parser as the day-notebooks, so the numbers below\n# reflect what the course actually runs.\nimport json, re, time, inspect, urllib.request, statistics\nfrom collections import Counter\nfrom google.colab import ai   # Colab's built-in Gemini, no API key\n\n# --- What can we actually tune on THIS runtime? Print the real signature.\n#     (Don't trust blog posts — ask the installed library.)\nsig = inspect.signature(ai.generate_text)\nprint(\"ai.generate_text signature:\", sig)\nparams = sig.parameters\n\n# Change ONE knob at a time (ablation). We start with temperature only and\n# leave the DEFAULT model + seed OUT, because forcing model_name / seed all\n# at once previously *increased* variance and made the cause unattributable.\n#   temperature=0 → greedy decoding (removes sampling randomness)\n# Even so, output on a hosted, batched endpoint is only BEST-EFFORT\n# reproducible — never bit-guaranteed (requests are batched with others and\n# float reductions reorder).\nUSE_TEMPERATURE = True   #@param {type:\"boolean\"}\nUSE_SEED        = False  #@param {type:\"boolean\"}\nUSE_MODEL_NAME  = False  #@param {type:\"boolean\"}\nMODEL_NAME      = \"google/gemini-2.5-flash\"  #@param {type:\"string\"}\n\nGEN_KWARGS = {}\nif USE_TEMPERATURE and \"temperature\" in params: GEN_KWARGS[\"temperature\"] = 0\nif USE_SEED        and \"seed\" in params:        GEN_KWARGS[\"seed\"] = 42\nif USE_MODEL_NAME  and \"model_name\" in params:  GEN_KWARGS[\"model_name\"] = MODEL_NAME\nprint(\"Passing to generate_text:\", GEN_KWARGS or \"(prompt only — default model)\")\nfor k in (\"temperature\", \"seed\", \"model_name\"):\n    if k not in params:\n        print(f\"  note: this runtime\\u2019s generate_text has no '{k}' parameter.\")\n\ndef generate_text(p):\n    return ai.generate_text(p, **GEN_KWARGS)\n\ndef _extract_level(text):\n    \"\"\"Identical to the day-notebooks' parser.\"\"\"\n    m = re.search(r\"\\b([ABC][12])\\b\", str(text).upper())\n    return m.group(1) if m else \"??\"\n\nLEVELS = [\"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"]\nPROMPT = (\n    \"You are a CEFR rater. Reply with ONLY one label from \"\n    \"A1, A2, B1, B2, C1, C2 for this sentence.\\n\\nSentence: {text}\\nLabel:\"\n)\n\n# Real CEFR sentences from the course gold set (cycled to reach the call counts).\nGOLD_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json\"\ngold = json.loads(urllib.request.urlopen(GOLD_URL).read().decode(\"utf-8\"))\nprint(f\"\\nLoaded {len(gold)} gold sentences. Backend: Colab Gemini (colab.ai).\")\nprint(\"temperature=0 set — output should be near-reproducible (best-effort).\"\n      if \"temperature\" in GEN_KWARGS else\n      \"No temperature control on this version → non-deterministic by design.\")"
+    "text": "Code"
   },
   {
-    "objectID": "resources/tools/colab-ai-preflight.html#step-2-smoke-test-is-the-api-even-reachable",
-    "href": "resources/tools/colab-ai-preflight.html#step-2-smoke-test-is-the-api-even-reachable",
-    "title": "google.colab.ai pre-flight",
-    "section": "Step 2 — Smoke test (is the API even reachable?)",
-    "text": "Step 2 — Smoke test (is the API even reachable?)\nOne list-models call + one generate call. If this errors, stop — the colab.ai path is unavailable on this account.\n\n\nShow code\n#@title Step 2 — smoke test\ntry:\n    print(\"Available models:\")\n    try:\n        print(\" \", ai.list_models())\n    except Exception as e:\n        print(\"  (list_models not available:\", type(e).__name__, e, \")\")\n    print(\"\\nSingle call →\", repr(generate_text(\"Say OK\")))\n    print(\"\\n✅ Reachable.\")\nexcept Exception as e:\n    print(\"❌ colab.ai unavailable on this account:\", type(e).__name__, e)\n    print(\"   → Escalate to the Gemini-API .env fallback (D4) and stop.\")"
+    "objectID": "resources/tools/colab-ai-preflight-README.html#option-a-open-in-colab-directly-recommended-no-clone",
+    "href": "resources/tools/colab-ai-preflight-README.html#option-a-open-in-colab-directly-recommended-no-clone",
+    "title": "",
+    "section": "Option A — open in Colab directly (recommended, no clone)",
+    "text": "Option A — open in Colab directly (recommended, no clone)\n\nMake sure the notebook is on GitHub first: git push origin main.\nOpen this link (or paste it into your browser), signed in with the Tohoku Google account:\nhttps://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tools/colab-ai-preflight.ipynb\nRuntime → Run all. Each step prints its own report; the last cell gives go / no-go.\n\nNo GPU/TPU needed — the default CPU runtime is fine."
   },
   {
-    "objectID": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop",
-    "href": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop",
-    "title": "google.colab.ai pre-flight",
-    "section": "Step 3 — Quota ceiling (100-call loop)",
-    "text": "Step 3 — Quota ceiling (100-call loop)\nFire 100 real CEFR prompts, one at a time. Each call is wrapped so a rate-limit / quota error is caught and its index recorded rather than crashing the run. Reports successes, latency (median / p95), total wall-time, and where (if anywhere) it first throttled.\n\n\nShow code\n#@title Step 3 — 100-call quota + latency probe\nN = 100\nitems = [gold[i % len(gold)] for i in range(N)]\n\nlatencies, preds, first_fail, fails = [], [], None, 0\nt0 = time.time()\nfor i, item in enumerate(items, 1):\n    prompt = PROMPT.format(text=item[\"text\"])\n    c0 = time.time()\n    try:\n        reply = generate_text(prompt)\n        latencies.append(time.time() - c0)\n        preds.append(_extract_level(reply))\n    except Exception as e:\n        fails += 1\n        if first_fail is None:\n            first_fail = (i, type(e).__name__, str(e)[:200])\n        preds.append(\"ERR\")\n    if i % 20 == 0:\n        print(f\"  ...{i}/{N}  ({fails} failures so far)\")\nwall = time.time() - t0\n\nok = len(latencies)\nprint(f\"\\n{ok}/{N} succeeded, {fails} failed.\")\nif latencies:\n    lat = sorted(latencies)\n    p95 = lat[min(len(lat)-1, int(0.95*len(lat)))]\n    print(f\"latency: median {statistics.median(lat):.2f}s  p95 {p95:.2f}s  \"\n          f\"min {lat[0]:.2f}s  max {lat[-1]:.2f}s\")\nprint(f\"total wall-time for {N} calls: {wall:.1f}s \"\n      f\"({wall/N:.2f}s/call incl. overhead)\")\nprint(\"first failure:\", first_fail if first_fail else \"none — no throttling in 100 calls\")\nprint(\"parse rate (non-??/ERR):\",\n      f\"{sum(p in LEVELS for p in preds)}/{N}\")"
+    "objectID": "resources/tools/colab-ai-preflight-README.html#option-b-clone-the-repo-and-upload",
+    "href": "resources/tools/colab-ai-preflight-README.html#option-b-clone-the-repo-and-upload",
+    "title": "",
+    "section": "Option B — clone the repo and upload",
+    "text": "Option B — clone the repo and upload\nUse this if you’d rather not push first, or want to edit locally.\ngit clone https://github.com/egumasa/linguistic-data-analysis-II-2026.git\ncd linguistic-data-analysis-II-2026\n# the notebook lives here:\n#   sources/resources/tools/colab-ai-preflight.ipynb\nThen in Colab: File → Upload notebook → pick sources/resources/tools/colab-ai-preflight.ipynb, sign in with the Tohoku account, and Runtime → Run all."
   },
   {
-    "objectID": "resources/tools/colab-ai-preflight.html#step-4-extrapolate-to-15-students",
-    "href": "resources/tools/colab-ai-preflight.html#step-4-extrapolate-to-15-students",
-    "title": "google.colab.ai pre-flight",
-    "section": "Step 4 — Extrapolate to ~15 students",
-    "text": "Step 4 — Extrapolate to ~15 students\nThe single-user numbers above → what a class of 15 implies. Caveat: this measures one account sequentially; it cannot test 15-way concurrency. If colab.ai quota is per-account (likely), 15 students = 15 independent quotas and Step 3 passing is reassuring. If it’s a shared project quota, real load is ~15× and only a multi-account trial can confirm it.\n\n\nShow code\n#@title Step 4 — class-of-15 projection\nCLASS = 15\nCALLS_PER_STUDENT_PER_DAY = 72 + 72 + 60  # tutorial + few-shot + lab, rough\nif latencies:\n    per_call = wall / N\n    student_day = per_call * CALLS_PER_STUDENT_PER_DAY\n    print(f\"~{per_call:.2f}s/call → one student\\u2019s ~{CALLS_PER_STUDENT_PER_DAY} \"\n          f\"calls/day ≈ {student_day/60:.1f} min of model time.\")\n    print(f\"Class total: {CLASS*CALLS_PER_STUDENT_PER_DAY} calls/day across {CLASS} accounts.\")\n    print(f\"If quota is PER-ACCOUNT: each student runs the {student_day/60:.1f}-min \"\n          \"budget independently → fine.\")\n    print(\"If quota is SHARED/project: treat 100-call ceiling from Step 3 as the \"\n          \"whole-class ceiling → likely too low, plan the .env fallback.\")\nelse:\n    print(\"No successful calls in Step 3 — cannot project. Fix Step 2/3 first.\")"
+    "objectID": "resources/tools/colab-ai-preflight-README.html#what-each-step-tells-you",
+    "href": "resources/tools/colab-ai-preflight-README.html#what-each-step-tells-you",
+    "title": "",
+    "section": "What each step tells you",
+    "text": "What each step tells you\n\n\n\n\n\n\n\n\nStep\nReads\nDecision\n\n\n\n\n2 · Smoke test\nIs colab.ai reachable at all?\nFails → the whole path is unavailable on Tohoku accounts; use the Gemini-API .env fallback (D4).\n\n\n3 · 100-call probe\nsuccesses/100, median & p95 latency, first throttle\nThrottles well before 100 → single-user ceiling too low.\n\n\n4 · Class-of-15 projection\nper-student daily model-time; per-account vs shared quota\nFrames whether 15 students is safe (can’t test true concurrency from one account).\n\n\n5 · Determinism\nmodal-label agreement over 10 repeats\nLow (&lt;~80%) → warn students about F1 wobble; consider majority-vote."
   },
   {
-    "objectID": "resources/tools/colab-ai-preflight.html#step-5-determinism-label-stability",
-    "href": "resources/tools/colab-ai-preflight.html#step-5-determinism-label-stability",
-    "title": "google.colab.ai pre-flight",
-    "section": "Step 5 — Determinism (label stability)",
-    "text": "Step 5 — Determinism (label stability)\ncolab.ai exposes no temperature knob, so raw text will vary. What matters for the course is whether the parsed CEFR label is stable. Send the same prompt 10× for a few sentences and report the modal label and its agreement rate — this is how much run-to-run F1 wobble to warn students about.\n\n\nShow code\n#@title Step 5 — same prompt × 10, label stability\nREPEATS = 10\nSAMPLES = 4\nsample_items = [gold[i * (len(gold)//SAMPLES)] for i in range(SAMPLES)]\n\nprint(f\"{REPEATS} repeats each, {SAMPLES} sentences:\\n\")\nagreements = []\nfor item in sample_items:\n    prompt = PROMPT.format(text=item[\"text\"])\n    labels = []\n    for _ in range(REPEATS):\n        try:\n            labels.append(_extract_level(generate_text(prompt)))\n        except Exception as e:\n            labels.append(\"ERR\")\n    c = Counter(labels)\n    modal, modal_n = c.most_common(1)[0]\n    agree = modal_n / REPEATS\n    agreements.append(agree)\n    print(f\"  gold {item['label']}  →  modal {modal} \"\n          f\"({modal_n}/{REPEATS} = {agree:.0%})   dist={dict(c)}\")\n\nprint(f\"\\nMean label agreement across samples: \"\n      f\"{statistics.mean(agreements):.0%}\")\nprint(\"→ Tell students their F1 can wobble by roughly the complement of this.\")"
+    "objectID": "resources/tools/colab-ai-preflight-README.html#after-the-run",
+    "href": "resources/tools/colab-ai-preflight-README.html#after-the-run",
+    "title": "",
+    "section": "After the run",
+    "text": "After the run\nRecord the numbers (reachable? throttle point? mean agreement?) in planning/course_planning/prep-plan.md — this closes the 07-09 milestone and de-risks the 07-12 end-to-end Colab run."
   },
   {
-    "objectID": "resources/tools/colab-ai-preflight.html#go-no-go",
-    "href": "resources/tools/colab-ai-preflight.html#go-no-go",
-    "title": "google.colab.ai pre-flight",
-    "section": "Go / no-go",
-    "text": "Go / no-go\n\nStep 2 fails → colab.ai unavailable on Tohoku accounts → use Gemini-API .env fallback (D4).\nStep 3 throttles well before 100 → single-user ceiling too low → fallback / rate-limit guidance.\nStep 5 agreement low (&lt;~80%) → warn students & consider majority-vote over repeats in the pipeline.\n\nRecord the numbers in planning/course_planning/prep-plan.md (milestone 07-09)."
+    "objectID": "resources/tools/index.html",
+    "href": "resources/tools/index.html",
+    "title": "Tools and Software",
+    "section": "",
+    "text": "The course’s primary platform is Google Colab — set that up first.\n\nGoogle Colab Setup\nPython Setup — Run Locally (optional)\nHousing Your Data in Google Drive\n\n\n\nThis course contrasts rule-based / feature-based analysis (lexical diversity, syntactic complexity) with the classifications an LLM judges in context. If you took Linguistic Data Analysis I — or want to try those feature-extraction tools (TAALED, TAALES, TAASSC, Japanese NLP) — see the LDA I course website.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Tools and Software"
+    ]
+  },
+  {
+    "objectID": "resources/tools/index.html#available-guides",
+    "href": "resources/tools/index.html#available-guides",
+    "title": "Tools and Software",
+    "section": "",
+    "text": "The course’s primary platform is Google Colab — set that up first.\n\nGoogle Colab Setup\nPython Setup — Run Locally (optional)\nHousing Your Data in Google Drive\n\n\n\nThis course contrasts rule-based / feature-based analysis (lexical diversity, syntactic complexity) with the classifications an LLM judges in context. If you took Linguistic Data Analysis I — or want to try those feature-extraction tools (TAALED, TAALES, TAASSC, Japanese NLP) — see the LDA I course website.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Tools and Software"
+    ]
+  },
+  {
+    "objectID": "resources/tools/index.html#other-useful-corpus-resources",
+    "href": "resources/tools/index.html#other-useful-corpus-resources",
+    "title": "Tools and Software",
+    "section": "Other useful corpus resources",
+    "text": "Other useful corpus resources\n\nCIABATTTA\nCorpus and Repository of Writing",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Tools and Software"
+    ]
+  },
+  {
+    "objectID": "resources/tools/gemini-api-key.html",
+    "href": "resources/tools/gemini-api-key.html",
+    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
+    "section": "",
+    "text": "You need a key starting on Day 3. Days 1 and 2 are keyless:\n\nDay 1 uses Colab’s built-in Gemini (colab.ai) for your first live call — zero setup. That free backend gives you no control over randomness (run the same prompt twice and the answer can change); that’s fine here, and we use it to show you why LLM output varies.\nDay 2 doesn’t call the model at all — it evaluates a frozen set of predictions committed to the repo, so everyone’s precision/recall/F1 come out identical while you’re learning the metrics.\n\nFrom Day 3 on — the Corpus Lab and the final project — you run the model yourself, and your results have to be stable and reproducible: your reported precision/recall/F1 shouldn’t change every time you re-run, and (because the Corpus Labs are autograded) a grader must be able to re-run your notebook and get the same numbers. For that you switch to the Gemini API, where you can pin the randomness (temperature=0, a fixed seed, a pinned model).\n\n\n\n\n\n\nImportant\n\n\n\nYou do not install anything or leave Colab. You get a free key, paste it into Colab’s built-in Secrets manager once, and the notebook picks it up automatically.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Get a free Gemini API key (for Corpus Lab & the final project)"
+    ]
+  },
+  {
+    "objectID": "resources/tools/gemini-api-key.html#when-you-need-this",
+    "href": "resources/tools/gemini-api-key.html#when-you-need-this",
+    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
+    "section": "",
+    "text": "You need a key starting on Day 3. Days 1 and 2 are keyless:\n\nDay 1 uses Colab’s built-in Gemini (colab.ai) for your first live call — zero setup. That free backend gives you no control over randomness (run the same prompt twice and the answer can change); that’s fine here, and we use it to show you why LLM output varies.\nDay 2 doesn’t call the model at all — it evaluates a frozen set of predictions committed to the repo, so everyone’s precision/recall/F1 come out identical while you’re learning the metrics.\n\nFrom Day 3 on — the Corpus Lab and the final project — you run the model yourself, and your results have to be stable and reproducible: your reported precision/recall/F1 shouldn’t change every time you re-run, and (because the Corpus Labs are autograded) a grader must be able to re-run your notebook and get the same numbers. For that you switch to the Gemini API, where you can pin the randomness (temperature=0, a fixed seed, a pinned model).\n\n\n\n\n\n\nImportant\n\n\n\nYou do not install anything or leave Colab. You get a free key, paste it into Colab’s built-in Secrets manager once, and the notebook picks it up automatically.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Get a free Gemini API key (for Corpus Lab & the final project)"
+    ]
+  },
+  {
+    "objectID": "resources/tools/gemini-api-key.html#step-1-create-a-free-api-key-ai-studio",
+    "href": "resources/tools/gemini-api-key.html#step-1-create-a-free-api-key-ai-studio",
+    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
+    "section": "Step 1 — Create a free API key (AI Studio)",
+    "text": "Step 1 — Create a free API key (AI Studio)\n\nGo to https://aistudio.google.com/apikey and sign in with your Tohoku Google account.\nClick Create API key.\nCopy the key (a long string starting with AIza…). Treat it like a password.\n\nThis is the free tier — no billing, no credit card. It has rate limits (a cap on requests per minute / per day), which are plenty for one student’s coursework.\n\n\n\n\n\n\nWarningNever paste your key into a notebook cell\n\n\n\nAnyone who sees your notebook (or the committed .ipynb) would get your key. Always use Colab Secrets (Step 2) so the key stays out of the code and out of what you submit.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Get a free Gemini API key (for Corpus Lab & the final project)"
+    ]
+  },
+  {
+    "objectID": "resources/tools/gemini-api-key.html#step-2-add-the-key-to-colab-secrets",
+    "href": "resources/tools/gemini-api-key.html#step-2-add-the-key-to-colab-secrets",
+    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
+    "section": "Step 2 — Add the key to Colab Secrets",
+    "text": "Step 2 — Add the key to Colab Secrets\n\nOpen your Corpus-Lab / project notebook in Colab.\nIn the left sidebar, click the 🔑 key icon (“Secrets”).\nClick + Add new secret.\nName it exactly GEMINI_API_KEY.\nPaste your key into the Value box.\nTurn on the Notebook access toggle for this secret.\n\nYou only do this once per Google account — the secret is remembered across your notebooks.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Get a free Gemini API key (for Corpus Lab & the final project)"
+    ]
+  },
+  {
+    "objectID": "resources/tools/gemini-api-key.html#step-3-the-notebook-uses-it-automatically",
+    "href": "resources/tools/gemini-api-key.html#step-3-the-notebook-uses-it-automatically",
+    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
+    "section": "Step 3 — The notebook uses it automatically",
+    "text": "Step 3 — The notebook uses it automatically\nWhen GEMINI_API_KEY is set, the notebook’s setup cell reads it from Secrets and routes calls through the Gemini API instead of colab.ai. You don’t change any code. Under the hood it does this:\nimport os\nfrom google.colab import userdata\nfrom google import genai\nfrom google.genai import types\n\n# Pull the key from Colab Secrets (never hard-code it).\nos.environ[\"GEMINI_API_KEY\"] = userdata.get(\"GEMINI_API_KEY\")\n\nclient = genai.Client()   # reads GEMINI_API_KEY from the environment\n\ndef generate_text(p):\n    return client.models.generate_content(\n        model=\"gemini-2.5-flash\",                    # pinned model\n        contents=p,\n        config=types.GenerateContentConfig(\n            temperature=0,   # greedy decoding — removes sampling randomness\n            seed=42,         # fixed random state\n        ),\n    ).text\nThe setup cell prints which backend it chose, e.g. LLM backend: Gemini API (gemini-2.5-flash). If it still says Colab Gemini, your secret isn’t set or its notebook-access toggle is off — recheck Step 2.\n\n\n\n\n\n\nTipIf Colab’s built-in Gemini (colab.ai) is ever unavailable\n\n\n\nThe Days 1–3 demos use the keyless colab.ai backend. If it’s down or unreachable in class, the fix is the same steps above: create a free key (Step 1) and add it as the GEMINI_API_KEY secret (Step 2). The notebook then routes every call through the Gemini API automatically — so the API key doubles as the fallback whenever the built-in backend isn’t working.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Get a free Gemini API key (for Corpus Lab & the final project)"
+    ]
+  },
+  {
+    "objectID": "resources/tools/gemini-api-key.html#about-reproducibility-important-and-a-little-humbling",
+    "href": "resources/tools/gemini-api-key.html#about-reproducibility-important-and-a-little-humbling",
+    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
+    "section": "About reproducibility (important, and a little humbling)",
+    "text": "About reproducibility (important, and a little humbling)\ntemperature=0 + seed makes the model as reproducible as a hosted LLM gets — but not perfectly. Requests are batched with other users’ on Google’s servers, and the resulting floating-point math can differ slightly run to run, which occasionally flips the label on a genuinely borderline item. So expect:\n\nClear-cut items → identical every run.\nAmbiguous items → the same most of the time, with the odd flip.\n\nBecause of this, your final deliverable freezes your predictions: you run the model once, save its raw output to a JSON file, and commit that alongside your analysis. Your evaluation (P/R/F1, confusion matrix, error table) then runs off the frozen file, so your submitted numbers are 100% reproducible — and anyone can audit exactly what the model said. (The Corpus-Lab notebook shows you how.)",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Get a free Gemini API key (for Corpus Lab & the final project)"
+    ]
+  },
+  {
+    "objectID": "resources/tools/gemini-api-key.html#rate-limits-good-manners",
+    "href": "resources/tools/gemini-api-key.html#rate-limits-good-manners",
+    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
+    "section": "Rate limits & good manners",
+    "text": "Rate limits & good manners\nThe free tier limits requests per minute and per day. If you hit a limit you’ll get a rate-limit error — wait a bit and re-run, or reduce your sample size. Practical tips:\n\nDevelop your prompt on a small slice (10–20 items) first; only run the full set once you’re happy.\nOnce you’ve frozen your predictions, you don’t need to call the API again — re-run analysis off the JSON.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Get a free Gemini API key (for Corpus Lab & the final project)"
+    ]
+  },
+  {
+    "objectID": "resources/tools/gemini-api-key.html#want-to-keep-working-after-the-course-optional-advanced",
+    "href": "resources/tools/gemini-api-key.html#want-to-keep-working-after-the-course-optional-advanced",
+    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
+    "section": "Want to keep working after the course? (optional, advanced)",
+    "text": "Want to keep working after the course? (optional, advanced)\nEverything above stays in Colab. If you’d rather run locally in your own environment (e.g. Positron + uv), clone the course repo and set the same GEMINI_API_KEY as an environment variable — the notebooks detect they’re not in Colab and use the API automatically. See Python setup (local). This is optional — not required for the course.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Get a free Gemini API key (for Corpus Lab & the final project)"
+    ]
+  },
+  {
+    "objectID": "final-project/index.html",
+    "href": "final-project/index.html",
+    "title": "Final Project",
+    "section": "",
+    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.\nThe final project is a group mini-project in which you run a small, end-to-end LLM-based analysis on a real annotated dataset and report the results. It is introduced in Session 3 (track selection + group formation) and carried out across Sessions 12–15."
+  },
+  {
+    "objectID": "final-project/index.html#choose-a-track",
+    "href": "final-project/index.html#choose-a-track",
+    "title": "Final Project",
+    "section": "Choose a track",
+    "text": "Choose a track\nPick one of the provided expert-annotated datasets (easy → hard). Details and licensing are on the Replication Datasets and Mini-Project Starter Tracks pages."
+  },
+  {
+    "objectID": "final-project/index.html#workflow",
+    "href": "final-project/index.html#workflow",
+    "title": "Final Project",
+    "section": "Workflow",
+    "text": "Workflow\n\nSample a balanced ~40-item gold subset from the provided pool (sample_pool).\nQC / adjudicate the sampled gold set.\nIterate your prompt over 2–3 rounds, re-evaluating each round (P/R/F1, confusion matrix).\nFreeze your final predictions to JSON (see below).\nReport in an in-class one-page report.\nPresent to the class with instructor Q&A.\n\n\n\n\n\n\n\nImportantRun it reproducibly, then freeze\n\n\n\nYou run the model through the Gemini API with temperature=0 + a fixed seed (get a free key). Even so, a hosted LLM is only best-effort reproducible, so once your prompt is final, run it once and save the predictions to a JSON file, committed with your notebook. Your evaluation then runs off that frozen file — so your reported F1 is stable, and anyone (including the grader) can re-run your analysis on exactly the outputs you saw."
+  },
+  {
+    "objectID": "final-project/index.html#deliverables",
+    "href": "final-project/index.html#deliverables",
+    "title": "Final Project",
+    "section": "Deliverables",
+    "text": "Deliverables\n\nPresentation + Q&A — the graded core.\nIn-class one-page report — track/labels · gold + what QC changed · prompt-iteration table (F1 per round) · confusion matrix + error analysis · limitations.\nCompleted notebook — assembled from the cell library and run end-to-end, with your group’s gold subset, prompt, frozen predictions JSON, and outputs.\n\nAll deliverables are produced and submitted during the course — there is no post-course write-up."
+  },
+  {
+    "objectID": "final-project/index.html#grading",
+    "href": "final-project/index.html#grading",
+    "title": "Final Project",
+    "section": "Grading",
+    "text": "Grading\nSee the Course Syllabus for the full breakdown (mini-project presentation + Q&A and the in-class report are weighted components; the completed notebook is graded under hands-on)."
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html",
+    "href": "resources/tools/google-drive-data.html",
+    "title": "Housing Your Data in Google Drive",
+    "section": "",
+    "text": "In the worked tutorials, the course hands you data over a URL — e.g. Day 2’s day2_gold_standards_and_evaluation.ipynb loads a committed CEFR gold set straight from GitHub, so it just runs. That is the instructor’s distribution channel.\nFor the mini-project you flip roles: you build your own gold set (download → reshape → sample a subset) and you need somewhere to keep it. That place is your Google Drive — not GitHub.\n\n\n\n\n\n\nNoteGitHub is ours, Drive is yours\n\n\n\nGitHub is how we ship read-only course data to everyone. Your own rebuilt/sampled data lives in your Drive because it:\n\npersists across Colab sessions — a Colab VM wipes /content/ when it disconnects, but your Drive files survive;\nneeds no git push — save and it’s there;\nstays private and license-clean — some source datasets can’t be redistributed, so committing them to a repo would be a licensing problem. Keeping your copy in your Drive avoids that.\n\n\n\nWe’ll learn the pattern on the CEFR data you already know from Day 2, then reuse the exact same four steps for your mini-project dataset.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#why-this-guide",
+    "href": "resources/tools/google-drive-data.html#why-this-guide",
+    "title": "Housing Your Data in Google Drive",
+    "section": "",
+    "text": "In the worked tutorials, the course hands you data over a URL — e.g. Day 2’s day2_gold_standards_and_evaluation.ipynb loads a committed CEFR gold set straight from GitHub, so it just runs. That is the instructor’s distribution channel.\nFor the mini-project you flip roles: you build your own gold set (download → reshape → sample a subset) and you need somewhere to keep it. That place is your Google Drive — not GitHub.\n\n\n\n\n\n\nNoteGitHub is ours, Drive is yours\n\n\n\nGitHub is how we ship read-only course data to everyone. Your own rebuilt/sampled data lives in your Drive because it:\n\npersists across Colab sessions — a Colab VM wipes /content/ when it disconnects, but your Drive files survive;\nneeds no git push — save and it’s there;\nstays private and license-clean — some source datasets can’t be redistributed, so committing them to a repo would be a licensing problem. Keeping your copy in your Drive avoids that.\n\n\n\nWe’ll learn the pattern on the CEFR data you already know from Day 2, then reuse the exact same four steps for your mini-project dataset.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#the-pattern-in-four-steps",
+    "href": "resources/tools/google-drive-data.html#the-pattern-in-four-steps",
+    "title": "Housing Your Data in Google Drive",
+    "section": "The pattern, in four steps",
+    "text": "The pattern, in four steps\n\n1. Mount your Drive\nRun this in a Colab cell. It pops up a Google auth window the first time — approve it, and your Drive appears under /content/drive/MyDrive/.\nfrom google.colab import drive\ndrive.mount('/content/drive')\n\n\n2. Make a project folder\nKeep everything for this course in one place so paths stay predictable.\nimport os\n\nDATA_DIR = \"/content/drive/MyDrive/lda2/gold\"\nos.makedirs(DATA_DIR, exist_ok=True)\nprint(\"Your data folder:\", DATA_DIR)\n\n\n3. Save your gold set into Drive\nAfter you’ve built a gold set — e.g. by running the CEFR download notebook download_cefr_sp.ipynb, which produces a list of {\"id\", \"text\", \"label\"} items — write it to Drive:\nimport json\n\n# `gold` is the list your download/build notebook produced\nout_path = f\"{DATA_DIR}/cefr_sentences.json\"\nwith open(out_path, \"w\", encoding=\"utf-8\") as f:\n    json.dump(gold, f, ensure_ascii=False, indent=2)\n\nprint(f\"Saved {len(gold)} items to {out_path}\")\n\n\n4. Load it back — from any future session\nThis is the payoff: once it’s in Drive, any notebook can read it with a local path instead of a URL. The tutorials’ load_gold() already accepts either:\nGOLD_PATH = \"/content/drive/MyDrive/lda2/gold/cefr_sentences.json\"\ngold = load_gold(GOLD_PATH)      # same function, path instead of URL\nprint(len(gold), \"items loaded from Drive\")\nThat’s the whole round-trip: mount → folder → save → load. Nothing is lost when Colab disconnects, and you never touch GitHub.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#reusing-this-for-your-mini-project",
+    "href": "resources/tools/google-drive-data.html#reusing-this-for-your-mini-project",
+    "title": "Housing Your Data in Google Drive",
+    "section": "Reusing this for your mini-project",
+    "text": "Reusing this for your mini-project\nThe four steps don’t change — you only swap which dataset you build and what you name the file. Pick your track in mini-project-tracks.md, run that track’s download notebook, then:\n\nMount your Drive (step 1).\nSave your track’s gold set — e.g. f\"{DATA_DIR}/raamove_moves.json\" (step 3).\nLoad it by path in your evaluation notebook (step 4).\n\nOne dataset, one mechanic, learned once on familiar CEFR data — now applied to your own.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#troubleshooting",
+    "href": "resources/tools/google-drive-data.html#troubleshooting",
+    "title": "Housing Your Data in Google Drive",
+    "section": "Troubleshooting",
+    "text": "Troubleshooting\n\n\n\n\n\n\n\nSymptom\nFix\n\n\n\n\ndrive.mount does nothing / asks again\nYou disconnected the runtime. Re-run the mount cell and re-approve.\n\n\nFileNotFoundError on load\nCheck the path spelling — it’s MyDrive (no space), and the folder must exist (re-run step 2).\n\n\nSaved file isn’t in Drive\nConfirm the cell printed a /content/drive/MyDrive/... path, then look under My Drive → lda2 → gold in the Drive web UI.\n\n\n“Mountpoint must not already contain files”\nRun drive.flush_and_unmount() once, then mount again.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
+  },
+  {
+    "objectID": "resources/tools/google-drive-data.html#see-also",
+    "href": "resources/tools/google-drive-data.html#see-also",
+    "title": "Housing Your Data in Google Drive",
+    "section": "See also",
+    "text": "See also\n\nGoogle Colab Setup Guide — get Colab working in the first place.\nReplication Datasets — the download notebooks that build the gold sets you house here.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Housing Your Data in Google Drive"
+    ]
   },
   {
     "objectID": "resources/tools/google-colab-setup.html",
@@ -1434,278 +1666,72 @@
     ]
   },
   {
-    "objectID": "resources/tools/google-drive-data.html",
-    "href": "resources/tools/google-drive-data.html",
-    "title": "Housing Your Data in Google Drive",
+    "objectID": "resources/tools/google-colab-setup.html#try-it-out-open-this-colab-notebook-and-run-it",
+    "href": "resources/tools/google-colab-setup.html#try-it-out-open-this-colab-notebook-and-run-it",
+    "title": "Google Colab Setup Guide",
+    "section": "Try it out — open this Colab notebook and run it",
+    "text": "Try it out — open this Colab notebook and run it\nBefore Day 1, please confirm the built-in LLM works on your Tohoku Google account. Open this Colab notebook and try running these cells:\nhttps://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tools/colab-llm-check.ipynb\n\nOpen the link, signed in with your Tohoku Google account.\nFile → Save a copy in Drive — this gives you your own copy to run (the same thing you’ll do for the real course notebooks).\nIn your copy, choose Runtime → Run all.\nWhen it finishes, copy the final ✅ / ❌ message and report it to the instructor.\n\nIf you see ✅ SUCCESS, you’re all set. If you see ❌ FAILED, paste the whole message (including the error) to the google classroom so we can help.\n\nPrefer to run on your own machine instead? See Python Setup — Run Locally.",
+    "crumbs": [
+      "Resources",
+      "Setup & Tools",
+      "Google Colab Setup Guide"
+    ]
+  },
+  {
+    "objectID": "resources/tools/colab-ai-preflight.html",
+    "href": "resources/tools/colab-ai-preflight.html",
+    "title": "google.colab.ai pre-flight",
     "section": "",
-    "text": "In the worked tutorials, the course hands you data over a URL — e.g. Day 2’s day2_gold_standards_and_evaluation.ipynb loads a committed CEFR gold set straight from GitHub, so it just runs. That is the instructor’s distribution channel.\nFor the mini-project you flip roles: you build your own gold set (download → reshape → sample a subset) and you need somewhere to keep it. That place is your Google Drive — not GitHub.\n\n\n\n\n\n\nNoteGitHub is ours, Drive is yours\n\n\n\nGitHub is how we ship read-only course data to everyone. Your own rebuilt/sampled data lives in your Drive because it:\n\npersists across Colab sessions — a Colab VM wipes /content/ when it disconnects, but your Drive files survive;\nneeds no git push — save and it’s there;\nstays private and license-clean — some source datasets can’t be redistributed, so committing them to a repo would be a licensing problem. Keeping your copy in your Drive avoids that.\n\n\n\nWe’ll learn the pattern on the CEFR data you already know from Day 2, then reuse the exact same four steps for your mini-project dataset.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Housing Your Data in Google Drive"
-    ]
+    "text": "Linguistic Data Analysis II — instructor pre-course check (run once, on the Tohoku Google account students will use).\nPurpose. Before building more on top of Colab’s built-in Gemini, confirm the backend the day-notebooks call — from google.colab import ai; ai.generate_text(p) — is reachable on the Tohoku account, find where (if anywhere) it throttles, and measure how stable the parsed CEFR labels are run-to-run.\nRun Runtime → Run all. Each step prints a compact report; the final cell summarizes go / no-go.\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Reuses the SAME label parser as the day-notebooks, so the numbers below\n# reflect what the course actually runs.\nimport json, re, time, inspect, urllib.request, statistics\nfrom collections import Counter\nfrom google.colab import ai   # Colab's built-in Gemini, no API key\n\n# --- What can we actually tune on THIS runtime? Print the real signature.\n#     (Don't trust blog posts — ask the installed library.)\nsig = inspect.signature(ai.generate_text)\nprint(\"ai.generate_text signature:\", sig)\nparams = sig.parameters\n\n# Change ONE knob at a time (ablation). We start with temperature only and\n# leave the DEFAULT model + seed OUT, because forcing model_name / seed all\n# at once previously *increased* variance and made the cause unattributable.\n#   temperature=0 → greedy decoding (removes sampling randomness)\n# Even so, output on a hosted, batched endpoint is only BEST-EFFORT\n# reproducible — never bit-guaranteed (requests are batched with others and\n# float reductions reorder).\nUSE_TEMPERATURE = True   #@param {type:\"boolean\"}\nUSE_SEED        = False  #@param {type:\"boolean\"}\nUSE_MODEL_NAME  = False  #@param {type:\"boolean\"}\nMODEL_NAME      = \"google/gemini-2.5-flash\"  #@param {type:\"string\"}\n\nGEN_KWARGS = {}\nif USE_TEMPERATURE and \"temperature\" in params: GEN_KWARGS[\"temperature\"] = 0\nif USE_SEED        and \"seed\" in params:        GEN_KWARGS[\"seed\"] = 42\nif USE_MODEL_NAME  and \"model_name\" in params:  GEN_KWARGS[\"model_name\"] = MODEL_NAME\nprint(\"Passing to generate_text:\", GEN_KWARGS or \"(prompt only — default model)\")\nfor k in (\"temperature\", \"seed\", \"model_name\"):\n    if k not in params:\n        print(f\"  note: this runtime\\u2019s generate_text has no '{k}' parameter.\")\n\ndef generate_text(p):\n    return ai.generate_text(p, **GEN_KWARGS)\n\ndef _extract_level(text):\n    \"\"\"Identical to the day-notebooks' parser.\"\"\"\n    m = re.search(r\"\\b([ABC][12])\\b\", str(text).upper())\n    return m.group(1) if m else \"??\"\n\nLEVELS = [\"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"]\nPROMPT = (\n    \"You are a CEFR rater. Reply with ONLY one label from \"\n    \"A1, A2, B1, B2, C1, C2 for this sentence.\\n\\nSentence: {text}\\nLabel:\"\n)\n\n# Real CEFR sentences from the course gold set (cycled to reach the call counts).\nGOLD_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json\"\ngold = json.loads(urllib.request.urlopen(GOLD_URL).read().decode(\"utf-8\"))\nprint(f\"\\nLoaded {len(gold)} gold sentences. Backend: Colab Gemini (colab.ai).\")\nprint(\"temperature=0 set — output should be near-reproducible (best-effort).\"\n      if \"temperature\" in GEN_KWARGS else\n      \"No temperature control on this version → non-deterministic by design.\")"
   },
   {
-    "objectID": "resources/tools/google-drive-data.html#why-this-guide",
-    "href": "resources/tools/google-drive-data.html#why-this-guide",
-    "title": "Housing Your Data in Google Drive",
+    "objectID": "resources/tools/colab-ai-preflight.html#step-2-smoke-test-is-the-api-even-reachable",
+    "href": "resources/tools/colab-ai-preflight.html#step-2-smoke-test-is-the-api-even-reachable",
+    "title": "google.colab.ai pre-flight",
+    "section": "Step 2 — Smoke test (is the API even reachable?)",
+    "text": "Step 2 — Smoke test (is the API even reachable?)\nOne list-models call + one generate call. If this errors, stop — the colab.ai path is unavailable on this account.\n\n\nShow code\n#@title Step 2 — smoke test\ntry:\n    print(\"Available models:\")\n    try:\n        print(\" \", ai.list_models())\n    except Exception as e:\n        print(\"  (list_models not available:\", type(e).__name__, e, \")\")\n    print(\"\\nSingle call →\", repr(generate_text(\"Say OK\")))\n    print(\"\\n✅ Reachable.\")\nexcept Exception as e:\n    print(\"❌ colab.ai unavailable on this account:\", type(e).__name__, e)\n    print(\"   → Escalate to the Gemini-API .env fallback (D4) and stop.\")"
+  },
+  {
+    "objectID": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop",
+    "href": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop",
+    "title": "google.colab.ai pre-flight",
+    "section": "Step 3 — Quota ceiling (100-call loop)",
+    "text": "Step 3 — Quota ceiling (100-call loop)\nFire 100 real CEFR prompts, one at a time. Each call is wrapped so a rate-limit / quota error is caught and its index recorded rather than crashing the run. Reports successes, latency (median / p95), total wall-time, and where (if anywhere) it first throttled.\n\n\nShow code\n#@title Step 3 — 100-call quota + latency probe\nN = 100\nitems = [gold[i % len(gold)] for i in range(N)]\n\nlatencies, preds, first_fail, fails = [], [], None, 0\nt0 = time.time()\nfor i, item in enumerate(items, 1):\n    prompt = PROMPT.format(text=item[\"text\"])\n    c0 = time.time()\n    try:\n        reply = generate_text(prompt)\n        latencies.append(time.time() - c0)\n        preds.append(_extract_level(reply))\n    except Exception as e:\n        fails += 1\n        if first_fail is None:\n            first_fail = (i, type(e).__name__, str(e)[:200])\n        preds.append(\"ERR\")\n    if i % 20 == 0:\n        print(f\"  ...{i}/{N}  ({fails} failures so far)\")\nwall = time.time() - t0\n\nok = len(latencies)\nprint(f\"\\n{ok}/{N} succeeded, {fails} failed.\")\nif latencies:\n    lat = sorted(latencies)\n    p95 = lat[min(len(lat)-1, int(0.95*len(lat)))]\n    print(f\"latency: median {statistics.median(lat):.2f}s  p95 {p95:.2f}s  \"\n          f\"min {lat[0]:.2f}s  max {lat[-1]:.2f}s\")\nprint(f\"total wall-time for {N} calls: {wall:.1f}s \"\n      f\"({wall/N:.2f}s/call incl. overhead)\")\nprint(\"first failure:\", first_fail if first_fail else \"none — no throttling in 100 calls\")\nprint(\"parse rate (non-??/ERR):\",\n      f\"{sum(p in LEVELS for p in preds)}/{N}\")"
+  },
+  {
+    "objectID": "resources/tools/colab-ai-preflight.html#step-4-extrapolate-to-15-students",
+    "href": "resources/tools/colab-ai-preflight.html#step-4-extrapolate-to-15-students",
+    "title": "google.colab.ai pre-flight",
+    "section": "Step 4 — Extrapolate to ~15 students",
+    "text": "Step 4 — Extrapolate to ~15 students\nThe single-user numbers above → what a class of 15 implies. Caveat: this measures one account sequentially; it cannot test 15-way concurrency. If colab.ai quota is per-account (likely), 15 students = 15 independent quotas and Step 3 passing is reassuring. If it’s a shared project quota, real load is ~15× and only a multi-account trial can confirm it.\n\n\nShow code\n#@title Step 4 — class-of-15 projection\nCLASS = 15\nCALLS_PER_STUDENT_PER_DAY = 72 + 72 + 60  # tutorial + few-shot + lab, rough\nif latencies:\n    per_call = wall / N\n    student_day = per_call * CALLS_PER_STUDENT_PER_DAY\n    print(f\"~{per_call:.2f}s/call → one student\\u2019s ~{CALLS_PER_STUDENT_PER_DAY} \"\n          f\"calls/day ≈ {student_day/60:.1f} min of model time.\")\n    print(f\"Class total: {CLASS*CALLS_PER_STUDENT_PER_DAY} calls/day across {CLASS} accounts.\")\n    print(f\"If quota is PER-ACCOUNT: each student runs the {student_day/60:.1f}-min \"\n          \"budget independently → fine.\")\n    print(\"If quota is SHARED/project: treat 100-call ceiling from Step 3 as the \"\n          \"whole-class ceiling → likely too low, plan the .env fallback.\")\nelse:\n    print(\"No successful calls in Step 3 — cannot project. Fix Step 2/3 first.\")"
+  },
+  {
+    "objectID": "resources/tools/colab-ai-preflight.html#step-5-determinism-label-stability",
+    "href": "resources/tools/colab-ai-preflight.html#step-5-determinism-label-stability",
+    "title": "google.colab.ai pre-flight",
+    "section": "Step 5 — Determinism (label stability)",
+    "text": "Step 5 — Determinism (label stability)\ncolab.ai exposes no temperature knob, so raw text will vary. What matters for the course is whether the parsed CEFR label is stable. Send the same prompt 10× for a few sentences and report the modal label and its agreement rate — this is how much run-to-run F1 wobble to warn students about.\n\n\nShow code\n#@title Step 5 — same prompt × 10, label stability\nREPEATS = 10\nSAMPLES = 4\nsample_items = [gold[i * (len(gold)//SAMPLES)] for i in range(SAMPLES)]\n\nprint(f\"{REPEATS} repeats each, {SAMPLES} sentences:\\n\")\nagreements = []\nfor item in sample_items:\n    prompt = PROMPT.format(text=item[\"text\"])\n    labels = []\n    for _ in range(REPEATS):\n        try:\n            labels.append(_extract_level(generate_text(prompt)))\n        except Exception as e:\n            labels.append(\"ERR\")\n    c = Counter(labels)\n    modal, modal_n = c.most_common(1)[0]\n    agree = modal_n / REPEATS\n    agreements.append(agree)\n    print(f\"  gold {item['label']}  →  modal {modal} \"\n          f\"({modal_n}/{REPEATS} = {agree:.0%})   dist={dict(c)}\")\n\nprint(f\"\\nMean label agreement across samples: \"\n      f\"{statistics.mean(agreements):.0%}\")\nprint(\"→ Tell students their F1 can wobble by roughly the complement of this.\")"
+  },
+  {
+    "objectID": "resources/tools/colab-ai-preflight.html#go-no-go",
+    "href": "resources/tools/colab-ai-preflight.html#go-no-go",
+    "title": "google.colab.ai pre-flight",
+    "section": "Go / no-go",
+    "text": "Go / no-go\n\nStep 2 fails → colab.ai unavailable on Tohoku accounts → use Gemini-API .env fallback (D4).\nStep 3 throttles well before 100 → single-user ceiling too low → fallback / rate-limit guidance.\nStep 5 agreement low (&lt;~80%) → warn students & consider majority-vote over repeats in the pipeline.\n\nRecord the numbers in planning/course_planning/prep-plan.md (milestone 07-09)."
+  },
+  {
+    "objectID": "resources/tools/colab-llm-check.html",
+    "href": "resources/tools/colab-llm-check.html",
+    "title": "Colab LLM check",
     "section": "",
-    "text": "In the worked tutorials, the course hands you data over a URL — e.g. Day 2’s day2_gold_standards_and_evaluation.ipynb loads a committed CEFR gold set straight from GitHub, so it just runs. That is the instructor’s distribution channel.\nFor the mini-project you flip roles: you build your own gold set (download → reshape → sample a subset) and you need somewhere to keep it. That place is your Google Drive — not GitHub.\n\n\n\n\n\n\nNoteGitHub is ours, Drive is yours\n\n\n\nGitHub is how we ship read-only course data to everyone. Your own rebuilt/sampled data lives in your Drive because it:\n\npersists across Colab sessions — a Colab VM wipes /content/ when it disconnects, but your Drive files survive;\nneeds no git push — save and it’s there;\nstays private and license-clean — some source datasets can’t be redistributed, so committing them to a repo would be a licensing problem. Keeping your copy in your Drive avoids that.\n\n\n\nWe’ll learn the pattern on the CEFR data you already know from Day 2, then reuse the exact same four steps for your mini-project dataset.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Housing Your Data in Google Drive"
-    ]
+    "text": "Linguistic Data Analysis II — a 1-minute check that the LLM works on your account.\nColab has a built-in Gemini model you can call with from google.colab import ai. Before Day 1 we need to confirm it works when you are signed in with your Tohoku Google account.\nWhat to do: Runtime → Run all, wait for every cell to finish, then copy the final ✅ / ❌ message and report it to the instructor.\nShow code\n# Step 1 — load Colab's built-in Gemini (no API key needed)\nfrom google.colab import ai\n\ndef run(prompt):\n    \"\"\"Send one prompt to the model and return its reply as text.\"\"\"\n    return ai.generate_text(prompt)\n\nprint(\"Loaded google.colab.ai — ready to try a prompt.\")\nShow code\n# Step 2 — try a simple prompt and read the reply\nreply = run(\"Say hello in one short sentence.\")\nprint(reply)"
   },
   {
-    "objectID": "resources/tools/google-drive-data.html#the-pattern-in-four-steps",
-    "href": "resources/tools/google-drive-data.html#the-pattern-in-four-steps",
-    "title": "Housing Your Data in Google Drive",
-    "section": "The pattern, in four steps",
-    "text": "The pattern, in four steps\n\n1. Mount your Drive\nRun this in a Colab cell. It pops up a Google auth window the first time — approve it, and your Drive appears under /content/drive/MyDrive/.\nfrom google.colab import drive\ndrive.mount('/content/drive')\n\n\n2. Make a project folder\nKeep everything for this course in one place so paths stay predictable.\nimport os\n\nDATA_DIR = \"/content/drive/MyDrive/lda2/gold\"\nos.makedirs(DATA_DIR, exist_ok=True)\nprint(\"Your data folder:\", DATA_DIR)\n\n\n3. Save your gold set into Drive\nAfter you’ve built a gold set — e.g. by running the CEFR download notebook download_cefr_sp.ipynb, which produces a list of {\"id\", \"text\", \"label\"} items — write it to Drive:\nimport json\n\n# `gold` is the list your download/build notebook produced\nout_path = f\"{DATA_DIR}/cefr_sentences.json\"\nwith open(out_path, \"w\", encoding=\"utf-8\") as f:\n    json.dump(gold, f, ensure_ascii=False, indent=2)\n\nprint(f\"Saved {len(gold)} items to {out_path}\")\n\n\n4. Load it back — from any future session\nThis is the payoff: once it’s in Drive, any notebook can read it with a local path instead of a URL. The tutorials’ load_gold() already accepts either:\nGOLD_PATH = \"/content/drive/MyDrive/lda2/gold/cefr_sentences.json\"\ngold = load_gold(GOLD_PATH)      # same function, path instead of URL\nprint(len(gold), \"items loaded from Drive\")\nThat’s the whole round-trip: mount → folder → save → load. Nothing is lost when Colab disconnects, and you never touch GitHub.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Housing Your Data in Google Drive"
-    ]
-  },
-  {
-    "objectID": "resources/tools/google-drive-data.html#reusing-this-for-your-mini-project",
-    "href": "resources/tools/google-drive-data.html#reusing-this-for-your-mini-project",
-    "title": "Housing Your Data in Google Drive",
-    "section": "Reusing this for your mini-project",
-    "text": "Reusing this for your mini-project\nThe four steps don’t change — you only swap which dataset you build and what you name the file. Pick your track in mini-project-tracks.md, run that track’s download notebook, then:\n\nMount your Drive (step 1).\nSave your track’s gold set — e.g. f\"{DATA_DIR}/raamove_moves.json\" (step 3).\nLoad it by path in your evaluation notebook (step 4).\n\nOne dataset, one mechanic, learned once on familiar CEFR data — now applied to your own.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Housing Your Data in Google Drive"
-    ]
-  },
-  {
-    "objectID": "resources/tools/google-drive-data.html#troubleshooting",
-    "href": "resources/tools/google-drive-data.html#troubleshooting",
-    "title": "Housing Your Data in Google Drive",
-    "section": "Troubleshooting",
-    "text": "Troubleshooting\n\n\n\n\n\n\n\nSymptom\nFix\n\n\n\n\ndrive.mount does nothing / asks again\nYou disconnected the runtime. Re-run the mount cell and re-approve.\n\n\nFileNotFoundError on load\nCheck the path spelling — it’s MyDrive (no space), and the folder must exist (re-run step 2).\n\n\nSaved file isn’t in Drive\nConfirm the cell printed a /content/drive/MyDrive/... path, then look under My Drive → lda2 → gold in the Drive web UI.\n\n\n“Mountpoint must not already contain files”\nRun drive.flush_and_unmount() once, then mount again.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Housing Your Data in Google Drive"
-    ]
-  },
-  {
-    "objectID": "resources/tools/google-drive-data.html#see-also",
-    "href": "resources/tools/google-drive-data.html#see-also",
-    "title": "Housing Your Data in Google Drive",
-    "section": "See also",
-    "text": "See also\n\nGoogle Colab Setup Guide — get Colab working in the first place.\nReplication Datasets — the download notebooks that build the gold sets you house here.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Housing Your Data in Google Drive"
-    ]
-  },
-  {
-    "objectID": "final-project/index.html",
-    "href": "final-project/index.html",
-    "title": "Final Project",
-    "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.\nThe final project is a group mini-project in which you run a small, end-to-end LLM-based analysis on a real annotated dataset and report the results. It is introduced in Session 3 (track selection + group formation) and carried out across Sessions 12–15."
-  },
-  {
-    "objectID": "final-project/index.html#choose-a-track",
-    "href": "final-project/index.html#choose-a-track",
-    "title": "Final Project",
-    "section": "Choose a track",
-    "text": "Choose a track\nPick one of the provided expert-annotated datasets (easy → hard). Details and licensing are on the Replication Datasets and Mini-Project Starter Tracks pages."
-  },
-  {
-    "objectID": "final-project/index.html#workflow",
-    "href": "final-project/index.html#workflow",
-    "title": "Final Project",
-    "section": "Workflow",
-    "text": "Workflow\n\nSample a balanced ~40-item gold subset from the provided pool (sample_pool).\nQC / adjudicate the sampled gold set.\nIterate your prompt over 2–3 rounds, re-evaluating each round (P/R/F1, confusion matrix).\nFreeze your final predictions to JSON (see below).\nReport in an in-class one-page report.\nPresent to the class with instructor Q&A.\n\n\n\n\n\n\n\nImportantRun it reproducibly, then freeze\n\n\n\nYou run the model through the Gemini API with temperature=0 + a fixed seed (get a free key). Even so, a hosted LLM is only best-effort reproducible, so once your prompt is final, run it once and save the predictions to a JSON file, committed with your notebook. Your evaluation then runs off that frozen file — so your reported F1 is stable, and anyone (including the grader) can re-run your analysis on exactly the outputs you saw."
-  },
-  {
-    "objectID": "final-project/index.html#deliverables",
-    "href": "final-project/index.html#deliverables",
-    "title": "Final Project",
-    "section": "Deliverables",
-    "text": "Deliverables\n\nPresentation + Q&A — the graded core.\nIn-class one-page report — track/labels · gold + what QC changed · prompt-iteration table (F1 per round) · confusion matrix + error analysis · limitations.\nCompleted notebook — assembled from the cell library and run end-to-end, with your group’s gold subset, prompt, frozen predictions JSON, and outputs.\n\nAll deliverables are produced and submitted during the course — there is no post-course write-up."
-  },
-  {
-    "objectID": "final-project/index.html#grading",
-    "href": "final-project/index.html#grading",
-    "title": "Final Project",
-    "section": "Grading",
-    "text": "Grading\nSee the Course Syllabus for the full breakdown (mini-project presentation + Q&A and the in-class report are weighted components; the completed notebook is graded under hands-on)."
-  },
-  {
-    "objectID": "resources/tools/gemini-api-key.html",
-    "href": "resources/tools/gemini-api-key.html",
-    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
-    "section": "",
-    "text": "You need a key starting on Day 3. Days 1 and 2 are keyless:\n\nDay 1 uses Colab’s built-in Gemini (colab.ai) for your first live call — zero setup. That free backend gives you no control over randomness (run the same prompt twice and the answer can change); that’s fine here, and we use it to show you why LLM output varies.\nDay 2 doesn’t call the model at all — it evaluates a frozen set of predictions committed to the repo, so everyone’s precision/recall/F1 come out identical while you’re learning the metrics.\n\nFrom Day 3 on — the Corpus Lab and the final project — you run the model yourself, and your results have to be stable and reproducible: your reported precision/recall/F1 shouldn’t change every time you re-run, and (because the Corpus Labs are autograded) a grader must be able to re-run your notebook and get the same numbers. For that you switch to the Gemini API, where you can pin the randomness (temperature=0, a fixed seed, a pinned model).\n\n\n\n\n\n\nImportant\n\n\n\nYou do not install anything or leave Colab. You get a free key, paste it into Colab’s built-in Secrets manager once, and the notebook picks it up automatically.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Get a free Gemini API key (for Corpus Lab & the final project)"
-    ]
-  },
-  {
-    "objectID": "resources/tools/gemini-api-key.html#when-you-need-this",
-    "href": "resources/tools/gemini-api-key.html#when-you-need-this",
-    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
-    "section": "",
-    "text": "You need a key starting on Day 3. Days 1 and 2 are keyless:\n\nDay 1 uses Colab’s built-in Gemini (colab.ai) for your first live call — zero setup. That free backend gives you no control over randomness (run the same prompt twice and the answer can change); that’s fine here, and we use it to show you why LLM output varies.\nDay 2 doesn’t call the model at all — it evaluates a frozen set of predictions committed to the repo, so everyone’s precision/recall/F1 come out identical while you’re learning the metrics.\n\nFrom Day 3 on — the Corpus Lab and the final project — you run the model yourself, and your results have to be stable and reproducible: your reported precision/recall/F1 shouldn’t change every time you re-run, and (because the Corpus Labs are autograded) a grader must be able to re-run your notebook and get the same numbers. For that you switch to the Gemini API, where you can pin the randomness (temperature=0, a fixed seed, a pinned model).\n\n\n\n\n\n\nImportant\n\n\n\nYou do not install anything or leave Colab. You get a free key, paste it into Colab’s built-in Secrets manager once, and the notebook picks it up automatically.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Get a free Gemini API key (for Corpus Lab & the final project)"
-    ]
-  },
-  {
-    "objectID": "resources/tools/gemini-api-key.html#step-1-create-a-free-api-key-ai-studio",
-    "href": "resources/tools/gemini-api-key.html#step-1-create-a-free-api-key-ai-studio",
-    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
-    "section": "Step 1 — Create a free API key (AI Studio)",
-    "text": "Step 1 — Create a free API key (AI Studio)\n\nGo to https://aistudio.google.com/apikey and sign in with your Tohoku Google account.\nClick Create API key.\nCopy the key (a long string starting with AIza…). Treat it like a password.\n\nThis is the free tier — no billing, no credit card. It has rate limits (a cap on requests per minute / per day), which are plenty for one student’s coursework.\n\n\n\n\n\n\nWarningNever paste your key into a notebook cell\n\n\n\nAnyone who sees your notebook (or the committed .ipynb) would get your key. Always use Colab Secrets (Step 2) so the key stays out of the code and out of what you submit.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Get a free Gemini API key (for Corpus Lab & the final project)"
-    ]
-  },
-  {
-    "objectID": "resources/tools/gemini-api-key.html#step-2-add-the-key-to-colab-secrets",
-    "href": "resources/tools/gemini-api-key.html#step-2-add-the-key-to-colab-secrets",
-    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
-    "section": "Step 2 — Add the key to Colab Secrets",
-    "text": "Step 2 — Add the key to Colab Secrets\n\nOpen your Corpus-Lab / project notebook in Colab.\nIn the left sidebar, click the 🔑 key icon (“Secrets”).\nClick + Add new secret.\nName it exactly GEMINI_API_KEY.\nPaste your key into the Value box.\nTurn on the Notebook access toggle for this secret.\n\nYou only do this once per Google account — the secret is remembered across your notebooks.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Get a free Gemini API key (for Corpus Lab & the final project)"
-    ]
-  },
-  {
-    "objectID": "resources/tools/gemini-api-key.html#step-3-the-notebook-uses-it-automatically",
-    "href": "resources/tools/gemini-api-key.html#step-3-the-notebook-uses-it-automatically",
-    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
-    "section": "Step 3 — The notebook uses it automatically",
-    "text": "Step 3 — The notebook uses it automatically\nWhen GEMINI_API_KEY is set, the notebook’s setup cell reads it from Secrets and routes calls through the Gemini API instead of colab.ai. You don’t change any code. Under the hood it does this:\nimport os\nfrom google.colab import userdata\nfrom google import genai\nfrom google.genai import types\n\n# Pull the key from Colab Secrets (never hard-code it).\nos.environ[\"GEMINI_API_KEY\"] = userdata.get(\"GEMINI_API_KEY\")\n\nclient = genai.Client()   # reads GEMINI_API_KEY from the environment\n\ndef generate_text(p):\n    return client.models.generate_content(\n        model=\"gemini-2.5-flash\",                    # pinned model\n        contents=p,\n        config=types.GenerateContentConfig(\n            temperature=0,   # greedy decoding — removes sampling randomness\n            seed=42,         # fixed random state\n        ),\n    ).text\nThe setup cell prints which backend it chose, e.g. LLM backend: Gemini API (gemini-2.5-flash). If it still says Colab Gemini, your secret isn’t set or its notebook-access toggle is off — recheck Step 2.\n\n\n\n\n\n\nTipIf Colab’s built-in Gemini (colab.ai) is ever unavailable\n\n\n\nThe Days 1–3 demos use the keyless colab.ai backend. If it’s down or unreachable in class, the fix is the same steps above: create a free key (Step 1) and add it as the GEMINI_API_KEY secret (Step 2). The notebook then routes every call through the Gemini API automatically — so the API key doubles as the fallback whenever the built-in backend isn’t working.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Get a free Gemini API key (for Corpus Lab & the final project)"
-    ]
-  },
-  {
-    "objectID": "resources/tools/gemini-api-key.html#about-reproducibility-important-and-a-little-humbling",
-    "href": "resources/tools/gemini-api-key.html#about-reproducibility-important-and-a-little-humbling",
-    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
-    "section": "About reproducibility (important, and a little humbling)",
-    "text": "About reproducibility (important, and a little humbling)\ntemperature=0 + seed makes the model as reproducible as a hosted LLM gets — but not perfectly. Requests are batched with other users’ on Google’s servers, and the resulting floating-point math can differ slightly run to run, which occasionally flips the label on a genuinely borderline item. So expect:\n\nClear-cut items → identical every run.\nAmbiguous items → the same most of the time, with the odd flip.\n\nBecause of this, your final deliverable freezes your predictions: you run the model once, save its raw output to a JSON file, and commit that alongside your analysis. Your evaluation (P/R/F1, confusion matrix, error table) then runs off the frozen file, so your submitted numbers are 100% reproducible — and anyone can audit exactly what the model said. (The Corpus-Lab notebook shows you how.)",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Get a free Gemini API key (for Corpus Lab & the final project)"
-    ]
-  },
-  {
-    "objectID": "resources/tools/gemini-api-key.html#rate-limits-good-manners",
-    "href": "resources/tools/gemini-api-key.html#rate-limits-good-manners",
-    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
-    "section": "Rate limits & good manners",
-    "text": "Rate limits & good manners\nThe free tier limits requests per minute and per day. If you hit a limit you’ll get a rate-limit error — wait a bit and re-run, or reduce your sample size. Practical tips:\n\nDevelop your prompt on a small slice (10–20 items) first; only run the full set once you’re happy.\nOnce you’ve frozen your predictions, you don’t need to call the API again — re-run analysis off the JSON.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Get a free Gemini API key (for Corpus Lab & the final project)"
-    ]
-  },
-  {
-    "objectID": "resources/tools/gemini-api-key.html#want-to-keep-working-after-the-course-optional-advanced",
-    "href": "resources/tools/gemini-api-key.html#want-to-keep-working-after-the-course-optional-advanced",
-    "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
-    "section": "Want to keep working after the course? (optional, advanced)",
-    "text": "Want to keep working after the course? (optional, advanced)\nEverything above stays in Colab. If you’d rather run locally in your own environment (e.g. Positron + uv), clone the course repo and set the same GEMINI_API_KEY as an environment variable — the notebooks detect they’re not in Colab and use the API automatically. See Python setup (local). This is optional — not required for the course.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Get a free Gemini API key (for Corpus Lab & the final project)"
-    ]
-  },
-  {
-    "objectID": "resources/tools/index.html",
-    "href": "resources/tools/index.html",
-    "title": "Tools and Software",
-    "section": "",
-    "text": "The course’s primary platform is Google Colab — set that up first.\n\nGoogle Colab Setup\nPython Setup — Run Locally (optional)\nHousing Your Data in Google Drive\n\n\n\nThis course contrasts rule-based / feature-based analysis (lexical diversity, syntactic complexity) with the classifications an LLM judges in context. If you took Linguistic Data Analysis I — or want to try those feature-extraction tools (TAALED, TAALES, TAASSC, Japanese NLP) — see the LDA I course website.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Tools and Software"
-    ]
-  },
-  {
-    "objectID": "resources/tools/index.html#available-guides",
-    "href": "resources/tools/index.html#available-guides",
-    "title": "Tools and Software",
-    "section": "",
-    "text": "The course’s primary platform is Google Colab — set that up first.\n\nGoogle Colab Setup\nPython Setup — Run Locally (optional)\nHousing Your Data in Google Drive\n\n\n\nThis course contrasts rule-based / feature-based analysis (lexical diversity, syntactic complexity) with the classifications an LLM judges in context. If you took Linguistic Data Analysis I — or want to try those feature-extraction tools (TAALED, TAALES, TAASSC, Japanese NLP) — see the LDA I course website.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Tools and Software"
-    ]
-  },
-  {
-    "objectID": "resources/tools/index.html#other-useful-corpus-resources",
-    "href": "resources/tools/index.html#other-useful-corpus-resources",
-    "title": "Tools and Software",
-    "section": "Other useful corpus resources",
-    "text": "Other useful corpus resources\n\nCIABATTTA\nCorpus and Repository of Writing",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Tools and Software"
-    ]
-  },
-  {
-    "objectID": "resources/tools/colab-ai-preflight-README.html",
-    "href": "resources/tools/colab-ai-preflight-README.html",
-    "title": "",
-    "section": "",
-    "text": "Code"
-  },
-  {
-    "objectID": "resources/tools/colab-ai-preflight-README.html#option-a-open-in-colab-directly-recommended-no-clone",
-    "href": "resources/tools/colab-ai-preflight-README.html#option-a-open-in-colab-directly-recommended-no-clone",
-    "title": "",
-    "section": "Option A — open in Colab directly (recommended, no clone)",
-    "text": "Option A — open in Colab directly (recommended, no clone)\n\nMake sure the notebook is on GitHub first: git push origin main.\nOpen this link (or paste it into your browser), signed in with the Tohoku Google account:\nhttps://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tools/colab-ai-preflight.ipynb\nRuntime → Run all. Each step prints its own report; the last cell gives go / no-go.\n\nNo GPU/TPU needed — the default CPU runtime is fine."
-  },
-  {
-    "objectID": "resources/tools/colab-ai-preflight-README.html#option-b-clone-the-repo-and-upload",
-    "href": "resources/tools/colab-ai-preflight-README.html#option-b-clone-the-repo-and-upload",
-    "title": "",
-    "section": "Option B — clone the repo and upload",
-    "text": "Option B — clone the repo and upload\nUse this if you’d rather not push first, or want to edit locally.\ngit clone https://github.com/egumasa/linguistic-data-analysis-II-2026.git\ncd linguistic-data-analysis-II-2026\n# the notebook lives here:\n#   sources/resources/tools/colab-ai-preflight.ipynb\nThen in Colab: File → Upload notebook → pick sources/resources/tools/colab-ai-preflight.ipynb, sign in with the Tohoku account, and Runtime → Run all."
-  },
-  {
-    "objectID": "resources/tools/colab-ai-preflight-README.html#what-each-step-tells-you",
-    "href": "resources/tools/colab-ai-preflight-README.html#what-each-step-tells-you",
-    "title": "",
-    "section": "What each step tells you",
-    "text": "What each step tells you\n\n\n\n\n\n\n\n\nStep\nReads\nDecision\n\n\n\n\n2 · Smoke test\nIs colab.ai reachable at all?\nFails → the whole path is unavailable on Tohoku accounts; use the Gemini-API .env fallback (D4).\n\n\n3 · 100-call probe\nsuccesses/100, median & p95 latency, first throttle\nThrottles well before 100 → single-user ceiling too low.\n\n\n4 · Class-of-15 projection\nper-student daily model-time; per-account vs shared quota\nFrames whether 15 students is safe (can’t test true concurrency from one account).\n\n\n5 · Determinism\nmodal-label agreement over 10 repeats\nLow (&lt;~80%) → warn students about F1 wobble; consider majority-vote."
-  },
-  {
-    "objectID": "resources/tools/colab-ai-preflight-README.html#after-the-run",
-    "href": "resources/tools/colab-ai-preflight-README.html#after-the-run",
-    "title": "",
-    "section": "After the run",
-    "text": "After the run\nRecord the numbers (reachable? throttle point? mean agreement?) in planning/course_planning/prep-plan.md — this closes the 07-09 milestone and de-risks the 07-12 end-to-end Colab run."
+    "objectID": "resources/tools/colab-llm-check.html#have-some-fun",
+    "href": "resources/tools/colab-llm-check.html#have-some-fun",
+    "title": "Colab LLM check",
+    "section": "Have some fun 🎉",
+    "text": "Have some fun 🎉\nThe model can do more than say hello. Change the topic in the form on the right (in Colab), then run the cell and see what it comes up with. Run it a few times — the answer changes each time!\n\n\nShow code\n#@title 🎈 Ask the model for a haiku { display-mode: \"form\" }\ntopic = \"cats learning statistics\"  #@param {type:\"string\"}\n\nhaiku = run(f\"Write a short, funny haiku about: {topic}\")\nprint(haiku)\n\n# Try changing `topic` above to anything you like — your hometown, your favorite\n# food, corpus linguistics... then run this cell again.\n\n\n\n\nShow code\n# One more for fun: ask it to explain something as if you were five.\nprint(run(\"Explain what a 'corpus' is in linguistics, in one sentence a 5-year-old would get.\"))\n\n\n\n\nShow code\n# Step 3 — final check: did the LLM run?  Copy the message below and report it.\ntry:\n    answer = run(\"What is 2 + 2? Reply with just the number.\")\n    print(\"✅ SUCCESS — Colab AI works on my account. (model replied:\", repr(answer.strip()), \")\")\nexcept Exception as e:\n    print(\"❌ FAILED — Colab AI did not run on my account.\")\n    print(\"   error:\", type(e).__name__, \"-\", e)\n    print(\"   → Copy this whole message and send it to the instructor.\")"
   },
   {
     "objectID": "resources/datasets/SOURCES.html",
@@ -2967,18 +2993,6 @@
       "Sessions",
       "Daily notebooks",
       "Day 2 Tutorial — Annotation, Gold Standards & Evaluation"
-    ]
-  },
-  {
-    "objectID": "resources/tools/google-colab-setup.html#try-it-out-open-this-colab-notebook-and-run-it",
-    "href": "resources/tools/google-colab-setup.html#try-it-out-open-this-colab-notebook-and-run-it",
-    "title": "Google Colab Setup Guide",
-    "section": "Try it out — open this Colab notebook and run it",
-    "text": "Try it out — open this Colab notebook and run it\nBefore Day 1, please confirm the built-in LLM works on your Tohoku Google account. Open this Colab notebook and try running these cells:\nhttps://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/tools/colab-llm-check.ipynb\n\nOpen the link, signed in with your Tohoku Google account.\nFile → Save a copy in Drive — this gives you your own copy to run (the same thing you’ll do for the real course notebooks).\nIn your copy, choose Runtime → Run all.\nWhen it finishes, copy the final ✅ / ❌ message and report it to the instructor.\n\nIf you see ✅ SUCCESS, you’re all set. If you see ❌ FAILED, paste the whole message (including the error) to the google classroom so we can help.\n\nPrefer to run on your own machine instead? See Python Setup — Run Locally.",
-    "crumbs": [
-      "Resources",
-      "Setup & Tools",
-      "Google Colab Setup Guide"
     ]
   }
 ]
