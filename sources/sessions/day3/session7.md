@@ -22,4 +22,5 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 - Kim, M., & Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. *Journal of English for Academic Purposes, 71*, 101422. <https://doi.org/10.1016/j.jeap.2024.101422>
 
 ## Slides & Colab
-<!-- slides link + Colab notebook link -->
+- Slides: [Session 7 slides](../../slides/slides-session7.html)
+<!-- Colab notebook link: to be added -->

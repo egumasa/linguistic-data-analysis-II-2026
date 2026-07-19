@@ -4,7 +4,7 @@ subtitle: "Proof of concept — two meanings of \"run\""
 author: "Linguistic Data Analysis II"
 format:
   live-revealjs:
-    theme: [default, ../../assets/css/slides.scss]
+    theme: [default, ../assets/css/slides.scss]
     slide-number: true
     incremental: false
 engine: jupyter

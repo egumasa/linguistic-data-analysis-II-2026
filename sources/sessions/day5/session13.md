@@ -18,7 +18,8 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 <!-- to be added -->
 
 ## Slides & Colab
-<!-- slides link + Colab notebook link -->
+- Slides: [Session 13 slides](../../slides/slides-session13.html)
+<!-- Colab notebook link: to be added -->
 
 ## Mini-project
 Project work session — see the [Final Project](../../final-project/index.md) page.

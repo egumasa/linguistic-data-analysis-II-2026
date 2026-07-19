@@ -18,4 +18,5 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 <!-- to be added -->
 
 ## Slides & Colab
-<!-- slides link + Colab notebook link -->
+- Slides: [Session 11 slides](../../slides/slides-session11.html)
+<!-- Colab notebook link: to be added -->
