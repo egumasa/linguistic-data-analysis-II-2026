@@ -21,5 +21,5 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 - Eguchi, M., & Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. *Research Methods in Applied Linguistics, 3*(3), 100153. <https://doi.org/10.1016/j.rmal.2024.100153>
 
 ## Slides & Colab
-- Slides: [Session 4 slides](../../slides/slides-session4.html)
+<!-- Slides: [Session 4 slides](../../slides/slides-session-04.html){target="_blank"} -->
 <!-- Colab notebook link: to be added -->

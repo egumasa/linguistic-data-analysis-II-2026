@@ -11,7 +11,7 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 :::
 
 
-The final project is a **group mini-project** in which you run a small, end-to-end LLM-based analysis on a real annotated dataset and report the results. It is introduced in [Session 3](../sessions/day1/session3.md) (track selection + group formation) and carried out across Sessions [12](../sessions/day4/session12.md)–[15](../sessions/day5/session15.md).
+The final project is a **group mini-project** in which you run a small, end-to-end LLM-based analysis on a real annotated dataset and report the results. It is introduced in [Session 3](../sessions/day1/session-03.md) (track selection + group formation) and carried out across Sessions [12](../sessions/day4/session-12.md)–[15](../sessions/day5/session-15.md).
 
 ## Choose a track
 

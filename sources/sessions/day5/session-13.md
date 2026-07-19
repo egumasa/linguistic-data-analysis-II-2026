@@ -1,6 +1,6 @@
 ---
-title: "Session 2: Linguistic Analyses & LLM Fundamentals"
-subtitle: "Day 1 · Introduction & First Experience (1-2)"
+title: "Session 13: Project Work — Prompt Iteration & Final Evaluation"
+subtitle: "Day 5 · Project Finalization & Presentations (5-1)"
 toc: true
 ---
 
@@ -18,5 +18,8 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 <!-- to be added -->
 
 ## Slides & Colab
-- Slides: [Session 2 slides](../../slides/slides-session2.html)
+<!-- Slides: [Session 13 slides](../../slides/slides-session-13.html){target="_blank"} -->
 <!-- Colab notebook link: to be added -->
+
+## Mini-project
+Project work session — see the [Final Project](../../final-project/index.md) page.

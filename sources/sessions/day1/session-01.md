@@ -1,6 +1,6 @@
 ---
-title: "Session 10: Methodology — Reproducibility, LLM Limits & Ethics"
-subtitle: "Day 4 · Methodology & Pipeline Assembly (4-1)"
+title: "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis"
+subtitle: "Day 1 · Introduction & First Experience (1-1)"
 toc: true
 ---
 
@@ -16,10 +16,10 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 
 ## Reading
 
-**Read in full** — revisit the Day 1 primer closely as a reproducibility checklist (see all [course readings](../../syllabus/readings.md)):
+**Skim** (see all [course readings](../../syllabus/readings.md)):
 
 - Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., & Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <https://doi.org/10.1177/25152459251325174>
 
 ## Slides & Colab
-- Slides: [Session 10 slides](../../slides/slides-session10.html)
+<!-- Slides: [Session 1 slides](../../slides/slides-session-01.html){target="_blank"} -->
 <!-- Colab notebook link: to be added -->

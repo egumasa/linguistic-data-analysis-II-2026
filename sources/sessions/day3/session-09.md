@@ -1,6 +1,6 @@
 ---
-title: "Session 13: Project Work — Prompt Iteration & Final Evaluation"
-subtitle: "Day 5 · Project Finalization & Presentations (5-1)"
+title: "Session 9: Error Analysis & Under-the-Hood Walkthrough"
+subtitle: "Day 3 · Prompt Design & Iteration (3-3)"
 toc: true
 ---
 
@@ -18,8 +18,5 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 <!-- to be added -->
 
 ## Slides & Colab
-- Slides: [Session 13 slides](../../slides/slides-session13.html)
+<!-- Slides: [Session 9 slides](../../slides/slides-session-09.html){target="_blank"} -->
 <!-- Colab notebook link: to be added -->
-
-## Mini-project
-Project work session — see the [Final Project](../../final-project/index.md) page.

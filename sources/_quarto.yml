@@ -42,35 +42,35 @@ website:
           href: notebooks/index.md
         - section: "Day 1 · Introduction & First Experience"
           contents:
-            - sessions/day1/session1.md
-            - sessions/day1/session2.md
-            - sessions/day1/session3.md
+            - sessions/day1/session-01.md
+            - sessions/day1/session-02.md
+            - sessions/day1/session-03.md
             - notebooks/day1_python_and_first_llm.ipynb
         - section: "Day 2 · Annotation, Gold Standards & Metrics"
           contents:
-            - sessions/day2/session4.md
-            - sessions/day2/session5.md
-            - sessions/day2/session6.md
+            - sessions/day2/session-04.md
+            - sessions/day2/session-05.md
+            - sessions/day2/session-06.md
             - notebooks/day2_gold_standards_and_evaluation.ipynb
             - notebooks/tutorial-day2-annotation-eval.md
         - section: "Day 3 · Prompt Design & Iteration"
           contents:
-            - sessions/day3/session7.md
-            - sessions/day3/session8.md
-            - sessions/day3/session9.md
+            - sessions/day3/session-07.md
+            - sessions/day3/session-08.md
+            - sessions/day3/session-09.md
             - notebooks/day3_prompt_design.ipynb
             - notebooks/tutorial-day3-move-replication.md
         - section: "Day 4 · Methodology & Pipeline Assembly"
           contents:
-            - sessions/day4/session10.md
-            - sessions/day4/session11.md
-            - sessions/day4/session12.md
+            - sessions/day4/session-10.md
+            - sessions/day4/session-11.md
+            - sessions/day4/session-12.md
             - notebooks/day4_pipeline_and_sampling.ipynb
         - section: "Day 5 · Project Finalization & Presentations"
           contents:
-            - sessions/day5/session13.md
-            - sessions/day5/session14.md
-            - sessions/day5/session15.md
+            - sessions/day5/session-13.md
+            - sessions/day5/session-14.md
+            - sessions/day5/session-15.md
             - notebooks/day5_project_finalization.ipynb
 
     - title: "Resources"

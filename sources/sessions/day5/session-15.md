@@ -1,6 +1,6 @@
 ---
-title: "Session 9: Error Analysis & Under-the-Hood Walkthrough"
-subtitle: "Day 3 · Prompt Design & Iteration (3-3)"
+title: "Session 15: Final Presentations & Wrap-up"
+subtitle: "Day 5 · Project Finalization & Presentations (5-3)"
 toc: true
 ---
 
@@ -18,5 +18,8 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 <!-- to be added -->
 
 ## Slides & Colab
-- Slides: [Session 9 slides](../../slides/slides-session9.html)
+<!-- Slides: [Session 15 slides](../../slides/slides-session-15.html){target="_blank"} -->
 <!-- Colab notebook link: to be added -->
+
+## Mini-project
+Final group presentations and instructor Q&A — see the [Final Project](../../final-project/index.md) page.
