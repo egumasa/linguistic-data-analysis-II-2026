@@ -7,7 +7,7 @@
     "text": "Day 5 — Linguistic Data Analysis II",
     "crumbs": [
       "Sessions",
-      "Day 5 · Project Finalization & Presentations",
+      "Daily notebooks",
       "Day 5 · Project finalization"
     ]
   },
@@ -19,7 +19,7 @@
     "text": "Part A · Tutorial — assemble & finalize\nBy today you have all the pieces: a gold set (Day 4), a prompt you iterated (Day 3), and the evaluation pipeline (Day 2). Today you run them together, end-to-end, on your held-out gold set and capture the final numbers.\nThe four ready-made track notebooks in the lda2-final-template repo (notebooks/cefr.ipynb, raamove.ipynb, cars50.ipynb, l2_errors.ipynb) are the fully-worked versions of this pipeline — use the one matching your track as your starting point.\n\n\n\n\n\n\nWarning🚧 TODO — to be written\n\n\n\nThe step-by-step finalization walkthrough is still being written. It will cover:\n\nloading your own gold set from Drive,\nrunning your best prompt end-to-end,\nproducing the final per-class P/R/F1 + confusion matrix,\nand exporting the figures for your slides.",
     "crumbs": [
       "Sessions",
-      "Day 5 · Project Finalization & Presentations",
+      "Daily notebooks",
       "Day 5 · Project finalization"
     ]
   },
@@ -31,7 +31,7 @@
     "text": "Part B · Corpus Lab — the one-page report\nYour notebook is submitted alongside a one-page report. Draft its five sections here as you finish each analysis (full guidance: mini-project tracks).\n\n\n\n\n\n\nWarning🚧 TODO — to be written\n\n\n\nReport scaffold (to be expanded):\n\nScheme & gold — label set; how you built the gold set; what QC changed.\nPrompt iterations — table of changes and F1 at each step.\nEvaluation — per-class precision/recall/F1 + confusion matrix.\nError analysis — concrete misses; model’s fault or the scheme’s?\nLimitations — stochasticity, contamination risk, what the numbers don’t show.",
     "crumbs": [
       "Sessions",
-      "Day 5 · Project Finalization & Presentations",
+      "Daily notebooks",
       "Day 5 · Project finalization"
     ]
   },
@@ -43,7 +43,7 @@
     "text": "✅ Before you submit\n\nRuntime → Run all and check every cell ran without error.\nPart A outputs are visible (tables / charts / the model’s answers).\nPart B self-check prints ✅ (or your TODO answers are filled in).\nFile → Download → Download .ipynb and upload that one file.",
     "crumbs": [
       "Sessions",
-      "Day 5 · Project Finalization & Presentations",
+      "Daily notebooks",
       "Day 5 · Project finalization"
     ]
   },
@@ -88,7 +88,7 @@
     "text": "Day 4 — Linguistic Data Analysis II",
     "crumbs": [
       "Sessions",
-      "Day 4 · Methodology & Pipeline Assembly",
+      "Daily notebooks",
       "Day 4 · Pipeline assembly & sampling your gold set"
     ]
   },
@@ -100,7 +100,7 @@
     "text": "Part A · Tutorial — sample a balanced gold subset\nFor your mini-project you build your own gold set by sampling from a pool. A balanced sample (equal items per label) keeps precision/recall/F1 and the confusion matrix meaningful. Here we demo it on the familiar CEFR pool; swap POOL_URL for your track’s pool. See the mini-project tracks for the full list.\n\nSetup — run this first\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Imports + the LLM backend. No pip install needed in Colab.\nimport json, re, urllib.request, os\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n\nMODEL_ID = \"gemini-2.5-flash\"   # pinned model for the reproducible (API) backend\n\ndef _resolve_gemini_key():\n    \"\"\"Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.\"\"\"\n    try:\n        from google.colab import userdata      # only exists in Colab\n        key = userdata.get(\"GEMINI_API_KEY\")\n        if key:\n            return key\n    except Exception:\n        pass                                    # not in Colab, or secret not set\n    return os.environ.get(\"GEMINI_API_KEY\")\n\ndef _make_api_backend(key):\n    \"\"\"Reproducible backend: Gemini API with temperature=0 + a fixed seed.\"\"\"\n    from google import genai\n    from google.genai import types\n    client = genai.Client(api_key=key)\n    cfg = types.GenerateContentConfig(temperature=0, seed=42)\n    return (lambda p: client.models.generate_content(\n                model=MODEL_ID, contents=p, config=cfg).text,\n            f\"Gemini API ({MODEL_ID}, temperature=0, seed=42)\")\n\n# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).\n_key = _resolve_gemini_key()\nif _key:\n    generate_text, _backend = _make_api_backend(_key)\nelse:\n    try:\n        from google.colab import ai            # Colab's built-in Gemini — no key\n        generate_text, _backend = (lambda p: ai.generate_text(p)), \"Colab Gemini (demo, non-reproducible)\"\n    except ImportError:\n        raise RuntimeError(\n            \"No LLM backend found. Run this notebook in Google Colab (free built-in \"\n            \"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets \"\n            \"panel, or as an environment variable when running locally. \"\n            \"See resources/tools/gemini-api-key.md.\")\n\n# Default gold + LEVELS for CEFR; change LEVELS to match your own track's labels.\nGOLD_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json\"\nLEVELS = [\"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"]\nprint(f\"Setup done. LLM backend: {_backend}. scikit-learn ready.\")\n\n\n\n\nShow code\n#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: \"form\" }\ndef load_gold(url_or_path):\n    \"\"\"Read the canonical gold JSON: [{'id','text','label'}, ...].\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        gold = json.loads(raw)\n    else:\n        gold = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(gold)} items. First one:\", gold[0])\n    return gold\n\n\n\n\nShow code\n#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: \"form\" }\ndef _extract_level(text):\n    \"\"\"Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply.\"\"\"\n    m = re.search(r\"\\b([ABC][12])\\b\", str(text).upper())\n    return m.group(1) if m else \"??\"\n\ndef run_prompt(prompt, gold):\n    \"\"\"Send each item's `text` to the LLM via {text}, collect predicted labels.\"\"\"\n    predictions = []\n    for i, item in enumerate(gold, 1):\n        reply = generate_text(prompt.format(text=item[\"text\"]))\n        predictions.append(_extract_level(reply))\n        if i % 12 == 0:\n            print(f\"  ...{i}/{len(gold)} done\")\n    print(f\"Got {len(predictions)} predictions.\")\n    return predictions\n\n\n\n\nShow code\n#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + confusion matrix { display-mode: \"form\" }\ndef evaluate(gold, predictions):\n    y_true = [item[\"label\"] for item in gold]\n    y_pred = predictions\n    print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))\n    cm = confusion_matrix(y_true, y_pred, labels=LEVELS)\n    plt.figure(figsize=(5.5, 4.5))\n    sns.heatmap(cm, annot=True, fmt=\"d\", cmap=\"Blues\",\n                xticklabels=LEVELS, yticklabels=LEVELS)\n    plt.xlabel(\"Predicted\"); plt.ylabel(\"Gold\"); plt.title(\"Confusion matrix\")\n    plt.tight_layout(); plt.show()\n\n\n\n\nShow code\n#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: \"form\" }\ndef show_errors(gold, predictions):\n    rows = [{\"id\": g[\"id\"], \"gold\": g[\"label\"], \"pred\": p, \"text\": g[\"text\"]}\n            for g, p in zip(gold, predictions) if g[\"label\"] != p]\n    print(f\"{len(rows)} of {len(gold)} wrong.\")\n    return pd.DataFrame(rows)\n\n\n\n\nShow code\n#@title 🔧 Library cell: save_predictions / load_predictions { display-mode: \"form\" }\ndef save_predictions(predictions, path):\n    \"\"\"Freeze a list of predicted labels to JSON.\"\"\"\n    with open(path, \"w\", encoding=\"utf-8\") as f:\n        json.dump(predictions, f)\n    print(f\"Saved {len(predictions)} predictions to {path}\")\n\ndef load_predictions(url_or_path):\n    \"\"\"Read a frozen predictions list — a committed URL or a local path.\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        predictions = json.loads(raw)\n    else:\n        predictions = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(predictions)} frozen predictions.\")\n    return predictions\n\n\n\n\nShow code\nPOOL_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_pool.json\"   # ✏️ swap for your track's pool\npool = load_gold(POOL_URL)\n\n\n\n\nDraw a balanced sample ✏️ YOU EDIT\nPER_LABEL items per label, with a fixed random seed so the sample is reproducible (same every run). Rare classes simply yield fewer — that’s a property of the data.\n\n\nShow code\nimport random\nfrom collections import defaultdict, Counter\n\nPER_LABEL = 8            # how many items per label\nrandom.seed(42)         # fixed seed = same sample every run\n\nby_label = defaultdict(list)\nfor item in pool:\n    by_label[item[\"label\"]].append(item)\n\ngold = []\nfor label in sorted(by_label):\n    bucket = by_label[label]\n    random.shuffle(bucket)\n    gold.extend(bucket[:PER_LABEL])\nrandom.shuffle(gold)\ngold = [{\"id\": i + 1, \"text\": x[\"text\"], \"label\": x[\"label\"]}\n        for i, x in enumerate(gold)]\n\nprint(\"sampled:\", len(gold), \"| per label:\",\n      dict(Counter(x[\"label\"] for x in gold)))\n\n\n\n\nSave your gold set to Google Drive\nKeep your own gold set in your Drive (not the course repo). See Housing your data in Google Drive for the mount → save → load round-trip.\n\n\nShow code\n# ✏️ Uncomment in Colab to save to your Drive:\n# from google.colab import drive; drive.mount(\"/content/drive\")\n# import json\n# with open(\"/content/drive/MyDrive/my_gold.json\", \"w\", encoding=\"utf-8\") as f:\n#     json.dump(gold, f, ensure_ascii=False, indent=2)\n# print(\"saved\", len(gold), \"items\")",
     "crumbs": [
       "Sessions",
-      "Day 4 · Methodology & Pipeline Assembly",
+      "Daily notebooks",
       "Day 4 · Pipeline assembly & sampling your gold set"
     ]
   },
@@ -112,7 +112,7 @@
     "text": "Part B · Corpus Lab — QC & adjudicate your gold set\n\n\n\n\n\n\nWarning🚧 TODO — to be written\n\n\n\nThis lab is still being written. When it is, you will:\n\nEach group member independently re-checks part of the sampled set against the scheme.\nFlag disagreements with the published label.\nDiscuss and resolve them — and record what changed (this feeds your report’s “Scheme & gold” section).",
     "crumbs": [
       "Sessions",
-      "Day 4 · Methodology & Pipeline Assembly",
+      "Daily notebooks",
       "Day 4 · Pipeline assembly & sampling your gold set"
     ]
   },
@@ -124,7 +124,7 @@
     "text": "✅ Before you submit\n\nRuntime → Run all and check every cell ran without error.\nPart A outputs are visible (tables / charts / the model’s answers).\nPart B self-check prints ✅ (or your TODO answers are filled in).\nFile → Download → Download .ipynb and upload that one file.",
     "crumbs": [
       "Sessions",
-      "Day 4 · Methodology & Pipeline Assembly",
+      "Daily notebooks",
       "Day 4 · Pipeline assembly & sampling your gold set"
     ]
   },
@@ -136,7 +136,7 @@
     "text": "Day 2 — Linguistic Data Analysis II",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 · Gold standards & evaluation"
     ]
   },
@@ -148,7 +148,7 @@
     "text": "Part A · Tutorial — the pipeline on CEFR-SP\nThe task (CEFR sentence level, A1–C2) is easy to judge on purpose — today the mechanics are the lesson, not the labeling.\n\n\n\n\n\n\nNoteToday runs on frozen predictions — no API key, no live model\n\n\n\nYou met the live model on Day 1 and saw its answers change from run to run. When you’re learning to measure quality, that wobble is just noise fighting the lesson — so today the model’s predictions are pre-computed and committed to a file. You load them and everyone’s precision / recall / F1 come out identical every run. You’ll run the model yourself (with the key) from Day 3 on.\n\n\n\nSetup — run this first\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Imports + the LLM backend. No pip install needed in Colab.\nimport json, re, urllib.request, os\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n\nMODEL_ID = \"gemini-2.5-flash\"   # pinned model for the reproducible (API) backend\n\ndef _resolve_gemini_key():\n    \"\"\"Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.\"\"\"\n    try:\n        from google.colab import userdata      # only exists in Colab\n        key = userdata.get(\"GEMINI_API_KEY\")\n        if key:\n            return key\n    except Exception:\n        pass                                    # not in Colab, or secret not set\n    return os.environ.get(\"GEMINI_API_KEY\")\n\ndef _make_api_backend(key):\n    \"\"\"Reproducible backend: Gemini API with temperature=0 + a fixed seed.\"\"\"\n    from google import genai\n    from google.genai import types\n    client = genai.Client(api_key=key)\n    cfg = types.GenerateContentConfig(temperature=0, seed=42)\n    return (lambda p: client.models.generate_content(\n                model=MODEL_ID, contents=p, config=cfg).text,\n            f\"Gemini API ({MODEL_ID}, temperature=0, seed=42)\")\n\n# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).\n_key = _resolve_gemini_key()\nif _key:\n    generate_text, _backend = _make_api_backend(_key)\nelse:\n    try:\n        from google.colab import ai            # Colab's built-in Gemini — no key\n        generate_text, _backend = (lambda p: ai.generate_text(p)), \"Colab Gemini (demo, non-reproducible)\"\n    except ImportError:\n        raise RuntimeError(\n            \"No LLM backend found. Run this notebook in Google Colab (free built-in \"\n            \"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets \"\n            \"panel, or as an environment variable when running locally. \"\n            \"See resources/tools/gemini-api-key.md.\")\n\n# CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.\nGOLD_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json\"\nLEVELS = [\"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"]\nPREDICTIONS_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/predictions_day2.json\"   # frozen model predictions\nprint(f\"Setup done. LLM backend: {_backend}. scikit-learn ready.\")\n\n\n\n\nShow code\n#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: \"form\" }\ndef load_gold(url_or_path):\n    \"\"\"Read the canonical gold JSON: [{'id','text','label'}, ...].\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        gold = json.loads(raw)\n    else:\n        gold = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(gold)} items. First one:\", gold[0])\n    return gold\n\n\n\n\nShow code\n#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: \"form\" }\ndef _extract_level(text):\n    \"\"\"Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply.\"\"\"\n    m = re.search(r\"\\b([ABC][12])\\b\", str(text).upper())\n    return m.group(1) if m else \"??\"\n\ndef run_prompt(prompt, gold):\n    \"\"\"Send each item's `text` to the LLM via {text}, collect predicted labels.\"\"\"\n    predictions = []\n    for i, item in enumerate(gold, 1):\n        reply = generate_text(prompt.format(text=item[\"text\"]))\n        predictions.append(_extract_level(reply))\n        if i % 12 == 0:\n            print(f\"  ...{i}/{len(gold)} done\")\n    print(f\"Got {len(predictions)} predictions.\")\n    return predictions\n\n\n\n\nShow code\n#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + confusion matrix { display-mode: \"form\" }\ndef evaluate(gold, predictions):\n    y_true = [item[\"label\"] for item in gold]\n    y_pred = predictions\n    print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))\n    cm = confusion_matrix(y_true, y_pred, labels=LEVELS)\n    plt.figure(figsize=(5.5, 4.5))\n    sns.heatmap(cm, annot=True, fmt=\"d\", cmap=\"Blues\",\n                xticklabels=LEVELS, yticklabels=LEVELS)\n    plt.xlabel(\"Predicted\"); plt.ylabel(\"Gold\"); plt.title(\"Confusion matrix\")\n    plt.tight_layout(); plt.show()\n\n\n\n\nShow code\n#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: \"form\" }\ndef show_errors(gold, predictions):\n    rows = [{\"id\": g[\"id\"], \"gold\": g[\"label\"], \"pred\": p, \"text\": g[\"text\"]}\n            for g, p in zip(gold, predictions) if g[\"label\"] != p]\n    print(f\"{len(rows)} of {len(gold)} wrong.\")\n    return pd.DataFrame(rows)\n\n\n\n\nShow code\n#@title 🔧 Library cell: save_predictions / load_predictions { display-mode: \"form\" }\ndef save_predictions(predictions, path):\n    \"\"\"Freeze a list of predicted labels to JSON.\"\"\"\n    with open(path, \"w\", encoding=\"utf-8\") as f:\n        json.dump(predictions, f)\n    print(f\"Saved {len(predictions)} predictions to {path}\")\n\ndef load_predictions(url_or_path):\n    \"\"\"Read a frozen predictions list — a committed URL or a local path.\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        predictions = json.loads(raw)\n    else:\n        predictions = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(predictions)} frozen predictions.\")\n    return predictions\n\n\n\n\nStep 1 — Load the gold standard\nNotice the shape: every dataset this week is {\"id\", \"text\", \"label\"}. That is the only data shape you have to learn.\n\n\nShow code\ngold = load_gold(GOLD_URL)\n\n\n\n\nStep 2 — The prompt, and the frozen predictions it produced\nHere is the prompt we sent the model — {text} is where each sentence gets slotted in. We ran it once over the gold set and committed the predictions, so today you load that frozen file rather than call the model. (From Day 3 you’ll run prompts like this yourself.)\n\n\nShow code\n# The prompt used to produce the frozen predictions (shown for reference — not run today):\nPROMPT = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.\nAnswer with the level only.\n\nSentence: {text}\"\"\"\n\n# Load the pre-computed predictions (same order as `gold`):\npredictions = load_predictions(PREDICTIONS_URL)\n\n\n\n\nStep 3 — Read the evaluation\nPer-level precision / recall / F1 (plus a macro average), then the confusion matrix. For CEFR you’ll usually see confusions between adjacent levels (B1 ↔︎ B2), rarely far-apart ones (A1 ↔︎ C2) — the model has the right idea, imprecise thresholds. Because the predictions are frozen, these numbers are the same every time you run — that’s the point.\n\n\nShow code\nevaluate(gold, predictions)\n\n\n\n\nStep 4 — Error analysis\nFor each miss, ask: is the gold defensible, or is this a genuinely borderline sentence? “Is the disagreement the model’s fault or the scheme’s?” is the heart of annotation work — and it returns with force in the Day 3 discourse task.\n\n\nShow code\nshow_errors(gold, predictions)",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 · Gold standards & evaluation"
     ]
   },
@@ -160,7 +160,7 @@
     "text": "Part B · Corpus Lab — code the metrics from scratch\nevaluate() above printed precision, recall, F1 and a confusion matrix for you. Now you write those formulas yourself, from plain lists of labels — no imports, no numpy. Once you have coded them, the numbers scikit-learn reports in your final project will never be a black box.\nFill in each function (replace its raise NotImplementedError(...)), then run the self-check cell — it compares your functions against scikit-learn on a small example and prints ✅ / ❌ for each.\n\n\nShow code\n# ✏️ YOU EDIT — implement each function. All take plain Python lists of labels.\n\ndef confusion_counts(gold, pred, label):\n    \"\"\"Return {\"tp\",\"fp\",\"fn\",\"tn\"} for ONE label, treating it as the positive class.\n        tp: gold IS label AND pred IS label\n        fp: gold is NOT label BUT pred IS label\n        fn: gold IS label BUT pred is NOT label\n        tn: gold is NOT label AND pred is NOT label\n    Example (label=\"B2\", gold=[\"A1\",\"B2\",\"B2\"], pred=[\"A1\",\"B2\",\"C1\"]):\n        {\"tp\": 1, \"fp\": 0, \"fn\": 1, \"tn\": 1}\n    \"\"\"\n    # HINT: start tp=fp=fn=tn=0; loop `for g, p in zip(gold, pred):`;\n    #       if/elif on whether g == label / p == label.\n    raise NotImplementedError(\"Count tp, fp, fn, tn and return them in a dict.\")\n\n\ndef precision(gold, pred, label):\n    \"\"\"tp / (tp + fp). Of all items CALLED `label`, what fraction really were?\n    Return 0.0 if tp + fp == 0 (never divide by zero).\"\"\"\n    raise NotImplementedError(\"Return tp / (tp + fp), or 0.0 if tp + fp == 0.\")\n\n\ndef recall(gold, pred, label):\n    \"\"\"tp / (tp + fn). Of all items that TRULY were `label`, what fraction found?\n    Return 0.0 if tp + fn == 0.\"\"\"\n    raise NotImplementedError(\"Return tp / (tp + fn), or 0.0 if tp + fn == 0.\")\n\n\ndef f1(gold, pred, label):\n    \"\"\"Harmonic mean of precision and recall:\n        2 * p * r / (p + r).   Return 0.0 if p + r == 0.\"\"\"\n    # HINT: reuse precision(...) and recall(...) above.\n    raise NotImplementedError(\"Return the harmonic mean of precision and recall.\")\n\n\ndef macro_f1(gold, pred, labels):\n    \"\"\"Plain average of f1(gold, pred, label) over every label in `labels`\n    (every class counts equally, no matter how many items it has).\"\"\"\n    raise NotImplementedError(\"Average f1 over every label in `labels`.\")\n\n\ndef percent_agreement(a, b):\n    \"\"\"Fraction of positions where two annotators agree: a[i] == b[i]. 0.0–1.0.\"\"\"\n    raise NotImplementedError(\"Return the fraction of positions where a[i] == b[i].\")\n\n\ndef cohen_kappa(a, b):\n    \"\"\"Agreement corrected for chance:  (p_o - p_e) / (1 - p_e).\n        p_o = observed agreement = percent_agreement(a, b)\n        p_e = chance agreement = sum over labels of prop_a(label) * prop_b(label),\n              where prop_x(label) = (# times x used label) / N.\n    Return 0.0 if 1 - p_e == 0.\"\"\"\n    # HINT: labels = set(a) | set(b); N = len(a); a.count(label) counts uses.\n    raise NotImplementedError(\"Return (p_o - p_e) / (1 - p_e), or 0.0 if 1 - p_e == 0.\")\n\n\n\n\nShow code\n#@title 🔎 Self-check against scikit-learn — run me { display-mode: \"form\" }\nfrom sklearn.metrics import (precision_score, recall_score, f1_score,\n                             cohen_kappa_score)\n\n# A small fixture with imbalance and a few mistakes — enough to catch bugs.\nLAB = [\"A1\", \"A2\", \"B1\", \"B2\"]\ng = [\"A1\", \"A1\", \"A2\", \"A2\", \"B1\", \"B1\", \"B1\", \"B2\", \"B2\", \"B2\"]\np = [\"A1\", \"A2\", \"A2\", \"A2\", \"B1\", \"B1\", \"B2\", \"B2\", \"B2\", \"A2\"]\nann_a = [\"A1\", \"A2\", \"B1\", \"B1\", \"B2\", \"A1\", \"A2\", \"B2\", \"B1\", \"A1\"]\nann_b = [\"A1\", \"A2\", \"B1\", \"B2\", \"B2\", \"A2\", \"A2\", \"B2\", \"B1\", \"A1\"]\n\nTOL, results = 1e-9, []\ndef _chk(name, got, exp):\n    ok = abs(got - exp) &lt; TOL\n    results.append(ok)\n    print((\"✅\" if ok else \"❌\"), f\"{name:&lt;22} yours={got:.6f}  sklearn={exp:.6f}\")\n\nfor label in LAB:\n    _chk(f\"precision({label})\", precision(g, p, label),\n         precision_score(g, p, labels=[label], average=\"micro\", zero_division=0))\n    _chk(f\"recall({label})\", recall(g, p, label),\n         recall_score(g, p, labels=[label], average=\"micro\", zero_division=0))\n    _chk(f\"f1({label})\", f1(g, p, label),\n         f1_score(g, p, labels=[label], average=\"micro\", zero_division=0))\n_chk(\"macro_f1\", macro_f1(g, p, LAB),\n     f1_score(g, p, labels=LAB, average=\"macro\", zero_division=0))\n_chk(\"percent_agreement\", percent_agreement(ann_a, ann_b),\n     sum(1 for x, y in zip(ann_a, ann_b) if x == y) / len(ann_a))\n_chk(\"cohen_kappa\", cohen_kappa(ann_a, ann_b), cohen_kappa_score(ann_a, ann_b))\n\nprint(\"-\" * 55)\nprint(f\"All {len(results)} checks passed ✅  — your metrics match scikit-learn.\"\n      if all(results) else\n      f\"{results.count(False)} of {len(results)} checks FAILED — fix and re-run.\")",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 · Gold standards & evaluation"
     ]
   },
@@ -172,7 +172,7 @@
     "text": "✅ Before you submit\n\nRuntime → Run all and check every cell ran without error.\nPart A outputs are visible (tables / charts / the model’s answers).\nPart B self-check prints ✅ (or your TODO answers are filled in).\nFile → Download → Download .ipynb and upload that one file.",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 · Gold standards & evaluation"
     ]
   },
@@ -191,63 +191,51 @@
     "text": "Linguistic Data Analysis II is a five-day intensive master-level graduate course on critically evaluating Large Language Models (LLMs) for linguistic analysis, offered at the Graduate School of International Cultural Studies, Tohoku University, in Summer 2026.\nAmong broad applications of LLMs, we cover topics that allows one to empirically evaluate LLMs performance on tasks at hand. To this end, we explore annotation scheme design, gold-standard dataset construction, prompt design/tuning, and evaluation.\nGiven the intensive nature of the 5-day course, we focus on the core concepts, methodology, and hands-on applications, instead of helping you to fully develop your own research agenda in this domain. However, the course aims to equip the students to explore further issues in LLM through applied linguistics lens, and plan and execute research studies of their own if they are interested.\n\n\n\n\n\n\nTipStart here\n\n\n\n\n📋 Course info — syllabus, grading, policies, and required materials (ready)\n📚 Readings — assigned readings by day (ready)\n🛠️ Setup guides — get Google Colab and your Gemini API key ready before Day 1 (ready)\n📅 Sessions — the daily schedule and per-session pages (being finalized)\n🎓 Final Project — the group mini-research project (being finalized)\n🛠️ Resources — corpora, datasets, and notebooks (being finalized)"
   },
   {
-    "objectID": "sessions/day1/session3.html",
-    "href": "sessions/day1/session3.html",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "objectID": "sessions/day1/session-02.html",
+    "href": "sessions/day1/session-02.html",
+    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
+      "Session 2: Linguistic Analyses & LLM Fundamentals"
     ]
   },
   {
-    "objectID": "sessions/day1/session3.html#learning-objectives",
-    "href": "sessions/day1/session3.html#learning-objectives",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "objectID": "sessions/day1/session-02.html#learning-objectives",
+    "href": "sessions/day1/session-02.html#learning-objectives",
+    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
     "section": "Learning objectives",
     "text": "Learning objectives",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
+      "Session 2: Linguistic Analyses & LLM Fundamentals"
     ]
   },
   {
-    "objectID": "sessions/day1/session3.html#reading",
-    "href": "sessions/day1/session3.html#reading",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "objectID": "sessions/day1/session-02.html#reading",
+    "href": "sessions/day1/session-02.html#reading",
+    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
     "section": "Reading",
     "text": "Reading",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
+      "Session 2: Linguistic Analyses & LLM Fundamentals"
     ]
   },
   {
-    "objectID": "sessions/day1/session3.html#slides-colab",
-    "href": "sessions/day1/session3.html#slides-colab",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "objectID": "sessions/day1/session-02.html#slides-colab",
+    "href": "sessions/day1/session-02.html#slides-colab",
+    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day1_python_and_first_llm.ipynb — Python basics + your first LLM call — \nSlides: Session 3 slides",
+    "text": "Slides & Colab",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
-    ]
-  },
-  {
-    "objectID": "sessions/day1/session3.html#mini-project",
-    "href": "sessions/day1/session3.html#mini-project",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
-    "section": "Mini-project",
-    "text": "Mini-project\nThis session includes mini-project track selection and group formation. See the Final Project page.",
-    "crumbs": [
-      "Sessions",
-      "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
+      "Session 2: Linguistic Analyses & LLM Fundamentals"
     ]
   },
   {
@@ -284,68 +272,8 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session13.html",
-    "href": "sessions/day5/session13.html",
-    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
-    "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
-    "crumbs": [
-      "Sessions",
-      "Day 5 · Project Finalization & Presentations",
-      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
-    ]
-  },
-  {
-    "objectID": "sessions/day5/session13.html#learning-objectives",
-    "href": "sessions/day5/session13.html#learning-objectives",
-    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
-    "section": "Learning objectives",
-    "text": "Learning objectives",
-    "crumbs": [
-      "Sessions",
-      "Day 5 · Project Finalization & Presentations",
-      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
-    ]
-  },
-  {
-    "objectID": "sessions/day5/session13.html#reading",
-    "href": "sessions/day5/session13.html#reading",
-    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
-    "section": "Reading",
-    "text": "Reading",
-    "crumbs": [
-      "Sessions",
-      "Day 5 · Project Finalization & Presentations",
-      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
-    ]
-  },
-  {
-    "objectID": "sessions/day5/session13.html#slides-colab",
-    "href": "sessions/day5/session13.html#slides-colab",
-    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
-    "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nSlides: Session 13 slides",
-    "crumbs": [
-      "Sessions",
-      "Day 5 · Project Finalization & Presentations",
-      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
-    ]
-  },
-  {
-    "objectID": "sessions/day5/session13.html#mini-project",
-    "href": "sessions/day5/session13.html#mini-project",
-    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
-    "section": "Mini-project",
-    "text": "Mini-project\nProject work session — see the Final Project page.",
-    "crumbs": [
-      "Sessions",
-      "Day 5 · Project Finalization & Presentations",
-      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
-    ]
-  },
-  {
-    "objectID": "sessions/day5/session14.html",
-    "href": "sessions/day5/session14.html",
+    "objectID": "sessions/day5/session-14.html",
+    "href": "sessions/day5/session-14.html",
     "title": "Session 14: Project Work — Finalize Report & Notebook",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
@@ -356,8 +284,8 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session14.html#learning-objectives",
-    "href": "sessions/day5/session14.html#learning-objectives",
+    "objectID": "sessions/day5/session-14.html#learning-objectives",
+    "href": "sessions/day5/session-14.html#learning-objectives",
     "title": "Session 14: Project Work — Finalize Report & Notebook",
     "section": "Learning objectives",
     "text": "Learning objectives",
@@ -368,8 +296,8 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session14.html#reading",
-    "href": "sessions/day5/session14.html#reading",
+    "objectID": "sessions/day5/session-14.html#reading",
+    "href": "sessions/day5/session-14.html#reading",
     "title": "Session 14: Project Work — Finalize Report & Notebook",
     "section": "Reading",
     "text": "Reading",
@@ -380,11 +308,11 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session14.html#slides-colab",
-    "href": "sessions/day5/session14.html#slides-colab",
+    "objectID": "sessions/day5/session-14.html#slides-colab",
+    "href": "sessions/day5/session-14.html#slides-colab",
     "title": "Session 14: Project Work — Finalize Report & Notebook",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day5_project_finalization.ipynb — assemble the pipeline end-to-end and draft the report — \nSlides: Session 14 slides",
+    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day5_project_finalization.ipynb — assemble the pipeline end-to-end and draft the report —   ## Mini-project Project work session — see the Final Project page.",
     "crumbs": [
       "Sessions",
       "Day 5 · Project Finalization & Presentations",
@@ -392,68 +320,164 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session14.html#mini-project",
-    "href": "sessions/day5/session14.html#mini-project",
-    "title": "Session 14: Project Work — Finalize Report & Notebook",
+    "objectID": "sessions/day5/session-13.html",
+    "href": "sessions/day5/session-13.html",
+    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
+    "section": "",
+    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
+    "crumbs": [
+      "Sessions",
+      "Day 5 · Project Finalization & Presentations",
+      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
+    ]
+  },
+  {
+    "objectID": "sessions/day5/session-13.html#learning-objectives",
+    "href": "sessions/day5/session-13.html#learning-objectives",
+    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
+    "section": "Learning objectives",
+    "text": "Learning objectives",
+    "crumbs": [
+      "Sessions",
+      "Day 5 · Project Finalization & Presentations",
+      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
+    ]
+  },
+  {
+    "objectID": "sessions/day5/session-13.html#reading",
+    "href": "sessions/day5/session-13.html#reading",
+    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
+    "section": "Reading",
+    "text": "Reading",
+    "crumbs": [
+      "Sessions",
+      "Day 5 · Project Finalization & Presentations",
+      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
+    ]
+  },
+  {
+    "objectID": "sessions/day5/session-13.html#slides-colab",
+    "href": "sessions/day5/session-13.html#slides-colab",
+    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
+    "section": "Slides & Colab",
+    "text": "Slides & Colab",
+    "crumbs": [
+      "Sessions",
+      "Day 5 · Project Finalization & Presentations",
+      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
+    ]
+  },
+  {
+    "objectID": "sessions/day5/session-13.html#mini-project",
+    "href": "sessions/day5/session-13.html#mini-project",
+    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
     "section": "Mini-project",
     "text": "Mini-project\nProject work session — see the Final Project page.",
     "crumbs": [
       "Sessions",
       "Day 5 · Project Finalization & Presentations",
-      "Session 14: Project Work — Finalize Report & Notebook"
+      "Session 13: Project Work — Prompt Iteration & Final Evaluation"
     ]
   },
   {
-    "objectID": "sessions/day2/session4.html",
-    "href": "sessions/day2/session4.html",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "objectID": "sessions/day2/session-05.html",
+    "href": "sessions/day2/session-05.html",
+    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
     ]
   },
   {
-    "objectID": "sessions/day2/session4.html#learning-objectives",
-    "href": "sessions/day2/session4.html#learning-objectives",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "objectID": "sessions/day2/session-05.html#learning-objectives",
+    "href": "sessions/day2/session-05.html#learning-objectives",
+    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
     "section": "Learning objectives",
     "text": "Learning objectives",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
     ]
   },
   {
-    "objectID": "sessions/day2/session4.html#reading",
-    "href": "sessions/day2/session4.html#reading",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "objectID": "sessions/day2/session-05.html#reading",
+    "href": "sessions/day2/session-05.html#reading",
+    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
     "section": "Reading",
-    "text": "Reading\nRead (see all course readings, including optional Day 2 items):\n\nEguchi, M., & Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. Research Methods in Applied Linguistics, 3(3), 100153. https://doi.org/10.1016/j.rmal.2024.100153",
+    "text": "Reading",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
     ]
   },
   {
-    "objectID": "sessions/day2/session4.html#slides-colab",
-    "href": "sessions/day2/session4.html#slides-colab",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "objectID": "sessions/day2/session-05.html#slides-colab",
+    "href": "sessions/day2/session-05.html#slides-colab",
+    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nSlides: Session 4 slides",
+    "text": "Slides & Colab\n\nTutorial notes: Day 2 — Annotation, gold standards & evaluation\nNotebook (tutorial + Corpus Lab): day2_gold_standards_and_evaluation.ipynb —",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
     ]
   },
   {
-    "objectID": "sessions/day3/session7.html",
-    "href": "sessions/day3/session7.html",
+    "objectID": "sessions/day3/session-08.html",
+    "href": "sessions/day3/session-08.html",
+    "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
+    "section": "",
+    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
+    "crumbs": [
+      "Sessions",
+      "Day 3 · Prompt Design & Iteration",
+      "Session 8: Hands-on — LLM Classification & Prompt Iteration"
+    ]
+  },
+  {
+    "objectID": "sessions/day3/session-08.html#learning-objectives",
+    "href": "sessions/day3/session-08.html#learning-objectives",
+    "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
+    "section": "Learning objectives",
+    "text": "Learning objectives",
+    "crumbs": [
+      "Sessions",
+      "Day 3 · Prompt Design & Iteration",
+      "Session 8: Hands-on — LLM Classification & Prompt Iteration"
+    ]
+  },
+  {
+    "objectID": "sessions/day3/session-08.html#reading",
+    "href": "sessions/day3/session-08.html#reading",
+    "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
+    "section": "Reading",
+    "text": "Reading",
+    "crumbs": [
+      "Sessions",
+      "Day 3 · Prompt Design & Iteration",
+      "Session 8: Hands-on — LLM Classification & Prompt Iteration"
+    ]
+  },
+  {
+    "objectID": "sessions/day3/session-08.html#slides-colab",
+    "href": "sessions/day3/session-08.html#slides-colab",
+    "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
+    "section": "Slides & Colab",
+    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day3_prompt_design.ipynb — zero-shot → few-shot → chain-of-thought on the CEFR task — \nFurther reading: Replicating Kim & Lu with open data (the discourse-move mini-project track)",
+    "crumbs": [
+      "Sessions",
+      "Day 3 · Prompt Design & Iteration",
+      "Session 8: Hands-on — LLM Classification & Prompt Iteration"
+    ]
+  },
+  {
+    "objectID": "sessions/day3/session-07.html",
+    "href": "sessions/day3/session-07.html",
     "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
@@ -464,8 +488,8 @@
     ]
   },
   {
-    "objectID": "sessions/day3/session7.html#learning-objectives",
-    "href": "sessions/day3/session7.html#learning-objectives",
+    "objectID": "sessions/day3/session-07.html#learning-objectives",
+    "href": "sessions/day3/session-07.html#learning-objectives",
     "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
     "section": "Learning objectives",
     "text": "Learning objectives",
@@ -476,8 +500,8 @@
     ]
   },
   {
-    "objectID": "sessions/day3/session7.html#reading",
-    "href": "sessions/day3/session7.html#reading",
+    "objectID": "sessions/day3/session-07.html#reading",
+    "href": "sessions/day3/session-07.html#reading",
     "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
     "section": "Reading",
     "text": "Reading\nRead (see all course readings):\n\nHuang, J., & Mizumoto, A. (2025). Prompt engineering: Enhancing AI-driven language learning and feedback. In L. McCallum & D. Tafazoli (Eds.), The Palgrave Encyclopedia of Computer-Assisted Language Learning (pp. 1–8). Springer Nature Switzerland. https://doi.org/10.1007/978-3-031-51447-0_103-1\nKim, M., & Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. Journal of English for Academic Purposes, 71, 101422. https://doi.org/10.1016/j.jeap.2024.101422",
@@ -488,11 +512,11 @@
     ]
   },
   {
-    "objectID": "sessions/day3/session7.html#slides-colab",
-    "href": "sessions/day3/session7.html#slides-colab",
+    "objectID": "sessions/day3/session-07.html#slides-colab",
+    "href": "sessions/day3/session-07.html#slides-colab",
     "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nSlides: Session 7 slides",
+    "text": "Slides & Colab",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -500,56 +524,8 @@
     ]
   },
   {
-    "objectID": "sessions/day3/session9.html",
-    "href": "sessions/day3/session9.html",
-    "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
-    "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
-    "crumbs": [
-      "Sessions",
-      "Day 3 · Prompt Design & Iteration",
-      "Session 9: Error Analysis & Under-the-Hood Walkthrough"
-    ]
-  },
-  {
-    "objectID": "sessions/day3/session9.html#learning-objectives",
-    "href": "sessions/day3/session9.html#learning-objectives",
-    "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
-    "section": "Learning objectives",
-    "text": "Learning objectives",
-    "crumbs": [
-      "Sessions",
-      "Day 3 · Prompt Design & Iteration",
-      "Session 9: Error Analysis & Under-the-Hood Walkthrough"
-    ]
-  },
-  {
-    "objectID": "sessions/day3/session9.html#reading",
-    "href": "sessions/day3/session9.html#reading",
-    "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
-    "section": "Reading",
-    "text": "Reading",
-    "crumbs": [
-      "Sessions",
-      "Day 3 · Prompt Design & Iteration",
-      "Session 9: Error Analysis & Under-the-Hood Walkthrough"
-    ]
-  },
-  {
-    "objectID": "sessions/day3/session9.html#slides-colab",
-    "href": "sessions/day3/session9.html#slides-colab",
-    "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
-    "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nSlides: Session 9 slides",
-    "crumbs": [
-      "Sessions",
-      "Day 3 · Prompt Design & Iteration",
-      "Session 9: Error Analysis & Under-the-Hood Walkthrough"
-    ]
-  },
-  {
-    "objectID": "sessions/day4/session11.html",
-    "href": "sessions/day4/session11.html",
+    "objectID": "sessions/day4/session-11.html",
+    "href": "sessions/day4/session-11.html",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
@@ -560,8 +536,8 @@
     ]
   },
   {
-    "objectID": "sessions/day4/session11.html#learning-objectives",
-    "href": "sessions/day4/session11.html#learning-objectives",
+    "objectID": "sessions/day4/session-11.html#learning-objectives",
+    "href": "sessions/day4/session-11.html#learning-objectives",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Learning objectives",
     "text": "Learning objectives",
@@ -572,8 +548,8 @@
     ]
   },
   {
-    "objectID": "sessions/day4/session11.html#reading",
-    "href": "sessions/day4/session11.html#reading",
+    "objectID": "sessions/day4/session-11.html#reading",
+    "href": "sessions/day4/session-11.html#reading",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Reading",
     "text": "Reading",
@@ -584,11 +560,11 @@
     ]
   },
   {
-    "objectID": "sessions/day4/session11.html#slides-colab",
-    "href": "sessions/day4/session11.html#slides-colab",
+    "objectID": "sessions/day4/session-11.html#slides-colab",
+    "href": "sessions/day4/session-11.html#slides-colab",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nSlides: Session 11 slides",
+    "text": "Slides & Colab",
     "crumbs": [
       "Sessions",
       "Day 4 · Methodology & Pipeline Assembly",
@@ -694,301 +670,270 @@
     "text": "Accommodations\nIf you have a disability or any other circumstance that may affect your participation, please contact the instructor as early as possible — ideally before the course begins — so that reasonable accommodations can be arranged. Requests are handled confidentially. Students may also consult Tohoku University’s Accessibility Support Room / Student Support Division for additional support."
   },
   {
-    "objectID": "slides/slides-session15.html#agenda",
-    "href": "slides/slides-session15.html#agenda",
-    "title": "Session 15: Final Presentations & Wrap-up",
-    "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nGroup presentations with instructor Q&A\nCourse wrap-up discussion"
-  },
-  {
-    "objectID": "slides/slides-session15.html#learning-objectives",
-    "href": "slides/slides-session15.html#learning-objectives",
-    "title": "Session 15: Final Presentations & Wrap-up",
-    "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
-  },
-  {
-    "objectID": "slides/slides-session15.html#group-presentations-qa-1",
-    "href": "slides/slides-session15.html#group-presentations-qa-1",
-    "title": "Session 15: Final Presentations & Wrap-up",
-    "section": "Group presentations & Q&A",
-    "text": "Group presentations & Q&A"
-  },
-  {
-    "objectID": "slides/slides-session15.html#course-wrap-up-1",
-    "href": "slides/slides-session15.html#course-wrap-up-1",
-    "title": "Session 15: Final Presentations & Wrap-up",
-    "section": "Course wrap-up",
-    "text": "Course wrap-up"
-  },
-  {
-    "objectID": "slides/slides-session8.html#agenda",
-    "href": "slides/slides-session8.html#agenda",
-    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
-    "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nRun LLM-based text classification in Colab\nEvaluate the outputs with the prepared tools\nGet your Gemini API key"
-  },
-  {
-    "objectID": "slides/slides-session8.html#learning-objectives",
-    "href": "slides/slides-session8.html#learning-objectives",
-    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
-    "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
-  },
-  {
-    "objectID": "slides/slides-session8.html#run-classification-in-colab-1",
-    "href": "slides/slides-session8.html#run-classification-in-colab-1",
-    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
-    "section": "Run classification in Colab",
-    "text": "Run classification in Colab"
-  },
-  {
-    "objectID": "slides/slides-session8.html#evaluate-the-outputs-1",
-    "href": "slides/slides-session8.html#evaluate-the-outputs-1",
-    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
-    "section": "Evaluate the outputs",
-    "text": "Evaluate the outputs"
-  },
-  {
-    "objectID": "slides/slides-session8.html#your-gemini-api-key-1",
-    "href": "slides/slides-session8.html#your-gemini-api-key-1",
-    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
-    "section": "Your Gemini API key",
-    "text": "Your Gemini API key"
-  },
-  {
-    "objectID": "slides/slides-session10.html#agenda",
-    "href": "slides/slides-session10.html#agenda",
-    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
-    "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nReproducibility — pin the model, log prompts, set temperature/seed\nLLM limitations — hallucination, data contamination, stochasticity\nEthics — privacy, authorship — and the reporting checklist"
-  },
-  {
-    "objectID": "slides/slides-session10.html#learning-objectives",
-    "href": "slides/slides-session10.html#learning-objectives",
-    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
-    "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
-  },
-  {
-    "objectID": "slides/slides-session10.html#reproducibility-1",
-    "href": "slides/slides-session10.html#reproducibility-1",
-    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
-    "section": "Reproducibility",
-    "text": "Reproducibility"
-  },
-  {
-    "objectID": "slides/slides-session10.html#llm-limitations-1",
-    "href": "slides/slides-session10.html#llm-limitations-1",
-    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
-    "section": "LLM limitations",
-    "text": "LLM limitations"
-  },
-  {
-    "objectID": "slides/slides-session10.html#ethics-the-reporting-checklist-1",
-    "href": "slides/slides-session10.html#ethics-the-reporting-checklist-1",
-    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
-    "section": "Ethics & the reporting checklist",
-    "text": "Ethics & the reporting checklist"
-  },
-  {
-    "objectID": "slides/slides-session13.html#agenda",
-    "href": "slides/slides-session13.html#agenda",
-    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
-    "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nIterate your prompt over 2–3 cycles\nRun the final evaluation\nBegin the in-class one-page report"
-  },
-  {
-    "objectID": "slides/slides-session13.html#learning-objectives",
-    "href": "slides/slides-session13.html#learning-objectives",
-    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
-    "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
-  },
-  {
-    "objectID": "slides/slides-session13.html#iterate-your-prompt-1",
-    "href": "slides/slides-session13.html#iterate-your-prompt-1",
-    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
-    "section": "Iterate your prompt",
-    "text": "Iterate your prompt"
-  },
-  {
-    "objectID": "slides/slides-session13.html#final-evaluation-run-1",
-    "href": "slides/slides-session13.html#final-evaluation-run-1",
-    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
-    "section": "Final evaluation run",
-    "text": "Final evaluation run"
-  },
-  {
-    "objectID": "slides/slides-session13.html#begin-the-one-page-report-1",
-    "href": "slides/slides-session13.html#begin-the-one-page-report-1",
-    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
-    "section": "Begin the one-page report",
-    "text": "Begin the one-page report"
-  },
-  {
-    "objectID": "slides/slides-session3.html#agenda",
-    "href": "slides/slides-session3.html#agenda",
-    "title": "Session 3: Classical NLP Tasks",
-    "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nText preprocessing\nTokenization\nDictionary look-up with basic Python"
-  },
-  {
-    "objectID": "slides/slides-session3.html#learning-objectives",
-    "href": "slides/slides-session3.html#learning-objectives",
-    "title": "Session 3: Classical NLP Tasks",
-    "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
-  },
-  {
-    "objectID": "slides/slides-session3.html#text-preprocessing-1",
-    "href": "slides/slides-session3.html#text-preprocessing-1",
-    "title": "Session 3: Classical NLP Tasks",
-    "section": "Text preprocessing",
-    "text": "Text preprocessing"
-  },
-  {
-    "objectID": "slides/slides-session3.html#tokenization-1",
-    "href": "slides/slides-session3.html#tokenization-1",
-    "title": "Session 3: Classical NLP Tasks",
-    "section": "Tokenization",
-    "text": "Tokenization"
-  },
-  {
-    "objectID": "slides/slides-session3.html#dictionary-look-up-1",
-    "href": "slides/slides-session3.html#dictionary-look-up-1",
-    "title": "Session 3: Classical NLP Tasks",
-    "section": "Dictionary look-up",
-    "text": "Dictionary look-up"
-  },
-  {
-    "objectID": "slides/slides-session1.html#agenda",
-    "href": "slides/slides-session1.html#agenda",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
-    "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nWhat LLMs are & how they fit linguistic analysis\nThe NLP tasks we’ll tackle in this course\nCourse overview & self-introductions"
-  },
-  {
-    "objectID": "slides/slides-session1.html#learning-objectives",
-    "href": "slides/slides-session1.html#learning-objectives",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
-    "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
-  },
-  {
-    "objectID": "slides/slides-session1.html#what-are-llms-1",
-    "href": "slides/slides-session1.html#what-are-llms-1",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
-    "section": "What are LLMs?",
-    "text": "What are LLMs?"
-  },
-  {
-    "objectID": "slides/slides-session1.html#nlp-tasks-for-linguistic-analysis-1",
-    "href": "slides/slides-session1.html#nlp-tasks-for-linguistic-analysis-1",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
-    "section": "NLP tasks for linguistic analysis",
-    "text": "NLP tasks for linguistic analysis"
-  },
-  {
-    "objectID": "slides/slides-session1.html#course-overview-introductions-1",
-    "href": "slides/slides-session1.html#course-overview-introductions-1",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
-    "section": "Course overview & introductions",
-    "text": "Course overview & introductions"
-  },
-  {
-    "objectID": "slides/slides-session4.html#agenda",
-    "href": "slides/slides-session4.html#agenda",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
-    "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nAnnotation principles\nThe NLP pipeline for applied linguistics\nIntroduction to gold-standard dataset construction"
-  },
-  {
-    "objectID": "slides/slides-session4.html#learning-objectives",
-    "href": "slides/slides-session4.html#learning-objectives",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
-    "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
-  },
-  {
-    "objectID": "slides/slides-session4.html#annotation-principles-1",
-    "href": "slides/slides-session4.html#annotation-principles-1",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
-    "section": "Annotation principles",
-    "text": "Annotation principles"
-  },
-  {
-    "objectID": "slides/slides-session4.html#the-nlp-pipeline-1",
-    "href": "slides/slides-session4.html#the-nlp-pipeline-1",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
-    "section": "The NLP pipeline",
-    "text": "The NLP pipeline"
-  },
-  {
-    "objectID": "slides/slides-session4.html#gold-standard-construction-1",
-    "href": "slides/slides-session4.html#gold-standard-construction-1",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
-    "section": "Gold-standard construction",
-    "text": "Gold-standard construction"
-  },
-  {
-    "objectID": "slides/slides-session7.html#agenda",
-    "href": "slides/slides-session7.html#agenda",
+    "objectID": "slides/slides-session-07.html#agenda",
+    "href": "slides/slides-session-07.html#agenda",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "📋 Agenda",
     "text": "📋 Agenda\n\nPrompt-design principles\nZero-shot vs. few-shot prompting\nStrategies for effective prompt engineering"
   },
   {
-    "objectID": "slides/slides-session7.html#learning-objectives",
-    "href": "slides/slides-session7.html#learning-objectives",
+    "objectID": "slides/slides-session-07.html#learning-objectives",
+    "href": "slides/slides-session-07.html#learning-objectives",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "🎯 Learning Objectives",
     "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
   },
   {
-    "objectID": "slides/slides-session7.html#prompt-design-principles-1",
-    "href": "slides/slides-session7.html#prompt-design-principles-1",
+    "objectID": "slides/slides-session-07.html#prompt-design-principles-1",
+    "href": "slides/slides-session-07.html#prompt-design-principles-1",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "Prompt-design principles",
     "text": "Prompt-design principles"
   },
   {
-    "objectID": "slides/slides-session7.html#zero-shot-vs.-few-shot-1",
-    "href": "slides/slides-session7.html#zero-shot-vs.-few-shot-1",
+    "objectID": "slides/slides-session-07.html#zero-shot-vs.-few-shot-1",
+    "href": "slides/slides-session-07.html#zero-shot-vs.-few-shot-1",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "Zero-shot vs. few-shot",
     "text": "Zero-shot vs. few-shot"
   },
   {
-    "objectID": "slides/slides-session7.html#effective-prompting-strategies-1",
-    "href": "slides/slides-session7.html#effective-prompting-strategies-1",
+    "objectID": "slides/slides-session-07.html#effective-prompting-strategies-1",
+    "href": "slides/slides-session-07.html#effective-prompting-strategies-1",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "Effective prompting strategies",
     "text": "Effective prompting strategies"
   },
   {
-    "objectID": "resources/corpora/learner-corpora.html",
-    "href": "resources/corpora/learner-corpora.html",
-    "title": "Learner Corpora",
-    "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
-    "crumbs": [
-      "Resources",
-      "Corpora",
-      "Learner Corpora"
-    ]
+    "objectID": "slides/slides-session-12.html#agenda",
+    "href": "slides/slides-session-12.html#agenda",
+    "title": "Session 12: Project Work: QC the Gold Set & Baseline",
+    "section": "📋 Agenda",
+    "text": "📋 Agenda\n\nA quality-control (adjudication) pass on your sampled gold set\nRun a baseline prompt"
   },
   {
-    "objectID": "resources/corpora/learner-corpora.html#placeholder",
-    "href": "resources/corpora/learner-corpora.html#placeholder",
-    "title": "Learner Corpora",
-    "section": "Placeholder",
-    "text": "Placeholder\nContent to be added.\n\nJapanese Learner corpus Natane\nInternational Center for Japanese Studies\n日本語学習者会話データベース",
-    "crumbs": [
-      "Resources",
-      "Corpora",
-      "Learner Corpora"
-    ]
+    "objectID": "slides/slides-session-12.html#learning-objectives",
+    "href": "slides/slides-session-12.html#learning-objectives",
+    "title": "Session 12: Project Work: QC the Gold Set & Baseline",
+    "section": "🎯 Learning Objectives",
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+  },
+  {
+    "objectID": "slides/slides-session-12.html#qc-adjudication-pass-1",
+    "href": "slides/slides-session-12.html#qc-adjudication-pass-1",
+    "title": "Session 12: Project Work: QC the Gold Set & Baseline",
+    "section": "QC / adjudication pass",
+    "text": "QC / adjudication pass"
+  },
+  {
+    "objectID": "slides/slides-session-12.html#run-a-baseline-prompt-1",
+    "href": "slides/slides-session-12.html#run-a-baseline-prompt-1",
+    "title": "Session 12: Project Work: QC the Gold Set & Baseline",
+    "section": "Run a baseline prompt",
+    "text": "Run a baseline prompt"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#agenda",
+    "href": "slides/slides-session-10.html#agenda",
+    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
+    "section": "📋 Agenda",
+    "text": "📋 Agenda\n\nReproducibility — pin the model, log prompts, set temperature/seed\nLLM limitations — hallucination, data contamination, stochasticity\nEthics — privacy, authorship — and the reporting checklist"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#learning-objectives",
+    "href": "slides/slides-session-10.html#learning-objectives",
+    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
+    "section": "🎯 Learning Objectives",
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#reproducibility-1",
+    "href": "slides/slides-session-10.html#reproducibility-1",
+    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
+    "section": "Reproducibility",
+    "text": "Reproducibility"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#llm-limitations-1",
+    "href": "slides/slides-session-10.html#llm-limitations-1",
+    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
+    "section": "LLM limitations",
+    "text": "LLM limitations"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#ethics-the-reporting-checklist-1",
+    "href": "slides/slides-session-10.html#ethics-the-reporting-checklist-1",
+    "title": "Session 10: Methodology: Reproducibility, LLM Limits & Ethics",
+    "section": "Ethics & the reporting checklist",
+    "text": "Ethics & the reporting checklist"
+  },
+  {
+    "objectID": "slides/slides-session-05.html#agenda",
+    "href": "slides/slides-session-05.html#agenda",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "📋 Agenda",
+    "text": "📋 Agenda\n\nRe-annotate a sample using a prepared scheme\nCompute inter-annotator agreement\nCompare against the published gold and against LLM annotations"
+  },
+  {
+    "objectID": "slides/slides-session-05.html#learning-objectives",
+    "href": "slides/slides-session-05.html#learning-objectives",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "🎯 Learning Objectives",
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+  },
+  {
+    "objectID": "slides/slides-session-05.html#re-annotate-a-sample-1",
+    "href": "slides/slides-session-05.html#re-annotate-a-sample-1",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Re-annotate a sample",
+    "text": "Re-annotate a sample"
+  },
+  {
+    "objectID": "slides/slides-session-05.html#inter-annotator-agreement-1",
+    "href": "slides/slides-session-05.html#inter-annotator-agreement-1",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Inter-annotator agreement",
+    "text": "Inter-annotator agreement"
+  },
+  {
+    "objectID": "slides/slides-session-05.html#compare-gold-vs.-llm-1",
+    "href": "slides/slides-session-05.html#compare-gold-vs.-llm-1",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Compare: gold vs. LLM",
+    "text": "Compare: gold vs. LLM"
+  },
+  {
+    "objectID": "slides/slides-session-15.html#agenda",
+    "href": "slides/slides-session-15.html#agenda",
+    "title": "Session 15: Final Presentations & Wrap-up",
+    "section": "📋 Agenda",
+    "text": "📋 Agenda\n\nGroup presentations with instructor Q&A\nCourse wrap-up discussion"
+  },
+  {
+    "objectID": "slides/slides-session-15.html#learning-objectives",
+    "href": "slides/slides-session-15.html#learning-objectives",
+    "title": "Session 15: Final Presentations & Wrap-up",
+    "section": "🎯 Learning Objectives",
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+  },
+  {
+    "objectID": "slides/slides-session-15.html#group-presentations-qa-1",
+    "href": "slides/slides-session-15.html#group-presentations-qa-1",
+    "title": "Session 15: Final Presentations & Wrap-up",
+    "section": "Group presentations & Q&A",
+    "text": "Group presentations & Q&A"
+  },
+  {
+    "objectID": "slides/slides-session-15.html#course-wrap-up-1",
+    "href": "slides/slides-session-15.html#course-wrap-up-1",
+    "title": "Session 15: Final Presentations & Wrap-up",
+    "section": "Course wrap-up",
+    "text": "Course wrap-up"
+  },
+  {
+    "objectID": "slides/slides-session-14.html#agenda",
+    "href": "slides/slides-session-14.html#agenda",
+    "title": "Session 14: Project Work: Finalize Report & Notebook",
+    "section": "📋 Agenda",
+    "text": "📋 Agenda\n\nFinalize the one-page report\nPrepare your presentation\nSubmit the completed notebook"
+  },
+  {
+    "objectID": "slides/slides-session-14.html#learning-objectives",
+    "href": "slides/slides-session-14.html#learning-objectives",
+    "title": "Session 14: Project Work: Finalize Report & Notebook",
+    "section": "🎯 Learning Objectives",
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+  },
+  {
+    "objectID": "slides/slides-session-14.html#finalize-the-report-1",
+    "href": "slides/slides-session-14.html#finalize-the-report-1",
+    "title": "Session 14: Project Work: Finalize Report & Notebook",
+    "section": "Finalize the report",
+    "text": "Finalize the report"
+  },
+  {
+    "objectID": "slides/slides-session-14.html#prepare-the-presentation-1",
+    "href": "slides/slides-session-14.html#prepare-the-presentation-1",
+    "title": "Session 14: Project Work: Finalize Report & Notebook",
+    "section": "Prepare the presentation",
+    "text": "Prepare the presentation"
+  },
+  {
+    "objectID": "slides/slides-session-14.html#submit-the-notebook-1",
+    "href": "slides/slides-session-14.html#submit-the-notebook-1",
+    "title": "Session 14: Project Work: Finalize Report & Notebook",
+    "section": "Submit the notebook",
+    "text": "Submit the notebook"
+  },
+  {
+    "objectID": "slides/slides-session-03.html#agenda",
+    "href": "slides/slides-session-03.html#agenda",
+    "title": "Session 3: Classical NLP Tasks",
+    "section": "📋 Agenda",
+    "text": "📋 Agenda\n\nText preprocessing\nTokenization\nDictionary look-up with basic Python"
+  },
+  {
+    "objectID": "slides/slides-session-03.html#learning-objectives",
+    "href": "slides/slides-session-03.html#learning-objectives",
+    "title": "Session 3: Classical NLP Tasks",
+    "section": "🎯 Learning Objectives",
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+  },
+  {
+    "objectID": "slides/slides-session-03.html#text-preprocessing-1",
+    "href": "slides/slides-session-03.html#text-preprocessing-1",
+    "title": "Session 3: Classical NLP Tasks",
+    "section": "Text preprocessing",
+    "text": "Text preprocessing"
+  },
+  {
+    "objectID": "slides/slides-session-03.html#tokenization-1",
+    "href": "slides/slides-session-03.html#tokenization-1",
+    "title": "Session 3: Classical NLP Tasks",
+    "section": "Tokenization",
+    "text": "Tokenization"
+  },
+  {
+    "objectID": "slides/slides-session-03.html#dictionary-look-up-1",
+    "href": "slides/slides-session-03.html#dictionary-look-up-1",
+    "title": "Session 3: Classical NLP Tasks",
+    "section": "Dictionary look-up",
+    "text": "Dictionary look-up"
+  },
+  {
+    "objectID": "slides/slides-session-09.html#agenda",
+    "href": "slides/slides-session-09.html#agenda",
+    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
+    "section": "📋 Agenda",
+    "text": "📋 Agenda\n\nError analysis of misclassifications\nIterate the prompt over 2–3 cycles\nA short under-the-hood walkthrough"
+  },
+  {
+    "objectID": "slides/slides-session-09.html#learning-objectives",
+    "href": "slides/slides-session-09.html#learning-objectives",
+    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
+    "section": "🎯 Learning Objectives",
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+  },
+  {
+    "objectID": "slides/slides-session-09.html#error-analysis-1",
+    "href": "slides/slides-session-09.html#error-analysis-1",
+    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
+    "section": "Error analysis",
+    "text": "Error analysis"
+  },
+  {
+    "objectID": "slides/slides-session-09.html#iterating-the-prompt-1",
+    "href": "slides/slides-session-09.html#iterating-the-prompt-1",
+    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
+    "section": "Iterating the prompt",
+    "text": "Iterating the prompt"
+  },
+  {
+    "objectID": "slides/slides-session-09.html#under-the-hood-1",
+    "href": "slides/slides-session-09.html#under-the-hood-1",
+    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
+    "section": "Under the hood",
+    "text": "Under the hood"
   },
   {
     "objectID": "resources/index.html",
@@ -1017,32 +962,11 @@
     "href": "resources/index.html#categories",
     "title": "Resources",
     "section": "Categories",
-    "text": "Categories\nReady now\n\n🛠️ Tools & Software — Google Colab setup, Gemini API key, and housing your data in Google Drive. Do these before the course.\n\nBeing finalized\n\n📚 Corpora — available and learner corpora\n🗂️ Replication Datasets — the open, annotated datasets used across Days 2–5\n🧮 Coding the metrics from scratch\n➕ Additional Examples — optional corpus & lexical notebooks\n🐙 GitHub & Optional Workshops",
+    "text": "Categories\nReady now\n\n🛠️ Tools & Software — Google Colab setup, Gemini API key, and housing your data in Google Drive. Do these before the course.\n\nBeing finalized\n\n📚 Further corpora (optional) — external corpus & lexical-data links, not required for the course\n🗂️ Replication Datasets — the open, annotated datasets used across Days 2–5\n🐙 GitHub & Optional Workshops",
     "crumbs": [
       "Resources",
       "All Resources"
     ]
-  },
-  {
-    "objectID": "resources/additional-examples/extracting-collocations.html",
-    "href": "resources/additional-examples/extracting-collocations.html",
-    "title": "Extracting collocations in Python",
-    "section": "",
-    "text": "In this notebook, I will demonstrate how to extract collocations from a corpus."
-  },
-  {
-    "objectID": "resources/additional-examples/extracting-collocations.html#preparation",
-    "href": "resources/additional-examples/extracting-collocations.html#preparation",
-    "title": "Extracting collocations in Python",
-    "section": "Preparation",
-    "text": "Preparation\n\nLet’s load necessary package.\n\n\nShow code\n# Load packages\n\nimport spacy\nimport glob\nimport pandas as pd\n\n# Initialize spaCy model\nnlp = spacy.load(\"en_core_web_sm\")\n\n\n\n\nLet’s specify the corpus path\n\n\nShow code\nCORPUS_FILES = glob.glob(\"../../../corpus_data/brown_single/*.txt\")"
-  },
-  {
-    "objectID": "resources/additional-examples/dl_aozorabunko.html#lets-download-the-data-from-huggingface",
-    "href": "resources/additional-examples/dl_aozorabunko.html#lets-download-the-data-from-huggingface",
-    "title": "Downloading Aozorabunko data and make it a usable corpus",
-    "section": "Let’s download the data from Huggingface",
-    "text": "Let’s download the data from Huggingface\nWe will use the data from the following repository\n\n\nShow code\nimport pandas as pd\n\ndf = pd.read_json(\"hf://datasets/globis-university/aozorabunko-clean/aozorabunko-dedupe-clean.jsonl.gz\", lines=True)\n\n\n\n\nShow code\ndf\n\n\n\n\n\n\n\n\n\ntext\nfootnote\nmeta\n\n\n\n\n0\n深いおどろきにうたれて、\\n名高いウェストミンスターに\\n真鍮や石の記念碑となって\\nすべて...\n底本：「スケッチ・ブック」新潮文庫、新潮社\\n　　　1957（昭和32）年5月20日発行\\n...\n{'作品ID': '059898', '作品名': 'ウェストミンスター寺院', '作品名読...\n\n\n1\nいざ、これより樂しまむ、\\n仕置を受くる憂なく、\\n遊びたのしむ時ぞ來ぬ、\\n時ぞ來ぬれば、...\n底本：「スケッチ・ブック」岩波文庫、岩波書店\\n　　　1935（昭和10）年9月15日第1刷...\n{'作品ID': '056078', '作品名': '駅伝馬車', '作品名読み': 'えき...\n\n\n2\nすべてよし。\\n何して遊ぼと\\n叱られない。\\n時はきた。\\nさっさと\\n本など投げだそう。...\n底本：「スケッチ・ブック」新潮文庫、新潮社\\n　　　1957（昭和32）年5月20日発行\\n...\n{'作品ID': '060224', '作品名': '駅馬車', '作品名読み': 'えきば...\n\n\n3\n年老いた人をいたわりなさい。その銀髪は、\\n名誉と尊敬をつねに集めてきたのです。\\n――マー...\n底本：「スケッチ・ブック」新潮文庫、新潮社\\n　　　1957（昭和32）年5月20日発行\\n...\n{'作品ID': '060225', '作品名': '寡婦とその子', '作品名読み': '...\n\n\n4\nだが、あのなつかしい、思い出ふかいクリスマスのお爺さんはもう逝ってしまったのだろうか。あと...\n底本：「スケッチ・ブック」新潮文庫、新潮社\\n　　　1957（昭和32）年5月20日発行\\n...\n{'作品ID': '060231', '作品名': 'クリスマス', '作品名読み': 'ク...\n\n\n...\n...\n...\n...\n\n\n16946\n夢の話をするのはあまり気のきいたことではない。確か痴人夢を説くという言葉があったはずだ。そ...\n底本：「和辻哲郎全集　補遺」岩波書店\\n　　　1978（昭和53）年6月16日第1刷発行\\n...\n{'作品ID': '055622', '作品名': '夢', '作品名読み': 'ゆめ', ...\n\n\n16947\n自分は現代の画家中に岸田君ほど明らかな「成長」を示している人を知らない。誇張でなく岸田君は...\n底本：「和辻哲郎随筆集」岩波文庫、岩波書店\\n　　　1995（平成7）年9月18日第1刷発行...\n{'作品ID': '049876', '作品名': '『劉生画集及芸術観』について', '作...\n\n\n16948\n一\\n\\n　荒漠たる秋の野に立つ。星は月の御座を囲み月は清らかに地の花を輝らす。花は紅と咲き...\n底本：「偶像再興・面とペルソナ　和辻哲郎感想集」講談社文芸文庫、講談社\\n　　　2007（平...\n{'作品ID': '049913', '作品名': '霊的本能主義', '作品名読み': '...\n\n\n16949\n関東大震災の前数年の間、先輩たちにまじって露伴先生から俳諧の指導をうけたことがある。その時...\n底本：「和辻哲郎随筆集」岩波文庫、岩波書店\\n　　　1995（平成7）年9月18日第1刷発行...\n{'作品ID': '049914', '作品名': '露伴先生の思い出', '作品名読み':...\n\n\n16950\n訳者序\\n\\n　一九〇九年、レオン・ワルラスの七十五歳の齢を記念して、ローザンヌ大...\n底本：「純粹經濟學要論　上卷」岩波文庫、岩波書店\\n　　　1953（昭和28）年11月25日...\n{'作品ID': '045210', '作品名': '純粋経済学要論', '作品名読み': ...\n\n\n\n\n16951 rows × 3 columns\n\n\n\n\n\nShow code\ndf['meta'][1]\n\n\n{'作品ID': '056078',\n '作品名': '駅伝馬車',\n '作品名読み': 'えきでんばしゃ',\n 'ソート用読み': 'えきてんはしや',\n '副題': '',\n '副題読み': '',\n '原題': '',\n '初出': '',\n '分類番号': 'NDC 933',\n '文字遣い種別': '旧字旧仮名',\n '作品著作権フラグ': 'なし',\n '公開日': '2013-09-20',\n '最終更新日': '2014-09-16',\n '図書カードURL': 'https://www.aozora.gr.jp/cards/001257/card56078.html',\n '人物ID': '001257',\n '姓': 'アーヴィング',\n '名': 'ワシントン',\n '姓読み': 'アーヴィング',\n '名読み': 'ワシントン',\n '姓読みソート用': 'ああういんく',\n '名読みソート用': 'わしんとん',\n '姓ローマ字': 'Irving',\n '名ローマ字': 'Washington',\n '役割フラグ': '著者',\n '生年月日': '1783-04-03',\n '没年月日': '1859-11-28',\n '人物著作権フラグ': 'なし',\n '底本名1': 'スケッチ・ブック',\n '底本出版社名1': '岩波文庫、岩波書店',\n '底本初版発行年1': '1935（昭和10）年9月15日',\n '入力に使用した版1': '2010（平成22）年2月23日第31刷',\n '校正に使用した版1': '1992（平成4）年2月26日第30刷',\n '底本の親本名1': '',\n '底本の親本出版社名1': '',\n '底本の親本初版発行年1': '',\n '底本名2': '',\n '底本出版社名2': '',\n '底本初版発行年2': '',\n '入力に使用した版2': '',\n '校正に使用した版2': '',\n '底本の親本名2': '',\n '底本の親本出版社名2': '',\n '底本の親本初版発行年2': '',\n '入力者': '雀',\n '校正者': '小林繁雄',\n 'テキストファイルURL': 'https://www.aozora.gr.jp/cards/001257/files/56078_ruby_51155.zip',\n 'テキストファイル最終更新日': '2013-09-03',\n 'テキストファイル符号化方式': 'ShiftJIS',\n 'テキストファイル文字集合': 'JIS X 0208',\n 'テキストファイル修正回数': '0',\n 'XHTML/HTMLファイルURL': 'https://www.aozora.gr.jp/cards/001257/files/56078_51422.html',\n 'XHTML/HTMLファイル最終更新日': '2013-09-03',\n 'XHTML/HTMLファイル符号化方式': 'ShiftJIS',\n 'XHTML/HTMLファイル文字集合': 'JIS X 0208',\n 'XHTML/HTMLファイル修正回数': '0'}\n\n\n\n\nShow code\nimport os\n\n# Set random seed for reproducibility\nrandom_seed = 42\n\n# Sample 1000 files from the dataframe\ndf_sample = df.sample(n=500, random_state=random_seed)\n\n# Create directory if it doesn't exist\noutput_dir = \"../../../corpus_data/aozora_500\"\nos.makedirs(output_dir, exist_ok=True)\n\n# Save each text to a file named by 作品ID\nfor idx, (_, row) in enumerate(df_sample.iterrows()):\n    # Get the 作品ID from meta field\n    sakuhin_id = row['meta']['作品ID']\n    \n    # Get the text content\n    text_content = row['text']\n    \n    # Create filename based on 作品ID\n    filename = f\"{sakuhin_id}.txt\"\n    filepath = os.path.join(output_dir, filename)\n    \n    # Write text to file\n    with open(filepath, 'w', encoding='utf-8') as f:\n        f.write(text_content)\n    \n    # Print progress every 100 files\n    if (idx + 1) % 100 == 0:\n        print(f\"Processed {idx + 1} files...\")\n\nprint(f\"Completed! Saved {len(df_sample)} text files to {output_dir}\")\n\n\nProcessed 100 files...\nProcessed 200 files...\nProcessed 300 files...\nProcessed 400 files...\nProcessed 500 files...\nCompleted! Saved 500 text files to ../../../corpus_data/aozora_500\n\n\n\n\nShow code\n# Sample 1000 files from the dataframe\ndf_sample = df.sample(n=50, random_state=random_seed)\n\n# Create directory if it doesn't exist\noutput_dir = \"../../../corpus_data/aozora_50\"\nos.makedirs(output_dir, exist_ok=True)\n\n# Save each text to a file named by 作品ID\nfor idx, (_, row) in enumerate(df_sample.iterrows()):\n    # Get the 作品ID from meta field\n    sakuhin_id = row['meta']['作品ID']\n    \n    # Get the text content\n    text_content = row['text']\n    \n    # Create filename based on 作品ID\n    filename = f\"{sakuhin_id}.txt\"\n    filepath = os.path.join(output_dir, filename)\n    \n    # Write text to file\n    with open(filepath, 'w', encoding='utf-8') as f:\n        f.write(text_content)\n    \n    # Print progress every 100 files\n    if (idx + 1) % 100 == 0:\n        print(f\"Processed {idx + 1} files...\")\n\nprint(f\"Completed! Saved {len(df_sample)} text files to {output_dir}\")\n\n\nCompleted! Saved 50 text files to ../../../corpus_data/aozora_50\n\n\n\n\nShow code\n\ndf_sample = df\n\n# Create directory if it doesn't exist\noutput_dir = \"../../../corpus_data/aozorabunko\"\nos.makedirs(output_dir, exist_ok=True)\n\n# Save each text to a file named by 作品ID\nfor idx, (_, row) in enumerate(df_sample.iterrows()):\n    # Get the 作品ID from meta field\n    sakuhin_id = row['meta']['作品ID']\n    \n    # Get the text content\n    text_content = row['text']\n    \n    # Create filename based on 作品ID\n    filename = f\"{sakuhin_id}.txt\"\n    filepath = os.path.join(output_dir, filename)\n    \n    # Write text to file\n    with open(filepath, 'w', encoding='utf-8') as f:\n        f.write(text_content)\n    \n    # Print progress every 100 files\n    if (idx + 1) % 100 == 0:\n        print(f\"Processed {idx + 1} files...\")\n\nprint(f\"Completed! Saved {len(df_sample)} text files to {output_dir}\")\n\n\nProcessed 100 files...\nProcessed 200 files...\nProcessed 300 files...\nProcessed 400 files...\nProcessed 500 files...\nProcessed 600 files...\nProcessed 700 files...\nProcessed 800 files...\nProcessed 900 files...\nProcessed 1000 files...\nProcessed 1100 files...\nProcessed 1200 files...\nProcessed 1300 files...\nProcessed 1400 files...\nProcessed 1500 files...\nProcessed 1600 files...\nProcessed 1700 files...\nProcessed 1800 files...\nProcessed 1900 files...\nProcessed 2000 files...\nProcessed 2100 files...\nProcessed 2200 files...\nProcessed 2300 files...\nProcessed 2400 files...\nProcessed 2500 files...\nProcessed 2600 files...\nProcessed 2700 files...\nProcessed 2800 files...\nProcessed 2900 files...\nProcessed 3000 files...\nProcessed 3100 files...\nProcessed 3200 files...\nProcessed 3300 files...\nProcessed 3400 files...\nProcessed 3500 files...\nProcessed 3600 files...\nProcessed 3700 files...\nProcessed 3800 files...\nProcessed 3900 files...\nProcessed 4000 files...\nProcessed 4100 files...\nProcessed 4200 files...\nProcessed 4300 files...\nProcessed 4400 files...\nProcessed 4500 files...\nProcessed 4600 files...\nProcessed 4700 files...\nProcessed 4800 files...\nProcessed 4900 files...\nProcessed 5000 files...\nProcessed 5100 files...\nProcessed 5200 files...\nProcessed 5300 files...\nProcessed 5400 files...\nProcessed 5500 files...\nProcessed 5600 files...\nProcessed 5700 files...\nProcessed 5800 files...\nProcessed 5900 files...\nProcessed 6000 files...\nProcessed 6100 files...\nProcessed 6200 files...\nProcessed 6300 files...\nProcessed 6400 files...\nProcessed 6500 files...\nProcessed 6600 files...\nProcessed 6700 files...\nProcessed 6800 files...\nProcessed 6900 files...\nProcessed 7000 files...\nProcessed 7100 files...\nProcessed 7200 files...\nProcessed 7300 files...\nProcessed 7400 files...\nProcessed 7500 files...\nProcessed 7600 files...\nProcessed 7700 files...\nProcessed 7800 files...\nProcessed 7900 files...\nProcessed 8000 files...\nProcessed 8100 files...\nProcessed 8200 files...\nProcessed 8300 files...\nProcessed 8400 files...\nProcessed 8500 files...\nProcessed 8600 files...\nProcessed 8700 files...\nProcessed 8800 files...\nProcessed 8900 files...\nProcessed 9000 files...\nProcessed 9100 files...\nProcessed 9200 files...\nProcessed 9300 files...\nProcessed 9400 files...\nProcessed 9500 files...\nProcessed 9600 files...\nProcessed 9700 files...\nProcessed 9800 files...\nProcessed 9900 files...\nProcessed 10000 files...\nProcessed 10100 files...\nProcessed 10200 files...\nProcessed 10300 files...\nProcessed 10400 files...\nProcessed 10500 files...\nProcessed 10600 files...\nProcessed 10700 files...\nProcessed 10800 files...\nProcessed 10900 files...\nProcessed 11000 files...\nProcessed 11100 files...\nProcessed 11200 files...\nProcessed 11300 files...\nProcessed 11400 files...\nProcessed 11500 files...\nProcessed 11600 files...\nProcessed 11700 files...\nProcessed 11800 files...\nProcessed 11900 files...\nProcessed 12000 files...\nProcessed 12100 files...\nProcessed 12200 files...\nProcessed 12300 files...\nProcessed 12400 files...\nProcessed 12500 files...\nProcessed 12600 files...\nProcessed 12700 files...\nProcessed 12800 files...\nProcessed 12900 files...\nProcessed 13000 files...\nProcessed 13100 files...\nProcessed 13200 files...\nProcessed 13300 files...\nProcessed 13400 files...\nProcessed 13500 files...\nProcessed 13600 files...\nProcessed 13700 files...\nProcessed 13800 files...\nProcessed 13900 files...\nProcessed 14000 files...\nProcessed 14100 files...\nProcessed 14200 files...\nProcessed 14300 files...\nProcessed 14400 files...\nProcessed 14500 files...\nProcessed 14600 files...\nProcessed 14700 files...\nProcessed 14800 files...\nProcessed 14900 files...\nProcessed 15000 files...\nProcessed 15100 files...\nProcessed 15200 files...\nProcessed 15300 files...\nProcessed 15400 files...\nProcessed 15500 files...\nProcessed 15600 files...\nProcessed 15700 files...\nProcessed 15800 files...\nProcessed 15900 files...\nProcessed 16000 files...\nProcessed 16100 files...\nProcessed 16200 files...\nProcessed 16300 files...\nProcessed 16400 files...\nProcessed 16500 files...\nProcessed 16600 files...\nProcessed 16700 files...\nProcessed 16800 files...\nProcessed 16900 files...\nCompleted! Saved 16951 text files to ../../../corpus_data/aozorabunko"
   },
   {
     "objectID": "resources/datasets/notebooks/download_cefr_sp.html",
@@ -1605,41 +1529,6 @@
     "text": "Grading\nSee the Course Syllabus for the full breakdown (mini-project presentation + Q&A and the in-class report are weighted components; the completed notebook is graded under hands-on)."
   },
   {
-    "objectID": "resources/code-examples/python/index.html",
-    "href": "resources/code-examples/python/index.html",
-    "title": "Coding the metrics from scratch",
-    "section": "",
-    "text": "In the Day-2 notebook and the Corpus Lab you called evaluate() on a set of frozen predictions and read the numbers it printed. Here you write those numbers yourself. Once you have coded precision, recall, F1, and Cohen’s κ from the raw label lists, the scores scikit-learn reports in the final project will never be a black box — you will know exactly what each one means and when it can mislead you."
-  },
-  {
-    "objectID": "resources/code-examples/python/index.html#the-files",
-    "href": "resources/code-examples/python/index.html#the-files",
-    "title": "Coding the metrics from scratch",
-    "section": "The files",
-    "text": "The files\n\n\n\nFile\nWhat it is\n\n\n\n\nmetrics_exercise.py\nThe file you edit. Each function has a docstring with the formula and a raise NotImplementedError(...) line for you to replace.\n\n\ncheck_metrics.py\nYour answer key. It runs your functions and scikit-learn on the same small dataset and prints ✅ / ❌ for each metric.\n\n\n\nYou implement six things, all from plain lists of labels — no imports, no numpy:\n\nconfusion_counts(gold, pred, label) → the tp / fp / fn / tn every metric is built from\nprecision, recall, f1 for one label\nmacro_f1 across all labels\npercent_agreement and cohen_kappa for two annotators"
-  },
-  {
-    "objectID": "resources/code-examples/python/index.html#run-it-in-google-colab",
-    "href": "resources/code-examples/python/index.html#run-it-in-google-colab",
-    "title": "Coding the metrics from scratch",
-    "section": "Run it in Google Colab",
-    "text": "Run it in Google Colab\n# Download the two files into the Colab runtime.\nBASE = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/code-examples/python\"\n!wget -q $BASE/metrics_exercise.py -O metrics_exercise.py\n!wget -q $BASE/check_metrics.py    -O check_metrics.py\n\n# Open metrics_exercise.py in Colab's file browser (left sidebar), fill in each function,\n# save (Ctrl/Cmd-S), then run the checker:\n!python check_metrics.py\nEvery line will say ❌ until you implement that function. Fix them until you see:\nAll 15 checks passed ✅  — your metrics match scikit-learn."
-  },
-  {
-    "objectID": "resources/code-examples/python/index.html#run-it-locally",
-    "href": "resources/code-examples/python/index.html#run-it-locally",
-    "title": "Coding the metrics from scratch",
-    "section": "Run it locally",
-    "text": "Run it locally\ncd sources/resources/code-examples/python\n# edit metrics_exercise.py, then:\nuv run --group dev python check_metrics.py"
-  },
-  {
-    "objectID": "resources/code-examples/python/index.html#why-the-checker-uses-scikit-learn",
-    "href": "resources/code-examples/python/index.html#why-the-checker-uses-scikit-learn",
-    "title": "Coding the metrics from scratch",
-    "section": "Why the checker uses scikit-learn",
-    "text": "Why the checker uses scikit-learn\ncheck_metrics.py is allowed to import sklearn — it is your grader, not your solution. Comparing against a trusted library is exactly how you gain confidence that a formula you wrote by hand is correct. That is the same reason the final project trusts scikit-learn outright: you have already earned the right to."
-  },
-  {
     "objectID": "resources/tools/gemini-api-key.html",
     "href": "resources/tools/gemini-api-key.html",
     "title": "Get a free Gemini API key (for Corpus Lab & the final project)",
@@ -1962,25 +1851,6 @@
     "text": "Step 6 — Save it\n\n\nShow code\nOUT_FILE = \"cars50_moves.json\"\n\n\n\n\nShow code\nimport json\nwith open(OUT_FILE, \"w\", encoding=\"utf-8\") as f:\n    json.dump(gold, f, ensure_ascii=False, indent=2)\nprint(f\"Saved {len(gold)} items to {OUT_FILE}\")\ngold[:3]  # preview the first three items\n\n\n\nYou built cars50_moves.json — the open stand-in for Kim & Lu’s data. Use it in the Day 3 tutorial.\nStretch: change the label to the full code (code instead of f\"Move {code[0]}\") for the 11-class Move+Step task and watch accuracy drop."
   },
   {
-    "objectID": "resources/additional-examples/ld_parallel_analysis.html",
-    "href": "resources/additional-examples/ld_parallel_analysis.html",
-    "title": "Running Parallel Analysis for Lexical Diversity",
-    "section": "",
-    "text": "The following tutorial is taken from TAALED repository\nPlease refer to the tutorial there for more information.\n\n\nShow code\nfrom taaled import ld\nfrom pylats import lats\n\n#for creating an output filename\nfrom datetime import datetime \nfrom datetime import date\n\n#for finding a list of texts\nimport glob\n\n\n\n\nShow code\n\nfilenames = glob.glob(\"../../../corpus_data/sample_for_ld_demo/*.txt\")\n\n\n\n\nShow code\nfilenames\n\n\n['../../../corpus_data/sample_for_ld_demo/GRA_PTJ0_112_ORIG.txt',\n '../../../corpus_data/sample_for_ld_demo/GRA_PTJ0_070_ORIG.txt',\n '../../../corpus_data/sample_for_ld_demo/GRA_PTJ0_124_ORIG.txt']\n\n\n\n\nShow code\ndef outname_creator(fldname,isprll,other = None):\n    day = date.today().strftime(\"%Y%m%d\") #get date\n    time = datetime.now().strftime(\"%H%M%S\")\n    ldv = \"taaledv\" + ld.version\n    # latsv = \"pylatsv\" + lats.version\n    if isprll == True: # we are going to think about only the \"nopa\" option in this tutorial.\n        pa = \"pa\"\n    else:\n        pa = \"nopa\"\n\n    if other == None:\n        outn = \"_\".join([day,time,fldname,pa]) + \".txt\"\n    else:\n        outn = \"_\".join([day,time,fldname,pa,other]) + \".txt\"\n\n    return(outn)\n    \n    \noutname = outname_creator(\"sample\",False)   \n\n\n\n\nShow code\nld.ldwrite(filenames,outname)\n\n\n1 of 3 ../../../corpus_data/sample_for_ld_demo/GRA_PTJ0_112_ORIG.txt\nPlease define a parameters class (e.g., params = lats.ld_params_en). Stopping program.\n3 files considered \n 0 files skipped due to length issues: \n [] \n 0 files successfully processed by TAALED\n\n\n\n\nShow code\nld.ldwrite(filenames, outname, \n           mn = 20,\n           mx = 200, \n           interval = 20, \n           prll = True, \n           params = lats.ld_params_en)\n\n\n1 of 3 ../../../corpus_data/sample_for_ld_demo/GRA_PTJ0_112_ORIG.txt\n2 of 3 ../../../corpus_data/sample_for_ld_demo/GRA_PTJ0_070_ORIG.txt\n3 of 3 ../../../corpus_data/sample_for_ld_demo/GRA_PTJ0_124_ORIG.txt\n3 files considered \n 0 files skipped due to length issues: \n [] \n 3 files successfully processed by TAALED\n\n\n\n\nShow code\nimport pandas as pd\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Load the parallel analysis data into a DataFrame\ndf = pd.read_csv(\"20250727_134615_sample_nopa.txt\", sep='\\t')\n\n# Display basic info about the DataFrame\nprint(\"DataFrame shape:\", df.shape)\nprint(\"\\nColumn names:\", df.columns.tolist())\nprint(\"\\nFirst few rows:\")\nprint(df.head())\nprint(\"\\nUnique filenames:\", df['filename'].unique())\n\n\nDataFrame shape: (30, 15)\n\nColumn names: ['filename', 'length', 'ntokens', 'ntypes', 'mtld', 'mtld92', 'mtldo', 'mattr', 'mattr11', 'ttr', 'rttr', 'lttr', 'maas', 'msttr', 'hdd']\n\nFirst few rows:\n                filename  length  ntokens  ntypes       mtld     mtld92  \\\n0  GRA_PTJ0_112_ORIG.txt      20       20    17.4  55.440000  15.982000   \n1  GRA_PTJ0_112_ORIG.txt      40       40    28.0  36.717737  14.683333   \n2  GRA_PTJ0_112_ORIG.txt      60       60    37.0  47.302778  15.595000   \n3  GRA_PTJ0_112_ORIG.txt      80       80    45.5  38.655250  16.159091   \n4  GRA_PTJ0_112_ORIG.txt     100      100    51.0  42.347917  19.952381   \n\n       mtldo     mattr   mattr11       ttr      rttr      lttr      maas  \\\n0  55.440000  0.870000  0.949091  0.870000  3.890758  0.952698  0.036358   \n1  40.681200  0.700000  0.955152  0.700000  4.427189  0.902472  0.060877   \n2  40.174376  0.661212  0.953333  0.616667  4.776679  0.881690  0.066535   \n3  38.790414  0.671290  0.950000  0.568750  5.087055  0.871207  0.067676   \n4  43.210139  0.660784  0.956566  0.510000  5.100000  0.853743  0.073128   \n\n      msttr       hdd  \n0  0.870000  0.000000  \n1  0.700000  0.000000  \n2  0.613333  0.690449  \n3  0.670000  0.706104  \n4  0.675000  0.693756  \n\nUnique filenames: ['GRA_PTJ0_112_ORIG.txt' 'GRA_PTJ0_070_ORIG.txt' 'GRA_PTJ0_124_ORIG.txt']\n\n\n\n\nShow code\n# Set up the plotting style\nsns.set_style(\"whitegrid\")\nplt.rcParams['figure.figsize'] = (10, 6)\n\n# Create four separate plots for each lexical diversity metric\n\n# 1. TTR (Type-Token Ratio) Plot\nplt.figure(figsize=(10, 6))\nsns.lineplot(data=df, x='length', y='ttr', hue='filename', marker='o', linewidth=2, markersize=6)\nplt.title('Type-Token Ratio (TTR) by Text Length', fontsize=14, fontweight='bold')\nplt.xlabel('Text Length (words)', fontsize=12)\nplt.ylabel('TTR', fontsize=12)\nplt.legend(title='Filename', bbox_to_anchor=(1.05, 1), loc='upper left')\nplt.tight_layout()\nplt.show()\n\n# 2. RTTR (Root Type-Token Ratio) Plot\nplt.figure(figsize=(10, 6))\nsns.lineplot(data=df, x='length', y='rttr', hue='filename', marker='o', linewidth=2, markersize=6)\nplt.title('Root Type-Token Ratio (RTTR) by Text Length', fontsize=14, fontweight='bold')\nplt.xlabel('Text Length (words)', fontsize=12)\nplt.ylabel('RTTR', fontsize=12)\nplt.legend(title='Filename', bbox_to_anchor=(1.05, 1), loc='upper left')\nplt.tight_layout()\nplt.show()\n\n# 3. Maas Index Plot\nplt.figure(figsize=(10, 6))\nsns.lineplot(data=df, x='length', y='maas', hue='filename', marker='o', linewidth=2, markersize=6)\nplt.title('Maas Index by Text Length', fontsize=14, fontweight='bold')\nplt.xlabel('Text Length (words)', fontsize=12)\nplt.ylabel('Maas Index', fontsize=12)\nplt.legend(title='Filename', bbox_to_anchor=(1.05, 1), loc='upper left')\nplt.tight_layout()\nplt.show()\n\n# 4. Log TTR Index Plot\nplt.figure(figsize=(10, 6))\nsns.lineplot(data=df, x='length', y='lttr', hue='filename', marker='o', linewidth=2, markersize=6)\nplt.title('Log TTR Index by Text Length', fontsize=14, fontweight='bold')\nplt.xlabel('Text Length (words)', fontsize=12)\nplt.ylabel('Log TTR Index', fontsize=12)\nplt.legend(title='Filename', bbox_to_anchor=(1.05, 1), loc='upper left')\nplt.tight_layout()\nplt.show()\n\n\n# 5. MTLD (Measure of Textual Lexical Diversity) Plot\nplt.figure(figsize=(10, 6))\nsns.lineplot(data=df, x='length', y='mtldo', hue='filename', marker='o', linewidth=2, markersize=6)\nplt.title('Measure of Textual Lexical Diversity (MTLD) by Text Length', fontsize=14, fontweight='bold')\nplt.xlabel('Text Length (words)', fontsize=12)\nplt.ylabel('MTLD', fontsize=12)\nplt.legend(title='Filename', bbox_to_anchor=(1.05, 1), loc='upper left')\nplt.tight_layout()\nplt.show()\n\n# 6. MTLD (Measure of Textual Lexical Diversity) Plot\nplt.figure(figsize=(10, 6))\nsns.lineplot(data=df, x='length', y='mattr', hue='filename', marker='o', linewidth=2, markersize=6)\nplt.title('Mean Average Type-Token Ratio by Text Length', fontsize=14, fontweight='bold')\nplt.xlabel('Text Length (words)', fontsize=12)\nplt.ylabel('MATTR', fontsize=12)\nplt.legend(title='Filename', bbox_to_anchor=(1.05, 1), loc='upper left')\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nShow code\n# Summary statistics for each metric by filename\nprint(\"\\n\" + \"=\"*60)\nprint(\"SUMMARY STATISTICS BY FILENAME\")\nprint(\"=\"*60)\n\nmetrics = ['ttr', 'rttr', 'maas', 'mtld']\nfor metric in metrics:\n    print(f\"\\n{metric.upper()} Summary:\")\n    print(df.groupby('filename')[metric].agg(['mean', 'std', 'min', 'max']).round(4))\n\n\n\n============================================================\nSUMMARY STATISTICS BY FILENAME\n============================================================\n\nTTR Summary:\n                         mean     std    min     max\nfilename                                            \nGRA_PTJ0_070_ORIG.txt  0.5825  0.1273  0.448  0.8750\nGRA_PTJ0_112_ORIG.txt  0.5095  0.1395  0.368  0.8708\nGRA_PTJ0_124_ORIG.txt  0.5968  0.1314  0.476  0.8958\n\nRTTR Summary:\n                         mean     std     min     max\nfilename                                             \nGRA_PTJ0_070_ORIG.txt  6.0991  0.8230  3.9131  7.1005\nGRA_PTJ0_112_ORIG.txt  5.2486  0.4906  3.8945  5.8186\nGRA_PTJ0_124_ORIG.txt  6.2516  0.8723  4.0063  7.5262\n\nMAAS Summary:\n                         mean     std     min     max\nfilename                                             \nGRA_PTJ0_070_ORIG.txt  0.0550  0.0082  0.0353  0.0630\nGRA_PTJ0_112_ORIG.txt  0.0692  0.0101  0.0364  0.0781\nGRA_PTJ0_124_ORIG.txt  0.0522  0.0100  0.0285  0.0627\n\nMTLD Summary:\n                          mean      std      min      max\nfilename                                                 \nGRA_PTJ0_070_ORIG.txt  50.9351  10.4496  39.9083  78.8492\nGRA_PTJ0_112_ORIG.txt  41.9704   4.3081  36.3750  53.0657\nGRA_PTJ0_124_ORIG.txt  65.3780   4.3214  59.2700  73.0065"
-  },
-  {
-    "objectID": "resources/additional-examples/index.html",
-    "href": "resources/additional-examples/index.html",
-    "title": "Additional Examples",
-    "section": "",
-    "text": "Optional, self-contained notebooks that are not part of the core in-class sequence — reference material you can dip into for corpus building and lexical analysis. Each is Colab-ready.\n\nDownloading Aozora Bunko — pull a Japanese literary corpus.\nExtracting Collocations — build collocation lists from a corpus.\nParallel Analysis for lexical diversity — choose the number of components for lexical-diversity measurement.\n\nFor the guided course notebooks, see Tutorials; for the annotated datasets, see Datasets.",
-    "crumbs": [
-      "Resources",
-      "Additional examples",
-      "Additional Examples"
-    ]
-  },
-  {
     "objectID": "resources/github/index.html",
     "href": "resources/github/index.html",
     "title": "GitHub & Optional Workshops",
@@ -2043,336 +1913,307 @@
   {
     "objectID": "resources/corpora/index.html",
     "href": "resources/corpora/index.html",
-    "title": "Corpora Resources",
+    "title": "Further Corpora & Language Data",
     "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
+    "text": "This course runs entirely on the replication datasets we ship for you — you won’t need an external corpus for any tutorial, Corpus Lab, or the final mini-project. The links below are optional, for anyone who wants to explore language data beyond the course (e.g. follow-on research). They are provided as-is; check each source’s own license before use.",
     "crumbs": [
       "Resources",
-      "Corpora",
-      "Corpora Resources"
+      "Further corpora (optional)",
+      "Further Corpora & Language Data"
     ]
   },
   {
-    "objectID": "resources/corpora/index.html#resources",
-    "href": "resources/corpora/index.html#resources",
-    "title": "Corpora Resources",
-    "section": "Resources",
-    "text": "Resources\n\nAvailable Corpora\nLearner Corpora",
+    "objectID": "resources/corpora/index.html#english-multilingual-corpus-tools",
+    "href": "resources/corpora/index.html#english-multilingual-corpus-tools",
+    "title": "Further Corpora & Language Data",
+    "section": "English / multilingual corpus tools",
+    "text": "English / multilingual corpus tools\n\nCorpusMate\nMontclair State University — CORAL lab",
     "crumbs": [
       "Resources",
-      "Corpora",
-      "Corpora Resources"
+      "Further corpora (optional)",
+      "Further Corpora & Language Data"
     ]
   },
   {
-    "objectID": "resources/corpora/available-corpora.html",
-    "href": "resources/corpora/available-corpora.html",
-    "title": "Available Corpora",
-    "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
+    "objectID": "resources/corpora/index.html#japanese-corpora",
+    "href": "resources/corpora/index.html#japanese-corpora",
+    "title": "Further Corpora & Language Data",
+    "section": "Japanese corpora",
+    "text": "Japanese corpora\n\nNINJAL-LWP for TWC\n名大会話コーパス (Nagoya University Conversation Corpus)\n日本語対話コーパス一覧 (Japanese dialogue corpus list)\n関西弁コーパス (Kansai dialect corpus)\nAozorabunko-data (cleaned)\n現代日本語書き言葉均衡コーパス (BCCWJ) 公開データ\n日本語話し言葉コーパス (CSJ)\n国語研日本語ウェブコーパス\nWortschatz Japanese corpus (Leipzig)",
     "crumbs": [
       "Resources",
-      "Corpora",
-      "Available Corpora"
+      "Further corpora (optional)",
+      "Further Corpora & Language Data"
     ]
   },
   {
-    "objectID": "resources/corpora/available-corpora.html#placeholder",
-    "href": "resources/corpora/available-corpora.html#placeholder",
-    "title": "Available Corpora",
-    "section": "Placeholder",
-    "text": "Placeholder\nContent to be added.\n\nCorpusMate\nMontclair State University - CORAL lab",
+    "objectID": "resources/corpora/index.html#learner-corpora",
+    "href": "resources/corpora/index.html#learner-corpora",
+    "title": "Further Corpora & Language Data",
+    "section": "Learner corpora",
+    "text": "Learner corpora\n\nJapanese Learner corpus Natane\nInternational Center for Japanese Studies\n日本語学習者会話データベース (Japanese learner conversation database)",
     "crumbs": [
       "Resources",
-      "Corpora",
-      "Available Corpora"
+      "Further corpora (optional)",
+      "Further Corpora & Language Data"
     ]
   },
   {
-    "objectID": "resources/corpora/available-corpora.html#japanese-corpus",
-    "href": "resources/corpora/available-corpora.html#japanese-corpus",
-    "title": "Available Corpora",
-    "section": "Japanese corpus",
-    "text": "Japanese corpus\n\nNINJAL-LWP for TWC\n名大会話コーパス\n日本語対話コーパス一覧\n関西弁コーパス\nAozorabunko-data",
+    "objectID": "resources/corpora/index.html#lexical-databases",
+    "href": "resources/corpora/index.html#lexical-databases",
+    "title": "Further Corpora & Language Data",
+    "section": "Lexical databases",
+    "text": "Lexical databases\n\nAge-of-acquisition ratings for 5,000+ Japanese words\nJALEX: Japanese Lexical Decision Database\nAWD-J: Abstractness of Word Database for Japanese",
     "crumbs": [
       "Resources",
-      "Corpora",
-      "Available Corpora"
+      "Further corpora (optional)",
+      "Further Corpora & Language Data"
     ]
   },
   {
-    "objectID": "resources/corpora/available-corpora.html#vocabulary-list",
-    "href": "resources/corpora/available-corpora.html#vocabulary-list",
-    "title": "Available Corpora",
-    "section": "Vocabulary list",
-    "text": "Vocabulary list\n\n現代日本語書き言葉均衡コーパス（BCCWJ）　公開データ\n日本語話し言葉コーパス（CSJ)\n国語研日本語ウェブコーパス",
-    "crumbs": [
-      "Resources",
-      "Corpora",
-      "Available Corpora"
-    ]
-  },
-  {
-    "objectID": "resources/corpora/available-corpora.html#corpus-data",
-    "href": "resources/corpora/available-corpora.html#corpus-data",
-    "title": "Available Corpora",
-    "section": "Corpus data",
-    "text": "Corpus data\n\nwortschatz corpus",
-    "crumbs": [
-      "Resources",
-      "Corpora",
-      "Available Corpora"
-    ]
-  },
-  {
-    "objectID": "resources/corpora/available-corpora.html#databases",
-    "href": "resources/corpora/available-corpora.html#databases",
-    "title": "Available Corpora",
-    "section": "Databases",
-    "text": "Databases\n\nCollection of age of acquisition ratings for over 5,000 Japanese words\nJALEX: Japanese Version of Lexical Decision Database\nAWD-J: AWD-J: Abstractness of Word Database for Japanese common words",
-    "crumbs": [
-      "Resources",
-      "Corpora",
-      "Available Corpora"
-    ]
-  },
-  {
-    "objectID": "slides/slides-session6.html#agenda",
-    "href": "slides/slides-session6.html#agenda",
-    "title": "Session 6: Evaluation Metrics",
+    "objectID": "slides/slides-session-08.html#agenda",
+    "href": "slides/slides-session-08.html#agenda",
+    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nPrecision, recall, and F1\nThe confusion matrix\nHands-on practice in Colab"
+    "text": "📋 Agenda\n\nRun LLM-based text classification in Colab\nEvaluate the outputs with the prepared tools\nGet your Gemini API key"
   },
   {
-    "objectID": "slides/slides-session6.html#learning-objectives",
-    "href": "slides/slides-session6.html#learning-objectives",
-    "title": "Session 6: Evaluation Metrics",
+    "objectID": "slides/slides-session-08.html#learning-objectives",
+    "href": "slides/slides-session-08.html#learning-objectives",
+    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
     "section": "🎯 Learning Objectives",
     "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
   },
   {
-    "objectID": "slides/slides-session6.html#precision-recall-f1-1",
-    "href": "slides/slides-session6.html#precision-recall-f1-1",
-    "title": "Session 6: Evaluation Metrics",
-    "section": "Precision, recall, F1",
-    "text": "Precision, recall, F1"
+    "objectID": "slides/slides-session-08.html#run-classification-in-colab-1",
+    "href": "slides/slides-session-08.html#run-classification-in-colab-1",
+    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
+    "section": "Run classification in Colab",
+    "text": "Run classification in Colab"
   },
   {
-    "objectID": "slides/slides-session6.html#the-confusion-matrix-1",
-    "href": "slides/slides-session6.html#the-confusion-matrix-1",
-    "title": "Session 6: Evaluation Metrics",
-    "section": "The confusion matrix",
-    "text": "The confusion matrix"
+    "objectID": "slides/slides-session-08.html#evaluate-the-outputs-1",
+    "href": "slides/slides-session-08.html#evaluate-the-outputs-1",
+    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
+    "section": "Evaluate the outputs",
+    "text": "Evaluate the outputs"
   },
   {
-    "objectID": "slides/slides-session6.html#hands-on-in-colab-1",
-    "href": "slides/slides-session6.html#hands-on-in-colab-1",
-    "title": "Session 6: Evaluation Metrics",
-    "section": "Hands-on in Colab",
-    "text": "Hands-on in Colab"
+    "objectID": "slides/slides-session-08.html#your-gemini-api-key-1",
+    "href": "slides/slides-session-08.html#your-gemini-api-key-1",
+    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
+    "section": "Your Gemini API key",
+    "text": "Your Gemini API key"
   },
   {
-    "objectID": "slides/slides-session5.html#agenda",
-    "href": "slides/slides-session5.html#agenda",
-    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
-    "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nRe-annotate a sample using a prepared scheme\nCompute inter-annotator agreement\nCompare against the published gold and against LLM annotations"
-  },
-  {
-    "objectID": "slides/slides-session5.html#learning-objectives",
-    "href": "slides/slides-session5.html#learning-objectives",
-    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
-    "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
-  },
-  {
-    "objectID": "slides/slides-session5.html#re-annotate-a-sample-1",
-    "href": "slides/slides-session5.html#re-annotate-a-sample-1",
-    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
-    "section": "Re-annotate a sample",
-    "text": "Re-annotate a sample"
-  },
-  {
-    "objectID": "slides/slides-session5.html#inter-annotator-agreement-1",
-    "href": "slides/slides-session5.html#inter-annotator-agreement-1",
-    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
-    "section": "Inter-annotator agreement",
-    "text": "Inter-annotator agreement"
-  },
-  {
-    "objectID": "slides/slides-session5.html#compare-gold-vs.-llm-1",
-    "href": "slides/slides-session5.html#compare-gold-vs.-llm-1",
-    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
-    "section": "Compare: gold vs. LLM",
-    "text": "Compare: gold vs. LLM"
-  },
-  {
-    "objectID": "slides/slides-session2.html#agenda",
-    "href": "slides/slides-session2.html#agenda",
+    "objectID": "slides/slides-session-02.html#agenda",
+    "href": "slides/slides-session-02.html#agenda",
     "title": "Session 2: First Experience with LLM Classification",
     "section": "📋 Agenda",
     "text": "📋 Agenda\n\nA quick chat-interface demo\nGoogle Colab onboarding — sign in, open, run, edit, re-run\nA short “reading Python” orientation"
   },
   {
-    "objectID": "slides/slides-session2.html#learning-objectives",
-    "href": "slides/slides-session2.html#learning-objectives",
+    "objectID": "slides/slides-session-02.html#learning-objectives",
+    "href": "slides/slides-session-02.html#learning-objectives",
     "title": "Session 2: First Experience with LLM Classification",
     "section": "🎯 Learning Objectives",
     "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
   },
   {
-    "objectID": "slides/slides-session2.html#chat-interface-demo-1",
-    "href": "slides/slides-session2.html#chat-interface-demo-1",
+    "objectID": "slides/slides-session-02.html#chat-interface-demo-1",
+    "href": "slides/slides-session-02.html#chat-interface-demo-1",
     "title": "Session 2: First Experience with LLM Classification",
     "section": "Chat-interface demo",
     "text": "Chat-interface demo"
   },
   {
-    "objectID": "slides/slides-session2.html#google-colab-onboarding-1",
-    "href": "slides/slides-session2.html#google-colab-onboarding-1",
+    "objectID": "slides/slides-session-02.html#google-colab-onboarding-1",
+    "href": "slides/slides-session-02.html#google-colab-onboarding-1",
     "title": "Session 2: First Experience with LLM Classification",
     "section": "Google Colab onboarding",
     "text": "Google Colab onboarding"
   },
   {
-    "objectID": "slides/slides-session2.html#reading-python-1",
-    "href": "slides/slides-session2.html#reading-python-1",
+    "objectID": "slides/slides-session-02.html#reading-python-1",
+    "href": "slides/slides-session-02.html#reading-python-1",
     "title": "Session 2: First Experience with LLM Classification",
     "section": "Reading Python",
     "text": "Reading Python"
   },
   {
-    "objectID": "slides/slides-session12.html#agenda",
-    "href": "slides/slides-session12.html#agenda",
-    "title": "Session 12: Project Work: QC the Gold Set & Baseline",
+    "objectID": "slides/slides-session-01.html#agenda",
+    "href": "slides/slides-session-01.html#agenda",
+    "title": "Session 1: Introduction to LLMs & NLP Tasks",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nA quality-control (adjudication) pass on your sampled gold set\nRun a baseline prompt"
+    "text": "📋 Agenda\n\nWhat LLMs are & how they fit linguistic analysis\nThe NLP tasks we’ll tackle in this course\nCourse overview & self-introductions"
   },
   {
-    "objectID": "slides/slides-session12.html#learning-objectives",
-    "href": "slides/slides-session12.html#learning-objectives",
-    "title": "Session 12: Project Work: QC the Gold Set & Baseline",
+    "objectID": "slides/slides-session-01.html#learning-objectives",
+    "href": "slides/slides-session-01.html#learning-objectives",
+    "title": "Session 1: Introduction to LLMs & NLP Tasks",
     "section": "🎯 Learning Objectives",
     "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
   },
   {
-    "objectID": "slides/slides-session12.html#qc-adjudication-pass-1",
-    "href": "slides/slides-session12.html#qc-adjudication-pass-1",
-    "title": "Session 12: Project Work: QC the Gold Set & Baseline",
-    "section": "QC / adjudication pass",
-    "text": "QC / adjudication pass"
+    "objectID": "slides/slides-session-01.html#what-are-llms-1",
+    "href": "slides/slides-session-01.html#what-are-llms-1",
+    "title": "Session 1: Introduction to LLMs & NLP Tasks",
+    "section": "What are LLMs?",
+    "text": "What are LLMs?"
   },
   {
-    "objectID": "slides/slides-session12.html#run-a-baseline-prompt-1",
-    "href": "slides/slides-session12.html#run-a-baseline-prompt-1",
-    "title": "Session 12: Project Work: QC the Gold Set & Baseline",
-    "section": "Run a baseline prompt",
-    "text": "Run a baseline prompt"
+    "objectID": "slides/slides-session-01.html#nlp-tasks-for-linguistic-analysis-1",
+    "href": "slides/slides-session-01.html#nlp-tasks-for-linguistic-analysis-1",
+    "title": "Session 1: Introduction to LLMs & NLP Tasks",
+    "section": "NLP tasks for linguistic analysis",
+    "text": "NLP tasks for linguistic analysis"
   },
   {
-    "objectID": "slides/slides-session11.html#agenda",
-    "href": "slides/slides-session11.html#agenda",
+    "objectID": "slides/slides-session-01.html#course-overview-introductions-1",
+    "href": "slides/slides-session-01.html#course-overview-introductions-1",
+    "title": "Session 1: Introduction to LLMs & NLP Tasks",
+    "section": "Course overview & introductions",
+    "text": "Course overview & introductions"
+  },
+  {
+    "objectID": "slides/slides-session-11.html#agenda",
+    "href": "slides/slides-session-11.html#agenda",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "📋 Agenda",
     "text": "📋 Agenda\n\nAssemble the project notebook together, step by step\nPick a mini-project track\nSample a balanced gold subset from the provided pool"
   },
   {
-    "objectID": "slides/slides-session11.html#learning-objectives",
-    "href": "slides/slides-session11.html#learning-objectives",
+    "objectID": "slides/slides-session-11.html#learning-objectives",
+    "href": "slides/slides-session-11.html#learning-objectives",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "🎯 Learning Objectives",
     "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
   },
   {
-    "objectID": "slides/slides-session11.html#assemble-the-notebook-1",
-    "href": "slides/slides-session11.html#assemble-the-notebook-1",
+    "objectID": "slides/slides-session-11.html#assemble-the-notebook-1",
+    "href": "slides/slides-session-11.html#assemble-the-notebook-1",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Assemble the notebook",
     "text": "Assemble the notebook"
   },
   {
-    "objectID": "slides/slides-session11.html#pick-a-track-1",
-    "href": "slides/slides-session11.html#pick-a-track-1",
+    "objectID": "slides/slides-session-11.html#pick-a-track-1",
+    "href": "slides/slides-session-11.html#pick-a-track-1",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Pick a track",
     "text": "Pick a track"
   },
   {
-    "objectID": "slides/slides-session11.html#sample-a-balanced-gold-subset-1",
-    "href": "slides/slides-session11.html#sample-a-balanced-gold-subset-1",
+    "objectID": "slides/slides-session-11.html#sample-a-balanced-gold-subset-1",
+    "href": "slides/slides-session-11.html#sample-a-balanced-gold-subset-1",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Sample a balanced gold subset",
     "text": "Sample a balanced gold subset"
   },
   {
-    "objectID": "slides/slides-session14.html#agenda",
-    "href": "slides/slides-session14.html#agenda",
-    "title": "Session 14: Project Work: Finalize Report & Notebook",
+    "objectID": "slides/slides-session-04.html#agenda",
+    "href": "slides/slides-session-04.html#agenda",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nFinalize the one-page report\nPrepare your presentation\nSubmit the completed notebook"
+    "text": "📋 Agenda\n\nAnnotation principles\nThe NLP pipeline for applied linguistics\nIntroduction to gold-standard dataset construction"
   },
   {
-    "objectID": "slides/slides-session14.html#learning-objectives",
-    "href": "slides/slides-session14.html#learning-objectives",
-    "title": "Session 14: Project Work: Finalize Report & Notebook",
+    "objectID": "slides/slides-session-04.html#learning-objectives",
+    "href": "slides/slides-session-04.html#learning-objectives",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "🎯 Learning Objectives",
     "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
   },
   {
-    "objectID": "slides/slides-session14.html#finalize-the-report-1",
-    "href": "slides/slides-session14.html#finalize-the-report-1",
-    "title": "Session 14: Project Work: Finalize Report & Notebook",
-    "section": "Finalize the report",
-    "text": "Finalize the report"
+    "objectID": "slides/slides-session-04.html#annotation-principles-1",
+    "href": "slides/slides-session-04.html#annotation-principles-1",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Annotation principles",
+    "text": "Annotation principles"
   },
   {
-    "objectID": "slides/slides-session14.html#prepare-the-presentation-1",
-    "href": "slides/slides-session14.html#prepare-the-presentation-1",
-    "title": "Session 14: Project Work: Finalize Report & Notebook",
-    "section": "Prepare the presentation",
-    "text": "Prepare the presentation"
+    "objectID": "slides/slides-session-04.html#the-nlp-pipeline-1",
+    "href": "slides/slides-session-04.html#the-nlp-pipeline-1",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "The NLP pipeline",
+    "text": "The NLP pipeline"
   },
   {
-    "objectID": "slides/slides-session14.html#submit-the-notebook-1",
-    "href": "slides/slides-session14.html#submit-the-notebook-1",
-    "title": "Session 14: Project Work: Finalize Report & Notebook",
-    "section": "Submit the notebook",
-    "text": "Submit the notebook"
+    "objectID": "slides/slides-session-04.html#gold-standard-construction-1",
+    "href": "slides/slides-session-04.html#gold-standard-construction-1",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Gold-standard construction",
+    "text": "Gold-standard construction"
   },
   {
-    "objectID": "slides/slides-session9.html#agenda",
-    "href": "slides/slides-session9.html#agenda",
-    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
+    "objectID": "slides/slides-session-06.html#agenda",
+    "href": "slides/slides-session-06.html#agenda",
+    "title": "Session 6: Evaluation Metrics",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nError analysis of misclassifications\nIterate the prompt over 2–3 cycles\nA short under-the-hood walkthrough"
+    "text": "📋 Agenda\n\nPrecision, recall, and F1\nThe confusion matrix\nHands-on practice in Colab"
   },
   {
-    "objectID": "slides/slides-session9.html#learning-objectives",
-    "href": "slides/slides-session9.html#learning-objectives",
-    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
+    "objectID": "slides/slides-session-06.html#learning-objectives",
+    "href": "slides/slides-session-06.html#learning-objectives",
+    "title": "Session 6: Evaluation Metrics",
     "section": "🎯 Learning Objectives",
     "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
   },
   {
-    "objectID": "slides/slides-session9.html#error-analysis-1",
-    "href": "slides/slides-session9.html#error-analysis-1",
-    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
-    "section": "Error analysis",
-    "text": "Error analysis"
+    "objectID": "slides/slides-session-06.html#precision-recall-f1-1",
+    "href": "slides/slides-session-06.html#precision-recall-f1-1",
+    "title": "Session 6: Evaluation Metrics",
+    "section": "Precision, recall, F1",
+    "text": "Precision, recall, F1"
   },
   {
-    "objectID": "slides/slides-session9.html#iterating-the-prompt-1",
-    "href": "slides/slides-session9.html#iterating-the-prompt-1",
-    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
-    "section": "Iterating the prompt",
-    "text": "Iterating the prompt"
+    "objectID": "slides/slides-session-06.html#the-confusion-matrix-1",
+    "href": "slides/slides-session-06.html#the-confusion-matrix-1",
+    "title": "Session 6: Evaluation Metrics",
+    "section": "The confusion matrix",
+    "text": "The confusion matrix"
   },
   {
-    "objectID": "slides/slides-session9.html#under-the-hood-1",
-    "href": "slides/slides-session9.html#under-the-hood-1",
-    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
-    "section": "Under the hood",
-    "text": "Under the hood"
+    "objectID": "slides/slides-session-06.html#hands-on-in-colab-1",
+    "href": "slides/slides-session-06.html#hands-on-in-colab-1",
+    "title": "Session 6: Evaluation Metrics",
+    "section": "Hands-on in Colab",
+    "text": "Hands-on in Colab"
+  },
+  {
+    "objectID": "slides/slides-session-13.html#agenda",
+    "href": "slides/slides-session-13.html#agenda",
+    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
+    "section": "📋 Agenda",
+    "text": "📋 Agenda\n\nIterate your prompt over 2–3 cycles\nRun the final evaluation\nBegin the in-class one-page report"
+  },
+  {
+    "objectID": "slides/slides-session-13.html#learning-objectives",
+    "href": "slides/slides-session-13.html#learning-objectives",
+    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
+    "section": "🎯 Learning Objectives",
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+  },
+  {
+    "objectID": "slides/slides-session-13.html#iterate-your-prompt-1",
+    "href": "slides/slides-session-13.html#iterate-your-prompt-1",
+    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
+    "section": "Iterate your prompt",
+    "text": "Iterate your prompt"
+  },
+  {
+    "objectID": "slides/slides-session-13.html#final-evaluation-run-1",
+    "href": "slides/slides-session-13.html#final-evaluation-run-1",
+    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
+    "section": "Final evaluation run",
+    "text": "Final evaluation run"
+  },
+  {
+    "objectID": "slides/slides-session-13.html#begin-the-one-page-report-1",
+    "href": "slides/slides-session-13.html#begin-the-one-page-report-1",
+    "title": "Session 13: Project Work: Prompt Iteration & Final Evaluation",
+    "section": "Begin the one-page report",
+    "text": "Begin the one-page report"
   },
   {
     "objectID": "syllabus/readings.html",
@@ -2417,8 +2258,56 @@
     "text": "Day 5 · Project Finalization & Presentations\nNo new reading — project work only."
   },
   {
-    "objectID": "sessions/day4/session10.html",
-    "href": "sessions/day4/session10.html",
+    "objectID": "sessions/day4/session-12.html",
+    "href": "sessions/day4/session-12.html",
+    "title": "Session 12: Project Work — Sample & QC the Gold Set",
+    "section": "",
+    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
+    "crumbs": [
+      "Sessions",
+      "Day 4 · Methodology & Pipeline Assembly",
+      "Session 12: Project Work — Sample & QC the Gold Set"
+    ]
+  },
+  {
+    "objectID": "sessions/day4/session-12.html#learning-objectives",
+    "href": "sessions/day4/session-12.html#learning-objectives",
+    "title": "Session 12: Project Work — Sample & QC the Gold Set",
+    "section": "Learning objectives",
+    "text": "Learning objectives",
+    "crumbs": [
+      "Sessions",
+      "Day 4 · Methodology & Pipeline Assembly",
+      "Session 12: Project Work — Sample & QC the Gold Set"
+    ]
+  },
+  {
+    "objectID": "sessions/day4/session-12.html#reading",
+    "href": "sessions/day4/session-12.html#reading",
+    "title": "Session 12: Project Work — Sample & QC the Gold Set",
+    "section": "Reading",
+    "text": "Reading",
+    "crumbs": [
+      "Sessions",
+      "Day 4 · Methodology & Pipeline Assembly",
+      "Session 12: Project Work — Sample & QC the Gold Set"
+    ]
+  },
+  {
+    "objectID": "sessions/day4/session-12.html#slides-colab",
+    "href": "sessions/day4/session-12.html#slides-colab",
+    "title": "Session 12: Project Work — Sample & QC the Gold Set",
+    "section": "Slides & Colab",
+    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day4_pipeline_and_sampling.ipynb — sample a balanced gold subset, then QC it —   ## Mini-project Project work session — see the Final Project page.",
+    "crumbs": [
+      "Sessions",
+      "Day 4 · Methodology & Pipeline Assembly",
+      "Session 12: Project Work — Sample & QC the Gold Set"
+    ]
+  },
+  {
+    "objectID": "sessions/day4/session-10.html",
+    "href": "sessions/day4/session-10.html",
     "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
@@ -2429,8 +2318,8 @@
     ]
   },
   {
-    "objectID": "sessions/day4/session10.html#learning-objectives",
-    "href": "sessions/day4/session10.html#learning-objectives",
+    "objectID": "sessions/day4/session-10.html#learning-objectives",
+    "href": "sessions/day4/session-10.html#learning-objectives",
     "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
     "section": "Learning objectives",
     "text": "Learning objectives",
@@ -2441,8 +2330,8 @@
     ]
   },
   {
-    "objectID": "sessions/day4/session10.html#reading",
-    "href": "sessions/day4/session10.html#reading",
+    "objectID": "sessions/day4/session-10.html#reading",
+    "href": "sessions/day4/session-10.html#reading",
     "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
     "section": "Reading",
     "text": "Reading\nRead in full — revisit the Day 1 primer closely as a reproducibility checklist (see all course readings):\n\nAbdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., & Dehghani, M. (2025). A primer for evaluating large language models in social-science research. Advances in Methods and Practices in Psychological Science, 8(2). https://doi.org/10.1177/25152459251325174",
@@ -2453,11 +2342,11 @@
     ]
   },
   {
-    "objectID": "sessions/day4/session10.html#slides-colab",
-    "href": "sessions/day4/session10.html#slides-colab",
+    "objectID": "sessions/day4/session-10.html#slides-colab",
+    "href": "sessions/day4/session-10.html#slides-colab",
     "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nSlides: Session 10 slides",
+    "text": "Slides & Colab",
     "crumbs": [
       "Sessions",
       "Day 4 · Methodology & Pipeline Assembly",
@@ -2465,164 +2354,56 @@
     ]
   },
   {
-    "objectID": "sessions/day4/session12.html",
-    "href": "sessions/day4/session12.html",
-    "title": "Session 12: Project Work — Sample & QC the Gold Set",
-    "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
-    "crumbs": [
-      "Sessions",
-      "Day 4 · Methodology & Pipeline Assembly",
-      "Session 12: Project Work — Sample & QC the Gold Set"
-    ]
-  },
-  {
-    "objectID": "sessions/day4/session12.html#learning-objectives",
-    "href": "sessions/day4/session12.html#learning-objectives",
-    "title": "Session 12: Project Work — Sample & QC the Gold Set",
-    "section": "Learning objectives",
-    "text": "Learning objectives",
-    "crumbs": [
-      "Sessions",
-      "Day 4 · Methodology & Pipeline Assembly",
-      "Session 12: Project Work — Sample & QC the Gold Set"
-    ]
-  },
-  {
-    "objectID": "sessions/day4/session12.html#reading",
-    "href": "sessions/day4/session12.html#reading",
-    "title": "Session 12: Project Work — Sample & QC the Gold Set",
-    "section": "Reading",
-    "text": "Reading",
-    "crumbs": [
-      "Sessions",
-      "Day 4 · Methodology & Pipeline Assembly",
-      "Session 12: Project Work — Sample & QC the Gold Set"
-    ]
-  },
-  {
-    "objectID": "sessions/day4/session12.html#slides-colab",
-    "href": "sessions/day4/session12.html#slides-colab",
-    "title": "Session 12: Project Work — Sample & QC the Gold Set",
-    "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day4_pipeline_and_sampling.ipynb — sample a balanced gold subset, then QC it — \nSlides: Session 12 slides",
-    "crumbs": [
-      "Sessions",
-      "Day 4 · Methodology & Pipeline Assembly",
-      "Session 12: Project Work — Sample & QC the Gold Set"
-    ]
-  },
-  {
-    "objectID": "sessions/day4/session12.html#mini-project",
-    "href": "sessions/day4/session12.html#mini-project",
-    "title": "Session 12: Project Work — Sample & QC the Gold Set",
-    "section": "Mini-project",
-    "text": "Mini-project\nProject work session — see the Final Project page.",
-    "crumbs": [
-      "Sessions",
-      "Day 4 · Methodology & Pipeline Assembly",
-      "Session 12: Project Work — Sample & QC the Gold Set"
-    ]
-  },
-  {
-    "objectID": "sessions/day3/session8.html",
-    "href": "sessions/day3/session8.html",
-    "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
+    "objectID": "sessions/day3/session-09.html",
+    "href": "sessions/day3/session-09.html",
+    "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
-      "Session 8: Hands-on — LLM Classification & Prompt Iteration"
+      "Session 9: Error Analysis & Under-the-Hood Walkthrough"
     ]
   },
   {
-    "objectID": "sessions/day3/session8.html#learning-objectives",
-    "href": "sessions/day3/session8.html#learning-objectives",
-    "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
+    "objectID": "sessions/day3/session-09.html#learning-objectives",
+    "href": "sessions/day3/session-09.html#learning-objectives",
+    "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
     "section": "Learning objectives",
     "text": "Learning objectives",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
-      "Session 8: Hands-on — LLM Classification & Prompt Iteration"
+      "Session 9: Error Analysis & Under-the-Hood Walkthrough"
     ]
   },
   {
-    "objectID": "sessions/day3/session8.html#reading",
-    "href": "sessions/day3/session8.html#reading",
-    "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
+    "objectID": "sessions/day3/session-09.html#reading",
+    "href": "sessions/day3/session-09.html#reading",
+    "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
     "section": "Reading",
     "text": "Reading",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
-      "Session 8: Hands-on — LLM Classification & Prompt Iteration"
+      "Session 9: Error Analysis & Under-the-Hood Walkthrough"
     ]
   },
   {
-    "objectID": "sessions/day3/session8.html#slides-colab",
-    "href": "sessions/day3/session8.html#slides-colab",
-    "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
+    "objectID": "sessions/day3/session-09.html#slides-colab",
+    "href": "sessions/day3/session-09.html#slides-colab",
+    "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day3_prompt_design.ipynb — zero-shot → few-shot → chain-of-thought on the CEFR task — \nFurther reading: Replicating Kim & Lu with open data (the discourse-move mini-project track)\nSlides: Session 8 slides",
+    "text": "Slides & Colab",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
-      "Session 8: Hands-on — LLM Classification & Prompt Iteration"
+      "Session 9: Error Analysis & Under-the-Hood Walkthrough"
     ]
   },
   {
-    "objectID": "sessions/day2/session5.html",
-    "href": "sessions/day2/session5.html",
-    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
-    "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
-    "crumbs": [
-      "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
-    ]
-  },
-  {
-    "objectID": "sessions/day2/session5.html#learning-objectives",
-    "href": "sessions/day2/session5.html#learning-objectives",
-    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
-    "section": "Learning objectives",
-    "text": "Learning objectives",
-    "crumbs": [
-      "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
-    ]
-  },
-  {
-    "objectID": "sessions/day2/session5.html#reading",
-    "href": "sessions/day2/session5.html#reading",
-    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
-    "section": "Reading",
-    "text": "Reading",
-    "crumbs": [
-      "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
-    ]
-  },
-  {
-    "objectID": "sessions/day2/session5.html#slides-colab",
-    "href": "sessions/day2/session5.html#slides-colab",
-    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
-    "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nTutorial notes: Day 2 — Annotation, gold standards & evaluation\nNotebook (tutorial + Corpus Lab): day2_gold_standards_and_evaluation.ipynb — \nSlides: Session 5 slides",
-    "crumbs": [
-      "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
-    ]
-  },
-  {
-    "objectID": "sessions/day2/session6.html",
-    "href": "sessions/day2/session6.html",
+    "objectID": "sessions/day2/session-06.html",
+    "href": "sessions/day2/session-06.html",
     "title": "Session 6: Gold Standards & Evaluation Metrics",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
@@ -2633,8 +2414,8 @@
     ]
   },
   {
-    "objectID": "sessions/day2/session6.html#learning-objectives",
-    "href": "sessions/day2/session6.html#learning-objectives",
+    "objectID": "sessions/day2/session-06.html#learning-objectives",
+    "href": "sessions/day2/session-06.html#learning-objectives",
     "title": "Session 6: Gold Standards & Evaluation Metrics",
     "section": "Learning objectives",
     "text": "Learning objectives",
@@ -2645,8 +2426,8 @@
     ]
   },
   {
-    "objectID": "sessions/day2/session6.html#reading",
-    "href": "sessions/day2/session6.html#reading",
+    "objectID": "sessions/day2/session-06.html#reading",
+    "href": "sessions/day2/session-06.html#reading",
     "title": "Session 6: Gold Standards & Evaluation Metrics",
     "section": "Reading",
     "text": "Reading\n\nAbdurahman, S., Salkhordeh Ziabari, A., Moore, A. K., Bartels, D. M., & Dehghani, M. (2025). A primer for evaluating large language models in social-science research. Advances in Methods and Practices in Psychological Science, 8(2). https://doi.org/10.1177/25152459251325174",
@@ -2657,11 +2438,11 @@
     ]
   },
   {
-    "objectID": "sessions/day2/session6.html#slides-colab",
-    "href": "sessions/day2/session6.html#slides-colab",
+    "objectID": "sessions/day2/session-06.html#slides-colab",
+    "href": "sessions/day2/session-06.html#slides-colab",
     "title": "Session 6: Gold Standards & Evaluation Metrics",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nTutorial notes: Day 2 — Annotation, gold standards & evaluation\nNotebook (tutorial + Corpus Lab): day2_gold_standards_and_evaluation.ipynb — \nSlides: Session 6 slides",
+    "text": "Slides & Colab\n\nTutorial notes: Day 2 — Annotation, gold standards & evaluation\nNotebook (tutorial + Corpus Lab): day2_gold_standards_and_evaluation.ipynb —",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -2669,8 +2450,56 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session15.html",
-    "href": "sessions/day5/session15.html",
+    "objectID": "sessions/day2/session-04.html",
+    "href": "sessions/day2/session-04.html",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "",
+    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+    ]
+  },
+  {
+    "objectID": "sessions/day2/session-04.html#learning-objectives",
+    "href": "sessions/day2/session-04.html#learning-objectives",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Learning objectives",
+    "text": "Learning objectives",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+    ]
+  },
+  {
+    "objectID": "sessions/day2/session-04.html#reading",
+    "href": "sessions/day2/session-04.html#reading",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Reading",
+    "text": "Reading\nRead (see all course readings, including optional Day 2 items):\n\nEguchi, M., & Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. Research Methods in Applied Linguistics, 3(3), 100153. https://doi.org/10.1016/j.rmal.2024.100153",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+    ]
+  },
+  {
+    "objectID": "sessions/day2/session-04.html#slides-colab",
+    "href": "sessions/day2/session-04.html#slides-colab",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Slides & Colab",
+    "text": "Slides & Colab",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+    ]
+  },
+  {
+    "objectID": "sessions/day5/session-15.html",
+    "href": "sessions/day5/session-15.html",
     "title": "Session 15: Final Presentations & Wrap-up",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
@@ -2681,8 +2510,8 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session15.html#learning-objectives",
-    "href": "sessions/day5/session15.html#learning-objectives",
+    "objectID": "sessions/day5/session-15.html#learning-objectives",
+    "href": "sessions/day5/session-15.html#learning-objectives",
     "title": "Session 15: Final Presentations & Wrap-up",
     "section": "Learning objectives",
     "text": "Learning objectives",
@@ -2693,8 +2522,8 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session15.html#reading",
-    "href": "sessions/day5/session15.html#reading",
+    "objectID": "sessions/day5/session-15.html#reading",
+    "href": "sessions/day5/session-15.html#reading",
     "title": "Session 15: Final Presentations & Wrap-up",
     "section": "Reading",
     "text": "Reading",
@@ -2705,11 +2534,11 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session15.html#slides-colab",
-    "href": "sessions/day5/session15.html#slides-colab",
+    "objectID": "sessions/day5/session-15.html#slides-colab",
+    "href": "sessions/day5/session-15.html#slides-colab",
     "title": "Session 15: Final Presentations & Wrap-up",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nSlides: Session 15 slides",
+    "text": "Slides & Colab",
     "crumbs": [
       "Sessions",
       "Day 5 · Project Finalization & Presentations",
@@ -2717,8 +2546,8 @@
     ]
   },
   {
-    "objectID": "sessions/day5/session15.html#mini-project",
-    "href": "sessions/day5/session15.html#mini-project",
+    "objectID": "sessions/day5/session-15.html#mini-project",
+    "href": "sessions/day5/session-15.html#mini-project",
     "title": "Session 15: Final Presentations & Wrap-up",
     "section": "Mini-project",
     "text": "Mini-project\nFinal group presentations and instructor Q&A — see the Final Project page.",
@@ -2757,8 +2586,56 @@
     "text": "When to use which\n\n\n\n\nRender-time {python}\nLive {pyodide}\n\n\n\n\nRuns where\nYour machine, at build\nViewer’s browser\n\n\nEditable by audience\nNo\nYes\n\n\nNeeds a server\nNo\nNo\n\n\nHeavy libs (spacy)\n✅\n⚠️ limited\n\n\nLLM API calls\n✅ (with keys)\n❌ (no keys / CORS)\n\n\n\nTakeaway: use live cells for lightweight, hands-on demos (pandas, metrics, small transforms). Keep spacy and LLM-API work in the Colab notebooks."
   },
   {
-    "objectID": "sessions/day1/session1.html",
-    "href": "sessions/day1/session1.html",
+    "objectID": "sessions/day1/session-03.html",
+    "href": "sessions/day1/session-03.html",
+    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "section": "",
+    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 3: Colab Onboarding & Mini-Project Setup"
+    ]
+  },
+  {
+    "objectID": "sessions/day1/session-03.html#learning-objectives",
+    "href": "sessions/day1/session-03.html#learning-objectives",
+    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "section": "Learning objectives",
+    "text": "Learning objectives",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 3: Colab Onboarding & Mini-Project Setup"
+    ]
+  },
+  {
+    "objectID": "sessions/day1/session-03.html#reading",
+    "href": "sessions/day1/session-03.html#reading",
+    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "section": "Reading",
+    "text": "Reading",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 3: Colab Onboarding & Mini-Project Setup"
+    ]
+  },
+  {
+    "objectID": "sessions/day1/session-03.html#slides-colab",
+    "href": "sessions/day1/session-03.html#slides-colab",
+    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "section": "Slides & Colab",
+    "text": "Slides & Colab\n\nNotebook (tutorial + Corpus Lab): day1_python_and_first_llm.ipynb — Python basics + your first LLM call —   ## Mini-project This session includes mini-project track selection and group formation. See the Final Project page.",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 3: Colab Onboarding & Mini-Project Setup"
+    ]
+  },
+  {
+    "objectID": "sessions/day1/session-01.html",
+    "href": "sessions/day1/session-01.html",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
@@ -2769,8 +2646,8 @@
     ]
   },
   {
-    "objectID": "sessions/day1/session1.html#learning-objectives",
-    "href": "sessions/day1/session1.html#learning-objectives",
+    "objectID": "sessions/day1/session-01.html#learning-objectives",
+    "href": "sessions/day1/session-01.html#learning-objectives",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Learning objectives",
     "text": "Learning objectives",
@@ -2781,8 +2658,8 @@
     ]
   },
   {
-    "objectID": "sessions/day1/session1.html#reading",
-    "href": "sessions/day1/session1.html#reading",
+    "objectID": "sessions/day1/session-01.html#reading",
+    "href": "sessions/day1/session-01.html#reading",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Reading",
     "text": "Reading\nSkim (see all course readings):\n\nAbdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., & Dehghani, M. (2025). A primer for evaluating large language models in social-science research. Advances in Methods and Practices in Psychological Science, 8(2). https://doi.org/10.1177/25152459251325174",
@@ -2793,63 +2670,15 @@
     ]
   },
   {
-    "objectID": "sessions/day1/session1.html#slides-colab",
-    "href": "sessions/day1/session1.html#slides-colab",
+    "objectID": "sessions/day1/session-01.html#slides-colab",
+    "href": "sessions/day1/session-01.html#slides-colab",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nSlides: Session 1 slides",
+    "text": "Slides & Colab",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
       "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis"
-    ]
-  },
-  {
-    "objectID": "sessions/day1/session2.html",
-    "href": "sessions/day1/session2.html",
-    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
-    "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
-    "crumbs": [
-      "Sessions",
-      "Day 1 · Introduction & First Experience",
-      "Session 2: Linguistic Analyses & LLM Fundamentals"
-    ]
-  },
-  {
-    "objectID": "sessions/day1/session2.html#learning-objectives",
-    "href": "sessions/day1/session2.html#learning-objectives",
-    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
-    "section": "Learning objectives",
-    "text": "Learning objectives",
-    "crumbs": [
-      "Sessions",
-      "Day 1 · Introduction & First Experience",
-      "Session 2: Linguistic Analyses & LLM Fundamentals"
-    ]
-  },
-  {
-    "objectID": "sessions/day1/session2.html#reading",
-    "href": "sessions/day1/session2.html#reading",
-    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
-    "section": "Reading",
-    "text": "Reading",
-    "crumbs": [
-      "Sessions",
-      "Day 1 · Introduction & First Experience",
-      "Session 2: Linguistic Analyses & LLM Fundamentals"
-    ]
-  },
-  {
-    "objectID": "sessions/day1/session2.html#slides-colab",
-    "href": "sessions/day1/session2.html#slides-colab",
-    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
-    "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nSlides: Session 2 slides",
-    "crumbs": [
-      "Sessions",
-      "Day 1 · Introduction & First Experience",
-      "Session 2: Linguistic Analyses & LLM Fundamentals"
     ]
   },
   {
@@ -2860,7 +2689,7 @@
     "text": "Day 3 — Linguistic Data Analysis II",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 · Prompt design & iteration"
     ]
   },
@@ -2872,7 +2701,7 @@
     "text": "Part A · Tutorial — three ways to prompt\nSame pipeline as Day 2, same CEFR-SP data — only the prompt changes. We compare three techniques and watch macro-F1 move:\n\n\n\nIteration\nTechnique\nIdea\n\n\n\n\n0\nzero-shot\njust describe the task\n\n\n1\nfew-shot\nadd a few labeled examples\n\n\n2\nchain-of-thought\nask the model to reason before answering\n\n\n\nRecord the macro-F1 (the macro avg row of evaluate) after each run so you can tell a story about what helped.\n\n\n\n\n\n\nImportantFrom today you run the model yourself — you need a free API key\n\n\n\nDays 1–2 used Colab’s built-in Gemini (or a frozen file). From Day 3 on you call the model live and need your prompt runs to be reproducible (temperature=0 + a fixed seed), so the notebook switches to the Gemini API. Get a free key and add it to Colab Secrets as GEMINI_API_KEY — one-time, ~2 minutes, no install. Full steps: Get a free Gemini API key. When the setup cell prints LLM backend: Gemini API (...) you’re set; if it still says Colab Gemini, your secret isn’t set or its notebook-access toggle is off.\n\n\n\nSetup — run this first\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Imports + the LLM backend. No pip install needed in Colab.\nimport json, re, urllib.request, os\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n\nMODEL_ID = \"gemini-2.5-flash\"   # pinned model for the reproducible (API) backend\n\ndef _resolve_gemini_key():\n    \"\"\"Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.\"\"\"\n    try:\n        from google.colab import userdata      # only exists in Colab\n        key = userdata.get(\"GEMINI_API_KEY\")\n        if key:\n            return key\n    except Exception:\n        pass                                    # not in Colab, or secret not set\n    return os.environ.get(\"GEMINI_API_KEY\")\n\ndef _make_api_backend(key):\n    \"\"\"Reproducible backend: Gemini API with temperature=0 + a fixed seed.\"\"\"\n    from google import genai\n    from google.genai import types\n    client = genai.Client(api_key=key)\n    cfg = types.GenerateContentConfig(temperature=0, seed=42)\n    return (lambda p: client.models.generate_content(\n                model=MODEL_ID, contents=p, config=cfg).text,\n            f\"Gemini API ({MODEL_ID}, temperature=0, seed=42)\")\n\n# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).\n_key = _resolve_gemini_key()\nif _key:\n    generate_text, _backend = _make_api_backend(_key)\nelse:\n    try:\n        from google.colab import ai            # Colab's built-in Gemini — no key\n        generate_text, _backend = (lambda p: ai.generate_text(p)), \"Colab Gemini (demo, non-reproducible)\"\n    except ImportError:\n        raise RuntimeError(\n            \"No LLM backend found. Run this notebook in Google Colab (free built-in \"\n            \"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets \"\n            \"panel, or as an environment variable when running locally. \"\n            \"See resources/tools/gemini-api-key.md.\")\n\n# CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.\nGOLD_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json\"\nLEVELS = [\"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"]\nprint(f\"Setup done. LLM backend: {_backend}. scikit-learn ready.\")\n\n\n\n\nShow code\n#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: \"form\" }\ndef load_gold(url_or_path):\n    \"\"\"Read the canonical gold JSON: [{'id','text','label'}, ...].\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        gold = json.loads(raw)\n    else:\n        gold = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(gold)} items. First one:\", gold[0])\n    return gold\n\n\n\n\nShow code\n#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: \"form\" }\ndef _extract_level(text):\n    \"\"\"Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply.\"\"\"\n    m = re.search(r\"\\b([ABC][12])\\b\", str(text).upper())\n    return m.group(1) if m else \"??\"\n\ndef run_prompt(prompt, gold):\n    \"\"\"Send each item's `text` to the LLM via {text}, collect predicted labels.\"\"\"\n    predictions = []\n    for i, item in enumerate(gold, 1):\n        reply = generate_text(prompt.format(text=item[\"text\"]))\n        predictions.append(_extract_level(reply))\n        if i % 12 == 0:\n            print(f\"  ...{i}/{len(gold)} done\")\n    print(f\"Got {len(predictions)} predictions.\")\n    return predictions\n\n\n\n\nShow code\n#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + confusion matrix { display-mode: \"form\" }\ndef evaluate(gold, predictions):\n    y_true = [item[\"label\"] for item in gold]\n    y_pred = predictions\n    print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))\n    cm = confusion_matrix(y_true, y_pred, labels=LEVELS)\n    plt.figure(figsize=(5.5, 4.5))\n    sns.heatmap(cm, annot=True, fmt=\"d\", cmap=\"Blues\",\n                xticklabels=LEVELS, yticklabels=LEVELS)\n    plt.xlabel(\"Predicted\"); plt.ylabel(\"Gold\"); plt.title(\"Confusion matrix\")\n    plt.tight_layout(); plt.show()\n\n\n\n\nShow code\n#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: \"form\" }\ndef show_errors(gold, predictions):\n    rows = [{\"id\": g[\"id\"], \"gold\": g[\"label\"], \"pred\": p, \"text\": g[\"text\"]}\n            for g, p in zip(gold, predictions) if g[\"label\"] != p]\n    print(f\"{len(rows)} of {len(gold)} wrong.\")\n    return pd.DataFrame(rows)\n\n\n\n\nShow code\n#@title 🔧 Library cell: save_predictions / load_predictions { display-mode: \"form\" }\ndef save_predictions(predictions, path):\n    \"\"\"Freeze a list of predicted labels to JSON.\"\"\"\n    with open(path, \"w\", encoding=\"utf-8\") as f:\n        json.dump(predictions, f)\n    print(f\"Saved {len(predictions)} predictions to {path}\")\n\ndef load_predictions(url_or_path):\n    \"\"\"Read a frozen predictions list — a committed URL or a local path.\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        predictions = json.loads(raw)\n    else:\n        predictions = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(predictions)} frozen predictions.\")\n    return predictions\n\n\n\n\nShow code\ngold = load_gold(GOLD_URL)\n\n\n\n\nIteration 0 — zero-shot ✏️ YOU EDIT\nJust describe the task. This is your baseline; note its macro-F1.\n\n\nShow code\nPROMPT_ZERO = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.\nAnswer with the level only.\n\nSentence: {text}\"\"\"\n\npred_zero = run_prompt(PROMPT_ZERO, gold)\nevaluate(gold, pred_zero)\n\n\n\n\nIteration 1 — few-shot ✏️ YOU EDIT\nAdd a few labeled examples so the model can pattern-match. The examples are hand-written here (feel free to draw more from cefr_pool.json — never from the gold set you’re scoring on, or you’d be testing on training data).\n\n\nShow code\nPROMPT_FEWSHOT = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2. Answer with the level only.\n\nExamples:\nSentence: \"I have a cat.\" -&gt; A1\nSentence: \"She went to the shops because she needed some milk.\" -&gt; A2\nSentence: \"The results suggest a modest but consistent improvement.\" -&gt; B2\nSentence: \"Notwithstanding these caveats, the framework generalises well.\" -&gt; C2\n\nSentence: {text}\"\"\"\n\npred_few = run_prompt(PROMPT_FEWSHOT, gold)\nevaluate(gold, pred_few)\n\n\n\n\nIteration 2 — chain-of-thought (CoT) ✏️ YOU EDIT\nAsk the model to reason first, then answer. Giving it room to think often helps on borderline items.\n\n\nShow code\nPROMPT_COT = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nThink step by step about the vocabulary and grammar, then decide the level.\nDo NOT mention any other CEFR level while reasoning.\nEnd your answer with the final level on its own, exactly one of: A1, A2, B1, B2, C1, C2.\n\nSentence: {text}\"\"\"\n\npred_cot = run_prompt(PROMPT_COT, gold)\nevaluate(gold, pred_cot)\n\n\n\n\n\n\n\n\nNoteA real limitation to notice\n\n\n\nrun_prompt grabs the first CEFR level it sees in the reply. With chain-of-thought the model may mention a level mid-reasoning, so the parser can pick the wrong one — which is exactly why the prompt says don’t mention other levels. If CoT scores worse than few-shot, check show_errors to see whether it’s the model or the parser.\n\n\n\n\nCompare the three\nFill in the macro-F1 you saw at each step. This little table is your result.\n\n\n\nIteration\nmacro-F1\n\n\n\n\n0 · zero-shot\n…\n\n\n1 · few-shot\n…\n\n\n2 · chain-of-thought\n…",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 · Prompt design & iteration"
     ]
   },
@@ -2884,7 +2713,7 @@
     "text": "Part B · Corpus Lab — your own prompt-iteration study\n\n\n\n\n\n\nWarning🚧 TODO — to be written\n\n\n\nThis lab is still being written. When it is, you will:\n\nPick one class the model handles worst (use show_errors).\nWrite one concrete prompt change you predict will help, and test it.\nLog each iteration’s macro-F1 in the table below and explain the change.\n\n\n\n\nIteration\nPrompt change\nmacro-F1\n\n\n\n\n…\n…\n…",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 · Prompt design & iteration"
     ]
   },
@@ -2896,7 +2725,7 @@
     "text": "✅ Before you submit\n\nRuntime → Run all and check every cell ran without error.\nPart A outputs are visible (tables / charts / the model’s answers).\nPart B self-check prints ✅ (or your TODO answers are filled in).\nFile → Download → Download .ipynb and upload that one file.",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 · Prompt design & iteration"
     ]
   },
@@ -2908,7 +2737,7 @@
     "text": "Goal. Replicate the core idea of Kim & Lu (2024) — using an LLM to annotate rhetorical moves — and see how prompt refinement and few-shot examples change accuracy. Same pipeline as Day 2; a much harder judgment.",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 Tutorial — Replicating Kim & Lu with Open Data"
     ]
   },
@@ -2920,7 +2749,7 @@
     "text": "Why this task is hard (and why that’s the point)\nDeciding a sentence’s move (“is this Background or a Gap?”) requires reading rhetorical intent in context. Even trained experts disagree: the CaRS-50 annotators reached only κ ≈ 0.43. So do not expect CEFR-level F1 here. The research question is not “can the model be perfect?” but “how much does better prompting help, and where does it still fail?” — exactly Kim & Lu’s question.",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 Tutorial — Replicating Kim & Lu with Open Data"
     ]
   },
@@ -2932,7 +2761,7 @@
     "text": "Step 1 — Start clean: RAAMove (8 moves)\nBegin with gold/raamove_moves.json (64 sentences from RA abstracts, balanced across 8 moves: Background, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication) — build it with the RAAMove download notebook. It is tidy JSON, so you can focus on the prompt.\n\nIteration 0 — zero-shot\nClassify the move of this sentence from a research abstract into exactly one of:\nBackground, Gap, Method, Purpose, Result, Conclusion, Contribution, Implication.\nAnswer with the move only.\n\nSentence: {text}\nRun evaluate. Note the macro-F1 and the confusion matrix — which moves collapse into each other? (Implication ↔︎ Conclusion and Background ↔︎ Gap are common.)\n\n\nIteration 1 — prompt refinement\nAdd short definitions of each move (one line each) to the prompt. Re-run. Did F1 rise? Which confusions shrank?\n\n\nIteration 2 — few-shot\nAdd one or two example sentences per move (drawn from raamove_pool.json, not from your gold set). Re-run. This mirrors Kim & Lu’s finding that few-shot examples and prompt refinement each give real but modest gains.\n\n\n\n\n\n\nImportantKeep examples out of your test set\n\n\n\nFew-shot examples must come from the pool file, never from the gold file you are scoring on — otherwise you are testing on training data.",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 Tutorial — Replicating Kim & Lu with Open Data"
     ]
   },
@@ -2944,7 +2773,7 @@
     "text": "Step 2 — The real replication: CaRS-50 (CARS moves)\nNow switch the gold file to gold/cars50_moves.json (build it with the CaRS-50 download notebook) — Swales’ CARS Move 1/2/3 in article introductions, the same scheme Kim & Lu used. Re-use your best prompt (adapt the label set and definitions to Moves 1–3). Compare:\n\nHow does F1 on CaRS-50 compare to RAAMove? Why might introductions be harder than abstracts?\nStretch: switch to the 11-class Move+Step labels (cars50_step_pool.json) — build a small balanced gold set from the pool and watch F1 drop as the label set gets finer.",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 Tutorial — Replicating Kim & Lu with Open Data"
     ]
   },
@@ -2956,7 +2785,7 @@
     "text": "Step 3 — Error analysis → next prompt\nRun show_errors and sort the misses by gold label. For the worst class, write one concrete prompt change you predict will help, then test it. Log each iteration’s macro-F1 so you can show the improvement curve — this table is your mini-result.\n\n\n\nIteration\nPrompt change\nMacro-F1\n\n\n\n\n0\nzero-shot\n…\n\n\n1\n+ move definitions\n…\n\n\n2\n+ few-shot examples\n…",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 Tutorial — Replicating Kim & Lu with Open Data"
     ]
   },
@@ -2968,7 +2797,7 @@
     "text": "Discussion (ties back to Kim & Lu)\n\nDid prompt refinement or few-shot help more? Kim & Lu found both helped, but fine-tuning (which we do not do here) gave the biggest jump.\nWhere the model fails, is it the model or the scheme (recall κ ≈ 0.43)? How would you report that honestly in your presentation?\n\n➡️ Ready to run your own study? Mini-project starter tracks",
     "crumbs": [
       "Sessions",
-      "Day 3 · Prompt Design & Iteration",
+      "Daily notebooks",
       "Day 3 Tutorial — Replicating Kim & Lu with Open Data"
     ]
   },
@@ -2980,7 +2809,7 @@
     "text": "Day 1 — Linguistic Data Analysis II",
     "crumbs": [
       "Sessions",
-      "Day 1 · Introduction & First Experience",
+      "Daily notebooks",
       "Day 1 · Python basics & your first LLM call"
     ]
   },
@@ -2992,7 +2821,7 @@
     "text": "Part A · Tutorial — a 15-minute Python primer\nNo prior Python needed. Run each cell, read the output, then change a value and re-run to see what happens. Everything this week is built from these few ideas.\n\n1. Variables & data types\nA variable is a name for a value. Python’s core types you’ll use all week: string (str, text), integer (int) and float (decimal number), list (an ordered sequence), and dictionary (dict, key → value pairs).\n\n\nShow code\nsentence = \"The cat sat on the mat.\"   # str  — text, in quotes\nword_count = 6                          # int  — whole number\nscore = 4.5                             # float — decimal number\nlevels = [\"A1\", \"A2\", \"B1\"]            # list — ordered, square brackets\nitem = {\"id\": 1, \"text\": sentence, \"label\": \"A1\"}  # dict — key: value\n\nprint(type(sentence), type(word_count), type(score))\nprint(\"levels[0] =\", levels[0])         # lists are indexed from 0\nprint(\"item['label'] =\", item[\"label\"])  # look up a dict value by its key\n\n\n\n\n2. if statements — make a decision\nRun one branch or another depending on a condition. Indentation (4 spaces) is how Python groups the lines that belong to each branch.\n\n\nShow code\nscore = 4.5\nif score &lt; 4:\n    band = \"Low\"\nelif score &lt; 7:\n    band = \"Mid\"\nelse:\n    band = \"High\"\nprint(\"score\", score, \"→ band\", band)\n\n\n\n\n3. for loops — do something to every item\nLoop over a list, or over a dictionary’s items. This is exactly how we’ll process every sentence in a dataset.\n\n\nShow code\nfor level in levels:\n    print(\"level:\", level)\n\nprint(\"---\")\nfor key, value in item.items():\n    print(key, \"→\", value)\n\n\n\n\n4. Functions — name a reusable piece of code\nA function takes inputs (arguments) and returns a result. Define once, call as often as you like.\n\n\nShow code\ndef band_of(score):\n    \"\"\"Turn a numeric score into a Low/Mid/High band.\"\"\"\n    if score &lt; 4:\n        return \"Low\"\n    elif score &lt; 7:\n        return \"Mid\"\n    return \"High\"\n\nprint(band_of(2), band_of(5), band_of(9))\n\n\n\n\n5. Basic input / output\nprint(...) shows a value. To read data, we mostly parse JSON — the {id, text, label} shape you’ll see all week. (input() also reads from the keyboard, but it pauses Run all, so we avoid it here.)\n\n\nShow code\nraw = '[{\"id\": 1, \"text\": \"Hello.\", \"label\": \"A1\"}, {\"id\": 2, \"text\": \"Nevertheless, the findings were inconclusive.\", \"label\": \"C1\"}]'\ndata = json.loads(raw)          # JSON text → Python list of dicts\nprint(\"number of items:\", len(data))\nfor row in data:\n    print(row[\"id\"], row[\"label\"], \"|\", row[\"text\"])\n\n# (Reading from the keyboard — left commented so Run all does not pause:)\n# name = input(\"Your name: \")\n# print(\"Hello,\", name)\n\n\n\n\n6. Meet the model — your first LLM call\nRun the setup cell (loads the LLM backend — in Colab that’s the free built-in Gemini, no key needed), then send the model a prompt with generate_text(...).\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Imports + the LLM backend. No pip install needed in Colab.\nimport json, re, urllib.request, os\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n\nMODEL_ID = \"gemini-2.5-flash\"   # pinned model for the reproducible (API) backend\n\ndef _resolve_gemini_key():\n    \"\"\"Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.\"\"\"\n    try:\n        from google.colab import userdata      # only exists in Colab\n        key = userdata.get(\"GEMINI_API_KEY\")\n        if key:\n            return key\n    except Exception:\n        pass                                    # not in Colab, or secret not set\n    return os.environ.get(\"GEMINI_API_KEY\")\n\ndef _make_api_backend(key):\n    \"\"\"Reproducible backend: Gemini API with temperature=0 + a fixed seed.\"\"\"\n    from google import genai\n    from google.genai import types\n    client = genai.Client(api_key=key)\n    cfg = types.GenerateContentConfig(temperature=0, seed=42)\n    return (lambda p: client.models.generate_content(\n                model=MODEL_ID, contents=p, config=cfg).text,\n            f\"Gemini API ({MODEL_ID}, temperature=0, seed=42)\")\n\n# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).\n_key = _resolve_gemini_key()\nif _key:\n    generate_text, _backend = _make_api_backend(_key)\nelse:\n    try:\n        from google.colab import ai            # Colab's built-in Gemini — no key\n        generate_text, _backend = (lambda p: ai.generate_text(p)), \"Colab Gemini (demo, non-reproducible)\"\n    except ImportError:\n        raise RuntimeError(\n            \"No LLM backend found. Run this notebook in Google Colab (free built-in \"\n            \"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets \"\n            \"panel, or as an environment variable when running locally. \"\n            \"See resources/tools/gemini-api-key.md.\")\nprint(f\"Setup done. LLM backend: {_backend}. scikit-learn ready.\")\n\n\n✏️ YOU EDIT — change the prompt and re-run.\n\n\nShow code\nreply = generate_text(\"In one sentence, what is applied linguistics?\")\nprint(reply)",
     "crumbs": [
       "Sessions",
-      "Day 1 · Introduction & First Experience",
+      "Daily notebooks",
       "Day 1 · Python basics & your first LLM call"
     ]
   },
@@ -3004,7 +2833,7 @@
     "text": "Part B · Corpus Lab — Python practice\nFill in each function so it does what its docstring says (replace the raise NotImplementedError(...) line). Then run the self-check cell at the bottom until every line prints ✅. No grader needed — the checks are your grader.\n\n\nShow code\n# ✏️ YOU EDIT — replace each NotImplementedError with your code.\n\ndef label_of(item):\n    \"\"\"Return the value stored under the key \"label\" in the dict `item`.\n    Example: label_of({\"id\": 1, \"text\": \"Hi\", \"label\": \"A1\"}) -&gt; \"A1\".\n    \"\"\"\n    raise NotImplementedError(\"Return item['label'].\")\n\n\ndef long_words(words, n):\n    \"\"\"Return a LIST of the words whose length is greater than n.\n    Example: long_words([\"a\", \"cat\", \"elephant\"], 3) -&gt; [\"elephant\"].\n    \"\"\"\n    # HINT: build a result list; loop with `for w in words:`; keep w if len(w) &gt; n.\n    raise NotImplementedError(\"Return the words longer than n characters.\")\n\n\ndef count_labels(items):\n    \"\"\"Given a list of {id, text, label} dicts, return a dict mapping each\n    label to how many times it appears.\n    Example: count_labels([{\"label\":\"A1\"}, {\"label\":\"A1\"}, {\"label\":\"B1\"}])\n             -&gt; {\"A1\": 2, \"B1\": 1}.\n    \"\"\"\n    # HINT: start with counts = {}; for each item, add 1 to counts[label]\n    #       (use counts.get(label, 0) + 1 so the first time starts at 0).\n    raise NotImplementedError(\"Count how many items carry each label.\")\n\n\n\n\nShow code\n#@title 🔎 Self-check — run me { display-mode: \"form\" }\nsample = [{\"id\": 1, \"text\": \"Hi.\", \"label\": \"A1\"},\n          {\"id\": 2, \"text\": \"Hello there.\", \"label\": \"A1\"},\n          {\"id\": 3, \"text\": \"Nevertheless...\", \"label\": \"C1\"}]\nchecks = [\n    (\"label_of\", label_of(sample[0]) == \"A1\"),\n    (\"long_words\", long_words([\"a\", \"cat\", \"elephant\"], 3) == [\"elephant\"]),\n    (\"count_labels\", count_labels(sample) == {\"A1\": 2, \"C1\": 1}),\n]\nfor name, ok in checks:\n    print((\"✅\" if ok else \"❌\"), name)\nprint(\"All passed ✅\" if all(ok for _, ok in checks)\n      else \"Some checks failed — fix them and re-run.\")",
     "crumbs": [
       "Sessions",
-      "Day 1 · Introduction & First Experience",
+      "Daily notebooks",
       "Day 1 · Python basics & your first LLM call"
     ]
   },
@@ -3016,7 +2845,7 @@
     "text": "✅ Before you submit\n\nRuntime → Run all and check every cell ran without error.\nPart A outputs are visible (tables / charts / the model’s answers).\nPart B self-check prints ✅ (or your TODO answers are filled in).\nFile → Download → Download .ipynb and upload that one file.",
     "crumbs": [
       "Sessions",
-      "Day 1 · Introduction & First Experience",
+      "Daily notebooks",
       "Day 1 · Python basics & your first LLM call"
     ]
   },
@@ -3028,7 +2857,7 @@
     "text": "Goal. By the end of this tutorial you can take an annotated dataset, evaluate a set of model predictions against it, and read the precision / recall / F1 / confusion-matrix output. We use an easy-to-judge task first — CEFR sentence levels — so the mechanics, not the labeling, are the challenge. The hard, research-style task comes in the Day 3 tutorial.\nCompanion notebook: day2_gold_standards_and_evaluation.ipynb — open it directly in Colab (Tohoku Google account, no setup):",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 Tutorial — Annotation, Gold Standards & Evaluation"
     ]
   },
@@ -3040,7 +2869,7 @@
     "text": "The task\nEach item is one English sentence; the label is its CEFR level (A1–C2). The gold labels were assigned by language-education professionals, and we kept only sentences where two annotators agreed — so there is a defensible “right answer” for every item.\nDataset: gold/cefr_sentences.json (72 items, 12 per level) — build it with the CEFR-SP download notebook. See the dataset catalog for provenance.",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 Tutorial — Annotation, Gold Standards & Evaluation"
     ]
   },
@@ -3052,7 +2881,7 @@
     "text": "Step 1 — Look at the gold standard\nOpen the gold file. Notice the canonical schema — this is the only data shape you will see all week:\n[{\"id\": 1, \"text\": \"He died on 6 October 1837 in Paris.\", \"label\": \"A1\"}, ...]\n\n\n\n\n\n\nTipAnnotate a few yourself first\n\n\n\nBefore running the model, label ~10 sentences by hand (cover the label column). Compare with a partner and compute simple agreement. For CEFR you will mostly agree — hold on to that feeling, then notice how different it is for the Day 3 discourse task.",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 Tutorial — Annotation, Gold Standards & Evaluation"
     ]
   },
@@ -3064,7 +2893,7 @@
     "text": "Step 2 — Load the frozen predictions (the pipeline)\nIn the day2_gold_standards_and_evaluation notebook the pipeline is a few named cells. You do not edit them — you just run them:\n\n\n\n\n\n\n\nCell\nWhat it does\n\n\n\n\nload_gold(path)\nreads the JSON gold file → gold\n\n\nload_predictions(url)\nreads the frozen predictions we pre-computed → predictions\n\n\nevaluate(gold, predictions)\nprints precision / recall / F1 + a confusion matrix\n\n\nshow_errors(gold, predictions)\nlists the items the model got wrong\n\n\n\nThe predictions were produced once with the prompt below (shown so you know what generated them — you don’t run it today; that’s what makes the numbers reproducible):\nYou are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.\nAnswer with the level only.\n\nSentence: {text}",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 Tutorial — Annotation, Gold Standards & Evaluation"
     ]
   },
@@ -3076,7 +2905,7 @@
     "text": "Step 3 — Read the evaluation\n\nPrecision / recall / F1 per level, plus a macro average.\nThe confusion matrix shows which levels get mixed up. For CEFR you will usually see confusions between adjacent levels (B1 ↔︎ B2), rarely between far-apart ones (A1 ↔︎ C2) — a sign the model has the right idea but imprecise thresholds.",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 Tutorial — Annotation, Gold Standards & Evaluation"
     ]
   },
@@ -3088,7 +2917,7 @@
     "text": "Step 4 — Error analysis\nRun show_errors. For each miss, ask: is the gold defensible, or is this a genuinely borderline sentence? This question — “is the disagreement the model’s fault or the scheme’s?” — is the heart of annotation work, and it returns with force in the Day 3 task.",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 Tutorial — Annotation, Gold Standards & Evaluation"
     ]
   },
@@ -3100,7 +2929,7 @@
     "text": "What to take to Day 3\nYou now know the full loop: load gold → format prompt → call model → evaluate → inspect errors. Today you evaluated frozen predictions so the numbers held still while you learned the metrics; on Day 3 you run the call model step yourself (with a free API key), and only the task gets harder.\n➡️ Day 3 Tutorial — Replicating Kim & Lu with open data",
     "crumbs": [
       "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Daily notebooks",
       "Day 2 Tutorial — Annotation, Gold Standards & Evaluation"
     ]
   }

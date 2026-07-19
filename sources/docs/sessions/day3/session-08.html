@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Coding the metrics from scratch – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Session 8: Hands-on — LLM Classification &amp; Prompt Iteration – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,23 +58,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../../">
-<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-4a0814e567ecc482b59ebd942d0563fa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,14 +107,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Linguistic Data Analysis II (Summer 2026)</span>
     </a>
   </div>
@@ -130,25 +130,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-course-info">    
         <li>
-    <a class="dropdown-item" href="../../../syllabus/index.html">
+    <a class="dropdown-item" href="../../syllabus/index.html">
  <span class="dropdown-text">Syllabus</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../../syllabus/readings.html">
+    <a class="dropdown-item" href="../../syllabus/readings.html">
  <span class="dropdown-text">Readings</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../../../sessions/index.html"> 
+    <a class="nav-link active" href="../../sessions/index.html" aria-current="page"> 
 <span class="menu-text">Sessions</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../final-project/index.html"> 
+    <a class="nav-link" href="../../final-project/index.html"> 
 <span class="menu-text">Final Project</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../resources/index.html"> 
+    <a class="nav-link" href="../../resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
   <li class="nav-item compact">
@@ -162,30 +162,258 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
       </div> <!-- /container-fluid -->
     </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day3/session-07.html">Day 3 · Prompt Design &amp; Iteration</a></li><li class="breadcrumb-item"><a href="../../sessions/day3/session-08.html">Session 8: Hands-on — LLM Classification &amp; Prompt Iteration</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Schedule</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Day 1 · Introduction &amp; First Experience</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day1/session-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day1/session-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 2: Linguistic Analyses &amp; LLM Fundamentals</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day1/session-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 3: Colab Onboarding &amp; Mini-Project Setup</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Day 2 · Annotation, Gold Standards &amp; Metrics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day2/session-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 4: Annotation Principles &amp; Inter-Annotator Agreement</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day2/session-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 5: Hands-on — Gold-Standard Annotation &amp; Agreement</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day2/session-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 6: Gold Standards &amp; Evaluation Metrics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Day 3 · Prompt Design &amp; Iteration</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day3/session-07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 7: Prompt Design — Zero-shot vs Few-shot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day3/session-08.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Session 8: Hands-on — LLM Classification &amp; Prompt Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day3/session-09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Day 4 · Methodology &amp; Pipeline Assembly</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day4/session-10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 10: Methodology — Reproducibility, LLM Limits &amp; Ethics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day4/session-11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 11: Plenary Pipeline Assembly</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day4/session-12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 12: Project Work — Sample &amp; QC the Gold Set</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Day 5 · Project Finalization &amp; Presentations</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day5/session-13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 13: Project Work — Prompt Iteration &amp; Final Evaluation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day5/session-14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 14: Project Work — Finalize Report &amp; Notebook</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../sessions/day5/session-15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Session 15: Final Presentations &amp; Wrap-up</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../notebooks/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Daily notebooks</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/day1_python_and_first_llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 1 · Python basics &amp; your first LLM call</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/day2_gold_standards_and_evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 2 · Gold standards &amp; evaluation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/tutorial-day2-annotation-eval.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 2 Tutorial — Annotation, Gold Standards &amp; Evaluation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/day3_prompt_design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 3 · Prompt design &amp; iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/tutorial-day3-move-replication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 3 Tutorial — Replicating Kim &amp; Lu with Open Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/day4_pipeline_and_sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 4 · Pipeline assembly &amp; sampling your gold set</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/day5_project_finalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 5 · Project finalization</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-files" id="toc-the-files" class="nav-link active" data-scroll-target="#the-files">The files</a></li>
-  <li><a href="#run-it-in-google-colab" id="toc-run-it-in-google-colab" class="nav-link" data-scroll-target="#run-it-in-google-colab">Run it in Google Colab</a></li>
-  <li><a href="#run-it-locally" id="toc-run-it-locally" class="nav-link" data-scroll-target="#run-it-locally">Run it locally</a></li>
-  <li><a href="#why-the-checker-uses-scikit-learn" id="toc-why-the-checker-uses-scikit-learn" class="nav-link" data-scroll-target="#why-the-checker-uses-scikit-learn">Why the checker uses scikit-learn</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
+  <li><a href="#slides-colab" id="toc-slides-colab" class="nav-link" data-scroll-target="#slides-colab">Slides &amp; Colab</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/code-examples/python/index.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/sessions/day3/session-08.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day3/session-07.html">Day 3 · Prompt Design &amp; Iteration</a></li><li class="breadcrumb-item"><a href="../../sessions/day3/session-08.html">Session 8: Hands-on — LLM Classification &amp; Prompt Iteration</a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Coding the metrics from scratch</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Implement precision, recall, F1, and Cohen’s κ by hand — then check them against scikit-learn</p>
+<div class="quarto-title-block"><div><h1 class="title">Session 8: Hands-on — LLM Classification &amp; Prompt Iteration</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Day 3 · Prompt Design &amp; Iteration (3-2)</p>
 </div>
 
 
@@ -202,60 +430,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>In the <a href="../../../notebooks/day2_gold_standards_and_evaluation.html">Day-2 notebook</a> and the <a href="../../../notebooks/index.html">Corpus Lab</a> you called <code>evaluate()</code> on a set of <em>frozen</em> predictions and read the numbers it printed. Here you write those numbers yourself. Once you have coded precision, recall, F1, and Cohen’s κ from the raw label lists, the scores scikit-learn reports in the final project will never be a black box — you will know exactly what each one means and when it can mislead you.</p>
-<blockquote class="blockquote">
-<p>In the <strong>final mini-project</strong> you go back to using scikit-learn’s implementations (<a href="../../../resources/datasets/mini-project-tracks.html"><code>lda2-final-template</code></a>). The point of <em>this</em> exercise is to understand them first.</p>
-</blockquote>
-<section id="the-files" class="level2">
-<h2 class="anchored" data-anchor-id="the-files">The files</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>File</th>
-<th>What it is</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="metrics_exercise.py"><code>metrics_exercise.py</code></a></td>
-<td>The file you edit. Each function has a docstring with the formula and a <code>raise NotImplementedError(...)</code> line for you to replace.</td>
-</tr>
-<tr class="even">
-<td><a href="check_metrics.py"><code>check_metrics.py</code></a></td>
-<td>Your answer key. It runs your functions and scikit-learn on the same small dataset and prints ✅ / ❌ for each metric.</td>
-</tr>
-</tbody>
-</table>
-<p>You implement six things, all from plain lists of labels — no imports, no numpy:</p>
+<!-- BEING-PREPARED-BANNER -->
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>🚧 Being prepared
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This page is being finalized ahead of the course (<strong>Aug 3–7, 2026</strong>) and may be incomplete or change before your session. The <a href="../../syllabus/index.html">syllabus</a> and <a href="../../syllabus/readings.html">readings</a> are ready now.</p>
+</div>
+</div>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<!-- to be added -->
+</section>
+<section id="reading" class="level2">
+<h2 class="anchored" data-anchor-id="reading">Reading</h2>
+<!-- to be added -->
+</section>
+<section id="slides-colab" class="level2">
+<h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
 <ul>
-<li><code>confusion_counts(gold, pred, label)</code> → the <code>tp / fp / fn / tn</code> every metric is built from</li>
-<li><code>precision</code>, <code>recall</code>, <code>f1</code> for one label</li>
-<li><code>macro_f1</code> across all labels</li>
-<li><code>percent_agreement</code> and <code>cohen_kappa</code> for two annotators</li>
+<li>Notebook (tutorial + Corpus Lab): <a href="../../notebooks/day3_prompt_design.html"><code>day3_prompt_design.ipynb</code></a> — zero-shot → few-shot → chain-of-thought on the CEFR task — <a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open In Colab"></a></li>
+<li>Further reading: <a href="../../notebooks/tutorial-day3-move-replication.html">Replicating Kim &amp; Lu with open data</a> (the discourse-move mini-project track) <!-- Slides: [Session 8 slides](../../slides/slides-session-08.html){target="_blank"} --></li>
 </ul>
-</section>
-<section id="run-it-in-google-colab" class="level2">
-<h2 class="anchored" data-anchor-id="run-it-in-google-colab">Run it in Google Colab</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the two files into the Colab runtime.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>BASE <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/code-examples/python"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget <span class="op">-</span>q $BASE<span class="op">/</span>metrics_exercise.py <span class="op">-</span>O metrics_exercise.py</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget <span class="op">-</span>q $BASE<span class="op">/</span>check_metrics.py    <span class="op">-</span>O check_metrics.py</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Open metrics_exercise.py in Colab's file browser (left sidebar), fill in each function,</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># save (Ctrl/Cmd-S), then run the checker:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>python check_metrics.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Every line will say ❌ until you implement that function. Fix them until you see:</p>
-<pre><code>All 15 checks passed ✅  — your metrics match scikit-learn.</code></pre>
-</section>
-<section id="run-it-locally" class="level2">
-<h2 class="anchored" data-anchor-id="run-it-locally">Run it locally</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> sources/resources/code-examples/python</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># edit metrics_exercise.py, then:</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run <span class="at">--group</span> dev python check_metrics.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="why-the-checker-uses-scikit-learn" class="level2">
-<h2 class="anchored" data-anchor-id="why-the-checker-uses-scikit-learn">Why the checker uses scikit-learn</h2>
-<p><code>check_metrics.py</code> is allowed to import <code>sklearn</code> — it is your <em>grader</em>, not your solution. Comparing against a trusted library is exactly how you gain confidence that a formula you wrote by hand is correct. That is the same reason the final project trusts scikit-learn outright: you have already earned the right to.</p>
 
 
 <!-- -->
@@ -721,75 +923,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Coding the metrics from scratch"</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Implement precision, recall, F1, and Cohen's κ by hand — then check them against scikit-learn"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>In the <span class="co">[</span><span class="ot">Day-2 notebook</span><span class="co">](../../../notebooks/day2_gold_standards_and_evaluation.ipynb)</span> and the</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Corpus Lab</span><span class="co">](../../../notebooks/index.md)</span> you called <span class="in">`evaluate()`</span> on a set of *frozen* predictions</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>and read the numbers it printed. Here you write those numbers yourself. Once you have coded precision, recall, F1,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>and Cohen's κ from the raw label lists, the scores scikit-learn reports in the final</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>project will never be a black box — you will know exactly what each one means and when it</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>can mislead you.</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; In the **final mini-project** you go back to using scikit-learn's implementations</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; (</span><span class="co">[</span><span class="ot">`lda2-final-template`</span><span class="co">](../../datasets/mini-project-tracks.md)</span><span class="at">). The point of *this*</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; exercise is to understand them first.</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## The files</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> File <span class="pp">|</span> What it is <span class="pp">|</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">`metrics_exercise.py`</span><span class="co">](metrics_exercise.py)</span> <span class="pp">|</span> The file you edit. Each function has a docstring with the formula and a <span class="in">`raise NotImplementedError(...)`</span> line for you to replace. <span class="pp">|</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">`check_metrics.py`</span><span class="co">](check_metrics.py)</span> <span class="pp">|</span> Your answer key. It runs your functions and scikit-learn on the same small dataset and prints ✅ / ❌ for each metric. <span class="pp">|</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>You implement six things, all from plain lists of labels — no imports, no numpy:</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`confusion_counts(gold, pred, label)`</span> → the <span class="in">`tp / fp / fn / tn`</span> every metric is built from</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`precision`</span>, <span class="in">`recall`</span>, <span class="in">`f1`</span> for one label</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`macro_f1`</span> across all labels</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`percent_agreement`</span> and <span class="in">`cohen_kappa`</span> for two annotators</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Run it in Google Colab</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the two files into the Colab runtime.</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>BASE <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/code-examples/python"</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget <span class="op">-</span>q $BASE<span class="op">/</span>metrics_exercise.py <span class="op">-</span>O metrics_exercise.py</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget <span class="op">-</span>q $BASE<span class="op">/</span>check_metrics.py    <span class="op">-</span>O check_metrics.py</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Open metrics_exercise.py in Colab's file browser (left sidebar), fill in each function,</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co"># save (Ctrl/Cmd-S), then run the checker:</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>python check_metrics.py</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>Every line will say ❌ until you implement that function. Fix them until you see:</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="in">All 15 checks passed ✅  — your metrics match scikit-learn.</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Run it locally</span></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> sources/resources/code-examples/python</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="co"># edit metrics_exercise.py, then:</span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run <span class="at">--group</span> dev python check_metrics.py</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why the checker uses scikit-learn</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="in">`check_metrics.py`</span> is allowed to import <span class="in">`sklearn`</span> — it is your *grader*, not your solution.</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>Comparing against a trusted library is exactly how you gain confidence that a formula you</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>wrote by hand is correct. That is the same reason the final project trusts scikit-learn</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>outright: you have already earned the right to.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Session 8: Hands-on — LLM Classification &amp; Prompt Iteration"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Day 3 · Prompt Design &amp; Iteration (3-2)"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning appearance="simple"}</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🚧 Being prepared</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The <span class="co">[</span><span class="ot">syllabus</span><span class="co">](/syllabus/index.md)</span> and <span class="co">[</span><span class="ot">readings</span><span class="co">](/syllabus/readings.md)</span> are ready now.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Notebook (tutorial + Corpus Lab): <span class="co">[</span><span class="ot">`day3_prompt_design.ipynb`</span><span class="co">](../../notebooks/day3_prompt_design.ipynb)</span> — zero-shot → few-shot → chain-of-thought on the CEFR task —</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design.ipynb)</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Further reading: <span class="co">[</span><span class="ot">Replicating Kim &amp; Lu with open data</span><span class="co">](../../notebooks/tutorial-day3-move-replication.md)</span> (the discourse-move mini-project track)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 8 slides](../../slides/slides-session-08.html){target="_blank"} --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/resources/code-examples/python/index.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/sessions/day3/session-08.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>
