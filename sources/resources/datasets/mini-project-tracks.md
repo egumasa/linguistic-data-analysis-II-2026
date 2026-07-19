@@ -35,13 +35,6 @@ round-trip, worked on the familiar CEFR data and reused unchanged for your track
 
 ## Tracks
 
-### ★☆☆ Proficiency level (CEFR-SP) — easiest
-
-Predict the CEFR level (A1–C2) of a sentence. Clean labels, high human agreement — a good track if
-you want to focus on **evaluation methodology** rather than wrestling with a fuzzy scheme.
-Gold: `cefr_sentences.json` · Pool: `cefr_pool.json`.
-Extensions: collapse to 3 bands (A/B/C); test whether the model confuses only *adjacent* levels.
-
 ### ★★★ Discourse moves (RAAMove / CaRS-50)
 
 Annotate rhetorical **moves**. This is the [Kim & Lu (2024)](./index.md#the-motivating-study)
