@@ -38,39 +38,40 @@ website:
       contents:
         - text: "Schedule"
           href: sessions/index.md
-        - text: "Daily notebooks"
-          href: notebooks/index.md
         - section: "Day 1 · Introduction & First Experience"
           contents:
             - sessions/day1/session-01.md
             - sessions/day1/session-02.md
             - sessions/day1/session-03.md
-            - notebooks/day1_python_and_first_llm.ipynb
         - section: "Day 2 · Annotation, Gold Standards & Metrics"
           contents:
             - sessions/day2/session-04.md
             - sessions/day2/session-05.md
             - sessions/day2/session-06.md
-            - notebooks/day2_gold_standards_and_evaluation.ipynb
-            - notebooks/tutorial-day2-annotation-eval.md
         - section: "Day 3 · Prompt Design & Iteration"
           contents:
             - sessions/day3/session-07.md
             - sessions/day3/session-08.md
             - sessions/day3/session-09.md
-            - notebooks/day3_prompt_design.ipynb
-            - notebooks/tutorial-day3-move-replication.md
         - section: "Day 4 · Methodology & Pipeline Assembly"
           contents:
             - sessions/day4/session-10.md
             - sessions/day4/session-11.md
             - sessions/day4/session-12.md
-            - notebooks/day4_pipeline_and_sampling.ipynb
         - section: "Day 5 · Project Finalization & Presentations"
           contents:
             - sessions/day5/session-13.md
             - sessions/day5/session-14.md
             - sessions/day5/session-15.md
+        - section: "Daily notebooks"
+          href: notebooks/index.md
+          contents:
+            - notebooks/day1_python_and_first_llm.ipynb
+            - notebooks/day2_gold_standards_and_evaluation.ipynb
+            - notebooks/tutorial-day2-annotation-eval.md
+            - notebooks/day3_prompt_design.ipynb
+            - notebooks/tutorial-day3-move-replication.md
+            - notebooks/day4_pipeline_and_sampling.ipynb
             - notebooks/day5_project_finalization.ipynb
 
     - title: "Resources"
@@ -87,18 +88,13 @@ website:
             - resources/tools/gemini-api-key.md
             - resources/tools/python-setup.md
             - resources/tools/google-drive-data.md
-        - section: "Corpora"
+        - section: "Further corpora (optional)"
           contents:
             - resources/corpora/index.md
-            - resources/corpora/available-corpora.md
-            - resources/corpora/learner-corpora.md
         - section: "Datasets"
           contents:
             - resources/datasets/index.md
             - resources/datasets/mini-project-tracks.md
-        - section: "Additional examples"
-          contents:
-            - resources/additional-examples/index.md
         - section: "GitHub & Optional Workshops"
           contents:
             - resources/github/index.md

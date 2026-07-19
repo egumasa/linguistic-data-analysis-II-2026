@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 OUT = Path("/Users/eguchi/Projects/linguistic-data-analysis-II-2026/"
-           "sources/resources/code-examples/data/notebooks")
+           "sources/resources/datasets/notebooks")
 OUT.mkdir(parents=True, exist_ok=True)
 
 
