@@ -42,8 +42,22 @@ Important: the example notebooks under [sources/resources/code-examples/python/]
 All site content lives under `sources/`:
 
 - `sources/syllabus/`, `sources/sessions/`, `sources/resources/` — the published pages (syllabus, per-day session notes, tool/corpus guides, code examples).
-- `sources/resources/tools/` and `sources/resources/corpora/` — student-facing how-to guides (AntConc, BYU corpora, JASP, Python/Colab setup; corpus inventories).
+- `sources/resources/tools/` and `sources/resources/corpora/` — how-to guides (AntConc, BYU corpora, JASP, Python/Colab setup; corpus inventories).
 - `assets/css/` — `style.scss` (site theme, extends the `litera` Bootswatch theme) and `slides.scss`. `.scss` files are the sources; `.css` files are generated.
+
+### No student/instructor audience labels
+
+**Assume students will see every file in the repo.** Never describe a file as "instructor-facing", "instructor-only", "student-facing", or "for students" — not in prose, headings, table columns, directory-tree comments, docstrings, or notebook cells. A reader who opens a file labeled "instructor-only" learns nothing useful about it and may assume they weren't meant to be there.
+
+Describe files by **what they do and when you'd open them** instead:
+
+- ❌ "Instructor-facing build script" → ✅ "Batch build of every gold file at once"
+- ❌ "How to rebuild (instructors)" → ✅ "Rebuilding every dataset at once"
+- ❌ a "Who it's for" column → ✅ a "When you'd open it" column
+
+If something genuinely must not reach students, **`.gitignore` it** — that is the only real hiding mechanism. A label is not access control.
+
+Writing *to* or *about* the instructor as a person is still fine ("report the result to the instructor", the syllabus's "Instructor Information", "group presentations with instructor Q&A"). The rule targets audience labels applied to files.
 
 ### Course structure (drives navigation and page organization)
 
