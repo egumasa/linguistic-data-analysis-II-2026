@@ -67,7 +67,7 @@ MODEL_ID = "gemini-3.1-flash-lite"
 
 BACKEND = '''#@title 📦 Setup — run me first { display-mode: "form" }
 # Imports + the LLM backend. No pip install needed in Colab.
-import json, re, urllib.request, os
+import json, re, time, urllib.request, os
 from sklearn.metrics import classification_report, confusion_matrix
 import pandas as pd, seaborn as sns, matplotlib.pyplot as plt
 
@@ -94,14 +94,57 @@ def _make_api_backend(key):
                 model=MODEL_ID, contents=p, config=cfg).text,
             f"Gemini API ({MODEL_ID}, temperature=0, seed=42)")
 
+# ---- keeps us from calling the model faster than the free tier allows ----------
+# (explained step by step in Day 3, right after this cell — the short version:
+#  wait a bit between calls, and if we still get told to slow down, wait longer
+#  and try again, unless the message says we are out of quota for the whole day.)
+def _looks_like_rate_limit(error):
+    text = str(error).lower()
+    return any(s in text for s in
+               ["429", "resource_exhausted", "rate limit", "quota", "too many requests"])
+
+def _looks_like_daily_quota(error):
+    text = str(error).lower()
+    return "per day" in text or "perday" in text.replace(" ", "")
+
+def _suggested_delay(error, fallback):
+    m = re.search(r"retry in ([0-9]+(?:\\.[0-9]+)?)s", str(error).lower())
+    return float(m.group(1)) + 1.0 if m else fallback
+
+_last_call_time = 0.0   # generate_text remembers & updates this with `global`
+
+def generate_text(prompt, max_retries=5):
+    global _last_call_time
+    for attempt in range(max_retries + 1):
+        wait = _min_interval - (time.monotonic() - _last_call_time)
+        if wait > 0:
+            time.sleep(wait)
+        try:
+            _last_call_time = time.monotonic()
+            return _raw_generate_text(prompt)
+        except Exception as error:
+            if not _looks_like_rate_limit(error):
+                raise                                   # a real bug — don't hide it
+            if _looks_like_daily_quota(error):
+                raise RuntimeError(
+                    "Daily quota used up for today — waiting won't help until it "
+                    "resets. Come back tomorrow, or ask your instructor.") from error
+            if attempt == max_retries:
+                raise
+            print(f"  (rate limited — waiting before trying again, attempt {attempt+1})")
+            time.sleep(_suggested_delay(error, _min_interval * (attempt + 2)))
+    raise RuntimeError("Still rate-limited after several tries.")
+
 # Prefer the API key when set (reproducible); else fall back to colab.ai (demo).
 _key = _resolve_gemini_key()
 if _key:
-    generate_text, _backend = _make_api_backend(_key)
+    _raw_generate_text, _backend = _make_api_backend(_key)
+    _min_interval = 4.4     # keeps us under gemini-3.1-flash-lite's 15-requests/minute cap
 else:
     try:
         from google.colab import ai            # Colab's built-in Gemini — no key
-        generate_text, _backend = (lambda p: ai.generate_text(p)), "Colab Gemini (demo, non-reproducible)"
+        _raw_generate_text, _backend = (lambda p: ai.generate_text(p)), "Colab Gemini (demo, non-reproducible)"
+        _min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively
     except ImportError:
         raise RuntimeError(
             "No LLM backend found. Run this notebook in Google Colab (free built-in "
@@ -823,12 +866,124 @@ def day3():
         "Colab **Secrets** as `GEMINI_API_KEY` — one-time, ~2 minutes, no install. Full steps: "
         "[Get a free Gemini API key](../resources/tools/gemini-api-key.md). "
         "When the setup cell prints `LLM backend: Gemini API (...)` you're set; if it still says "
-        "`Colab Gemini`, your secret isn't set or its notebook-access toggle is off.",
+        "`Colab Gemini`, your secret isn't set or its notebook-access toggle is off. Don't worry "
+        "about rate limits crashing your loop — that's already handled, and explained right after "
+        "Setup, below.",
         ":::")]
     cells += [md("### Setup — run this first")]
     cells += [setup_cell(
         CEFR_GOLD_URL,
         "CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.")]
+
+    # ---- staged walkthrough: the rate-limit guard quietly running in Setup ----
+    cells += [md(
+        "### Why your calls don't crash the lab — two different clocks",
+        "",
+        "The free tier limits you in **two independent ways**, on two different clocks:",
+        "",
+        "- **RPM** — requests per *minute*. A speed limit: how fast you're allowed to call.",
+        "- **RPD** — requests per *day*. A fuel tank: how much you're allowed to use, total, "
+        "today.",
+        "",
+        "A plain `for` loop over 72 sentences can blow through the RPM speed limit in the "
+        "first few seconds — long before it's used any meaningful share of the day's fuel "
+        "tank. This isn't hypothetical: while building this course, a loop tripped a 15-per-"
+        "minute cap after only 16 calls in one minute, while just 126 of that day's 500-call "
+        "budget had been used. The fix isn't \"use less\" — it's \"go slower, and know which "
+        "kind of limit you hit.\"",
+        "",
+        "Your Setup cell above already has a guard built in that does exactly this. The rest "
+        "of this section walks through it, piece by piece — you don't need it to keep "
+        "working, but it's worth understanding what's protecting your Corpus Lab.")]
+
+    cells += [md(
+        "### Piece 1 — always leave a gap between calls (pacing)",
+        "",
+        "The simplest fix: never call the model faster than the speed limit allows. If the "
+        "limit is 15 calls per minute, that's one call every `60 / 15 = 4` seconds — so before "
+        "each call, check how long it's been since the *last* one, and wait out the "
+        "difference.",
+        "",
+        "That means the function has to **remember** when the last call happened, across "
+        "calls. Normally a function forgets everything the moment it returns — its local "
+        "variables disappear. The `global` keyword is how you tell Python \"no, remember "
+        "this one, and share it across every call.\" That's the only new keyword in this "
+        "whole guard.",
+        "",
+        "Try it below — no model, no internet, just pacing:")]
+    cells += [code(
+        'import time',
+        '',
+        '_demo_last_call = 0.0        # remembered BETWEEN calls, thanks to `global`',
+        'DEMO_INTERVAL = 2            # seconds (the real guard uses 4.4s or 13.2s)',
+        '',
+        'def wait_your_turn():',
+        '    global _demo_last_call',
+        '    wait = DEMO_INTERVAL - (time.monotonic() - _demo_last_call)',
+        '    if wait > 0:',
+        '        print(f"  waiting {wait:.1f}s so we don\'t call too often...")',
+        '        time.sleep(wait)',
+        '    _demo_last_call = time.monotonic()',
+        '    print("  → calling now!")',
+        '',
+        'for i in range(3):',
+        '    wait_your_turn()')]
+
+    cells += [md(
+        "### Piece 2 — if you still get told to slow down, wait and try again",
+        "",
+        "Pacing alone isn't quite enough — the server can still say \"too fast, try again "
+        "later,\" and a network hiccup can raise an error for reasons that have nothing to "
+        "do with rate limits at all. `try`/`except` is Python's way of saying: *try this, "
+        "and if it breaks, do something else instead of crashing.*",
+        "",
+        "The something-else here depends on **what kind of failure it is**, which we can "
+        "tell from the error message:",
+        "",
+        "- **Not rate-limit shaped at all** (a typo in your prompt, a dropped connection) — "
+        "a real bug. Don't retry it; let it raise so you notice.",
+        "- **Per-minute limit** — wait a bit and try again; the limit refills every minute, "
+        "so this is temporary.",
+        "- **Per-day limit** — retrying is pointless. It won't refill until tomorrow no "
+        "matter how long you wait, so the guard gives up immediately with a clear message "
+        "instead of silently hanging.",
+        "",
+        "A small demo — no model, just the `try`/`except` shape, retrying until it works:")]
+    cells += [code(
+        'attempt_count = 0',
+        '',
+        'def flaky_call():',
+        '    """Pretends to fail twice, then succeeds — like a real rate-limited call."""',
+        '    global attempt_count',
+        '    attempt_count += 1',
+        '    if attempt_count <= 2:',
+        '        raise Exception("429 rate limit — please slow down")',
+        '    return "success!"',
+        '',
+        'for attempt in range(3):',
+        '    try:',
+        '        result = flaky_call()',
+        '        print("Got:", result)',
+        '        break',
+        '    except Exception as error:',
+        '        print(f"  attempt {attempt+1} failed ({error}) — trying again...")')]
+
+    cells += [md(
+        "### Putting the two pieces together",
+        "",
+        "\"Always wait a bit\" (piece 1) plus \"if told to slow down, wait longer and try "
+        "again, but give up right away on a *daily* limit\" (piece 2) is **exactly** what's "
+        "inside `generate_text` in the Setup cell above. You've been calling it since your "
+        "very first prompt on Day 1, and it's been quietly protecting every call — it'll "
+        "protect every Corpus Lab loop you write from here on, too.",
+        "",
+        "If you're curious to see the fancier version — one that also **remembers past "
+        "answers so you never pay for the same prompt twice** — see "
+        "[`resources/extra/handling-rate-limits.ipynb`](../resources/extra/handling-rate-limits.ipynb). "
+        "It uses one more advanced idea we haven't covered yet (a function that builds and "
+        "returns another function), but the underlying logic is identical to what you just "
+        "read.")]
+
     cells += PIPELINE_LIB
     cells += [code('gold = load_gold(GOLD_URL)')]
 
