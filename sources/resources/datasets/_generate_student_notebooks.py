@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Generate student-facing, Colab-runnable download+preprocess notebooks (one per dataset).
+"""Generate the Colab-runnable download+preprocess notebooks (one per dataset).
 
-Pedagogy: cells are pre-written and heavily narrated; students RUN them and READ the code
+Pedagogy: cells are pre-written and heavily narrated; you RUN them and READ the code
 (the "read visible Python" floor). Each notebook shows that the raw data format differs every
 time, and walks download -> inspect raw -> reshape to {id,text,label} -> inspect labels -> save.
 Stdlib only (no pip installs) so they run in a fresh Colab.

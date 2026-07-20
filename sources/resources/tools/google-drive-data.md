@@ -8,7 +8,7 @@ toc: true
 
 In the worked tutorials, the course hands you data over a URL — e.g. Day 2's
 [`day2_gold_standards_and_evaluation.ipynb`](../../notebooks/day2_gold_standards_and_evaluation.ipynb) loads a committed CEFR gold set
-straight from GitHub, so it *just runs*. That is the **instructor's** distribution channel.
+straight from GitHub, so it *just runs*. That is how the course ships **shared** data.
 
 For the **mini-project** you flip roles: you *build your own* gold set (download → reshape →
 sample a subset) and you need somewhere to keep it. That place is **your Google Drive** — not

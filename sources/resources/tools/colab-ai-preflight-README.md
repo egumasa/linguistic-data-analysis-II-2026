@@ -1,7 +1,7 @@
 # `google.colab.ai` pre-flight — how to run
 
-Instructor-only check to run **once before the course**, on the Tohoku Google
-account students will use. It confirms Colab's built-in Gemini
+A capacity check run **once before the course**, on the Tohoku Google account the
+class will use. It confirms Colab's built-in Gemini
 (`from google.colab import ai`) is reachable, finds where it throttles, projects
 load to ~15 students, and measures how stable the parsed CEFR labels are.
 
