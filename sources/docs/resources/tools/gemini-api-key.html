@@ -277,12 +277,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">GitHub &amp; Optional Workshops</span></a>
+ <span class="menu-text">Extra Topics</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/extra/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Topics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/extra/handling-rate-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Handling rate limits without crashing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">GitHub &amp; Optional Workshops</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../resources/github/index.html" class="sidebar-item-text sidebar-link">
@@ -405,14 +428,14 @@ Important
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text(p):</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> client.models.generate_content(</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span><span class="st">"gemini-2.5-flash"</span>,                    <span class="co"># pinned model</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span><span class="st">"gemini-3.1-flash-lite"</span>,               <span class="co"># pinned model</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        contents<span class="op">=</span>p,</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        config<span class="op">=</span>types.GenerateContentConfig(</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            temperature<span class="op">=</span><span class="dv">0</span>,   <span class="co"># greedy decoding — removes sampling randomness</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            seed<span class="op">=</span><span class="dv">42</span>,         <span class="co"># fixed random state</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        ),</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    ).text</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The setup cell prints which backend it chose, e.g. <code>LLM backend: Gemini API (gemini-2.5-flash)</code>. If it still says <code>Colab Gemini</code>, your secret isn’t set or its notebook-access toggle is off — recheck Step 2.</p>
+<p>The setup cell prints which backend it chose, e.g. <code>LLM backend: Gemini API (gemini-3.1-flash-lite)</code>. If it still says <code>Colab Gemini</code>, your secret isn’t set or its notebook-access toggle is off — recheck Step 2.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -983,7 +1006,7 @@ Important
 <span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text(p):</span>
 <span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> client.models.generate_content(</span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span><span class="st">"gemini-2.5-flash"</span>,                    <span class="co"># pinned model</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span><span class="st">"gemini-3.1-flash-lite"</span>,               <span class="co"># pinned model</span></span>
 <span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        contents<span class="op">=</span>p,</span>
 <span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        config<span class="op">=</span>types.GenerateContentConfig(</span>
 <span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>            temperature<span class="op">=</span><span class="dv">0</span>,   <span class="co"># greedy decoding — removes sampling randomness</span></span>
@@ -993,7 +1016,7 @@ Important
 <span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>The setup cell prints which backend it chose, e.g.</span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="in">`LLM backend: Gemini API (gemini-2.5-flash)`</span>. If it still says <span class="in">`Colab Gemini`</span>, your secret isn't set</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="in">`LLM backend: Gemini API (gemini-3.1-flash-lite)`</span>. If it still says <span class="in">`Colab Gemini`</span>, your secret isn't set</span>
 <span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>or its notebook-access toggle is off — recheck Step 2.</span>
 <span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>

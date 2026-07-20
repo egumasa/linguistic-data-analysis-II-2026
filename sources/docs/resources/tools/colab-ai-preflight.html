@@ -173,7 +173,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#step-2-smoke-test-is-the-api-even-reachable" id="toc-step-2-smoke-test-is-the-api-even-reachable" class="nav-link active" data-scroll-target="#step-2-smoke-test-is-the-api-even-reachable">Step 2 — Smoke test (is the API even reachable?)</a></li>
-  <li><a href="#step-3-quota-ceiling-100-call-loop" id="toc-step-3-quota-ceiling-100-call-loop" class="nav-link" data-scroll-target="#step-3-quota-ceiling-100-call-loop">Step 3 — Quota ceiling (100-call loop)</a></li>
+  <li><a href="#step-3-quota-ceiling-100-call-loop-deliberately-unguarded" id="toc-step-3-quota-ceiling-100-call-loop-deliberately-unguarded" class="nav-link" data-scroll-target="#step-3-quota-ceiling-100-call-loop-deliberately-unguarded">Step 3 — Quota ceiling (100-call loop, deliberately unguarded)</a></li>
+  <li><a href="#step-3b-does-pacing-backoff-actually-fix-it" id="toc-step-3b-does-pacing-backoff-actually-fix-it" class="nav-link" data-scroll-target="#step-3b-does-pacing-backoff-actually-fix-it">Step 3b — Does pacing + backoff actually fix it?</a></li>
   <li><a href="#step-4-extrapolate-to-15-students" id="toc-step-4-extrapolate-to-15-students" class="nav-link" data-scroll-target="#step-4-extrapolate-to-15-students">Step 4 — Extrapolate to ~15 students</a></li>
   <li><a href="#step-5-determinism-label-stability" id="toc-step-5-determinism-label-stability" class="nav-link" data-scroll-target="#step-5-determinism-label-stability">Step 5 — Determinism (label stability)</a></li>
   <li><a href="#go-no-go" id="toc-go-no-go" class="nav-link" data-scroll-target="#go-no-go">Go / no-go</a></li>
@@ -215,7 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Reuses the SAME label parser as the day-notebooks, so the numbers below</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># reflect what the course actually runs.</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json, re, time, inspect, urllib.request, statistics</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json, re, time, inspect, urllib.request, statistics, random</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> ai   <span class="co"># Colab's built-in Gemini, no API key</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -266,7 +267,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Loaded </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> gold sentences. Backend: Colab Gemini (colab.ai)."</span>)</span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"temperature=0 set — output should be near-reproducible (best-effort)."</span></span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="st">"temperature"</span> <span class="kw">in</span> GEN_KWARGS <span class="cf">else</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>      <span class="st">"No temperature control on this version → non-deterministic by design."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>      <span class="st">"No temperature control on this version → non-deterministic by design."</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------ resilience</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co"># The same guards the day-notebooks and the mini-project template use, so what we</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co"># measure below is what students will actually experience. Explained in full in</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co"># resources/extra/handling-rate-limits.ipynb.</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> looks_like_rate_limit(error):</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="bu">str</span>(error).lower()</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">any</span>(s <span class="kw">in</span> text <span class="cf">for</span> s <span class="kw">in</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>               [<span class="st">"429"</span>, <span class="st">"resource_exhausted"</span>, <span class="st">"rate limit"</span>, <span class="st">"quota"</span>, <span class="st">"too many requests"</span>])</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> looks_like_daily_quota(error):</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="bu">str</span>(error).lower()</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"perday"</span> <span class="kw">in</span> text.replace(<span class="st">" "</span>, <span class="st">""</span>) <span class="kw">or</span> <span class="st">"per day"</span> <span class="kw">in</span> text</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> suggested_delay(error, fallback):</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.search(<span class="vs">r"retry in </span><span class="kw">(</span><span class="pp">[0-9]</span><span class="op">+</span>(?:<span class="ch">\.</span><span class="pp">[0-9]</span><span class="op">+</span>)<span class="op">?</span><span class="kw">)</span><span class="vs">s"</span>, <span class="bu">str</span>(error).lower())</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">float</span>(m.group(<span class="dv">1</span>)) <span class="cf">if</span> m <span class="cf">else</span> fallback</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> with_pacing(call, min_interval):</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""At least min_interval seconds between consecutive calls."""</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    last <span class="op">=</span> [<span class="fl">0.0</span>]</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> paced(prompt):</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>        wait <span class="op">=</span> min_interval <span class="op">-</span> (time.monotonic() <span class="op">-</span> last[<span class="dv">0</span>])</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>            time.sleep(wait)</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>        last[<span class="dv">0</span>] <span class="op">=</span> time.monotonic()</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> call(prompt)</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> paced</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> with_retry(call, max_retries<span class="op">=</span><span class="dv">5</span>, base_delay<span class="op">=</span><span class="fl">4.0</span>, verbose<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Back off and retry per-minute limits; fail fast on daily caps and real bugs."""</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> retrying(prompt):</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(max_retries <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> call(prompt)</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> error:</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="kw">not</span> looks_like_rate_limit(error):</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">raise</span>                       <span class="co"># a real bug — surface it now</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> looks_like_daily_quota(error):</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"DAILY quota exhausted — waiting cannot help today."</span>) <span class="im">from</span> error</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> attempt <span class="op">==</span> max_retries:</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">raise</span></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>                delay <span class="op">=</span> suggested_delay(error, base_delay <span class="op">*</span> (<span class="dv">2</span> <span class="op">**</span> attempt))</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>                delay <span class="op">+=</span> random.uniform(<span class="dv">0</span>, <span class="fl">0.3</span> <span class="op">*</span> delay)      <span class="co"># jitter</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> verbose:</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">print</span>(<span class="ss">f"    (rate limited — waiting </span><span class="sc">{</span>delay<span class="sc">:.1f}</span><span class="ss">s)"</span>)</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>                time.sleep(delay)</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"unreachable"</span>)</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> retrying</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="co"># colab.ai publishes no RPM number, so pace conservatively at the free-tier</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="co"># gemini-2.5-flash rate (5 RPM -&gt; 12s) and let Step 3 tell us if that is wrong.</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>ASSUMED_RPM   <span class="op">=</span> <span class="dv">5</span>      <span class="co">#@param {type:"integer"}</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>MIN_INTERVAL  <span class="op">=</span> <span class="fl">60.0</span> <span class="op">/</span> ASSUMED_RPM</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>generate_raw <span class="op">=</span> generate_text          <span class="co"># unguarded — Step 3 needs this to find the ceiling</span></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>generate_guarded <span class="op">=</span> with_pacing(with_retry(generate_raw), MIN_INTERVAL)</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Guarded backend ready: pacing at </span><span class="sc">{</span>MIN_INTERVAL<span class="sc">:.1f}</span><span class="ss">s/call "</span></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"(assuming </span><span class="sc">{</span>ASSUMED_RPM<span class="sc">}</span><span class="ss"> RPM), retry+backoff on 429."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="step-2-smoke-test-is-the-api-even-reachable" class="level2">
@@ -290,115 +352,180 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </section>
-<section id="step-3-quota-ceiling-100-call-loop" class="level2">
-<h2 class="anchored" data-anchor-id="step-3-quota-ceiling-100-call-loop">Step 3 — Quota ceiling (100-call loop)</h2>
-<p>Fire 100 real CEFR prompts, one at a time. Each call is wrapped so a rate-limit / quota error is caught and its <strong>index</strong> recorded rather than crashing the run. Reports successes, latency (median / p95), total wall-time, and where (if anywhere) it first throttled.</p>
+<section id="step-3-quota-ceiling-100-call-loop-deliberately-unguarded" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-quota-ceiling-100-call-loop-deliberately-unguarded">Step 3 — Quota ceiling (100-call loop, deliberately unguarded)</h2>
+<p>Fire 100 real CEFR prompts as fast as they will go, with <strong>no pacing and no retry</strong>. That is the point: this step exists to <em>find</em> the ceiling, so guarding it would destroy the measurement.</p>
+<p>Each failure is caught and classified — per-minute vs per-day — because the two mean very different things for the course. A per-minute ceiling is a pacing problem students can work around; a per-day ceiling is a hard budget that caps how much lab work is possible per student per day.</p>
+<p>Step 3b then re-runs the same load <em>with</em> the guards, to confirm the workaround actually holds on this account.</p>
 <div id="cell-6" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title Step 3 — 100-call quota + latency probe</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title Step 3 — unguarded 100-call quota + latency probe</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> [gold[i <span class="op">%</span> <span class="bu">len</span>(gold)] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N)]</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>latencies, preds, first_fail, fails <span class="op">=</span> [], [], <span class="va">None</span>, <span class="dv">0</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(items, <span class="dv">1</span>):</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> PROMPT.<span class="bu">format</span>(text<span class="op">=</span>item[<span class="st">"text"</span>])</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    c0 <span class="op">=</span> time.time()</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        reply <span class="op">=</span> generate_text(prompt)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        latencies.append(time.time() <span class="op">-</span> c0)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        preds.append(_extract_level(reply))</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        fails <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> first_fail <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            first_fail <span class="op">=</span> (i, <span class="bu">type</span>(e).<span class="va">__name__</span>, <span class="bu">str</span>(e)[:<span class="dv">200</span>])</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        preds.append(<span class="st">"ERR"</span>)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">20</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  ...</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>fails<span class="sc">}</span><span class="ss"> failures so far)"</span>)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>wall <span class="op">=</span> time.time() <span class="op">-</span> t0</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> <span class="bu">len</span>(latencies)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>ok<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> succeeded, </span><span class="sc">{</span>fails<span class="sc">}</span><span class="ss"> failed."</span>)</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> latencies:</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    lat <span class="op">=</span> <span class="bu">sorted</span>(latencies)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    p95 <span class="op">=</span> lat[<span class="bu">min</span>(<span class="bu">len</span>(lat)<span class="op">-</span><span class="dv">1</span>, <span class="bu">int</span>(<span class="fl">0.95</span><span class="op">*</span><span class="bu">len</span>(lat)))]</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"latency: median </span><span class="sc">{</span>statistics<span class="sc">.</span>median(lat)<span class="sc">:.2f}</span><span class="ss">s  p95 </span><span class="sc">{</span>p95<span class="sc">:.2f}</span><span class="ss">s  "</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"min </span><span class="sc">{</span>lat[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">s  max </span><span class="sc">{</span>lat[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">s"</span>)</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"total wall-time for </span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> calls: </span><span class="sc">{</span>wall<span class="sc">:.1f}</span><span class="ss">s "</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"(</span><span class="sc">{</span>wall<span class="op">/</span>N<span class="sc">:.2f}</span><span class="ss">s/call incl. overhead)"</span>)</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first failure:"</span>, first_fail <span class="cf">if</span> first_fail <span class="cf">else</span> <span class="st">"none — no throttling in 100 calls"</span>)</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"parse rate (non-??/ERR):"</span>,</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span><span class="bu">sum</span>(p <span class="kw">in</span> LEVELS <span class="cf">for</span> p <span class="kw">in</span> preds)<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>latencies, preds, first_fail <span class="op">=</span> [], [], <span class="va">None</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>fails <span class="op">=</span> {<span class="st">"per_minute"</span>: <span class="dv">0</span>, <span class="st">"per_day"</span>: <span class="dv">0</span>, <span class="st">"other"</span>: <span class="dv">0</span>}</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(items, <span class="dv">1</span>):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> PROMPT.<span class="bu">format</span>(text<span class="op">=</span>item[<span class="st">"text"</span>])</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    c0 <span class="op">=</span> time.time()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        reply <span class="op">=</span> generate_raw(prompt)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        latencies.append(time.time() <span class="op">-</span> c0)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        preds.append(_extract_level(reply))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        kind <span class="op">=</span> (<span class="st">"per_day"</span> <span class="cf">if</span> looks_like_daily_quota(e)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                <span class="cf">else</span> <span class="st">"per_minute"</span> <span class="cf">if</span> looks_like_rate_limit(e) <span class="cf">else</span> <span class="st">"other"</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        fails[kind] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> first_fail <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>            first_fail <span class="op">=</span> (i, kind, <span class="bu">type</span>(e).<span class="va">__name__</span>, <span class="bu">str</span>(e)[:<span class="dv">160</span>])</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        preds.append(<span class="st">"ERR"</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">20</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  ...</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span><span class="bu">sum</span>(fails.values())<span class="sc">}</span><span class="ss"> failures so far)"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>wall <span class="op">=</span> time.time() <span class="op">-</span> t0</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> <span class="bu">len</span>(latencies)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>ok<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> succeeded. Failures: </span><span class="sc">{</span>fails<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> latencies:</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    lat <span class="op">=</span> <span class="bu">sorted</span>(latencies)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    p95 <span class="op">=</span> lat[<span class="bu">min</span>(<span class="bu">len</span>(lat)<span class="op">-</span><span class="dv">1</span>, <span class="bu">int</span>(<span class="fl">0.95</span><span class="op">*</span><span class="bu">len</span>(lat)))]</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"latency: median </span><span class="sc">{</span>statistics<span class="sc">.</span>median(lat)<span class="sc">:.2f}</span><span class="ss">s  p95 </span><span class="sc">{</span>p95<span class="sc">:.2f}</span><span class="ss">s  "</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"min </span><span class="sc">{</span>lat[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">s  max </span><span class="sc">{</span>lat[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">s"</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"total wall-time for </span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> calls: </span><span class="sc">{</span>wall<span class="sc">:.1f}</span><span class="ss">s (</span><span class="sc">{</span>wall<span class="op">/</span>N<span class="sc">:.2f}</span><span class="ss">s/call incl. overhead)"</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> first_fail:</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    i, kind, name, msg <span class="op">=</span> first_fail</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"first failure at call </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: [</span><span class="sc">{</span>kind<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>msg<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> kind <span class="op">==</span> <span class="st">"per_minute"</span>:</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        observed_rpm <span class="op">=</span> i <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  -&gt; throttled after ~</span><span class="sc">{</span>observed_rpm<span class="sc">}</span><span class="ss"> calls in "</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>              <span class="ss">f"</span><span class="sc">{</span>wall<span class="sc">:.0f}</span><span class="ss">s. Set ASSUMED_RPM at or below this and re-run Setup."</span>)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> kind <span class="op">==</span> <span class="st">"per_day"</span>:</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"  -&gt; DAILY cap. This is a hard budget: no pacing can widen it."</span>)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"     Record the number and size the labs to fit it."</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"first failure: none — no throttling in </span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> unguarded calls"</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"parse rate (a valid CEFR label):"</span>, <span class="ss">f"</span><span class="sc">{</span><span class="bu">sum</span>(p <span class="kw">in</span> LEVELS <span class="cf">for</span> p <span class="kw">in</span> preds)<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="step-3b-does-pacing-backoff-actually-fix-it" class="level2">
+<h2 class="anchored" data-anchor-id="step-3b-does-pacing-backoff-actually-fix-it">Step 3b — Does pacing + backoff actually fix it?</h2>
+<p>Only meaningful if Step 3 hit a <strong>per-minute</strong> limit. Same 100 prompts, now through <code>generate_guarded</code>. What we want is 100/100 — that would confirm the guidance we give students (pace, back off, retry) genuinely works on this account rather than merely sounding sensible.</p>
+<p>This is slow by construction: at the paced rate it takes roughly <code>100 x MIN_INTERVAL</code> seconds. That wall-time <em>is</em> the finding — it tells you how long a full-gold-set lab run will really take.</p>
+<p>Skip it if Step 3 hit a per-day cap; there is nothing left to spend today.</p>
+<div id="cell-8" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title Step 3b — the same load, guarded</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>RUN_STEP_3B <span class="op">=</span> <span class="va">True</span>   <span class="co">#@param {type:"boolean"}</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>N_GUARDED   <span class="op">=</span> <span class="dv">100</span>    <span class="co">#@param {type:"integer"}</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> RUN_STEP_3B:</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"skipped (RUN_STEP_3B = False)"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> first_fail <span class="kw">and</span> first_fail[<span class="dv">1</span>] <span class="op">==</span> <span class="st">"per_day"</span>:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"skipped — Step 3 hit a DAILY cap; no quota left to test with today."</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    g_items <span class="op">=</span> [gold[i <span class="op">%</span> <span class="bu">len</span>(gold)] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N_GUARDED)]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    g_ok, g_fail, g_first_fail <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="va">None</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    t0 <span class="op">=</span> time.time()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(g_items, <span class="dv">1</span>):</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            _extract_level(generate_guarded(PROMPT.<span class="bu">format</span>(text<span class="op">=</span>item[<span class="st">"text"</span>])))</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            g_ok <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            g_fail <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> g_first_fail <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                g_first_fail <span class="op">=</span> (i, <span class="bu">type</span>(e).<span class="va">__name__</span>, <span class="bu">str</span>(e)[:<span class="dv">160</span>])</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">20</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  ...</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>N_GUARDED<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>g_fail<span class="sc">}</span><span class="ss"> failures, "</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                  <span class="ss">f"</span><span class="sc">{</span>time<span class="sc">.</span>time()<span class="op">-</span>t0<span class="sc">:.0f}</span><span class="ss">s elapsed)"</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    g_wall <span class="op">=</span> time.time() <span class="op">-</span> t0</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Guarded: </span><span class="sc">{</span>g_ok<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>N_GUARDED<span class="sc">}</span><span class="ss"> succeeded, </span><span class="sc">{</span>g_fail<span class="sc">}</span><span class="ss"> failed, "</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span>g_wall<span class="sc">:.0f}</span><span class="ss">s (</span><span class="sc">{</span>g_wall<span class="op">/</span>N_GUARDED<span class="sc">:.1f}</span><span class="ss">s/call)."</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> g_ok <span class="op">==</span> N_GUARDED:</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"✅ Pacing + backoff fully absorbed the limit. Ship this wrapper in the"</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"   day-notebooks and the observed cost is "</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>              <span class="ss">f"~</span><span class="sc">{</span>g_wall<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss"> min per 100 calls."</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"⚠️  Still failing (</span><span class="sc">{</span>g_first_fail<span class="sc">}</span><span class="ss">). MIN_INTERVAL is too aggressive —"</span>)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"   lower ASSUMED_RPM, re-run Setup, and try again."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-4-extrapolate-to-15-students" class="level2">
 <h2 class="anchored" data-anchor-id="step-4-extrapolate-to-15-students">Step 4 — Extrapolate to ~15 students</h2>
 <p>The single-user numbers above → what a class of 15 implies. <strong>Caveat:</strong> this measures one account sequentially; it cannot test 15-way <em>concurrency</em>. If <code>colab.ai</code> quota is per-account (likely), 15 students = 15 independent quotas and Step 3 passing is reassuring. If it’s a shared project quota, real load is ~15× and only a multi-account trial can confirm it.</p>
-<div id="cell-8" class="cell">
+<div id="cell-10" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title Step 4 — class-of-15 projection</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>CLASS <span class="op">=</span> <span class="dv">15</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>CALLS_PER_STUDENT_PER_DAY <span class="op">=</span> <span class="dv">72</span> <span class="op">+</span> <span class="dv">72</span> <span class="op">+</span> <span class="dv">60</span>  <span class="co"># tutorial + few-shot + lab, rough</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> latencies:</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    per_call <span class="op">=</span> wall <span class="op">/</span> N</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    student_day <span class="op">=</span> per_call <span class="op">*</span> CALLS_PER_STUDENT_PER_DAY</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"~</span><span class="sc">{</span>per_call<span class="sc">:.2f}</span><span class="ss">s/call → one student</span><span class="ch">\u2019</span><span class="ss">s ~</span><span class="sc">{</span>CALLS_PER_STUDENT_PER_DAY<span class="sc">}</span><span class="ss"> "</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"calls/day ≈ </span><span class="sc">{</span>student_day<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss"> min of model time."</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Class total: </span><span class="sc">{</span>CLASS<span class="op">*</span>CALLS_PER_STUDENT_PER_DAY<span class="sc">}</span><span class="ss"> calls/day across </span><span class="sc">{</span>CLASS<span class="sc">}</span><span class="ss"> accounts."</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"If quota is PER-ACCOUNT: each student runs the </span><span class="sc">{</span>student_day<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss">-min "</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>          <span class="st">"budget independently → fine."</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"If quota is SHARED/project: treat 100-call ceiling from Step 3 as the "</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>          <span class="st">"whole-class ceiling → likely too low, plan the .env fallback."</span>)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"No successful calls in Step 3 — cannot project. Fix Step 2/3 first."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title Step 4 — class-of-15 projection</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>CLASS <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>CALLS_PER_STUDENT_PER_DAY <span class="op">=</span> <span class="dv">72</span> <span class="op">+</span> <span class="dv">72</span> <span class="op">+</span> <span class="dv">60</span>  <span class="co"># tutorial + few-shot + lab, rough</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> latencies:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    per_call <span class="op">=</span> wall <span class="op">/</span> N</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    student_day <span class="op">=</span> per_call <span class="op">*</span> CALLS_PER_STUDENT_PER_DAY</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"~</span><span class="sc">{</span>per_call<span class="sc">:.2f}</span><span class="ss">s/call → one student</span><span class="ch">\u2019</span><span class="ss">s ~</span><span class="sc">{</span>CALLS_PER_STUDENT_PER_DAY<span class="sc">}</span><span class="ss"> "</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"calls/day ≈ </span><span class="sc">{</span>student_day<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss"> min of model time."</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Class total: </span><span class="sc">{</span>CLASS<span class="op">*</span>CALLS_PER_STUDENT_PER_DAY<span class="sc">}</span><span class="ss"> calls/day across </span><span class="sc">{</span>CLASS<span class="sc">}</span><span class="ss"> accounts."</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"If quota is PER-ACCOUNT: each student runs the </span><span class="sc">{</span>student_day<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss">-min "</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>          <span class="st">"budget independently → fine."</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"If quota is SHARED/project: treat 100-call ceiling from Step 3 as the "</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>          <span class="st">"whole-class ceiling → likely too low, plan the .env fallback."</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"No successful calls in Step 3 — cannot project. Fix Step 2/3 first."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-5-determinism-label-stability" class="level2">
 <h2 class="anchored" data-anchor-id="step-5-determinism-label-stability">Step 5 — Determinism (label stability)</h2>
 <p><code>colab.ai</code> exposes no temperature knob, so raw text will vary. What matters for the course is whether the <strong>parsed CEFR label</strong> is stable. Send the same prompt 10× for a few sentences and report the modal label and its agreement rate — this is how much run-to-run F1 wobble to warn students about.</p>
-<div id="cell-10" class="cell">
+<p>This step runs through <code>generate_guarded</code>, so a throttle shows up as a pause rather than as an <code>ERR</code> that would silently depress the agreement figure. We want to measure the model’s <em>variability</em>, not our own rate-limit noise.</p>
+<div id="cell-12" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title Step 5 — same prompt × 10, label stability</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>REPEATS <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>SAMPLES <span class="op">=</span> <span class="dv">4</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>sample_items <span class="op">=</span> [gold[i <span class="op">*</span> (<span class="bu">len</span>(gold)<span class="op">//</span>SAMPLES)] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(SAMPLES)]</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>REPEATS<span class="sc">}</span><span class="ss"> repeats each, </span><span class="sc">{</span>SAMPLES<span class="sc">}</span><span class="ss"> sentences:</span><span class="ch">\n</span><span class="ss">"</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>agreements <span class="op">=</span> []</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> sample_items:</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> PROMPT.<span class="bu">format</span>(text<span class="op">=</span>item[<span class="st">"text"</span>])</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> []</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(REPEATS):</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            labels.append(_extract_level(generate_text(prompt)))</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            labels.append(<span class="st">"ERR"</span>)</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> Counter(labels)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    modal, modal_n <span class="op">=</span> c.most_common(<span class="dv">1</span>)[<span class="dv">0</span>]</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    agree <span class="op">=</span> modal_n <span class="op">/</span> REPEATS</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    agreements.append(agree)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  gold </span><span class="sc">{</span>item[<span class="st">'label'</span>]<span class="sc">}</span><span class="ss">  →  modal </span><span class="sc">{</span>modal<span class="sc">}</span><span class="ss"> "</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"(</span><span class="sc">{</span>modal_n<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>REPEATS<span class="sc">}</span><span class="ss"> = </span><span class="sc">{</span>agree<span class="sc">:.0%}</span><span class="ss">)   dist=</span><span class="sc">{</span><span class="bu">dict</span>(c)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Mean label agreement across samples: "</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span>statistics<span class="sc">.</span>mean(agreements)<span class="sc">:.0%}</span><span class="ss">"</span>)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"→ Tell students their F1 can wobble by roughly the complement of this."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title Step 5 — same prompt × 10, label stability (guarded)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>REPEATS <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>SAMPLES <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>sample_items <span class="op">=</span> [gold[i <span class="op">*</span> (<span class="bu">len</span>(gold)<span class="op">//</span>SAMPLES)] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(SAMPLES)]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>REPEATS<span class="sc">}</span><span class="ss"> repeats each, </span><span class="sc">{</span>SAMPLES<span class="sc">}</span><span class="ss"> sentences:</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>agreements <span class="op">=</span> []</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> sample_items:</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> PROMPT.<span class="bu">format</span>(text<span class="op">=</span>item[<span class="st">"text"</span>])</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> []</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(REPEATS):</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            labels.append(_extract_level(generate_guarded(prompt)))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            labels.append(<span class="st">"ERR"</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> Counter(labels)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    modal, modal_n <span class="op">=</span> c.most_common(<span class="dv">1</span>)[<span class="dv">0</span>]</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    agree <span class="op">=</span> modal_n <span class="op">/</span> REPEATS</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    agreements.append(agree)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  gold </span><span class="sc">{</span>item[<span class="st">'label'</span>]<span class="sc">}</span><span class="ss">  →  modal </span><span class="sc">{</span>modal<span class="sc">}</span><span class="ss"> "</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"(</span><span class="sc">{</span>modal_n<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>REPEATS<span class="sc">}</span><span class="ss"> = </span><span class="sc">{</span>agree<span class="sc">:.0%}</span><span class="ss">)   dist=</span><span class="sc">{</span><span class="bu">dict</span>(c)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Mean label agreement across samples: "</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span>statistics<span class="sc">.</span>mean(agreements)<span class="sc">:.0%}</span><span class="ss">"</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"→ Tell students their F1 can wobble by roughly the complement of this."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="go-no-go" class="level2">
 <h2 class="anchored" data-anchor-id="go-no-go">Go / no-go</h2>
 <ul>
-<li><strong>Step 2 fails</strong> → <code>colab.ai</code> unavailable on Tohoku accounts → use Gemini-API <code>.env</code> fallback (D4).</li>
-<li><strong>Step 3 throttles well before 100</strong> → single-user ceiling too low → fallback / rate-limit guidance.</li>
-<li><strong>Step 5 agreement low (&lt;~80%)</strong> → warn students &amp; consider majority-vote over repeats in the pipeline.</li>
+<li><strong>Step 2 fails</strong> → <code>colab.ai</code> unavailable on Tohoku accounts → use the Gemini-API <code>.env</code> fallback (D4).</li>
+<li><strong>Step 3 throttles per-minute</strong> → expected and fixable. Read the observed RPM off Step 3, set <code>ASSUMED_RPM</code>, and confirm with Step 3b.</li>
+<li><strong>Step 3 throttles per-day</strong> → a hard budget. Size the labs to fit it, or move to the Gemini API with <code>gemini-3.1-flash-lite</code> (500/day).</li>
+<li><strong>Step 3b still fails</strong> → pacing is not enough on this account → fallback.</li>
+<li><strong>Step 3b’s seconds-per-call</strong> → multiply by the per-student call count to get the real lab duration. If a lab exceeds the class period, shrink the gold set.</li>
+<li><strong>Step 5 agreement low (&lt;~80%)</strong> → warn students about F1 wobble; consider majority-vote over repeats.</li>
 </ul>
 <p>Record the numbers in <code>planning/course_planning/prep-plan.md</code> (milestone 07-09).</p>
+<p>The guards used here are explained, with runnable no-key demos, in <a href="../../resources/extra/handling-rate-limits.html"><code>resources/extra/handling-rate-limits.ipynb</code></a>.</p>
 
 
 </section>

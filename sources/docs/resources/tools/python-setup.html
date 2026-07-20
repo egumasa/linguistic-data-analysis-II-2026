@@ -277,12 +277,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">GitHub &amp; Optional Workshops</span></a>
+ <span class="menu-text">Extra Topics</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/extra/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Topics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../resources/extra/handling-rate-limits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Handling rate limits without crashing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">GitHub &amp; Optional Workshops</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../resources/github/index.html" class="sidebar-item-text sidebar-link">
@@ -394,7 +417,7 @@ Warning
 <section id="open-and-run-the-notebook" class="level2">
 <h2 class="anchored" data-anchor-id="open-and-run-the-notebook">5. Open and run the notebook</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run jupyter lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>In the browser tab that opens, navigate to a notebook that calls the model — e.g. <code>sources/notebooks/day3_prompt_design.ipynb</code> — and choose <strong>Run → Run All Cells</strong>. The first cell prints which backend it chose, e.g. <code>LLM backend: Gemini API (gemini-2.5-flash, temperature=0, seed=42)</code>. Everything else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab. (The Day-2 notebook needs no key; it reads frozen predictions.)</p>
+<p>In the browser tab that opens, navigate to a notebook that calls the model — e.g. <code>sources/notebooks/day3_prompt_design.ipynb</code> — and choose <strong>Run → Run All Cells</strong>. The first cell prints which backend it chose, e.g. <code>LLM backend: Gemini API (gemini-3.1-flash-lite, temperature=0, seed=42)</code>. Everything else — loading the gold set, the confusion matrix, the error table — works exactly as in Colab. (The Day-2 notebook needs no key; it reads frozen predictions.)</p>
 </section>
 <section id="troubleshooting" class="level2">
 <h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
@@ -955,7 +978,7 @@ Warning
 <span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>In the browser tab that opens, navigate to a notebook that calls the model — e.g.</span>
 <span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a><span class="in">`sources/notebooks/day3_prompt_design.ipynb`</span> — and choose **Run → Run All Cells**. The</span>
 <span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>first cell prints which backend it chose, e.g.</span>
-<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a><span class="in">`LLM backend: Gemini API (gemini-2.5-flash, temperature=0, seed=42)`</span>. Everything else — loading the</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a><span class="in">`LLM backend: Gemini API (gemini-3.1-flash-lite, temperature=0, seed=42)`</span>. Everything else — loading the</span>
 <span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>gold set, the confusion matrix, the error table — works exactly as in Colab. (The Day-2 notebook</span>
 <span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>needs no key; it reads frozen predictions.)</span>
 <span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a></span>

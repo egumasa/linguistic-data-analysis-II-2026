@@ -236,22 +236,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Fails → the whole path is unavailable on Tohoku accounts; use the Gemini-API <code>.env</code> fallback (D4).</td>
 </tr>
 <tr class="even">
-<td>3 · 100-call probe</td>
-<td>successes/100, median &amp; p95 latency, first throttle</td>
-<td>Throttles well before 100 → single-user ceiling too low.</td>
+<td>3 · 100-call probe (unguarded)</td>
+<td>successes/100, latency, and the first throttle <strong>classified per-minute vs per-day</strong></td>
+<td>Per-minute → fixable by pacing, go to 3b. Per-day → a hard budget; size the labs to fit it.</td>
 </tr>
 <tr class="odd">
+<td>3b · Same load, guarded</td>
+<td>does pacing + backoff + retry reach 100/100, and at what seconds-per-call</td>
+<td>100/100 → ship the wrapper in the day-notebooks. Still failing → lower <code>ASSUMED_RPM</code>, or fall back.</td>
+</tr>
+<tr class="even">
 <td>4 · Class-of-15 projection</td>
 <td>per-student daily model-time; per-account vs shared quota</td>
 <td>Frames whether 15 students is safe (can’t test true concurrency from one account).</td>
 </tr>
-<tr class="even">
-<td>5 · Determinism</td>
+<tr class="odd">
+<td>5 · Determinism (guarded)</td>
 <td>modal-label agreement over 10 repeats</td>
 <td>Low (&lt;~80%) → warn students about F1 wobble; consider majority-vote.</td>
 </tr>
 </tbody>
 </table>
+<p>Step 3 is deliberately <strong>unguarded</strong> — its job is to find the ceiling, so pacing it would destroy the measurement. Step 3b then re-runs the same load through the guards to confirm the workaround holds on this account.</p>
+<p>Step 3b’s seconds-per-call is the number that matters for timetabling: multiply it by the per-student call count to get how long a lab really takes. If that exceeds the class period, shrink the gold set.</p>
+<p>The guards are explained, with runnable no-key demos, in <a href="../../resources/extra/handling-rate-limits.html"><code>resources/extra/handling-rate-limits.ipynb</code></a>.</p>
 </section>
 <section id="after-the-run" class="level2">
 <h2 class="anchored" data-anchor-id="after-the-run">After the run</h2>
@@ -767,15 +775,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Step <span class="pp">|</span> Reads <span class="pp">|</span> Decision <span class="pp">|</span></span>
 <span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · Smoke test <span class="pp">|</span> Is <span class="in">`colab.ai`</span> reachable at all? <span class="pp">|</span> Fails → the whole path is unavailable on Tohoku accounts; use the Gemini-API <span class="in">`.env`</span> fallback (D4). <span class="pp">|</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 · 100-call probe <span class="pp">|</span> successes/100, median &amp; p95 latency, first throttle <span class="pp">|</span> Throttles well before 100 → single-user ceiling too low. <span class="pp">|</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 · Class-of-15 projection <span class="pp">|</span> per-student daily model-time; per-account vs shared quota <span class="pp">|</span> Frames whether 15 students is safe (can't test true concurrency from one account). <span class="pp">|</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 · Determinism <span class="pp">|</span> modal-label agreement over 10 repeats <span class="pp">|</span> Low (&lt;~80%) → warn students about F1 wobble; consider majority-vote. <span class="pp">|</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## After the run</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>Record the numbers (reachable? throttle point? mean agreement?) in</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="in">`planning/course_planning/prep-plan.md`</span> — this closes the **07-09** milestone and</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>de-risks the **07-12** end-to-end Colab run.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 · 100-call probe (unguarded) <span class="pp">|</span> successes/100, latency, and the first throttle **classified per-minute vs per-day** <span class="pp">|</span> Per-minute → fixable by pacing, go to 3b. Per-day → a hard budget; size the labs to fit it. <span class="pp">|</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3b · Same load, guarded <span class="pp">|</span> does pacing + backoff + retry reach 100/100, and at what seconds-per-call <span class="pp">|</span> 100/100 → ship the wrapper in the day-notebooks. Still failing → lower <span class="in">`ASSUMED_RPM`</span>, or fall back. <span class="pp">|</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 · Class-of-15 projection <span class="pp">|</span> per-student daily model-time; per-account vs shared quota <span class="pp">|</span> Frames whether 15 students is safe (can't test true concurrency from one account). <span class="pp">|</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 · Determinism (guarded) <span class="pp">|</span> modal-label agreement over 10 repeats <span class="pp">|</span> Low (&lt;~80%) → warn students about F1 wobble; consider majority-vote. <span class="pp">|</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>Step 3 is deliberately **unguarded** — its job is to find the ceiling, so pacing it</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>would destroy the measurement. Step 3b then re-runs the same load through the</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>guards to confirm the workaround holds on this account.</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>Step 3b's seconds-per-call is the number that matters for timetabling: multiply it</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>by the per-student call count to get how long a lab really takes. If that exceeds</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>the class period, shrink the gold set.</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>The guards are explained, with runnable no-key demos, in</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`resources/extra/handling-rate-limits.ipynb`</span><span class="co">](../extra/handling-rate-limits.ipynb)</span>.</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## After the run</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>Record the numbers (reachable? throttle point? mean agreement?) in</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="in">`planning/course_planning/prep-plan.md`</span> — this closes the **07-09** milestone and</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>de-risks the **07-12** end-to-end Colab run.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
