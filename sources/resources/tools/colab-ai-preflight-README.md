@@ -3,7 +3,7 @@
 A capacity check run **once before the course**, on the Tohoku Google account the
 class will use. It confirms Colab's built-in Gemini
 (`from google.colab import ai`) is reachable, finds where it throttles, projects
-load to ~15 students, and measures how stable the parsed CEFR labels are.
+load to the 8-student class, and measures how stable the parsed CEFR labels are.
 
 Notebook: [`colab-ai-preflight.ipynb`](./colab-ai-preflight.ipynb)
 
@@ -43,9 +43,21 @@ account, and **Runtime → Run all**.
 | Step | Reads | Decision |
 | --- | --- | --- |
 | 2 · Smoke test | Is `colab.ai` reachable at all? | Fails → the whole path is unavailable on Tohoku accounts; use the Gemini-API `.env` fallback (D4). |
-| 3 · 100-call probe | successes/100, median & p95 latency, first throttle | Throttles well before 100 → single-user ceiling too low. |
-| 4 · Class-of-15 projection | per-student daily model-time; per-account vs shared quota | Frames whether 15 students is safe (can't test true concurrency from one account). |
-| 5 · Determinism | modal-label agreement over 10 repeats | Low (<~80%) → warn students about F1 wobble; consider majority-vote. |
+| 3 · 100-call probe (unguarded) | successes/100, latency, and the first throttle **classified per-minute vs per-day** | Per-minute → fixable by pacing, go to 3b. Per-day → a hard budget; size the labs to fit it. |
+| 3b · Same load, guarded | does pacing + backoff + retry reach 100/100, and at what seconds-per-call | 100/100 → ship the wrapper in the day-notebooks. Still failing → lower `ASSUMED_RPM`, or fall back. |
+| 4 · Class-of-8 projection | per-student daily model-time; per-account vs shared quota | Frames whether 8 students is safe (can't test true concurrency from one account). |
+| 5 · Determinism (guarded) | modal-label agreement over 10 repeats | Low (<~80%) → warn students about F1 wobble; consider majority-vote. |
+
+Step 3 is deliberately **unguarded** — its job is to find the ceiling, so pacing it
+would destroy the measurement. Step 3b then re-runs the same load through the
+guards to confirm the workaround holds on this account.
+
+Step 3b's seconds-per-call is the number that matters for timetabling: multiply it
+by the per-student call count to get how long a lab really takes. If that exceeds
+the class period, shrink the gold set.
+
+The guards are explained, with runnable no-key demos, in
+[`resources/extra/handling-rate-limits.ipynb`](../extra/handling-rate-limits.ipynb).
 
 ## After the run
 
