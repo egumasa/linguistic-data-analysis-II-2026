@@ -68,9 +68,7 @@ website:
           contents:
             - notebooks/day1_python_and_first_llm.ipynb
             - notebooks/day2_gold_standards_and_evaluation.ipynb
-            - notebooks/tutorial-day2-annotation-eval.md
             - notebooks/day3_prompt_design.ipynb
-            - notebooks/tutorial-day3-move-replication.md
             - notebooks/day4_pipeline_and_sampling.ipynb
             - notebooks/day5_project_finalization.ipynb
 

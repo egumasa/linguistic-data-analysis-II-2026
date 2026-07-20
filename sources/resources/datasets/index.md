@@ -27,27 +27,6 @@ notebooks below) from the original sources. Licenses and citations are in
 [`SOURCES.md`](./SOURCES.md). **Always cite the original dataset.** Once you've rebuilt a gold set,
 keep it in *your* Google Drive — see [Housing Your Data in Google Drive](../tools/google-drive-data.md).
 
-::: {.callout-note}
-## Two kinds of difficulty
-A task can be hard to *prepare* (messy source data) or hard to *judge* (the labeling decision
-itself is subjective). They are independent. We deliberately **start with an easy-to-judge task**
-(CEFR level) to learn the pipeline, then move to **hard-to-judge** research tasks (discourse moves,
-L2 errors) where even expert annotators disagree — which is exactly what makes them interesting.
-:::
-
-## The motivating study
-
-This strand of the course replicates the *idea* of **Kim & Lu (2024)**, who tested how well
-ChatGPT can annotate **rhetorical move-steps** in research-article introductions, and how prompt
-refinement, few-shot examples, and fine-tuning change its accuracy.
-
-> Kim, M., & Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step
-> analysis: The impact of prompt refinement, few-shot learning, and fine-tuning.
-> *Journal of English for Academic Purposes, 71,* 101422.
-
-Their annotated corpus is **not** publicly available, so we use **CaRS-50** — an open dataset that
-annotates the *same* phenomenon (Swales' CARS moves in article introductions) — as the stand-in.
-
 ## Dataset catalog
 
 | Dataset | Phenomenon | Labels | Judge difficulty | Gold files |
@@ -106,36 +85,41 @@ instructions in [`SOURCES.md`](./SOURCES.md) to build the gold file.
 ## Building the gold files yourself
 
 **Getting raw data and shaping it into a gold standard is itself a core skill in this course** — not
-just a chore done for you. So each dataset has a **student notebook** (Colab-ready, no setup) that
+just a chore done for you. So each dataset has its own **download notebook** (Colab-ready, no setup) that
 walks through *download → inspect the raw format → reshape to the canonical schema → check the label
 balance → save*. The point you will feel: **every dataset's raw format is different**, and getting
 it into one clean shape is half the work of building a gold standard.
 
-| Dataset | Student notebook |
-|---------|------------------|
-| CEFR-SP | [`download_cefr_sp.ipynb`](./notebooks/download_cefr_sp.ipynb) |
-| RAAMove | [`download_raamove.ipynb`](./notebooks/download_raamove.ipynb) |
-| CaRS-50 | [`download_cars50.ipynb`](./notebooks/download_cars50.ipynb) |
-| AutoErrorAnalyzer | [`download_autoerroranalyzer.ipynb`](./notebooks/download_autoerroranalyzer.ipynb) |
-| ICNALE GRA | [`download_icnale_gra.ipynb`](./notebooks/download_icnale_gra.ipynb) (gated — upload your own download) |
+| Dataset | Open in Colab | Produces |
+|---------|---------------|----------|
+| CEFR-SP | [`download_cefr_sp.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_cefr_sp.ipynb) | `cefr_sentences.json` |
+| RAAMove | [`download_raamove.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_raamove.ipynb) | `raamove_moves.json` |
+| CaRS-50 | [`download_cars50.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_cars50.ipynb) | `cars50_moves.json` |
+| AutoErrorAnalyzer | [`download_autoerroranalyzer.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_autoerroranalyzer.ipynb) | `l2_errors.json` |
+| ICNALE GRA | [`download_icnale_gra.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_icnale_gra.ipynb) (gated — upload your own download) | `icnale_gra_scores.json` |
 
-Instructors can rebuild everything at once with the script behind those notebooks:
+Open a notebook, choose **Runtime ▸ Run all**, and wait 1–2 minutes. ⚠️ The file it saves lives
+in the Colab session and **disappears when the runtime disconnects** — download it or save it to
+Drive before closing the tab. The [folder README](./README.md) explains both routes, plus what
+every file in this directory is for.
+
+If you already have Python on your own machine and want every dataset at once, the same logic is
+available as a single script — standard library only, so there is nothing to install:
 
 ```bash
 cd sources/resources/datasets
-uv run --no-project python prep_datasets.py          # build all available datasets
-uv run --no-project python prep_datasets.py raamove  # or just one
+python3 prep_datasets.py          # build all available datasets
+python3 prep_datasets.py raamove  # or just one
 ```
 
 Neither the raw downloads nor the derived `gold/*.json` are distributed with this repo — rebuild
-them locally with the notebooks or the script above. See
-[`prep_datasets.ipynb`](./prep_datasets.ipynb) for the instructor build + a schema
-validator.
+them locally with the notebooks or the script above. [`prep_datasets.ipynb`](./prep_datasets.ipynb)
+runs that build and then checks every gold file against the schema.
 
 ## Worked tutorials & mini-project tracks
 
-- [Day 2 tutorial — Annotation, gold standards & evaluation](../../notebooks/tutorial-day2-annotation-eval.md)
-  (on-ramp with CEFR-SP)
-- [Day 3 tutorial — Replicating Kim & Lu with open data](../../notebooks/tutorial-day3-move-replication.md)
-  (RAAMove → CaRS-50)
+- [Day 2 notebook — Gold standards & evaluation](../../notebooks/day2_gold_standards_and_evaluation.ipynb)
+  (on-ramp with CEFR-SP; plus annotating your own gold set in a Google Sheet)
+- [Day 3 tutorial — Prompt design & iteration](../../notebooks/day3_prompt_design.ipynb)
+  (zero-shot → few-shot → chain-of-thought, on CEFR-SP)
 - [Mini-project starter tracks](./mini-project-tracks.md)

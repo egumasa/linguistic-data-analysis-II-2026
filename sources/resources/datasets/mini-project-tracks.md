@@ -23,7 +23,7 @@ track is the same:
 Each track rebuilds a ready gold file **and** a full pool to sample your own subset from.
 
 Rebuild the gold files: [`README.md`](./README.md) · provenance & licenses: [`SOURCES.md`](./SOURCES.md) ·
-the pipeline: [Day 2](../../notebooks/tutorial-day2-annotation-eval.md) & [Day 3](../../notebooks/tutorial-day3-move-replication.md) tutorials.
+the pipeline: [Day 2](../../notebooks/day2_gold_standards_and_evaluation.ipynb) & [Day 3](../../notebooks/day3_prompt_design.ipynb) notebooks.
 
 ::: {.callout-tip}
 ## Keep your data in your own Drive
@@ -37,11 +37,22 @@ round-trip, worked on the familiar CEFR data and reused unchanged for your track
 
 ### ★★★ Discourse moves (RAAMove / CaRS-50)
 
-Annotate rhetorical **moves**. This is the [Kim & Lu (2024)](./index.md#the-motivating-study)
-replication track.
+Annotate rhetorical **moves**. This track replicates the idea of Kim & Lu (2024), who tested how
+well ChatGPT can annotate move-steps in research-article introductions, and how prompt refinement
+and few-shot examples change its accuracy. Their corpus is not public, so CaRS-50 stands in.
+
+> Kim, M., & Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step
+> analysis: The impact of prompt refinement, few-shot learning, and fine-tuning.
+> *Journal of English for Academic Purposes, 71,* 101422.
+
 Gold: `raamove_moves.json` (8 moves, abstracts) or `cars50_moves.json` (CARS Moves, introductions).
 Pools: `raamove_pool.json`, `cars50_pool.json`, `cars50_step_pool.json` (11-class stretch).
 Extensions: compare abstracts vs. introductions; move-only vs. move+step; few-shot vs. definitions.
+
+RAAMove ships as tidy JSON and is the gentler start; CaRS-50 is harder because judging moves in
+*introductions* needs more context. Expect lower F1 than the CEFR tutorials — the CaRS-50 annotators
+themselves reached only **κ ≈ 0.43**, so "the model is wrong" and "the scheme is fuzzy" are both live
+explanations, and telling them apart is the interesting part of your analysis.
 
 ### ★★★ L2 error annotation (AutoErrorAnalyzer)
 

@@ -47,8 +47,8 @@ REPO_RAW = ("https://raw.githubusercontent.com/egumasa/"
             "linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold")
 CEFR_GOLD_URL = f"{REPO_RAW}/cefr_sentences.json"
 CEFR_POOL_URL = f"{REPO_RAW}/cefr_pool.json"
-# Frozen CEFR predictions for the Day-2 metrics lesson (instructor generates this
-# once from the fixed Day-2 prompt; committed so Day 2 is keyless & deterministic).
+# Frozen CEFR predictions for the Day-2 metrics lesson (generated once from the
+# fixed Day-2 prompt; committed so Day 2 is keyless & deterministic).
 CEFR_PREDICTIONS_DAY2_URL = f"{REPO_RAW}/predictions_day2.json"
 
 
@@ -196,8 +196,100 @@ LIB_PREDICTIONS = code(
 
 PIPELINE_LIB = [LIB_LOAD_GOLD, LIB_RUN_PROMPT, LIB_EVALUATE, LIB_SHOW_ERRORS, LIB_PREDICTIONS]
 
+# Manual annotation round-trip: Colab writes a Google Sheet into the student's own
+# Drive, they label it by hand in the browser (two annotator columns, so agreement
+# falls out), then Colab reads it back and canonicalises it to {id,text,label}.
+# gspread + google-auth are pre-installed in Colab; no pip install needed.
+LIB_SHEETS = code(
+    '#@title 🔧 Library cell: Google Sheets annotation round-trip { display-mode: "form" }',
+    'ANNOTATION_HEADER = ["id", "text", "label_a", "label_b", "final", "notes"]',
+    '',
+    'def _sheets_client():',
+    '    """Authorise gspread with your Google account (a pop-up asks for permission)."""',
+    '    from google.colab import auth',
+    '    import google.auth, gspread',
+    '    auth.authenticate_user()',
+    '    creds, _ = google.auth.default()',
+    '    return gspread.authorize(creds)',
+    '',
+    'def create_annotation_sheet(title, items, labels):',
+    '    """Create a Sheet in YOUR Drive: one row per item, blank columns to label.',
+    '    `items` are {"id","text",...} dicts — any existing label is deliberately NOT',
+    '    copied across, so you annotate blind. Returns the sheet URL."""',
+    '    sheet = _sheets_client().create(title)',
+    '    worksheet = sheet.sheet1',
+    '    rows = [[item["id"], item["text"], "", "", "", ""] for item in items]',
+    '    worksheet.update([ANNOTATION_HEADER] + rows)',
+    '    worksheet.freeze(rows=1)',
+    '    print(f"Created \'{title}\' with {len(rows)} rows to annotate.")',
+    '    print("Allowed labels:", ", ".join(labels))',
+    '    print("Open it:", sheet.url)',
+    '    return sheet.url',
+    '',
+    'def load_annotation_sheet(title):',
+    '    """Read your annotation sheet back as a list of row dicts."""',
+    '    rows = _sheets_client().open(title).sheet1.get_all_records()',
+    '    print(f"Read {len(rows)} rows from \'{title}\'.")',
+    '    return rows',
+    '',
+    'def to_canonical(rows, labels, column="final"):',
+    '    """Turn annotation rows into canonical gold: [{"id","text","label"}, ...].',
+    '    Blank rows are skipped; labels outside `labels` are reported, not silently kept."""',
+    '    gold, blank, invalid = [], 0, []',
+    '    for row in rows:',
+    '        label = str(row.get(column, "")).strip()',
+    '        if not label:',
+    '            blank += 1',
+    '        elif label not in labels:',
+    '            invalid.append((row.get("id"), label))',
+    '        else:',
+    '            gold.append({"id": int(row["id"]), "text": str(row["text"]), "label": label})',
+    '    print(f"{len(gold)} usable · {blank} still blank · {len(invalid)} invalid")',
+    '    if invalid:',
+    '        print("  fix these in the sheet, then re-run:", invalid[:10])',
+    '    return gold',
+    '',
+    'def annotator_agreement(rows, a="label_a", b="label_b"):',
+    '    """Percent agreement + Cohen\'s κ between the two annotator columns."""',
+    '    from sklearn.metrics import cohen_kappa_score',
+    '    pairs = [(str(r.get(a, "")).strip(), str(r.get(b, "")).strip()) for r in rows]',
+    '    pairs = [(x, y) for x, y in pairs if x and y]',
+    '    if not pairs:',
+    '        print("No rows where BOTH annotators have labelled. Nothing to compare yet.")',
+    '        return None',
+    '    percent = sum(x == y for x, y in pairs) / len(pairs)',
+    '    kappa = cohen_kappa_score([x for x, _ in pairs], [y for _, y in pairs])',
+    '    print(f"{len(pairs)} doubly-annotated · agreement {percent:.1%} · Cohen\'s κ {kappa:.3f}")',
+    '    return {"n": len(pairs), "percent_agreement": percent, "kappa": kappa}',
+    '',
+    'def disagreements(rows, a="label_a", b="label_b"):',
+    '    """The rows your two annotators labelled differently — your adjudication list."""',
+    '    out = [r for r in rows',
+    '           if str(r.get(a, "")).strip() and str(r.get(b, "")).strip()',
+    '           and str(r[a]).strip() != str(r[b]).strip()]',
+    '    print(f"{len(out)} rows to adjudicate. Agree on a `final` label for each in the sheet.")',
+    '    return pd.DataFrame(out)',
+    '',
+    'def compare_to_published(gold, published):',
+    '    """How often does YOUR final label match the published gold, item by item?"""',
+    '    lookup = {item["id"]: item["label"] for item in published}',
+    '    shared = [(g["label"], lookup[g["id"]]) for g in gold if g["id"] in lookup]',
+    '    if not shared:',
+    '        print("No overlapping ids — did you keep the ids the sheet gave you?")',
+    '        return None',
+    '    agree = sum(mine == theirs for mine, theirs in shared)',
+    '    print(f"{agree}/{len(shared)} match the published label ({agree / len(shared):.1%})")',
+    '    return pd.DataFrame([{"id": g["id"], "yours": g["label"], "published": lookup[g["id"]],',
+    '                          "text": g["text"]}',
+    '                         for g in gold if g["id"] in lookup',
+    '                         and g["label"] != lookup[g["id"]]])')
 
-def how_to_use(day, title, part_a, part_b):
+
+def how_to_use(day, title, part_a, part_b, part_c=None):
+    parts = [f"- **Part A · Tutorial** — {part_a}",
+             f"- **Part B · Corpus Lab** — {part_b}"]
+    if part_c:
+        parts.append(f"- **Part C · Corpus Lab** — {part_c}")
     return md(
         f"# {title}",
         "",
@@ -205,10 +297,10 @@ def how_to_use(day, title, part_a, part_b):
         "",
         "### How to use this notebook",
         "",
-        "This is your **single submission for the day**. It has two parts:",
+        f"This is your **single submission for the day**. It has "
+        f"{'three' if part_c else 'two'} parts:",
         "",
-        f"- **Part A · Tutorial** — {part_a}",
-        f"- **Part B · Corpus Lab** — {part_b}",
+        *parts,
         "",
         "You only edit the cells marked **✏️ YOU EDIT**. Cells marked **🔧 Library cell** "
         "are pre-written — run them, don't change them.",
@@ -222,8 +314,8 @@ SUBMISSION = md(
     "## ✅ Before you submit",
     "",
     "1. **Runtime → Run all** and check every cell ran without error.",
-    "2. Part A outputs are visible (tables / charts / the model's answers).",
-    "3. Part B self-check prints ✅ (or your TODO answers are filled in).",
+    "2. Tutorial outputs are visible (tables / charts / the model's answers).",
+    "3. Every Corpus Lab self-check prints ✅ (or your TODO answers are filled in).",
     "4. **File → Download → Download `.ipynb`** and upload that one file.")
 
 
@@ -400,6 +492,8 @@ def day2():
         "load a gold standard → evaluate a **frozen** set of model predictions → read "
         "precision / recall / F1 + a confusion matrix → inspect the errors, on an "
         "easy-to-judge task (CEFR sentence level).",
+        "build a gold standard yourself — annotate ~20 sentences by hand in a Google "
+        "Sheet, measure your agreement, adjudicate, and import it back as canonical JSON.",
         "code the evaluation metrics (precision, recall, F1, Cohen's κ) by hand, then "
         "check them against scikit-learn.")]
 
@@ -461,12 +555,114 @@ def day2():
         "",
         "For each miss, ask: is the **gold** defensible, or is this a genuinely borderline "
         "sentence? *\"Is the disagreement the model's fault or the scheme's?\"* is the heart "
-        "of annotation work — and it returns with force in the Day 3 discourse task.")]
+        "of annotation work — and it is the question your mini-project has to answer "
+        "honestly.")]
     cells += [code('show_errors(gold, predictions)')]
 
-    # ---- Part B: metrics-from-scratch lab ----
+    # ---- Part B: build a gold standard by hand, in a Google Sheet ----
+    # The graded home of the "gold-standard construction" outcome (session 2-2):
+    # sample → annotate blind in a Sheet → agreement → adjudicate → canonical JSON
+    # → compare against the published gold.
     cells += [md(
-        "## Part B · Corpus Lab — code the metrics from scratch",
+        "## Part B · Corpus Lab — build a gold standard yourself",
+        "",
+        "So far the gold labels were handed to you. Now you make some. You will annotate ~20 "
+        "sentences **by hand in a Google Sheet**, with your partner labelling the same "
+        "sentences independently, then bring the result back into Python as a canonical gold "
+        "file — the same `{\"id\", \"text\", \"label\"}` shape you loaded in Part A.",
+        "",
+        "::: {.callout-note}",
+        "## Why a spreadsheet?",
+        "Annotation is a *judgement* task, not a coding task — a sheet is the fastest honest "
+        "way to do it, and it is what most annotation projects actually use. The point is not "
+        "the tool; it is that you feel how often two careful people disagree, and what it "
+        "takes to resolve that into a single defensible label.",
+        ":::")]
+    cells += [LIB_SHEETS]
+    cells += [md(
+        "### B1 — Draw ~20 sentences to annotate   ✏️ YOU EDIT",
+        "",
+        "We sample from the same CEFR set you just evaluated — but the sheet gets **only the "
+        "ids and the sentences**, never the labels. That way your annotation is genuinely "
+        "independent, and at the end you can check it against the published gold.")]
+    cells += [code(
+        'import random',
+        '',
+        'N_ITEMS = 20            # ✏️ how many sentences to annotate',
+        'random.seed(42)         # fixed seed = the same sample every run',
+        '',
+        'to_annotate = random.sample(gold, N_ITEMS)',
+        'print(f"{len(to_annotate)} sentences drawn. First:", to_annotate[0]["text"])')]
+    cells += [md(
+        "### B2 — Create your annotation sheet",
+        "",
+        "This creates a Sheet **in your own Drive** and prints a link. Colab will ask "
+        "permission to access your Google account — that is the `authenticate_user()` "
+        "pop-up; accept it with your Tohoku account.",
+        "",
+        "In the sheet, one of you fills **`label_a`** and the other fills **`label_b`** — "
+        "*without looking at each other's column*. Leave `final` blank for now. Use `notes` "
+        "for anything you found hard to decide; those notes are useful evidence later.")]
+    cells += [code(
+        'SHEET_NAME = "lda2_day2_annotation"     # ✏️ rename if you like',
+        '',
+        'create_annotation_sheet(SHEET_NAME, to_annotate, LEVELS)')]
+    cells += [md(
+        "::: {.callout-important}",
+        "## Stop here and go annotate",
+        "Open the link above and label all ~20 sentences in **both** annotator columns before "
+        "running the next cell. Come back when the sheet is filled in.",
+        ":::")]
+    cells += [md(
+        "### B3 — Read it back and measure your agreement",
+        "",
+        "How often did the two of you pick the same level? **Cohen's κ** corrects that for "
+        "the agreement you would expect by chance alone — you will code it yourself in Part C.")]
+    cells += [code(
+        'rows = load_annotation_sheet(SHEET_NAME)',
+        'annotator_agreement(rows)')]
+    cells += [md(
+        "### B4 — Adjudicate the disagreements",
+        "",
+        "Every row below is one your two annotators saw differently. Talk each one through, "
+        "decide a single label, and type it into the **`final`** column in the sheet. For the "
+        "rows you already agreed on, `final` is just that agreed label.",
+        "",
+        "Keep track of *why* you disagreed — is the sentence genuinely borderline, or is the "
+        "scheme underspecified? That distinction is the heart of your mini-project report.")]
+    cells += [code('disagreements(rows)')]
+    cells += [md(
+        "### B5 — Import it as a gold standard   ✏️ YOU EDIT",
+        "",
+        "Once every row has a `final` label, read the sheet again and convert it to the "
+        "canonical form. `to_canonical` refuses anything that is not one of your allowed "
+        "labels, so typos surface here rather than silently corrupting your gold set.")]
+    cells += [code(
+        'rows = load_annotation_sheet(SHEET_NAME)       # re-read, now with `final` filled in',
+        'my_gold = to_canonical(rows, LEVELS, column="final")',
+        'my_gold[:3]')]
+    cells += [md(
+        "### B6 — How does your gold compare with the published gold?",
+        "",
+        "The CEFR-SP labels came from language-education professionals, and we kept only "
+        "sentences where two of them agreed. Where you differ from them, you are not simply "
+        "*wrong* — but each difference is worth a look.")]
+    cells += [code('compare_to_published(my_gold, gold)')]
+    cells += [md(
+        "### B7 — Save your gold set to your Drive",
+        "",
+        "Your gold set belongs in **your** Drive, not the course repo. See "
+        "[Housing your data in Google Drive](../resources/tools/google-drive-data.md).")]
+    cells += [code(
+        '# ✏️ Uncomment in Colab to save:',
+        '# from google.colab import drive; drive.mount("/content/drive")',
+        '# with open("/content/drive/MyDrive/my_gold_day2.json", "w", encoding="utf-8") as f:',
+        '#     json.dump(my_gold, f, ensure_ascii=False, indent=2)',
+        '# print("saved", len(my_gold), "items")')]
+
+    # ---- Part C: metrics-from-scratch lab ----
+    cells += [md(
+        "## Part C · Corpus Lab — code the metrics from scratch",
         "",
         "`evaluate()` above printed precision, recall, F1 and a confusion matrix *for* you. "
         "Now you write those formulas yourself, from plain lists of labels — no imports, no "
