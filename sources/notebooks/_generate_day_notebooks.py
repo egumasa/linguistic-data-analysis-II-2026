@@ -60,7 +60,10 @@ CEFR_PREDICTIONS_DAY2_URL = f"{REPO_RAW}/predictions_day2.json"
 #     autograded work (Corpus Lab from Day 3, and the final project).
 # The key is PREFERRED when present — including inside Colab (via Colab Secrets).
 # See resources/tools/gemini-api-key.md.
-MODEL_ID = "gemini-2.5-flash"   # pinned; confirm against the API pre-flight (see prep-plan)
+# Pinned 2026-07-20 by the API pre-flight. NOT gemini-2.5-flash: its free tier is
+# 5 RPM / 20 RPD, so a single 72-item lab run needs 3.5 days of quota. flash-lite is
+# 15 RPM / 500 RPD. See planning/course_planning/api-preflight-testing.md Task 1.
+MODEL_ID = "gemini-3.1-flash-lite"
 
 BACKEND = '''#@title 📦 Setup — run me first { display-mode: "form" }
 # Imports + the LLM backend. No pip install needed in Colab.
@@ -68,7 +71,7 @@ import json, re, urllib.request, os
 from sklearn.metrics import classification_report, confusion_matrix
 import pandas as pd, seaborn as sns, matplotlib.pyplot as plt
 
-MODEL_ID = "gemini-2.5-flash"   # pinned model for the reproducible (API) backend
+MODEL_ID = "gemini-3.1-flash-lite"   # pinned model for the reproducible (API) backend
 
 def _resolve_gemini_key():
     """Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env."""
@@ -545,19 +548,41 @@ def day2():
         "### Step 3 — Read the evaluation",
         "",
         "Per-level precision / recall / F1 (plus a macro average), then the confusion "
-        "matrix. For CEFR you'll usually see confusions between *adjacent* levels "
-        "(B1 ↔ B2), rarely far-apart ones (A1 ↔ C2) — the model has the right idea, "
-        "imprecise thresholds. Because the predictions are frozen, these numbers are the "
+        "matrix.",
+        "",
+        "**Brace yourself: overall accuracy is about 39%.** Before you conclude the model "
+        "is useless, look at *how* it is wrong. Roughly 97% of its answers are within one "
+        "level of the gold label — only two sentences in the whole set miss by two, and "
+        "nothing misses by more. A model guessing at random would scatter A1s against C2s. "
+        "This one doesn't. It has the right idea and imprecise thresholds, which is a very "
+        "different failure from not understanding the task.",
+        "",
+        "Now read the confusion matrix **down the columns** — how often the model *says* "
+        "each level, rather than how often it's right. The gold set is balanced, 12 "
+        "sentences per level, so an unbiased rater would use each label about 12 times. "
+        "Check whether this one does. Ask yourself why a rater — human or machine — under "
+        "pressure to judge something as fuzzy as \"difficulty\" might drift toward the "
+        "middle of a scale and avoid committing to the extremes. You will meet this "
+        "tendency again in your own annotation work.",
+        "",
+        "Because the predictions are frozen, these numbers are the "
         "same every time you run — that's the point.")]
     cells += [code('evaluate(gold, predictions)')]
     cells += [md(
         "### Step 4 — Error analysis",
         "",
-        "For each miss, ask: is the **gold** defensible, or is this a genuinely borderline "
-        "sentence? *\"Is the disagreement the model's fault or the scheme's?\"* is the heart "
-        "of annotation work — and it is the question your mini-project has to answer "
-        "honestly.")]
-    cells += [code('show_errors(gold, predictions)')]
+        "There are 44 misses here — too many to read one by one, and you don't need to. "
+        "Skim a dozen, then look specifically at the rows where the gold label is **C2** "
+        "or **A1**: the ends of the scale are where this model disagrees with the gold "
+        "most often, so that is where the interesting arguments are.",
+        "",
+        "For each miss you do read, ask: is the **gold** defensible, or is this a genuinely "
+        "borderline sentence? *\"Is the disagreement the model's fault or the scheme's?\"* "
+        "is the heart of annotation work — and it is the question your mini-project has to "
+        "answer honestly.")]
+    cells += [code(
+        'errors = show_errors(gold, predictions)',
+        'errors.head(15)     # ...or errors[errors["gold"] == "C2"] to see the hard end')]
 
     # ---- Part B: build a gold standard by hand, in a Google Sheet ----
     # The graded home of the "gold-standard construction" outcome (session 2-2):

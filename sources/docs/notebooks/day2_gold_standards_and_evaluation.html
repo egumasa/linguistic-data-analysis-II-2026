@@ -474,7 +474,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, seaborn <span class="im">as</span> sns, matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>MODEL_ID <span class="op">=</span> <span class="st">"gemini-2.5-flash"</span>   <span class="co"># pinned model for the reproducible (API) backend</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>MODEL_ID <span class="op">=</span> <span class="st">"gemini-3.1-flash-lite"</span>   <span class="co"># pinned model for the reproducible (API) backend</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _resolve_gemini_key():</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env."""</span></span>
@@ -634,7 +634,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-3-read-the-evaluation" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-read-the-evaluation">Step 3 — Read the evaluation</h3>
-<p>Per-level precision / recall / F1 (plus a macro average), then the confusion matrix. For CEFR you’ll usually see confusions between <em>adjacent</em> levels (B1 ↔︎ B2), rarely far-apart ones (A1 ↔︎ C2) — the model has the right idea, imprecise thresholds. Because the predictions are frozen, these numbers are the same every time you run — that’s the point.</p>
+<p>Per-level precision / recall / F1 (plus a macro average), then the confusion matrix.</p>
+<p><strong>Brace yourself: overall accuracy is about 39%.</strong> Before you conclude the model is useless, look at <em>how</em> it is wrong. Roughly 97% of its answers are within one level of the gold label — only two sentences in the whole set miss by two, and nothing misses by more. A model guessing at random would scatter A1s against C2s. This one doesn’t. It has the right idea and imprecise thresholds, which is a very different failure from not understanding the task.</p>
+<p>Now read the confusion matrix <strong>down the columns</strong> — how often the model <em>says</em> each level, rather than how often it’s right. The gold set is balanced, 12 sentences per level, so an unbiased rater would use each label about 12 times. Check whether this one does. Ask yourself why a rater — human or machine — under pressure to judge something as fuzzy as “difficulty” might drift toward the middle of a scale and avoid committing to the extremes. You will meet this tendency again in your own annotation work.</p>
+<p>Because the predictions are frozen, these numbers are the same every time you run — that’s the point.</p>
 <div id="cell-15" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -644,11 +647,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-4-error-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-error-analysis">Step 4 — Error analysis</h3>
-<p>For each miss, ask: is the <strong>gold</strong> defensible, or is this a genuinely borderline sentence? <em>“Is the disagreement the model’s fault or the scheme’s?”</em> is the heart of annotation work — and it is the question your mini-project has to answer honestly.</p>
+<p>There are 44 misses here — too many to read one by one, and you don’t need to. Skim a dozen, then look specifically at the rows where the gold label is <strong>C2</strong> or <strong>A1</strong>: the ends of the scale are where this model disagrees with the gold most often, so that is where the interesting arguments are.</p>
+<p>For each miss you do read, ask: is the <strong>gold</strong> defensible, or is this a genuinely borderline sentence? <em>“Is the disagreement the model’s fault or the scheme’s?”</em> is the heart of annotation work — and it is the question your mini-project has to answer honestly.</p>
 <div id="cell-17" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>show_errors(gold, predictions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(gold, predictions)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] to see the hard end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>

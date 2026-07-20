@@ -9,3 +9,9 @@ __pycache__/
 # CC BY-SA 3.0 (CEFR-SP, Wiki-Auto portion) — see SOURCES.md. Students learn the
 # download→build→house-in-Drive workflow separately (mini-project).
 !gold/cefr_sentences.json
+
+# Same exception, same reason: Day 2 is keyless and deterministic, so it loads a
+# frozen run of the model over the gold set instead of calling the API. Committed
+# because the notebook fetches it by raw-GitHub URL — if it is missing, Day 2 dies
+# at Step 2 for every student. Just the 72 predicted labels, no source text.
+!gold/predictions_day2.json
