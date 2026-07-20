@@ -26,3 +26,7 @@ Course resources organized by category. **Setup guides are ready now** — get t
 - 📚 [Further corpora (optional)](corpora/index.md) — external corpus & lexical-data links, not required for the course
 - 🗂️ [Replication Datasets](datasets/index.md) — the open, annotated datasets used across Days 2–5
 - 🐙 [GitHub &amp; Optional Workshops](github/index.md)
+
+**Optional**
+
+- 🚦 [Extra Topics](extra/index.md) — deep-dives beyond the day notebooks, starting with [handling API rate limits](extra/handling-rate-limits.ipynb) without crashing mid-run

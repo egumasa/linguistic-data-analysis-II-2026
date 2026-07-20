@@ -93,6 +93,10 @@ website:
           contents:
             - resources/datasets/index.md
             - resources/datasets/mini-project-tracks.md
+        - section: "Extra Topics"
+          contents:
+            - resources/extra/index.md
+            - resources/extra/handling-rate-limits.ipynb
         - section: "GitHub & Optional Workshops"
           contents:
             - resources/github/index.md
