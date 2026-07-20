@@ -361,20 +361,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/tutorial-day2-annotation-eval.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 2 Tutorial — Annotation, Gold Standards &amp; Evaluation</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../notebooks/day3_prompt_design.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Day 3 · Prompt design &amp; iteration</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/tutorial-day3-move-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 3 Tutorial — Replicating Kim &amp; Lu with Open Data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -402,7 +390,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#the-notebooks" id="toc-the-notebooks" class="nav-link active" data-scroll-target="#the-notebooks">The notebooks</a></li>
-  <li><a href="#deeper-notes" id="toc-deeper-notes" class="nav-link" data-scroll-target="#deeper-notes">Deeper notes</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/notebooks/index.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -500,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>2</td>
 <td><a href="../notebooks/day2_gold_standards_and_evaluation.html"><code>day2_gold_standards_and_evaluation.ipynb</code></a></td>
 <td>The pipeline on CEFR-SP (P/R/F1 + confusion matrix)</td>
-<td>Code the metrics from scratch, checked vs.&nbsp;scikit-learn</td>
+<td>Annotate a gold set by hand in a Google Sheet (agreement → adjudication → canonical JSON); then code the metrics from scratch</td>
 </tr>
 <tr class="odd">
 <td>3</td>
@@ -522,14 +509,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-</section>
-<section id="deeper-notes" class="level2">
-<h2 class="anchored" data-anchor-id="deeper-notes">Deeper notes</h2>
-<p>The prose walkthroughs below expand on the in-notebook narration:</p>
-<ul>
-<li><a href="../notebooks/tutorial-day2-annotation-eval.html">Day 2 — Annotation, gold standards &amp; evaluation</a></li>
-<li><a href="../notebooks/tutorial-day3-move-replication.html">Day 3 — Replicating Kim &amp; Lu with open data</a> — the discourse-move mini-project track.</li>
-</ul>
 <p>When you are ready to run your own study, move on to the <a href="../resources/datasets/mini-project-tracks.html">mini-project starter tracks</a>.</p>
 
 
@@ -1041,21 +1020,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Day <span class="pp">|</span> Notebook <span class="pp">|</span> Tutorial (Part A) <span class="pp">|</span> Corpus Lab (Part B) <span class="pp">|</span></span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|</span></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day1_python_and_first_llm.ipynb`</span><span class="co">](./day1_python_and_first_llm.ipynb)</span> <span class="pp">|</span> Python basics + your first LLM call <span class="pp">|</span> Python practice exercises (self-checked) <span class="pp">|</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2_gold_standards_and_evaluation.ipynb`</span><span class="co">](./day2_gold_standards_and_evaluation.ipynb)</span> <span class="pp">|</span> The pipeline on CEFR-SP (P/R/F1 + confusion matrix) <span class="pp">|</span> Code the metrics from scratch, checked vs. scikit-learn <span class="pp">|</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2_gold_standards_and_evaluation.ipynb`</span><span class="co">](./day2_gold_standards_and_evaluation.ipynb)</span> <span class="pp">|</span> The pipeline on CEFR-SP (P/R/F1 + confusion matrix) <span class="pp">|</span> Annotate a gold set by hand in a Google Sheet (agreement → adjudication → canonical JSON); then code the metrics from scratch <span class="pp">|</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day3_prompt_design.ipynb`</span><span class="co">](./day3_prompt_design.ipynb)</span> <span class="pp">|</span> Zero-shot → few-shot → chain-of-thought on CEFR <span class="pp">|</span> Your own prompt-iteration study *(coming soon)* <span class="pp">|</span></span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day4_pipeline_and_sampling.ipynb`</span><span class="co">](./day4_pipeline_and_sampling.ipynb)</span> <span class="pp">|</span> Sample a balanced gold subset from a pool <span class="pp">|</span> QC &amp; adjudicate your gold set *(coming soon)* <span class="pp">|</span></span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day5_project_finalization.ipynb`</span><span class="co">](./day5_project_finalization.ipynb)</span> <span class="pp">|</span> Assemble the pipeline end-to-end *(coming soon)* | Draft the one-page report *(coming soon)* <span class="pp">|</span></span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deeper notes</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>The prose walkthroughs below expand on the in-notebook narration:</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Day 2 — Annotation, gold standards &amp; evaluation</span><span class="co">](./tutorial-day2-annotation-eval.md)</span></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Day 3 — Replicating Kim &amp; Lu with open data</span><span class="co">](./tutorial-day3-move-replication.md)</span> — the</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  discourse-move mini-project track.</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>When you are ready to run your own study, move on to the</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">mini-project starter tracks</span><span class="co">](../resources/datasets/mini-project-tracks.md)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>When you are ready to run your own study, move on to the</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">mini-project starter tracks</span><span class="co">](../resources/datasets/mini-project-tracks.md)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

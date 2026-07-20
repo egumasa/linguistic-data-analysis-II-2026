@@ -5,11 +5,13 @@ Canonical schema (every gold file, every task):
 
     [{"id": 1, "text": "...", "label": "..."}, ...]
 
-This is an INSTRUCTOR-facing, reproducible build script (stdlib only — no pip installs).
+Reproducible batch build of every gold file at once (stdlib only — no pip installs).
+The per-dataset notebooks in notebooks/ do the same work one dataset at a time, with
+the reshaping steps spelled out; this script is the shortcut when you want them all.
 Run from this directory:
 
-    uv run python prep_datasets.py            # build everything that has raw/ data
-    uv run python prep_datasets.py raamove    # build a single dataset
+    python3 prep_datasets.py            # build everything that has raw/ data
+    python3 prep_datasets.py raamove    # build a single dataset
 
 Outputs go to gold/. Raw inputs are read from raw/ and are git-ignored.
 
