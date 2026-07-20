@@ -69,7 +69,7 @@ client = genai.Client()   # reads GEMINI_API_KEY from the environment
 
 def generate_text(p):
     return client.models.generate_content(
-        model="gemini-2.5-flash",                    # pinned model
+        model="gemini-3.1-flash-lite",               # pinned model
         contents=p,
         config=types.GenerateContentConfig(
             temperature=0,   # greedy decoding — removes sampling randomness
@@ -79,7 +79,7 @@ def generate_text(p):
 ```
 
 The setup cell prints which backend it chose, e.g.
-`LLM backend: Gemini API (gemini-2.5-flash)`. If it still says `Colab Gemini`, your secret isn't set
+`LLM backend: Gemini API (gemini-3.1-flash-lite)`. If it still says `Colab Gemini`, your secret isn't set
 or its notebook-access toggle is off — recheck Step 2.
 
 ::: {.callout-tip}
