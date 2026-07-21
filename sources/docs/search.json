@@ -172,49 +172,49 @@
   {
     "objectID": "sessions/day1/session-02.html",
     "href": "sessions/day1/session-02.html",
-    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 2: Linguistic Analyses & LLM Fundamentals"
+      "Session 2: Colab Onboarding & Your First LLM Call"
     ]
   },
   {
     "objectID": "sessions/day1/session-02.html#learning-objectives",
     "href": "sessions/day1/session-02.html#learning-objectives",
-    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "Learning objectives",
-    "text": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.\nSend a prompt to a language model with generate_text(...), then edit the prompt and re-run.\nRecognise Python’s core data types — str, list, dict — in what the model hands back, and index into a list or dict.\nBuild a prompt from a variable with an f-string.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 2: Linguistic Analyses & LLM Fundamentals"
+      "Session 2: Colab Onboarding & Your First LLM Call"
     ]
   },
   {
     "objectID": "sessions/day1/session-02.html#reading",
     "href": "sessions/day1/session-02.html#reading",
-    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "Reading",
     "text": "Reading",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 2: Linguistic Analyses & LLM Fundamentals"
+      "Session 2: Colab Onboarding & Your First LLM Call"
     ]
   },
   {
     "objectID": "sessions/day1/session-02.html#slides-colab",
     "href": "sessions/day1/session-02.html#slides-colab",
-    "title": "Session 2: Linguistic Analyses & LLM Fundamentals",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "Slides & Colab",
-    "text": "Slides & Colab",
+    "text": "Slides & Colab\n\nNotebook — Part A (guided): day1_python_and_first_llm.ipynb — \nSlides: Session 2 slides",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 2: Linguistic Analyses & LLM Fundamentals"
+      "Session 2: Colab Onboarding & Your First LLM Call"
     ]
   },
   {
@@ -233,7 +233,7 @@
     "href": "sessions/index.html#overview",
     "title": "Course Schedule",
     "section": "Overview",
-    "text": "Overview\nThis intensive 5-day course covers LLM-based linguistic data analysis — annotation and gold-standard construction, prompt design, and evaluation (precision/recall/F1, confusion matrices) — through lectures, tutorials, and hands-on practice, culminating in a group mini-project presentation.\n\n\nDay 1 · Introduction & First Experience — Aug 3 (Mon)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n1\nIntroduction to LLMs & NLP Tasks\nWhat LLMs are and how they fit linguistic analysis; the NLP tasks we’ll tackle; course overview and self-introductions.\n\n\n2\nFirst Experience with LLM Classification\nA quick chat-interface demo, then Google Colab onboarding — sign in, open the notebook, run a cell, edit the prompt, re-run — plus a short “reading Python” orientation.\n\n\n3\nClassical NLP Tasks\nText preprocessing, tokenization, and dictionary look-up using basic Python.\n\n\n\n📖 Reading (before Day 1) — Skim: Abdurahman et al. (2025). See Readings →\n\n\nDay 2 · Annotation, Gold Standards & Metrics — Aug 4 (Tue)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n4\nAnnotation Principles & Inter-Annotator Agreement\nAnnotation principles and the NLP pipeline for applied linguistics; an introduction to gold-standard dataset construction.\n\n\n5\nHands-on: Gold-Standard Annotation & Agreement\nRe-annotate a sample using a prepared scheme; compute inter-annotator agreement; compare against the published gold and against LLM annotations.\n\n\n6\nEvaluation Metrics\nPrecision, recall, F1, and the confusion matrix, with hands-on practice in Colab.\n\n\n\n📖 Reading (before Day 2) — Read: Eguchi & Kyle (2024); optional further reading listed. See Readings →\n\n\nDay 3 · Prompt Design & Iteration — Aug 5 (Wed)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n7\nPrompt Design: Zero-shot vs Few-shot\nPrompt-design principles and strategies for effective prompt engineering.\n\n\n8\nHands-on: LLM Classification & Prompt Iteration\nRun LLM-based text classification in Colab through the provided notebook, and evaluate the outputs with the prepared tools.\n\n\n9\nIterative Prompt Improvement & Error Analysis\nIterate the prompt over 2–3 cycles with error analysis, plus a short under-the-hood walkthrough.\n\n\n\n📖 Reading (before Day 3) — Read: Huang & Mizumoto (2025); Kim & Lu (2024). See Readings →\n\n\nDay 4 · Methodology & Pipeline Assembly — Aug 6 (Thu)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n10\nMethodology: Reproducibility, LLM Limits & Ethics\nReproducibility, LLM limitations (hallucination, data contamination), and ethical issues in LLM-based research.\n\n\n11\nPlenary Pipeline Assembly\nAssemble the project notebook together, step by step; then pick a mini-project track and sample a balanced gold subset from a provided pool.\n\n\n12\nProject Work: QC the Gold Set & Baseline\nA quality-control (adjudication) pass on your sampled gold set, then run a baseline prompt.\n\n\n\n📖 Reading (before Day 4) — Read (in full): Abdurahman et al. (2025). See Readings →\n\n\nDay 5 · Project Finalization & Presentations — Aug 7 (Fri)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n13\nProject Work: Prompt Iteration & Final Evaluation\nIterate your prompt (2–3 cycles), run the final evaluation, and begin the in-class one-page report.\n\n\n14\nProject Work: Finalize Report & Notebook\nFinalize the one-page report, prepare your presentation, and submit the completed notebook.\n\n\n15\nFinal Presentations & Wrap-up\nGroup presentations with instructor Q&A and a course wrap-up discussion.\n\n\n\nNo new reading for Day 5 — project work only.",
+    "text": "Overview\nThis intensive 5-day course covers LLM-based linguistic data analysis — annotation and gold-standard construction, prompt design, and evaluation (precision/recall/F1, confusion matrices) — through lectures, tutorials, and hands-on practice, culminating in a group mini-project presentation.\n\n\nDay 1 · Introduction & First Experience — Aug 3 (Mon)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n1\nIntroduction to LLMs & NLP Tasks\nWhat LLMs are and how they fit linguistic analysis; the NLP tasks we’ll tackle; course overview and self-introductions.\n\n\n2\nColab Onboarding & Your First LLM Call\nGoogle Colab onboarding — sign in, run a cell, read an error — then your first generate_text(...) call, the data types it returns, and building a prompt with an f-string.\n\n\n3\nPython Practice & Mini-Project Setup\nSegment text into sentences (with and without a model), run the model over a list with a for loop and a function, and short Python practice — then form project groups and pick a track.\n\n\n\n📖 Reading (before Day 1) — Skim: Abdurahman et al. (2025). See Readings →\n\n\nDay 2 · Annotation, Gold Standards & Metrics — Aug 4 (Tue)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n4\nAnnotation Principles & Inter-Annotator Agreement\nAnnotation principles and the NLP pipeline for applied linguistics; an introduction to gold-standard dataset construction.\n\n\n5\nHands-on: Gold-Standard Annotation & Agreement\nRe-annotate a sample using a prepared scheme; compute inter-annotator agreement; compare against the published gold and against LLM annotations.\n\n\n6\nEvaluation Metrics\nPrecision, recall, F1, and the confusion matrix, with hands-on practice in Colab.\n\n\n\n📖 Reading (before Day 2) — Read: Eguchi & Kyle (2024); optional further reading listed. See Readings →\n\n\nDay 3 · Prompt Design & Iteration — Aug 5 (Wed)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n7\nPrompt Design: Zero-shot vs Few-shot\nPrompt-design principles and strategies for effective prompt engineering.\n\n\n8\nHands-on: LLM Classification & Prompt Iteration\nRun LLM-based text classification in Colab through the provided notebook, and evaluate the outputs with the prepared tools.\n\n\n9\nIterative Prompt Improvement & Error Analysis\nIterate the prompt over 2–3 cycles with error analysis, plus a short under-the-hood walkthrough.\n\n\n\n📖 Reading (before Day 3) — Read: Huang & Mizumoto (2025); Kim & Lu (2024). See Readings →\n\n\nDay 4 · Methodology & Pipeline Assembly — Aug 6 (Thu)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n10\nMethodology: Reproducibility, LLM Limits & Ethics\nReproducibility, LLM limitations (hallucination, data contamination), and ethical issues in LLM-based research.\n\n\n11\nPlenary Pipeline Assembly\nAssemble the project notebook together, step by step; then pick a mini-project track and sample a balanced gold subset from a provided pool.\n\n\n12\nProject Work: QC the Gold Set & Baseline\nA quality-control (adjudication) pass on your sampled gold set, then run a baseline prompt.\n\n\n\n📖 Reading (before Day 4) — Read (in full): Abdurahman et al. (2025). See Readings →\n\n\nDay 5 · Project Finalization & Presentations — Aug 7 (Fri)\n\n\n\n#\nSession\nWhat we’ll do\n\n\n\n\n13\nProject Work: Prompt Iteration & Final Evaluation\nIterate your prompt (2–3 cycles), run the final evaluation, and begin the in-class one-page report.\n\n\n14\nProject Work: Finalize Report & Notebook\nFinalize the one-page report, prepare your presentation, and submit the completed notebook.\n\n\n15\nFinal Presentations & Wrap-up\nGroup presentations with instructor Q&A and a course wrap-up discussion.\n\n\n\nNo new reading for Day 5 — project work only.",
     "crumbs": [
       "Sessions",
       "Schedule"
@@ -387,7 +387,7 @@
     "href": "sessions/day2/session-05.html#learning-objectives",
     "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
     "section": "Learning objectives",
-    "text": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nDraw a sample of sentences and annotate them by hand against a prepared scheme.\nCompute a simple agreement rate (and Cohen’s κ) between two annotators, and adjudicate the disagreements.\nCompare your adjudicated labels against the published gold standard and interpret the differences.\nImport your annotations back as a canonical {id, text, label} gold set.\n\n\n\n\n\n\n\nNote\n\n\n\nThis hands-on is where the construction objective is assessed — building a gold standard (operationalizing categories and measuring agreement). Give the annotation itself real care; it’s the graded piece.",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -859,16 +859,16 @@
   {
     "objectID": "slides/slides-session-03.html#agenda",
     "href": "slides/slides-session-03.html#agenda",
-    "title": "Session 3: Classical NLP Tasks",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nText preprocessing\nTokenization\nDictionary look-up with basic Python"
+    "text": "📋 Agenda\nPicks up Part B of the Day 1 notebook, then forms project groups.\n\nFrom a document to sentences — segmentation without and with a model\nRun the model over every sentence — for, if, and a function\nYour turn — guided Python practice + self-check\nMini-project setup — form groups and pick a track"
   },
   {
     "objectID": "slides/slides-session-03.html#learning-objectives",
     "href": "slides/slides-session-03.html#learning-objectives",
-    "title": "Session 3: Classical NLP Tasks",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nSplit a paragraph into sentences two ways — naive .split(\".\") and a spaCy sentencizer — and explain why the naive rule fails.\nUse a for loop, an if, and a function (def) to run the model over a list of sentences.\nComplete short Python exercises and confirm them with the self-check.\nForm a project group and pick a mini-project track."
   },
   {
     "objectID": "slides/slides-session-03.html#text-preprocessing-1",
@@ -2013,16 +2013,16 @@
   {
     "objectID": "slides/slides-session-02.html#agenda",
     "href": "slides/slides-session-02.html#agenda",
-    "title": "Session 2: First Experience with LLM Classification",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nA quick chat-interface demo\nGoogle Colab onboarding — sign in, open, run, edit, re-run\nA short “reading Python” orientation"
+    "text": "📋 Agenda\n\nColab basics — run a cell, read an error\nYour first LLM call\nWhat did the model hand back? — data types\nReaching into your data — indexing\nf-strings — put your data into the prompt"
   },
   {
     "objectID": "slides/slides-session-02.html#learning-objectives",
     "href": "slides/slides-session-02.html#learning-objectives",
-    "title": "Session 2: First Experience with LLM Classification",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nSign in to Colab, run a cell (Shift+Enter), and read a Python error well enough to fix a typo.\nSend a prompt with generate_text(...), then edit it and re-run.\nRecognise str / list / dict in what the model hands back, and index into a list or dict.\nBuild a prompt from a variable with an f-string."
   },
   {
     "objectID": "slides/slides-session-02.html#chat-interface-demo-1",
@@ -2435,7 +2435,7 @@
     "href": "sessions/day2/session-06.html#learning-objectives",
     "title": "Session 6: Gold Standards & Evaluation Metrics",
     "section": "Learning objectives",
-    "text": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nRead a gold file as a {id, text, label} list of dicts, and recognise with open(...) for reading/writing data files.\nDefine precision, recall, and F1, and read them off a classification_report.\nRead a confusion matrix and say which classes a model confuses.\nInterpret the metrics critically — what a high or low score does and doesn’t tell you.",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -2483,7 +2483,7 @@
     "href": "sessions/day2/session-04.html#learning-objectives",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Learning objectives",
-    "text": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nExplain what an annotation scheme and coding guidelines are, and why operationalizing a category matters.\nDescribe where annotation sits in an NLP pipeline for applied linguistics (annotate → model → evaluate).\nExplain inter-annotator agreement conceptually — why we double-annotate, and what a simple agreement rate and Cohen’s κ tell you.\nSay what a gold-standard dataset is and how it is constructed.",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -2605,61 +2605,61 @@
   {
     "objectID": "sessions/day1/session-03.html",
     "href": "sessions/day1/session-03.html",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "",
     "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
+      "Session 3: Python Practice & Mini-Project Setup"
     ]
   },
   {
     "objectID": "sessions/day1/session-03.html#learning-objectives",
     "href": "sessions/day1/session-03.html#learning-objectives",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "Learning objectives",
-    "text": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nSplit a paragraph into sentences two ways — a naive .split(\".\") and a spaCy sentencizer — and explain why the naive rule fails on abbreviations and decimals.\nUse a for loop, an if, and a function (def) to run the model over a list of sentences and tidy each reply.\nComplete short Python exercises and confirm them with the notebook’s self-check.\nForm a project group and pick a mini-project track.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
+      "Session 3: Python Practice & Mini-Project Setup"
     ]
   },
   {
     "objectID": "sessions/day1/session-03.html#reading",
     "href": "sessions/day1/session-03.html#reading",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "Reading",
     "text": "Reading",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
+      "Session 3: Python Practice & Mini-Project Setup"
     ]
   },
   {
     "objectID": "sessions/day1/session-03.html#slides-colab",
     "href": "sessions/day1/session-03.html#slides-colab",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "Slides & Colab",
-    "text": "Slides & Colab",
+    "text": "Slides & Colab\n\nNotebook — Part B (practice): day1_python_and_first_llm.ipynb — \nSlides: Session 3 slides",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
+      "Session 3: Python Practice & Mini-Project Setup"
     ]
   },
   {
     "objectID": "sessions/day1/session-03.html#mini-project",
     "href": "sessions/day1/session-03.html#mini-project",
-    "title": "Session 3: Colab Onboarding & Mini-Project Setup",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "Mini-project",
-    "text": "Mini-project\nThis session includes mini-project track selection and group formation. See the Final Project page.",
+    "text": "Mini-project\nThis session closes with mini-project track selection and group formation — each group needs at least one Linguistic Data Analysis I alumnus. Choose your track now so you can start annotating it on Day 2. See the Final Project page.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
-      "Session 3: Colab Onboarding & Mini-Project Setup"
+      "Session 3: Python Practice & Mini-Project Setup"
     ]
   },
   {
@@ -2679,7 +2679,7 @@
     "href": "sessions/day1/session-01.html#learning-objectives",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Learning objectives",
-    "text": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nDescribe, at a high level, what a Large Language Model is and how it differs from the corpus and NLP tools you met in Linguistic Data Analysis I.\nName the NLP tasks this course targets — classification, annotation, and extraction of linguistic features — and give an example of each.\nJudge, from a live chat demo, where an LLM is genuinely useful for linguistic analysis and where its output cannot be trusted at face value.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -2997,5 +2997,329 @@
     "title": "google.colab.ai pre-flight",
     "section": "Step 3b — Does pacing + backoff actually fix it?",
     "text": "Step 3b — Does pacing + backoff actually fix it?\nOnly meaningful if Step 3 hit a per-minute limit. Same 100 prompts, now through generate_guarded. What we want is 100/100 — that would confirm the guidance we give students (pace, back off, retry) genuinely works on this account rather than merely sounding sensible.\nThis is slow by construction: at the paced rate it takes roughly 100 x MIN_INTERVAL seconds. That wall-time is the finding — it tells you how long a full-gold-set lab run will really take.\nSkip it if Step 3 hit a per-day cap; there is nothing left to spend today.\n\n\nShow code\n#@title Step 3b — the same load, guarded\nRUN_STEP_3B = True   #@param {type:\"boolean\"}\nN_GUARDED   = 100    #@param {type:\"integer\"}\n\nif not RUN_STEP_3B:\n    print(\"skipped (RUN_STEP_3B = False)\")\nelif first_fail and first_fail[1] == \"per_day\":\n    print(\"skipped — Step 3 hit a DAILY cap; no quota left to test with today.\")\nelse:\n    g_items = [gold[i % len(gold)] for i in range(N_GUARDED)]\n    g_ok, g_fail, g_first_fail = 0, 0, None\n    t0 = time.time()\n    for i, item in enumerate(g_items, 1):\n        try:\n            _extract_level(generate_guarded(PROMPT.format(text=item[\"text\"])))\n            g_ok += 1\n        except Exception as e:\n            g_fail += 1\n            if g_first_fail is None:\n                g_first_fail = (i, type(e).__name__, str(e)[:160])\n        if i % 20 == 0:\n            print(f\"  ...{i}/{N_GUARDED}  ({g_fail} failures, \"\n                  f\"{time.time()-t0:.0f}s elapsed)\")\n    g_wall = time.time() - t0\n\n    print(f\"\\nGuarded: {g_ok}/{N_GUARDED} succeeded, {g_fail} failed, \"\n          f\"{g_wall:.0f}s ({g_wall/N_GUARDED:.1f}s/call).\")\n    if g_ok == N_GUARDED:\n        print(\"✅ Pacing + backoff fully absorbed the limit. Ship this wrapper in the\")\n        print(\"   day-notebooks and the observed cost is \"\n              f\"~{g_wall/60:.1f} min per 100 calls.\")\n    else:\n        print(f\"⚠️  Still failing ({g_first_fail}). MIN_INTERVAL is too aggressive —\")\n        print(\"   lower ASSUMED_RPM, re-run Setup, and try again.\")"
+  },
+  {
+    "objectID": "sessions/day1/session-01.html#agenda",
+    "href": "sessions/day1/session-01.html#agenda",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Agenda",
+    "text": "Agenda\n\nCourse overview & logistics — the 5-day arc, the mini-project, and how you’ll be graded.\nSelf-introductions — your background, research interests, and any prior programming exposure.\nLLMs as analysis tools — what they are, how they fit linguistic analysis, and the tasks we’ll tackle this week.\nNo-code chat demo — throw real language data at an LLM in the chat interface and read the output critically: what did it get right, and how would we ever know?\nBridge from LDA I — how today’s questions connect to frequency, concordancing, and the metrics you already know.\n\nNo laptop setup is needed today — the hands-on tooling starts in Session 2.",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis"
+    ]
+  },
+  {
+    "objectID": "sessions/day1/session-02.html#agenda",
+    "href": "sessions/day1/session-02.html#agenda",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Agenda",
+    "text": "Agenda\nThis is a guided, run-along session using Part A of the Day 1 notebook. The LLM call is the spine — everything else is just enough Python to read and reshape what the model gives back.\n\nColab basics — run a cell, read an error — sign in, cells and the runtime, Shift+Enter, and how to read a red error.\nYour first LLM call — run the setup cell, then generate_text(...); change the prompt and re-run.\nWhat did the model hand back? — data types (str / list / dict) and [...] indexing, motivated by the reply.\nf-strings — drop a sentence into a prompt with f\"...{sentence}\".\n\nControl flow (for, if, functions) and text segmentation come next, in Session 3.",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 2: Colab Onboarding & Your First LLM Call"
+    ]
+  },
+  {
+    "objectID": "sessions/day1/session-03.html#agenda",
+    "href": "sessions/day1/session-03.html#agenda",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Agenda",
+    "text": "Agenda\nThis session picks up Part B of the Day 1 notebook, then forms project groups.\n\nFrom a document to sentences — segment a paragraph without a model (.split(\".\"), dot-methods) and with a model (spaCy sentencizer); see why sentence boundaries matter for annotation.\nRun the model over every sentence — a for loop + an if, wrapped into a reusable ask(...) function (the seed of the pipeline you’ll assemble later in the week).\nYour turn — the guided Python practice exercises with a self-check.\nMini-project setup — form groups and choose a track (see below).",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 3: Python Practice & Mini-Project Setup"
+    ]
+  },
+  {
+    "objectID": "sessions/day2/session-04.html#agenda",
+    "href": "sessions/day2/session-04.html#agenda",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Agenda",
+    "text": "Agenda\n\nWhy annotation? — from a linguistic construct to labelled data; the {id, text, label} shape.\nAnnotation schemes & coding guidelines — operationalizing a category so two people can apply it consistently.\nInter-annotator agreement (conceptual) — double annotation, percent agreement, and Cohen’s κ; why chance-corrected agreement matters.\nThe pipeline in context — how today’s gold standard feeds the prompt design and evaluation of the coming days (Eguchi & Kyle, 2024).\n\nThis is the conceptual grounding for the hands-on annotation in Session 5.",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+    ]
+  },
+  {
+    "objectID": "sessions/day2/session-05.html#agenda",
+    "href": "sessions/day2/session-05.html#agenda",
+    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
+    "section": "Agenda",
+    "text": "Agenda\nWorks through Part B of the Day 2 notebook — a Google Sheets annotation round-trip.\n\nDraw ~20 sentences from the provided pool for your track.\nAnnotate by hand in a Google Sheet (two annotator columns, so agreement falls out).\nMeasure agreement — percent agreement + Cohen’s κ — then adjudicate the disagreements to a final label.\nCompare to the published gold and import your set back as canonical JSON.\n\nThe Google Sheets round-trip (creating the sheet, annotating, reading it back) is the time-consuming part — pace yourself and don’t skip the adjudication step.",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
+    ]
+  },
+  {
+    "objectID": "sessions/day2/session-06.html#agenda",
+    "href": "sessions/day2/session-06.html#agenda",
+    "title": "Session 6: Gold Standards & Evaluation Metrics",
+    "section": "Agenda",
+    "text": "Agenda\nWorks through Part A of the Day 2 notebook, which runs on frozen predictions — no API key, no live model, so everyone’s numbers come out identical every run.\n\nWarm-up: what a gold file is — parse a {id, text, label} record, index into it, and meet with open(...) for files.\nLoad the gold standard and the frozen predictions the fixed prompt produced.\nRead the evaluation — precision / recall / F1 from a classification_report, then the confusion matrix.\nError analysis — which classes get confused, and what that implies.\n\nYou’ll run the model live yourself from Day 3 onward; today the focus is measuring quality, not producing it.",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 6: Gold Standards & Evaluation Metrics"
+    ]
+  },
+  {
+    "objectID": "slides/slides-session-02.html#how-today-works",
+    "href": "slides/slides-session-02.html#how-today-works",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "How today works",
+    "text": "How today works\n\nSlides give the idea for each step (a minute or two).\nThen you do it in Colab — right away, while it’s fresh.\nType the code, don’t copy it. The little effort is the point: it’s how it sticks.\n\nTwo kinds of Colab moment:\n\n👀 Let’s follow — run the cell together and watch what happens.\n🧪 Let’s try — your turn: change something and re-run.\n\n\n\n\n\n\n\nTip\n\n\nErrors are normal and expected today. Reading them is a skill we practise, not a sign anything is broken."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#what-colab-is",
+    "href": "slides/slides-session-02.html#what-colab-is",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "What Colab is",
+    "text": "What Colab is\nColab = an online Python notebook Google offers (run code without installing anything).\nA notebook = a document of cells you run one at a time.\n\nText cells (like this slide) — notes.\nCode cells — Python that runs on a runtime (a free computer Google lends you in the cloud).\nRun a cell with Shift + Enter.\n\n\nNothing installs on your laptop. If the runtime disconnects, you just re-run the cells."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#why-this-matters",
+    "href": "slides/slides-session-02.html#why-this-matters",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Why this matters",
+    "text": "Why this matters\nThis is the room you’ll work in all week — every session runs here.\n\nAnd one thing will happen: you’ll hit a red error. That’s not failure — it’s Python telling you exactly what it couldn’t do. Read the last line to understand what you’ll need to do."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab",
+    "href": "slides/slides-session-02.html#lets-try-in-colab",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nYour turn:\n\nprint(...) a message of your own.\nThen misspell a word or variable on purpose and read the error you get.\nFix it and re-run.\n\nReading that last line is the whole skill — you’ll use it all week."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#the-whole-idea-in-one-line",
+    "href": "slides/slides-session-02.html#the-whole-idea-in-one-line",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "The whole idea, in one line",
+    "text": "The whole idea, in one line\nYou send the model text (a prompt); it sends text back (a reply).\nreply = generate_text(\"...your prompt...\")\n\n\ngenerate_text(...) does the call (we set it up for you — no API key today).\nreply = ... stores the answer in a variable named reply, so you can use it later."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#why-this-matters-1",
+    "href": "slides/slides-session-02.html#why-this-matters-1",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Why this matters",
+    "text": "Why this matters\nThis one call is the spine of the whole week.\n\nClassification, annotation, evaluation — everything we do is a variation on this: build a prompt, send it, read the reply. Get comfortable here and the rest is reshaping the text around it."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab-1",
+    "href": "slides/slides-session-02.html#lets-try-in-colab-1",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nYour turn — change the prompt and re-run (a different topic, or another language):\nreply = generate_text(\"In one sentence, what is a corpus?\")\nprint(reply)\nSame code, new answer. The prompt is just text you control."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#python-labels-every-value-with-a-type",
+    "href": "slides/slides-session-02.html#python-labels-every-value-with-a-type",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Python labels every value with a type",
+    "text": "Python labels every value with a type\nprint(type(reply))     # &lt;class 'str'&gt; — a string, i.e. text\nThe three types you need all week:\n\nstr — text, in quotes: \"A1\".\nlist — many items in order, in brackets: [\"a\", \"b\", \"c\"].\ndict — a labelled record, in braces: {\"label\": \"A1\"} (key → value)."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#getting-one-item-out-indexing",
+    "href": "slides/slides-session-02.html#getting-one-item-out-indexing",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Getting one item out — indexing",
+    "text": "Getting one item out — indexing\nUse [...] to reach inside:\n\na list by position (starts at 0): sentences[0]\na dict by key: record[\"label\"]"
+  },
+  {
+    "objectID": "slides/slides-session-02.html#why-this-matters-2",
+    "href": "slides/slides-session-02.html#why-this-matters-2",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Why this matters",
+    "text": "Why this matters\nEvery dataset this week is a list of dicts — sentences shaped like {\"id\": ..., \"text\": ..., \"label\": ...}. Reading them is just list + dict indexing."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab-2",
+    "href": "slides/slides-session-02.html#lets-try-in-colab-2",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nYour turn — build your own:\n\na list of three words, and\na dict with keys id, text, and label.\n\nPrint each and check the [ ] / { } match what you intended."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#putting-your-data-into-the-prompt",
+    "href": "slides/slides-session-02.html#putting-your-data-into-the-prompt",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Putting your data into the prompt",
+    "text": "Putting your data into the prompt\nAn f-string is a normal string with an f in front — anything in { } gets swapped for its value:\nsentence = \"Despite the rain, the game went ahead.\"\nprompt = f\"What CEFR level (A1-C2) is this sentence? {sentence}\"\n\n{sentence} becomes the actual sentence text inside the prompt — no copy-paste, no gluing strings together."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#why-this-matters-3",
+    "href": "slides/slides-session-02.html#why-this-matters-3",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Why this matters",
+    "text": "Why this matters\nThe prompt is now built from a variable.\n\nSwap in a different sentence and you get a different prompt — automatically. That’s the mechanism for running one prompt over many sentences, which is exactly what Session 3 turns into a loop."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab-3",
+    "href": "slides/slides-session-02.html#lets-try-in-colab-3",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nYour turn:\n\nChange the 0 in sentences[0] to 1 — what prints?\nAsk for record[\"text\"], then record[\"id\"].\n\nWatch what comes out each time."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#coming-up-in-session-3",
+    "href": "slides/slides-session-02.html#coming-up-in-session-3",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Coming up in Session 3",
+    "text": "Coming up in Session 3\nYou can call the model once. Next: run it over a whole list of sentences —\n\nturn a paragraph into sentences (segmentation),\nloop the call over each with for,\nand wrap it in a reusable function.\n\nThen form your project groups."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#same-rhythm-as-session-2",
+    "href": "slides/slides-session-03.html#same-rhythm-as-session-2",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Same rhythm as Session 2",
+    "text": "Same rhythm as Session 2\n\nSlide for the idea, then do it in Colab.\nType it, don’t copy it.\nIn Part A you called the model once. Today: run it over many sentences — the first taste of a real pipeline."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#the-problem",
+    "href": "slides/slides-session-03.html#the-problem",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "The problem",
+    "text": "The problem\nYour data arrives as paragraphs. But the unit we work with is the sentence. So we need to segment a paragraph into its sentences.\n\nThe obvious idea: cut on every full stop. To do that we call a method on the string — some_text.split(\".\") — using a dot (.) to run a built-in action on that value."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#why-this-matters",
+    "href": "slides/slides-session-03.html#why-this-matters",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Why this matters",
+    "text": "Why this matters\nThe naive rule looks fine — until it isn’t. Abbreviations and decimals contain dots that aren’t sentence ends.\n\nBad boundaries corrupt everything downstream. So it’s worth seeing the naive rule fail before we reach for a better tool."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-naive-split",
+    "href": "slides/slides-session-03.html#lets-try-naive-split",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — naive split",
+    "text": "🧪 Let’s try — naive split\nparagraph = (\"Dr. Smith reviewed the data. The results were clear, \"\n             \"e.g. accuracy rose. Scores went from 3.14 to 9.\")\n\nnaive = paragraph.split(\".\")     # cut the string at every \".\"\nfor piece in naive:\n    print(repr(piece))\n\nLook at the mess: \"Dr\" (from Dr.), \"e\" and \"g\" (from e.g.), \"3\" and \"14\" (from 3.14) all split in the wrong places. Sentence boundaries are not just full stops."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#borrow-a-real-tool",
+    "href": "slides/slides-session-03.html#borrow-a-real-tool",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Borrow a real tool",
+    "text": "Borrow a real tool\nInstead of our own rule, we import a purpose-built library, spaCy:\nimport spacy\nnlp = spacy.blank(\"en\")          # a minimal English pipeline\nnlp.add_pipe(\"sentencizer\")      # a rule-based sentence splitter — no download\n\nimport spacy loads the toolbox.\nThe sentencizer knows abbreviations and decimals aren’t sentence ends."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#why-this-matters-1",
+    "href": "slides/slides-session-03.html#why-this-matters-1",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Why this matters",
+    "text": "Why this matters\n\n\n\n\n\n\nImportant\n\n\nOn Day 2, the sentence is the unit you annotate by hand and the unit you feed the LLM. Bad boundaries → bad gold data → misleading scores.\n\n\n\nGetting segmentation right is not a side quest — it’s the foundation the whole gold standard sits on."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-the-sentencizer",
+    "href": "slides/slides-session-03.html#lets-try-the-sentencizer",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — the sentencizer",
+    "text": "🧪 Let’s try — the sentencizer\ndoc = nlp(paragraph)\nsentences = list(doc.sents)      # spaCy's sentences, as a list\nfor s in sentences:\n    print(repr(s.text))\n\nCompare to the naive split: Dr. Smith, e.g., and 3.14 stay intact. You now have a real list of sentences — exactly what step 3 loops over."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#three-small-pieces-of-python",
+    "href": "slides/slides-session-03.html#three-small-pieces-of-python",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Three small pieces of Python",
+    "text": "Three small pieces of Python\n\nfor — repeat the same steps for every item in a list.\nif — react to what comes back (e.g. flag an empty reply).\ndef — package the steps into a reusable function you can call by name.\n\n\nTogether: for each sentence → build a prompt → call the model → tidy the reply."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#why-this-matters-2",
+    "href": "slides/slides-session-03.html#why-this-matters-2",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Why this matters",
+    "text": "Why this matters\nThis little loop is the seed of the pipeline you’ll assemble later in the week.\n\nAnnotation, classification, evaluation — all of it is “run this call over a list and collect the results.” Write it once here; reuse the shape all week."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-the-loop",
+    "href": "slides/slides-session-03.html#lets-try-the-loop",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — the loop",
+    "text": "🧪 Let’s try — the loop\nfor sentence in examples:\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    reply = generate_text(prompt).strip()\n    if reply == \"\":\n        reply = \"(no answer)\"\n    print(sentence, \"→\", reply)"
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-wrap-it-in-a-function",
+    "href": "slides/slides-session-03.html#lets-try-wrap-it-in-a-function",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — wrap it in a function",
+    "text": "🧪 Let’s try — wrap it in a function\nSame three steps, packaged so you can reuse them:\ndef ask(sentence):\n    \"\"\"Ask the model for the CEFR level of one sentence; return its reply.\"\"\"\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    return generate_text(prompt).strip()\n\nprint(ask(\"Despite the rain, the game went ahead.\"))\nNow labelling a sentence is just ask(...)."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#guided-practice",
+    "href": "slides/slides-session-03.html#guided-practice",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Guided practice",
+    "text": "Guided practice\nIn the notebook, a few cells ask you to replace NotImplementedError with a line or two — e.g. long_words, count_labels. Then a self-check cell tells you if they pass.\n\n\n\n\n\n\n\nPython you’ll read but not write\n\n\nSome library cells use a list comprehension like [row[\"label\"] for row in rows] — read it as “the label of every row.” You never have to write these; just recognise them."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#mini-project-setup",
+    "href": "slides/slides-session-03.html#mini-project-setup",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Mini-project setup",
+    "text": "Mini-project setup\n\nForm a group — each needs at least one Linguistic Data Analysis I alumnus.\nPick one of the four tracks (datasets) — this is what you’ll annotate on Day 2.\nRecord your group and track where the instructor asks.\n\n\nChoosing now means you can start annotating right away on Day 2. See the Final Project page for the tracks."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#first-whats-a-variable",
+    "href": "slides/slides-session-02.html#first-whats-a-variable",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "First — what’s a variable?",
+    "text": "First — what’s a variable?\nA variable is a named box that stores a value.\nlevel = \"A1\"        # make a box called `level`, put \"A1\" in it\nprint(level)        # A1  — get the value back by its name\n\nname = value — the = means “store this”, not “equals”.\nOnce stored, reuse the value anywhere just by writing its name.\n\n\nNext we’ll store the model’s reply in a box called reply."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#a-few-more-types",
+    "href": "slides/slides-session-02.html#a-few-more-types",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "A few more types",
+    "text": "A few more types\nHere are some more frequent variable types.\n\nint — whole numbers: 42\nfloat — decimals: 3.14\nbool — True / False\ntuple — like a list, but fixed and can’t be changed: (1, 2)\nNone — “nothing here yet”\n\nNo need to memorise — when you see one, you’ll know it’s just another kind of value."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nRun your first cell:\nprint(\"Hello, Colab! You just ran your first cell.\")\n\nNow break it on purpose — a typo — and run it:\nprint(mesage)      # 'mesage' was never defined\nRead the last line of the red box:\nNameError: name 'mesage' is not defined\n→ error type · message · line number."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-1",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab-1",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nRun the 📦 Setup cell first, then run this together:\nreply = generate_text(\"In one sentence, what is applied linguistics?\")\nprint(reply)\nThe model’s answer prints out. You just called an LLM from Python."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-2",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab-2",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nRun this together — build a list of sentences and a dict record, then print each whole:\nsentences = [\"The cat sat on the mat.\",          # a list of strings\n             \"Despite the rain, the game went ahead.\"]\nrecord = {\"id\": 1, \"text\": \"The cat sat on the mat.\", \"label\": \"A1\"}   # a dict\n\nprint(sentences)     # the whole list  — note the [ ... ]\nprint(record)        # the whole dict  — note the { key: value ... }"
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-3",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab-3",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nReuse the sentences and record you just built — now reach inside them:\nprint(\"first sentence:\", sentences[0])       # list — index by position\nprint(\"its gold label:\", record[\"label\"])    # dict — index by key"
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-4",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab-4",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nRun this together — build a prompt from a variable, then send it:\nsentence = \"Despite the rain, the game went ahead.\"\nprompt = f\"What CEFR level (A1-C2) is this sentence? {sentence}\"\nreply = generate_text(prompt)\nprint(reply)"
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab-4",
+    "href": "slides/slides-session-02.html#lets-try-in-colab-4",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nChange sentence to one of your own and re-run.\n\nYou built a prompt from data and sent it — the core move of the whole course."
   }
 ]

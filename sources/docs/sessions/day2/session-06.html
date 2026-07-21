@@ -211,13 +211,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../sessions/day1/session-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 2: Linguistic Analyses &amp; LLM Fundamentals</span></a>
+ <span class="menu-text">Session 2: Colab Onboarding &amp; Your First LLM Call</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../sessions/day1/session-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 3: Colab Onboarding &amp; Mini-Project Setup</span></a>
+ <span class="menu-text">Session 3: Python Practice &amp; Mini-Project Setup</span></a>
   </div>
 </li>
       </ul>
@@ -390,6 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#agenda" id="toc-agenda" class="nav-link" data-scroll-target="#agenda">Agenda</a></li>
   <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
   <li><a href="#slides-colab" id="toc-slides-colab" class="nav-link" data-scroll-target="#slides-colab">Slides &amp; Colab</a></li>
   </ul>
@@ -434,7 +435,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<!-- to be added -->
+<p>By the end of this session you will be able to:</p>
+<ul>
+<li>Read a gold file as a <code>{id, text, label}</code> list of dicts, and recognise <code>with open(...)</code> for reading/writing data files.</li>
+<li>Define precision, recall, and F1, and read them off a <code>classification_report</code>.</li>
+<li>Read a confusion matrix and say which classes a model confuses.</li>
+<li>Interpret the metrics critically — what a high or low score does and doesn’t tell you.</li>
+</ul>
+</section>
+<section id="agenda" class="level2">
+<h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
+<p>Works through <strong>Part A</strong> of the Day 2 notebook, which runs on <strong>frozen predictions</strong> — no API key, no live model, so everyone’s numbers come out identical every run.</p>
+<ol type="1">
+<li><strong>Warm-up: what a gold file is</strong> — parse a <code>{id, text, label}</code> record, index into it, and meet <code>with open(...)</code> for files.</li>
+<li><strong>Load the gold standard and the frozen predictions</strong> the fixed prompt produced.</li>
+<li><strong>Read the evaluation</strong> — precision / recall / F1 from a <code>classification_report</code>, then the <strong>confusion matrix</strong>.</li>
+<li><strong>Error analysis</strong> — which classes get confused, and what that implies.</li>
+</ol>
+<p>You’ll run the model live yourself from Day 3 onward; today the focus is <em>measuring</em> quality, not producing it.</p>
 </section>
 <section id="reading" class="level2">
 <h2 class="anchored" data-anchor-id="reading">Reading</h2>
@@ -926,17 +944,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Abdurahman, S., Salkhordeh Ziabari, A., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <span class="ot">&lt;https://doi.org/10.1177/25152459251325174&gt;</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Read a gold file as a <span class="in">`{id, text, label}`</span> list of dicts, and recognise <span class="in">`with open(...)`</span> for reading/writing data files.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define precision, recall, and F1, and read them off a <span class="in">`classification_report`</span>.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Read a confusion matrix and say which classes a model confuses.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Interpret the metrics critically — what a high or low score does and doesn't tell you.</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Notebook (tutorial + Corpus Lab): <span class="co">[</span><span class="ot">`day2_gold_standards_and_evaluation.ipynb`</span><span class="co">](../../notebooks/day2_gold_standards_and_evaluation.ipynb)</span> —</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 6 slides](../../slides/slides-session-06.html){target="_blank"} --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>Works through **Part A** of the Day 2 notebook, which runs on **frozen predictions** — no API key, no live model, so everyone's numbers come out identical every run.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Warm-up: what a gold file is** — parse a <span class="in">`{id, text, label}`</span> record, index into it, and meet <span class="in">`with open(...)`</span> for files.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Load the gold standard and the frozen predictions** the fixed prompt produced.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Read the evaluation** — precision / recall / F1 from a `classification_report`, then the **confusion matrix**.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Error analysis** — which classes get confused, and what that implies.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>You'll run the model live yourself from Day 3 onward; today the focus is *measuring* quality, not producing it.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Abdurahman, S., Salkhordeh Ziabari, A., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <span class="ot">&lt;https://doi.org/10.1177/25152459251325174&gt;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Notebook (tutorial + Corpus Lab): <span class="co">[</span><span class="ot">`day2_gold_standards_and_evaluation.ipynb`</span><span class="co">](../../notebooks/day2_gold_standards_and_evaluation.ipynb)</span> —</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 6 slides](../../slides/slides-session-06.html){target="_blank"} --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

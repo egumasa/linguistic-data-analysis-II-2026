@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Masaki EGUCHI, Ph.D.">
-  <title>Linguistic Data Analysis II (Summer 2026) – Session 2: First Experience with LLM Classification</title>
+  <title>Linguistic Data Analysis II (Summer 2026) – Session 2: Colab Onboarding &amp; Your First LLM Call</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,6 +28,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7319ef940ecc18a51fa7d51b60c4dbfa.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -129,7 +195,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Session 2: First Experience with LLM Classification</h1>
+  <h1 class="title">Session 2: Colab Onboarding &amp; Your First LLM Call</h1>
   <p class="subtitle">Day 1 · Introduction &amp; First Experience (1-2)</p>
 
 <div class="quarto-title-authors">
@@ -141,61 +207,286 @@ Masaki EGUCHI, Ph.D.
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-</section>
 <section>
-<section id="session-2-first-experience-with-llm-classification" class="title-slide slide level1 center">
-<h1>Session 2: First Experience with LLM Classification</h1>
+<section id="session-2-colab-onboarding-your-first-llm-call" class="title-slide slide level1 center">
+<h1>Session 2: Colab Onboarding &amp; Your First LLM Call</h1>
 
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
-<ul>
-<li>A quick chat-interface demo</li>
-<li>Google Colab onboarding — sign in, open, run, edit, re-run</li>
-<li>A short “reading Python” orientation</li>
-</ul>
+<ol type="1">
+<li>Colab basics — run a cell, read an error</li>
+<li>Your first LLM call</li>
+<li>What did the model hand back? — data types</li>
+<li>Reaching into your data — indexing</li>
+<li>f-strings — put your data <em>into</em> the prompt</li>
+</ol>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Sign in to Colab, run a cell (Shift+Enter), and <strong>read a Python error</strong> well enough to fix a typo.</li>
+<li>Send a prompt with <code>generate_text(...)</code>, then edit it and re-run.</li>
+<li>Recognise <code>str</code> / <code>list</code> / <code>dict</code> in what the model hands back, and <strong>index</strong> into a list or dict.</li>
+<li>Build a prompt from a variable with an <strong>f-string</strong>.</li>
+</ul>
+</section>
+<section id="how-today-works" class="slide level2 smaller">
+<h2>How today works</h2>
+<ul>
+<li>Slides give the <strong>idea</strong> for each step (a minute or two).</li>
+<li>Then you <strong>do it in Colab</strong> — right away, while it’s fresh.</li>
+<li><strong>Type the code, don’t copy it.</strong> The little effort is the point: it’s how it sticks.</li>
+</ul>
+<p>Two kinds of Colab moment:</p>
+<ul>
+<li><strong>👀 Let’s follow</strong> — run the cell together and watch what happens.</li>
+<li><strong>🧪 Let’s try</strong> — your turn: change something and re-run.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Errors are normal and expected today. Reading them is a skill we practise, not a sign anything is broken.</p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="chat-interface-demo" class="title-slide slide level1 center">
-<h1>Chat-interface demo</h1>
+<section id="colab-basics-run-a-cell-read-an-error" class="title-slide slide level1 center">
+<h1>1 · Colab basics — run a cell, read an error</h1>
 
 </section>
-<section id="chat-interface-demo-1" class="slide level2">
-<h2>Chat-interface demo</h2>
-<!-- to be added -->
+<section id="what-colab-is" class="slide level2">
+<h2>What Colab is</h2>
+<p><strong>Colab</strong> = an online Python notebook Google offers (run code without installing anything).</p>
+<p>A <strong>notebook</strong> = a document of <strong>cells</strong> you run one at a time.</p>
+<ul>
+<li><strong>Text cells</strong> (like this slide) — notes.</li>
+<li><strong>Code cells</strong> — Python that runs on a <strong>runtime</strong> (a free computer Google lends you in the cloud).</li>
+<li>Run a cell with <strong>Shift + Enter</strong>.</li>
+</ul>
+<div class="fragment">
+<p>Nothing installs on your laptop. If the runtime disconnects, you just re-run the cells.</p>
+</div>
+</section>
+<section id="why-this-matters" class="slide level2">
+<h2>Why this matters</h2>
+<p>This is the <strong>room you’ll work in all week</strong> — every session runs here.</p>
+<div class="fragment">
+<p>And one thing <em>will</em> happen: you’ll hit a <strong>red error</strong>. That’s not failure — it’s Python telling you exactly what it couldn’t do. <strong>Read the last line</strong> to understand what you’ll need to do.</p>
+</div>
+</section>
+<section id="lets-follow-in-colab" class="slide level2 smaller">
+<h2>👀 Let’s follow — in Colab</h2>
+<p>Run your first cell:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="bu">print</span>(<span class="st">"Hello, Colab! You just ran your first cell."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Now break it on purpose — a typo — and run it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="bu">print</span>(mesage)      <span class="co"># 'mesage' was never defined</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Read the <strong>last line</strong> of the red box:</p>
+<pre><code>NameError: name 'mesage' is not defined</code></pre>
+<p>→ <strong>error type</strong> · <strong>message</strong> · <strong>line number</strong>.</p>
+</div>
+</section>
+<section id="lets-try-in-colab" class="slide level2 smaller">
+<h2>🧪 Let’s try — in Colab</h2>
+<p>Your turn:</p>
+<ul>
+<li><code>print(...)</code> a message of your own.</li>
+<li>Then <strong>misspell</strong> a word or variable on purpose and read the error you get.</li>
+<li>Fix it and re-run.</li>
+</ul>
+<p>Reading that last line is the whole skill — you’ll use it all week.</p>
 </section></section>
 <section>
-<section id="google-colab-onboarding" class="title-slide slide level1 center">
-<h1>Google Colab onboarding</h1>
+<section id="your-first-llm-call" class="title-slide slide level1 center">
+<h1>2 · Your first LLM call</h1>
 
 </section>
-<section id="google-colab-onboarding-1" class="slide level2">
-<h2>Google Colab onboarding</h2>
-<!-- to be added -->
+<section id="first-whats-a-variable" class="slide level2 smaller">
+<h2>First — what’s a variable?</h2>
+<p>A <strong>variable</strong> is a <strong>named box</strong> that stores a value.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>level <span class="op">=</span> <span class="st">"A1"</span>        <span class="co"># make a box called `level`, put "A1" in it</span></span>
+<span id="cb4-2"><a></a><span class="bu">print</span>(level)        <span class="co"># A1  — get the value back by its name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>name = value</code> — the <code>=</code> means <strong>“store this”</strong>, not “equals”.</li>
+<li>Once stored, reuse the value anywhere just by writing its name.</li>
+</ul>
+<div class="fragment">
+<p>Next we’ll store the model’s reply in a box called <code>reply</code>.</p>
+</div>
+</section>
+<section id="the-whole-idea-in-one-line" class="slide level2 smaller">
+<h2>The whole idea, in one line</h2>
+<p>You send the model <strong>text</strong> (a <em>prompt</em>); it sends <strong>text</strong> back (a <em>reply</em>).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"...your prompt..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li><code>generate_text(...)</code> does the call (we set it up for you — no API key today).</li>
+<li><code>reply = ...</code> <strong>stores</strong> the answer in a variable named <code>reply</code>, so you can use it later.</li>
+</ul>
+</div>
+</section>
+<section id="why-this-matters-1" class="slide level2">
+<h2>Why this matters</h2>
+<p>This one call is the <strong>spine of the whole week</strong>.</p>
+<div class="fragment">
+<p>Classification, annotation, evaluation — everything we do is a <em>variation on this</em>: build a prompt, send it, read the reply. Get comfortable here and the rest is reshaping the text around it.</p>
+</div>
+</section>
+<section id="lets-follow-in-colab-1" class="slide level2 smaller">
+<h2>👀 Let’s follow — in Colab</h2>
+<p>Run the <strong>📦 Setup</strong> cell first, then run this together:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)</span>
+<span id="cb6-2"><a></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The model’s answer prints out. You just called an LLM from Python.</p>
+</section>
+<section id="lets-try-in-colab-1" class="slide level2 smaller">
+<h2>🧪 Let’s try — in Colab</h2>
+<p>Your turn — <strong>change the prompt</strong> and re-run (a different topic, or another language):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is a corpus?"</span>)</span>
+<span id="cb7-2"><a></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Same code, new answer. The prompt is just text you control.</p>
 </section></section>
 <section>
-<section id="reading-python" class="title-slide slide level1 center">
-<h1>Reading Python</h1>
+<section id="what-did-the-model-hand-back" class="title-slide slide level1 center">
+<h1>3 · What did the model hand back?</h1>
 
 </section>
-<section id="reading-python-1" class="slide level2">
-<h2>Reading Python</h2>
-<!-- to be added -->
+<section id="python-labels-every-value-with-a-type" class="slide level2 smaller">
+<h2>Python labels every value with a <strong>type</strong></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="bu">print</span>(<span class="bu">type</span>(reply))     <span class="co"># &lt;class 'str'&gt; — a string, i.e. text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The three types you need all week:</p>
+<ul>
+<li><strong><code>str</code></strong> — text, in quotes: <code>"A1"</code>.</li>
+<li><strong><code>list</code></strong> — many items in order, in brackets: <code>["a", "b", "c"]</code>.</li>
+<li><strong><code>dict</code></strong> — a labelled record, in braces: <code>{"label": "A1"}</code> (key → value).</li>
+</ul>
+</section>
+<section id="a-few-more-types" class="slide level2 smaller">
+<h2>A few more types</h2>
+<p>Here are some more frequent variable types.</p>
+<ul>
+<li><strong><code>int</code></strong> — whole numbers: <code>42</code></li>
+<li><strong><code>float</code></strong> — decimals: <code>3.14</code></li>
+<li><strong><code>bool</code></strong> — <code>True</code> / <code>False</code></li>
+<li><strong><code>tuple</code></strong> — like a list, but fixed and can’t be changed: <code>(1, 2)</code></li>
+<li><strong><code>None</code></strong> — “nothing here yet”</li>
+</ul>
+<p>No need to memorise — when you see one, you’ll know it’s just another kind of value.</p>
+</section>
+<section id="lets-follow-in-colab-2" class="slide level2 smaller">
+<h2>👀 Let’s follow — in Colab</h2>
+<p>Run this together — build a <strong>list</strong> of sentences and a <strong>dict</strong> record, then print each whole:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>sentences <span class="op">=</span> [<span class="st">"The cat sat on the mat."</span>,          <span class="co"># a list of strings</span></span>
+<span id="cb9-2"><a></a>             <span class="st">"Despite the rain, the game went ahead."</span>]</span>
+<span id="cb9-3"><a></a>record <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"The cat sat on the mat."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>}   <span class="co"># a dict</span></span>
+<span id="cb9-4"><a></a></span>
+<span id="cb9-5"><a></a><span class="bu">print</span>(sentences)     <span class="co"># the whole list  — note the [ ... ]</span></span>
+<span id="cb9-6"><a></a><span class="bu">print</span>(record)        <span class="co"># the whole dict  — note the { key: value ... }</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lets-try-in-colab-2" class="slide level2 smaller">
+<h2>🧪 Let’s try — in Colab</h2>
+<p>Your turn — build your own:</p>
+<ul>
+<li>a <strong>list</strong> of three words, and</li>
+<li>a <strong>dict</strong> with keys <code>id</code>, <code>text</code>, and <code>label</code>.</li>
+</ul>
+<p>Print each and check the <code>[ ]</code> / <code>{ }</code> match what you intended.</p>
 </section></section>
+<section>
+<section id="reaching-into-your-data-indexing" class="title-slide slide level1 center">
+<h1>4 · Reaching into your data — indexing</h1>
+
+</section>
+<section id="getting-one-item-out-indexing" class="slide level2">
+<h2>Getting one item out — indexing</h2>
+<p>Use <strong><code>[...]</code></strong> to reach inside:</p>
+<ul>
+<li>a <strong>list</strong> by <em>position</em> (starts at <strong>0</strong>): <code>sentences[0]</code></li>
+<li>a <strong>dict</strong> by <em>key</em>: <code>record["label"]</code></li>
+</ul>
+</section>
+<section id="why-this-matters-2" class="slide level2">
+<h2>Why this matters</h2>
+<p>Every dataset this week is a <strong><code>list</code> of <code>dict</code>s</strong> — sentences shaped like <code>{"id": ..., "text": ..., "label": ...}</code>. Reading them is just list + dict indexing.</p>
+</section>
+<section id="lets-follow-in-colab-3" class="slide level2 smaller">
+<h2>👀 Let’s follow — in Colab</h2>
+<p>Reuse the <code>sentences</code> and <code>record</code> you just built — now reach <strong>inside</strong> them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="bu">print</span>(<span class="st">"first sentence:"</span>, sentences[<span class="dv">0</span>])       <span class="co"># list — index by position</span></span>
+<span id="cb10-2"><a></a><span class="bu">print</span>(<span class="st">"its gold label:"</span>, record[<span class="st">"label"</span>])    <span class="co"># dict — index by key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lets-try-in-colab-3" class="slide level2 smaller">
+<h2>🧪 Let’s try — in Colab</h2>
+<p>Your turn:</p>
+<ul>
+<li>Change the <code>0</code> in <code>sentences[0]</code> to <code>1</code> — what prints?</li>
+<li>Ask for <code>record["text"]</code>, then <code>record["id"]</code>.</li>
+</ul>
+<p>Watch what comes out each time.</p>
+</section></section>
+<section>
+<section id="f-strings" class="title-slide slide level1 center">
+<h1>5 · f-strings</h1>
+
+</section>
+<section id="putting-your-data-into-the-prompt" class="slide level2 smaller">
+<h2>Putting your data <em>into</em> the prompt</h2>
+<p>An <strong>f-string</strong> is a normal string with an <code>f</code> in front — anything in <code>{ }</code> gets swapped for its value:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>sentence <span class="op">=</span> <span class="st">"Despite the rain, the game went ahead."</span></span>
+<span id="cb11-2"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><code>{sentence}</code> becomes the actual sentence text inside the prompt — no copy-paste, no gluing strings together.</p>
+</div>
+</section>
+<section id="why-this-matters-3" class="slide level2">
+<h2>Why this matters</h2>
+<p>The prompt is now <strong>built from a variable</strong>.</p>
+<div class="fragment">
+<p>Swap in a different sentence and you get a different prompt — automatically. That’s the mechanism for running <strong>one prompt over many sentences</strong>, which is exactly what Session 3 turns into a loop.</p>
+</div>
+</section>
+<section id="lets-follow-in-colab-4" class="slide level2 smaller">
+<h2>👀 Let’s follow — in Colab</h2>
+<p>Run this together — build a prompt from a variable, then send it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>sentence <span class="op">=</span> <span class="st">"Despite the rain, the game went ahead."</span></span>
+<span id="cb12-2"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb12-3"><a></a>reply <span class="op">=</span> generate_text(prompt)</span>
+<span id="cb12-4"><a></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lets-try-in-colab-4" class="slide level2 smaller">
+<h2>🧪 Let’s try — in Colab</h2>
+<p>Change <code>sentence</code> to one of your own and re-run.</p>
+<div class="fragment">
+<p>You built a prompt from data and sent it — the core move of the whole course.</p>
+</div>
+</section></section>
+<section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
 
-
-
 </section>
+<section id="coming-up-in-session-3" class="slide level2">
+<h2>Coming up in Session 3</h2>
+<p>You can call the model <strong>once</strong>. Next: run it over a <strong>whole list of sentences</strong> —</p>
+<ul>
+<li>turn a paragraph into sentences (segmentation),</li>
+<li>loop the call over each with <code>for</code>,</li>
+<li>and wrap it in a reusable function.</li>
+</ul>
+<p>Then form your project groups.</p>
+
+
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

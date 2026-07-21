@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Session 3: Colab Onboarding &amp; Mini-Project Setup – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Session 3: Python Practice &amp; Mini-Project Setup – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -167,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day1/session-01.html">Day 1 · Introduction &amp; First Experience</a></li><li class="breadcrumb-item"><a href="../../sessions/day1/session-03.html">Session 3: Colab Onboarding &amp; Mini-Project Setup</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day1/session-01.html">Day 1 · Introduction &amp; First Experience</a></li><li class="breadcrumb-item"><a href="../../sessions/day1/session-03.html">Session 3: Python Practice &amp; Mini-Project Setup</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -211,13 +211,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../sessions/day1/session-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 2: Linguistic Analyses &amp; LLM Fundamentals</span></a>
+ <span class="menu-text">Session 2: Colab Onboarding &amp; Your First LLM Call</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../sessions/day1/session-03.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Session 3: Colab Onboarding &amp; Mini-Project Setup</span></a>
+ <span class="menu-text">Session 3: Python Practice &amp; Mini-Project Setup</span></a>
   </div>
 </li>
       </ul>
@@ -390,6 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#agenda" id="toc-agenda" class="nav-link" data-scroll-target="#agenda">Agenda</a></li>
   <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
   <li><a href="#slides-colab" id="toc-slides-colab" class="nav-link" data-scroll-target="#slides-colab">Slides &amp; Colab</a></li>
   <li><a href="#mini-project" id="toc-mini-project" class="nav-link" data-scroll-target="#mini-project">Mini-project</a></li>
@@ -399,9 +400,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day1/session-01.html">Day 1 · Introduction &amp; First Experience</a></li><li class="breadcrumb-item"><a href="../../sessions/day1/session-03.html">Session 3: Colab Onboarding &amp; Mini-Project Setup</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../sessions/day1/session-01.html">Day 1 · Introduction &amp; First Experience</a></li><li class="breadcrumb-item"><a href="../../sessions/day1/session-03.html">Session 3: Python Practice &amp; Mini-Project Setup</a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Session 3: Colab Onboarding &amp; Mini-Project Setup</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Session 3: Python Practice &amp; Mini-Project Setup</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 <p class="subtitle lead">Day 1 · Introduction &amp; First Experience (1-3)</p>
 </div>
 
@@ -435,7 +436,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<!-- to be added -->
+<p>By the end of this session you will be able to:</p>
+<ul>
+<li>Split a paragraph into sentences two ways — a naive <code>.split(".")</code> and a spaCy sentencizer — and explain why the naive rule fails on abbreviations and decimals.</li>
+<li>Use a <code>for</code> loop, an <code>if</code>, and a function (<code>def</code>) to run the model over a list of sentences and tidy each reply.</li>
+<li>Complete short Python exercises and confirm them with the notebook’s self-check.</li>
+<li>Form a project group and pick a mini-project track.</li>
+</ul>
+</section>
+<section id="agenda" class="level2">
+<h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
+<p>This session picks up <strong>Part B</strong> of the Day 1 notebook, then forms project groups.</p>
+<ol type="1">
+<li><strong>From a document to sentences</strong> — segment a paragraph <em>without</em> a model (<code>.split(".")</code>, dot-methods) and <em>with</em> a model (spaCy sentencizer); see why sentence boundaries matter for annotation.</li>
+<li><strong>Run the model over every sentence</strong> — a <code>for</code> loop + an <code>if</code>, wrapped into a reusable <code>ask(...)</code> function (the seed of the pipeline you’ll assemble later in the week).</li>
+<li><strong>Your turn</strong> — the guided Python practice exercises with a self-check.</li>
+<li><strong>Mini-project setup</strong> — form groups and choose a track (see below).</li>
+</ol>
 </section>
 <section id="reading" class="level2">
 <h2 class="anchored" data-anchor-id="reading">Reading</h2>
@@ -443,16 +460,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="slides-colab" class="level2">
 <h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
-<!-- Notebook not yet finalized:
-- Notebook (tutorial + Corpus Lab): [`day1_python_and_first_llm.ipynb`](../../notebooks/day1_python_and_first_llm.ipynb) — Python basics + your first LLM call —
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day1_python_and_first_llm.ipynb)
--->
-<!-- Colab notebook link: to be added -->
-<!-- Slides: [Session 3 slides](../../slides/slides-session-03.html){target="_blank"} -->
+<ul>
+<li>Notebook — <strong>Part B</strong> (practice): <a href="../../notebooks/day1_python_and_first_llm.html"><code>day1_python_and_first_llm.ipynb</code></a> — <a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day1_python_and_first_llm.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open In Colab"></a></li>
+<li>Slides: <a href="../../slides/slides-session-03.html" target="_blank">Session 3 slides</a></li>
+</ul>
 </section>
 <section id="mini-project" class="level2">
 <h2 class="anchored" data-anchor-id="mini-project">Mini-project</h2>
-<p>This session includes mini-project track selection and group formation. See the <a href="../../final-project/index.html">Final Project</a> page.</p>
+<p>This session closes with mini-project <strong>track selection and group formation</strong> — each group needs at least one <em>Linguistic Data Analysis I</em> alumnus. Choose your track now so you can start annotating it on Day 2. See the <a href="../../final-project/index.html">Final Project</a> page.</p>
 
 
 <!-- -->
@@ -919,7 +934,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Session 3: Colab Onboarding &amp; Mini-Project Setup"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Session 3: Python Practice &amp; Mini-Project Setup"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Day 1 · Introduction &amp; First Experience (1-3)"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
@@ -932,21 +947,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Notebook not yet finalized:</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">- Notebook (tutorial + Corpus Lab): [`day1_python_and_first_llm.ipynb`](../../notebooks/day1_python_and_first_llm.ipynb) — Python basics + your first LLM call —</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day1_python_and_first_llm.ipynb)</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 3 slides](../../slides/slides-session-03.html){target="_blank"} --&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mini-project</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>This session includes mini-project track selection and group formation. See the <span class="co">[</span><span class="ot">Final Project</span><span class="co">](../../final-project/index.md)</span> page.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Split a paragraph into sentences two ways — a naive <span class="in">`.split(".")`</span> and a spaCy sentencizer — and explain why the naive rule fails on abbreviations and decimals.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use a <span class="in">`for`</span> loop, an <span class="in">`if`</span>, and a function (<span class="in">`def`</span>) to run the model over a list of sentences and tidy each reply.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Complete short Python exercises and confirm them with the notebook's self-check.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Form a project group and pick a mini-project track.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>This session picks up **Part B** of the Day 1 notebook, then forms project groups.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**From a document to sentences** — segment a paragraph *without* a model (`.split(".")`, dot-methods) and *with* a model (spaCy sentencizer); see why sentence boundaries matter for annotation.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Run the model over every sentence** — a <span class="in">`for`</span> loop + an <span class="in">`if`</span>, wrapped into a reusable <span class="in">`ask(...)`</span> function (the seed of the pipeline you'll assemble later in the week).</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Your turn** — the guided Python practice exercises with a self-check.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Mini-project setup** — form groups and choose a track (see below).</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Notebook — **Part B** (practice): <span class="co">[</span><span class="ot">`day1_python_and_first_llm.ipynb`</span><span class="co">](../../notebooks/day1_python_and_first_llm.ipynb)</span> —</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day1_python_and_first_llm.ipynb)</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Slides: <span class="co">[</span><span class="ot">Session 3 slides</span><span class="co">](../../slides/slides-session-03.html)</span>{target="_blank"}</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mini-project</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>This session closes with mini-project **track selection and group formation** — each group needs at least one *Linguistic Data Analysis I* alumnus. Choose your track now so you can start annotating it on Day 2. See the <span class="co">[</span><span class="ot">Final Project</span><span class="co">](../../final-project/index.md)</span> page.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

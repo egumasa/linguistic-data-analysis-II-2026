@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Masaki EGUCHI, Ph.D.">
-  <title>Linguistic Data Analysis II (Summer 2026) – Session 3: Classical NLP Tasks</title>
+  <title>Linguistic Data Analysis II (Summer 2026) – Session 3: Python Practice &amp; Mini-Project Setup</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,6 +28,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7319ef940ecc18a51fa7d51b60c4dbfa.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -129,7 +195,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Session 3: Classical NLP Tasks</h1>
+  <h1 class="title">Session 3: Python Practice &amp; Mini-Project Setup</h1>
   <p class="subtitle">Day 1 · Introduction &amp; First Experience (1-3)</p>
 
 <div class="quarto-title-authors">
@@ -141,54 +207,195 @@ Masaki EGUCHI, Ph.D.
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-</section>
 <section>
-<section id="session-3-classical-nlp-tasks" class="title-slide slide level1 center">
-<h1>Session 3: Classical NLP Tasks</h1>
+<section id="session-3-python-practice-mini-project-setup" class="title-slide slide level1 center">
+<h1>Session 3: Python Practice &amp; Mini-Project Setup</h1>
 
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
-<ul>
-<li>Text preprocessing</li>
-<li>Tokenization</li>
-<li>Dictionary look-up with basic Python</li>
-</ul>
+<p>Picks up <strong>Part B</strong> of the Day 1 notebook, then forms project groups.</p>
+<ol type="1">
+<li>From a document to sentences — segmentation <em>without</em> and <em>with</em> a model</li>
+<li>Run the model over every sentence — <code>for</code>, <code>if</code>, and a function</li>
+<li>Your turn — guided Python practice + self-check</li>
+<li>Mini-project setup — form groups and pick a track</li>
+</ol>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Split a paragraph into sentences two ways — naive <code>.split(".")</code> and a spaCy sentencizer — and explain why the naive rule fails.</li>
+<li>Use a <code>for</code> loop, an <code>if</code>, and a function (<code>def</code>) to run the model over a list of sentences.</li>
+<li>Complete short Python exercises and confirm them with the self-check.</li>
+<li>Form a project group and pick a mini-project track.</li>
+</ul>
+</section>
+<section id="same-rhythm-as-session-2" class="slide level2">
+<h2>Same rhythm as Session 2</h2>
+<ul>
+<li>Slide for the <strong>idea</strong>, then <strong>do it in Colab</strong>.</li>
+<li><strong>Type it, don’t copy it.</strong></li>
+<li>In Part A you called the model <strong>once</strong>. Today: run it over <strong>many</strong> sentences — the first taste of a real pipeline.</li>
+</ul>
 </section></section>
 <section>
-<section id="text-preprocessing" class="title-slide slide level1 center">
-<h1>Text preprocessing</h1>
+<section id="from-a-document-to-sentences" class="title-slide slide level1 center">
+<h1>1 · From a document to sentences</h1>
 
 </section>
-<section id="text-preprocessing-1" class="slide level2">
-<h2>Text preprocessing</h2>
-<!-- to be added -->
+<section id="the-problem" class="slide level2">
+<h2>The problem</h2>
+<p>Your data arrives as <strong>paragraphs</strong>. But the unit we work with is the <strong>sentence</strong>. So we need to <strong>segment</strong> a paragraph into its sentences.</p>
+<div class="fragment">
+<p>The obvious idea: cut on every full stop. To do that we <strong>call a method</strong> on the string — <code>some_text.split(".")</code> — using a dot (<code>.</code>) to run a built-in action <em>on</em> that value.</p>
+</div>
+</section>
+<section id="why-this-matters" class="slide level2">
+<h2>Why this matters</h2>
+<p>The naive rule looks fine — until it isn’t. Abbreviations and decimals contain dots that <strong>aren’t</strong> sentence ends.</p>
+<div class="fragment">
+<p>Bad boundaries corrupt everything downstream. So it’s worth <em>seeing</em> the naive rule fail before we reach for a better tool.</p>
+</div>
+</section>
+<section id="lets-try-naive-split" class="slide level2 smaller">
+<h2>🧪 Let’s try — naive split</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>paragraph <span class="op">=</span> (<span class="st">"Dr. Smith reviewed the data. The results were clear, "</span></span>
+<span id="cb1-2"><a></a>             <span class="st">"e.g. accuracy rose. Scores went from 3.14 to 9."</span>)</span>
+<span id="cb1-3"><a></a></span>
+<span id="cb1-4"><a></a>naive <span class="op">=</span> paragraph.split(<span class="st">"."</span>)     <span class="co"># cut the string at every "."</span></span>
+<span id="cb1-5"><a></a><span class="cf">for</span> piece <span class="kw">in</span> naive:</span>
+<span id="cb1-6"><a></a>    <span class="bu">print</span>(<span class="bu">repr</span>(piece))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Look at the mess: <code>"Dr"</code> (from <em>Dr.</em>), <code>"e"</code> and <code>"g"</code> (from <em>e.g.</em>), <code>"3"</code> and <code>"14"</code> (from <em>3.14</em>) all split in the wrong places. <strong>Sentence boundaries are not just full stops.</strong></p>
+</div>
 </section></section>
 <section>
-<section id="tokenization" class="title-slide slide level1 center">
-<h1>Tokenization</h1>
+<section id="segmentation-with-a-model" class="title-slide slide level1 center">
+<h1>2 · Segmentation with a model</h1>
 
 </section>
-<section id="tokenization-1" class="slide level2">
-<h2>Tokenization</h2>
-<!-- to be added -->
+<section id="borrow-a-real-tool" class="slide level2 smaller">
+<h2>Borrow a real tool</h2>
+<p>Instead of our own rule, we <strong>import</strong> a purpose-built library, <strong>spaCy</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">import</span> spacy</span>
+<span id="cb2-2"><a></a>nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)          <span class="co"># a minimal English pipeline</span></span>
+<span id="cb2-3"><a></a>nlp.add_pipe(<span class="st">"sentencizer"</span>)      <span class="co"># a rule-based sentence splitter — no download</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>import spacy</code> loads the toolbox.</li>
+<li>The <strong>sentencizer</strong> knows abbreviations and decimals aren’t sentence ends.</li>
+</ul>
+</section>
+<section id="why-this-matters-1" class="slide level2 smaller">
+<h2>Why this matters</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>On <strong>Day 2</strong>, the <strong>sentence</strong> is the unit you <strong>annotate by hand</strong> and the unit you <strong>feed the LLM</strong>. Bad boundaries → bad gold data → misleading scores.</p>
+</div>
+</div>
+</div>
+<p>Getting segmentation right is not a side quest — it’s the foundation the whole gold standard sits on.</p>
+</section>
+<section id="lets-try-the-sentencizer" class="slide level2 smaller">
+<h2>🧪 Let’s try — the sentencizer</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>doc <span class="op">=</span> nlp(paragraph)</span>
+<span id="cb3-2"><a></a>sentences <span class="op">=</span> <span class="bu">list</span>(doc.sents)      <span class="co"># spaCy's sentences, as a list</span></span>
+<span id="cb3-3"><a></a><span class="cf">for</span> s <span class="kw">in</span> sentences:</span>
+<span id="cb3-4"><a></a>    <span class="bu">print</span>(<span class="bu">repr</span>(s.text))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Compare to the naive split: <em>Dr.&nbsp;Smith</em>, <em>e.g.</em>, and <em>3.14</em> stay intact. <strong>You now have a real list of sentences</strong> — exactly what step 3 loops over.</p>
+</div>
 </section></section>
 <section>
-<section id="dictionary-look-up" class="title-slide slide level1 center">
-<h1>Dictionary look-up</h1>
+<section id="run-the-model-over-every-sentence" class="title-slide slide level1 center">
+<h1>3 · Run the model over every sentence</h1>
 
 </section>
-<section id="dictionary-look-up-1" class="slide level2">
-<h2>Dictionary look-up</h2>
-<!-- to be added -->
+<section id="three-small-pieces-of-python" class="slide level2 smaller">
+<h2>Three small pieces of Python</h2>
+<ul>
+<li><strong><code>for</code></strong> — repeat the same steps for every item in a list.</li>
+<li><strong><code>if</code></strong> — react to what comes back (e.g.&nbsp;flag an empty reply).</li>
+<li><strong><code>def</code></strong> — package the steps into a reusable <strong>function</strong> you can call by name.</li>
+</ul>
+<div class="fragment">
+<p>Together: <em>for each sentence → build a prompt → call the model → tidy the reply.</em></p>
+</div>
+</section>
+<section id="why-this-matters-2" class="slide level2">
+<h2>Why this matters</h2>
+<p>This little loop is the <strong>seed of the pipeline</strong> you’ll assemble later in the week.</p>
+<div class="fragment">
+<p>Annotation, classification, evaluation — all of it is “run this call over a list and collect the results.” Write it once here; reuse the shape all week.</p>
+</div>
+</section>
+<section id="lets-try-the-loop" class="slide level2 smaller">
+<h2>🧪 Let’s try — the loop</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:</span>
+<span id="cb4-2"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-3"><a></a>    reply <span class="op">=</span> generate_text(prompt).strip()</span>
+<span id="cb4-4"><a></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:</span>
+<span id="cb4-5"><a></a>        reply <span class="op">=</span> <span class="st">"(no answer)"</span></span>
+<span id="cb4-6"><a></a>    <span class="bu">print</span>(sentence, <span class="st">"→"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lets-try-wrap-it-in-a-function" class="slide level2 smaller">
+<h2>🧪 Let’s try — wrap it in a function</h2>
+<p>Same three steps, packaged so you can reuse them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> ask(sentence):</span>
+<span id="cb5-2"><a></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
+<span id="cb5-3"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-4"><a></a>    <span class="cf">return</span> generate_text(prompt).strip()</span>
+<span id="cb5-5"><a></a></span>
+<span id="cb5-6"><a></a><span class="bu">print</span>(ask(<span class="st">"Despite the rain, the game went ahead."</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now labelling a sentence is just <code>ask(...)</code>.</p>
+</section></section>
+<section>
+<section id="your-turn" class="title-slide slide level1 center">
+<h1>4 · Your turn</h1>
+
+</section>
+<section id="guided-practice" class="slide level2 smaller">
+<h2>Guided practice</h2>
+<p>In the notebook, a few cells ask you to <strong>replace <code>NotImplementedError</code></strong> with a line or two — e.g.&nbsp;<code>long_words</code>, <code>count_labels</code>. Then a <strong>self-check</strong> cell tells you if they pass.</p>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Python you’ll <em>read</em> but not write</strong></p>
+</div>
+<div class="callout-content">
+<p>Some library cells use a <strong>list comprehension</strong> like <code>[row["label"] for row in rows]</code> — read it as <em>“the label of every row.”</em> You never have to write these; just recognise them.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="lets-form-groups" class="title-slide slide level1 center">
+<h1>Let’s form groups</h1>
+
+</section>
+<section id="mini-project-setup" class="slide level2 smaller">
+<h2>Mini-project setup</h2>
+<ul>
+<li>Form a <strong>group</strong> — each needs <strong>at least one <em>Linguistic Data Analysis I</em> alumnus</strong>.</li>
+<li>Pick <strong>one of the four tracks</strong> (datasets) — this is what you’ll annotate on Day 2.</li>
+<li><strong>Record</strong> your group and track where the instructor asks.</li>
+</ul>
+<div class="fragment">
+<p>Choosing now means you can start annotating <strong>right away</strong> on Day 2. See the <a href="../final-project/index.html">Final Project</a> page for the tracks.</p>
+</div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
