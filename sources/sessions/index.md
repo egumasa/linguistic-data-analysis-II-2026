@@ -23,8 +23,8 @@ This intensive 5-day course covers LLM-based linguistic data analysis — annota
 | #  | Session | What we'll do |
 | -- | ------- | ------------- |
 | 1 | [Introduction to LLMs & NLP Tasks](day1/session-01.md) | What LLMs are and how they fit linguistic analysis; the NLP tasks we'll tackle; course overview and self-introductions. |
-| 2 | [First Experience with LLM Classification](day1/session-02.md) | A quick chat-interface demo, then Google Colab onboarding — sign in, open the notebook, run a cell, edit the prompt, re-run — plus a short "reading Python" orientation. |
-| 3 | [Classical NLP Tasks](day1/session-03.md) | Text preprocessing, tokenization, and dictionary look-up using basic Python. |
+| 2 | [Colab Onboarding & Your First LLM Call](day1/session-02.md) | Google Colab onboarding — sign in, run a cell, read an error — then your first `generate_text(...)` call, the data types it returns, and building a prompt with an f-string. |
+| 3 | [Python Practice & Mini-Project Setup](day1/session-03.md) | Segment text into sentences (with and without a model), run the model over a list with a `for` loop and a function, and short Python practice — then form project groups and pick a track. |
 
 📖 **Reading (before Day 1)** — *Skim:* Abdurahman et al. (2025). [See Readings →](../syllabus/readings.md)
 

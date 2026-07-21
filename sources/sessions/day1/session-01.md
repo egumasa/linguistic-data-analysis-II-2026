@@ -12,7 +12,22 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 
 
 ## Learning objectives
-<!-- to be added -->
+
+By the end of this session you will be able to:
+
+- Describe, at a high level, what a Large Language Model is and how it differs from the corpus and NLP tools you met in *Linguistic Data Analysis I*.
+- Name the NLP tasks this course targets — classification, annotation, and extraction of linguistic features — and give an example of each.
+- Judge, from a live chat demo, where an LLM is genuinely useful for linguistic analysis and where its output cannot be trusted at face value.
+
+## Agenda
+
+1. **Course overview & logistics** — the 5-day arc, the mini-project, and how you'll be graded.
+2. **Self-introductions** — your background, research interests, and any prior programming exposure.
+3. **LLMs as analysis tools** — what they are, how they fit linguistic analysis, and the tasks we'll tackle this week.
+4. **No-code chat demo** — throw real language data at an LLM in the chat interface and read the output *critically*: what did it get right, and how would we ever know?
+5. **Bridge from LDA I** — how today's questions connect to frequency, concordancing, and the metrics you already know.
+
+No laptop setup is needed today — the hands-on tooling starts in Session 2.
 
 ## Reading
 

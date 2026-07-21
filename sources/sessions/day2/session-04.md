@@ -12,7 +12,22 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 
 
 ## Learning objectives
-<!-- to be added -->
+
+By the end of this session you will be able to:
+
+- Explain what an annotation scheme and coding guidelines are, and why operationalizing a category matters.
+- Describe where annotation sits in an NLP pipeline for applied linguistics (annotate → model → evaluate).
+- Explain inter-annotator agreement conceptually — why we double-annotate, and what a simple agreement rate and Cohen's κ tell you.
+- Say what a gold-standard dataset is and how it is constructed.
+
+## Agenda
+
+1. **Why annotation?** — from a linguistic construct to labelled data; the `{id, text, label}` shape.
+2. **Annotation schemes & coding guidelines** — operationalizing a category so two people can apply it consistently.
+3. **Inter-annotator agreement (conceptual)** — double annotation, percent agreement, and Cohen's κ; why chance-corrected agreement matters.
+4. **The pipeline in context** — how today's gold standard feeds the prompt design and evaluation of the coming days (Eguchi & Kyle, 2024).
+
+This is the conceptual grounding for the hands-on annotation in [Session 5](session-05.md).
 
 ## Reading
 
