@@ -377,114 +377,192 @@ def todo(*lines):
 # ============================================================ DAY 1
 def day1():
     cells = [how_to_use(
-        1, "Day 1 · Python basics & your first LLM call",
-        "a hands-on Python primer, then your first call to a language model.",
-        "short Python exercises you complete and self-check.")]
+        1, "Day 1 · Your first LLM call & reading its data",
+        "call a language model, then learn to read the data it hands back.",
+        "segment text into sentences, run the model over a list, then practice the basics.")]
 
-    # ---- Part A: Python primer ----
+    # ---- Part A: Colab survival → first LLM call → data types → f-strings ----
     cells += [md(
-        "## Part A · Tutorial — a 15-minute Python primer",
+        "## Part A · Tutorial — your first LLM call, and reading its answer",
         "",
-        "No prior Python needed. Run each cell, read the output, then change a value and "
-        "re-run to see what happens. Everything this week is built from these few ideas.")]
+        "No prior Python needed. The star of Part A is a single call to a language model; "
+        "everything else — variables, data types, f-strings — is just enough Python to read "
+        "and reshape what the model gives you back. Run each cell, read the output, then "
+        "change a value and re-run to see what happens.")]
 
+    # 1. Colab survival kit
     cells += [md(
-        "### 1. Variables & data types",
+        "### 1. Getting your bearings in Colab",
         "",
-        "A **variable** is a name for a value. Python's core types you'll use all week: "
-        "**string** (`str`, text), **integer** (`int`) and **float** (decimal number), "
-        "**list** (an ordered sequence), and **dictionary** (`dict`, key → value pairs).")]
+        "This page is a **Colab notebook**: a stack of **cells** you run top to bottom. A "
+        "code cell runs when you press **Shift+Enter** (or click ▶). The first run wakes up "
+        "a **runtime** — a temporary computer in the cloud that remembers your variables "
+        "until you close the tab. Run the cell below to prove it works.")]
     cells += [code(
-        'sentence = "The cat sat on the mat."   # str  — text, in quotes',
-        'word_count = 6                          # int  — whole number',
-        'score = 4.5                             # float — decimal number',
-        'levels = ["A1", "A2", "B1"]            # list — ordered, square brackets',
-        'item = {"id": 1, "text": sentence, "label": "A1"}  # dict — key: value',
-        '',
-        'print(type(sentence), type(word_count), type(score))',
-        'print("levels[0] =", levels[0])         # lists are indexed from 0',
-        'print("item[\'label\'] =", item["label"])  # look up a dict value by its key')]
-
+        'print("Hello, Colab! You just ran your first cell.")')]
     cells += [md(
-        "### 2. `if` statements — make a decision",
+        "**When a cell breaks — read the error.** Sooner or later a cell turns red. Don't "
+        "panic: Python tells you what went wrong on the **last line**. For example, running "
+        "`print(mesage)` (a typo for `message`) prints:",
         "",
-        "Run one branch or another depending on a condition. Indentation (4 spaces) is how "
-        "Python groups the lines that belong to each branch.")]
-    cells += [code(
-        'score = 4.5',
-        'if score < 4:',
-        '    band = "Low"',
-        'elif score < 7:',
-        '    band = "Mid"',
-        'else:',
-        '    band = "High"',
-        'print("score", score, "→ band", band)')]
+        "```",
+        "NameError: name 'mesage' is not defined",
+        "```",
+        "",
+        "Read it back to front: the **error type** (`NameError`), the **message** "
+        "(`'mesage' is not defined`), and the **line** it happened on. Nearly every early "
+        "error is a typo or a cell you haven't run yet. Fix the typo, re-run, move on.")]
 
+    # 2. First LLM call (the spine)
     cells += [md(
-        "### 3. `for` loops — do something to every item",
+        "### 2. Your first LLM call",
         "",
-        "Loop over a list, or over a dictionary's items. This is exactly how we'll process "
-        "every sentence in a dataset.")]
-    cells += [code(
-        'for level in levels:',
-        '    print("level:", level)',
-        '',
-        'print("---")',
-        'for key, value in item.items():',
-        '    print(key, "→", value)')]
-
-    cells += [md(
-        "### 4. Functions — name a reusable piece of code",
-        "",
-        "A **function** takes inputs (arguments) and `return`s a result. Define once, call "
-        "as often as you like.")]
-    cells += [code(
-        'def band_of(score):',
-        '    """Turn a numeric score into a Low/Mid/High band."""',
-        '    if score < 4:',
-        '        return "Low"',
-        '    elif score < 7:',
-        '        return "Mid"',
-        '    return "High"',
-        '',
-        'print(band_of(2), band_of(5), band_of(9))')]
-
-    cells += [md(
-        "### 5. Basic input / output",
-        "",
-        "`print(...)` shows a value. To read data, we mostly parse **JSON** — the "
-        "`{id, text, label}` shape you'll see all week. (`input()` also reads from the "
-        "keyboard, but it pauses *Run all*, so we avoid it here.)")]
-    cells += [code(
-        'raw = \'[{"id": 1, "text": "Hello.", "label": "A1"}, {"id": 2, "text": "Nevertheless, the findings were inconclusive.", "label": "C1"}]\'',
-        'data = json.loads(raw)          # JSON text → Python list of dicts',
-        'print("number of items:", len(data))',
-        'for row in data:',
-        '    print(row["id"], row["label"], "|", row["text"])',
-        '',
-        '# (Reading from the keyboard — left commented so Run all does not pause:)',
-        '# name = input("Your name: ")',
-        '# print("Hello,", name)')]
-
-    # ---- setup + first LLM call ----
-    cells += [md(
-        "### 6. Meet the model — your first LLM call",
-        "",
-        "Run the setup cell (loads the LLM backend — in Colab that's the free built-in "
-        "Gemini, no key needed), then send the model a prompt with `generate_text(...)`.")]
+        "Run the setup cell (it loads the LLM backend — in Colab that's the free built-in "
+        "Gemini, no key needed), then send the model a prompt with `generate_text(...)`. The "
+        "answer comes back as text, which we store in a **variable** called `reply`.")]
     cells += [setup_cell()]
-    cells += [md("**✏️ YOU EDIT** — change the prompt and re-run.")]
+    cells += [md("**✏️ YOU EDIT** — change the prompt text and re-run. The prompt is just "
+                 "text you send; the reply is just text you get back.")]
     cells += [code(
         'reply = generate_text("In one sentence, what is applied linguistics?")',
         'print(reply)')]
 
-    # ---- Part B: lab ----
+    # 3. Data types — motivated by the reply
     cells += [md(
-        "## Part B · Corpus Lab — Python practice",
+        "### 3. What did the model hand back? — Python data types",
+        "",
+        "Every value in Python has a **type**. Ask what type `reply` is:")]
+    cells += [code(
+        'print(type(reply))     # <class \'str\'> — a string, i.e. text')]
+    cells += [md(
+        "The three types you'll use all week:",
+        "",
+        "- **`str`** — text, in quotes (like `reply`).",
+        "- **`list`** — an ordered sequence, in square brackets. Several sentences, say.",
+        "- **`dict`** — a labelled record, in curly braces: `key → value` pairs. This is the "
+        "`{id, text, label}` shape every dataset this week uses.",
+        "",
+        "Build one of each, then reach inside them with **`[...]`** — lists by position "
+        "(counting from 0), dicts by key.")]
+    cells += [code(
+        'sentences = ["The cat sat on the mat.",          # a list of strings',
+        '             "Nevertheless, the findings were inconclusive."]',
+        'record = {"id": 1, "text": sentences[0], "label": "A1"}   # a dict',
+        '',
+        'print("how many sentences:", len(sentences))',
+        'print("first sentence:", sentences[0])       # list — index by position (from 0)',
+        'print("its gold label:", record["label"])   # dict — index by key')]
+
+    # 4. f-strings
+    cells += [md(
+        "### 4. f-strings — put your data *into* a prompt",
+        "",
+        "An **f-string** (`f\"...\"`) drops a variable straight into a piece of text with "
+        "`{curly braces}`. That's how you build a prompt *about* a specific sentence — the "
+        "trick we'll use to run one prompt over a whole dataset later.")]
+    cells += [md("**✏️ YOU EDIT** — change the sentence and re-run.")]
+    cells += [code(
+        'sentence = "Nevertheless, the findings were inconclusive."',
+        'prompt = f"What CEFR level (A1-C2) is this sentence? {sentence}"',
+        'print("Prompt sent:", prompt)',
+        '',
+        'reply = generate_text(prompt)',
+        'print("Model says:", reply)')]
+
+    # ---- Part B: segmentation → control flow → practice → project ----
+    cells += [md(
+        "## Part B · Corpus Lab — from text to sentences, then practice",
+        "",
+        "In Part A you called the model once. Here you'll turn a paragraph into individual "
+        "**sentences** (the unit you'll annotate on Day 2), run the model over all of them, "
+        "and then practice the basics on your own. Cells marked **✏️ YOU EDIT** are yours to "
+        "change; run the **self-check** at the end until every line prints ✅.")]
+
+    # B1. Segmentation without a model
+    cells += [md(
+        "### 1. Splitting text into sentences — *without* a model",
+        "",
+        "Text arrives as one long string. To analyse it sentence by sentence you first have "
+        "to **segment** it. The obvious idea: split on the full stop. To do that we call a "
+        "**method** on the string — `some_text.split(\".\")` — using a dot (`.`) to run a "
+        "built-in action on a value.")]
+    cells += [code(
+        'paragraph = ("Dr. Smith reviewed the data. The results were clear, e.g. accuracy '
+        'rose. Scores went from 3.14 to 9.")',
+        '',
+        'naive = paragraph.split(".")     # cut the string at every "."',
+        'print("pieces:", len(naive))',
+        'for piece in naive:',
+        '    print(repr(piece))')]
+    cells += [md(
+        "Look at the output: `\"Dr\"` (from *Dr.*), `\"e\"` and `\"g\"` (from *e.g.*), and "
+        "`\"3\"`/`\"14\"` (from *3.14*) all got split in the wrong places. **Sentence "
+        "boundaries are not just full stops** — abbreviations and decimals break the naive "
+        "rule.")]
+
+    # B2. Segmentation with a model
+    cells += [md(
+        "### 2. Splitting text into sentences — *with* a model",
+        "",
+        "A proper tool knows more than \"cut at every dot\". We'll use **spaCy**, an NLP "
+        "library. `import spacy` loads that toolbox; `spacy.blank(\"en\")` makes a minimal "
+        "English pipeline and we add a rule-based **sentencizer** to it (no model download "
+        "needed).")]
+    cells += [code(
+        'import spacy',
+        'nlp = spacy.blank("en")',
+        'nlp.add_pipe("sentencizer")',
+        '',
+        'doc = nlp(paragraph)',
+        'sentences = list(doc.sents)        # spaCy\'s sentence objects, as a list',
+        'print("sentences found:", len(sentences))',
+        'print("first sentence:", sentences[0])')]
+    cells += [md(
+        "spaCy keeps `Dr.` and `e.g.` intact and finds the real boundaries. **Why this "
+        "matters:** on Day 2 the unit you annotate and feed the LLM is the *sentence* — bad "
+        "boundaries mean bad data downstream.")]
+
+    # B3. Control flow: for / if / function
+    cells += [md(
+        "### 3. Run the model over every sentence — `for`, `if`, and a function",
+        "",
+        "Now that you have a list of sentences, do something to *each* one. A **`for` loop** "
+        "repeats the same steps for every item; an **`if`** lets you react to what comes "
+        "back. Below, we build a prompt for each sentence (with an f-string) and ask the "
+        "model for its CEFR level.")]
+    cells += [md("**✏️ YOU EDIT** — try your own sentences.")]
+    cells += [code(
+        'examples = ["The findings were inconclusive.",',
+        '            "Nevertheless, we draw some tentative conclusions.",',
+        '            "More research is needed."]',
+        '',
+        'for sentence in examples:',
+        '    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"',
+        '    reply = generate_text(prompt).strip()',
+        '    if reply == "":',
+        '        print(sentence, "→ (no answer)")',
+        '    else:',
+        '        print(sentence, "→", reply)')]
+    cells += [md(
+        "Finally, wrap those three steps — build prompt, call model, tidy the reply — into a "
+        "**function** you can reuse. Defining `ask(...)` once means the rest of the week you "
+        "just call `ask(sentence)`. This little function is the seed of the pipeline you'll "
+        "assemble later.")]
+    cells += [code(
+        'def ask(sentence):',
+        '    """Ask the model for the CEFR level of one sentence; return its reply."""',
+        '    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"',
+        '    return generate_text(prompt).strip()',
+        '',
+        'print(ask("The cat sat on the mat."))')]
+
+    # B4. Guided practice (existing exercises)
+    cells += [md(
+        "### 4. Your turn — Python practice",
         "",
         "Fill in each function so it does what its docstring says (replace the "
-        "`raise NotImplementedError(...)` line). Then run the **self-check** cell at the "
-        "bottom until every line prints ✅. No grader needed — the checks *are* your grader.")]
+        "`raise NotImplementedError(...)` line). Then run the **self-check** cell below until "
+        "every line prints ✅. No grader needed — the checks *are* your grader.")]
     cells += [code(
         '# ✏️ YOU EDIT — replace each NotImplementedError with your code.',
         '',
@@ -527,6 +605,32 @@ def day1():
         'print("All passed ✅" if all(ok for _, ok in checks)',
         '      else "Some checks failed — fix them and re-run.")')]
 
+    # Read-only syntax cheat-sheet
+    cells += [md(
+        "### Python you'll *see* but won't have to write",
+        "",
+        "The pre-written **🔧 Library cells** later this week occasionally use two shorthands. "
+        "You never have to write them — just recognise them:",
+        "",
+        "- A **list comprehension** builds a list in one line. "
+        "`[row[\"label\"] for row in rows]` means \"the `label` of every row\" — the same as a "
+        "`for` loop that `.append`s each label.",
+        "- **`try` / `except`** (handle an error instead of crashing) and **`global`** (let a "
+        "function update a shared variable) show up in the LLM backend and are explained on "
+        "**Day 3** — no need to learn them today.")]
+
+    # Mini-project setup
+    cells += [md(
+        "---",
+        "## Mini-project — form your group & pick a track",
+        "",
+        "Before Day 2 you'll settle into a project group and choose a dataset **track**. Each "
+        "group needs **at least one *Linguistic Data Analysis I* alumnus**. Once formed, pick "
+        "your track and note it — you'll annotate that dataset tomorrow.",
+        "",
+        "See the [Final Project](../final-project/index.md) page for the tracks and what the "
+        "project involves.")]
+
     cells += [SUBMISSION]
     save("day1_python_and_first_llm.ipynb", cells)
 
@@ -565,10 +669,36 @@ def day2():
         predictions_url=CEFR_PREDICTIONS_DAY2_URL)]
     cells += PIPELINE_LIB
     cells += [md(
+        "### Warm-up — what a *gold file* actually is",
+        "",
+        "Before we load one, let's see the shape up close. A gold standard is stored as "
+        "**JSON** text — the same `{\"id\", \"text\", \"label\"}` records you met on Day 1, "
+        "written to a file. `json.loads(...)` turns that text into a Python **list of dicts** "
+        "you can index into.")]
+    cells += [code(
+        'raw = \'[{"id": 1, "text": "Hello.", "label": "A1"}, {"id": 2, "text": "Nevertheless, the findings were inconclusive.", "label": "C1"}]\'',
+        'items = json.loads(raw)               # JSON text → list of dicts',
+        'print("number of items:", len(items))',
+        'print("first record:", items[0])',
+        'print("its label:", items[0]["label"])   # index: list by position, dict by key')]
+    cells += [md(
+        "Files are read and written with **`with open(...) as f:`** — it opens the file, "
+        "gives it to you as `f`, and closes it automatically when the block ends. You won't "
+        "write this yourself (the 🔧 Library cells handle it), but you'll see it, so here it "
+        "is once, in the open:")]
+    cells += [code(
+        'with open("example_gold.json", "w", encoding="utf-8") as f:   # write',
+        '    json.dump(items, f)',
+        '',
+        'with open("example_gold.json", encoding="utf-8") as f:        # read back',
+        '    reloaded = json.loads(f.read())',
+        'print("read back", len(reloaded), "records — same shape:", reloaded[0])')]
+    cells += [md(
         "### Step 1 — Load the gold standard",
         "",
-        "Notice the shape: every dataset this week is `{\"id\", \"text\", \"label\"}`. That is "
-        "the *only* data shape you have to learn.")]
+        "`load_gold(...)` does exactly the read you just saw, but from a URL. Notice the shape: "
+        "every dataset this week is `{\"id\", \"text\", \"label\"}`. That is the *only* data "
+        "shape you have to learn.")]
     cells += [code('gold = load_gold(GOLD_URL)')]
     cells += [md(
         "### Step 2 — The prompt, and the frozen predictions it produced",
