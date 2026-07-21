@@ -1,43 +1,175 @@
 ---
-title: "Session 3: Classical NLP Tasks"
+title: "Session 3: Python Practice & Mini-Project Setup"
 subtitle: "Day 1 · Introduction & First Experience (1-3)"
 format: revealjs
 metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-
-# Session 3: Classical NLP Tasks
+# Session 3: Python Practice & Mini-Project Setup
 
 ## 📋 Agenda
 
-- Text preprocessing
-- Tokenization
-- Dictionary look-up with basic Python
+Picks up **Part B** of the Day 1 notebook, then forms project groups.
+
+1. From a document to sentences — segmentation *without* and *with* a model
+2. Run the model over every sentence — `for`, `if`, and a function
+3. Your turn — guided Python practice + self-check
+4. Mini-project setup — form groups and pick a track
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Split a paragraph into sentences two ways — naive `.split(".")` and a spaCy sentencizer — and explain why the naive rule fails.
+- Use a `for` loop, an `if`, and a function (`def`) to run the model over a list of sentences.
+- Complete short Python exercises and confirm them with the self-check.
+- Form a project group and pick a mini-project track.
 
-# Text preprocessing
+## Same rhythm as Session 2
 
-## Text preprocessing
+- Slide for the **idea**, then **do it in Colab**.
+- **Type it, don't copy it.**
+- In Part A you called the model **once**. Today: run it over **many** sentences — the first taste of a real pipeline.
 
-<!-- to be added -->
+# 1 · From a document to sentences
 
-# Tokenization
+## The problem
 
-## Tokenization
+Your data arrives as **paragraphs**. But the unit we work with is the **sentence**. So we need to **segment** a paragraph into its sentences.
 
-<!-- to be added -->
+. . .
 
-# Dictionary look-up
+The obvious idea: cut on every full stop. To do that we **call a method** on the string — `some_text.split(".")` — using a dot (`.`) to run a built-in action *on* that value.
 
-## Dictionary look-up
+## Why this matters
 
-<!-- to be added -->
+The naive rule looks fine — until it isn't. Abbreviations and decimals contain dots that **aren't** sentence ends.
+
+. . .
+
+Bad boundaries corrupt everything downstream. So it's worth *seeing* the naive rule fail before we reach for a better tool.
+
+## 🧪 Let's try — naive split {.smaller}
+
+```python
+paragraph = ("Dr. Smith reviewed the data. The results were clear, "
+             "e.g. accuracy rose. Scores went from 3.14 to 9.")
+
+naive = paragraph.split(".")     # cut the string at every "."
+for piece in naive:
+    print(repr(piece))
+```
+
+. . .
+
+Look at the mess: `"Dr"` (from *Dr.*), `"e"` and `"g"` (from *e.g.*), `"3"` and `"14"` (from *3.14*) all split in the wrong places. **Sentence boundaries are not just full stops.**
+
+# 2 · Segmentation with a model
+
+## Borrow a real tool {.smaller}
+
+Instead of our own rule, we **import** a purpose-built library, **spaCy**:
+
+```python
+import spacy
+nlp = spacy.blank("en")          # a minimal English pipeline
+nlp.add_pipe("sentencizer")      # a rule-based sentence splitter — no download
+```
+
+- `import spacy` loads the toolbox.
+- The **sentencizer** knows abbreviations and decimals aren't sentence ends.
+
+## Why this matters {.smaller}
+
+::: {.callout-important}
+On **Day 2**, the **sentence** is the unit you **annotate by hand** and the unit you **feed the LLM**. Bad boundaries → bad gold data → misleading scores.
+:::
+
+Getting segmentation right is not a side quest — it's the foundation the whole gold standard sits on.
+
+## 🧪 Let's try — the sentencizer {.smaller}
+
+```python
+doc = nlp(paragraph)
+sentences = list(doc.sents)      # spaCy's sentences, as a list
+for s in sentences:
+    print(repr(s.text))
+```
+
+. . .
+
+Compare to the naive split: *Dr. Smith*, *e.g.*, and *3.14* stay intact. **You now have a real list of sentences** — exactly what step 3 loops over.
+
+# 3 · Run the model over every sentence
+
+## Three small pieces of Python {.smaller}
+
+- **`for`** — repeat the same steps for every item in a list.
+- **`if`** — react to what comes back (e.g. flag an empty reply).
+- **`def`** — package the steps into a reusable **function** you can call by name.
+
+. . .
+
+Together: *for each sentence → build a prompt → call the model → tidy the reply.*
+
+## Why this matters
+
+This little loop is the **seed of the pipeline** you'll assemble later in the week.
+
+. . .
+
+Annotation, classification, evaluation — all of it is "run this call over a list and collect the results." Write it once here; reuse the shape all week.
+
+## 🧪 Let's try — the loop {.smaller}
+
+```python
+for sentence in examples:
+    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"
+    reply = generate_text(prompt).strip()
+    if reply == "":
+        reply = "(no answer)"
+    print(sentence, "→", reply)
+```
+
+## 🧪 Let's try — wrap it in a function {.smaller}
+
+Same three steps, packaged so you can reuse them:
+
+```python
+def ask(sentence):
+    """Ask the model for the CEFR level of one sentence; return its reply."""
+    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"
+    return generate_text(prompt).strip()
+
+print(ask("Despite the rain, the game went ahead."))
+```
+
+Now labelling a sentence is just `ask(...)`.
+
+# 4 · Your turn
+
+## Guided practice {.smaller}
+
+In the notebook, a few cells ask you to **replace `NotImplementedError`** with a line or two — e.g. `long_words`, `count_labels`. Then a **self-check** cell tells you if they pass.
+
+. . .
+
+::: {.callout-note}
+## Python you'll *read* but not write
+Some library cells use a **list comprehension** like `[row["label"] for row in rows]` — read it as *"the label of every row."* You never have to write these; just recognise them.
+:::
+
+# Let's form groups
+
+## Mini-project setup {.smaller}
+
+- Form a **group** — each needs **at least one *Linguistic Data Analysis I* alumnus**.
+- Pick **one of the four tracks** (datasets) — this is what you'll annotate on Day 2.
+- **Record** your group and track where the instructor asks.
+
+. . .
+
+Choosing now means you can start annotating **right away** on Day 2. See the [Final Project](../final-project/index.md) page for the tracks.
 
 # Any questions?

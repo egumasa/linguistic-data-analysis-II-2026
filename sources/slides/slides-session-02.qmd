@@ -1,43 +1,294 @@
 ---
-title: "Session 2: First Experience with LLM Classification"
+title: "Session 2: Colab Onboarding & Your First LLM Call"
 subtitle: "Day 1 · Introduction & First Experience (1-2)"
 format: revealjs
 metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-
-# Session 2: First Experience with LLM Classification
+# Session 2: Colab Onboarding & Your First LLM Call
 
 ## 📋 Agenda
 
-- A quick chat-interface demo
-- Google Colab onboarding — sign in, open, run, edit, re-run
-- A short "reading Python" orientation
+1. Colab basics — run a cell, read an error
+2. Your first LLM call
+3. What did the model hand back? — data types
+4. Reaching into your data — indexing
+5. f-strings — put your data *into* the prompt
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Sign in to Colab, run a cell (Shift+Enter), and **read a Python error** well enough to fix a typo.
+- Send a prompt with `generate_text(...)`, then edit it and re-run.
+- Recognise `str` / `list` / `dict` in what the model hands back, and **index** into a list or dict.
+- Build a prompt from a variable with an **f-string**.
 
-# Chat-interface demo
+## How today works {.smaller}
 
-## Chat-interface demo
+- Slides give the **idea** for each step (a minute or two).
+- Then you **do it in Colab** — right away, while it's fresh.
+- **Type the code, don't copy it.** The little effort is the point: it's how it sticks.
 
-<!-- to be added -->
+Two kinds of Colab moment:
 
-# Google Colab onboarding
+- **👀 Let's follow** — run the cell together and watch what happens.
+- **🧪 Let's try** — your turn: change something and re-run.
 
-## Google Colab onboarding
+::: {.callout-tip}
+Errors are normal and expected today. Reading them is a skill we practise, not a sign anything is broken.
+:::
 
-<!-- to be added -->
+# 1 · Colab basics — run a cell, read an error
 
-# Reading Python
+## What Colab is
 
-## Reading Python
+**Colab** = an online Python notebook Google offers (run code without installing anything).
 
-<!-- to be added -->
+A **notebook** = a document of **cells** you run one at a time.
+
+- **Text cells** (like this slide) — notes.
+- **Code cells** — Python that runs on a **runtime** (a free computer Google lends you in the cloud).
+- Run a cell with **Shift + Enter**.
+
+. . .
+
+Nothing installs on your laptop. If the runtime disconnects, you just re-run the cells.
+
+## Why this matters
+
+This is the **room you'll work in all week** — every session runs here.
+
+. . .
+
+And one thing *will* happen: you'll hit a **red error**. That's not failure — it's Python telling you exactly what it couldn't do. **Read the last line** to understand what you'll need to do.
+
+## 👀 Let's follow — in Colab {.smaller}
+
+Run your first cell:
+
+```python
+print("Hello, Colab! You just ran your first cell.")
+```
+
+. . .
+
+Now break it on purpose — a typo — and run it:
+
+```python
+print(mesage)      # 'mesage' was never defined
+```
+
+Read the **last line** of the red box:
+
+```
+NameError: name 'mesage' is not defined
+```
+
+→ **error type** · **message** · **line number**.
+
+## 🧪 Let's try — in Colab {.smaller}
+
+Your turn:
+
+- `print(...)` a message of your own.
+- Then **misspell** a word or variable on purpose and read the error you get.
+- Fix it and re-run.
+
+Reading that last line is the whole skill — you'll use it all week.
+
+
+# 2 · Your first LLM call
+
+## First — what's a variable? {.smaller}
+
+A **variable** is a **named box** that stores a value.
+
+```python
+level = "A1"        # make a box called `level`, put "A1" in it
+print(level)        # A1  — get the value back by its name
+```
+
+- `name = value` — the `=` means **"store this"**, not "equals".
+- Once stored, reuse the value anywhere just by writing its name.
+
+. . .
+
+Next we'll store the model's reply in a box called `reply`.
+
+## The whole idea, in one line {.smaller}
+
+You send the model **text** (a *prompt*); it sends **text** back (a *reply*).
+
+```python
+reply = generate_text("...your prompt...")
+```
+
+. . .
+
+- `generate_text(...)` does the call (we set it up for you — no API key today).
+- `reply = ...` **stores** the answer in a variable named `reply`, so you can use it later.
+
+## Why this matters
+
+This one call is the **spine of the whole week**.
+
+. . .
+
+Classification, annotation, evaluation — everything we do is a *variation on this*: build a prompt, send it, read the reply. Get comfortable here and the rest is reshaping the text around it.
+
+## 👀 Let's follow — in Colab {.smaller}
+
+Run the **📦 Setup** cell first, then run this together:
+
+```python
+reply = generate_text("In one sentence, what is applied linguistics?")
+print(reply)
+```
+
+The model's answer prints out. You just called an LLM from Python.
+
+## 🧪 Let's try — in Colab {.smaller}
+
+Your turn — **change the prompt** and re-run (a different topic, or another language):
+
+```python
+reply = generate_text("In one sentence, what is a corpus?")
+print(reply)
+```
+
+Same code, new answer. The prompt is just text you control.
+
+# 3 · What did the model hand back?
+
+## Python labels every value with a **type** {.smaller}
+
+```python
+print(type(reply))     # <class 'str'> — a string, i.e. text
+```
+
+The three types you need all week:
+
+- **`str`** — text, in quotes: `"A1"`.
+- **`list`** — many items in order, in brackets: `["a", "b", "c"]`.
+- **`dict`** — a labelled record, in braces: `{"label": "A1"}` (key → value).
+
+## A few more types {.smaller}
+
+Here are some more frequent variable types.
+
+- **`int`** — whole numbers: `42`
+- **`float`** — decimals: `3.14`
+- **`bool`** — `True` / `False`
+- **`tuple`** — like a list, but fixed and can't be changed: `(1, 2)`
+- **`None`** — "nothing here yet"
+
+No need to memorise — when you see one, you'll know it's just another kind of value.
+
+## 👀 Let's follow — in Colab {.smaller}
+
+Run this together — build a **list** of sentences and a **dict** record, then print each whole:
+
+```python
+sentences = ["The cat sat on the mat.",          # a list of strings
+             "Despite the rain, the game went ahead."]
+record = {"id": 1, "text": "The cat sat on the mat.", "label": "A1"}   # a dict
+
+print(sentences)     # the whole list  — note the [ ... ]
+print(record)        # the whole dict  — note the { key: value ... }
+```
+
+## 🧪 Let's try — in Colab {.smaller}
+
+Your turn — build your own:
+
+- a **list** of three words, and
+- a **dict** with keys `id`, `text`, and `label`.
+
+Print each and check the `[ ]` / `{ }` match what you intended.
+
+# 4 · Reaching into your data — indexing
+
+## Getting one item out — indexing
+
+Use **`[...]`** to reach inside:
+
+- a **list** by *position* (starts at **0**): `sentences[0]`
+- a **dict** by *key*: `record["label"]`
+
+## Why this matters
+
+Every dataset this week is a **`list` of `dict`s** — sentences shaped like `{"id": ..., "text": ..., "label": ...}`. Reading them is just list + dict indexing.
+
+## 👀 Let's follow — in Colab {.smaller}
+
+Reuse the `sentences` and `record` you just built — now reach **inside** them:
+
+```python
+print("first sentence:", sentences[0])       # list — index by position
+print("its gold label:", record["label"])    # dict — index by key
+```
+
+## 🧪 Let's try — in Colab {.smaller}
+
+Your turn:
+
+- Change the `0` in `sentences[0]` to `1` — what prints?
+- Ask for `record["text"]`, then `record["id"]`.
+
+Watch what comes out each time.
+
+# 5 · f-strings
+
+## Putting your data *into* the prompt {.smaller}
+
+An **f-string** is a normal string with an `f` in front — anything in `{ }` gets swapped for its value:
+
+```python
+sentence = "Despite the rain, the game went ahead."
+prompt = f"What CEFR level (A1-C2) is this sentence? {sentence}"
+```
+
+. . .
+
+`{sentence}` becomes the actual sentence text inside the prompt — no copy-paste, no gluing strings together.
+
+## Why this matters
+
+The prompt is now **built from a variable**.
+
+. . .
+
+Swap in a different sentence and you get a different prompt — automatically. That's the mechanism for running **one prompt over many sentences**, which is exactly what Session 3 turns into a loop.
+
+## 👀 Let's follow — in Colab {.smaller}
+
+Run this together — build a prompt from a variable, then send it:
+
+```python
+sentence = "Despite the rain, the game went ahead."
+prompt = f"What CEFR level (A1-C2) is this sentence? {sentence}"
+reply = generate_text(prompt)
+print(reply)
+```
+
+## 🧪 Let's try — in Colab {.smaller}
+
+Change `sentence` to one of your own and re-run.
+
+. . .
+
+You built a prompt from data and sent it — the core move of the whole course.
 
 # Any questions?
+
+## Coming up in Session 3
+
+You can call the model **once**. Next: run it over a **whole list of sentences** —
+
+- turn a paragraph into sentences (segmentation),
+- loop the call over each with `for`,
+- and wrap it in a reusable function.
+
+Then form your project groups.
