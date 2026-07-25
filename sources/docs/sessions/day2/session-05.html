@@ -437,9 +437,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this session you will be able to:</p>
 <ul>
-<li>Draw a sample of sentences and annotate them by hand against a prepared scheme.</li>
-<li>Compute a simple agreement rate (and Cohen’s κ) between two annotators, and adjudicate the disagreements.</li>
-<li>Compare your adjudicated labels against the published gold standard and interpret the differences.</li>
+<li>Working in a pair, each annotate the same ~20 sentences by hand against a prepared scheme.</li>
+<li>Import the annotation spreadsheet into Colab and compute a simple agreement rate, Cohen’s κ, and an annotator-vs-annotator confusion matrix.</li>
+<li>Read the confusion matrix to see <em>where</em> you two disagree, then refine the scheme and re-annotate — iterate until agreement is acceptable.</li>
+<li>Adjudicate the remaining disagreements, compare your labels against the published gold standard, and interpret the differences.</li>
 <li>Import your annotations back as a canonical <code>{id, text, label}</code> gold set.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -461,21 +462,24 @@ Note
 <p>Works through <strong>Part B</strong> of the Day 2 notebook — a Google Sheets annotation round-trip.</p>
 <ol type="1">
 <li><strong>Draw ~20 sentences</strong> from the provided pool for your track.</li>
-<li><strong>Annotate by hand</strong> in a Google Sheet (two annotator columns, so agreement falls out).</li>
-<li><strong>Measure agreement</strong> — percent agreement + Cohen’s κ — then <strong>adjudicate</strong> the disagreements to a <code>final</code> label.</li>
-<li><strong>Compare to the published gold</strong> and import your set back as canonical JSON.</li>
+<li><strong>Annotate by hand</strong> — each person in the pair annotates the same 20 items in a Google Sheet (two annotator columns, so agreement falls out).</li>
+<li><strong>Import the sheet into Colab</strong> and <strong>measure agreement</strong> — percent agreement, Cohen’s κ, and an annotator-vs-annotator confusion matrix.</li>
+<li><strong>Iterate</strong> — read the confusion matrix to find where the scheme is ambiguous, refine it, and re-annotate the disagreements until agreement is acceptable.</li>
+<li><strong>Adjudicate</strong> the remaining disagreements to a <code>final</code> label, <strong>compare to the published gold</strong>, and import your set back as canonical JSON.</li>
 </ol>
-<p>The Google Sheets round-trip (creating the sheet, annotating, reading it back) is the time-consuming part — pace yourself and don’t skip the adjudication step.</p>
+<p>The Google Sheets round-trip (creating the sheet, annotating, reading it back into Colab) is the time-consuming part — pace yourself and don’t skip the iterate/adjudicate steps.</p>
 </section>
 <section id="reading" class="level2">
 <h2 class="anchored" data-anchor-id="reading">Reading</h2>
-<!-- to be added -->
+<p>No new reading for this session — see the Day 2 reading (Eguchi &amp; Kyle, 2024) in <a href="../../sessions/day2/session-04.html">Session 4</a> and the optional further reading on the <a href="../../syllabus/readings.html">Readings</a> page.</p>
 </section>
 <section id="slides-colab" class="level2">
 <h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
-<ul>
-<li>Notebook (tutorial + Corpus Lab): <a href="../../notebooks/day2_gold_standards_and_evaluation.html"><code>day2_gold_standards_and_evaluation.ipynb</code></a> — <a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open In Colab"></a> <!-- Slides: [Session 5 slides](../../slides/slides-session-05.html){target="_blank"} --></li>
-</ul>
+<!--
+- Notebook (tutorial + Corpus Lab): [`day2_gold_standards_and_evaluation.ipynb`](../../notebooks/day2_gold_standards_and_evaluation.ipynb) —
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)
+- Slides: [Session 5 slides](../../slides/slides-session-05.html){target="_blank"}
+-->
 
 
 <!-- -->
@@ -958,34 +962,39 @@ Note
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Draw a sample of sentences and annotate them by hand against a prepared scheme.</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compute a simple agreement rate (and Cohen's κ) between two annotators, and adjudicate the disagreements.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compare your adjudicated labels against the published gold standard and interpret the differences.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Import your annotations back as a canonical <span class="in">`{id, text, label}`</span> gold set.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>This hands-on is where the **construction** objective is assessed — building a gold standard (operationalizing categories and measuring agreement). Give the annotation itself real care; it's the graded piece.</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>Works through **Part B** of the Day 2 notebook — a Google Sheets annotation round-trip.</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Draw ~20 sentences** from the provided pool for your track.</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Annotate by hand** in a Google Sheet (two annotator columns, so agreement falls out).</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Measure agreement** — percent agreement + Cohen's κ — then **adjudicate** the disagreements to a <span class="in">`final`</span> label.</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Compare to the published gold** and import your set back as canonical JSON.</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>The Google Sheets round-trip (creating the sheet, annotating, reading it back) is the time-consuming part — pace yourself and don't skip the adjudication step.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Working in a pair, each annotate the same ~20 sentences by hand against a prepared scheme.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Import the annotation spreadsheet into Colab and compute a simple agreement rate, Cohen's κ, and an annotator-vs-annotator confusion matrix.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Read the confusion matrix to see *where* you two disagree, then refine the scheme and re-annotate — iterate until agreement is acceptable.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adjudicate the remaining disagreements, compare your labels against the published gold standard, and interpret the differences.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Import your annotations back as a canonical <span class="in">`{id, text, label}`</span> gold set.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>This hands-on is where the **construction** objective is assessed — building a gold standard (operationalizing categories and measuring agreement). Give the annotation itself real care; it's the graded piece.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>Works through **Part B** of the Day 2 notebook — a Google Sheets annotation round-trip.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Draw ~20 sentences** from the provided pool for your track.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Annotate by hand** — each person in the pair annotates the same 20 items in a Google Sheet (two annotator columns, so agreement falls out).</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Import the sheet into Colab** and **measure agreement** — percent agreement, Cohen's κ, and an annotator-vs-annotator confusion matrix.</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Iterate** — read the confusion matrix to find where the scheme is ambiguous, refine it, and re-annotate the disagreements until agreement is acceptable.</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Adjudicate** the remaining disagreements to a `final` label, **compare to the published gold**, and import your set back as canonical JSON.</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Notebook (tutorial + Corpus Lab): <span class="co">[</span><span class="ot">`day2_gold_standards_and_evaluation.ipynb`</span><span class="co">](../../notebooks/day2_gold_standards_and_evaluation.ipynb)</span> —</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 5 slides](../../slides/slides-session-05.html){target="_blank"} --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>The Google Sheets round-trip (creating the sheet, annotating, reading it back into Colab) is the time-consuming part — pace yourself and don't skip the iterate/adjudicate steps.</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 2 reading (Eguchi &amp; Kyle, 2024) in <span class="co">[</span><span class="ot">Session 4</span><span class="co">](session-04.md)</span> and the optional further reading on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">- Notebook (tutorial + Corpus Lab): [`day2_gold_standards_and_evaluation.ipynb`](../../notebooks/day2_gold_standards_and_evaluation.ipynb) —</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">- Slides: [Session 5 slides](../../slides/slides-session-05.html){target="_blank"}</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

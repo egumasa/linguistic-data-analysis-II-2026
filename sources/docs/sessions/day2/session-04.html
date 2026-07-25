@@ -441,6 +441,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Describe where annotation sits in an NLP pipeline for applied linguistics (annotate → model → evaluate).</li>
 <li>Explain inter-annotator agreement conceptually — why we double-annotate, and what a simple agreement rate and Cohen’s κ tell you.</li>
 <li>Say what a gold-standard dataset is and how it is constructed.</li>
+<li>Explain, conceptually, what the core evaluation metrics (precision, recall, F1) and a <strong>confusion matrix</strong> are, and why we need them to judge model output against a gold standard.</li>
 </ul>
 </section>
 <section id="agenda" class="level2">
@@ -449,9 +450,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Why annotation?</strong> — from a linguistic construct to labelled data; the <code>{id, text, label}</code> shape.</li>
 <li><strong>Annotation schemes &amp; coding guidelines</strong> — operationalizing a category so two people can apply it consistently.</li>
 <li><strong>Inter-annotator agreement (conceptual)</strong> — double annotation, percent agreement, and Cohen’s κ; why chance-corrected agreement matters.</li>
+<li><strong>Evaluation metrics (conceptual)</strong> — what precision, recall, and F1 mean, and how a confusion matrix shows <em>where</em> a model goes wrong. This previews the hands-on evaluation you implement in <a href="../../sessions/day2/session-06.html">Session 6</a>.</li>
 <li><strong>The pipeline in context</strong> — how today’s gold standard feeds the prompt design and evaluation of the coming days (Eguchi &amp; Kyle, 2024).</li>
 </ol>
-<p>This is the conceptual grounding for the hands-on annotation in <a href="../../sessions/day2/session-05.html">Session 5</a>.</p>
+<p>This is the conceptual grounding for the hands-on annotation in <a href="../../sessions/day2/session-05.html">Session 5</a> and the evaluation code in <a href="../../sessions/day2/session-06.html">Session 6</a>.</p>
 </section>
 <section id="reading" class="level2">
 <h2 class="anchored" data-anchor-id="reading">Reading</h2>
@@ -950,25 +952,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Describe where annotation sits in an NLP pipeline for applied linguistics (annotate → model → evaluate).</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Explain inter-annotator agreement conceptually — why we double-annotate, and what a simple agreement rate and Cohen's κ tell you.</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Say what a gold-standard dataset is and how it is constructed.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Why annotation?** — from a linguistic construct to labelled data; the <span class="in">`{id, text, label}`</span> shape.</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Annotation schemes &amp; coding guidelines** — operationalizing a category so two people can apply it consistently.</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Inter-annotator agreement (conceptual)** — double annotation, percent agreement, and Cohen's κ; why chance-corrected agreement matters.</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**The pipeline in context** — how today's gold standard feeds the prompt design and evaluation of the coming days (Eguchi &amp; Kyle, 2024).</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>This is the conceptual grounding for the hands-on annotation in <span class="co">[</span><span class="ot">Session 5</span><span class="co">](session-05.md)</span>.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Explain, conceptually, what the core evaluation metrics (precision, recall, F1) and a **confusion matrix** are, and why we need them to judge model output against a gold standard.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Why annotation?** — from a linguistic construct to labelled data; the <span class="in">`{id, text, label}`</span> shape.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Annotation schemes &amp; coding guidelines** — operationalizing a category so two people can apply it consistently.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Inter-annotator agreement (conceptual)** — double annotation, percent agreement, and Cohen's κ; why chance-corrected agreement matters.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Evaluation metrics (conceptual)** — what precision, recall, and F1 mean, and how a confusion matrix shows *where* a model goes wrong. This previews the hands-on evaluation you implement in <span class="co">[</span><span class="ot">Session 6</span><span class="co">](session-06.md)</span>.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**The pipeline in context** — how today's gold standard feeds the prompt design and evaluation of the coming days (Eguchi &amp; Kyle, 2024).</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>This is the conceptual grounding for the hands-on annotation in <span class="co">[</span><span class="ot">Session 5</span><span class="co">](session-05.md)</span> and the evaluation code in <span class="co">[</span><span class="ot">Session 6</span><span class="co">](session-06.md)</span>.</span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>**Read** (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>, including optional Day 2 items):</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eguchi, M., &amp; Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. *Research Methods in Applied Linguistics, 3*(3), 100153. <span class="ot">&lt;https://doi.org/10.1016/j.rmal.2024.100153&gt;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>**Read** (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>, including optional Day 2 items):</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 4 slides](../../slides/slides-session-04.html){target="_blank"} --&gt;</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eguchi, M., &amp; Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. *Research Methods in Applied Linguistics, 3*(3), 100153. <span class="ot">&lt;https://doi.org/10.1016/j.rmal.2024.100153&gt;</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 4 slides](../../slides/slides-session-04.html){target="_blank"} --&gt;</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
