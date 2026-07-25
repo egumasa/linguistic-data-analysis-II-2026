@@ -50,49 +50,61 @@
   {
     "objectID": "notebooks/day1_python_and_first_llm.html",
     "href": "notebooks/day1_python_and_first_llm.html",
-    "title": "Day 1 · Python basics & your first LLM call",
+    "title": "Day 1 · Your first LLM call & reading its data",
     "section": "",
     "text": "Day 1 — Linguistic Data Analysis II",
     "crumbs": [
       "Sessions",
       "Daily notebooks",
-      "Day 1 · Python basics & your first LLM call"
+      "Day 1 · Your first LLM call & reading its data"
     ]
   },
   {
-    "objectID": "notebooks/day1_python_and_first_llm.html#part-a-tutorial-a-15-minute-python-primer",
-    "href": "notebooks/day1_python_and_first_llm.html#part-a-tutorial-a-15-minute-python-primer",
-    "title": "Day 1 · Python basics & your first LLM call",
-    "section": "Part A · Tutorial — a 15-minute Python primer",
-    "text": "Part A · Tutorial — a 15-minute Python primer\nNo prior Python needed. Run each cell, read the output, then change a value and re-run to see what happens. Everything this week is built from these few ideas.\n\n1. Variables & data types\nA variable is a name for a value. Python’s core types you’ll use all week: string (str, text), integer (int) and float (decimal number), list (an ordered sequence), and dictionary (dict, key → value pairs).\n\n\nShow code\nsentence = \"The cat sat on the mat.\"   # str  — text, in quotes\nword_count = 6                          # int  — whole number\nscore = 4.5                             # float — decimal number\nlevels = [\"A1\", \"A2\", \"B1\"]            # list — ordered, square brackets\nitem = {\"id\": 1, \"text\": sentence, \"label\": \"A1\"}  # dict — key: value\n\nprint(type(sentence), type(word_count), type(score))\nprint(\"levels[0] =\", levels[0])         # lists are indexed from 0\nprint(\"item['label'] =\", item[\"label\"])  # look up a dict value by its key\n\n\n\n\n2. if statements — make a decision\nRun one branch or another depending on a condition. Indentation (4 spaces) is how Python groups the lines that belong to each branch.\n\n\nShow code\nscore = 4.5\nif score &lt; 4:\n    band = \"Low\"\nelif score &lt; 7:\n    band = \"Mid\"\nelse:\n    band = \"High\"\nprint(\"score\", score, \"→ band\", band)\n\n\n\n\n3. for loops — do something to every item\nLoop over a list, or over a dictionary’s items. This is exactly how we’ll process every sentence in a dataset.\n\n\nShow code\nfor level in levels:\n    print(\"level:\", level)\n\nprint(\"---\")\nfor key, value in item.items():\n    print(key, \"→\", value)\n\n\n\n\n4. Functions — name a reusable piece of code\nA function takes inputs (arguments) and returns a result. Define once, call as often as you like.\n\n\nShow code\ndef band_of(score):\n    \"\"\"Turn a numeric score into a Low/Mid/High band.\"\"\"\n    if score &lt; 4:\n        return \"Low\"\n    elif score &lt; 7:\n        return \"Mid\"\n    return \"High\"\n\nprint(band_of(2), band_of(5), band_of(9))\n\n\n\n\n5. Basic input / output\nprint(...) shows a value. To read data, we mostly parse JSON — the {id, text, label} shape you’ll see all week. (input() also reads from the keyboard, but it pauses Run all, so we avoid it here.)\n\n\nShow code\nraw = '[{\"id\": 1, \"text\": \"Hello.\", \"label\": \"A1\"}, {\"id\": 2, \"text\": \"Nevertheless, the findings were inconclusive.\", \"label\": \"C1\"}]'\ndata = json.loads(raw)          # JSON text → Python list of dicts\nprint(\"number of items:\", len(data))\nfor row in data:\n    print(row[\"id\"], row[\"label\"], \"|\", row[\"text\"])\n\n# (Reading from the keyboard — left commented so Run all does not pause:)\n# name = input(\"Your name: \")\n# print(\"Hello,\", name)\n\n\n\n\n6. Meet the model — your first LLM call\nRun the setup cell (loads the LLM backend — in Colab that’s the free built-in Gemini, no key needed), then send the model a prompt with generate_text(...).\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Imports + the LLM backend. No pip install needed in Colab.\nimport json, re, time, urllib.request, os\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n\nMODEL_ID = \"gemini-3.1-flash-lite\"   # pinned model for the reproducible (API) backend\n\ndef _resolve_gemini_key():\n    \"\"\"Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.\"\"\"\n    try:\n        from google.colab import userdata      # only exists in Colab\n        key = userdata.get(\"GEMINI_API_KEY\")\n        if key:\n            return key\n    except Exception:\n        pass                                    # not in Colab, or secret not set\n    return os.environ.get(\"GEMINI_API_KEY\")\n\ndef _make_api_backend(key):\n    \"\"\"Reproducible backend: Gemini API with temperature=0 + a fixed seed.\"\"\"\n    from google import genai\n    from google.genai import types\n    client = genai.Client(api_key=key)\n    cfg = types.GenerateContentConfig(temperature=0, seed=42)\n    return (lambda p: client.models.generate_content(\n                model=MODEL_ID, contents=p, config=cfg).text,\n            f\"Gemini API ({MODEL_ID}, temperature=0, seed=42)\")\n\n# ---- keeps us from calling the model faster than the free tier allows ----------\n# (explained step by step in Day 3, right after this cell — the short version:\n#  wait a bit between calls, and if we still get told to slow down, wait longer\n#  and try again, unless the message says we are out of quota for the whole day.)\ndef _looks_like_rate_limit(error):\n    text = str(error).lower()\n    return any(s in text for s in\n               [\"429\", \"resource_exhausted\", \"rate limit\", \"quota\", \"too many requests\"])\n\ndef _looks_like_daily_quota(error):\n    text = str(error).lower()\n    return \"per day\" in text or \"perday\" in text.replace(\" \", \"\")\n\ndef _suggested_delay(error, fallback):\n    m = re.search(r\"retry in ([0-9]+(?:\\.[0-9]+)?)s\", str(error).lower())\n    return float(m.group(1)) + 1.0 if m else fallback\n\n_last_call_time = 0.0   # generate_text remembers & updates this with `global`\n\ndef generate_text(prompt, max_retries=5):\n    global _last_call_time\n    for attempt in range(max_retries + 1):\n        wait = _min_interval - (time.monotonic() - _last_call_time)\n        if wait &gt; 0:\n            time.sleep(wait)\n        try:\n            _last_call_time = time.monotonic()\n            return _raw_generate_text(prompt)\n        except Exception as error:\n            if not _looks_like_rate_limit(error):\n                raise                                   # a real bug — don't hide it\n            if _looks_like_daily_quota(error):\n                raise RuntimeError(\n                    \"Daily quota used up for today — waiting won't help until it \"\n                    \"resets. Come back tomorrow, or ask your instructor.\") from error\n            if attempt == max_retries:\n                raise\n            print(f\"  (rate limited — waiting before trying again, attempt {attempt+1})\")\n            time.sleep(_suggested_delay(error, _min_interval * (attempt + 2)))\n    raise RuntimeError(\"Still rate-limited after several tries.\")\n\n# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).\n_key = _resolve_gemini_key()\nif _key:\n    _raw_generate_text, _backend = _make_api_backend(_key)\n    _min_interval = 4.4     # keeps us under gemini-3.1-flash-lite's 15-requests/minute cap\nelse:\n    try:\n        from google.colab import ai            # Colab's built-in Gemini — no key\n        _raw_generate_text, _backend = (lambda p: ai.generate_text(p)), \"Colab Gemini (demo, non-reproducible)\"\n        _min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively\n    except ImportError:\n        raise RuntimeError(\n            \"No LLM backend found. Run this notebook in Google Colab (free built-in \"\n            \"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets \"\n            \"panel, or as an environment variable when running locally. \"\n            \"See resources/tools/gemini-api-key.md.\")\nprint(f\"Setup done. LLM backend: {_backend}. scikit-learn ready.\")\n\n\n✏️ YOU EDIT — change the prompt and re-run.\n\n\nShow code\nreply = generate_text(\"In one sentence, what is applied linguistics?\")\nprint(reply)",
+    "objectID": "notebooks/day1_python_and_first_llm.html#part-a-tutorial-your-first-llm-call-and-reading-its-answer",
+    "href": "notebooks/day1_python_and_first_llm.html#part-a-tutorial-your-first-llm-call-and-reading-its-answer",
+    "title": "Day 1 · Your first LLM call & reading its data",
+    "section": "Part A · Tutorial — your first LLM call, and reading its answer",
+    "text": "Part A · Tutorial — your first LLM call, and reading its answer\nNo prior Python needed. The star of Part A is a single call to a language model; everything else — variables, data types, f-strings — is just enough Python to read and reshape what the model gives you back. Run each cell, read the output, then change a value and re-run to see what happens.\n\n1. Getting your bearings in Colab\nThis page is a Colab notebook: a stack of cells you run top to bottom. A code cell runs when you press Shift+Enter (or click ▶). The first run wakes up a runtime — a temporary computer in the cloud that remembers your variables until you close the tab. Run the cell below to prove it works.\n\n\nShow code\nprint(\"Hello, Colab! You just ran your first cell.\")\n\n\nWhen a cell breaks — read the error. Sooner or later a cell turns red. Don’t panic: Python tells you what went wrong on the last line. For example, running print(mesage) (a typo for message) prints:\nNameError: name 'mesage' is not defined\nRead it back to front: the error type (NameError), the message ('mesage' is not defined), and the line it happened on. Nearly every early error is a typo or a cell you haven’t run yet. Fix the typo, re-run, move on.\n\n\n2. Your first LLM call\nRun the setup cell (it loads the LLM backend — in Colab that’s the free built-in Gemini, no key needed), then send the model a prompt with generate_text(...). The answer comes back as text, which we store in a variable called reply.\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Imports + the LLM backend. No pip install needed in Colab.\nimport json, re, time, urllib.request, os\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n\nMODEL_ID = \"gemini-3.1-flash-lite\"   # pinned model for the reproducible (API) backend\n\ndef _resolve_gemini_key():\n    \"\"\"Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.\"\"\"\n    try:\n        from google.colab import userdata      # only exists in Colab\n        key = userdata.get(\"GEMINI_API_KEY\")\n        if key:\n            return key\n    except Exception:\n        pass                                    # not in Colab, or secret not set\n    return os.environ.get(\"GEMINI_API_KEY\")\n\ndef _make_api_backend(key):\n    \"\"\"Reproducible backend: Gemini API with temperature=0 + a fixed seed.\"\"\"\n    from google import genai\n    from google.genai import types\n    client = genai.Client(api_key=key)\n    cfg = types.GenerateContentConfig(temperature=0, seed=42)\n    return (lambda p: client.models.generate_content(\n                model=MODEL_ID, contents=p, config=cfg).text,\n            f\"Gemini API ({MODEL_ID}, temperature=0, seed=42)\")\n\n# ---- keeps us from calling the model faster than the free tier allows ----------\n# (explained step by step in Day 3, right after this cell — the short version:\n#  wait a bit between calls, and if we still get told to slow down, wait longer\n#  and try again, unless the message says we are out of quota for the whole day.)\ndef _looks_like_rate_limit(error):\n    text = str(error).lower()\n    return any(s in text for s in\n               [\"429\", \"resource_exhausted\", \"rate limit\", \"quota\", \"too many requests\"])\n\ndef _looks_like_daily_quota(error):\n    text = str(error).lower()\n    return \"per day\" in text or \"perday\" in text.replace(\" \", \"\")\n\ndef _suggested_delay(error, fallback):\n    m = re.search(r\"retry in ([0-9]+(?:\\.[0-9]+)?)s\", str(error).lower())\n    return float(m.group(1)) + 1.0 if m else fallback\n\n_last_call_time = 0.0   # generate_text remembers & updates this with `global`\n\ndef generate_text(prompt, max_retries=5):\n    global _last_call_time\n    for attempt in range(max_retries + 1):\n        wait = _min_interval - (time.monotonic() - _last_call_time)\n        if wait &gt; 0:\n            time.sleep(wait)\n        try:\n            _last_call_time = time.monotonic()\n            return _raw_generate_text(prompt)\n        except Exception as error:\n            if not _looks_like_rate_limit(error):\n                raise                                   # a real bug — don't hide it\n            if _looks_like_daily_quota(error):\n                raise RuntimeError(\n                    \"Daily quota used up for today — waiting won't help until it \"\n                    \"resets. Come back tomorrow, or ask your instructor.\") from error\n            if attempt == max_retries:\n                raise\n            print(f\"  (rate limited — waiting before trying again, attempt {attempt+1})\")\n            time.sleep(_suggested_delay(error, _min_interval * (attempt + 2)))\n    raise RuntimeError(\"Still rate-limited after several tries.\")\n\n# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).\n_key = _resolve_gemini_key()\nif _key:\n    _raw_generate_text, _backend = _make_api_backend(_key)\n    _min_interval = 4.4     # keeps us under gemini-3.1-flash-lite's 15-requests/minute cap\nelse:\n    try:\n        from google.colab import ai            # Colab's built-in Gemini — no key\n        _raw_generate_text, _backend = (lambda p: ai.generate_text(p)), \"Colab Gemini (demo, non-reproducible)\"\n        _min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively\n    except ImportError:\n        raise RuntimeError(\n            \"No LLM backend found. Run this notebook in Google Colab (free built-in \"\n            \"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets \"\n            \"panel, or as an environment variable when running locally. \"\n            \"See resources/tools/gemini-api-key.md.\")\nprint(f\"Setup done. LLM backend: {_backend}. scikit-learn ready.\")\n\n\n✏️ YOU EDIT — change the prompt text and re-run. The prompt is just text you send; the reply is just text you get back.\n\n\nShow code\nreply = generate_text(\"In one sentence, what is applied linguistics?\")\nprint(reply)\n\n\n\n\n3. What did the model hand back? — Python data types\nEvery value in Python has a type. Ask what type reply is:\n\n\nShow code\nprint(type(reply))     # &lt;class 'str'&gt; — a string, i.e. text\n\n\nThe three types you’ll use all week:\n\nstr — text, in quotes (like reply).\nlist — an ordered sequence, in square brackets. Several sentences, say.\ndict — a labelled record, in curly braces: key → value pairs. This is the {id, text, label} shape every dataset this week uses.\n\nBuild one of each, then reach inside them with [...] — lists by position (counting from 0), dicts by key.\n\n\nShow code\nsentences = [\"The cat sat on the mat.\",          # a list of strings\n             \"Nevertheless, the findings were inconclusive.\"]\nrecord = {\"id\": 1, \"text\": sentences[0], \"label\": \"A1\"}   # a dict\n\nprint(\"how many sentences:\", len(sentences))\nprint(\"first sentence:\", sentences[0])       # list — index by position (from 0)\nprint(\"its gold label:\", record[\"label\"])   # dict — index by key\n\n\n\n\n4. f-strings — put your data into a prompt\nAn f-string (f\"...\") drops a variable straight into a piece of text with {curly braces}. That’s how you build a prompt about a specific sentence — the trick we’ll use to run one prompt over a whole dataset later.\n✏️ YOU EDIT — change the sentence and re-run.\n\n\nShow code\nsentence = \"Nevertheless, the findings were inconclusive.\"\nprompt = f\"What CEFR level (A1-C2) is this sentence? {sentence}\"\nprint(\"Prompt sent:\", prompt)\n\nreply = generate_text(prompt)\nprint(\"Model says:\", reply)",
     "crumbs": [
       "Sessions",
       "Daily notebooks",
-      "Day 1 · Python basics & your first LLM call"
+      "Day 1 · Your first LLM call & reading its data"
     ]
   },
   {
-    "objectID": "notebooks/day1_python_and_first_llm.html#part-b-corpus-lab-python-practice",
-    "href": "notebooks/day1_python_and_first_llm.html#part-b-corpus-lab-python-practice",
-    "title": "Day 1 · Python basics & your first LLM call",
-    "section": "Part B · Corpus Lab — Python practice",
-    "text": "Part B · Corpus Lab — Python practice\nFill in each function so it does what its docstring says (replace the raise NotImplementedError(...) line). Then run the self-check cell at the bottom until every line prints ✅. No grader needed — the checks are your grader.\n\n\nShow code\n# ✏️ YOU EDIT — replace each NotImplementedError with your code.\n\ndef label_of(item):\n    \"\"\"Return the value stored under the key \"label\" in the dict `item`.\n    Example: label_of({\"id\": 1, \"text\": \"Hi\", \"label\": \"A1\"}) -&gt; \"A1\".\n    \"\"\"\n    raise NotImplementedError(\"Return item['label'].\")\n\n\ndef long_words(words, n):\n    \"\"\"Return a LIST of the words whose length is greater than n.\n    Example: long_words([\"a\", \"cat\", \"elephant\"], 3) -&gt; [\"elephant\"].\n    \"\"\"\n    # HINT: build a result list; loop with `for w in words:`; keep w if len(w) &gt; n.\n    raise NotImplementedError(\"Return the words longer than n characters.\")\n\n\ndef count_labels(items):\n    \"\"\"Given a list of {id, text, label} dicts, return a dict mapping each\n    label to how many times it appears.\n    Example: count_labels([{\"label\":\"A1\"}, {\"label\":\"A1\"}, {\"label\":\"B1\"}])\n             -&gt; {\"A1\": 2, \"B1\": 1}.\n    \"\"\"\n    # HINT: start with counts = {}; for each item, add 1 to counts[label]\n    #       (use counts.get(label, 0) + 1 so the first time starts at 0).\n    raise NotImplementedError(\"Count how many items carry each label.\")\n\n\n\n\nShow code\n#@title 🔎 Self-check — run me { display-mode: \"form\" }\nsample = [{\"id\": 1, \"text\": \"Hi.\", \"label\": \"A1\"},\n          {\"id\": 2, \"text\": \"Hello there.\", \"label\": \"A1\"},\n          {\"id\": 3, \"text\": \"Nevertheless...\", \"label\": \"C1\"}]\nchecks = [\n    (\"label_of\", label_of(sample[0]) == \"A1\"),\n    (\"long_words\", long_words([\"a\", \"cat\", \"elephant\"], 3) == [\"elephant\"]),\n    (\"count_labels\", count_labels(sample) == {\"A1\": 2, \"C1\": 1}),\n]\nfor name, ok in checks:\n    print((\"✅\" if ok else \"❌\"), name)\nprint(\"All passed ✅\" if all(ok for _, ok in checks)\n      else \"Some checks failed — fix them and re-run.\")",
+    "objectID": "notebooks/day1_python_and_first_llm.html#part-b-corpus-lab-from-text-to-sentences-then-practice",
+    "href": "notebooks/day1_python_and_first_llm.html#part-b-corpus-lab-from-text-to-sentences-then-practice",
+    "title": "Day 1 · Your first LLM call & reading its data",
+    "section": "Part B · Corpus Lab — from text to sentences, then practice",
+    "text": "Part B · Corpus Lab — from text to sentences, then practice\nIn Part A you called the model once. Here you’ll turn a paragraph into individual sentences (the unit you’ll annotate on Day 2), run the model over all of them, and then practice the basics on your own. Cells marked ✏️ YOU EDIT are yours to change; run the self-check at the end until every line prints ✅.\n\n1. Splitting text into sentences — without a model\nText arrives as one long string. To analyse it sentence by sentence you first have to segment it. The obvious idea: split on the full stop. To do that we call a method on the string — some_text.split(\".\") — using a dot (.) to run a built-in action on a value.\n\n\nShow code\nparagraph = (\"Dr. Smith reviewed the data. The results were clear, e.g. accuracy rose. Scores went from 3.14 to 9.\")\n\nnaive = paragraph.split(\".\")     # cut the string at every \".\"\nprint(\"pieces:\", len(naive))\nfor piece in naive:\n    print(repr(piece))\n\n\nLook at the output: \"Dr\" (from Dr.), \"e\" and \"g\" (from e.g.), and \"3\"/\"14\" (from 3.14) all got split in the wrong places. Sentence boundaries are not just full stops — abbreviations and decimals break the naive rule.\n\n\n2. Splitting text into sentences — with a model\nA proper tool knows more than “cut at every dot”. We’ll use spaCy, an NLP library. import spacy loads that toolbox; spacy.blank(\"en\") makes a minimal English pipeline and we add a rule-based sentencizer to it (no model download needed).\n\n\nShow code\nimport spacy\nnlp = spacy.blank(\"en\")\nnlp.add_pipe(\"sentencizer\")\n\ndoc = nlp(paragraph)\nsentences = list(doc.sents)        # spaCy's sentence objects, as a list\nprint(\"sentences found:\", len(sentences))\nprint(\"first sentence:\", sentences[0])\n\n\nspaCy keeps Dr. and e.g. intact and finds the real boundaries. Why this matters: on Day 2 the unit you annotate and feed the LLM is the sentence — bad boundaries mean bad data downstream.\n\n\n3. Run the model over every sentence — for, if, and a function\nNow that you have a list of sentences, do something to each one. A for loop repeats the same steps for every item; an if lets you react to what comes back. Below, we build a prompt for each sentence (with an f-string) and ask the model for its CEFR level.\n✏️ YOU EDIT — try your own sentences.\n\n\nShow code\nexamples = [\"The findings were inconclusive.\",\n            \"Nevertheless, we draw some tentative conclusions.\",\n            \"More research is needed.\"]\n\nfor sentence in examples:\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    reply = generate_text(prompt).strip()\n    if reply == \"\":\n        print(sentence, \"→ (no answer)\")\n    else:\n        print(sentence, \"→\", reply)\n\n\nFinally, wrap those three steps — build prompt, call model, tidy the reply — into a function you can reuse. Defining ask(...) once means the rest of the week you just call ask(sentence). This little function is the seed of the pipeline you’ll assemble later.\n\n\nShow code\ndef ask(sentence):\n    \"\"\"Ask the model for the CEFR level of one sentence; return its reply.\"\"\"\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    return generate_text(prompt).strip()\n\nprint(ask(\"The cat sat on the mat.\"))\n\n\n\n\n4. Your turn — Python practice\nFill in each function so it does what its docstring says (replace the raise NotImplementedError(...) line). Then run the self-check cell below until every line prints ✅. No grader needed — the checks are your grader.\n\n\nShow code\n# ✏️ YOU EDIT — replace each NotImplementedError with your code.\n\ndef label_of(item):\n    \"\"\"Return the value stored under the key \"label\" in the dict `item`.\n    Example: label_of({\"id\": 1, \"text\": \"Hi\", \"label\": \"A1\"}) -&gt; \"A1\".\n    \"\"\"\n    raise NotImplementedError(\"Return item['label'].\")\n\n\ndef long_words(words, n):\n    \"\"\"Return a LIST of the words whose length is greater than n.\n    Example: long_words([\"a\", \"cat\", \"elephant\"], 3) -&gt; [\"elephant\"].\n    \"\"\"\n    # HINT: build a result list; loop with `for w in words:`; keep w if len(w) &gt; n.\n    raise NotImplementedError(\"Return the words longer than n characters.\")\n\n\ndef count_labels(items):\n    \"\"\"Given a list of {id, text, label} dicts, return a dict mapping each\n    label to how many times it appears.\n    Example: count_labels([{\"label\":\"A1\"}, {\"label\":\"A1\"}, {\"label\":\"B1\"}])\n             -&gt; {\"A1\": 2, \"B1\": 1}.\n    \"\"\"\n    # HINT: start with counts = {}; for each item, add 1 to counts[label]\n    #       (use counts.get(label, 0) + 1 so the first time starts at 0).\n    raise NotImplementedError(\"Count how many items carry each label.\")\n\n\n\n\nShow code\n#@title 🔎 Self-check — run me { display-mode: \"form\" }\nsample = [{\"id\": 1, \"text\": \"Hi.\", \"label\": \"A1\"},\n          {\"id\": 2, \"text\": \"Hello there.\", \"label\": \"A1\"},\n          {\"id\": 3, \"text\": \"Nevertheless...\", \"label\": \"C1\"}]\nchecks = [\n    (\"label_of\", label_of(sample[0]) == \"A1\"),\n    (\"long_words\", long_words([\"a\", \"cat\", \"elephant\"], 3) == [\"elephant\"]),\n    (\"count_labels\", count_labels(sample) == {\"A1\": 2, \"C1\": 1}),\n]\nfor name, ok in checks:\n    print((\"✅\" if ok else \"❌\"), name)\nprint(\"All passed ✅\" if all(ok for _, ok in checks)\n      else \"Some checks failed — fix them and re-run.\")\n\n\n\n\nPython you’ll see but won’t have to write\nThe pre-written 🔧 Library cells later this week occasionally use two shorthands. You never have to write them — just recognise them:\n\nA list comprehension builds a list in one line. [row[\"label\"] for row in rows] means “the label of every row” — the same as a for loop that .appends each label.\ntry / except (handle an error instead of crashing) and global (let a function update a shared variable) show up in the LLM backend and are explained on Day 3 — no need to learn them today.",
     "crumbs": [
       "Sessions",
       "Daily notebooks",
-      "Day 1 · Python basics & your first LLM call"
+      "Day 1 · Your first LLM call & reading its data"
+    ]
+  },
+  {
+    "objectID": "notebooks/day1_python_and_first_llm.html#mini-project-form-your-group-pick-a-track",
+    "href": "notebooks/day1_python_and_first_llm.html#mini-project-form-your-group-pick-a-track",
+    "title": "Day 1 · Your first LLM call & reading its data",
+    "section": "Mini-project — form your group & pick a track",
+    "text": "Mini-project — form your group & pick a track\nBefore Day 2 you’ll settle into a project group and choose a dataset track. Each group needs at least one Linguistic Data Analysis I alumnus. Once formed, pick your track and note it — you’ll annotate that dataset tomorrow.\nSee the Final Project page for the tracks and what the project involves.",
+    "crumbs": [
+      "Sessions",
+      "Daily notebooks",
+      "Day 1 · Your first LLM call & reading its data"
     ]
   },
   {
     "objectID": "notebooks/day1_python_and_first_llm.html#before-you-submit",
     "href": "notebooks/day1_python_and_first_llm.html#before-you-submit",
-    "title": "Day 1 · Python basics & your first LLM call",
+    "title": "Day 1 · Your first LLM call & reading its data",
     "section": "✅ Before you submit",
     "text": "✅ Before you submit\n\nRuntime → Run all and check every cell ran without error.\nTutorial outputs are visible (tables / charts / the model’s answers).\nEvery Corpus Lab self-check prints ✅ (or your TODO answers are filled in).\nFile → Download → Download .ipynb and upload that one file.",
     "crumbs": [
       "Sessions",
       "Daily notebooks",
-      "Day 1 · Python basics & your first LLM call"
+      "Day 1 · Your first LLM call & reading its data"
     ]
   },
   {
@@ -112,7 +124,7 @@
     "href": "notebooks/day2_gold_standards_and_evaluation.html#part-a-tutorial-the-pipeline-on-cefr-sp",
     "title": "Day 2 · Gold standards & evaluation",
     "section": "Part A · Tutorial — the pipeline on CEFR-SP",
-    "text": "Part A · Tutorial — the pipeline on CEFR-SP\nThe task (CEFR sentence level, A1–C2) is easy to judge on purpose — today the mechanics are the lesson, not the labeling.\n\n\n\n\n\n\nNoteToday runs on frozen predictions — no API key, no live model\n\n\n\nYou met the live model on Day 1 and saw its answers change from run to run. When you’re learning to measure quality, that wobble is just noise fighting the lesson — so today the model’s predictions are pre-computed and committed to a file. You load them and everyone’s precision / recall / F1 come out identical every run. You’ll run the model yourself (with the key) from Day 3 on.\n\n\n\nSetup — run this first\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Imports + the LLM backend. No pip install needed in Colab.\nimport json, re, time, urllib.request, os\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n\nMODEL_ID = \"gemini-3.1-flash-lite\"   # pinned model for the reproducible (API) backend\n\ndef _resolve_gemini_key():\n    \"\"\"Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.\"\"\"\n    try:\n        from google.colab import userdata      # only exists in Colab\n        key = userdata.get(\"GEMINI_API_KEY\")\n        if key:\n            return key\n    except Exception:\n        pass                                    # not in Colab, or secret not set\n    return os.environ.get(\"GEMINI_API_KEY\")\n\ndef _make_api_backend(key):\n    \"\"\"Reproducible backend: Gemini API with temperature=0 + a fixed seed.\"\"\"\n    from google import genai\n    from google.genai import types\n    client = genai.Client(api_key=key)\n    cfg = types.GenerateContentConfig(temperature=0, seed=42)\n    return (lambda p: client.models.generate_content(\n                model=MODEL_ID, contents=p, config=cfg).text,\n            f\"Gemini API ({MODEL_ID}, temperature=0, seed=42)\")\n\n# ---- keeps us from calling the model faster than the free tier allows ----------\n# (explained step by step in Day 3, right after this cell — the short version:\n#  wait a bit between calls, and if we still get told to slow down, wait longer\n#  and try again, unless the message says we are out of quota for the whole day.)\ndef _looks_like_rate_limit(error):\n    text = str(error).lower()\n    return any(s in text for s in\n               [\"429\", \"resource_exhausted\", \"rate limit\", \"quota\", \"too many requests\"])\n\ndef _looks_like_daily_quota(error):\n    text = str(error).lower()\n    return \"per day\" in text or \"perday\" in text.replace(\" \", \"\")\n\ndef _suggested_delay(error, fallback):\n    m = re.search(r\"retry in ([0-9]+(?:\\.[0-9]+)?)s\", str(error).lower())\n    return float(m.group(1)) + 1.0 if m else fallback\n\n_last_call_time = 0.0   # generate_text remembers & updates this with `global`\n\ndef generate_text(prompt, max_retries=5):\n    global _last_call_time\n    for attempt in range(max_retries + 1):\n        wait = _min_interval - (time.monotonic() - _last_call_time)\n        if wait &gt; 0:\n            time.sleep(wait)\n        try:\n            _last_call_time = time.monotonic()\n            return _raw_generate_text(prompt)\n        except Exception as error:\n            if not _looks_like_rate_limit(error):\n                raise                                   # a real bug — don't hide it\n            if _looks_like_daily_quota(error):\n                raise RuntimeError(\n                    \"Daily quota used up for today — waiting won't help until it \"\n                    \"resets. Come back tomorrow, or ask your instructor.\") from error\n            if attempt == max_retries:\n                raise\n            print(f\"  (rate limited — waiting before trying again, attempt {attempt+1})\")\n            time.sleep(_suggested_delay(error, _min_interval * (attempt + 2)))\n    raise RuntimeError(\"Still rate-limited after several tries.\")\n\n# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).\n_key = _resolve_gemini_key()\nif _key:\n    _raw_generate_text, _backend = _make_api_backend(_key)\n    _min_interval = 4.4     # keeps us under gemini-3.1-flash-lite's 15-requests/minute cap\nelse:\n    try:\n        from google.colab import ai            # Colab's built-in Gemini — no key\n        _raw_generate_text, _backend = (lambda p: ai.generate_text(p)), \"Colab Gemini (demo, non-reproducible)\"\n        _min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively\n    except ImportError:\n        raise RuntimeError(\n            \"No LLM backend found. Run this notebook in Google Colab (free built-in \"\n            \"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets \"\n            \"panel, or as an environment variable when running locally. \"\n            \"See resources/tools/gemini-api-key.md.\")\n\n# CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.\nGOLD_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json\"\nLEVELS = [\"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"]\nPREDICTIONS_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/predictions_day2.json\"   # frozen model predictions\nprint(f\"Setup done. LLM backend: {_backend}. scikit-learn ready.\")\n\n\n\n\nShow code\n#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: \"form\" }\ndef load_gold(url_or_path):\n    \"\"\"Read the canonical gold JSON: [{'id','text','label'}, ...].\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        gold = json.loads(raw)\n    else:\n        gold = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(gold)} items. First one:\", gold[0])\n    return gold\n\n\n\n\nShow code\n#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: \"form\" }\ndef _extract_level(text):\n    \"\"\"Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply.\"\"\"\n    m = re.search(r\"\\b([ABC][12])\\b\", str(text).upper())\n    return m.group(1) if m else \"??\"\n\ndef run_prompt(prompt, gold):\n    \"\"\"Send each item's `text` to the LLM via {text}, collect predicted labels.\"\"\"\n    predictions = []\n    for i, item in enumerate(gold, 1):\n        reply = generate_text(prompt.format(text=item[\"text\"]))\n        predictions.append(_extract_level(reply))\n        if i % 12 == 0:\n            print(f\"  ...{i}/{len(gold)} done\")\n    print(f\"Got {len(predictions)} predictions.\")\n    return predictions\n\n\n\n\nShow code\n#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + confusion matrix { display-mode: \"form\" }\ndef evaluate(gold, predictions):\n    y_true = [item[\"label\"] for item in gold]\n    y_pred = predictions\n    print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))\n    cm = confusion_matrix(y_true, y_pred, labels=LEVELS)\n    plt.figure(figsize=(5.5, 4.5))\n    sns.heatmap(cm, annot=True, fmt=\"d\", cmap=\"Blues\",\n                xticklabels=LEVELS, yticklabels=LEVELS)\n    plt.xlabel(\"Predicted\"); plt.ylabel(\"Gold\"); plt.title(\"Confusion matrix\")\n    plt.tight_layout(); plt.show()\n\n\n\n\nShow code\n#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: \"form\" }\ndef show_errors(gold, predictions):\n    rows = [{\"id\": g[\"id\"], \"gold\": g[\"label\"], \"pred\": p, \"text\": g[\"text\"]}\n            for g, p in zip(gold, predictions) if g[\"label\"] != p]\n    print(f\"{len(rows)} of {len(gold)} wrong.\")\n    return pd.DataFrame(rows)\n\n\n\n\nShow code\n#@title 🔧 Library cell: save_predictions / load_predictions { display-mode: \"form\" }\ndef save_predictions(predictions, path):\n    \"\"\"Freeze a list of predicted labels to JSON.\"\"\"\n    with open(path, \"w\", encoding=\"utf-8\") as f:\n        json.dump(predictions, f)\n    print(f\"Saved {len(predictions)} predictions to {path}\")\n\ndef load_predictions(url_or_path):\n    \"\"\"Read a frozen predictions list — a committed URL or a local path.\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        predictions = json.loads(raw)\n    else:\n        predictions = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(predictions)} frozen predictions.\")\n    return predictions\n\n\n\n\nStep 1 — Load the gold standard\nNotice the shape: every dataset this week is {\"id\", \"text\", \"label\"}. That is the only data shape you have to learn.\n\n\nShow code\ngold = load_gold(GOLD_URL)\n\n\n\n\nStep 2 — The prompt, and the frozen predictions it produced\nHere is the prompt we sent the model — {text} is where each sentence gets slotted in. We ran it once over the gold set and committed the predictions, so today you load that frozen file rather than call the model. (From Day 3 you’ll run prompts like this yourself.)\n\n\nShow code\n# The prompt used to produce the frozen predictions (shown for reference — not run today):\nPROMPT = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.\nAnswer with the level only.\n\nSentence: {text}\"\"\"\n\n# Load the pre-computed predictions (same order as `gold`):\npredictions = load_predictions(PREDICTIONS_URL)\n\n\n\n\nStep 3 — Read the evaluation\nPer-level precision / recall / F1 (plus a macro average), then the confusion matrix.\nBrace yourself: overall accuracy is about 39%. Before you conclude the model is useless, look at how it is wrong. Roughly 97% of its answers are within one level of the gold label — only two sentences in the whole set miss by two, and nothing misses by more. A model guessing at random would scatter A1s against C2s. This one doesn’t. It has the right idea and imprecise thresholds, which is a very different failure from not understanding the task.\nNow read the confusion matrix down the columns — how often the model says each level, rather than how often it’s right. The gold set is balanced, 12 sentences per level, so an unbiased rater would use each label about 12 times. Check whether this one does. Ask yourself why a rater — human or machine — under pressure to judge something as fuzzy as “difficulty” might drift toward the middle of a scale and avoid committing to the extremes. You will meet this tendency again in your own annotation work.\nBecause the predictions are frozen, these numbers are the same every time you run — that’s the point.\n\n\nShow code\nevaluate(gold, predictions)\n\n\n\n\nStep 4 — Error analysis\nThere are 44 misses here — too many to read one by one, and you don’t need to. Skim a dozen, then look specifically at the rows where the gold label is C2 or A1: the ends of the scale are where this model disagrees with the gold most often, so that is where the interesting arguments are.\nFor each miss you do read, ask: is the gold defensible, or is this a genuinely borderline sentence? “Is the disagreement the model’s fault or the scheme’s?” is the heart of annotation work — and it is the question your mini-project has to answer honestly.\n\n\nShow code\nerrors = show_errors(gold, predictions)\nerrors.head(15)     # ...or errors[errors[\"gold\"] == \"C2\"] to see the hard end",
+    "text": "Part A · Tutorial — the pipeline on CEFR-SP\nThe task (CEFR sentence level, A1–C2) is easy to judge on purpose — today the mechanics are the lesson, not the labeling.\n\n\n\n\n\n\nNoteToday runs on frozen predictions — no API key, no live model\n\n\n\nYou met the live model on Day 1 and saw its answers change from run to run. When you’re learning to measure quality, that wobble is just noise fighting the lesson — so today the model’s predictions are pre-computed and committed to a file. You load them and everyone’s precision / recall / F1 come out identical every run. You’ll run the model yourself (with the key) from Day 3 on.\n\n\n\nSetup — run this first\n\n\nShow code\n#@title 📦 Setup — run me first { display-mode: \"form\" }\n# Imports + the LLM backend. No pip install needed in Colab.\nimport json, re, time, urllib.request, os\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n\nMODEL_ID = \"gemini-3.1-flash-lite\"   # pinned model for the reproducible (API) backend\n\ndef _resolve_gemini_key():\n    \"\"\"Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.\"\"\"\n    try:\n        from google.colab import userdata      # only exists in Colab\n        key = userdata.get(\"GEMINI_API_KEY\")\n        if key:\n            return key\n    except Exception:\n        pass                                    # not in Colab, or secret not set\n    return os.environ.get(\"GEMINI_API_KEY\")\n\ndef _make_api_backend(key):\n    \"\"\"Reproducible backend: Gemini API with temperature=0 + a fixed seed.\"\"\"\n    from google import genai\n    from google.genai import types\n    client = genai.Client(api_key=key)\n    cfg = types.GenerateContentConfig(temperature=0, seed=42)\n    return (lambda p: client.models.generate_content(\n                model=MODEL_ID, contents=p, config=cfg).text,\n            f\"Gemini API ({MODEL_ID}, temperature=0, seed=42)\")\n\n# ---- keeps us from calling the model faster than the free tier allows ----------\n# (explained step by step in Day 3, right after this cell — the short version:\n#  wait a bit between calls, and if we still get told to slow down, wait longer\n#  and try again, unless the message says we are out of quota for the whole day.)\ndef _looks_like_rate_limit(error):\n    text = str(error).lower()\n    return any(s in text for s in\n               [\"429\", \"resource_exhausted\", \"rate limit\", \"quota\", \"too many requests\"])\n\ndef _looks_like_daily_quota(error):\n    text = str(error).lower()\n    return \"per day\" in text or \"perday\" in text.replace(\" \", \"\")\n\ndef _suggested_delay(error, fallback):\n    m = re.search(r\"retry in ([0-9]+(?:\\.[0-9]+)?)s\", str(error).lower())\n    return float(m.group(1)) + 1.0 if m else fallback\n\n_last_call_time = 0.0   # generate_text remembers & updates this with `global`\n\ndef generate_text(prompt, max_retries=5):\n    global _last_call_time\n    for attempt in range(max_retries + 1):\n        wait = _min_interval - (time.monotonic() - _last_call_time)\n        if wait &gt; 0:\n            time.sleep(wait)\n        try:\n            _last_call_time = time.monotonic()\n            return _raw_generate_text(prompt)\n        except Exception as error:\n            if not _looks_like_rate_limit(error):\n                raise                                   # a real bug — don't hide it\n            if _looks_like_daily_quota(error):\n                raise RuntimeError(\n                    \"Daily quota used up for today — waiting won't help until it \"\n                    \"resets. Come back tomorrow, or ask your instructor.\") from error\n            if attempt == max_retries:\n                raise\n            print(f\"  (rate limited — waiting before trying again, attempt {attempt+1})\")\n            time.sleep(_suggested_delay(error, _min_interval * (attempt + 2)))\n    raise RuntimeError(\"Still rate-limited after several tries.\")\n\n# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).\n_key = _resolve_gemini_key()\nif _key:\n    _raw_generate_text, _backend = _make_api_backend(_key)\n    _min_interval = 4.4     # keeps us under gemini-3.1-flash-lite's 15-requests/minute cap\nelse:\n    try:\n        from google.colab import ai            # Colab's built-in Gemini — no key\n        _raw_generate_text, _backend = (lambda p: ai.generate_text(p)), \"Colab Gemini (demo, non-reproducible)\"\n        _min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively\n    except ImportError:\n        raise RuntimeError(\n            \"No LLM backend found. Run this notebook in Google Colab (free built-in \"\n            \"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets \"\n            \"panel, or as an environment variable when running locally. \"\n            \"See resources/tools/gemini-api-key.md.\")\n\n# CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.\nGOLD_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json\"\nLEVELS = [\"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"]\nPREDICTIONS_URL = \"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/predictions_day2.json\"   # frozen model predictions\nprint(f\"Setup done. LLM backend: {_backend}. scikit-learn ready.\")\n\n\n\n\nShow code\n#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: \"form\" }\ndef load_gold(url_or_path):\n    \"\"\"Read the canonical gold JSON: [{'id','text','label'}, ...].\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        gold = json.loads(raw)\n    else:\n        gold = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(gold)} items. First one:\", gold[0])\n    return gold\n\n\n\n\nShow code\n#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: \"form\" }\ndef _extract_level(text):\n    \"\"\"Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply.\"\"\"\n    m = re.search(r\"\\b([ABC][12])\\b\", str(text).upper())\n    return m.group(1) if m else \"??\"\n\ndef run_prompt(prompt, gold):\n    \"\"\"Send each item's `text` to the LLM via {text}, collect predicted labels.\"\"\"\n    predictions = []\n    for i, item in enumerate(gold, 1):\n        reply = generate_text(prompt.format(text=item[\"text\"]))\n        predictions.append(_extract_level(reply))\n        if i % 12 == 0:\n            print(f\"  ...{i}/{len(gold)} done\")\n    print(f\"Got {len(predictions)} predictions.\")\n    return predictions\n\n\n\n\nShow code\n#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + confusion matrix { display-mode: \"form\" }\ndef evaluate(gold, predictions):\n    y_true = [item[\"label\"] for item in gold]\n    y_pred = predictions\n    print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))\n    cm = confusion_matrix(y_true, y_pred, labels=LEVELS)\n    plt.figure(figsize=(5.5, 4.5))\n    sns.heatmap(cm, annot=True, fmt=\"d\", cmap=\"Blues\",\n                xticklabels=LEVELS, yticklabels=LEVELS)\n    plt.xlabel(\"Predicted\"); plt.ylabel(\"Gold\"); plt.title(\"Confusion matrix\")\n    plt.tight_layout(); plt.show()\n\n\n\n\nShow code\n#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: \"form\" }\ndef show_errors(gold, predictions):\n    rows = [{\"id\": g[\"id\"], \"gold\": g[\"label\"], \"pred\": p, \"text\": g[\"text\"]}\n            for g, p in zip(gold, predictions) if g[\"label\"] != p]\n    print(f\"{len(rows)} of {len(gold)} wrong.\")\n    return pd.DataFrame(rows)\n\n\n\n\nShow code\n#@title 🔧 Library cell: save_predictions / load_predictions { display-mode: \"form\" }\ndef save_predictions(predictions, path):\n    \"\"\"Freeze a list of predicted labels to JSON.\"\"\"\n    with open(path, \"w\", encoding=\"utf-8\") as f:\n        json.dump(predictions, f)\n    print(f\"Saved {len(predictions)} predictions to {path}\")\n\ndef load_predictions(url_or_path):\n    \"\"\"Read a frozen predictions list — a committed URL or a local path.\"\"\"\n    if str(url_or_path).startswith(\"http\"):\n        raw = urllib.request.urlopen(url_or_path).read().decode(\"utf-8\")\n        predictions = json.loads(raw)\n    else:\n        predictions = json.loads(open(url_or_path, encoding=\"utf-8\").read())\n    print(f\"Loaded {len(predictions)} frozen predictions.\")\n    return predictions\n\n\n\n\nWarm-up — what a gold file actually is\nBefore we load one, let’s see the shape up close. A gold standard is stored as JSON text — the same {\"id\", \"text\", \"label\"} records you met on Day 1, written to a file. json.loads(...) turns that text into a Python list of dicts you can index into.\n\n\nShow code\nraw = '[{\"id\": 1, \"text\": \"Hello.\", \"label\": \"A1\"}, {\"id\": 2, \"text\": \"Nevertheless, the findings were inconclusive.\", \"label\": \"C1\"}]'\nitems = json.loads(raw)               # JSON text → list of dicts\nprint(\"number of items:\", len(items))\nprint(\"first record:\", items[0])\nprint(\"its label:\", items[0][\"label\"])   # index: list by position, dict by key\n\n\nFiles are read and written with with open(...) as f: — it opens the file, gives it to you as f, and closes it automatically when the block ends. You won’t write this yourself (the 🔧 Library cells handle it), but you’ll see it, so here it is once, in the open:\n\n\nShow code\nwith open(\"example_gold.json\", \"w\", encoding=\"utf-8\") as f:   # write\n    json.dump(items, f)\n\nwith open(\"example_gold.json\", encoding=\"utf-8\") as f:        # read back\n    reloaded = json.loads(f.read())\nprint(\"read back\", len(reloaded), \"records — same shape:\", reloaded[0])\n\n\n\n\nStep 1 — Load the gold standard\nload_gold(...) does exactly the read you just saw, but from a URL. Notice the shape: every dataset this week is {\"id\", \"text\", \"label\"}. That is the only data shape you have to learn.\n\n\nShow code\ngold = load_gold(GOLD_URL)\n\n\n\n\nStep 2 — The prompt, and the frozen predictions it produced\nHere is the prompt we sent the model — {text} is where each sentence gets slotted in. We ran it once over the gold set and committed the predictions, so today you load that frozen file rather than call the model. (From Day 3 you’ll run prompts like this yourself.)\n\n\nShow code\n# The prompt used to produce the frozen predictions (shown for reference — not run today):\nPROMPT = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.\nAnswer with the level only.\n\nSentence: {text}\"\"\"\n\n# Load the pre-computed predictions (same order as `gold`):\npredictions = load_predictions(PREDICTIONS_URL)\n\n\n\n\nStep 3 — Read the evaluation\nPer-level precision / recall / F1 (plus a macro average), then the confusion matrix.\nBrace yourself: overall accuracy is about 39%. Before you conclude the model is useless, look at how it is wrong. Roughly 97% of its answers are within one level of the gold label — only two sentences in the whole set miss by two, and nothing misses by more. A model guessing at random would scatter A1s against C2s. This one doesn’t. It has the right idea and imprecise thresholds, which is a very different failure from not understanding the task.\nNow read the confusion matrix down the columns — how often the model says each level, rather than how often it’s right. The gold set is balanced, 12 sentences per level, so an unbiased rater would use each label about 12 times. Check whether this one does. Ask yourself why a rater — human or machine — under pressure to judge something as fuzzy as “difficulty” might drift toward the middle of a scale and avoid committing to the extremes. You will meet this tendency again in your own annotation work.\nBecause the predictions are frozen, these numbers are the same every time you run — that’s the point.\n\n\nShow code\nevaluate(gold, predictions)\n\n\n\n\nStep 4 — Error analysis\nThere are 44 misses here — too many to read one by one, and you don’t need to. Skim a dozen, then look specifically at the rows where the gold label is C2 or A1: the ends of the scale are where this model disagrees with the gold most often, so that is where the interesting arguments are.\nFor each miss you do read, ask: is the gold defensible, or is this a genuinely borderline sentence? “Is the disagreement the model’s fault or the scheme’s?” is the heart of annotation work — and it is the question your mini-project has to answer honestly.\n\n\nShow code\nerrors = show_errors(gold, predictions)\nerrors.head(15)     # ...or errors[errors[\"gold\"] == \"C2\"] to see the hard end",
     "crumbs": [
       "Sessions",
       "Daily notebooks",
@@ -187,6 +199,18 @@
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "Learning objectives",
     "text": "Learning objectives\nBy the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.\nSend a prompt to a language model with generate_text(...), then edit the prompt and re-run.\nRecognise Python’s core data types — str, list, dict — in what the model hands back, and index into a list or dict.\nBuild a prompt from a variable with an f-string.",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 2: Colab Onboarding & Your First LLM Call"
+    ]
+  },
+  {
+    "objectID": "sessions/day1/session-02.html#agenda",
+    "href": "sessions/day1/session-02.html#agenda",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Agenda",
+    "text": "Agenda\nThis is a guided, run-along session using Part A of the Day 1 notebook. The LLM call is the spine — everything else is just enough Python to read and reshape what the model gives back.\n\nColab basics — run a cell, read an error — sign in, cells and the runtime, Shift+Enter, and how to read a red error.\nYour first LLM call — run the setup cell, then generate_text(...); change the prompt and re-run.\nWhat did the model hand back? — data types (str / list / dict) and [...] indexing, motivated by the reply.\nf-strings — drop a sentence into a prompt with f\"...{sentence}\".\n\nControl flow (for, if, functions) and text segmentation come next, in Session 3.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -388,6 +412,18 @@
     "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
     "section": "Learning objectives",
     "text": "Learning objectives\nBy the end of this session you will be able to:\n\nDraw a sample of sentences and annotate them by hand against a prepared scheme.\nCompute a simple agreement rate (and Cohen’s κ) between two annotators, and adjudicate the disagreements.\nCompare your adjudicated labels against the published gold standard and interpret the differences.\nImport your annotations back as a canonical {id, text, label} gold set.\n\n\n\n\n\n\n\nNote\n\n\n\nThis hands-on is where the construction objective is assessed — building a gold standard (operationalizing categories and measuring agreement). Give the annotation itself real care; it’s the graded piece.",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
+    ]
+  },
+  {
+    "objectID": "sessions/day2/session-05.html#agenda",
+    "href": "sessions/day2/session-05.html#agenda",
+    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
+    "section": "Agenda",
+    "text": "Agenda\nWorks through Part B of the Day 2 notebook — a Google Sheets annotation round-trip.\n\nDraw ~20 sentences from the provided pool for your track.\nAnnotate by hand in a Google Sheet (two annotator columns, so agreement falls out).\nMeasure agreement — percent agreement + Cohen’s κ — then adjudicate the disagreements to a final label.\nCompare to the published gold and import your set back as canonical JSON.\n\nThe Google Sheets round-trip (creating the sheet, annotating, reading it back) is the time-consuming part — pace yourself and don’t skip the adjudication step.",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -871,25 +907,95 @@
     "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nSplit a paragraph into sentences two ways — naive .split(\".\") and a spaCy sentencizer — and explain why the naive rule fails.\nUse a for loop, an if, and a function (def) to run the model over a list of sentences.\nComplete short Python exercises and confirm them with the self-check.\nForm a project group and pick a mini-project track."
   },
   {
-    "objectID": "slides/slides-session-03.html#text-preprocessing-1",
-    "href": "slides/slides-session-03.html#text-preprocessing-1",
-    "title": "Session 3: Classical NLP Tasks",
-    "section": "Text preprocessing",
-    "text": "Text preprocessing"
+    "objectID": "slides/slides-session-03.html#same-rhythm-as-session-2",
+    "href": "slides/slides-session-03.html#same-rhythm-as-session-2",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Same rhythm as Session 2",
+    "text": "Same rhythm as Session 2\n\nSlide for the idea, then do it in Colab.\nType it, don’t copy it.\nIn Part A you called the model once. Today: run it over many sentences — the first taste of a real pipeline."
   },
   {
-    "objectID": "slides/slides-session-03.html#tokenization-1",
-    "href": "slides/slides-session-03.html#tokenization-1",
-    "title": "Session 3: Classical NLP Tasks",
-    "section": "Tokenization",
-    "text": "Tokenization"
+    "objectID": "slides/slides-session-03.html#the-problem",
+    "href": "slides/slides-session-03.html#the-problem",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "The problem",
+    "text": "The problem\nYour data arrives as paragraphs. But the unit we work with is the sentence. So we need to segment a paragraph into its sentences.\n\nThe obvious idea: cut on every full stop. To do that we call a method on the string — some_text.split(\".\") — using a dot (.) to run a built-in action on that value."
   },
   {
-    "objectID": "slides/slides-session-03.html#dictionary-look-up-1",
-    "href": "slides/slides-session-03.html#dictionary-look-up-1",
-    "title": "Session 3: Classical NLP Tasks",
-    "section": "Dictionary look-up",
-    "text": "Dictionary look-up"
+    "objectID": "slides/slides-session-03.html#why-this-matters",
+    "href": "slides/slides-session-03.html#why-this-matters",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Why this matters",
+    "text": "Why this matters\nThe naive rule looks fine — until it isn’t. Abbreviations and decimals contain dots that aren’t sentence ends.\n\nBad boundaries corrupt everything downstream. So it’s worth seeing the naive rule fail before we reach for a better tool."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-naive-split",
+    "href": "slides/slides-session-03.html#lets-try-naive-split",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — naive split",
+    "text": "🧪 Let’s try — naive split\nparagraph = (\"Dr. Smith reviewed the data. The results were clear, \"\n             \"e.g. accuracy rose. Scores went from 3.14 to 9.\")\n\nnaive = paragraph.split(\".\")     # cut the string at every \".\"\nfor piece in naive:\n    print(repr(piece))\n\nLook at the mess: \"Dr\" (from Dr.), \"e\" and \"g\" (from e.g.), \"3\" and \"14\" (from 3.14) all split in the wrong places. Sentence boundaries are not just full stops."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#borrow-a-real-tool",
+    "href": "slides/slides-session-03.html#borrow-a-real-tool",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Borrow a real tool",
+    "text": "Borrow a real tool\nInstead of our own rule, we import a purpose-built library, spaCy:\nimport spacy\nnlp = spacy.blank(\"en\")          # a minimal English pipeline\nnlp.add_pipe(\"sentencizer\")      # a rule-based sentence splitter — no download\n\nimport spacy loads the toolbox.\nThe sentencizer knows abbreviations and decimals aren’t sentence ends."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#why-this-matters-1",
+    "href": "slides/slides-session-03.html#why-this-matters-1",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Why this matters",
+    "text": "Why this matters\n\n\n\n\n\n\nImportant\n\n\nOn Day 2, the sentence is the unit you annotate by hand and the unit you feed the LLM. Bad boundaries → bad gold data → misleading scores.\n\n\n\nGetting segmentation right is not a side quest — it’s the foundation the whole gold standard sits on."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-the-sentencizer",
+    "href": "slides/slides-session-03.html#lets-try-the-sentencizer",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — the sentencizer",
+    "text": "🧪 Let’s try — the sentencizer\ndoc = nlp(paragraph)\nsentences = list(doc.sents)      # spaCy's sentences, as a list\nfor s in sentences:\n    print(repr(s.text))\n\nCompare to the naive split: Dr. Smith, e.g., and 3.14 stay intact. You now have a real list of sentences — exactly what step 3 loops over."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#three-small-pieces-of-python",
+    "href": "slides/slides-session-03.html#three-small-pieces-of-python",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Three small pieces of Python",
+    "text": "Three small pieces of Python\n\nfor — repeat the same steps for every item in a list.\nif — react to what comes back (e.g. flag an empty reply).\ndef — package the steps into a reusable function you can call by name.\n\n\nTogether: for each sentence → build a prompt → call the model → tidy the reply."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#why-this-matters-2",
+    "href": "slides/slides-session-03.html#why-this-matters-2",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Why this matters",
+    "text": "Why this matters\nThis little loop is the seed of the pipeline you’ll assemble later in the week.\n\nAnnotation, classification, evaluation — all of it is “run this call over a list and collect the results.” Write it once here; reuse the shape all week."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-the-loop",
+    "href": "slides/slides-session-03.html#lets-try-the-loop",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — the loop",
+    "text": "🧪 Let’s try — the loop\nfor sentence in examples:\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    reply = generate_text(prompt).strip()\n    if reply == \"\":\n        reply = \"(no answer)\"\n    print(sentence, \"→\", reply)"
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-wrap-it-in-a-function",
+    "href": "slides/slides-session-03.html#lets-try-wrap-it-in-a-function",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — wrap it in a function",
+    "text": "🧪 Let’s try — wrap it in a function\nSame three steps, packaged so you can reuse them:\ndef ask(sentence):\n    \"\"\"Ask the model for the CEFR level of one sentence; return its reply.\"\"\"\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    return generate_text(prompt).strip()\n\nprint(ask(\"Despite the rain, the game went ahead.\"))\nNow labelling a sentence is just ask(...)."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#guided-practice",
+    "href": "slides/slides-session-03.html#guided-practice",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Guided practice",
+    "text": "Guided practice\nIn the notebook, a few cells ask you to replace NotImplementedError with a line or two — e.g. long_words, count_labels. Then a self-check cell tells you if they pass.\n\n\n\n\n\n\n\nPython you’ll read but not write\n\n\nSome library cells use a list comprehension like [row[\"label\"] for row in rows] — read it as “the label of every row.” You never have to write these; just recognise them."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#mini-project-setup",
+    "href": "slides/slides-session-03.html#mini-project-setup",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Mini-project setup",
+    "text": "Mini-project setup\n\nForm a group — each needs at least one Linguistic Data Analysis I alumnus.\nPick one of the four tracks (datasets) — this is what you’ll annotate on Day 2.\nRecord your group and track where the instructor asks.\n\n\nChoosing now means you can start annotating right away on Day 2. See the Final Project page for the tracks."
   },
   {
     "objectID": "slides/slides-session-09.html#agenda",
@@ -925,6 +1031,42 @@
     "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
     "section": "Under the hood",
     "text": "Under the hood"
+  },
+  {
+    "objectID": "resources/extra/index.html",
+    "href": "resources/extra/index.html",
+    "title": "Extra Topics",
+    "section": "",
+    "text": "Material here is not required for any Corpus Lab or the mini-project. It covers practical problems that come up once you start running your own LLM code at any real volume, and it is here so the day notebooks can stay focused on the linguistics.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Extra Topics"
+    ]
+  },
+  {
+    "objectID": "resources/extra/index.html#contents",
+    "href": "resources/extra/index.html#contents",
+    "title": "Extra Topics",
+    "section": "Contents",
+    "text": "Contents\n\n🚦 Handling rate limits without crashing — why a 429 arrives when you have “barely used” your quota, how to read which limit you hit, and a make_resilient() wrapper that paces, retries, and caches. Runs without an API key.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Extra Topics"
+    ]
+  },
+  {
+    "objectID": "resources/extra/index.html#when-youd-open-this",
+    "href": "resources/extra/index.html#when-youd-open-this",
+    "title": "Extra Topics",
+    "section": "When you’d open this",
+    "text": "When you’d open this\n\n\n\nIf you hit…\nRead\n\n\n\n\n429 RESOURCE_EXHAUSTED mid-run\nHandling rate limits\n\n\nA loop that dies partway and loses every answer so far\nHandling rate limits §6\n\n\n“Quota exceeded” that a retry never fixes\nHandling rate limits §1 — you are probably at a daily cap",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Extra Topics"
+    ]
   },
   {
     "objectID": "resources/index.html",
@@ -1276,7 +1418,7 @@
     "href": "resources/tools/colab-ai-preflight-README.html#what-each-step-tells-you",
     "title": "",
     "section": "What each step tells you",
-    "text": "What each step tells you\n\n\n\n\n\n\n\n\nStep\nReads\nDecision\n\n\n\n\n2 · Smoke test\nIs colab.ai reachable at all?\nFails → the whole path is unavailable on Tohoku accounts; use the Gemini-API .env fallback (D4).\n\n\n3 · 100-call probe (unguarded)\nsuccesses/100, latency, and the first throttle classified per-minute vs per-day\nPer-minute → fixable by pacing, go to 3b. Per-day → a hard budget; size the labs to fit it.\n\n\n3b · Same load, guarded\ndoes pacing + backoff + retry reach 100/100, and at what seconds-per-call\n100/100 → ship the wrapper in the day-notebooks. Still failing → lower ASSUMED_RPM, or fall back.\n\n\n4 · Class-of-15 projection\nper-student daily model-time; per-account vs shared quota\nFrames whether 15 students is safe (can’t test true concurrency from one account).\n\n\n5 · Determinism (guarded)\nmodal-label agreement over 10 repeats\nLow (&lt;~80%) → warn students about F1 wobble; consider majority-vote.\n\n\n\nStep 3 is deliberately unguarded — its job is to find the ceiling, so pacing it would destroy the measurement. Step 3b then re-runs the same load through the guards to confirm the workaround holds on this account.\nStep 3b’s seconds-per-call is the number that matters for timetabling: multiply it by the per-student call count to get how long a lab really takes. If that exceeds the class period, shrink the gold set.\nThe guards are explained, with runnable no-key demos, in resources/extra/handling-rate-limits.ipynb."
+    "text": "What each step tells you\n\n\n\n\n\n\n\n\nStep\nReads\nDecision\n\n\n\n\n2 · Smoke test\nIs colab.ai reachable at all?\nFails → the whole path is unavailable on Tohoku accounts; use the Gemini-API .env fallback (D4).\n\n\n3 · 100-call probe (unguarded)\nsuccesses/100, latency, and the first throttle classified per-minute vs per-day\nPer-minute → fixable by pacing, go to 3b. Per-day → a hard budget; size the labs to fit it.\n\n\n3b · Same load, guarded\ndoes pacing + backoff + retry reach 100/100, and at what seconds-per-call\n100/100 → ship the wrapper in the day-notebooks. Still failing → lower ASSUMED_RPM, or fall back.\n\n\n4 · Class-of-8 projection\nper-student daily model-time; per-account vs shared quota\nFrames whether 8 students is safe (can’t test true concurrency from one account).\n\n\n5 · Determinism (guarded)\nmodal-label agreement over 10 repeats\nLow (&lt;~80%) → warn students about F1 wobble; consider majority-vote.\n\n\n\nStep 3 is deliberately unguarded — its job is to find the ceiling, so pacing it would destroy the measurement. Step 3b then re-runs the same load through the guards to confirm the workaround holds on this account.\nStep 3b’s seconds-per-call is the number that matters for timetabling: multiply it by the per-student call count to get how long a lab really takes. If that exceeds the class period, shrink the gold set.\nThe guards are explained, with runnable no-key demos, in resources/extra/handling-rate-limits.ipynb."
   },
   {
     "objectID": "resources/tools/colab-ai-preflight-README.html#after-the-run",
@@ -1659,18 +1801,25 @@
     "text": "Step 2 — Smoke test (is the API even reachable?)\nOne list-models call + one generate call. If this errors, stop — the colab.ai path is unavailable on this account.\n\n\nShow code\n#@title Step 2 — smoke test\ntry:\n    print(\"Available models:\")\n    try:\n        print(\" \", ai.list_models())\n    except Exception as e:\n        print(\"  (list_models not available:\", type(e).__name__, e, \")\")\n    print(\"\\nSingle call →\", repr(generate_text(\"Say OK\")))\n    print(\"\\n✅ Reachable.\")\nexcept Exception as e:\n    print(\"❌ colab.ai unavailable on this account:\", type(e).__name__, e)\n    print(\"   → Escalate to the Gemini-API .env fallback (D4) and stop.\")"
   },
   {
-    "objectID": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop",
-    "href": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop",
+    "objectID": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop-deliberately-unguarded",
+    "href": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop-deliberately-unguarded",
     "title": "google.colab.ai pre-flight",
-    "section": "Step 3 — Quota ceiling (100-call loop)",
-    "text": "Step 3 — Quota ceiling (100-call loop)\nFire 100 real CEFR prompts, one at a time. Each call is wrapped so a rate-limit / quota error is caught and its index recorded rather than crashing the run. Reports successes, latency (median / p95), total wall-time, and where (if anywhere) it first throttled.\n\n\nShow code\n#@title Step 3 — 100-call quota + latency probe\nN = 100\nitems = [gold[i % len(gold)] for i in range(N)]\n\nlatencies, preds, first_fail, fails = [], [], None, 0\nt0 = time.time()\nfor i, item in enumerate(items, 1):\n    prompt = PROMPT.format(text=item[\"text\"])\n    c0 = time.time()\n    try:\n        reply = generate_text(prompt)\n        latencies.append(time.time() - c0)\n        preds.append(_extract_level(reply))\n    except Exception as e:\n        fails += 1\n        if first_fail is None:\n            first_fail = (i, type(e).__name__, str(e)[:200])\n        preds.append(\"ERR\")\n    if i % 20 == 0:\n        print(f\"  ...{i}/{N}  ({fails} failures so far)\")\nwall = time.time() - t0\n\nok = len(latencies)\nprint(f\"\\n{ok}/{N} succeeded, {fails} failed.\")\nif latencies:\n    lat = sorted(latencies)\n    p95 = lat[min(len(lat)-1, int(0.95*len(lat)))]\n    print(f\"latency: median {statistics.median(lat):.2f}s  p95 {p95:.2f}s  \"\n          f\"min {lat[0]:.2f}s  max {lat[-1]:.2f}s\")\nprint(f\"total wall-time for {N} calls: {wall:.1f}s \"\n      f\"({wall/N:.2f}s/call incl. overhead)\")\nprint(\"first failure:\", first_fail if first_fail else \"none — no throttling in 100 calls\")\nprint(\"parse rate (non-??/ERR):\",\n      f\"{sum(p in LEVELS for p in preds)}/{N}\")"
+    "section": "Step 3 — Quota ceiling (100-call loop, deliberately unguarded)",
+    "text": "Step 3 — Quota ceiling (100-call loop, deliberately unguarded)\nFire 100 real CEFR prompts as fast as they will go, with no pacing and no retry. That is the point: this step exists to find the ceiling, so guarding it would destroy the measurement.\nEach failure is caught and classified — per-minute vs per-day — because the two mean very different things for the course. A per-minute ceiling is a pacing problem students can work around; a per-day ceiling is a hard budget that caps how much lab work is possible per student per day.\nStep 3b then re-runs the same load with the guards, to confirm the workaround actually holds on this account.\n\n\nShow code\n#@title Step 3 — unguarded 100-call quota + latency probe\nN = 100\nitems = [gold[i % len(gold)] for i in range(N)]\n\nlatencies, preds, first_fail = [], [], None\nfails = {\"per_minute\": 0, \"per_day\": 0, \"other\": 0}\nt0 = time.time()\nfor i, item in enumerate(items, 1):\n    prompt = PROMPT.format(text=item[\"text\"])\n    c0 = time.time()\n    try:\n        reply = generate_raw(prompt)\n        latencies.append(time.time() - c0)\n        preds.append(_extract_level(reply))\n    except Exception as e:\n        kind = (\"per_day\" if looks_like_daily_quota(e)\n                else \"per_minute\" if looks_like_rate_limit(e) else \"other\")\n        fails[kind] += 1\n        if first_fail is None:\n            first_fail = (i, kind, type(e).__name__, str(e)[:160])\n        preds.append(\"ERR\")\n    if i % 20 == 0:\n        print(f\"  ...{i}/{N}  ({sum(fails.values())} failures so far)\")\nwall = time.time() - t0\n\nok = len(latencies)\nprint(f\"\\n{ok}/{N} succeeded. Failures: {fails}\")\nif latencies:\n    lat = sorted(latencies)\n    p95 = lat[min(len(lat)-1, int(0.95*len(lat)))]\n    print(f\"latency: median {statistics.median(lat):.2f}s  p95 {p95:.2f}s  \"\n          f\"min {lat[0]:.2f}s  max {lat[-1]:.2f}s\")\nprint(f\"total wall-time for {N} calls: {wall:.1f}s ({wall/N:.2f}s/call incl. overhead)\")\n\nif first_fail:\n    i, kind, name, msg = first_fail\n    print(f\"first failure at call {i}: [{kind}] {name}: {msg}\")\n    if kind == \"per_minute\":\n        observed_rpm = i - 1\n        print(f\"  -&gt; throttled after ~{observed_rpm} calls in \"\n              f\"{wall:.0f}s. Set ASSUMED_RPM at or below this and re-run Setup.\")\n    elif kind == \"per_day\":\n        print(\"  -&gt; DAILY cap. This is a hard budget: no pacing can widen it.\")\n        print(\"     Record the number and size the labs to fit it.\")\nelse:\n    print(f\"first failure: none — no throttling in {N} unguarded calls\")\nprint(\"parse rate (a valid CEFR label):\", f\"{sum(p in LEVELS for p in preds)}/{N}\")"
   },
   {
-    "objectID": "resources/tools/colab-ai-preflight.html#step-4-extrapolate-to-15-students",
-    "href": "resources/tools/colab-ai-preflight.html#step-4-extrapolate-to-15-students",
+    "objectID": "resources/tools/colab-ai-preflight.html#step-3b-does-pacing-backoff-actually-fix-it",
+    "href": "resources/tools/colab-ai-preflight.html#step-3b-does-pacing-backoff-actually-fix-it",
     "title": "google.colab.ai pre-flight",
-    "section": "Step 4 — Extrapolate to ~15 students",
-    "text": "Step 4 — Extrapolate to ~15 students\nThe single-user numbers above → what a class of 15 implies. Caveat: this measures one account sequentially; it cannot test 15-way concurrency. If colab.ai quota is per-account (likely), 15 students = 15 independent quotas and Step 3 passing is reassuring. If it’s a shared project quota, real load is ~15× and only a multi-account trial can confirm it.\n\n\nShow code\n#@title Step 4 — class-of-15 projection\nCLASS = 15\nCALLS_PER_STUDENT_PER_DAY = 72 + 72 + 60  # tutorial + few-shot + lab, rough\nif latencies:\n    per_call = wall / N\n    student_day = per_call * CALLS_PER_STUDENT_PER_DAY\n    print(f\"~{per_call:.2f}s/call → one student\\u2019s ~{CALLS_PER_STUDENT_PER_DAY} \"\n          f\"calls/day ≈ {student_day/60:.1f} min of model time.\")\n    print(f\"Class total: {CLASS*CALLS_PER_STUDENT_PER_DAY} calls/day across {CLASS} accounts.\")\n    print(f\"If quota is PER-ACCOUNT: each student runs the {student_day/60:.1f}-min \"\n          \"budget independently → fine.\")\n    print(\"If quota is SHARED/project: treat 100-call ceiling from Step 3 as the \"\n          \"whole-class ceiling → likely too low, plan the .env fallback.\")\nelse:\n    print(\"No successful calls in Step 3 — cannot project. Fix Step 2/3 first.\")"
+    "section": "Step 3b — Does pacing + backoff actually fix it?",
+    "text": "Step 3b — Does pacing + backoff actually fix it?\nOnly meaningful if Step 3 hit a per-minute limit. Same 100 prompts, now through generate_guarded. What we want is 100/100 — that would confirm the guidance we give students (pace, back off, retry) genuinely works on this account rather than merely sounding sensible.\nThis is slow by construction: at the paced rate it takes roughly 100 x MIN_INTERVAL seconds. That wall-time is the finding — it tells you how long a full-gold-set lab run will really take.\nSkip it if Step 3 hit a per-day cap; there is nothing left to spend today.\n\n\nShow code\n#@title Step 3b — the same load, guarded\nRUN_STEP_3B = True   #@param {type:\"boolean\"}\nN_GUARDED   = 100    #@param {type:\"integer\"}\n\nif not RUN_STEP_3B:\n    print(\"skipped (RUN_STEP_3B = False)\")\nelif first_fail and first_fail[1] == \"per_day\":\n    print(\"skipped — Step 3 hit a DAILY cap; no quota left to test with today.\")\nelse:\n    g_items = [gold[i % len(gold)] for i in range(N_GUARDED)]\n    g_ok, g_fail, g_first_fail = 0, 0, None\n    t0 = time.time()\n    for i, item in enumerate(g_items, 1):\n        try:\n            _extract_level(generate_guarded(PROMPT.format(text=item[\"text\"])))\n            g_ok += 1\n        except Exception as e:\n            g_fail += 1\n            if g_first_fail is None:\n                g_first_fail = (i, type(e).__name__, str(e)[:160])\n        if i % 20 == 0:\n            print(f\"  ...{i}/{N_GUARDED}  ({g_fail} failures, \"\n                  f\"{time.time()-t0:.0f}s elapsed)\")\n    g_wall = time.time() - t0\n\n    print(f\"\\nGuarded: {g_ok}/{N_GUARDED} succeeded, {g_fail} failed, \"\n          f\"{g_wall:.0f}s ({g_wall/N_GUARDED:.1f}s/call).\")\n    if g_ok == N_GUARDED:\n        print(\"✅ Pacing + backoff fully absorbed the limit. Ship this wrapper in the\")\n        print(\"   day-notebooks and the observed cost is \"\n              f\"~{g_wall/60:.1f} min per 100 calls.\")\n    else:\n        print(f\"⚠️  Still failing ({g_first_fail}). MIN_INTERVAL is too aggressive —\")\n        print(\"   lower ASSUMED_RPM, re-run Setup, and try again.\")"
+  },
+  {
+    "objectID": "resources/tools/colab-ai-preflight.html#step-4-extrapolate-to-the-class-8-students",
+    "href": "resources/tools/colab-ai-preflight.html#step-4-extrapolate-to-the-class-8-students",
+    "title": "google.colab.ai pre-flight",
+    "section": "Step 4 — Extrapolate to the class (8 students)",
+    "text": "Step 4 — Extrapolate to the class (8 students)\nThe single-user numbers above → what a class of 8 implies. Caveat: this measures one account sequentially; it cannot test 8-way concurrency. If colab.ai quota is per-account (likely), 8 students = 8 independent quotas and Step 3 passing is reassuring. If it’s a shared project quota, real load is ~8× and only a multi-account trial can confirm it.\n\n\nShow code\n#@title Step 4 — class-of-15 projection\nCLASS = 8      # D3 (decided 2026-07-19): 8 students\nCALLS_PER_STUDENT_PER_DAY = 72 + 72 + 60  # tutorial + few-shot + lab, rough\nif latencies:\n    per_call = wall / N\n    student_day = per_call * CALLS_PER_STUDENT_PER_DAY\n    print(f\"~{per_call:.2f}s/call → one student\\u2019s ~{CALLS_PER_STUDENT_PER_DAY} \"\n          f\"calls/day ≈ {student_day/60:.1f} min of model time.\")\n    print(f\"Class total: {CLASS*CALLS_PER_STUDENT_PER_DAY} calls/day across {CLASS} accounts.\")\n    print(f\"If quota is PER-ACCOUNT: each student runs the {student_day/60:.1f}-min \"\n          \"budget independently → fine.\")\n    print(\"If quota is SHARED/project: treat 100-call ceiling from Step 3 as the \"\n          \"whole-class ceiling → likely too low, plan the .env fallback.\")\nelse:\n    print(\"No successful calls in Step 3 — cannot project. Fix Step 2/3 first.\")"
   },
   {
     "objectID": "resources/tools/colab-ai-preflight.html#step-5-determinism-label-stability",
@@ -1916,6 +2065,126 @@
     ]
   },
   {
+    "objectID": "resources/extra/handling-rate-limits.html",
+    "href": "resources/extra/handling-rate-limits.html",
+    "title": "Handling rate limits without crashing",
+    "section": "",
+    "text": "Linguistic Data Analysis II — extra resource.\nSooner or later a cell that was working fine will stop with a wall of red text ending in something like:\nThis notebook explains what that means and builds, step by step, a wrapper that makes it stop happening. Everything here runs without an API key — the demos use a fake backend that imitates a rate-limited server, so you can see each strategy work (and watch the naive version fail) without spending any quota.\nWhat you will build. One function, make_resilient(call), that takes a plain “prompt → text” function and returns a version that paces itself, backs off and retries when the server pushes back, refuses to retry when retrying cannot help, and remembers answers it already paid for.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
+    "objectID": "resources/extra/handling-rate-limits.html#the-single-most-common-misunderstanding",
+    "href": "resources/extra/handling-rate-limits.html#the-single-most-common-misunderstanding",
+    "title": "Handling rate limits without crashing",
+    "section": "1 · The single most common misunderstanding",
+    "text": "1 · The single most common misunderstanding\n\n“I’ve barely used it today. Why am I rate limited?”\n\nBecause there is more than one limit, and they run on different clocks. The free tier meters you three ways at once:\n\n\n\n\n\n\n\n\n\nLimit\nMeaning\nClock\nWhat trips it\n\n\n\n\nRPM\nrequests per minute\nrolling 60 s\na for loop with no pause\n\n\nTPM\ninput tokens per minute\nrolling 60 s\nlong prompts, few-shot with big examples\n\n\nRPD\nrequests per day\nresets ~midnight Pacific\na long session, or many re-runs\n\n\n\nAlmost every 429 that surprises people is RPM, not RPD. Fifteen requests per minute sounds generous until you notice that an unthrottled loop issues them in about two seconds. You can be at 126 requests out of a 500/day allowance — 25% of your daily budget, nowhere near exhausted — and still be hard-blocked, because you spent 16 of them inside one minute.\nThe distinction matters because the two failures need opposite responses:\n\nRPM → wait a moment and retry. The quota refills continuously.\nRPD → do not retry. It will not refill until tomorrow, so a retry loop just burns time and makes noise. Switch models, or stop.\n\nThe rest of this notebook is essentially that table turned into code.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
+    "objectID": "resources/extra/handling-rate-limits.html#read-the-error-dont-guess",
+    "href": "resources/extra/handling-rate-limits.html#read-the-error-dont-guess",
+    "title": "Handling rate limits without crashing",
+    "section": "2 · Read the error, don’t guess",
+    "text": "2 · Read the error, don’t guess\nThe 429 tells you exactly which limit you hit — people just don’t read that far. The useful part is the quotaId:\n\nGenerateRequestsPerMinutePerProjectPerModel-FreeTier → per minute\nGenerateRequestsPerDayPerProjectPerModel-FreeTier → per day\n\nThere is also a retryDelay ('Please retry in 52.24s'). That number is the server telling you precisely how long until it will accept you again. Honoring it beats guessing.\nBelow: two small functions that classify an error and pull out the suggested delay. They work on the error’s string form, which sounds crude but is deliberate — Colab’s built-in Gemini and the google-genai package raise different exception classes for the same condition, and matching on text handles both without importing either.\n\n\nShow code\nimport re, time, json, random\n\ndef looks_like_rate_limit(error):\n    \"\"\"True if this exception is a throttling / quota error (either kind).\"\"\"\n    text = str(error).lower()\n    return any(signal in text for signal in\n               [\"429\", \"resource_exhausted\", \"rate limit\",\n                \"quota\", \"too many requests\"])\n\ndef looks_like_daily_quota(error):\n    \"\"\"True only for a PER-DAY cap — the kind waiting cannot fix.\"\"\"\n    text = str(error).lower()\n    return (\"perday\" in text.replace(\" \", \"\")\n            or \"per day\" in text\n            or \"requests per day\" in text)\n\ndef suggested_delay(error, fallback):\n    \"\"\"The server's own 'please retry in Ns' hint, if it gave one.\"\"\"\n    match = re.search(r\"retry in ([0-9]+(?:\\.[0-9]+)?)s\", str(error).lower())\n    return float(match.group(1)) if match else fallback\n\n# Try them on the real error text from the top of this notebook.\nREAL_429 = (\"429 RESOURCE_EXHAUSTED. Quota exceeded for metric: \"\n            \"generativelanguage.googleapis.com/generate_content_free_tier_requests, \"\n            \"quotaId: GenerateRequestsPerMinutePerProjectPerModel-FreeTier, \"\n            \"limit: 15. Please retry in 52.242615755s.\")\n\nprint(\"rate limit? \", looks_like_rate_limit(REAL_429))\nprint(\"daily cap?  \", looks_like_daily_quota(REAL_429), \" &lt;- False, so waiting WILL help\")\nprint(\"wait for:   \", suggested_delay(REAL_429, fallback=5), \"seconds\")\n\n\nrate limit?  True\ndaily cap?   False  &lt;- False, so waiting WILL help\nwait for:    52.242615755 seconds",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
+    "objectID": "resources/extra/handling-rate-limits.html#a-fake-server-so-we-can-fail-safely",
+    "href": "resources/extra/handling-rate-limits.html#a-fake-server-so-we-can-fail-safely",
+    "title": "Handling rate limits without crashing",
+    "section": "3 · A fake server, so we can fail safely",
+    "text": "3 · A fake server, so we can fail safely\nTo compare strategies we need something that rate-limits us on demand. This FakeGemini enforces a real rolling-window RPM cap and a daily cap, and raises error messages shaped like the real ones — but it costs nothing and needs no key.\nIt also counts how many calls it actually served, which is how we will score each strategy.\nOne concession to your patience: the window parameter. A real RPM window is 60 seconds, so an honest demo at 5 RPM would take nine minutes to watch. The cells below shrink the server’s window and the client’s pacing by the same factor, which keeps the arithmetic faithful while letting each cell finish in about a second. Scaling only one of the two would quietly turn the demo into a lie — which is exactly the bug this notebook had in its first draft.\n\n\nShow code\nclass RateLimitError(Exception):\n    pass\n\nclass FakeGemini:\n    \"\"\"A stand-in for a rate-limited LLM endpoint. No network, no key, no cost.\n\n    window is the RPM averaging period; it is 60s in reality, and smaller here\n    only so the demos run quickly.\n    \"\"\"\n\n    def __init__(self, rpm=15, rpd=500, latency=0.02, window=60.0):\n        self.rpm, self.rpd, self.latency, self.window = rpm, rpd, latency, window\n        self.call_times = []      # timestamps of accepted calls\n        self.served = 0           # successful responses\n        self.rejected = 0         # 429s raised\n\n    def __call__(self, prompt):\n        now = time.monotonic()\n        # Drop timestamps that have aged out of the rolling window.\n        self.call_times = [t for t in self.call_times if now - t &lt; self.window]\n\n        if len(self.call_times) &gt;= self.rpm:\n            self.rejected += 1\n            wait = self.window - (now - self.call_times[0])\n            raise RateLimitError(\n                \"429 RESOURCE_EXHAUSTED. Quota exceeded for metric: \"\n                \"generate_content_free_tier_requests, quotaId: \"\n                f\"GenerateRequestsPerMinutePerProjectPerModel-FreeTier, limit: {self.rpm}. \"\n                f\"Please retry in {wait:.2f}s.\")\n\n        if self.served &gt;= self.rpd:\n            self.rejected += 1\n            raise RateLimitError(\n                \"429 RESOURCE_EXHAUSTED. Quota exceeded for metric: \"\n                \"generate_content_free_tier_requests, quotaId: \"\n                f\"GenerateRequestsPerDayPerProjectPerModel-FreeTier, limit: {self.rpd}.\")\n\n        self.call_times.append(now)\n        self.served += 1\n        time.sleep(self.latency)          # pretend the model thought about it\n        return f\"B2\"                      # a plausible CEFR reply\n\nprint(\"FakeGemini ready.\")\n\n\nFakeGemini ready.\n\n\n\nThe naive loop, for reference\nThis is what most first drafts look like — and what produced the error at the top of this notebook. We give it 40 sentences to label. Watch where it dies.\n(We use a 5-per-minute cap, which is genuinely what gemini-2.5-flash allows on the free tier — not a rigged setup. DEMO_SCALE shrinks the clock so you are not waiting a real minute for the point to land.)\n\n\nShow code\nDEMO_SCALE = 0.01                      # 1/100th-speed clock, for demos only\nDEMO_WINDOW = 60.0 * DEMO_SCALE        # the server's RPM window, shrunk to match\n\nserver = FakeGemini(rpm=5, latency=0.01, window=DEMO_WINDOW)\nprompts = [f\"Rate the CEFR level of sentence {i}.\" for i in range(40)]\n\ntry:\n    answers = [server(p) for p in prompts]       # &lt;- the naive version\n    print(\"finished:\", len(answers))\nexcept Exception as error:\n    print(\"💥 crashed after\", server.served, \"of\", len(prompts), \"prompts\")\n    print(\"  \", str(error)[:110], \"...\")\n    print(\"\\nNote what was lost: the\", server.served, \"answers already paid for are\")\n    print(\"gone too, because the list comprehension never returned.\")\n\n\n💥 crashed after 5 of 40 prompts\n   429 RESOURCE_EXHAUSTED. Quota exceeded for metric: generate_content_free_tier_requests, quotaId: GenerateReque ...\n\nNote what was lost: the 5 answers already paid for are\ngone too, because the list comprehension never returned.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
+    "objectID": "resources/extra/handling-rate-limits.html#strategy-1-pace-yourself-the-one-that-actually-matters",
+    "href": "resources/extra/handling-rate-limits.html#strategy-1-pace-yourself-the-one-that-actually-matters",
+    "title": "Handling rate limits without crashing",
+    "section": "4 · Strategy 1 — Pace yourself (the one that actually matters)",
+    "text": "4 · Strategy 1 — Pace yourself (the one that actually matters)\nEvery other strategy in this notebook is damage control. This one is prevention, and it removes the great majority of 429s on its own.\nThe idea is trivial: if the limit is 15 requests per minute, never issue them faster than one every 60 / 15 = 4 seconds. Before each call, check how long ago the previous call went out and sleep off the difference.\nTwo details that are easy to get wrong:\n\nLeave headroom. Pace to slightly below the cap (we use a 1.1× safety factor), because the server’s idea of “a minute” and yours will drift apart.\nMeasure with time.monotonic(), not time.time(). A wall clock can jump backwards when the machine syncs to a time server; a monotonic clock cannot. Elapsed-time arithmetic on time.time() is a classic source of rare, baffling bugs.\n\nThe free-tier limits differ sharply per model, so pacing has to be derived from the model you actually chose:\n\n\nShow code\n# Free-tier limits, Gemini API. Check https://ai.dev/rate-limit for current values --\n# these change, and the dashboard is authoritative.\nRATE_LIMITS = {\n    \"gemini-2.5-flash\":      {\"rpm\": 5,  \"rpd\": 20},\n    \"gemini-3.1-flash-lite\": {\"rpm\": 15, \"rpd\": 500},\n}\n\ndef min_interval_for(model, safety=1.1):\n    \"\"\"Seconds to leave between calls to stay under that model's RPM cap.\"\"\"\n    rpm = RATE_LIMITS.get(model, {}).get(\"rpm\", 5)   # unknown model -&gt; be cautious\n    return (60.0 / rpm) * safety\n\nfor model, limits in RATE_LIMITS.items():\n    print(f\"{model:24s} {limits['rpm']:&gt;3} RPM, {limits['rpd']:&gt;4} RPD\"\n          f\"  -&gt; pace at {min_interval_for(model):.1f}s between calls\")\n\n\ngemini-2.5-flash           5 RPM,   20 RPD  -&gt; pace at 13.2s between calls\ngemini-3.1-flash-lite     15 RPM,  500 RPD  -&gt; pace at 4.4s between calls\n\n\nNotice how large the gap is. gemini-2.5-flash allows 20 requests per day on the free tier — one lab exercise over a 25-sentence gold set exhausts it before lunch. gemini-3.1-flash-lite allows 500. Pacing cannot rescue you from picking the wrong model; check RPD before you start a long run.\nHere is pacing on its own, applied to the same 40 prompts that just crashed:\n\n\nShow code\ndef with_pacing(call, min_interval):\n    \"\"\"Wrap a call so consecutive invocations are at least min_interval apart.\"\"\"\n    last = [0.0]                       # a list, so the closure can mutate it\n\n    def paced(prompt):\n        wait = min_interval - (time.monotonic() - last[0])\n        if wait &gt; 0:\n            time.sleep(wait)\n        last[0] = time.monotonic()\n        return call(prompt)\n\n    return paced\n\n# Same server as the crash above, but paced. Both the server's window and our\n# pacing are scaled by DEMO_SCALE, so the ratio between them is the real one.\nserver = FakeGemini(rpm=5, latency=0.01, window=DEMO_WINDOW)\npaced_call = with_pacing(server,\n                         min_interval=min_interval_for(\"gemini-2.5-flash\") * DEMO_SCALE)\n\nstart = time.monotonic()\nanswers = [paced_call(p) for p in prompts]\nprint(f\"✅ {len(answers)}/{len(prompts)} prompts completed, {server.rejected} rejections\")\nprint(f\"   (took {time.monotonic()-start:.1f}s at {DEMO_SCALE}x scale; \"\n      f\"~{(time.monotonic()-start)/DEMO_SCALE/60:.0f} min for real)\")\n\n\n✅ 40/40 prompts completed, 0 rejections\n   (took 5.4s at 0.01x scale; ~9 min for real)\n\n\nZero rejections. The trade is honest and unavoidable: staying inside a 5 RPM cap means 40 sentences takes about nine minutes of wall time. That is not the wrapper being slow — it is the actual cost of the free tier, previously hidden behind a crash.\nThis is why you keep gold sets small. Twenty-five sentences is a pedagogical choice, but it is also a quota choice.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
+    "objectID": "resources/extra/handling-rate-limits.html#strategy-2-back-off-and-retry-when-youre-pushed-back-anyway",
+    "href": "resources/extra/handling-rate-limits.html#strategy-2-back-off-and-retry-when-youre-pushed-back-anyway",
+    "title": "Handling rate limits without crashing",
+    "section": "5 · Strategy 2 — Back off and retry when you’re pushed back anyway",
+    "text": "5 · Strategy 2 — Back off and retry when you’re pushed back anyway\nPacing handles your traffic. It cannot handle everything: the limit is per project, so another notebook of yours sharing the key eats the same budget, and transient server-side congestion happens regardless.\nSo the second layer catches a 429 and retries. Three rules make the difference between a retry loop that helps and one that makes things worse:\n\nHonor the server’s retryDelay when it gives one. It knows when your window reopens; you are guessing.\nBack off exponentially otherwise — 4 s, 8 s, 16 s. A fixed-interval retry against a still-closed window is just more rejected traffic.\nAdd jitter (a small random offset). If you and three classmates hit the limit simultaneously and all retry after exactly 8 s, you collide again in lockstep. Randomness breaks the synchronization. This is the “thundering herd” problem, and jitter is the standard fix.\n\nGive up after a handful of attempts rather than looping forever — a wrapper that retries indefinitely turns a clear error into a hung notebook, which is worse.\n\n\nShow code\ndef with_retry(call, max_retries=5, base_delay=4.0):\n    \"\"\"Retry rate-limit errors with exponential backoff + jitter.\"\"\"\n\n    def retrying(prompt):\n        for attempt in range(max_retries + 1):\n            try:\n                return call(prompt)\n            except Exception as error:\n                # Real bugs (bad prompt, no network) must surface immediately,\n                # not be retried 5 times behind a misleading \"rate limited\" message.\n                if not looks_like_rate_limit(error):\n                    raise\n                # A daily cap will not clear today. Retrying is pure waste.\n                if looks_like_daily_quota(error):\n                    raise RuntimeError(\n                        \"Daily free-tier quota exhausted for this model. Retrying \"\n                        \"will not help until it resets (~midnight Pacific). Switch to \"\n                        \"gemini-3.1-flash-lite (500/day), run in Colab, or continue \"\n                        \"tomorrow.\"\n                    ) from error\n                if attempt == max_retries:\n                    raise\n                delay = suggested_delay(error, base_delay * (2 ** attempt))\n                delay += random.uniform(0, 0.3 * delay)      # jitter\n                print(f\"   rate limited — waiting {delay:.1f}s (attempt {attempt+1})\")\n                time.sleep(delay)\n        raise RuntimeError(\"unreachable\")\n\n    return retrying\n\nprint(\"with_retry defined.\")\n\n\nwith_retry defined.\n\n\nNote the two raise statements before the backoff. They are the point of the function as much as the retrying is:\n\nA typo in your prompt code should fail in one second, not after five backoffs totaling a minute, disguised as a quota problem.\nA daily cap should say “come back tomorrow” immediately. This is exactly the case where a naive retry loop wastes the most time — it will patiently sleep, retry, sleep, retry, and still fail, because nothing it does can refill a daily bucket.\n\nWorth seeing rather than taking on faith. Here is a server whose daily allowance is already spent — the wrapper gives up immediately, with an error that tells you what to do next:\n\n\nShow code\nexhausted = FakeGemini(rpm=5, rpd=3, latency=0.01, window=DEMO_WINDOW)\nguarded = with_retry(exhausted, max_retries=5, base_delay=4.0 * DEMO_SCALE)\n\nstart = time.monotonic()\ntry:\n    for i in range(10):\n        guarded(f\"prompt {i}\")\nexcept RuntimeError as error:\n    print(f\"stopped after {exhausted.served} calls \"\n          f\"in {time.monotonic()-start:.2f}s — no pointless retrying\")\n    print(\"message:\", error)\n\n\nstopped after 3 calls in 0.04s — no pointless retrying\nmessage: Daily free-tier quota exhausted for this model. Retrying will not help until it resets (~midnight Pacific). Switch to gemini-3.1-flash-lite (500/day), run in Colab, or continue tomorrow.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
+    "objectID": "resources/extra/handling-rate-limits.html#strategy-3-never-pay-for-the-same-answer-twice",
+    "href": "resources/extra/handling-rate-limits.html#strategy-3-never-pay-for-the-same-answer-twice",
+    "title": "Handling rate limits without crashing",
+    "section": "6 · Strategy 3 — Never pay for the same answer twice",
+    "text": "6 · Strategy 3 — Never pay for the same answer twice\nThe naive loop lost every answer it had already earned. On a metered API that is the expensive mistake, not the crash itself.\nA cache fixes it: keep results keyed by prompt, and skip anything already answered. Re-running a cell after a failure then costs only the remaining calls. Because the key is the prompt text, editing your prompt correctly invalidates the cache — changed prompt, changed key, fresh call.\nWriting the cache to disk (in Colab, to your mounted Drive) carries it across runtime restarts, which is worth doing for anything longer than a few minutes.\n\n\nShow code\ndef with_cache(call, store=None):\n    \"\"\"Skip the network entirely for prompts already answered.\"\"\"\n    store = {} if store is None else store\n\n    def cached(prompt):\n        if prompt not in store:\n            store[prompt] = call(prompt)\n        return store[prompt]\n\n    cached.store = store          # exposed so you can save/inspect it\n    return cached\n\ndef save_cache(store, path=\"llm_cache.json\"):\n    with open(path, \"w\", encoding=\"utf-8\") as f:\n        json.dump(store, f, ensure_ascii=False, indent=1)\n\ndef load_cache(path=\"llm_cache.json\"):\n    try:\n        with open(path, encoding=\"utf-8\") as f:\n            return json.load(f)\n    except FileNotFoundError:\n        return {}\n\nprint(\"with_cache defined.\")\n\n\nwith_cache defined.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
+    "objectID": "resources/extra/handling-rate-limits.html#putting-it-together",
+    "href": "resources/extra/handling-rate-limits.html#putting-it-together",
+    "title": "Handling rate limits without crashing",
+    "section": "7 · Putting it together",
+    "text": "7 · Putting it together\nThe three wrappers compose. Order matters, and it is worth reasoning through rather than memorizing — read the nesting from the inside out:\ncache  ⟶  pacing  ⟶  retry  ⟶  the actual API call\n\nCache outermost, so a cached hit skips the pacing sleep as well as the network. Put it inside the pacing and every cache hit would still sleep 4 seconds for no reason.\nRetry innermost, wrapping the raw call, so a retry re-enters only the call and not the pacing bookkeeping.\n\n\n\nShow code\ndef make_resilient(call, model=\"gemini-3.1-flash-lite\", store=None,\n                   max_retries=5, scale=1.0):\n    \"\"\"Wrap a raw prompt-&gt;text function so free-tier limits stop being your problem.\n\n    scale is for demos only — it shrinks the sleeps so examples run quickly.\n    Leave it at 1.0 for real work.\n    \"\"\"\n    interval = min_interval_for(model) * scale\n    guarded = with_retry(call, max_retries=max_retries, base_delay=4.0 * scale)\n    guarded = with_pacing(guarded, min_interval=interval)\n    guarded = with_cache(guarded, store=store)\n    return guarded\n\n# Full test: 40 prompts, a stingy server, and a re-run to show the cache working.\nserver = FakeGemini(rpm=5, latency=0.01, window=DEMO_WINDOW)\ngenerate = make_resilient(server, model=\"gemini-2.5-flash\", scale=DEMO_SCALE)\n\nstart = time.monotonic()\nanswers = [generate(p) for p in prompts]\nfirst_pass = time.monotonic() - start\nprint(f\"✅ pass 1: {len(answers)} answers, {server.served} API calls, \"\n      f\"{server.rejected} rejections, {first_pass:.2f}s\")\n\nstart = time.monotonic()\nanswers = [generate(p) for p in prompts]\nprint(f\"✅ pass 2: {len(answers)} answers, {server.served} API calls total \"\n      f\"(unchanged — all cached), {time.monotonic()-start:.3f}s\")\n\n\n✅ pass 1: 40 answers, 40 API calls, 0 rejections, 5.45s\n✅ pass 2: 40 answers, 40 API calls total (unchanged — all cached), 0.000s\n\n\nThe second pass costs zero quota and returns instantly. That is what makes iterating on downstream analysis cheap: you pay for the model’s answers once, then re-run the scoring, the confusion matrix, and the plots as often as you like.\n\nUsing it with a real backend\nDrop-in, in any course notebook. Everything downstream keeps calling generate_text(prompt) and never learns the difference:\nfrom google import genai\nfrom google.genai import types\n\nMODEL_ID = \"gemini-3.1-flash-lite\"      # 500/day, not 20 — check before long runs\nclient = genai.Client(api_key=_resolve_gemini_key())\ncfg = types.GenerateContentConfig(temperature=0, seed=42)\n\nraw = lambda p: client.models.generate_content(\n    model=MODEL_ID, contents=p, config=cfg).text\n\ngenerate_text = make_resilient(raw, model=MODEL_ID, store=load_cache())\nThen save the cache when you are done, so a runtime restart does not cost you the calls again:\nsave_cache(generate_text.store)\nColab’s built-in google.colab.ai backend has its own separate, undocumented throttling, but the same wrapper applies — pass model=\"gemini-2.5-flash\" to get conservative pacing.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
+    "objectID": "resources/extra/handling-rate-limits.html#when-the-wrapper-is-the-wrong-tool",
+    "href": "resources/extra/handling-rate-limits.html#when-the-wrapper-is-the-wrong-tool",
+    "title": "Handling rate limits without crashing",
+    "section": "8 · When the wrapper is the wrong tool",
+    "text": "8 · When the wrapper is the wrong tool\nRetry logic makes a program resilient to transient limits. It cannot manufacture quota, and reaching for it in the following situations wastes your time:\n\n\n\n\n\n\n\nSituation\nWhat to do instead\n\n\n\n\nDaily cap (RPD) hit\nSwitch model (gemini-3.1-flash-lite, 500/day), or resume tomorrow. No amount of waiting helps today.\n\n\nLong runs, repeatedly\nShrink the job: fewer items, or n_per_class sampling. Most course tasks need 25 items, not 250.\n\n\nIterating on a prompt\nTest on 3–5 sentences. Run the full gold set only when the prompt has stopped changing.\n\n\nNeed speed and volume\nEnable billing. The paid tier’s limits are far higher; the free tier is not meant for bulk work.\n\n\nTPM (token) limit, not RPM\nShorten the prompt — trim few-shot examples or truncate long texts. Pacing does not help if a single call is too large.\n\n\n\nThe general principle: a rate limit is a budget, not an obstacle. The wrapper spends the budget smoothly instead of all at once, and it stops you losing work you already paid for. Deciding how much to spend is still your job, and the cheapest call remains the one you never make.",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
+    "objectID": "resources/extra/handling-rate-limits.html#see-also",
+    "href": "resources/extra/handling-rate-limits.html#see-also",
+    "title": "Handling rate limits without crashing",
+    "section": "See also",
+    "text": "See also\n\nGemini API key setup\nGoogle Colab setup\nCurrent free-tier limits: https://ai.dev/rate-limit",
+    "crumbs": [
+      "Resources",
+      "Extra Topics",
+      "Handling rate limits without crashing"
+    ]
+  },
+  {
     "objectID": "resources/corpora/index.html",
     "href": "resources/corpora/index.html",
     "title": "Further Corpora & Language Data",
@@ -2025,25 +2294,165 @@
     "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nSign in to Colab, run a cell (Shift+Enter), and read a Python error well enough to fix a typo.\nSend a prompt with generate_text(...), then edit it and re-run.\nRecognise str / list / dict in what the model hands back, and index into a list or dict.\nBuild a prompt from a variable with an f-string."
   },
   {
-    "objectID": "slides/slides-session-02.html#chat-interface-demo-1",
-    "href": "slides/slides-session-02.html#chat-interface-demo-1",
-    "title": "Session 2: First Experience with LLM Classification",
-    "section": "Chat-interface demo",
-    "text": "Chat-interface demo"
+    "objectID": "slides/slides-session-02.html#how-today-works",
+    "href": "slides/slides-session-02.html#how-today-works",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "How today works",
+    "text": "How today works\n\nSlides give the idea for each step (a minute or two).\nThen you do it in Colab — right away, while it’s fresh.\nType the code, don’t copy it. The little effort is the point: it’s how it sticks.\n\nTwo kinds of Colab moment:\n\n👀 Let’s follow — run the cell together and watch what happens.\n🧪 Let’s try — your turn: change something and re-run.\n\n\n\n\n\n\n\nTip\n\n\nErrors are normal and expected today. Reading them is a skill we practise, not a sign anything is broken."
   },
   {
-    "objectID": "slides/slides-session-02.html#google-colab-onboarding-1",
-    "href": "slides/slides-session-02.html#google-colab-onboarding-1",
-    "title": "Session 2: First Experience with LLM Classification",
-    "section": "Google Colab onboarding",
-    "text": "Google Colab onboarding"
+    "objectID": "slides/slides-session-02.html#what-colab-is",
+    "href": "slides/slides-session-02.html#what-colab-is",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "What Colab is",
+    "text": "What Colab is\nColab = an online Python notebook Google offers (run code without installing anything).\nA notebook = a document of cells you run one at a time.\n\nText cells (like this slide) — notes.\nCode cells — Python that runs on a runtime (a free computer Google lends you in the cloud).\nRun a cell with Shift + Enter.\n\n\nNothing installs on your laptop. If the runtime disconnects, you just re-run the cells."
   },
   {
-    "objectID": "slides/slides-session-02.html#reading-python-1",
-    "href": "slides/slides-session-02.html#reading-python-1",
-    "title": "Session 2: First Experience with LLM Classification",
-    "section": "Reading Python",
-    "text": "Reading Python"
+    "objectID": "slides/slides-session-02.html#why-this-matters",
+    "href": "slides/slides-session-02.html#why-this-matters",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Why this matters",
+    "text": "Why this matters\nThis is the room you’ll work in all week — every session runs here.\n\nAnd one thing will happen: you’ll hit a red error. That’s not failure — it’s Python telling you exactly what it couldn’t do. Read the last line to understand what you’ll need to do."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nRun your first cell:\nprint(\"Hello, Colab! You just ran your first cell.\")\n\nNow break it on purpose — a typo — and run it:\nprint(mesage)      # 'mesage' was never defined\nRead the last line of the red box:\nNameError: name 'mesage' is not defined\n→ error type · message · line number."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab",
+    "href": "slides/slides-session-02.html#lets-try-in-colab",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nYour turn:\n\nprint(...) a message of your own.\nThen misspell a word or variable on purpose and read the error you get.\nFix it and re-run.\n\nReading that last line is the whole skill — you’ll use it all week."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#first-whats-a-variable",
+    "href": "slides/slides-session-02.html#first-whats-a-variable",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "First — what’s a variable?",
+    "text": "First — what’s a variable?\nA variable is a named box that stores a value.\nlevel = \"A1\"        # make a box called `level`, put \"A1\" in it\nprint(level)        # A1  — get the value back by its name\n\nname = value — the = means “store this”, not “equals”.\nOnce stored, reuse the value anywhere just by writing its name.\n\n\nNext we’ll store the model’s reply in a box called reply."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#the-whole-idea-in-one-line",
+    "href": "slides/slides-session-02.html#the-whole-idea-in-one-line",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "The whole idea, in one line",
+    "text": "The whole idea, in one line\nYou send the model text (a prompt); it sends text back (a reply).\nreply = generate_text(\"...your prompt...\")\n\n\ngenerate_text(...) does the call (we set it up for you — no API key today).\nreply = ... stores the answer in a variable named reply, so you can use it later."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#why-this-matters-1",
+    "href": "slides/slides-session-02.html#why-this-matters-1",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Why this matters",
+    "text": "Why this matters\nThis one call is the spine of the whole week.\n\nClassification, annotation, evaluation — everything we do is a variation on this: build a prompt, send it, read the reply. Get comfortable here and the rest is reshaping the text around it."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-1",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab-1",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nRun the 📦 Setup cell first, then run this together:\nreply = generate_text(\"In one sentence, what is applied linguistics?\")\nprint(reply)\nThe model’s answer prints out. You just called an LLM from Python."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab-1",
+    "href": "slides/slides-session-02.html#lets-try-in-colab-1",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nYour turn — change the prompt and re-run (a different topic, or another language):\nreply = generate_text(\"In one sentence, what is a corpus?\")\nprint(reply)\nSame code, new answer. The prompt is just text you control."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#python-labels-every-value-with-a-type",
+    "href": "slides/slides-session-02.html#python-labels-every-value-with-a-type",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Python labels every value with a type",
+    "text": "Python labels every value with a type\nprint(type(reply))     # &lt;class 'str'&gt; — a string, i.e. text\nThe three types you need all week:\n\nstr — text, in quotes: \"A1\".\nlist — many items in order, in brackets: [\"a\", \"b\", \"c\"].\ndict — a labelled record, in braces: {\"label\": \"A1\"} (key → value)."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#a-few-more-types",
+    "href": "slides/slides-session-02.html#a-few-more-types",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "A few more types",
+    "text": "A few more types\nHere are some more frequent variable types.\n\nint — whole numbers: 42\nfloat — decimals: 3.14\nbool — True / False\ntuple — like a list, but fixed and can’t be changed: (1, 2)\nNone — “nothing here yet”\n\nNo need to memorise — when you see one, you’ll know it’s just another kind of value."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-2",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab-2",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nRun this together — build a list of sentences and a dict record, then print each whole:\nsentences = [\"The cat sat on the mat.\",          # a list of strings\n             \"Despite the rain, the game went ahead.\"]\nrecord = {\"id\": 1, \"text\": \"The cat sat on the mat.\", \"label\": \"A1\"}   # a dict\n\nprint(sentences)     # the whole list  — note the [ ... ]\nprint(record)        # the whole dict  — note the { key: value ... }"
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab-2",
+    "href": "slides/slides-session-02.html#lets-try-in-colab-2",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nYour turn — build your own:\n\na list of three words, and\na dict with keys id, text, and label.\n\nPrint each and check the [ ] / { } match what you intended."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#getting-one-item-out-indexing",
+    "href": "slides/slides-session-02.html#getting-one-item-out-indexing",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Getting one item out — indexing",
+    "text": "Getting one item out — indexing\nUse [...] to reach inside:\n\na list by position (starts at 0): sentences[0]\na dict by key: record[\"label\"]"
+  },
+  {
+    "objectID": "slides/slides-session-02.html#why-this-matters-2",
+    "href": "slides/slides-session-02.html#why-this-matters-2",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Why this matters",
+    "text": "Why this matters\nEvery dataset this week is a list of dicts — sentences shaped like {\"id\": ..., \"text\": ..., \"label\": ...}. Reading them is just list + dict indexing."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-3",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab-3",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nReuse the sentences and record you just built — now reach inside them:\nprint(\"first sentence:\", sentences[0])       # list — index by position\nprint(\"its gold label:\", record[\"label\"])    # dict — index by key"
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab-3",
+    "href": "slides/slides-session-02.html#lets-try-in-colab-3",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nYour turn:\n\nChange the 0 in sentences[0] to 1 — what prints?\nAsk for record[\"text\"], then record[\"id\"].\n\nWatch what comes out each time."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#putting-your-data-into-the-prompt",
+    "href": "slides/slides-session-02.html#putting-your-data-into-the-prompt",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Putting your data into the prompt",
+    "text": "Putting your data into the prompt\nAn f-string is a normal string with an f in front — anything in { } gets swapped for its value:\nsentence = \"Despite the rain, the game went ahead.\"\nprompt = f\"What CEFR level (A1-C2) is this sentence? {sentence}\"\n\n{sentence} becomes the actual sentence text inside the prompt — no copy-paste, no gluing strings together."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#why-this-matters-3",
+    "href": "slides/slides-session-02.html#why-this-matters-3",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Why this matters",
+    "text": "Why this matters\nThe prompt is now built from a variable.\n\nSwap in a different sentence and you get a different prompt — automatically. That’s the mechanism for running one prompt over many sentences, which is exactly what Session 3 turns into a loop."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-4",
+    "href": "slides/slides-session-02.html#lets-follow-in-colab-4",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "👀 Let’s follow — in Colab",
+    "text": "👀 Let’s follow — in Colab\nRun this together — build a prompt from a variable, then send it:\nsentence = \"Despite the rain, the game went ahead.\"\nprompt = f\"What CEFR level (A1-C2) is this sentence? {sentence}\"\nreply = generate_text(prompt)\nprint(reply)"
+  },
+  {
+    "objectID": "slides/slides-session-02.html#lets-try-in-colab-4",
+    "href": "slides/slides-session-02.html#lets-try-in-colab-4",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "🧪 Let’s try — in Colab",
+    "text": "🧪 Let’s try — in Colab\nChange sentence to one of your own and re-run.\n\nYou built a prompt from data and sent it — the core move of the whole course."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#coming-up-in-session-3",
+    "href": "slides/slides-session-02.html#coming-up-in-session-3",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Coming up in Session 3",
+    "text": "Coming up in Session 3\nYou can call the model once. Next: run it over a whole list of sentences —\n\nturn a paragraph into sentences (segmentation),\nloop the call over each with for,\nand wrap it in a reusable function.\n\nThen form your project groups."
   },
   {
     "objectID": "slides/slides-session-01.html#agenda",
@@ -2443,6 +2852,18 @@
     ]
   },
   {
+    "objectID": "sessions/day2/session-06.html#agenda",
+    "href": "sessions/day2/session-06.html#agenda",
+    "title": "Session 6: Gold Standards & Evaluation Metrics",
+    "section": "Agenda",
+    "text": "Agenda\nWorks through Part A of the Day 2 notebook, which runs on frozen predictions — no API key, no live model, so everyone’s numbers come out identical every run.\n\nWarm-up: what a gold file is — parse a {id, text, label} record, index into it, and meet with open(...) for files.\nLoad the gold standard and the frozen predictions the fixed prompt produced.\nRead the evaluation — precision / recall / F1 from a classification_report, then the confusion matrix.\nError analysis — which classes get confused, and what that implies.\n\nYou’ll run the model live yourself from Day 3 onward; today the focus is measuring quality, not producing it.",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 6: Gold Standards & Evaluation Metrics"
+    ]
+  },
+  {
     "objectID": "sessions/day2/session-06.html#reading",
     "href": "sessions/day2/session-06.html#reading",
     "title": "Session 6: Gold Standards & Evaluation Metrics",
@@ -2484,6 +2905,18 @@
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Learning objectives",
     "text": "Learning objectives\nBy the end of this session you will be able to:\n\nExplain what an annotation scheme and coding guidelines are, and why operationalizing a category matters.\nDescribe where annotation sits in an NLP pipeline for applied linguistics (annotate → model → evaluate).\nExplain inter-annotator agreement conceptually — why we double-annotate, and what a simple agreement rate and Cohen’s κ tell you.\nSay what a gold-standard dataset is and how it is constructed.",
+    "crumbs": [
+      "Sessions",
+      "Day 2 · Annotation, Gold Standards & Metrics",
+      "Session 4: Annotation Principles & Inter-Annotator Agreement"
+    ]
+  },
+  {
+    "objectID": "sessions/day2/session-04.html#agenda",
+    "href": "sessions/day2/session-04.html#agenda",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Agenda",
+    "text": "Agenda\n\nWhy annotation? — from a linguistic construct to labelled data; the {id, text, label} shape.\nAnnotation schemes & coding guidelines — operationalizing a category so two people can apply it consistently.\nInter-annotator agreement (conceptual) — double annotation, percent agreement, and Cohen’s κ; why chance-corrected agreement matters.\nThe pipeline in context — how today’s gold standard feeds the prompt design and evaluation of the coming days (Eguchi & Kyle, 2024).\n\nThis is the conceptual grounding for the hands-on annotation in Session 5.",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -2627,6 +3060,18 @@
     ]
   },
   {
+    "objectID": "sessions/day1/session-03.html#agenda",
+    "href": "sessions/day1/session-03.html#agenda",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Agenda",
+    "text": "Agenda\nThis session picks up Part B of the Day 1 notebook, then forms project groups.\n\nFrom a document to sentences — segment a paragraph without a model (.split(\".\"), dot-methods) and with a model (spaCy sentencizer); see why sentence boundaries matter for annotation.\nRun the model over every sentence — a for loop + an if, wrapped into a reusable ask(...) function (the seed of the pipeline you’ll assemble later in the week).\nYour turn — the guided Python practice exercises with a self-check.\nMini-project setup — form groups and choose a track (see below).",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 3: Python Practice & Mini-Project Setup"
+    ]
+  },
+  {
     "objectID": "sessions/day1/session-03.html#reading",
     "href": "sessions/day1/session-03.html#reading",
     "title": "Session 3: Python Practice & Mini-Project Setup",
@@ -2680,6 +3125,18 @@
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Learning objectives",
     "text": "Learning objectives\nBy the end of this session you will be able to:\n\nDescribe, at a high level, what a Large Language Model is and how it differs from the corpus and NLP tools you met in Linguistic Data Analysis I.\nName the NLP tasks this course targets — classification, annotation, and extraction of linguistic features — and give an example of each.\nJudge, from a live chat demo, where an LLM is genuinely useful for linguistic analysis and where its output cannot be trusted at face value.",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis"
+    ]
+  },
+  {
+    "objectID": "sessions/day1/session-01.html#agenda",
+    "href": "sessions/day1/session-01.html#agenda",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Agenda",
+    "text": "Agenda\n\nCourse overview & logistics — the 5-day arc, the mini-project, and how you’ll be graded.\nSelf-introductions — your background, research interests, and any prior programming exposure.\nLLMs as analysis tools — what they are, how they fit linguistic analysis, and the tasks we’ll tackle this week.\nNo-code chat demo — throw real language data at an LLM in the chat interface and read the output critically: what did it get right, and how would we ever know?\nBridge from LDA I — how today’s questions connect to frequency, concordancing, and the metrics you already know.\n\nNo laptop setup is needed today — the hands-on tooling starts in Session 2.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -2827,499 +3284,5 @@
       "Sessions",
       "Daily notebooks"
     ]
-  },
-  {
-    "objectID": "resources/extra/index.html",
-    "href": "resources/extra/index.html",
-    "title": "Extra Topics",
-    "section": "",
-    "text": "Material here is not required for any Corpus Lab or the mini-project. It covers practical problems that come up once you start running your own LLM code at any real volume, and it is here so the day notebooks can stay focused on the linguistics.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Extra Topics"
-    ]
-  },
-  {
-    "objectID": "resources/extra/index.html#contents",
-    "href": "resources/extra/index.html#contents",
-    "title": "Extra Topics",
-    "section": "Contents",
-    "text": "Contents\n\n🚦 Handling rate limits without crashing — why a 429 arrives when you have “barely used” your quota, how to read which limit you hit, and a make_resilient() wrapper that paces, retries, and caches. Runs without an API key.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Extra Topics"
-    ]
-  },
-  {
-    "objectID": "resources/extra/index.html#when-youd-open-this",
-    "href": "resources/extra/index.html#when-youd-open-this",
-    "title": "Extra Topics",
-    "section": "When you’d open this",
-    "text": "When you’d open this\n\n\n\nIf you hit…\nRead\n\n\n\n\n429 RESOURCE_EXHAUSTED mid-run\nHandling rate limits\n\n\nA loop that dies partway and loses every answer so far\nHandling rate limits §6\n\n\n“Quota exceeded” that a retry never fixes\nHandling rate limits §1 — you are probably at a daily cap",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Extra Topics"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html",
-    "href": "resources/extra/handling-rate-limits.html",
-    "title": "Handling rate limits without crashing",
-    "section": "",
-    "text": "Linguistic Data Analysis II — extra resource.\nSooner or later a cell that was working fine will stop with a wall of red text ending in something like:\nThis notebook explains what that means and builds, step by step, a wrapper that makes it stop happening. Everything here runs without an API key — the demos use a fake backend that imitates a rate-limited server, so you can see each strategy work (and watch the naive version fail) without spending any quota.\nWhat you will build. One function, make_resilient(call), that takes a plain “prompt → text” function and returns a version that paces itself, backs off and retries when the server pushes back, refuses to retry when retrying cannot help, and remembers answers it already paid for.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html#the-single-most-common-misunderstanding",
-    "href": "resources/extra/handling-rate-limits.html#the-single-most-common-misunderstanding",
-    "title": "Handling rate limits without crashing",
-    "section": "1 · The single most common misunderstanding",
-    "text": "1 · The single most common misunderstanding\n\n“I’ve barely used it today. Why am I rate limited?”\n\nBecause there is more than one limit, and they run on different clocks. The free tier meters you three ways at once:\n\n\n\n\n\n\n\n\n\nLimit\nMeaning\nClock\nWhat trips it\n\n\n\n\nRPM\nrequests per minute\nrolling 60 s\na for loop with no pause\n\n\nTPM\ninput tokens per minute\nrolling 60 s\nlong prompts, few-shot with big examples\n\n\nRPD\nrequests per day\nresets ~midnight Pacific\na long session, or many re-runs\n\n\n\nAlmost every 429 that surprises people is RPM, not RPD. Fifteen requests per minute sounds generous until you notice that an unthrottled loop issues them in about two seconds. You can be at 126 requests out of a 500/day allowance — 25% of your daily budget, nowhere near exhausted — and still be hard-blocked, because you spent 16 of them inside one minute.\nThe distinction matters because the two failures need opposite responses:\n\nRPM → wait a moment and retry. The quota refills continuously.\nRPD → do not retry. It will not refill until tomorrow, so a retry loop just burns time and makes noise. Switch models, or stop.\n\nThe rest of this notebook is essentially that table turned into code.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html#read-the-error-dont-guess",
-    "href": "resources/extra/handling-rate-limits.html#read-the-error-dont-guess",
-    "title": "Handling rate limits without crashing",
-    "section": "2 · Read the error, don’t guess",
-    "text": "2 · Read the error, don’t guess\nThe 429 tells you exactly which limit you hit — people just don’t read that far. The useful part is the quotaId:\n\nGenerateRequestsPerMinutePerProjectPerModel-FreeTier → per minute\nGenerateRequestsPerDayPerProjectPerModel-FreeTier → per day\n\nThere is also a retryDelay ('Please retry in 52.24s'). That number is the server telling you precisely how long until it will accept you again. Honoring it beats guessing.\nBelow: two small functions that classify an error and pull out the suggested delay. They work on the error’s string form, which sounds crude but is deliberate — Colab’s built-in Gemini and the google-genai package raise different exception classes for the same condition, and matching on text handles both without importing either.\n\n\nShow code\nimport re, time, json, random\n\ndef looks_like_rate_limit(error):\n    \"\"\"True if this exception is a throttling / quota error (either kind).\"\"\"\n    text = str(error).lower()\n    return any(signal in text for signal in\n               [\"429\", \"resource_exhausted\", \"rate limit\",\n                \"quota\", \"too many requests\"])\n\ndef looks_like_daily_quota(error):\n    \"\"\"True only for a PER-DAY cap — the kind waiting cannot fix.\"\"\"\n    text = str(error).lower()\n    return (\"perday\" in text.replace(\" \", \"\")\n            or \"per day\" in text\n            or \"requests per day\" in text)\n\ndef suggested_delay(error, fallback):\n    \"\"\"The server's own 'please retry in Ns' hint, if it gave one.\"\"\"\n    match = re.search(r\"retry in ([0-9]+(?:\\.[0-9]+)?)s\", str(error).lower())\n    return float(match.group(1)) if match else fallback\n\n# Try them on the real error text from the top of this notebook.\nREAL_429 = (\"429 RESOURCE_EXHAUSTED. Quota exceeded for metric: \"\n            \"generativelanguage.googleapis.com/generate_content_free_tier_requests, \"\n            \"quotaId: GenerateRequestsPerMinutePerProjectPerModel-FreeTier, \"\n            \"limit: 15. Please retry in 52.242615755s.\")\n\nprint(\"rate limit? \", looks_like_rate_limit(REAL_429))\nprint(\"daily cap?  \", looks_like_daily_quota(REAL_429), \" &lt;- False, so waiting WILL help\")\nprint(\"wait for:   \", suggested_delay(REAL_429, fallback=5), \"seconds\")\n\n\nrate limit?  True\ndaily cap?   False  &lt;- False, so waiting WILL help\nwait for:    52.242615755 seconds",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html#a-fake-server-so-we-can-fail-safely",
-    "href": "resources/extra/handling-rate-limits.html#a-fake-server-so-we-can-fail-safely",
-    "title": "Handling rate limits without crashing",
-    "section": "3 · A fake server, so we can fail safely",
-    "text": "3 · A fake server, so we can fail safely\nTo compare strategies we need something that rate-limits us on demand. This FakeGemini enforces a real rolling-window RPM cap and a daily cap, and raises error messages shaped like the real ones — but it costs nothing and needs no key.\nIt also counts how many calls it actually served, which is how we will score each strategy.\nOne concession to your patience: the window parameter. A real RPM window is 60 seconds, so an honest demo at 5 RPM would take nine minutes to watch. The cells below shrink the server’s window and the client’s pacing by the same factor, which keeps the arithmetic faithful while letting each cell finish in about a second. Scaling only one of the two would quietly turn the demo into a lie — which is exactly the bug this notebook had in its first draft.\n\n\nShow code\nclass RateLimitError(Exception):\n    pass\n\nclass FakeGemini:\n    \"\"\"A stand-in for a rate-limited LLM endpoint. No network, no key, no cost.\n\n    window is the RPM averaging period; it is 60s in reality, and smaller here\n    only so the demos run quickly.\n    \"\"\"\n\n    def __init__(self, rpm=15, rpd=500, latency=0.02, window=60.0):\n        self.rpm, self.rpd, self.latency, self.window = rpm, rpd, latency, window\n        self.call_times = []      # timestamps of accepted calls\n        self.served = 0           # successful responses\n        self.rejected = 0         # 429s raised\n\n    def __call__(self, prompt):\n        now = time.monotonic()\n        # Drop timestamps that have aged out of the rolling window.\n        self.call_times = [t for t in self.call_times if now - t &lt; self.window]\n\n        if len(self.call_times) &gt;= self.rpm:\n            self.rejected += 1\n            wait = self.window - (now - self.call_times[0])\n            raise RateLimitError(\n                \"429 RESOURCE_EXHAUSTED. Quota exceeded for metric: \"\n                \"generate_content_free_tier_requests, quotaId: \"\n                f\"GenerateRequestsPerMinutePerProjectPerModel-FreeTier, limit: {self.rpm}. \"\n                f\"Please retry in {wait:.2f}s.\")\n\n        if self.served &gt;= self.rpd:\n            self.rejected += 1\n            raise RateLimitError(\n                \"429 RESOURCE_EXHAUSTED. Quota exceeded for metric: \"\n                \"generate_content_free_tier_requests, quotaId: \"\n                f\"GenerateRequestsPerDayPerProjectPerModel-FreeTier, limit: {self.rpd}.\")\n\n        self.call_times.append(now)\n        self.served += 1\n        time.sleep(self.latency)          # pretend the model thought about it\n        return f\"B2\"                      # a plausible CEFR reply\n\nprint(\"FakeGemini ready.\")\n\n\nFakeGemini ready.\n\n\n\nThe naive loop, for reference\nThis is what most first drafts look like — and what produced the error at the top of this notebook. We give it 40 sentences to label. Watch where it dies.\n(We use a 5-per-minute cap, which is genuinely what gemini-2.5-flash allows on the free tier — not a rigged setup. DEMO_SCALE shrinks the clock so you are not waiting a real minute for the point to land.)\n\n\nShow code\nDEMO_SCALE = 0.01                      # 1/100th-speed clock, for demos only\nDEMO_WINDOW = 60.0 * DEMO_SCALE        # the server's RPM window, shrunk to match\n\nserver = FakeGemini(rpm=5, latency=0.01, window=DEMO_WINDOW)\nprompts = [f\"Rate the CEFR level of sentence {i}.\" for i in range(40)]\n\ntry:\n    answers = [server(p) for p in prompts]       # &lt;- the naive version\n    print(\"finished:\", len(answers))\nexcept Exception as error:\n    print(\"💥 crashed after\", server.served, \"of\", len(prompts), \"prompts\")\n    print(\"  \", str(error)[:110], \"...\")\n    print(\"\\nNote what was lost: the\", server.served, \"answers already paid for are\")\n    print(\"gone too, because the list comprehension never returned.\")\n\n\n💥 crashed after 5 of 40 prompts\n   429 RESOURCE_EXHAUSTED. Quota exceeded for metric: generate_content_free_tier_requests, quotaId: GenerateReque ...\n\nNote what was lost: the 5 answers already paid for are\ngone too, because the list comprehension never returned.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html#strategy-1-pace-yourself-the-one-that-actually-matters",
-    "href": "resources/extra/handling-rate-limits.html#strategy-1-pace-yourself-the-one-that-actually-matters",
-    "title": "Handling rate limits without crashing",
-    "section": "4 · Strategy 1 — Pace yourself (the one that actually matters)",
-    "text": "4 · Strategy 1 — Pace yourself (the one that actually matters)\nEvery other strategy in this notebook is damage control. This one is prevention, and it removes the great majority of 429s on its own.\nThe idea is trivial: if the limit is 15 requests per minute, never issue them faster than one every 60 / 15 = 4 seconds. Before each call, check how long ago the previous call went out and sleep off the difference.\nTwo details that are easy to get wrong:\n\nLeave headroom. Pace to slightly below the cap (we use a 1.1× safety factor), because the server’s idea of “a minute” and yours will drift apart.\nMeasure with time.monotonic(), not time.time(). A wall clock can jump backwards when the machine syncs to a time server; a monotonic clock cannot. Elapsed-time arithmetic on time.time() is a classic source of rare, baffling bugs.\n\nThe free-tier limits differ sharply per model, so pacing has to be derived from the model you actually chose:\n\n\nShow code\n# Free-tier limits, Gemini API. Check https://ai.dev/rate-limit for current values --\n# these change, and the dashboard is authoritative.\nRATE_LIMITS = {\n    \"gemini-2.5-flash\":      {\"rpm\": 5,  \"rpd\": 20},\n    \"gemini-3.1-flash-lite\": {\"rpm\": 15, \"rpd\": 500},\n}\n\ndef min_interval_for(model, safety=1.1):\n    \"\"\"Seconds to leave between calls to stay under that model's RPM cap.\"\"\"\n    rpm = RATE_LIMITS.get(model, {}).get(\"rpm\", 5)   # unknown model -&gt; be cautious\n    return (60.0 / rpm) * safety\n\nfor model, limits in RATE_LIMITS.items():\n    print(f\"{model:24s} {limits['rpm']:&gt;3} RPM, {limits['rpd']:&gt;4} RPD\"\n          f\"  -&gt; pace at {min_interval_for(model):.1f}s between calls\")\n\n\ngemini-2.5-flash           5 RPM,   20 RPD  -&gt; pace at 13.2s between calls\ngemini-3.1-flash-lite     15 RPM,  500 RPD  -&gt; pace at 4.4s between calls\n\n\nNotice how large the gap is. gemini-2.5-flash allows 20 requests per day on the free tier — one lab exercise over a 25-sentence gold set exhausts it before lunch. gemini-3.1-flash-lite allows 500. Pacing cannot rescue you from picking the wrong model; check RPD before you start a long run.\nHere is pacing on its own, applied to the same 40 prompts that just crashed:\n\n\nShow code\ndef with_pacing(call, min_interval):\n    \"\"\"Wrap a call so consecutive invocations are at least min_interval apart.\"\"\"\n    last = [0.0]                       # a list, so the closure can mutate it\n\n    def paced(prompt):\n        wait = min_interval - (time.monotonic() - last[0])\n        if wait &gt; 0:\n            time.sleep(wait)\n        last[0] = time.monotonic()\n        return call(prompt)\n\n    return paced\n\n# Same server as the crash above, but paced. Both the server's window and our\n# pacing are scaled by DEMO_SCALE, so the ratio between them is the real one.\nserver = FakeGemini(rpm=5, latency=0.01, window=DEMO_WINDOW)\npaced_call = with_pacing(server,\n                         min_interval=min_interval_for(\"gemini-2.5-flash\") * DEMO_SCALE)\n\nstart = time.monotonic()\nanswers = [paced_call(p) for p in prompts]\nprint(f\"✅ {len(answers)}/{len(prompts)} prompts completed, {server.rejected} rejections\")\nprint(f\"   (took {time.monotonic()-start:.1f}s at {DEMO_SCALE}x scale; \"\n      f\"~{(time.monotonic()-start)/DEMO_SCALE/60:.0f} min for real)\")\n\n\n✅ 40/40 prompts completed, 0 rejections\n   (took 5.4s at 0.01x scale; ~9 min for real)\n\n\nZero rejections. The trade is honest and unavoidable: staying inside a 5 RPM cap means 40 sentences takes about nine minutes of wall time. That is not the wrapper being slow — it is the actual cost of the free tier, previously hidden behind a crash.\nThis is why you keep gold sets small. Twenty-five sentences is a pedagogical choice, but it is also a quota choice.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html#strategy-2-back-off-and-retry-when-youre-pushed-back-anyway",
-    "href": "resources/extra/handling-rate-limits.html#strategy-2-back-off-and-retry-when-youre-pushed-back-anyway",
-    "title": "Handling rate limits without crashing",
-    "section": "5 · Strategy 2 — Back off and retry when you’re pushed back anyway",
-    "text": "5 · Strategy 2 — Back off and retry when you’re pushed back anyway\nPacing handles your traffic. It cannot handle everything: the limit is per project, so another notebook of yours sharing the key eats the same budget, and transient server-side congestion happens regardless.\nSo the second layer catches a 429 and retries. Three rules make the difference between a retry loop that helps and one that makes things worse:\n\nHonor the server’s retryDelay when it gives one. It knows when your window reopens; you are guessing.\nBack off exponentially otherwise — 4 s, 8 s, 16 s. A fixed-interval retry against a still-closed window is just more rejected traffic.\nAdd jitter (a small random offset). If you and three classmates hit the limit simultaneously and all retry after exactly 8 s, you collide again in lockstep. Randomness breaks the synchronization. This is the “thundering herd” problem, and jitter is the standard fix.\n\nGive up after a handful of attempts rather than looping forever — a wrapper that retries indefinitely turns a clear error into a hung notebook, which is worse.\n\n\nShow code\ndef with_retry(call, max_retries=5, base_delay=4.0):\n    \"\"\"Retry rate-limit errors with exponential backoff + jitter.\"\"\"\n\n    def retrying(prompt):\n        for attempt in range(max_retries + 1):\n            try:\n                return call(prompt)\n            except Exception as error:\n                # Real bugs (bad prompt, no network) must surface immediately,\n                # not be retried 5 times behind a misleading \"rate limited\" message.\n                if not looks_like_rate_limit(error):\n                    raise\n                # A daily cap will not clear today. Retrying is pure waste.\n                if looks_like_daily_quota(error):\n                    raise RuntimeError(\n                        \"Daily free-tier quota exhausted for this model. Retrying \"\n                        \"will not help until it resets (~midnight Pacific). Switch to \"\n                        \"gemini-3.1-flash-lite (500/day), run in Colab, or continue \"\n                        \"tomorrow.\"\n                    ) from error\n                if attempt == max_retries:\n                    raise\n                delay = suggested_delay(error, base_delay * (2 ** attempt))\n                delay += random.uniform(0, 0.3 * delay)      # jitter\n                print(f\"   rate limited — waiting {delay:.1f}s (attempt {attempt+1})\")\n                time.sleep(delay)\n        raise RuntimeError(\"unreachable\")\n\n    return retrying\n\nprint(\"with_retry defined.\")\n\n\nwith_retry defined.\n\n\nNote the two raise statements before the backoff. They are the point of the function as much as the retrying is:\n\nA typo in your prompt code should fail in one second, not after five backoffs totaling a minute, disguised as a quota problem.\nA daily cap should say “come back tomorrow” immediately. This is exactly the case where a naive retry loop wastes the most time — it will patiently sleep, retry, sleep, retry, and still fail, because nothing it does can refill a daily bucket.\n\nWorth seeing rather than taking on faith. Here is a server whose daily allowance is already spent — the wrapper gives up immediately, with an error that tells you what to do next:\n\n\nShow code\nexhausted = FakeGemini(rpm=5, rpd=3, latency=0.01, window=DEMO_WINDOW)\nguarded = with_retry(exhausted, max_retries=5, base_delay=4.0 * DEMO_SCALE)\n\nstart = time.monotonic()\ntry:\n    for i in range(10):\n        guarded(f\"prompt {i}\")\nexcept RuntimeError as error:\n    print(f\"stopped after {exhausted.served} calls \"\n          f\"in {time.monotonic()-start:.2f}s — no pointless retrying\")\n    print(\"message:\", error)\n\n\nstopped after 3 calls in 0.04s — no pointless retrying\nmessage: Daily free-tier quota exhausted for this model. Retrying will not help until it resets (~midnight Pacific). Switch to gemini-3.1-flash-lite (500/day), run in Colab, or continue tomorrow.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html#strategy-3-never-pay-for-the-same-answer-twice",
-    "href": "resources/extra/handling-rate-limits.html#strategy-3-never-pay-for-the-same-answer-twice",
-    "title": "Handling rate limits without crashing",
-    "section": "6 · Strategy 3 — Never pay for the same answer twice",
-    "text": "6 · Strategy 3 — Never pay for the same answer twice\nThe naive loop lost every answer it had already earned. On a metered API that is the expensive mistake, not the crash itself.\nA cache fixes it: keep results keyed by prompt, and skip anything already answered. Re-running a cell after a failure then costs only the remaining calls. Because the key is the prompt text, editing your prompt correctly invalidates the cache — changed prompt, changed key, fresh call.\nWriting the cache to disk (in Colab, to your mounted Drive) carries it across runtime restarts, which is worth doing for anything longer than a few minutes.\n\n\nShow code\ndef with_cache(call, store=None):\n    \"\"\"Skip the network entirely for prompts already answered.\"\"\"\n    store = {} if store is None else store\n\n    def cached(prompt):\n        if prompt not in store:\n            store[prompt] = call(prompt)\n        return store[prompt]\n\n    cached.store = store          # exposed so you can save/inspect it\n    return cached\n\ndef save_cache(store, path=\"llm_cache.json\"):\n    with open(path, \"w\", encoding=\"utf-8\") as f:\n        json.dump(store, f, ensure_ascii=False, indent=1)\n\ndef load_cache(path=\"llm_cache.json\"):\n    try:\n        with open(path, encoding=\"utf-8\") as f:\n            return json.load(f)\n    except FileNotFoundError:\n        return {}\n\nprint(\"with_cache defined.\")\n\n\nwith_cache defined.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html#putting-it-together",
-    "href": "resources/extra/handling-rate-limits.html#putting-it-together",
-    "title": "Handling rate limits without crashing",
-    "section": "7 · Putting it together",
-    "text": "7 · Putting it together\nThe three wrappers compose. Order matters, and it is worth reasoning through rather than memorizing — read the nesting from the inside out:\ncache  ⟶  pacing  ⟶  retry  ⟶  the actual API call\n\nCache outermost, so a cached hit skips the pacing sleep as well as the network. Put it inside the pacing and every cache hit would still sleep 4 seconds for no reason.\nRetry innermost, wrapping the raw call, so a retry re-enters only the call and not the pacing bookkeeping.\n\n\n\nShow code\ndef make_resilient(call, model=\"gemini-3.1-flash-lite\", store=None,\n                   max_retries=5, scale=1.0):\n    \"\"\"Wrap a raw prompt-&gt;text function so free-tier limits stop being your problem.\n\n    scale is for demos only — it shrinks the sleeps so examples run quickly.\n    Leave it at 1.0 for real work.\n    \"\"\"\n    interval = min_interval_for(model) * scale\n    guarded = with_retry(call, max_retries=max_retries, base_delay=4.0 * scale)\n    guarded = with_pacing(guarded, min_interval=interval)\n    guarded = with_cache(guarded, store=store)\n    return guarded\n\n# Full test: 40 prompts, a stingy server, and a re-run to show the cache working.\nserver = FakeGemini(rpm=5, latency=0.01, window=DEMO_WINDOW)\ngenerate = make_resilient(server, model=\"gemini-2.5-flash\", scale=DEMO_SCALE)\n\nstart = time.monotonic()\nanswers = [generate(p) for p in prompts]\nfirst_pass = time.monotonic() - start\nprint(f\"✅ pass 1: {len(answers)} answers, {server.served} API calls, \"\n      f\"{server.rejected} rejections, {first_pass:.2f}s\")\n\nstart = time.monotonic()\nanswers = [generate(p) for p in prompts]\nprint(f\"✅ pass 2: {len(answers)} answers, {server.served} API calls total \"\n      f\"(unchanged — all cached), {time.monotonic()-start:.3f}s\")\n\n\n✅ pass 1: 40 answers, 40 API calls, 0 rejections, 5.45s\n✅ pass 2: 40 answers, 40 API calls total (unchanged — all cached), 0.000s\n\n\nThe second pass costs zero quota and returns instantly. That is what makes iterating on downstream analysis cheap: you pay for the model’s answers once, then re-run the scoring, the confusion matrix, and the plots as often as you like.\n\nUsing it with a real backend\nDrop-in, in any course notebook. Everything downstream keeps calling generate_text(prompt) and never learns the difference:\nfrom google import genai\nfrom google.genai import types\n\nMODEL_ID = \"gemini-3.1-flash-lite\"      # 500/day, not 20 — check before long runs\nclient = genai.Client(api_key=_resolve_gemini_key())\ncfg = types.GenerateContentConfig(temperature=0, seed=42)\n\nraw = lambda p: client.models.generate_content(\n    model=MODEL_ID, contents=p, config=cfg).text\n\ngenerate_text = make_resilient(raw, model=MODEL_ID, store=load_cache())\nThen save the cache when you are done, so a runtime restart does not cost you the calls again:\nsave_cache(generate_text.store)\nColab’s built-in google.colab.ai backend has its own separate, undocumented throttling, but the same wrapper applies — pass model=\"gemini-2.5-flash\" to get conservative pacing.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html#when-the-wrapper-is-the-wrong-tool",
-    "href": "resources/extra/handling-rate-limits.html#when-the-wrapper-is-the-wrong-tool",
-    "title": "Handling rate limits without crashing",
-    "section": "8 · When the wrapper is the wrong tool",
-    "text": "8 · When the wrapper is the wrong tool\nRetry logic makes a program resilient to transient limits. It cannot manufacture quota, and reaching for it in the following situations wastes your time:\n\n\n\n\n\n\n\nSituation\nWhat to do instead\n\n\n\n\nDaily cap (RPD) hit\nSwitch model (gemini-3.1-flash-lite, 500/day), or resume tomorrow. No amount of waiting helps today.\n\n\nLong runs, repeatedly\nShrink the job: fewer items, or n_per_class sampling. Most course tasks need 25 items, not 250.\n\n\nIterating on a prompt\nTest on 3–5 sentences. Run the full gold set only when the prompt has stopped changing.\n\n\nNeed speed and volume\nEnable billing. The paid tier’s limits are far higher; the free tier is not meant for bulk work.\n\n\nTPM (token) limit, not RPM\nShorten the prompt — trim few-shot examples or truncate long texts. Pacing does not help if a single call is too large.\n\n\n\nThe general principle: a rate limit is a budget, not an obstacle. The wrapper spends the budget smoothly instead of all at once, and it stops you losing work you already paid for. Deciding how much to spend is still your job, and the cheapest call remains the one you never make.",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/extra/handling-rate-limits.html#see-also",
-    "href": "resources/extra/handling-rate-limits.html#see-also",
-    "title": "Handling rate limits without crashing",
-    "section": "See also",
-    "text": "See also\n\nGemini API key setup\nGoogle Colab setup\nCurrent free-tier limits: https://ai.dev/rate-limit",
-    "crumbs": [
-      "Resources",
-      "Extra Topics",
-      "Handling rate limits without crashing"
-    ]
-  },
-  {
-    "objectID": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop-deliberately-unguarded",
-    "href": "resources/tools/colab-ai-preflight.html#step-3-quota-ceiling-100-call-loop-deliberately-unguarded",
-    "title": "google.colab.ai pre-flight",
-    "section": "Step 3 — Quota ceiling (100-call loop, deliberately unguarded)",
-    "text": "Step 3 — Quota ceiling (100-call loop, deliberately unguarded)\nFire 100 real CEFR prompts as fast as they will go, with no pacing and no retry. That is the point: this step exists to find the ceiling, so guarding it would destroy the measurement.\nEach failure is caught and classified — per-minute vs per-day — because the two mean very different things for the course. A per-minute ceiling is a pacing problem students can work around; a per-day ceiling is a hard budget that caps how much lab work is possible per student per day.\nStep 3b then re-runs the same load with the guards, to confirm the workaround actually holds on this account.\n\n\nShow code\n#@title Step 3 — unguarded 100-call quota + latency probe\nN = 100\nitems = [gold[i % len(gold)] for i in range(N)]\n\nlatencies, preds, first_fail = [], [], None\nfails = {\"per_minute\": 0, \"per_day\": 0, \"other\": 0}\nt0 = time.time()\nfor i, item in enumerate(items, 1):\n    prompt = PROMPT.format(text=item[\"text\"])\n    c0 = time.time()\n    try:\n        reply = generate_raw(prompt)\n        latencies.append(time.time() - c0)\n        preds.append(_extract_level(reply))\n    except Exception as e:\n        kind = (\"per_day\" if looks_like_daily_quota(e)\n                else \"per_minute\" if looks_like_rate_limit(e) else \"other\")\n        fails[kind] += 1\n        if first_fail is None:\n            first_fail = (i, kind, type(e).__name__, str(e)[:160])\n        preds.append(\"ERR\")\n    if i % 20 == 0:\n        print(f\"  ...{i}/{N}  ({sum(fails.values())} failures so far)\")\nwall = time.time() - t0\n\nok = len(latencies)\nprint(f\"\\n{ok}/{N} succeeded. Failures: {fails}\")\nif latencies:\n    lat = sorted(latencies)\n    p95 = lat[min(len(lat)-1, int(0.95*len(lat)))]\n    print(f\"latency: median {statistics.median(lat):.2f}s  p95 {p95:.2f}s  \"\n          f\"min {lat[0]:.2f}s  max {lat[-1]:.2f}s\")\nprint(f\"total wall-time for {N} calls: {wall:.1f}s ({wall/N:.2f}s/call incl. overhead)\")\n\nif first_fail:\n    i, kind, name, msg = first_fail\n    print(f\"first failure at call {i}: [{kind}] {name}: {msg}\")\n    if kind == \"per_minute\":\n        observed_rpm = i - 1\n        print(f\"  -&gt; throttled after ~{observed_rpm} calls in \"\n              f\"{wall:.0f}s. Set ASSUMED_RPM at or below this and re-run Setup.\")\n    elif kind == \"per_day\":\n        print(\"  -&gt; DAILY cap. This is a hard budget: no pacing can widen it.\")\n        print(\"     Record the number and size the labs to fit it.\")\nelse:\n    print(f\"first failure: none — no throttling in {N} unguarded calls\")\nprint(\"parse rate (a valid CEFR label):\", f\"{sum(p in LEVELS for p in preds)}/{N}\")"
-  },
-  {
-    "objectID": "resources/tools/colab-ai-preflight.html#step-3b-does-pacing-backoff-actually-fix-it",
-    "href": "resources/tools/colab-ai-preflight.html#step-3b-does-pacing-backoff-actually-fix-it",
-    "title": "google.colab.ai pre-flight",
-    "section": "Step 3b — Does pacing + backoff actually fix it?",
-    "text": "Step 3b — Does pacing + backoff actually fix it?\nOnly meaningful if Step 3 hit a per-minute limit. Same 100 prompts, now through generate_guarded. What we want is 100/100 — that would confirm the guidance we give students (pace, back off, retry) genuinely works on this account rather than merely sounding sensible.\nThis is slow by construction: at the paced rate it takes roughly 100 x MIN_INTERVAL seconds. That wall-time is the finding — it tells you how long a full-gold-set lab run will really take.\nSkip it if Step 3 hit a per-day cap; there is nothing left to spend today.\n\n\nShow code\n#@title Step 3b — the same load, guarded\nRUN_STEP_3B = True   #@param {type:\"boolean\"}\nN_GUARDED   = 100    #@param {type:\"integer\"}\n\nif not RUN_STEP_3B:\n    print(\"skipped (RUN_STEP_3B = False)\")\nelif first_fail and first_fail[1] == \"per_day\":\n    print(\"skipped — Step 3 hit a DAILY cap; no quota left to test with today.\")\nelse:\n    g_items = [gold[i % len(gold)] for i in range(N_GUARDED)]\n    g_ok, g_fail, g_first_fail = 0, 0, None\n    t0 = time.time()\n    for i, item in enumerate(g_items, 1):\n        try:\n            _extract_level(generate_guarded(PROMPT.format(text=item[\"text\"])))\n            g_ok += 1\n        except Exception as e:\n            g_fail += 1\n            if g_first_fail is None:\n                g_first_fail = (i, type(e).__name__, str(e)[:160])\n        if i % 20 == 0:\n            print(f\"  ...{i}/{N_GUARDED}  ({g_fail} failures, \"\n                  f\"{time.time()-t0:.0f}s elapsed)\")\n    g_wall = time.time() - t0\n\n    print(f\"\\nGuarded: {g_ok}/{N_GUARDED} succeeded, {g_fail} failed, \"\n          f\"{g_wall:.0f}s ({g_wall/N_GUARDED:.1f}s/call).\")\n    if g_ok == N_GUARDED:\n        print(\"✅ Pacing + backoff fully absorbed the limit. Ship this wrapper in the\")\n        print(\"   day-notebooks and the observed cost is \"\n              f\"~{g_wall/60:.1f} min per 100 calls.\")\n    else:\n        print(f\"⚠️  Still failing ({g_first_fail}). MIN_INTERVAL is too aggressive —\")\n        print(\"   lower ASSUMED_RPM, re-run Setup, and try again.\")"
-  },
-  {
-    "objectID": "sessions/day1/session-01.html#agenda",
-    "href": "sessions/day1/session-01.html#agenda",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Agenda",
-    "text": "Agenda\n\nCourse overview & logistics — the 5-day arc, the mini-project, and how you’ll be graded.\nSelf-introductions — your background, research interests, and any prior programming exposure.\nLLMs as analysis tools — what they are, how they fit linguistic analysis, and the tasks we’ll tackle this week.\nNo-code chat demo — throw real language data at an LLM in the chat interface and read the output critically: what did it get right, and how would we ever know?\nBridge from LDA I — how today’s questions connect to frequency, concordancing, and the metrics you already know.\n\nNo laptop setup is needed today — the hands-on tooling starts in Session 2.",
-    "crumbs": [
-      "Sessions",
-      "Day 1 · Introduction & First Experience",
-      "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis"
-    ]
-  },
-  {
-    "objectID": "sessions/day1/session-02.html#agenda",
-    "href": "sessions/day1/session-02.html#agenda",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Agenda",
-    "text": "Agenda\nThis is a guided, run-along session using Part A of the Day 1 notebook. The LLM call is the spine — everything else is just enough Python to read and reshape what the model gives back.\n\nColab basics — run a cell, read an error — sign in, cells and the runtime, Shift+Enter, and how to read a red error.\nYour first LLM call — run the setup cell, then generate_text(...); change the prompt and re-run.\nWhat did the model hand back? — data types (str / list / dict) and [...] indexing, motivated by the reply.\nf-strings — drop a sentence into a prompt with f\"...{sentence}\".\n\nControl flow (for, if, functions) and text segmentation come next, in Session 3.",
-    "crumbs": [
-      "Sessions",
-      "Day 1 · Introduction & First Experience",
-      "Session 2: Colab Onboarding & Your First LLM Call"
-    ]
-  },
-  {
-    "objectID": "sessions/day1/session-03.html#agenda",
-    "href": "sessions/day1/session-03.html#agenda",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Agenda",
-    "text": "Agenda\nThis session picks up Part B of the Day 1 notebook, then forms project groups.\n\nFrom a document to sentences — segment a paragraph without a model (.split(\".\"), dot-methods) and with a model (spaCy sentencizer); see why sentence boundaries matter for annotation.\nRun the model over every sentence — a for loop + an if, wrapped into a reusable ask(...) function (the seed of the pipeline you’ll assemble later in the week).\nYour turn — the guided Python practice exercises with a self-check.\nMini-project setup — form groups and choose a track (see below).",
-    "crumbs": [
-      "Sessions",
-      "Day 1 · Introduction & First Experience",
-      "Session 3: Python Practice & Mini-Project Setup"
-    ]
-  },
-  {
-    "objectID": "sessions/day2/session-04.html#agenda",
-    "href": "sessions/day2/session-04.html#agenda",
-    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
-    "section": "Agenda",
-    "text": "Agenda\n\nWhy annotation? — from a linguistic construct to labelled data; the {id, text, label} shape.\nAnnotation schemes & coding guidelines — operationalizing a category so two people can apply it consistently.\nInter-annotator agreement (conceptual) — double annotation, percent agreement, and Cohen’s κ; why chance-corrected agreement matters.\nThe pipeline in context — how today’s gold standard feeds the prompt design and evaluation of the coming days (Eguchi & Kyle, 2024).\n\nThis is the conceptual grounding for the hands-on annotation in Session 5.",
-    "crumbs": [
-      "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 4: Annotation Principles & Inter-Annotator Agreement"
-    ]
-  },
-  {
-    "objectID": "sessions/day2/session-05.html#agenda",
-    "href": "sessions/day2/session-05.html#agenda",
-    "title": "Session 5: Hands-on — Gold-Standard Annotation & Agreement",
-    "section": "Agenda",
-    "text": "Agenda\nWorks through Part B of the Day 2 notebook — a Google Sheets annotation round-trip.\n\nDraw ~20 sentences from the provided pool for your track.\nAnnotate by hand in a Google Sheet (two annotator columns, so agreement falls out).\nMeasure agreement — percent agreement + Cohen’s κ — then adjudicate the disagreements to a final label.\nCompare to the published gold and import your set back as canonical JSON.\n\nThe Google Sheets round-trip (creating the sheet, annotating, reading it back) is the time-consuming part — pace yourself and don’t skip the adjudication step.",
-    "crumbs": [
-      "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
-    ]
-  },
-  {
-    "objectID": "sessions/day2/session-06.html#agenda",
-    "href": "sessions/day2/session-06.html#agenda",
-    "title": "Session 6: Gold Standards & Evaluation Metrics",
-    "section": "Agenda",
-    "text": "Agenda\nWorks through Part A of the Day 2 notebook, which runs on frozen predictions — no API key, no live model, so everyone’s numbers come out identical every run.\n\nWarm-up: what a gold file is — parse a {id, text, label} record, index into it, and meet with open(...) for files.\nLoad the gold standard and the frozen predictions the fixed prompt produced.\nRead the evaluation — precision / recall / F1 from a classification_report, then the confusion matrix.\nError analysis — which classes get confused, and what that implies.\n\nYou’ll run the model live yourself from Day 3 onward; today the focus is measuring quality, not producing it.",
-    "crumbs": [
-      "Sessions",
-      "Day 2 · Annotation, Gold Standards & Metrics",
-      "Session 6: Gold Standards & Evaluation Metrics"
-    ]
-  },
-  {
-    "objectID": "slides/slides-session-02.html#how-today-works",
-    "href": "slides/slides-session-02.html#how-today-works",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "How today works",
-    "text": "How today works\n\nSlides give the idea for each step (a minute or two).\nThen you do it in Colab — right away, while it’s fresh.\nType the code, don’t copy it. The little effort is the point: it’s how it sticks.\n\nTwo kinds of Colab moment:\n\n👀 Let’s follow — run the cell together and watch what happens.\n🧪 Let’s try — your turn: change something and re-run.\n\n\n\n\n\n\n\nTip\n\n\nErrors are normal and expected today. Reading them is a skill we practise, not a sign anything is broken."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#what-colab-is",
-    "href": "slides/slides-session-02.html#what-colab-is",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "What Colab is",
-    "text": "What Colab is\nColab = an online Python notebook Google offers (run code without installing anything).\nA notebook = a document of cells you run one at a time.\n\nText cells (like this slide) — notes.\nCode cells — Python that runs on a runtime (a free computer Google lends you in the cloud).\nRun a cell with Shift + Enter.\n\n\nNothing installs on your laptop. If the runtime disconnects, you just re-run the cells."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#why-this-matters",
-    "href": "slides/slides-session-02.html#why-this-matters",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Why this matters",
-    "text": "Why this matters\nThis is the room you’ll work in all week — every session runs here.\n\nAnd one thing will happen: you’ll hit a red error. That’s not failure — it’s Python telling you exactly what it couldn’t do. Read the last line to understand what you’ll need to do."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-try-in-colab",
-    "href": "slides/slides-session-02.html#lets-try-in-colab",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "🧪 Let’s try — in Colab",
-    "text": "🧪 Let’s try — in Colab\nYour turn:\n\nprint(...) a message of your own.\nThen misspell a word or variable on purpose and read the error you get.\nFix it and re-run.\n\nReading that last line is the whole skill — you’ll use it all week."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#the-whole-idea-in-one-line",
-    "href": "slides/slides-session-02.html#the-whole-idea-in-one-line",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "The whole idea, in one line",
-    "text": "The whole idea, in one line\nYou send the model text (a prompt); it sends text back (a reply).\nreply = generate_text(\"...your prompt...\")\n\n\ngenerate_text(...) does the call (we set it up for you — no API key today).\nreply = ... stores the answer in a variable named reply, so you can use it later."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#why-this-matters-1",
-    "href": "slides/slides-session-02.html#why-this-matters-1",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Why this matters",
-    "text": "Why this matters\nThis one call is the spine of the whole week.\n\nClassification, annotation, evaluation — everything we do is a variation on this: build a prompt, send it, read the reply. Get comfortable here and the rest is reshaping the text around it."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-try-in-colab-1",
-    "href": "slides/slides-session-02.html#lets-try-in-colab-1",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "🧪 Let’s try — in Colab",
-    "text": "🧪 Let’s try — in Colab\nYour turn — change the prompt and re-run (a different topic, or another language):\nreply = generate_text(\"In one sentence, what is a corpus?\")\nprint(reply)\nSame code, new answer. The prompt is just text you control."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#python-labels-every-value-with-a-type",
-    "href": "slides/slides-session-02.html#python-labels-every-value-with-a-type",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Python labels every value with a type",
-    "text": "Python labels every value with a type\nprint(type(reply))     # &lt;class 'str'&gt; — a string, i.e. text\nThe three types you need all week:\n\nstr — text, in quotes: \"A1\".\nlist — many items in order, in brackets: [\"a\", \"b\", \"c\"].\ndict — a labelled record, in braces: {\"label\": \"A1\"} (key → value)."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#getting-one-item-out-indexing",
-    "href": "slides/slides-session-02.html#getting-one-item-out-indexing",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Getting one item out — indexing",
-    "text": "Getting one item out — indexing\nUse [...] to reach inside:\n\na list by position (starts at 0): sentences[0]\na dict by key: record[\"label\"]"
-  },
-  {
-    "objectID": "slides/slides-session-02.html#why-this-matters-2",
-    "href": "slides/slides-session-02.html#why-this-matters-2",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Why this matters",
-    "text": "Why this matters\nEvery dataset this week is a list of dicts — sentences shaped like {\"id\": ..., \"text\": ..., \"label\": ...}. Reading them is just list + dict indexing."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-try-in-colab-2",
-    "href": "slides/slides-session-02.html#lets-try-in-colab-2",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "🧪 Let’s try — in Colab",
-    "text": "🧪 Let’s try — in Colab\nYour turn — build your own:\n\na list of three words, and\na dict with keys id, text, and label.\n\nPrint each and check the [ ] / { } match what you intended."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#putting-your-data-into-the-prompt",
-    "href": "slides/slides-session-02.html#putting-your-data-into-the-prompt",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Putting your data into the prompt",
-    "text": "Putting your data into the prompt\nAn f-string is a normal string with an f in front — anything in { } gets swapped for its value:\nsentence = \"Despite the rain, the game went ahead.\"\nprompt = f\"What CEFR level (A1-C2) is this sentence? {sentence}\"\n\n{sentence} becomes the actual sentence text inside the prompt — no copy-paste, no gluing strings together."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#why-this-matters-3",
-    "href": "slides/slides-session-02.html#why-this-matters-3",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Why this matters",
-    "text": "Why this matters\nThe prompt is now built from a variable.\n\nSwap in a different sentence and you get a different prompt — automatically. That’s the mechanism for running one prompt over many sentences, which is exactly what Session 3 turns into a loop."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-try-in-colab-3",
-    "href": "slides/slides-session-02.html#lets-try-in-colab-3",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "🧪 Let’s try — in Colab",
-    "text": "🧪 Let’s try — in Colab\nYour turn:\n\nChange the 0 in sentences[0] to 1 — what prints?\nAsk for record[\"text\"], then record[\"id\"].\n\nWatch what comes out each time."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#coming-up-in-session-3",
-    "href": "slides/slides-session-02.html#coming-up-in-session-3",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Coming up in Session 3",
-    "text": "Coming up in Session 3\nYou can call the model once. Next: run it over a whole list of sentences —\n\nturn a paragraph into sentences (segmentation),\nloop the call over each with for,\nand wrap it in a reusable function.\n\nThen form your project groups."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#same-rhythm-as-session-2",
-    "href": "slides/slides-session-03.html#same-rhythm-as-session-2",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Same rhythm as Session 2",
-    "text": "Same rhythm as Session 2\n\nSlide for the idea, then do it in Colab.\nType it, don’t copy it.\nIn Part A you called the model once. Today: run it over many sentences — the first taste of a real pipeline."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#the-problem",
-    "href": "slides/slides-session-03.html#the-problem",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "The problem",
-    "text": "The problem\nYour data arrives as paragraphs. But the unit we work with is the sentence. So we need to segment a paragraph into its sentences.\n\nThe obvious idea: cut on every full stop. To do that we call a method on the string — some_text.split(\".\") — using a dot (.) to run a built-in action on that value."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#why-this-matters",
-    "href": "slides/slides-session-03.html#why-this-matters",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Why this matters",
-    "text": "Why this matters\nThe naive rule looks fine — until it isn’t. Abbreviations and decimals contain dots that aren’t sentence ends.\n\nBad boundaries corrupt everything downstream. So it’s worth seeing the naive rule fail before we reach for a better tool."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#lets-try-naive-split",
-    "href": "slides/slides-session-03.html#lets-try-naive-split",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "🧪 Let’s try — naive split",
-    "text": "🧪 Let’s try — naive split\nparagraph = (\"Dr. Smith reviewed the data. The results were clear, \"\n             \"e.g. accuracy rose. Scores went from 3.14 to 9.\")\n\nnaive = paragraph.split(\".\")     # cut the string at every \".\"\nfor piece in naive:\n    print(repr(piece))\n\nLook at the mess: \"Dr\" (from Dr.), \"e\" and \"g\" (from e.g.), \"3\" and \"14\" (from 3.14) all split in the wrong places. Sentence boundaries are not just full stops."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#borrow-a-real-tool",
-    "href": "slides/slides-session-03.html#borrow-a-real-tool",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Borrow a real tool",
-    "text": "Borrow a real tool\nInstead of our own rule, we import a purpose-built library, spaCy:\nimport spacy\nnlp = spacy.blank(\"en\")          # a minimal English pipeline\nnlp.add_pipe(\"sentencizer\")      # a rule-based sentence splitter — no download\n\nimport spacy loads the toolbox.\nThe sentencizer knows abbreviations and decimals aren’t sentence ends."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#why-this-matters-1",
-    "href": "slides/slides-session-03.html#why-this-matters-1",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Why this matters",
-    "text": "Why this matters\n\n\n\n\n\n\nImportant\n\n\nOn Day 2, the sentence is the unit you annotate by hand and the unit you feed the LLM. Bad boundaries → bad gold data → misleading scores.\n\n\n\nGetting segmentation right is not a side quest — it’s the foundation the whole gold standard sits on."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#lets-try-the-sentencizer",
-    "href": "slides/slides-session-03.html#lets-try-the-sentencizer",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "🧪 Let’s try — the sentencizer",
-    "text": "🧪 Let’s try — the sentencizer\ndoc = nlp(paragraph)\nsentences = list(doc.sents)      # spaCy's sentences, as a list\nfor s in sentences:\n    print(repr(s.text))\n\nCompare to the naive split: Dr. Smith, e.g., and 3.14 stay intact. You now have a real list of sentences — exactly what step 3 loops over."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#three-small-pieces-of-python",
-    "href": "slides/slides-session-03.html#three-small-pieces-of-python",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Three small pieces of Python",
-    "text": "Three small pieces of Python\n\nfor — repeat the same steps for every item in a list.\nif — react to what comes back (e.g. flag an empty reply).\ndef — package the steps into a reusable function you can call by name.\n\n\nTogether: for each sentence → build a prompt → call the model → tidy the reply."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#why-this-matters-2",
-    "href": "slides/slides-session-03.html#why-this-matters-2",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Why this matters",
-    "text": "Why this matters\nThis little loop is the seed of the pipeline you’ll assemble later in the week.\n\nAnnotation, classification, evaluation — all of it is “run this call over a list and collect the results.” Write it once here; reuse the shape all week."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#lets-try-the-loop",
-    "href": "slides/slides-session-03.html#lets-try-the-loop",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "🧪 Let’s try — the loop",
-    "text": "🧪 Let’s try — the loop\nfor sentence in examples:\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    reply = generate_text(prompt).strip()\n    if reply == \"\":\n        reply = \"(no answer)\"\n    print(sentence, \"→\", reply)"
-  },
-  {
-    "objectID": "slides/slides-session-03.html#lets-try-wrap-it-in-a-function",
-    "href": "slides/slides-session-03.html#lets-try-wrap-it-in-a-function",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "🧪 Let’s try — wrap it in a function",
-    "text": "🧪 Let’s try — wrap it in a function\nSame three steps, packaged so you can reuse them:\ndef ask(sentence):\n    \"\"\"Ask the model for the CEFR level of one sentence; return its reply.\"\"\"\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    return generate_text(prompt).strip()\n\nprint(ask(\"Despite the rain, the game went ahead.\"))\nNow labelling a sentence is just ask(...)."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#guided-practice",
-    "href": "slides/slides-session-03.html#guided-practice",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Guided practice",
-    "text": "Guided practice\nIn the notebook, a few cells ask you to replace NotImplementedError with a line or two — e.g. long_words, count_labels. Then a self-check cell tells you if they pass.\n\n\n\n\n\n\n\nPython you’ll read but not write\n\n\nSome library cells use a list comprehension like [row[\"label\"] for row in rows] — read it as “the label of every row.” You never have to write these; just recognise them."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#mini-project-setup",
-    "href": "slides/slides-session-03.html#mini-project-setup",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Mini-project setup",
-    "text": "Mini-project setup\n\nForm a group — each needs at least one Linguistic Data Analysis I alumnus.\nPick one of the four tracks (datasets) — this is what you’ll annotate on Day 2.\nRecord your group and track where the instructor asks.\n\n\nChoosing now means you can start annotating right away on Day 2. See the Final Project page for the tracks."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#first-whats-a-variable",
-    "href": "slides/slides-session-02.html#first-whats-a-variable",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "First — what’s a variable?",
-    "text": "First — what’s a variable?\nA variable is a named box that stores a value.\nlevel = \"A1\"        # make a box called `level`, put \"A1\" in it\nprint(level)        # A1  — get the value back by its name\n\nname = value — the = means “store this”, not “equals”.\nOnce stored, reuse the value anywhere just by writing its name.\n\n\nNext we’ll store the model’s reply in a box called reply."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#a-few-more-types",
-    "href": "slides/slides-session-02.html#a-few-more-types",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "A few more types",
-    "text": "A few more types\nHere are some more frequent variable types.\n\nint — whole numbers: 42\nfloat — decimals: 3.14\nbool — True / False\ntuple — like a list, but fixed and can’t be changed: (1, 2)\nNone — “nothing here yet”\n\nNo need to memorise — when you see one, you’ll know it’s just another kind of value."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-follow-in-colab",
-    "href": "slides/slides-session-02.html#lets-follow-in-colab",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "👀 Let’s follow — in Colab",
-    "text": "👀 Let’s follow — in Colab\nRun your first cell:\nprint(\"Hello, Colab! You just ran your first cell.\")\n\nNow break it on purpose — a typo — and run it:\nprint(mesage)      # 'mesage' was never defined\nRead the last line of the red box:\nNameError: name 'mesage' is not defined\n→ error type · message · line number."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-1",
-    "href": "slides/slides-session-02.html#lets-follow-in-colab-1",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "👀 Let’s follow — in Colab",
-    "text": "👀 Let’s follow — in Colab\nRun the 📦 Setup cell first, then run this together:\nreply = generate_text(\"In one sentence, what is applied linguistics?\")\nprint(reply)\nThe model’s answer prints out. You just called an LLM from Python."
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-2",
-    "href": "slides/slides-session-02.html#lets-follow-in-colab-2",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "👀 Let’s follow — in Colab",
-    "text": "👀 Let’s follow — in Colab\nRun this together — build a list of sentences and a dict record, then print each whole:\nsentences = [\"The cat sat on the mat.\",          # a list of strings\n             \"Despite the rain, the game went ahead.\"]\nrecord = {\"id\": 1, \"text\": \"The cat sat on the mat.\", \"label\": \"A1\"}   # a dict\n\nprint(sentences)     # the whole list  — note the [ ... ]\nprint(record)        # the whole dict  — note the { key: value ... }"
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-3",
-    "href": "slides/slides-session-02.html#lets-follow-in-colab-3",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "👀 Let’s follow — in Colab",
-    "text": "👀 Let’s follow — in Colab\nReuse the sentences and record you just built — now reach inside them:\nprint(\"first sentence:\", sentences[0])       # list — index by position\nprint(\"its gold label:\", record[\"label\"])    # dict — index by key"
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-follow-in-colab-4",
-    "href": "slides/slides-session-02.html#lets-follow-in-colab-4",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "👀 Let’s follow — in Colab",
-    "text": "👀 Let’s follow — in Colab\nRun this together — build a prompt from a variable, then send it:\nsentence = \"Despite the rain, the game went ahead.\"\nprompt = f\"What CEFR level (A1-C2) is this sentence? {sentence}\"\nreply = generate_text(prompt)\nprint(reply)"
-  },
-  {
-    "objectID": "slides/slides-session-02.html#lets-try-in-colab-4",
-    "href": "slides/slides-session-02.html#lets-try-in-colab-4",
-    "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "🧪 Let’s try — in Colab",
-    "text": "🧪 Let’s try — in Colab\nChange sentence to one of your own and re-run.\n\nYou built a prompt from data and sent it — the core move of the whole course."
   }
 ]

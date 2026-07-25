@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Day 1 · Python basics &amp; your first LLM call – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Day 1 · Your first LLM call &amp; reading its data – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -167,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day1_python_and_first_llm.html">Day 1 · Python basics &amp; your first LLM call</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day1_python_and_first_llm.html">Day 1 · Your first LLM call &amp; reading its data</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -211,13 +211,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sessions/day1/session-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 2: Linguistic Analyses &amp; LLM Fundamentals</span></a>
+ <span class="menu-text">Session 2: Colab Onboarding &amp; Your First LLM Call</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sessions/day1/session-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 3: Colab Onboarding &amp; Mini-Project Setup</span></a>
+ <span class="menu-text">Session 3: Python Practice &amp; Mini-Project Setup</span></a>
   </div>
 </li>
       </ul>
@@ -350,7 +350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../notebooks/day1_python_and_first_llm.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Day 1 · Python basics &amp; your first LLM call</span></a>
+ <span class="menu-text">Day 1 · Your first LLM call &amp; reading its data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -390,16 +390,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link active" data-scroll-target="#how-to-use-this-notebook">How to use this notebook</a></li>
-  <li><a href="#part-a-tutorial-a-15-minute-python-primer" id="toc-part-a-tutorial-a-15-minute-python-primer" class="nav-link" data-scroll-target="#part-a-tutorial-a-15-minute-python-primer">Part A · Tutorial — a 15-minute Python primer</a>
+  <li><a href="#part-a-tutorial-your-first-llm-call-and-reading-its-answer" id="toc-part-a-tutorial-your-first-llm-call-and-reading-its-answer" class="nav-link" data-scroll-target="#part-a-tutorial-your-first-llm-call-and-reading-its-answer">Part A · Tutorial — your first LLM call, and reading its answer</a>
   <ul class="collapse">
-  <li><a href="#variables-data-types" id="toc-variables-data-types" class="nav-link" data-scroll-target="#variables-data-types">1. Variables &amp; data types</a></li>
-  <li><a href="#if-statements-make-a-decision" id="toc-if-statements-make-a-decision" class="nav-link" data-scroll-target="#if-statements-make-a-decision">2. <code>if</code> statements — make a decision</a></li>
-  <li><a href="#for-loops-do-something-to-every-item" id="toc-for-loops-do-something-to-every-item" class="nav-link" data-scroll-target="#for-loops-do-something-to-every-item">3. <code>for</code> loops — do something to every item</a></li>
-  <li><a href="#functions-name-a-reusable-piece-of-code" id="toc-functions-name-a-reusable-piece-of-code" class="nav-link" data-scroll-target="#functions-name-a-reusable-piece-of-code">4. Functions — name a reusable piece of code</a></li>
-  <li><a href="#basic-input-output" id="toc-basic-input-output" class="nav-link" data-scroll-target="#basic-input-output">5. Basic input / output</a></li>
-  <li><a href="#meet-the-model-your-first-llm-call" id="toc-meet-the-model-your-first-llm-call" class="nav-link" data-scroll-target="#meet-the-model-your-first-llm-call">6. Meet the model — your first LLM call</a></li>
+  <li><a href="#getting-your-bearings-in-colab" id="toc-getting-your-bearings-in-colab" class="nav-link" data-scroll-target="#getting-your-bearings-in-colab">1. Getting your bearings in Colab</a></li>
+  <li><a href="#your-first-llm-call" id="toc-your-first-llm-call" class="nav-link" data-scroll-target="#your-first-llm-call">2. Your first LLM call</a></li>
+  <li><a href="#what-did-the-model-hand-back-python-data-types" id="toc-what-did-the-model-hand-back-python-data-types" class="nav-link" data-scroll-target="#what-did-the-model-hand-back-python-data-types">3. What did the model hand back? — Python data types</a></li>
+  <li><a href="#f-strings-put-your-data-into-a-prompt" id="toc-f-strings-put-your-data-into-a-prompt" class="nav-link" data-scroll-target="#f-strings-put-your-data-into-a-prompt">4. f-strings — put your data <em>into</em> a prompt</a></li>
   </ul></li>
-  <li><a href="#part-b-corpus-lab-python-practice" id="toc-part-b-corpus-lab-python-practice" class="nav-link" data-scroll-target="#part-b-corpus-lab-python-practice">Part B · Corpus Lab — Python practice</a></li>
+  <li><a href="#part-b-corpus-lab-from-text-to-sentences-then-practice" id="toc-part-b-corpus-lab-from-text-to-sentences-then-practice" class="nav-link" data-scroll-target="#part-b-corpus-lab-from-text-to-sentences-then-practice">Part B · Corpus Lab — from text to sentences, then practice</a>
+  <ul class="collapse">
+  <li><a href="#splitting-text-into-sentences-without-a-model" id="toc-splitting-text-into-sentences-without-a-model" class="nav-link" data-scroll-target="#splitting-text-into-sentences-without-a-model">1. Splitting text into sentences — <em>without</em> a model</a></li>
+  <li><a href="#splitting-text-into-sentences-with-a-model" id="toc-splitting-text-into-sentences-with-a-model" class="nav-link" data-scroll-target="#splitting-text-into-sentences-with-a-model">2. Splitting text into sentences — <em>with</em> a model</a></li>
+  <li><a href="#run-the-model-over-every-sentence-for-if-and-a-function" id="toc-run-the-model-over-every-sentence-for-if-and-a-function" class="nav-link" data-scroll-target="#run-the-model-over-every-sentence-for-if-and-a-function">3. Run the model over every sentence — <code>for</code>, <code>if</code>, and a function</a></li>
+  <li><a href="#your-turn-python-practice" id="toc-your-turn-python-practice" class="nav-link" data-scroll-target="#your-turn-python-practice">4. Your turn — Python practice</a></li>
+  <li><a href="#python-youll-see-but-wont-have-to-write" id="toc-python-youll-see-but-wont-have-to-write" class="nav-link" data-scroll-target="#python-youll-see-but-wont-have-to-write">Python you’ll <em>see</em> but won’t have to write</a></li>
+  </ul></li>
+  <li><a href="#mini-project-form-your-group-pick-a-track" id="toc-mini-project-form-your-group-pick-a-track" class="nav-link" data-scroll-target="#mini-project-form-your-group-pick-a-track">Mini-project — form your group &amp; pick a track</a></li>
   <li><a href="#before-you-submit" id="toc-before-you-submit" class="nav-link" data-scroll-target="#before-you-submit">✅ Before you submit</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/notebooks/day1_python_and_first_llm.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -407,9 +413,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day1_python_and_first_llm.html">Day 1 · Python basics &amp; your first LLM call</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day1_python_and_first_llm.html">Day 1 · Your first LLM call &amp; reading its data</a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Day 1 · Python basics &amp; your first LLM call</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Day 1 · Your first LLM call &amp; reading its data</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
 </div>
 
 
@@ -431,258 +437,315 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="how-to-use-this-notebook">How to use this notebook</h3>
 <p>This is your <strong>single submission for the day</strong>. It has two parts:</p>
 <ul>
-<li><strong>Part A · Tutorial</strong> — a hands-on Python primer, then your first call to a language model.</li>
-<li><strong>Part B · Corpus Lab</strong> — short Python exercises you complete and self-check.</li>
+<li><strong>Part A · Tutorial</strong> — call a language model, then learn to read the data it hands back.</li>
+<li><strong>Part B · Corpus Lab</strong> — segment text into sentences, run the model over a list, then practice the basics.</li>
 </ul>
 <p>You only edit the cells marked <strong>✏️ YOU EDIT</strong>. Cells marked <strong>🔧 Library cell</strong> are pre-written — run them, don’t change them.</p>
 <p>➡️ Work top to bottom. When you’re done, <strong>Runtime → Run all</strong>, then <strong>File → Download → Download <code>.ipynb</code></strong> and submit that file.</p>
 </section>
-<section id="part-a-tutorial-a-15-minute-python-primer" class="level2">
-<h2 class="anchored" data-anchor-id="part-a-tutorial-a-15-minute-python-primer">Part A · Tutorial — a 15-minute Python primer</h2>
-<p>No prior Python needed. Run each cell, read the output, then change a value and re-run to see what happens. Everything this week is built from these few ideas.</p>
-<section id="variables-data-types" class="level3">
-<h3 class="anchored" data-anchor-id="variables-data-types">1. Variables &amp; data types</h3>
-<p>A <strong>variable</strong> is a name for a value. Python’s core types you’ll use all week: <strong>string</strong> (<code>str</code>, text), <strong>integer</strong> (<code>int</code>) and <strong>float</strong> (decimal number), <strong>list</strong> (an ordered sequence), and <strong>dictionary</strong> (<code>dict</code>, key → value pairs).</p>
+<section id="part-a-tutorial-your-first-llm-call-and-reading-its-answer" class="level2">
+<h2 class="anchored" data-anchor-id="part-a-tutorial-your-first-llm-call-and-reading-its-answer">Part A · Tutorial — your first LLM call, and reading its answer</h2>
+<p>No prior Python needed. The star of Part A is a single call to a language model; everything else — variables, data types, f-strings — is just enough Python to read and reshape what the model gives you back. Run each cell, read the output, then change a value and re-run to see what happens.</p>
+<section id="getting-your-bearings-in-colab" class="level3">
+<h3 class="anchored" data-anchor-id="getting-your-bearings-in-colab">1. Getting your bearings in Colab</h3>
+<p>This page is a <strong>Colab notebook</strong>: a stack of <strong>cells</strong> you run top to bottom. A code cell runs when you press <strong>Shift+Enter</strong> (or click ▶). The first run wakes up a <strong>runtime</strong> — a temporary computer in the cloud that remembers your variables until you close the tab. Run the cell below to prove it works.</p>
 <div id="cell-4" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sentence <span class="op">=</span> <span class="st">"The cat sat on the mat."</span>   <span class="co"># str  — text, in quotes</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>word_count <span class="op">=</span> <span class="dv">6</span>                          <span class="co"># int  — whole number</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> <span class="fl">4.5</span>                             <span class="co"># float — decimal number</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>levels <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>]            <span class="co"># list — ordered, square brackets</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>item <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: sentence, <span class="st">"label"</span>: <span class="st">"A1"</span>}  <span class="co"># dict — key: value</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(sentence), <span class="bu">type</span>(word_count), <span class="bu">type</span>(score))</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"levels[0] ="</span>, levels[<span class="dv">0</span>])         <span class="co"># lists are indexed from 0</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"item['label'] ="</span>, item[<span class="st">"label"</span>])  <span class="co"># look up a dict value by its key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hello, Colab! You just ran your first cell."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>When a cell breaks — read the error.</strong> Sooner or later a cell turns red. Don’t panic: Python tells you what went wrong on the <strong>last line</strong>. For example, running <code>print(mesage)</code> (a typo for <code>message</code>) prints:</p>
+<pre><code>NameError: name 'mesage' is not defined</code></pre>
+<p>Read it back to front: the <strong>error type</strong> (<code>NameError</code>), the <strong>message</strong> (<code>'mesage' is not defined</code>), and the <strong>line</strong> it happened on. Nearly every early error is a typo or a cell you haven’t run yet. Fix the typo, re-run, move on.</p>
+</section>
+<section id="your-first-llm-call" class="level3">
+<h3 class="anchored" data-anchor-id="your-first-llm-call">2. Your first LLM call</h3>
+<p>Run the setup cell (it loads the LLM backend — in Colab that’s the free built-in Gemini, no key needed), then send the model a prompt with <code>generate_text(...)</code>. The answer comes back as text, which we store in a <strong>variable</strong> called <code>reply</code>.</p>
+<div id="cell-7" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Imports + the LLM backend. No pip install needed in Colab.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json, re, time, urllib.request, os</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, seaborn <span class="im">as</span> sns, matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>MODEL_ID <span class="op">=</span> <span class="st">"gemini-3.1-flash-lite"</span>   <span class="co"># pinned model for the reproducible (API) backend</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _resolve_gemini_key():</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env."""</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata      <span class="co"># only exists in Colab</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> userdata.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> key:</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> key</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span>                                    <span class="co"># not in Colab, or secret not set</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.environ.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _make_api_backend(key):</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reproducible backend: Gemini API with temperature=0 + a fixed seed."""</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google <span class="im">import</span> genai</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google.genai <span class="im">import</span> types</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> genai.Client(api_key<span class="op">=</span>key)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    cfg <span class="op">=</span> types.GenerateContentConfig(temperature<span class="op">=</span><span class="dv">0</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="kw">lambda</span> p: client.models.generate_content(</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                model<span class="op">=</span>MODEL_ID, contents<span class="op">=</span>p, config<span class="op">=</span>cfg).text,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Gemini API (</span><span class="sc">{</span>MODEL_ID<span class="sc">}</span><span class="ss">, temperature=0, seed=42)"</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- keeps us from calling the model faster than the free tier allows ----------</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co"># (explained step by step in Day 3, right after this cell — the short version:</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#  wait a bit between calls, and if we still get told to slow down, wait longer</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">#  and try again, unless the message says we are out of quota for the whole day.)</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _looks_like_rate_limit(error):</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="bu">str</span>(error).lower()</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">any</span>(s <span class="kw">in</span> text <span class="cf">for</span> s <span class="kw">in</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>               [<span class="st">"429"</span>, <span class="st">"resource_exhausted"</span>, <span class="st">"rate limit"</span>, <span class="st">"quota"</span>, <span class="st">"too many requests"</span>])</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _looks_like_daily_quota(error):</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="bu">str</span>(error).lower()</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"per day"</span> <span class="kw">in</span> text <span class="kw">or</span> <span class="st">"perday"</span> <span class="kw">in</span> text.replace(<span class="st">" "</span>, <span class="st">""</span>)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _suggested_delay(error, fallback):</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.search(<span class="vs">r"retry in </span><span class="kw">(</span><span class="pp">[0-9]</span><span class="op">+</span>(?:<span class="ch">\.</span><span class="pp">[0-9]</span><span class="op">+</span>)<span class="op">?</span><span class="kw">)</span><span class="vs">s"</span>, <span class="bu">str</span>(error).lower())</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">float</span>(m.group(<span class="dv">1</span>)) <span class="op">+</span> <span class="fl">1.0</span> <span class="cf">if</span> m <span class="cf">else</span> fallback</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>_last_call_time <span class="op">=</span> <span class="fl">0.0</span>   <span class="co"># generate_text remembers &amp; updates this with `global`</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text(prompt, max_retries<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> _last_call_time</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(max_retries <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>        wait <span class="op">=</span> _min_interval <span class="op">-</span> (time.monotonic() <span class="op">-</span> _last_call_time)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>            time.sleep(wait)</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>            _last_call_time <span class="op">=</span> time.monotonic()</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> _raw_generate_text(prompt)</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> error:</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> _looks_like_rate_limit(error):</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span>                                   <span class="co"># a real bug — don't hide it</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> _looks_like_daily_quota(error):</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span> <span class="pp">RuntimeError</span>(</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Daily quota used up for today — waiting won't help until it "</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"resets. Come back tomorrow, or ask your instructor."</span>) <span class="im">from</span> error</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> attempt <span class="op">==</span> max_retries:</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  (rate limited — waiting before trying again, attempt </span><span class="sc">{</span>attempt<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>            time.sleep(_suggested_delay(error, _min_interval <span class="op">*</span> (attempt <span class="op">+</span> <span class="dv">2</span>)))</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"Still rate-limited after several tries."</span>)</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Prefer the API key when set (reproducible); else fall back to colab.ai (demo).</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>_key <span class="op">=</span> _resolve_gemini_key()</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> _key:</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    _raw_generate_text, _backend <span class="op">=</span> _make_api_backend(_key)</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    _min_interval <span class="op">=</span> <span class="fl">4.4</span>     <span class="co"># keeps us under gemini-3.1-flash-lite's 15-requests/minute cap</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> ai            <span class="co"># Colab's built-in Gemini — no key</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>        _raw_generate_text, _backend <span class="op">=</span> (<span class="kw">lambda</span> p: ai.generate_text(p)), <span class="st">"Colab Gemini (demo, non-reproducible)"</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>        _min_interval <span class="op">=</span> <span class="fl">13.2</span>   <span class="co"># colab.ai publishes no rate limit — pace conservatively</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>            <span class="st">"No LLM backend found. Run this notebook in Google Colab (free built-in "</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets "</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>            <span class="st">"panel, or as an environment variable when running locally. "</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>            <span class="st">"See resources/tools/gemini-api-key.md."</span>)</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done. LLM backend: </span><span class="sc">{</span>_backend<span class="sc">}</span><span class="ss">. scikit-learn ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>✏️ YOU EDIT</strong> — change the prompt text and re-run. The prompt is just text you send; the reply is just text you get back.</p>
+<div id="cell-9" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="if-statements-make-a-decision" class="level3">
-<h3 class="anchored" data-anchor-id="if-statements-make-a-decision">2. <code>if</code> statements — make a decision</h3>
-<p>Run one branch or another depending on a condition. Indentation (4 spaces) is how Python groups the lines that belong to each branch.</p>
-<div id="cell-6" class="cell">
+<section id="what-did-the-model-hand-back-python-data-types" class="level3">
+<h3 class="anchored" data-anchor-id="what-did-the-model-hand-back-python-data-types">3. What did the model hand back? — Python data types</h3>
+<p>Every value in Python has a <strong>type</strong>. Ask what type <code>reply</code> is:</p>
+<div id="cell-11" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> <span class="fl">4.5</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> score <span class="op">&lt;</span> <span class="dv">4</span>:</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    band <span class="op">=</span> <span class="st">"Low"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> score <span class="op">&lt;</span> <span class="dv">7</span>:</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    band <span class="op">=</span> <span class="st">"Mid"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    band <span class="op">=</span> <span class="st">"High"</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"score"</span>, score, <span class="st">"→ band"</span>, band)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(reply))     <span class="co"># &lt;class 'str'&gt; — a string, i.e. text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>The three types you’ll use all week:</p>
+<ul>
+<li><strong><code>str</code></strong> — text, in quotes (like <code>reply</code>).</li>
+<li><strong><code>list</code></strong> — an ordered sequence, in square brackets. Several sentences, say.</li>
+<li><strong><code>dict</code></strong> — a labelled record, in curly braces: <code>key → value</code> pairs. This is the <code>{id, text, label}</code> shape every dataset this week uses.</li>
+</ul>
+<p>Build one of each, then reach inside them with <strong><code>[...]</code></strong> — lists by position (counting from 0), dicts by key.</p>
+<div id="cell-13" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sentences <span class="op">=</span> [<span class="st">"The cat sat on the mat."</span>,          <span class="co"># a list of strings</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Nevertheless, the findings were inconclusive."</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>record <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: sentences[<span class="dv">0</span>], <span class="st">"label"</span>: <span class="st">"A1"</span>}   <span class="co"># a dict</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"how many sentences:"</span>, <span class="bu">len</span>(sentences))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first sentence:"</span>, sentences[<span class="dv">0</span>])       <span class="co"># list — index by position (from 0)</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"its gold label:"</span>, record[<span class="st">"label"</span>])   <span class="co"># dict — index by key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="for-loops-do-something-to-every-item" class="level3">
-<h3 class="anchored" data-anchor-id="for-loops-do-something-to-every-item">3. <code>for</code> loops — do something to every item</h3>
-<p>Loop over a list, or over a dictionary’s items. This is exactly how we’ll process every sentence in a dataset.</p>
-<div id="cell-8" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> level <span class="kw">in</span> levels:</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"level:"</span>, level)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"---"</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> item.items():</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(key, <span class="st">"→"</span>, value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="functions-name-a-reusable-piece-of-code" class="level3">
-<h3 class="anchored" data-anchor-id="functions-name-a-reusable-piece-of-code">4. Functions — name a reusable piece of code</h3>
-<p>A <strong>function</strong> takes inputs (arguments) and <code>return</code>s a result. Define once, call as often as you like.</p>
-<div id="cell-10" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> band_of(score):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Turn a numeric score into a Low/Mid/High band."""</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> score <span class="op">&lt;</span> <span class="dv">4</span>:</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"Low"</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> score <span class="op">&lt;</span> <span class="dv">7</span>:</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"Mid"</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"High"</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(band_of(<span class="dv">2</span>), band_of(<span class="dv">5</span>), band_of(<span class="dv">9</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="basic-input-output" class="level3">
-<h3 class="anchored" data-anchor-id="basic-input-output">5. Basic input / output</h3>
-<p><code>print(...)</code> shows a value. To read data, we mostly parse <strong>JSON</strong> — the <code>{id, text, label}</code> shape you’ll see all week. (<code>input()</code> also reads from the keyboard, but it pauses <em>Run all</em>, so we avoid it here.)</p>
-<div id="cell-12" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="st">'[{"id": 1, "text": "Hello.", "label": "A1"}, {"id": 2, "text": "Nevertheless, the findings were inconclusive.", "label": "C1"}]'</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> json.loads(raw)          <span class="co"># JSON text → Python list of dicts</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"number of items:"</span>, <span class="bu">len</span>(data))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> data:</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(row[<span class="st">"id"</span>], row[<span class="st">"label"</span>], <span class="st">"|"</span>, row[<span class="st">"text"</span>])</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># (Reading from the keyboard — left commented so Run all does not pause:)</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># name = input("Your name: ")</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># print("Hello,", name)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="meet-the-model-your-first-llm-call" class="level3">
-<h3 class="anchored" data-anchor-id="meet-the-model-your-first-llm-call">6. Meet the model — your first LLM call</h3>
-<p>Run the setup cell (loads the LLM backend — in Colab that’s the free built-in Gemini, no key needed), then send the model a prompt with <code>generate_text(...)</code>.</p>
-<div id="cell-14" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Imports + the LLM backend. No pip install needed in Colab.</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json, re, time, urllib.request, os</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, seaborn <span class="im">as</span> sns, matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>MODEL_ID <span class="op">=</span> <span class="st">"gemini-3.1-flash-lite"</span>   <span class="co"># pinned model for the reproducible (API) backend</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _resolve_gemini_key():</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env."""</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata      <span class="co"># only exists in Colab</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> userdata.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> key:</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> key</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span>                                    <span class="co"># not in Colab, or secret not set</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.environ.get(<span class="st">"GEMINI_API_KEY"</span>)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _make_api_backend(key):</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reproducible backend: Gemini API with temperature=0 + a fixed seed."""</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google <span class="im">import</span> genai</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google.genai <span class="im">import</span> types</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> genai.Client(api_key<span class="op">=</span>key)</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    cfg <span class="op">=</span> types.GenerateContentConfig(temperature<span class="op">=</span><span class="dv">0</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="kw">lambda</span> p: client.models.generate_content(</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>                model<span class="op">=</span>MODEL_ID, contents<span class="op">=</span>p, config<span class="op">=</span>cfg).text,</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Gemini API (</span><span class="sc">{</span>MODEL_ID<span class="sc">}</span><span class="ss">, temperature=0, seed=42)"</span>)</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- keeps us from calling the model faster than the free tier allows ----------</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co"># (explained step by step in Day 3, right after this cell — the short version:</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#  wait a bit between calls, and if we still get told to slow down, wait longer</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#  and try again, unless the message says we are out of quota for the whole day.)</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _looks_like_rate_limit(error):</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="bu">str</span>(error).lower()</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">any</span>(s <span class="kw">in</span> text <span class="cf">for</span> s <span class="kw">in</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>               [<span class="st">"429"</span>, <span class="st">"resource_exhausted"</span>, <span class="st">"rate limit"</span>, <span class="st">"quota"</span>, <span class="st">"too many requests"</span>])</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _looks_like_daily_quota(error):</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="bu">str</span>(error).lower()</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"per day"</span> <span class="kw">in</span> text <span class="kw">or</span> <span class="st">"perday"</span> <span class="kw">in</span> text.replace(<span class="st">" "</span>, <span class="st">""</span>)</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _suggested_delay(error, fallback):</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.search(<span class="vs">r"retry in </span><span class="kw">(</span><span class="pp">[0-9]</span><span class="op">+</span>(?:<span class="ch">\.</span><span class="pp">[0-9]</span><span class="op">+</span>)<span class="op">?</span><span class="kw">)</span><span class="vs">s"</span>, <span class="bu">str</span>(error).lower())</span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">float</span>(m.group(<span class="dv">1</span>)) <span class="op">+</span> <span class="fl">1.0</span> <span class="cf">if</span> m <span class="cf">else</span> fallback</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>_last_call_time <span class="op">=</span> <span class="fl">0.0</span>   <span class="co"># generate_text remembers &amp; updates this with `global`</span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text(prompt, max_retries<span class="op">=</span><span class="dv">5</span>):</span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> _last_call_time</span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(max_retries <span class="op">+</span> <span class="dv">1</span>):</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        wait <span class="op">=</span> _min_interval <span class="op">-</span> (time.monotonic() <span class="op">-</span> _last_call_time)</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>            time.sleep(wait)</span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>            _last_call_time <span class="op">=</span> time.monotonic()</span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> _raw_generate_text(prompt)</span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> error:</span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> _looks_like_rate_limit(error):</span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span>                                   <span class="co"># a real bug — don't hide it</span></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> _looks_like_daily_quota(error):</span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span> <span class="pp">RuntimeError</span>(</span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Daily quota used up for today — waiting won't help until it "</span></span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"resets. Come back tomorrow, or ask your instructor."</span>) <span class="im">from</span> error</span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> attempt <span class="op">==</span> max_retries:</span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span></span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  (rate limited — waiting before trying again, attempt </span><span class="sc">{</span>attempt<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">)"</span>)</span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>            time.sleep(_suggested_delay(error, _min_interval <span class="op">*</span> (attempt <span class="op">+</span> <span class="dv">2</span>)))</span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"Still rate-limited after several tries."</span>)</span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Prefer the API key when set (reproducible); else fall back to colab.ai (demo).</span></span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>_key <span class="op">=</span> _resolve_gemini_key()</span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> _key:</span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>    _raw_generate_text, _backend <span class="op">=</span> _make_api_backend(_key)</span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>    _min_interval <span class="op">=</span> <span class="fl">4.4</span>     <span class="co"># keeps us under gemini-3.1-flash-lite's 15-requests/minute cap</span></span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> ai            <span class="co"># Colab's built-in Gemini — no key</span></span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>        _raw_generate_text, _backend <span class="op">=</span> (<span class="kw">lambda</span> p: ai.generate_text(p)), <span class="st">"Colab Gemini (demo, non-reproducible)"</span></span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>        _min_interval <span class="op">=</span> <span class="fl">13.2</span>   <span class="co"># colab.ai publishes no rate limit — pace conservatively</span></span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
-<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(</span>
-<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>            <span class="st">"No LLM backend found. Run this notebook in Google Colab (free built-in "</span></span>
-<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets "</span></span>
-<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>            <span class="st">"panel, or as an environment variable when running locally. "</span></span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>            <span class="st">"See resources/tools/gemini-api-key.md."</span>)</span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done. LLM backend: </span><span class="sc">{</span>_backend<span class="sc">}</span><span class="ss">. scikit-learn ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<p><strong>✏️ YOU EDIT</strong> — change the prompt and re-run.</p>
+<section id="f-strings-put-your-data-into-a-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="f-strings-put-your-data-into-a-prompt">4. f-strings — put your data <em>into</em> a prompt</h3>
+<p>An <strong>f-string</strong> (<code>f"..."</code>) drops a variable straight into a piece of text with <code>{curly braces}</code>. That’s how you build a prompt <em>about</em> a specific sentence — the trick we’ll use to run one prompt over a whole dataset later.</p>
+<p><strong>✏️ YOU EDIT</strong> — change the sentence and re-run.</p>
 <div id="cell-16" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sentence <span class="op">=</span> <span class="st">"Nevertheless, the findings were inconclusive."</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Prompt sent:"</span>, prompt)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(prompt)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model says:"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 </section>
-<section id="part-b-corpus-lab-python-practice" class="level2">
-<h2 class="anchored" data-anchor-id="part-b-corpus-lab-python-practice">Part B · Corpus Lab — Python practice</h2>
-<p>Fill in each function so it does what its docstring says (replace the <code>raise NotImplementedError(...)</code> line). Then run the <strong>self-check</strong> cell at the bottom until every line prints ✅. No grader needed — the checks <em>are</em> your grader.</p>
-<div id="cell-18" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — replace each NotImplementedError with your code.</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> label_of(item):</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the value stored under the key "label" in the dict `item`.</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: label_of({"id": 1, "text": "Hi", "label": "A1"}) -&gt; "A1".</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return item['label']."</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> long_words(words, n):</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return a LIST of the words whose length is greater than n.</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: long_words(["a", "cat", "elephant"], 3) -&gt; ["elephant"].</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: build a result list; loop with `for w in words:`; keep w if len(w) &gt; n.</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the words longer than n characters."</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_labels(items):</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Given a list of {id, text, label} dicts, return a dict mapping each</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">    label to how many times it appears.</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: count_labels([{"label":"A1"}, {"label":"A1"}, {"label":"B1"}])</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">             -&gt; {"A1": 2, "B1": 1}.</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: start with counts = {}; for each item, add 1 to counts[label]</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       (use counts.get(label, 0) + 1 so the first time starts at 0).</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Count how many items carry each label."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
+<section id="part-b-corpus-lab-from-text-to-sentences-then-practice" class="level2">
+<h2 class="anchored" data-anchor-id="part-b-corpus-lab-from-text-to-sentences-then-practice">Part B · Corpus Lab — from text to sentences, then practice</h2>
+<p>In Part A you called the model once. Here you’ll turn a paragraph into individual <strong>sentences</strong> (the unit you’ll annotate on Day 2), run the model over all of them, and then practice the basics on your own. Cells marked <strong>✏️ YOU EDIT</strong> are yours to change; run the <strong>self-check</strong> at the end until every line prints ✅.</p>
+<section id="splitting-text-into-sentences-without-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="splitting-text-into-sentences-without-a-model">1. Splitting text into sentences — <em>without</em> a model</h3>
+<p>Text arrives as one long string. To analyse it sentence by sentence you first have to <strong>segment</strong> it. The obvious idea: split on the full stop. To do that we call a <strong>method</strong> on the string — <code>some_text.split(".")</code> — using a dot (<code>.</code>) to run a built-in action on a value.</p>
 <div id="cell-19" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check — run me { display-mode: "form" }</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> [{<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"Hi."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"text"</span>: <span class="st">"Hello there."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"text"</span>: <span class="st">"Nevertheless..."</span>, <span class="st">"label"</span>: <span class="st">"C1"</span>}]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>checks <span class="op">=</span> [</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"label_of"</span>, label_of(sample[<span class="dv">0</span>]) <span class="op">==</span> <span class="st">"A1"</span>),</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"long_words"</span>, long_words([<span class="st">"a"</span>, <span class="st">"cat"</span>, <span class="st">"elephant"</span>], <span class="dv">3</span>) <span class="op">==</span> [<span class="st">"elephant"</span>]),</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"count_labels"</span>, count_labels(sample) <span class="op">==</span> {<span class="st">"A1"</span>: <span class="dv">2</span>, <span class="st">"C1"</span>: <span class="dv">1</span>}),</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, ok <span class="kw">in</span> checks:</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), name)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All passed ✅"</span> <span class="cf">if</span> <span class="bu">all</span>(ok <span class="cf">for</span> _, ok <span class="kw">in</span> checks)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> <span class="st">"Some checks failed — fix them and re-run."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>paragraph <span class="op">=</span> (<span class="st">"Dr. Smith reviewed the data. The results were clear, e.g. accuracy rose. Scores went from 3.14 to 9."</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>naive <span class="op">=</span> paragraph.split(<span class="st">"."</span>)     <span class="co"># cut the string at every "."</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"pieces:"</span>, <span class="bu">len</span>(naive))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> piece <span class="kw">in</span> naive:</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">repr</span>(piece))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p>Look at the output: <code>"Dr"</code> (from <em>Dr.</em>), <code>"e"</code> and <code>"g"</code> (from <em>e.g.</em>), and <code>"3"</code>/<code>"14"</code> (from <em>3.14</em>) all got split in the wrong places. <strong>Sentence boundaries are not just full stops</strong> — abbreviations and decimals break the naive rule.</p>
+</section>
+<section id="splitting-text-into-sentences-with-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="splitting-text-into-sentences-with-a-model">2. Splitting text into sentences — <em>with</em> a model</h3>
+<p>A proper tool knows more than “cut at every dot”. We’ll use <strong>spaCy</strong>, an NLP library. <code>import spacy</code> loads that toolbox; <code>spacy.blank("en")</code> makes a minimal English pipeline and we add a rule-based <strong>sentencizer</strong> to it (no model download needed).</p>
+<div id="cell-22" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> spacy</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>nlp.add_pipe(<span class="st">"sentencizer"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>doc <span class="op">=</span> nlp(paragraph)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>sentences <span class="op">=</span> <span class="bu">list</span>(doc.sents)        <span class="co"># spaCy's sentence objects, as a list</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"sentences found:"</span>, <span class="bu">len</span>(sentences))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first sentence:"</span>, sentences[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>spaCy keeps <code>Dr.</code> and <code>e.g.</code> intact and finds the real boundaries. <strong>Why this matters:</strong> on Day 2 the unit you annotate and feed the LLM is the <em>sentence</em> — bad boundaries mean bad data downstream.</p>
+</section>
+<section id="run-the-model-over-every-sentence-for-if-and-a-function" class="level3">
+<h3 class="anchored" data-anchor-id="run-the-model-over-every-sentence-for-if-and-a-function">3. Run the model over every sentence — <code>for</code>, <code>if</code>, and a function</h3>
+<p>Now that you have a list of sentences, do something to <em>each</em> one. A <strong><code>for</code> loop</strong> repeats the same steps for every item; an <strong><code>if</code></strong> lets you react to what comes back. Below, we build a prompt for each sentence (with an f-string) and ask the model for its CEFR level.</p>
+<p><strong>✏️ YOU EDIT</strong> — try your own sentences.</p>
+<div id="cell-26" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [<span class="st">"The findings were inconclusive."</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Nevertheless, we draw some tentative conclusions."</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"More research is needed."</span>]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    reply <span class="op">=</span> generate_text(prompt).strip()</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(sentence, <span class="st">"→ (no answer)"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(sentence, <span class="st">"→"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Finally, wrap those three steps — build prompt, call model, tidy the reply — into a <strong>function</strong> you can reuse. Defining <code>ask(...)</code> once means the rest of the week you just call <code>ask(sentence)</code>. This little function is the seed of the pipeline you’ll assemble later.</p>
+<div id="cell-28" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask(sentence):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> generate_text(prompt).strip()</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ask(<span class="st">"The cat sat on the mat."</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="your-turn-python-practice" class="level3">
+<h3 class="anchored" data-anchor-id="your-turn-python-practice">4. Your turn — Python practice</h3>
+<p>Fill in each function so it does what its docstring says (replace the <code>raise NotImplementedError(...)</code> line). Then run the <strong>self-check</strong> cell below until every line prints ✅. No grader needed — the checks <em>are</em> your grader.</p>
+<div id="cell-30" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — replace each NotImplementedError with your code.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> label_of(item):</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the value stored under the key "label" in the dict `item`.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: label_of({"id": 1, "text": "Hi", "label": "A1"}) -&gt; "A1".</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return item['label']."</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> long_words(words, n):</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return a LIST of the words whose length is greater than n.</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: long_words(["a", "cat", "elephant"], 3) -&gt; ["elephant"].</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: build a result list; loop with `for w in words:`; keep w if len(w) &gt; n.</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the words longer than n characters."</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_labels(items):</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Given a list of {id, text, label} dicts, return a dict mapping each</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">    label to how many times it appears.</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: count_labels([{"label":"A1"}, {"label":"A1"}, {"label":"B1"}])</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">             -&gt; {"A1": 2, "B1": 1}.</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: start with counts = {}; for each item, add 1 to counts[label]</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       (use counts.get(label, 0) + 1 so the first time starts at 0).</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Count how many items carry each label."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-31" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check — run me { display-mode: "form" }</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> [{<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"Hi."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"text"</span>: <span class="st">"Hello there."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"text"</span>: <span class="st">"Nevertheless..."</span>, <span class="st">"label"</span>: <span class="st">"C1"</span>}]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>checks <span class="op">=</span> [</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"label_of"</span>, label_of(sample[<span class="dv">0</span>]) <span class="op">==</span> <span class="st">"A1"</span>),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"long_words"</span>, long_words([<span class="st">"a"</span>, <span class="st">"cat"</span>, <span class="st">"elephant"</span>], <span class="dv">3</span>) <span class="op">==</span> [<span class="st">"elephant"</span>]),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"count_labels"</span>, count_labels(sample) <span class="op">==</span> {<span class="st">"A1"</span>: <span class="dv">2</span>, <span class="st">"C1"</span>: <span class="dv">1</span>}),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, ok <span class="kw">in</span> checks:</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), name)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All passed ✅"</span> <span class="cf">if</span> <span class="bu">all</span>(ok <span class="cf">for</span> _, ok <span class="kw">in</span> checks)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> <span class="st">"Some checks failed — fix them and re-run."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="python-youll-see-but-wont-have-to-write" class="level3">
+<h3 class="anchored" data-anchor-id="python-youll-see-but-wont-have-to-write">Python you’ll <em>see</em> but won’t have to write</h3>
+<p>The pre-written <strong>🔧 Library cells</strong> later this week occasionally use two shorthands. You never have to write them — just recognise them:</p>
+<ul>
+<li>A <strong>list comprehension</strong> builds a list in one line. <code>[row["label"] for row in rows]</code> means “the <code>label</code> of every row” — the same as a <code>for</code> loop that <code>.append</code>s each label.</li>
+<li><strong><code>try</code> / <code>except</code></strong> (handle an error instead of crashing) and <strong><code>global</code></strong> (let a function update a shared variable) show up in the LLM backend and are explained on <strong>Day 3</strong> — no need to learn them today.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="mini-project-form-your-group-pick-a-track" class="level2">
+<h2 class="anchored" data-anchor-id="mini-project-form-your-group-pick-a-track">Mini-project — form your group &amp; pick a track</h2>
+<p>Before Day 2 you’ll settle into a project group and choose a dataset <strong>track</strong>. Each group needs <strong>at least one <em>Linguistic Data Analysis I</em> alumnus</strong>. Once formed, pick your track and note it — you’ll annotate that dataset tomorrow.</p>
+<p>See the <a href="../final-project/index.html">Final Project</a> page for the tracks and what the project involves.</p>
 <hr>
 </section>
 <section id="before-you-submit" class="level2">

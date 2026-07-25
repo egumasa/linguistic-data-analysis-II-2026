@@ -356,7 +356,7 @@ def how_to_use(day, title, part_a, part_b, part_c=None):
 
 
 SUBMISSION = md(
-    "---",
+    "***",
     "## ✅ Before you submit",
     "",
     "1. **Runtime → Run all** and check every cell ran without error.",
@@ -621,7 +621,7 @@ def day1():
 
     # Mini-project setup
     cells += [md(
-        "---",
+        "***",
         "## Mini-project — form your group & pick a track",
         "",
         "Before Day 2 you'll settle into a project group and choose a dataset **track**. Each "

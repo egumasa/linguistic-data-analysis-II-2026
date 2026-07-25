@@ -175,7 +175,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#step-2-smoke-test-is-the-api-even-reachable" id="toc-step-2-smoke-test-is-the-api-even-reachable" class="nav-link active" data-scroll-target="#step-2-smoke-test-is-the-api-even-reachable">Step 2 — Smoke test (is the API even reachable?)</a></li>
   <li><a href="#step-3-quota-ceiling-100-call-loop-deliberately-unguarded" id="toc-step-3-quota-ceiling-100-call-loop-deliberately-unguarded" class="nav-link" data-scroll-target="#step-3-quota-ceiling-100-call-loop-deliberately-unguarded">Step 3 — Quota ceiling (100-call loop, deliberately unguarded)</a></li>
   <li><a href="#step-3b-does-pacing-backoff-actually-fix-it" id="toc-step-3b-does-pacing-backoff-actually-fix-it" class="nav-link" data-scroll-target="#step-3b-does-pacing-backoff-actually-fix-it">Step 3b — Does pacing + backoff actually fix it?</a></li>
-  <li><a href="#step-4-extrapolate-to-15-students" id="toc-step-4-extrapolate-to-15-students" class="nav-link" data-scroll-target="#step-4-extrapolate-to-15-students">Step 4 — Extrapolate to ~15 students</a></li>
+  <li><a href="#step-4-extrapolate-to-the-class-8-students" id="toc-step-4-extrapolate-to-the-class-8-students" class="nav-link" data-scroll-target="#step-4-extrapolate-to-the-class-8-students">Step 4 — Extrapolate to the class (8 students)</a></li>
   <li><a href="#step-5-determinism-label-stability" id="toc-step-5-determinism-label-stability" class="nav-link" data-scroll-target="#step-5-determinism-label-stability">Step 5 — Determinism (label stability)</a></li>
   <li><a href="#go-no-go" id="toc-go-no-go" class="nav-link" data-scroll-target="#go-no-go">Go / no-go</a></li>
   </ul>
@@ -455,14 +455,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </section>
-<section id="step-4-extrapolate-to-15-students" class="level2">
-<h2 class="anchored" data-anchor-id="step-4-extrapolate-to-15-students">Step 4 — Extrapolate to ~15 students</h2>
-<p>The single-user numbers above → what a class of 15 implies. <strong>Caveat:</strong> this measures one account sequentially; it cannot test 15-way <em>concurrency</em>. If <code>colab.ai</code> quota is per-account (likely), 15 students = 15 independent quotas and Step 3 passing is reassuring. If it’s a shared project quota, real load is ~15× and only a multi-account trial can confirm it.</p>
+<section id="step-4-extrapolate-to-the-class-8-students" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-extrapolate-to-the-class-8-students">Step 4 — Extrapolate to the class (8 students)</h2>
+<p>The single-user numbers above → what a class of 8 implies. <strong>Caveat:</strong> this measures one account sequentially; it cannot test 8-way <em>concurrency</em>. If <code>colab.ai</code> quota is per-account (likely), 8 students = 8 independent quotas and Step 3 passing is reassuring. If it’s a shared project quota, real load is ~8× and only a multi-account trial can confirm it.</p>
 <div id="cell-10" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title Step 4 — class-of-15 projection</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>CLASS <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>CLASS <span class="op">=</span> <span class="dv">8</span>      <span class="co"># D3 (decided 2026-07-19): 8 students</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>CALLS_PER_STUDENT_PER_DAY <span class="op">=</span> <span class="dv">72</span> <span class="op">+</span> <span class="dv">72</span> <span class="op">+</span> <span class="dv">60</span>  <span class="co"># tutorial + few-shot + lab, rough</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> latencies:</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    per_call <span class="op">=</span> wall <span class="op">/</span> N</span>
