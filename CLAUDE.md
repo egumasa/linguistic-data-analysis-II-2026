@@ -35,7 +35,16 @@ Important: the example notebooks under [sources/resources/code-examples/python/]
 ## Coding approach
 
 - use basic functional oriented programming ()
-- 
+
+### Notebook coding principles (MUST read before touching `sources/notebooks/`)
+
+Any work on the day notebooks MUST follow
+[planning/course_planning/notebook-coding-principles.md](planning/course_planning/notebook-coding-principles.md).
+In short: the `.ipynb` files are generated — edit
+[sources/notebooks/_generate_day_notebooks.py](sources/notebooks/_generate_day_notebooks.py)
+and re-run it, never hand-edit a notebook. Each day ships only the backend and 🔧 helper
+cells it actually calls (`setup_cell(backend=..., lib_names=[...])` + `libs(...)`); editable
+✏️ cells stay within the vocabulary the progression table has introduced by that day.
 
 ## Layout & content authoring
 

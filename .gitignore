@@ -23,6 +23,9 @@ sources/resources/code-examples/data/raw/
 sources/resources/code-examples/data/gold/
 # ...and never let a render leak them into the published site
 sources/docs/resources/code-examples/data/raw/
+
+# Runtime artifact written by the Day-2 notebook warm-up cell (not a source file).
+sources/notebooks/example_gold.json
 sources/docs/resources/code-examples/data/gold/
 
 # Python bytecode

@@ -5,9 +5,11 @@ Students submit ONE .ipynb per day; each contains that day's guided **tutorial**
 (Part A) and its **Corpus Lab** (Part B). Notebooks run in Google Colab (free built-in
 Gemini, no key) and fall back to a local LLM API off-Colab.
 
-The shared LLM backend + pipeline "library cells" are lifted verbatim from the original
-`02_gold_and_eval.ipynb`; only the task-specific bits (GOLD_URL / LEVELS) are
-parameterized. Days whose tutorial or lab is not written yet ship honest TODO scaffolds.
+Each day's Setup cell and 🔧 pipeline cells are selected **per day** so a notebook ships
+only what it actually calls: setup_cell(backend=..., lib_names=[...]) picks the LLM
+backend (demo / api / none) and the imports, and libs(...) picks the pipeline cells.
+See planning/course_planning/notebook-coding-principles.md for the rules this enforces.
+Days whose tutorial or lab is not written yet ship honest TODO scaffolds.
 
 Run:  python sources/notebooks/_generate_day_notebooks.py
 """
@@ -52,25 +54,46 @@ CEFR_POOL_URL = f"{REPO_RAW}/cefr_pool.json"
 CEFR_PREDICTIONS_DAY2_URL = f"{REPO_RAW}/predictions_day2.json"
 
 
-# ------------------------------------------------- shared cells (verbatim library)
-# The LLM backend block. Two backends, chosen by whether a Gemini API key is set:
-#   * DEMO (no key)  → Colab's built-in Gemini (colab.ai). Zero setup, but NON-
-#     reproducible: colab.ai exposes no temperature/seed, so output varies run to run.
-#   * REAL (key set) → the Gemini API with temperature=0 + seed, for reproducible,
-#     autograded work (Corpus Lab from Day 3, and the final project).
-# The key is PREFERRED when present — including inside Colab (via Colab Secrets).
-# See resources/tools/gemini-api-key.md.
-# Pinned 2026-07-20 by the API pre-flight. NOT gemini-2.5-flash: its free tier is
-# 5 RPM / 20 RPD, so a single 72-item lab run needs 3.5 days of quota. flash-lite is
-# 15 RPM / 500 RPD. See planning/course_planning/api-preflight-testing.md Task 1.
-MODEL_ID = "gemini-3.1-flash-lite"
+# ------------------------------------------------- shared cells (library)
+# Two LLM backends live here; each day's Setup cell pulls in ONLY the one it needs
+# (and Days 2 & 4 pull in neither — they touch no model):
+#   * DEMO_BACKEND (Day 1)   → Colab's built-in Gemini (colab.ai). Keyless, zero
+#     setup, but NON-reproducible: colab.ai exposes no temperature/seed, so output
+#     varies run to run. Day 1 only needs to *see* a model answer, so that's fine.
+#   * API_BACKEND (Day 3+)   → the Gemini API with temperature=0 + seed, for
+#     reproducible, autograded work. Prefers a key (Colab Secrets or env), and
+#     falls back to colab.ai if none is set.
+# Pinned model: gemini-3.1-flash-lite (15 RPM / 500 RPD). NOT gemini-2.5-flash: its
+# free tier is 5 RPM / 20 RPD, so one 72-item lab run needs 3.5 days of quota.
+# See planning/course_planning/api-preflight-testing.md Task 1.
 
-BACKEND = '''#@title 📦 Setup — run me first { display-mode: "form" }
-# Imports + the LLM backend. No pip install needed in Colab.
-import json, re, time, urllib.request, os
-from sklearn.metrics import classification_report, confusion_matrix
-import pandas as pd, seaborn as sns, matplotlib.pyplot as plt
+# The keyless demo backend (Day 1): pace the calls, then hand off to colab.ai.
+DEMO_BACKEND = '''# --- LLM backend: Colab's free built-in Gemini (no API key) -------------------
+_last_call_time = 0.0
+_min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively
 
+def generate_text(prompt):
+    """Send a prompt to Colab's built-in Gemini; wait between calls so we don't go
+    too fast. Returns the reply as text. (Non-reproducible: no temperature/seed.)"""
+    global _last_call_time
+    wait = _min_interval - (time.monotonic() - _last_call_time)
+    if wait > 0:
+        time.sleep(wait)
+    _last_call_time = time.monotonic()
+    return _raw_generate_text(prompt)
+
+try:
+    from google.colab import ai            # Colab's built-in Gemini — no key
+    _raw_generate_text = lambda p: ai.generate_text(p)
+    _backend = "Colab Gemini (demo, non-reproducible)"
+except ImportError:
+    raise RuntimeError(
+        "No LLM backend found. Run this notebook in Google Colab (free built-in "
+        "Gemini, no key needed). See resources/tools/gemini-api-key.md.")'''
+
+# The reproducible API backend (Day 3+): key preferred, colab.ai fallback, plus a
+# rate-limit guard (pacing + retry) — walked through piece by piece in Day 3.
+API_BACKEND = '''# --- LLM backend: Gemini API when a key is set, else colab.ai demo ------------
 MODEL_ID = "gemini-3.1-flash-lite"   # pinned model for the reproducible (API) backend
 
 def _resolve_gemini_key():
@@ -153,22 +176,67 @@ else:
             "See resources/tools/gemini-api-key.md.")'''
 
 
-def setup_cell(gold_url=None, gold_comment=None, predictions_url=None):
-    """Build the setup cell. With a gold_url, also define GOLD_URL + LEVELS (CEFR).
-    With a predictions_url, also define PREDICTIONS_URL (frozen Day-2 predictions)."""
-    src = BACKEND
+def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
+               predictions_url=None):
+    """Build a day's 📦 Setup cell, importing ONLY what that day uses.
+
+    backend    : "demo" (Day 1), "api" (Day 3+), or None (Days 2 & 4 — no model).
+    lib_names  : which 🔧 pipeline cells the day ships (drives which imports load).
+    gold_url / predictions_url : optionally append GOLD_URL+LEVELS / PREDICTIONS_URL.
+    """
+    lib_names = set(lib_names)
+    simple = []                                   # single-line `import x` modules
+    if backend == "api":
+        simple += ["os", "re", "time"]
+    elif backend == "demo":
+        simple += ["time"]
+    if lib_names & {"load_gold", "predictions"} or gold_url or predictions_url:
+        simple += ["json", "urllib.request"]
+    if "run_prompt" in lib_names:
+        simple += ["re"]
+    want_sklearn = "evaluate" in lib_names
+    want_viz = bool(lib_names & {"evaluate", "show_errors"})   # pandas/seaborn/plt
+
+    lines = ['#@title 📦 Setup — run me first { display-mode: "form" }',
+             "# Helper — you don't need to read this. Run it and move on."]
+    if simple:
+        lines.append("import " + ", ".join(sorted(set(simple))))
+    if want_sklearn:
+        lines.append("from sklearn.metrics import classification_report, confusion_matrix")
+    if want_viz:
+        lines.append("import pandas as pd, seaborn as sns, matplotlib.pyplot as plt")
+    src = "\n".join(lines)
+
+    if backend == "demo":
+        src += "\n\n" + DEMO_BACKEND
+    elif backend == "api":
+        src += "\n\n" + API_BACKEND
+
     if gold_url:
         src += (f'\n\n# {gold_comment}\n'
                 f'GOLD_URL = "{gold_url}"\n'
                 'LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]')
     if predictions_url:
         src += f'\nPREDICTIONS_URL = "{predictions_url}"   # frozen model predictions'
-    src += '\nprint(f"Setup done. LLM backend: {_backend}. scikit-learn ready.")'
+
+    status = "Setup done."
+    if backend:
+        status += " LLM backend: {_backend}."
+    if want_sklearn:
+        status += " scikit-learn ready."
+    src += f'\nprint(f"{status}")'
     return code(src)
 
 
+# The 🔧 pipeline "library" cells. Each day ships only the ones it calls, selected
+# by name through libs(...) — see the LIB registry below. All are collapsed form
+# cells flagged "helper — you don't need to read this"; their internals are kept
+# readable (explicit loops, minimal regex) for the curious.
+_HELPER_NOTE = "# Helper — you don't need to read this. Run it and move on."
+
 LIB_LOAD_GOLD = code(
     '#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: "form" }',
+    _HELPER_NOTE,
     'def load_gold(url_or_path):',
     '    """Read the canonical gold JSON: [{\'id\',\'text\',\'label\'}, ...]."""',
     '    if str(url_or_path).startswith("http"):',
@@ -181,6 +249,7 @@ LIB_LOAD_GOLD = code(
 
 LIB_RUN_PROMPT = code(
     '#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: "form" }',
+    _HELPER_NOTE,
     'def _extract_level(text):',
     '    """Pull the first A1/A2/B1/B2/C1/C2 out of the model\'s reply."""',
     '    m = re.search(r"\\b([ABC][12])\\b", str(text).upper())',
@@ -199,8 +268,11 @@ LIB_RUN_PROMPT = code(
 
 LIB_EVALUATE = code(
     '#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + confusion matrix { display-mode: "form" }',
+    _HELPER_NOTE,
     'def evaluate(gold, predictions):',
-    '    y_true = [item["label"] for item in gold]',
+    '    y_true = []',
+    '    for item in gold:',
+    '        y_true.append(item["label"])',
     '    y_pred = predictions',
     '    print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))',
     '    cm = confusion_matrix(y_true, y_pred, labels=LEVELS)',
@@ -212,24 +284,22 @@ LIB_EVALUATE = code(
 
 LIB_SHOW_ERRORS = code(
     '#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: "form" }',
+    _HELPER_NOTE,
     'def show_errors(gold, predictions):',
-    '    rows = [{"id": g["id"], "gold": g["label"], "pred": p, "text": g["text"]}',
-    '            for g, p in zip(gold, predictions) if g["label"] != p]',
+    '    rows = []',
+    '    for g, p in zip(gold, predictions):',
+    '        if g["label"] != p:',
+    '            rows.append({"id": g["id"], "gold": g["label"], "pred": p, "text": g["text"]})',
     '    print(f"{len(rows)} of {len(gold)} wrong.")',
     '    return pd.DataFrame(rows)')
 
-# Freeze predictions to JSON so evaluation is reproducible: run the model ONCE,
-# save its predictions, then evaluate the saved file (identical numbers every run,
-# no LLM in the loop). Used keyless on Day 2 (metrics lesson) and by the final
-# project (auditable, autogradable deliverable).
-LIB_PREDICTIONS = code(
-    '#@title 🔧 Library cell: save_predictions / load_predictions { display-mode: "form" }',
-    'def save_predictions(predictions, path):',
-    '    """Freeze a list of predicted labels to JSON."""',
-    '    with open(path, "w", encoding="utf-8") as f:',
-    '        json.dump(predictions, f)',
-    '    print(f"Saved {len(predictions)} predictions to {path}")',
-    '',
+# Frozen predictions make evaluation reproducible: the model is run ONCE offline,
+# its predictions saved to JSON and committed, then loaded here (identical numbers
+# every run, no LLM in the loop). Day 2 loads them keyless. The one-off freezing is
+# an offline step, so only the loader ships in the notebooks.
+LIB_LOAD_PREDICTIONS = code(
+    '#@title 🔧 Library cell: load_predictions(url_or_path) → predictions { display-mode: "form" }',
+    _HELPER_NOTE,
     'def load_predictions(url_or_path):',
     '    """Read a frozen predictions list — a committed URL or a local path."""',
     '    if str(url_or_path).startswith("http"):',
@@ -240,7 +310,20 @@ LIB_PREDICTIONS = code(
     '    print(f"Loaded {len(predictions)} frozen predictions.")',
     '    return predictions')
 
-PIPELINE_LIB = [LIB_LOAD_GOLD, LIB_RUN_PROMPT, LIB_EVALUATE, LIB_SHOW_ERRORS, LIB_PREDICTIONS]
+# name → 🔧 cell. A day requests only what it calls via libs(...).
+LIB = {
+    "load_gold": LIB_LOAD_GOLD,
+    "run_prompt": LIB_RUN_PROMPT,
+    "evaluate": LIB_EVALUATE,
+    "show_errors": LIB_SHOW_ERRORS,
+    "predictions": LIB_LOAD_PREDICTIONS,
+}
+
+
+def libs(*names):
+    """The 🔧 pipeline cells for a day, in the given order. Keep the names here in
+    sync with the lib_names passed to setup_cell (they drive the day's imports)."""
+    return [LIB[n] for n in names]
 
 # Manual annotation round-trip: Colab writes a Google Sheet into the student's own
 # Drive, they label it by hand in the browser (two annotator columns, so agreement
@@ -248,6 +331,7 @@ PIPELINE_LIB = [LIB_LOAD_GOLD, LIB_RUN_PROMPT, LIB_EVALUATE, LIB_SHOW_ERRORS, LI
 # gspread + google-auth are pre-installed in Colab; no pip install needed.
 LIB_SHEETS = code(
     '#@title 🔧 Library cell: Google Sheets annotation round-trip { display-mode: "form" }',
+    "# Helper — you don't need to read this. Run it and move on.",
     'ANNOTATION_HEADER = ["id", "text", "label_a", "label_b", "final", "notes"]',
     '',
     'def _sheets_client():',
@@ -264,7 +348,9 @@ LIB_SHEETS = code(
     '    copied across, so you annotate blind. Returns the sheet URL."""',
     '    sheet = _sheets_client().create(title)',
     '    worksheet = sheet.sheet1',
-    '    rows = [[item["id"], item["text"], "", "", "", ""] for item in items]',
+    '    rows = []',
+    '    for item in items:',
+    '        rows.append([item["id"], item["text"], "", "", "", ""])',
     '    worksheet.update([ANNOTATION_HEADER] + rows)',
     '    worksheet.freeze(rows=1)',
     '    print(f"Created \'{title}\' with {len(rows)} rows to annotate.")',
@@ -420,7 +506,7 @@ def day1():
         "Run the setup cell (it loads the LLM backend — in Colab that's the free built-in "
         "Gemini, no key needed), then send the model a prompt with `generate_text(...)`. The "
         "answer comes back as text, which we store in a **variable** called `reply`.")]
-    cells += [setup_cell()]
+    cells += [setup_cell(backend="demo")]
     cells += [md("**✏️ YOU EDIT** — change the prompt text and re-run. The prompt is just "
                  "text you send; the reply is just text you get back.")]
     cells += [code(
@@ -663,11 +749,14 @@ def day2():
         "You'll run the model yourself (with the key) from Day 3 on.",
         ":::")]
     cells += [md("### Setup — run this first")]
+    day2_libs = ["load_gold", "predictions", "evaluate", "show_errors"]
     cells += [setup_cell(
-        CEFR_GOLD_URL,
-        "CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.",
+        backend=None,          # frozen predictions — Day 2 never calls a model
+        lib_names=day2_libs,
+        gold_url=CEFR_GOLD_URL,
+        gold_comment="CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.",
         predictions_url=CEFR_PREDICTIONS_DAY2_URL)]
-    cells += PIPELINE_LIB
+    cells += libs(*day2_libs)
     cells += [md(
         "### Warm-up — what a *gold file* actually is",
         "",
@@ -1001,9 +1090,12 @@ def day3():
         "Setup, below.",
         ":::")]
     cells += [md("### Setup — run this first")]
+    day3_libs = ["load_gold", "run_prompt", "evaluate", "show_errors"]
     cells += [setup_cell(
-        CEFR_GOLD_URL,
-        "CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.")]
+        backend="api",         # Day 3 on: reproducible Gemini API (key), colab.ai fallback
+        lib_names=day3_libs,
+        gold_url=CEFR_GOLD_URL,
+        gold_comment="CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.")]
 
     # ---- staged walkthrough: the rate-limit guard quietly running in Setup ----
     cells += [md(
@@ -1114,7 +1206,7 @@ def day3():
         "returns another function), but the underlying logic is identical to what you just "
         "read.")]
 
-    cells += PIPELINE_LIB
+    cells += libs(*day3_libs)
     cells += [code('gold = load_gold(GOLD_URL)')]
 
     cells += [md(
@@ -1176,6 +1268,16 @@ def day3():
         "*worse* than few-shot, check `show_errors` to see whether it's the model or the parser.",
         ":::")]
     cells += [md(
+        "### Where is your best prompt still wrong?",
+        "",
+        "`show_errors` lists the sentences your chain-of-thought prompt got wrong — the raw "
+        "material for the Corpus Lab below. Skim them and note which level is hardest, and "
+        "whether any miss is really the *parser* grabbing the wrong level rather than the "
+        "model being wrong.")]
+    cells += [code(
+        'errors = show_errors(gold, pred_cot)',
+        'errors.head(15)')]
+    cells += [md(
         "### Compare the three",
         "",
         "Fill in the macro-F1 you saw at each step. This little table *is* your result.",
@@ -1219,10 +1321,13 @@ def day4():
         "`POOL_URL` for your track's pool. See the "
         "[mini-project tracks](../resources/datasets/mini-project-tracks.md) for the full list.")]
     cells += [md("### Setup — run this first")]
+    day4_libs = ["load_gold"]      # Day 4 only loads a pool + samples it — no model, no eval
     cells += [setup_cell(
-        CEFR_GOLD_URL,
-        "Default gold + LEVELS for CEFR; change LEVELS to match your own track's labels.")]
-    cells += PIPELINE_LIB
+        backend=None,
+        lib_names=day4_libs,
+        gold_url=CEFR_GOLD_URL,
+        gold_comment="Default gold + LEVELS for CEFR; change LEVELS to match your own track's labels.")]
+    cells += libs(*day4_libs)
     cells += [code(
         f'POOL_URL = "{CEFR_POOL_URL}"   # ✏️ swap for your track\'s pool',
         'pool = load_gold(POOL_URL)')]
