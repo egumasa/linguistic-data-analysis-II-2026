@@ -198,7 +198,7 @@
     "href": "sessions/day1/session-02.html#learning-objectives",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.\nSend a prompt to a language model with generate_text(...), then edit the prompt and re-run.\nRecognise Python’s core data types — str, list, dict — in what the model hands back, and index into a list or dict.\nBuild a prompt from a variable with an f-string.",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message.\nSend a prompt to a language model with, then edit the prompt and re-run.\nRecognise Python’s core data types — str, list, dict — in what the model hands back, and index into a list or dict.\nUndetstand basic Python syntax (variable assignments, if-statements, for-loop) to explain what is happening in the tutorial notebook.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -2904,7 +2904,7 @@
     "href": "sessions/day2/session-04.html#learning-objectives",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nExplain what an annotation scheme and coding guidelines are, and why operationalizing a category matters.\nDescribe where annotation sits in an NLP pipeline for applied linguistics (annotate → model → evaluate).\nExplain inter-annotator agreement conceptually — why we double-annotate, and what a simple agreement rate and Cohen’s κ tell you.\nSay what a gold-standard dataset is and how it is constructed.\nExplain, conceptually, what the core evaluation metrics (precision, recall, F1) and a confusion matrix are, and why we need them to judge model output against a gold standard.",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nExplain what an annotation scheme and coding guidelines are, and why operationalizing a category matters.\nDescribe where annotation sits in an NLP pipeline for applied linguistics (annotate → model → evaluate).\nExplain inter-annotator agreement conceptually — why we double-annotate, and what a simple agreement rate and Cohen’s κ tell you.\nDescribe what a gold-standard dataset is and how it is constructed.\nExplain, conceptually, what the core evaluation metrics (precision, recall, F1) and a confusion matrix are, and why we need them to judge model output against a gold standard.",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -3052,7 +3052,7 @@
     "href": "sessions/day1/session-03.html#learning-objectives",
     "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nSplit a paragraph into sentences two ways — a naive .split(\".\") and a spaCy sentencizer — and explain why the naive rule fails on abbreviations and decimals.\nUse a for loop, an if, and a function (def) to run the model over a list of sentences and tidy each reply.\nComplete short Python exercises and confirm them with the notebook’s self-check.\nForm a project group and pick a mini-project track.",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nSplit a paragraph into sentences two ways — a naive .split(\".\") and a spaCy sentencizer — and explain why the naive rule fails on abbreviations and decimals.\nUse a for loop, an if, and a function (def) to run the model over a list of sentences and tidy each reply.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -3124,7 +3124,7 @@
     "href": "sessions/day1/session-01.html#learning-objectives",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nDescribe, at a high level, what a Large Language Model is and how it differs from the corpus and NLP tools you met in Linguistic Data Analysis I.\nName the NLP tasks this course targets — classification, annotation, and extraction of linguistic features — and give an example of each.\nJudge, from a live chat demo, where an LLM is genuinely useful for linguistic analysis and where its output cannot be trusted at face value.",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nDescribe, at a high level, what a Large Language Model is, how they are trained, and how they produce natural language.\nName the NLP tasks this course targets — classification, annotation, and extraction of linguistic features — and give an example of each.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -3136,7 +3136,7 @@
     "href": "sessions/day1/session-01.html#agenda",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Agenda",
-    "text": "Agenda\n\nCourse overview & logistics — the 5-day arc, the mini-project, and how you’ll be graded.\nSelf-introductions — your background, research interests, and any prior programming exposure.\nLLMs as analysis tools — what they are, how they fit linguistic analysis, and the tasks we’ll tackle this week.\nNo-code chat demo — throw real language data at an LLM in the chat interface and read the output critically: what did it get right, and how would we ever know?\nBridge from LDA I — how today’s questions connect to frequency, concordancing, and the metrics you already know.\n\nNo laptop setup is needed today — the hands-on tooling starts in Session 2.",
+    "text": "Agenda\n\nCourse overview & logistics — the 5-day arc, the mini-project, and how you’ll be graded.\nSelf-introductions — your background, research interests, and any prior programming exposure.\nLLMs as analysis tools — what they are, how they fit linguistic analysis, and the tasks we’ll tackle this week.\nNo-code chat demo — throw real language data at an LLM in the chat interface and read the output critically: what did it get right, and how would we ever know?\n\nNo laptop setup is needed today — the hands-on tooling starts in Session 2.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",

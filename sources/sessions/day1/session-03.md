@@ -3,13 +3,14 @@ title: "Session 3: Python Practice & Mini-Project Setup"
 subtitle: "Day 1 · Introduction & First Experience (1-3)"
 toc: true
 ---
-
 <!-- BEING-PREPARED-BANNER -->
+
 ::: {.callout-warning appearance="simple"}
+
 ## 🚧 Being prepared
+
 This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The [syllabus](/syllabus/index.md) and [readings](/syllabus/readings.md) are ready now.
 :::
-
 
 ## Learning objectives
 
@@ -17,8 +18,6 @@ By the end of this session you will be able to:
 
 - Split a paragraph into sentences two ways — a naive `.split(".")` and a spaCy sentencizer — and explain why the naive rule fails on abbreviations and decimals.
 - Use a `for` loop, an `if`, and a function (`def`) to run the model over a list of sentences and tidy each reply.
-- Complete short Python exercises and confirm them with the notebook's self-check.
-- Form a project group and pick a mini-project track.
 
 ## Agenda
 
