@@ -146,8 +146,32 @@ invisibly. You get the files, but you skip the skill the notebooks are there to 
 | **CEFR-SP** (Wiki-Auto) | Sentence CEFR level A1–C2 | `cefr_sentences.json` (72), `cefr_pool.json` (3,183) | CC BY-SA 3.0 | ✅ built |
 | **RAAMove** | 8 moves in RA abstracts | `raamove_moves.json` (64), `raamove_pool.json` (3,069) | CC BY 4.0 | ✅ built |
 | **CaRS-50** | CARS Move/Step in RA intros | `cars50_moves.json` (60), `cars50_pool.json` (1,297), `cars50_step_pool.json` (1,297) | CC BY 4.0 | ✅ built |
-| **AutoErrorAnalyzer** | L2 error type / detection | `l2_errors.json` (60), `l2_error_detection.json` (60), `l2_errors_pool.json` (1,038) | OSF | ✅ built |
+| **AutoErrorAnalyzer** | L2 error type / detection | `l2_errors.json` (60), `l2_error_detection.json` (60), `l2_errors_pool.json` (1,038) | CC BY 4.0 | ✅ built |
 | **ICNALE GRA** | Holistic essay score band | `icnale_gra_scores.json` | research use (password) | ⛔ manual download |
+
+### Can I redistribute these?
+
+**Four of the five are freely redistributable with attribution; ICNALE GRA is not.** This
+matters the moment you hand built gold files to anyone else — e.g. sharing them through Google
+Drive, posting them, or bundling them into materials.
+
+| Source dataset | License | Redistribute? | What you must do |
+|----------------|---------|---------------|------------------|
+| **RAAMove** | CC BY 4.0 | ✅ Yes | Cite the source (attribution). |
+| **CaRS-50** | CC BY 4.0 | ✅ Yes | Cite the source (attribution). |
+| **AutoErrorAnalyzer** | CC BY 4.0 | ✅ Yes | Cite the source (attribution). |
+| **CEFR-SP** (Wiki-Auto) | CC BY-**SA** 3.0 | ⚠️ Yes, but **share-alike** | Cite the source **and** license any bundle containing it under CC BY-SA 3.0 (or compatible). You cannot re-license it as all-rights-reserved. |
+| **ICNALE GRA** | Registration / password, research use | ⛔ **No** | Do **not** redistribute. Each user registers and downloads their own copy. |
+
+Two things that keep this clean:
+
+- **CEFR-SP uses the Wiki-Auto portion only.** CEFR-SP's other portions are SCoRE
+  (CC BY-**NC**-SA 4.0 — *non-commercial*) and Newsela (access-gated). The builder takes
+  Wiki-Auto only, so the derived files are plain CC BY-SA 3.0 with no non-commercial string.
+- **Nothing is committed to this repo.** `raw/` and `gold/*.json` are git-ignored, so the
+  attribution and share-alike obligations attach only when *you* distribute a built file. When
+  you do, ship the citation (see [`SOURCES.md`](./SOURCES.md)) alongside it, and mark
+  CEFR-derived files CC BY-SA 3.0.
 
 ### Per-dataset preparation notes
 

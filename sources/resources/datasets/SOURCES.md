@@ -17,7 +17,7 @@ original source and note that the data were reshaped.
 | `cefr_sentences.json`, `cefr_pool.json` | CEFR level A1–C2 (on-ramp) | CEFR-SP, Wiki-Auto portion | CC BY-SA 3.0 | ✅ built |
 | `raamove_moves.json`, `raamove_pool.json` | RA-abstract move (8 classes) | RAAMove | CC BY 4.0 | ✅ built |
 | `cars50_moves.json`, `cars50_pool.json`, `cars50_step_pool.json` | RA-intro Move (3) / Move+Step (11) | CaRS-50 | CC BY 4.0 | ✅ built |
-| `l2_errors.json`, `l2_errors_pool.json`, `l2_error_detection.json` | L2 error category / detection | AutoErrorAnalyzer (OSF) | see OSF project | ✅ built |
+| `l2_errors.json`, `l2_errors_pool.json`, `l2_error_detection.json` | L2 error category / detection | AutoErrorAnalyzer (OSF) | CC BY 4.0 | ✅ built |
 | `icnale_gra_scores.json` | Holistic score band (AWE) | ICNALE GRA | research use (password) | ⛔ manual download |
 
 Notes:
