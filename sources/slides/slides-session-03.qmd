@@ -165,11 +165,11 @@ Some library cells use a **list comprehension** like `[row["label"] for row in r
 ## Mini-project setup {.smaller}
 
 - Form a **group** — each needs **at least one *Linguistic Data Analysis I* alumnus**.
-- Pick **one of the four tracks** (datasets) — this is what you'll annotate on Day 2.
+- Pick **one of the three mini-project tracks** (datasets) for your Day 4–5 project.
 - **Record** your group and track where the instructor asks.
 
 . . .
 
-Choosing now means you can start annotating **right away** on Day 2. See the [Final Project](../final-project/index.md) page for the tracks.
+Choosing now means your group is ready to start the project on **Day 4**. See the [Final Project](../final-project/index.md) page for the tracks.
 
 # Any questions?

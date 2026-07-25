@@ -15,7 +15,8 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 <!-- to be added -->
 
 ## Reading
-<!-- to be added -->
+
+No new reading for this session — see the Day 4 reading (Abdurahman et al., 2025, *read in full*) in [Session 10](session-10.md) and on the [Readings](../../syllabus/readings.md) page.
 
 ## Slides & Colab
 <!-- Slides: [Session 11 slides](../../slides/slides-session-11.html){target="_blank"} -->

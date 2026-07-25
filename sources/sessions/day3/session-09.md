@@ -15,7 +15,8 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 <!-- to be added -->
 
 ## Reading
-<!-- to be added -->
+
+No new reading for this session — see the Day 3 reading (Huang & Mizumoto, 2025; Kim & Lu, 2024) in [Session 7](session-07.md) and on the [Readings](../../syllabus/readings.md) page.
 
 ## Slides & Colab
 <!-- Slides: [Session 9 slides](../../slides/slides-session-09.html){target="_blank"} -->

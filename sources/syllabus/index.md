@@ -35,7 +35,7 @@ By the end of this course, students will be able to:
 | Area                               | Objective                                                                                                                                    |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Critical appraisal**       | Explain the strengths and limitations of Large Language Models for linguistic analysis, and judge when an LLM-based approach is appropriate. |
-| **Annotation scheme design** | Design an annotation scheme and coding guidelines for a linguistic construct of interest.                                                    |
+| **Annotation scheme (adapt & operationalize)** | Adapt and operationalize an existing annotation scheme and coding guidelines for a linguistic construct.                                                    |
 | **Gold-standard datasets**   | Construct a gold-standard dataset, including operationalizing categories and assessing inter-annotator agreement.                            |
 | **Prompt design**            | Design, tune, and document prompts that elicit reliable linguistic annotations from an LLM.                                                  |
 | **Evaluation**               | Evaluate model performance using precision, recall, F1, and confusion matrices, and interpret the results critically.                        |

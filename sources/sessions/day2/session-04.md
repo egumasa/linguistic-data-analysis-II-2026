@@ -19,15 +19,17 @@ By the end of this session you will be able to:
 - Describe where annotation sits in an NLP pipeline for applied linguistics (annotate → model → evaluate).
 - Explain inter-annotator agreement conceptually — why we double-annotate, and what a simple agreement rate and Cohen's κ tell you.
 - Say what a gold-standard dataset is and how it is constructed.
+- Explain, conceptually, what the core evaluation metrics (precision, recall, F1) and a **confusion matrix** are, and why we need them to judge model output against a gold standard.
 
 ## Agenda
 
 1. **Why annotation?** — from a linguistic construct to labelled data; the `{id, text, label}` shape.
 2. **Annotation schemes & coding guidelines** — operationalizing a category so two people can apply it consistently.
 3. **Inter-annotator agreement (conceptual)** — double annotation, percent agreement, and Cohen's κ; why chance-corrected agreement matters.
-4. **The pipeline in context** — how today's gold standard feeds the prompt design and evaluation of the coming days (Eguchi & Kyle, 2024).
+4. **Evaluation metrics (conceptual)** — what precision, recall, and F1 mean, and how a confusion matrix shows *where* a model goes wrong. This previews the hands-on evaluation you implement in [Session 6](session-06.md).
+5. **The pipeline in context** — how today's gold standard feeds the prompt design and evaluation of the coming days (Eguchi & Kyle, 2024).
 
-This is the conceptual grounding for the hands-on annotation in [Session 5](session-05.md).
+This is the conceptual grounding for the hands-on annotation in [Session 5](session-05.md) and the evaluation code in [Session 6](session-06.md).
 
 ## Reading
 

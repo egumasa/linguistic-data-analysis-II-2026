@@ -32,10 +32,13 @@ This is a **guided, run-along session** using Part A of the Day 1 notebook. The 
 Control flow (`for`, `if`, functions) and text segmentation come next, in [Session 3](session-03.md).
 
 ## Reading
-<!-- to be added -->
+
+No new reading for this session — the Day 1 reading (Abdurahman et al., 2025, *skim*) is listed in [Session 1](session-01.md) and on the [Readings](../../syllabus/readings.md) page.
 
 ## Slides & Colab
 
+<!--
 - Notebook — **Part A** (guided): [`day1_python_and_first_llm.ipynb`](../../notebooks/day1_python_and_first_llm.ipynb) —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day1_python_and_first_llm.ipynb)
 - Slides: [Session 2 slides](../../slides/slides-session-02.html){target="_blank"}
+-->

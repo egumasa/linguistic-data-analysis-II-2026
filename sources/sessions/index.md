@@ -33,8 +33,8 @@ This intensive 5-day course covers LLM-based linguistic data analysis — annota
 | #  | Session | What we'll do |
 | -- | ------- | ------------- |
 | 4 | [Annotation Principles & Inter-Annotator Agreement](day2/session-04.md) | Annotation principles and the NLP pipeline for applied linguistics; an introduction to gold-standard dataset construction. |
-| 5 | [Hands-on: Gold-Standard Annotation & Agreement](day2/session-05.md) | Re-annotate a sample using a prepared scheme; compute inter-annotator agreement; compare against the published gold and against LLM annotations. |
-| 6 | [Evaluation Metrics](day2/session-06.md) | Precision, recall, F1, and the confusion matrix, with hands-on practice in Colab. |
+| 5 | [Hands-on: Gold-Standard Annotation & Agreement](day2/session-05.md) | In pairs, re-annotate ~20 items using a prepared scheme; import the sheet into Colab for agreement, Cohen's κ, and an annotator confusion matrix; iterate, then compare against the published gold. |
+| 6 | [Evaluation Metrics](day2/session-06.md) | Precision, recall, F1, Cohen's κ, and the confusion matrix, with hands-on practice in Colab. |
 
 📖 **Reading (before Day 2)** — *Read:* Eguchi & Kyle (2024); optional further reading listed. [See Readings →](../syllabus/readings.md)
 

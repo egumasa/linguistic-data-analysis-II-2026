@@ -30,13 +30,16 @@ This session picks up **Part B** of the Day 1 notebook, then forms project group
 4. **Mini-project setup** — form groups and choose a track (see below).
 
 ## Reading
-<!-- to be added -->
+
+No new reading for this session — the Day 1 reading (Abdurahman et al., 2025, *skim*) is listed in [Session 1](session-01.md) and on the [Readings](../../syllabus/readings.md) page.
 
 ## Slides & Colab
 
+<!--
 - Notebook — **Part B** (practice): [`day1_python_and_first_llm.ipynb`](../../notebooks/day1_python_and_first_llm.ipynb) —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day1_python_and_first_llm.ipynb)
 - Slides: [Session 3 slides](../../slides/slides-session-03.html){target="_blank"}
+-->
 
 ## Mini-project
 
