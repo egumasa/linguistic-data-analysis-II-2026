@@ -12,7 +12,13 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 
 
 ## Learning objectives
-<!-- to be added -->
+
+By the end of this session, you will be able to:
+
+- Get and store a **Gemini API key** (Colab Secrets) and make **reproducible** calls (`temperature=0`, `seed`).
+- **Map the four prompt elements onto a classification prompt** — recasting Huang & Mizumoto's *Task / Criteria / "My paragraph"* structure as the CEFR prompt (instruction = classify; context = level descriptors; input = the sentence; output indicator = return only the label).
+- Run the **zero-shot → few-shot → chain-of-thought** progression on CEFR, re-evaluating each on a validation set, and score the final prompt **once** on the held-out test set.
+- Prompt for **structured output** and recognise **JSON** as the `{id, text, label}` data format.
 
 ## Reading
 

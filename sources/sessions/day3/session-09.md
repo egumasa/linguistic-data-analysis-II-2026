@@ -12,7 +12,13 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 
 
 ## Learning objectives
-<!-- to be added -->
+
+By the end of this session, you will be able to:
+
+- Use `show_errors` to find misclassifications, hypothesize a fix, and re-run — the same **generic → structured refinement** you saw in Huang & Mizumoto's Example Prompt 1 → 2 (Session 7), now driven by error data.
+- Compare **macro-F1** across iteration rounds.
+- Benchmark the best LLM prompt against a **pre-trained spaCy classifier** on the same held-out CEFR test set.
+- Interpret what supervised fine-tuning **buys and costs** versus zero-training prompting — the LLM as an assistant to evaluate and supervise, not a verdict to accept.
 
 ## Reading
 
