@@ -28,6 +28,11 @@ sources/docs/resources/code-examples/data/raw/
 sources/notebooks/example_gold.json
 sources/docs/resources/code-examples/data/gold/
 
+# Quarto local build cache for `execute: freeze: auto` (executed cell outputs).
+# Not part of deployment — .github/workflows/deploy.yml uploads sources/docs/ only,
+# CI never renders. Kept local; a fresh clone re-renders computational pages from source.
+sources/_freeze/
+
 # Python bytecode
 __pycache__/
 *.pyc
