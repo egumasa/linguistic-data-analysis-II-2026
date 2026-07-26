@@ -138,21 +138,36 @@ Everything this week is a way of *checking* that judge. Today we build the case 
 
 ## Large Language Model
 
-- statistical machine-learning model 
-- autoregressive
-- transformer
+In order to understand what LLM is, we should understand:
+
+1. Statistical machine-learning model 
+2. Autoregressive models
+3. Transformer architecture
+
+We will address each.
 
 
-## A quick detour: how does a model *learn*? {.smaller}
+## Statistical machine-learning model
 
 **Machine learning** = a model **learns patterns from data** instead of being hand-coded with rules.
 
 - Rule-based: *a human writes the rules.*
-- ML: *the model infers the rules from labelled examples.*
+- ML: *the model infers the rules from examples.*
 
-. . .
+ML model typically learns probablistic representation from statistical regularity in the data. 
 
-This is the shift that made modern NLP — and it's why data (annotation!) matters so much.
+## Example - Spam email detection
+
+
+
+## Autoregressive model
+
+Models that predicts a data at a given time (timepoint *T*), given the input that preceeds it (*T-1*).
+
+
+## Transformer architecture
+
+
 
 ## How LLMs are trained {.smaller}
 

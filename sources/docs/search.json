@@ -2620,7 +2620,7 @@
     "href": "slides/slides-session-01.html#large-language-model",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Large Language Model",
-    "text": "Large Language Model\n\nstatistical machine-learning model\nautoregressive\ntransformer"
+    "text": "Large Language Model\nIn order to understand what LLM is, we should understand:\n\nStatistical machine-learning model\nAutoregressive models\nTransformer architecture\n\nWe will address each."
   },
   {
     "objectID": "slides/slides-session-01.html#a-quick-detour-how-does-a-model-learn",
@@ -3571,5 +3571,33 @@
       "Sessions",
       "Daily notebooks"
     ]
+  },
+  {
+    "objectID": "slides/slides-session-01.html#statistical-machine-learning-model",
+    "href": "slides/slides-session-01.html#statistical-machine-learning-model",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Statistical machine-learning model",
+    "text": "Statistical machine-learning model\nMachine learning = a model learns patterns from data instead of being hand-coded with rules.\n\nRule-based: a human writes the rules.\nML: the model infers the rules from examples.\n\nML model typically learns probablistic representation from statistical regularity in the data."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#example---spam-email-detection",
+    "href": "slides/slides-session-01.html#example---spam-email-detection",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Example - Spam email detection",
+    "text": "Example - Spam email detection"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#autoregressive-model",
+    "href": "slides/slides-session-01.html#autoregressive-model",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Autoregressive model",
+    "text": "Autoregressive model\nModels that predicts a data at a given time (timepoint T), given the input that preceeds it (T-1)."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#transformer-architecture",
+    "href": "slides/slides-session-01.html#transformer-architecture",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Transformer architecture",
+    "text": "Transformer architecture"
   }
 ]
