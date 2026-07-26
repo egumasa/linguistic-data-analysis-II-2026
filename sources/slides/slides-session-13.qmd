@@ -1,7 +1,14 @@
 ---
 title: "Session 13: Project Work: Prompt Iteration & Final Evaluation"
 subtitle: "Day 5 · Project Finalization & Presentations (5-1)"
-format: revealjs
+kicker: "Linguistic Data Analysis II · Day 5"
+format:
+  revealjs:
+    # Per-deck flavor. slides-v2 = shared rules; slide-<flavor> = palette only.
+    theme:
+      - default
+      - ../assets/css/slides-v2.scss
+      - ../assets/css/slide-forest.scss
 metadata-files:
   - _slides.yml
 ---
