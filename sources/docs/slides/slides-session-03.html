@@ -95,7 +95,7 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7319ef940ecc18a51fa7d51b60c4dbfa.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-5222b0819fedac50371f8e47cce628d3.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -194,18 +194,14 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center quarto-title-block">
+  <p class="kicker">Linguistic Data Analysis II · Day 1</p>
   <h1 class="title">Session 3: Python Practice &amp; Mini-Project Setup</h1>
   <p class="subtitle">Day 1 · Introduction &amp; First Experience (1-3)</p>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Masaki EGUCHI, Ph.D. 
-</div>
-</div>
-</div>
-
+  <div class="title-meta">
+    <p class="author">Masaki EGUCHI, Ph.D.</p>
+    <p class="institute">Tohoku University · Summer 2026</p>
+  </div>
 </section>
 <section>
 <section id="session-3-python-practice-mini-project-setup" class="title-slide slide level1 center">
@@ -303,6 +299,9 @@ Masaki EGUCHI, Ph.D.
 </div>
 </div>
 <p>Getting segmentation right is not a side quest — it’s the foundation the whole gold standard sits on.</p>
+<div class="fragment">
+<p>This is your <strong>unit of analysis</strong> — the thing you attach one label to. Sometimes it’s the <strong>sentence</strong> (segment first, like here); sometimes it’s the <strong>whole text</strong> (an essay gets one rating). Session 4 formalizes this as <em>sentence categorization</em> vs <em>text categorization</em>.</p>
+</div>
 </section>
 <section id="lets-try-the-sentencizer" class="slide level2 smaller">
 <h2>🧪 Let’s try — the sentencizer</h2>
@@ -356,6 +355,26 @@ Masaki EGUCHI, Ph.D.
 <span id="cb5-5"><a></a></span>
 <span id="cb5-6"><a></a><span class="bu">print</span>(ask(<span class="st">"Despite the rain, the game went ahead."</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now labelling a sentence is just <code>ask(...)</code>.</p>
+</section>
+<section id="one-prediction-one-record" class="slide level2 smaller">
+<h2>One prediction, one record</h2>
+<p>When you label a sentence, keep the result in a small, fixed shape:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>prediction <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"Despite the rain, the game went ahead."</span>, <span class="st">"label"</span>: ask(...)}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>This <code>{id, text, label}</code> <strong>record</strong> — <em>text in → label out</em> — is the <strong>canonical schema</strong> you’ll use every day this week. Every gold set and every model output is just a <strong>list of these</strong>.</p>
+</div>
+</div>
+</div>
+</div>
 </section></section>
 <section>
 <section id="your-turn" class="title-slide slide level1 center">
@@ -395,6 +414,37 @@ Masaki EGUCHI, Ph.D.
 </ul>
 <div class="fragment">
 <p>Choosing now means your group is ready to start the project on <strong>Day 4</strong>. See the <a href="../final-project/index.html">Final Project</a> page for the tracks.</p>
+</div>
+</section></section>
+<section>
+<section id="作戦会議-strategy-huddle" class="title-slide slide level1 center">
+<h1>作戦会議 — strategy huddle</h1>
+
+</section>
+<section id="open-your-作戦シート" class="slide level2 smaller">
+<h2>Open your 作戦シート</h2>
+<p>Class tutorials only ever use the <strong>CEFR</strong> demo. This ~10–15 min team huddle is where you carry each day’s mechanic onto <strong>your own track</strong>.</p>
+<p>Start your <strong>作戦シート</strong> (<em>project design log</em>) — today’s four entries:</p>
+<ol type="1">
+<li><strong>Track</strong> — which dataset your group picked.</li>
+<li><strong>Problem statement</strong> — one line: <em>what are you labelling, and why?</em></li>
+<li><strong>Unit of analysis</strong> — sentence or whole text?</li>
+<li><strong>Draft label set</strong> — your first guess at the categories.</li>
+</ol>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>You’ll add to this sheet again at the end of <strong>Day 2</strong> and <strong>Day 3</strong>. By then it’s a <strong>study design</strong> — and it prefills your final report.</p>
+</div>
+</div>
+</div>
 </div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">

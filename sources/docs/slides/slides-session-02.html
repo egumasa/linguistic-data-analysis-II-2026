@@ -95,7 +95,7 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7319ef940ecc18a51fa7d51b60c4dbfa.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-786aa19b3b784cc15a2029c072583b99.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -194,18 +194,14 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center quarto-title-block">
+  <p class="kicker">Linguistic Data Analysis II · Day 1</p>
   <h1 class="title">Session 2: Colab Onboarding &amp; Your First LLM Call</h1>
   <p class="subtitle">Day 1 · Introduction &amp; First Experience (1-2)</p>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Masaki EGUCHI, Ph.D. 
-</div>
-</div>
-</div>
-
+  <div class="title-meta">
+    <p class="author">Masaki EGUCHI, Ph.D.</p>
+    <p class="institute">Tohoku University · Summer 2026</p>
+  </div>
 </section>
 <section>
 <section id="session-2-colab-onboarding-your-first-llm-call" class="title-slide slide level1 center">
@@ -237,7 +233,6 @@ Masaki EGUCHI, Ph.D.
 <ul>
 <li>Slides give the <strong>idea</strong> for each step (a minute or two).</li>
 <li>Then you <strong>do it in Colab</strong> — right away, while it’s fresh.</li>
-<li><strong>Type the code, don’t copy it.</strong> The little effort is the point: it’s how it sticks.</li>
 </ul>
 <p>Two kinds of Colab moment:</p>
 <ul>
@@ -257,6 +252,15 @@ Masaki EGUCHI, Ph.D.
 </div>
 </div>
 </div>
+</section>
+<section id="before-we-begin" class="slide level2">
+<h2>Before we begin</h2>
+<p>Why do we learn Python syntax when LLM can write for us?</p>
+<ul>
+<li>The role is changing; human conceptualize and supervise.</li>
+<li>AI cannot take responsibility of your work.</li>
+<li><code>Review</code> is still your job; reading and being able to explain what is happening is critical.</li>
+</ul>
 </section></section>
 <section>
 <section id="colab-basics-run-a-cell-read-an-error" class="title-slide slide level1 center">
@@ -272,16 +276,12 @@ Masaki EGUCHI, Ph.D.
 <li><strong>Code cells</strong> — Python that runs on a <strong>runtime</strong> (a free computer Google lends you in the cloud).</li>
 <li>Run a cell with <strong>Shift + Enter</strong>.</li>
 </ul>
-<div class="fragment">
 <p>Nothing installs on your laptop. If the runtime disconnects, you just re-run the cells.</p>
-</div>
 </section>
 <section id="why-this-matters" class="slide level2">
 <h2>Why this matters</h2>
-<p>This is the <strong>room you’ll work in all week</strong> — every session runs here.</p>
-<div class="fragment">
+<p>This is the <strong>workspace you’ll use for every work</strong> — every session runs here.</p>
 <p>And one thing <em>will</em> happen: you’ll hit a <strong>red error</strong>. That’s not failure — it’s Python telling you exactly what it couldn’t do. <strong>Read the last line</strong> to understand what you’ll need to do.</p>
-</div>
 </section>
 <section id="lets-follow-in-colab" class="slide level2 smaller">
 <h2>👀 Let’s follow — in Colab</h2>
@@ -332,6 +332,9 @@ Masaki EGUCHI, Ph.D.
 <li><code>generate_text(...)</code> does the call (we set it up for you — no API key today).</li>
 <li><code>reply = ...</code> <strong>stores</strong> the answer in a variable named <code>reply</code>, so you can use it later.</li>
 </ul>
+</div>
+<div class="fragment">
+<p>One call = <strong>one answer</strong>. That reply isn’t the truth — it’s <strong>data to check.</strong> In Session 6 you’ll <em>score</em> answers like this against a human gold standard.</p>
 </div>
 </section>
 <section id="why-this-matters-1" class="slide level2">

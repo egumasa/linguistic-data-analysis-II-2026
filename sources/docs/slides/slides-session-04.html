@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7319ef940ecc18a51fa7d51b60c4dbfa.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bde00274b4a677e175132b983751c62b.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -128,22 +128,21 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center quarto-title-block">
+  <p class="kicker">Linguistic Data Analysis II · Day 2</p>
   <h1 class="title">Session 4: Annotation Principles &amp; Inter-Annotator Agreement</h1>
   <p class="subtitle">Day 2 · Annotation, Gold Standards &amp; Metrics (2-1)</p>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Masaki EGUCHI, Ph.D. 
-</div>
-</div>
-</div>
-
+  <div class="title-meta">
+    <p class="author">Masaki EGUCHI, Ph.D.</p>
+    <p class="institute">Tohoku University · Summer 2026</p>
+  </div>
 </section>
 <section class="slide level2">
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
+<!-- OUTLINE DECK — slide-by-slide beat list for review. Bodies are condensed bullets, not
+     final prose; once the structure is approved these get written out in the S2/S3 style
+     (framing paragraph + `. . .` fragments + callouts). Derived from course-design.md S4
+     (lines 323–373), the three-move A → B → C outline, anchored in Eguchi & Kyle (2024). -->
 </section>
 <section>
 <section id="session-4-annotation-principles-inter-annotator-agreement" class="title-slide slide level1 center">
@@ -152,44 +151,275 @@ Masaki EGUCHI, Ph.D.
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
-<ul>
-<li>Annotation principles</li>
-<li>The NLP pipeline for applied linguistics</li>
-<li>Introduction to gold-standard dataset construction</li>
-</ul>
+<p>Three moves — anchored throughout in <strong>Eguchi &amp; Kyle (2024)</strong>:</p>
+<ol type="1">
+<li><strong>A · What NLP tasks are there</strong> — the task taxonomy, now concrete in linguistics</li>
+<li><strong>B · How NLP is evaluated</strong> — the workflow, and how it transfers to <strong>LLMs</strong></li>
+<li><strong>C · The annotation-&amp;-evaluation workflow</strong> — what you’ll run hands-on in S5–S6</li>
+</ol>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Place a linguistic annotation task in the classic NLP taxonomy (<em>identify · extract · categorize</em>, by <strong>unit of analysis</strong>).</li>
+<li>Explain why the course targets <strong>sentence</strong> and <strong>text categorization</strong> — and why <strong>error annotation</strong> is the exception.</li>
+<li>Describe the NLP <strong>evaluation workflow</strong> (gold → predictions → metrics) and how it transfers from a trained model to a prompted <strong>LLM</strong>.</li>
+<li>Operationalize a linguistic category into an <strong>annotation scheme</strong> with coding guidelines.</li>
+<li>Explain <strong>inter-annotator agreement</strong>: percent agreement vs.&nbsp;why <strong>Cohen’s κ</strong> corrects for chance.</li>
+<li>Read a <strong>confusion matrix</strong> and conceptual <strong>P / R / F1</strong>.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The message of the day: <em>labelled data is only trustworthy if the category is <strong>operationalized</strong> and two coders agree <strong>beyond chance</strong>.</em></p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="annotation-principles" class="title-slide slide level1 center">
-<h1>Annotation principles</h1>
+<section id="a-what-nlp-tasks-are-there" class="title-slide slide level1 center">
+<h1>A · What NLP tasks are there</h1>
 
 </section>
-<section id="annotation-principles-1" class="slide level2">
-<h2>Annotation principles</h2>
-<!-- to be added -->
+<section id="what-is-annotation" class="slide level2 smaller">
+<h2>What is annotation?</h2>
+<p><strong>Annotation</strong> = adding <strong>interpretive labels</strong> to language.</p>
+<ul>
+<li><strong>POS</strong> — noun / verb / adjective…</li>
+<li><strong>Word sense</strong> — which meaning of <em>bank</em>?</li>
+<li><strong>Stance / engagement</strong> — is the writer hedging, endorsing?</li>
+<li><strong>Discourse moves</strong> — what is this sentence <em>doing</em> in the argument?</li>
+<li><strong>Error tags</strong>, <strong>CEFR level</strong>, …</li>
+</ul>
+<p>The common shape: <strong>a unit of language → a label.</strong> That’s the whole game.</p>
+</section>
+<section id="annotation-is-the-foundation-of-corpus-linguistics" class="slide level2">
+<h2>Annotation is the foundation of corpus linguistics</h2>
+<p>Raw text is only searchable by <strong>word form</strong>.</p>
+<div class="fragment">
+<p>Annotation makes it searchable and analyzable at the level of <strong>meaning and function</strong> — that’s what turns a pile of text into a <em>corpus you can ask questions of</em>.</p>
+</div>
+</section>
+<section id="annotation-is-the-fuel-of-nlp" class="slide level2 smaller">
+<h2>Annotation is the fuel of NLP</h2>
+<p>Classic NLP systems are <strong>supervised</strong>: they <strong>learn from human-annotated gold data</strong>.</p>
+<ul>
+<li>Someone labels thousands of examples → the system learns the pattern.</li>
+<li>No annotation, no model.</li>
+</ul>
+<div class="fragment">
+<p>So NLP has <em>always</em> <strong>depended on</strong> annotation. Today we look at <em>how</em> that annotation is done well — and how we <strong>evaluate</strong> it.</p>
+</div>
+</section>
+<section id="classic-tasks-in-linguistics" class="slide level2 smaller">
+<h2>Classic tasks, in linguistics</h2>
+<p>Via <strong>Eguchi &amp; Kyle (2024)</strong> — each task = <em>input → output</em> over a <strong>unit of analysis</strong>, doing one of <em>identify · extract · categorize</em>:</p>
+<ul>
+<li><strong>POS tagging &amp; dependency parsing</strong> — label every token.</li>
+<li><strong>NER</strong> — find and type spans (names, places…).</li>
+<li><strong>Span categorization</strong> — their epistemic-stance / Engagement Analyzer example.</li>
+<li><strong>Text classification</strong> — one label for a whole text.</li>
+</ul>
+<div class="fragment">
+<p>Same three verbs, different unit — that’s the whole taxonomy.</p>
+</div>
+</section>
+<section id="organize-by-unit-output" class="slide level2">
+<h2>Organize by unit + output</h2>
+<ul>
+<li><strong>Token-level sequence labelling</strong> — POS, NER (one label <em>per token</em>).</li>
+<li><strong>Span categorization</strong> — stance spans (label a <em>stretch</em> of text).</li>
+<li><strong>Unit categorization → one label per unit</strong> — a <strong>sentence</strong> or a <strong>whole text</strong>.</li>
+</ul>
+<div class="fragment">
+<p>The last row is the one that yields clean, evaluable gold data. That’s where the course lives.</p>
+</div>
+</section>
+<section id="narrow-the-course-focus-and-why" class="slide level2 smaller">
+<h2>Narrow the course focus — and why</h2>
+<p>We do <strong>sentence categorization</strong> and <strong>text categorization</strong>:</p>
+<ul>
+<li>one label per unit → clean gold, a <strong>confusion matrix</strong>, <strong>P / R / F1</strong>;</li>
+<li>the canonical <code>{id, text, label}</code> schema you met in S3.</li>
+</ul>
+<div class="fragment">
+<p>Span / sequence tasks carry <strong>boundary + partial-match</strong> problems — too heavy for 5 days.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p><em>The evaluation you can teach in a week determines the tasks you can target.</em></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-challenge-path-error-annotation" class="slide level2 smaller">
+<h2>Optional challenge path — error annotation</h2>
+<p>The <strong>AutoErrorAnalyzer</strong> track has two routes:</p>
+<ul>
+<li><strong>Default — sentence-level:</strong> one label per unit; rides the taught pipeline like every other track.</li>
+<li><strong>Stretch — locate-a-span-then-categorize:</strong> the <em>real</em> error-annotation task. Breaks one-label-per-unit; needs <strong>span matching + partial-match scoring</strong>.</li>
+</ul>
+<div class="fragment">
+<p>Offered as an <strong>instructor-supported stretch</strong>, not an excluded case — a coding-guidelines + span-scoring spec is provided for teams who take it.</p>
+</div>
 </section></section>
 <section>
-<section id="the-nlp-pipeline" class="title-slide slide level1 center">
-<h1>The NLP pipeline</h1>
+<section id="b-how-nlp-evaluates-a-system-and-how-it-transfers-to-llms" class="title-slide slide level1 center">
+<h1>B · How NLP evaluates a system — and how it transfers to LLMs</h1>
 
 </section>
-<section id="the-nlp-pipeline-1" class="slide level2">
-<h2>The NLP pipeline</h2>
-<!-- to be added -->
+<section id="the-nlp-evaluation-workflow" class="slide level2">
+<h2>The NLP evaluation workflow</h2>
+<p>Eguchi &amp; Kyle (2024) walk the full loop:</p>
+<p><strong>build a gold standard → a system produces predictions → score predictions against gold.</strong></p>
+<div class="fragment">
+<p>We borrow the <strong>evaluation half</strong> — not the training half.</p>
+</div>
+</section>
+<section id="model-prompted-llm" class="slide level2">
+<h2>Model → prompted LLM</h2>
+<ul>
+<li>Classic NLP trains a <strong>supervised model</strong> on gold (context, not our method).</li>
+<li>This course <strong>replaces the model with a prompted LLM</strong>…</li>
+<li>…but <strong>evaluates it the same way.</strong></li>
+</ul>
+<div class="fragment">
+<p>That transfer is the whole reason this workflow matters here.</p>
+</div>
+</section>
+<section id="what-evaluation-means" class="slide level2 smaller">
+<h2>What “evaluation” means</h2>
+<ul>
+<li><strong>P / R / F1</strong>, and <strong>macro-F1</strong> across classes.</li>
+<li><strong>Confusion matrix</strong> — where the errors actually go.</li>
+<li><strong>Cohen’s κ</strong> — agreement corrected for chance.</li>
+<li><strong>Train / validation / test</strong> — the held-out logic (seed now; applied when we tune prompts in S7–S8).</li>
+</ul>
+</section>
+<section id="reading-a-22-confusion-matrix" class="slide level2 smaller">
+<h2>Reading a 2×2 confusion matrix</h2>
+<p>Rows = <strong>gold</strong>, columns = <strong>prediction</strong>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">Pred <strong>+</strong></th>
+<th style="text-align: center;">Pred <strong>−</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gold <strong>+</strong></td>
+<td style="text-align: center;"><strong>TP</strong></td>
+<td style="text-align: center;">FN</td>
+</tr>
+<tr class="even">
+<td>Gold <strong>−</strong></td>
+<td style="text-align: center;">FP</td>
+<td style="text-align: center;"><strong>TN</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li><strong>Precision</strong> = TP / (TP + FP) — of what it <em>flagged</em>, how much was right?</li>
+<li><strong>Recall</strong> = TP / (TP + FN) — of what was <em>actually positive</em>, how much did it catch?</li>
+<li><strong>F1</strong> = harmonic mean of the two.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>κ</strong> asks the harder question: how much do two labellers agree <em>beyond what chance alone would give</em>?</p>
+</div>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="gold-standard-construction" class="title-slide slide level1 center">
-<h1>Gold-standard construction</h1>
+<section id="c-workflow-annotation-procedure-evaluation" class="title-slide slide level1 center">
+<h1>C · Workflow — annotation procedure &amp; evaluation</h1>
 
 </section>
-<section id="gold-standard-construction-1" class="slide level2">
-<h2>Gold-standard construction</h2>
-<!-- to be added -->
+<section id="design-the-annotation-scheme" class="slide level2">
+<h2>Design the annotation scheme</h2>
+<ul>
+<li>Adapt or design an <strong>annotation scheme</strong> + coding guidelines.</li>
+<li><strong>Operationalize</strong> the category: turn a fuzzy construct into a <em>decidable</em> rule a second coder can follow.</li>
+</ul>
+<div class="fragment">
+<p>If two trained coders can’t agree on it, a model can’t be trusted on it either.</p>
+</div>
+</section>
+<section id="annotate-blind-agreement-gold" class="slide level2">
+<h2>Annotate blind → agreement → gold</h2>
+<ol type="1">
+<li>Two coders annotate the same items <strong>blind</strong>.</li>
+<li>Measure <strong>inter-annotator agreement</strong> — percent <strong>+ κ</strong>.</li>
+<li><strong>Adjudicate</strong> disagreements → a <strong>gold standard</strong>.</li>
+</ol>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>You’ll run exactly this in <strong>S5</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluate-a-model-against-gold" class="slide level2">
+<h2>Evaluate a model against gold</h2>
+<p>Same metrics, two different comparisons:</p>
+<ul>
+<li><strong>annotator vs.&nbsp;annotator</strong> → <strong>inter-annotator agreement (IAA)</strong></li>
+<li><strong>gold vs.&nbsp;model</strong> → <strong>model evaluation</strong></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>You’ll run this in <strong>S6</strong> — the frozen predictions stand in for a trained model.</p>
+</div>
+</div>
+</div>
 </section></section>
+<section id="coming-up" class="title-slide slide level1 center">
+<h1>Coming up</h1>
+<ul>
+<li><strong>S5 — Gold-Standard Annotation &amp; Agreement</strong> <em>(hands-on)</em>: build the gold standard and measure agreement — executes <strong>Phase C</strong>.</li>
+<li><strong>S6 — Gold Standards &amp; Evaluation Metrics</strong> <em>(hands-on)</em>: score a model against that gold — executes <strong>Phase B</strong>.</li>
+</ul>
+</section>
+
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
 

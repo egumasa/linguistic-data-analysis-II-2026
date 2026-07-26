@@ -471,7 +471,7 @@
     "href": "sessions/day3/session-08.html#learning-objectives",
     "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
     "section": "Learning objectives",
-    "text": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nGet and store a Gemini API key (Colab Secrets) and make reproducible calls (temperature=0, seed).\nMap the four prompt elements onto a classification prompt — recasting Huang & Mizumoto’s Task / Criteria / “My paragraph” structure as the CEFR prompt (instruction = classify; context = level descriptors; input = the sentence; output indicator = return only the label).\nRun the zero-shot → few-shot → chain-of-thought progression on CEFR, re-evaluating each on a validation set, and score the final prompt once on the held-out test set.\nPrompt for structured output and recognise JSON as the {id, text, label} data format.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -519,7 +519,7 @@
     "href": "sessions/day3/session-07.html#learning-objectives",
     "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
     "section": "Learning objectives",
-    "text": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nName the four prompt elements — instruction · context · input data · output indicator — and locate each in a real prompt.\nDistinguish zero-shot from few-shot prompting and judge when examples help.\nExplain chain-of-thought prompting and where it earns its keep.\nPlace a technique on the run-it-this-week vs. know-it-exists line (zero/few/CoT and structured output vs. self-consistency, RAG, and agentic prompting).\nExplain the train/test contamination trap and why you tune on a validation set but report on a held-out test set.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -531,7 +531,7 @@
     "href": "sessions/day3/session-07.html#reading",
     "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
     "section": "Reading",
-    "text": "Reading\nRead (see all course readings):\n\nHuang, J., & Mizumoto, A. (2025). Prompt engineering: Enhancing AI-driven language learning and feedback. In L. McCallum & D. Tafazoli (Eds.), The Palgrave Encyclopedia of Computer-Assisted Language Learning (pp. 1–8). Springer Nature Switzerland. https://doi.org/10.1007/978-3-031-51447-0_103-1\nKim, M., & Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. Journal of English for Academic Purposes, 71, 101422. https://doi.org/10.1016/j.jeap.2024.101422",
+    "text": "Reading\nRead (see all course readings):\n\nHuang, J., & Mizumoto, A. (2025). Prompt engineering: Enhancing AI-driven language learning and feedback. In L. McCallum & D. Tafazoli (Eds.), The Palgrave Encyclopedia of Computer-Assisted Language Learning (pp. 1–8). Springer Nature Switzerland. https://doi.org/10.1007/978-3-031-51447-0_103-1\nKim, M., & Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. Journal of English for Academic Purposes, 71, 101422. https://doi.org/10.1016/j.jeap.2024.101422\n\n\n\n\n\n\n\nRunning example (Day 3). We anchor the whole day in Huang & Mizumoto’s worked prompts — Example Prompt 1 (a generic chain-of-thought paragraph-feedback prompt) refined into Example Prompt 2 (the structured Task / Criteria / “My paragraph” prompt). That same structure returns in Session 8 (mapped onto the CEFR classification prompt) and in Session 9 (as the error-analysis iteration loop). A self-study map of the wider technique landscape: the Prompt Engineering Guide.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -701,35 +701,77 @@
     "href": "slides/slides-session-07.html#agenda",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nPrompt-design principles\nZero-shot vs. few-shot prompting\nStrategies for effective prompt engineering"
+    "text": "📋 Agenda\n\nThe anatomy of a prompt — four elements\nZero-shot vs. few-shot, and chain-of-thought\nThe wider design space — what to run vs. what to know about\nTwo traps: contamination and the validation/test split\n\nOur worked example all session: Huang & Mizumoto (2025) — writing-feedback prompts."
   },
   {
     "objectID": "slides/slides-session-07.html#learning-objectives",
     "href": "slides/slides-session-07.html#learning-objectives",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nName the four prompt elements — instruction · context · input data · output indicator — and locate each in a real prompt.\nDistinguish zero-shot from few-shot prompting and judge when examples help.\nExplain chain-of-thought and where it earns its keep.\nPlace a technique on the run-it-this-week vs. know-it-exists line.\nExplain the train/test contamination trap and why you tune on validation, report on test.\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: prompting is a design space, not a single trick — small structural choices move the score."
   },
   {
-    "objectID": "slides/slides-session-07.html#prompt-design-principles-1",
-    "href": "slides/slides-session-07.html#prompt-design-principles-1",
+    "objectID": "slides/slides-session-07.html#prompting-is-a-design-space",
+    "href": "slides/slides-session-07.html#prompting-is-a-design-space",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
-    "section": "Prompt-design principles",
-    "text": "Prompt-design principles"
+    "section": "Prompting is a design space",
+    "text": "Prompting is a design space\nAn LLM does what the prompt tells it to. Change the prompt, change the output — and the score.\n\nSo a prompt is not a magic phrase you either know or don’t. It has parts you can design deliberately — and today we learn those parts on one concrete example."
   },
   {
-    "objectID": "slides/slides-session-07.html#zero-shot-vs.-few-shot-1",
-    "href": "slides/slides-session-07.html#zero-shot-vs.-few-shot-1",
+    "objectID": "slides/slides-session-07.html#four-elements-of-a-prompt",
+    "href": "slides/slides-session-07.html#four-elements-of-a-prompt",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Four elements of a prompt",
+    "text": "Four elements of a prompt\nChen et al. (2023), via Huang & Mizumoto (2025) — an effective prompt typically has four parts:\n\nInstruction — what the model should do (start with a verb: classify, summarize, explain).\nContext — the background, role, rubric, or level that scopes the task.\nInput data — the actual text to be processed.\nOutput indicator — the form of the answer (format, tone, “only feedback, no rewrite”).\n\n\nIf one of the four is missing, the output usually misses too."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#the-running-example-writing-feedback",
+    "href": "slides/slides-session-07.html#the-running-example-writing-feedback",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "The running example — writing feedback",
+    "text": "The running example — writing feedback\nHuang & Mizumoto’s Example Prompt 2 — a structured paragraph-feedback prompt for an EFL class:\n\nTask — Based on the following criteria, review the following paragraph and provide specific feedback… I am not seeking rewrite, give me only feedback.\nCriteria — 1. Hook / Attention-grabber · 2. Background / Context · 3. Thesis statement · 4. Organization · 5. Clarity & coherence\nMy paragraph — (paste your paragraph here)\n\n\nRead the four elements straight off it:\n\n\n\nElement\nIn this prompt\n\n\n\n\nInstruction\n“review… and provide specific feedback”\n\n\nContext\nthe 5-item Criteria rubric\n\n\nInput data\n“My paragraph”\n\n\nOutput indicator\n“only feedback, no rewrite”"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#zero-shot-vs.-few-shot",
+    "href": "slides/slides-session-07.html#zero-shot-vs.-few-shot",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "Zero-shot vs. few-shot",
-    "text": "Zero-shot vs. few-shot"
+    "text": "Zero-shot vs. few-shot\n\nZero-shot — instruction only, no examples. The model relies on what it already knows. Great for simple, familiar tasks.\nFew-shot — you include a few worked examples (input → correct label) right in the prompt, so the model infers the pattern.\n\n\nWhen do examples help? When the task is specialized, the label set is your own, or the format must be exact. Two tips (promptingguide.ai):\n\nkeep a consistent format across all examples;\nmake the examples’ label space representative — don’t show only one class."
   },
   {
-    "objectID": "slides/slides-session-07.html#effective-prompting-strategies-1",
-    "href": "slides/slides-session-07.html#effective-prompting-strategies-1",
+    "objectID": "slides/slides-session-07.html#chain-of-thought-cot",
+    "href": "slides/slides-session-07.html#chain-of-thought-cot",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
-    "section": "Effective prompting strategies",
-    "text": "Effective prompting strategies"
+    "section": "Chain-of-thought (CoT)",
+    "text": "Chain-of-thought (CoT)\nAsk the model to reason in steps before answering (Wei et al., 2022).\nHuang & Mizumoto’s Example Prompt 1 is CoT feedback:\n\nFirst, read the paragraph to understand its main idea. Next, check the structure… Then, identify grammatical errors. After that, assess clarity and coherence. Provide feedback based on these steps.\n\n\nZero-shot CoT is often just one added line — “Let’s think step by step” (Kojima et al., 2022).\n\n\n\n\n\n\nTip\n\n\nCoT earns its keep on tasks that need sequential judgement — reviewing writing, or deciding a borderline label."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#iterating-a-prompt-ex-1-ex-2",
+    "href": "slides/slides-session-07.html#iterating-a-prompt-ex-1-ex-2",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Iterating a prompt: Ex 1 → Ex 2",
+    "text": "Iterating a prompt: Ex 1 → Ex 2\nThe same feedback task, tightened:\n\nEx 1 (generic) — “give feedback on this paragraph, step by step.” Works, but vague.\nEx 2 (structured) — split into Task / Criteria / My paragraph, add the output indicator “only feedback.”\n\n\nThat move — generic → structured — is prompt iteration. You’ll do the data-driven version of it in S9, reading the errors and tightening the Criteria."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#run-it-this-week-vs.-know-it-exists",
+    "href": "slides/slides-session-07.html#run-it-this-week-vs.-know-it-exists",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Run it this week vs. know it exists",
+    "text": "Run it this week vs. know it exists\n\n\n\n\n\n\n\nRun it in S8\nKnow it exists (name & reason, don’t run)\n\n\n\n\nzero-shot\nself-consistency — sample N, majority-vote (a reproducibility lever → S10)\n\n\nfew-shot\nRAG — ground the model on the annotation manual / codebook (≈ dynamic few-shot)\n\n\nchain-of-thought\nagentic / multi-step — the model plans → critiques its own label → revises\n\n\nstructured output\n(ReAct, Reflexion, prompt chaining…)\n\n\n\n\nYour self-study map for all of these: promptingguide.ai/techniques."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#two-traps-before-you-tune",
+    "href": "slides/slides-session-07.html#two-traps-before-you-tune",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Two traps before you tune",
+    "text": "Two traps before you tune\n\nTrain/test contamination — never draw your few-shot examples from the gold set you score on. The model would be “shown the answers.”\nValidation vs. test — tune the prompt on a small validation set; report the final number once on a held-out test set.\n\n\nBoth protect the one thing an evaluation is for: an honest estimate of how the prompt does on unseen text."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#bridge-to-s8-same-anatomy-new-task",
+    "href": "slides/slides-session-07.html#bridge-to-s8-same-anatomy-new-task",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Bridge to S8 — same anatomy, new task",
+    "text": "Bridge to S8 — same anatomy, new task\nNext session you build a real classification pipeline — and the CEFR prompt is the same four elements:\n\n\n\n\n\n\n\nEx 2 (feedback)\nCEFR classification (S8)\n\n\n\n\nInstruction: “provide feedback”\n“classify this sentence’s CEFR level”\n\n\nContext: the 5-item rubric\nthe CEFR level descriptors\n\n\nInput: “My paragraph”\nthe learner sentence\n\n\nOutput indicator: “only feedback”\n“return only the label” → JSON\n\n\n\n\nS8 — run zero → few → CoT on CEFR, with a Gemini API key. S9 — read the errors, iterate, and benchmark against a trained model."
   },
   {
     "objectID": "slides/slides-session-12.html#agenda",
@@ -946,7 +988,7 @@
     "href": "slides/slides-session-03.html#why-this-matters-1",
     "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "Why this matters",
-    "text": "Why this matters\n\n\n\n\n\n\nImportant\n\n\nOn Day 2, the sentence is the unit you annotate by hand and the unit you feed the LLM. Bad boundaries → bad gold data → misleading scores.\n\n\n\nGetting segmentation right is not a side quest — it’s the foundation the whole gold standard sits on."
+    "text": "Why this matters\n\n\n\n\n\n\nImportant\n\n\nOn Day 2, the sentence is the unit you annotate by hand and the unit you feed the LLM. Bad boundaries → bad gold data → misleading scores.\n\n\n\nGetting segmentation right is not a side quest — it’s the foundation the whole gold standard sits on.\n\nThis is your unit of analysis — the thing you attach one label to. Sometimes it’s the sentence (segment first, like here); sometimes it’s the whole text (an essay gets one rating). Session 4 formalizes this as sentence categorization vs text categorization."
   },
   {
     "objectID": "slides/slides-session-03.html#lets-try-the-sentencizer",
@@ -984,6 +1026,13 @@
     "text": "🧪 Let’s try — wrap it in a function\nSame three steps, packaged so you can reuse them:\ndef ask(sentence):\n    \"\"\"Ask the model for the CEFR level of one sentence; return its reply.\"\"\"\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    return generate_text(prompt).strip()\n\nprint(ask(\"Despite the rain, the game went ahead.\"))\nNow labelling a sentence is just ask(...)."
   },
   {
+    "objectID": "slides/slides-session-03.html#one-prediction-one-record",
+    "href": "slides/slides-session-03.html#one-prediction-one-record",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "One prediction, one record",
+    "text": "One prediction, one record\nWhen you label a sentence, keep the result in a small, fixed shape:\nprediction = {\"id\": 1, \"text\": \"Despite the rain, the game went ahead.\", \"label\": ask(...)}\n\n\n\n\n\n\n\nNote\n\n\nThis {id, text, label} record — text in → label out — is the canonical schema you’ll use every day this week. Every gold set and every model output is just a list of these."
+  },
+  {
     "objectID": "slides/slides-session-03.html#guided-practice",
     "href": "slides/slides-session-03.html#guided-practice",
     "title": "Session 3: Python Practice & Mini-Project Setup",
@@ -998,6 +1047,13 @@
     "text": "Mini-project setup\n\nForm a group — each needs at least one Linguistic Data Analysis I alumnus.\nPick one of the three mini-project tracks (datasets) for your Day 4–5 project.\nRecord your group and track where the instructor asks.\n\n\nChoosing now means your group is ready to start the project on Day 4. See the Final Project page for the tracks."
   },
   {
+    "objectID": "slides/slides-session-03.html#open-your-作戦シート",
+    "href": "slides/slides-session-03.html#open-your-作戦シート",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Open your 作戦シート",
+    "text": "Open your 作戦シート\nClass tutorials only ever use the CEFR demo. This ~10–15 min team huddle is where you carry each day’s mechanic onto your own track.\nStart your 作戦シート (project design log) — today’s four entries:\n\nTrack — which dataset your group picked.\nProblem statement — one line: what are you labelling, and why?\nUnit of analysis — sentence or whole text?\nDraft label set — your first guess at the categories.\n\n\n\n\n\n\n\n\nTip\n\n\nYou’ll add to this sheet again at the end of Day 2 and Day 3. By then it’s a study design — and it prefills your final report."
+  },
+  {
     "objectID": "slides/slides-session-09.html#agenda",
     "href": "slides/slides-session-09.html#agenda",
     "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
@@ -1009,7 +1065,7 @@
     "href": "slides/slides-session-09.html#learning-objectives",
     "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nUse show_errors to find misclassifications, hypothesize a fix, and re-run.\nCompare macro-F1 across iteration rounds.\nBenchmark the best LLM prompt against a pre-trained spaCy classifier on the same test set.\nInterpret what supervised fine-tuning buys and costs versus zero-training prompting."
   },
   {
     "objectID": "slides/slides-session-09.html#error-analysis-1",
@@ -1017,6 +1073,13 @@
     "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
     "section": "Error analysis",
     "text": "Error analysis"
+  },
+  {
+    "objectID": "slides/slides-session-09.html#the-same-move-you-already-saw",
+    "href": "slides/slides-session-09.html#the-same-move-you-already-saw",
+    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
+    "section": "The same move you already saw",
+    "text": "The same move you already saw\nBack in S7, Huang & Mizumoto’s Ex 1 → Ex 2 was a generic prompt tightened into a structured one.\n\nThat’s exactly the loop here — only now it’s driven by data, not intuition:\n\nread the errors (show_errors) — where does the prompt fail?\ntighten one thing — usually the Criteria / label descriptors.\nre-measure macro-F1 — did it actually help?\n\n\n\n\n\n\n\nTip\n\n\nChange one thing per round, so you know what moved the number."
   },
   {
     "objectID": "slides/slides-session-09.html#iterating-the-prompt-1",
@@ -1031,6 +1094,13 @@
     "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
     "section": "Under the hood",
     "text": "Under the hood"
+  },
+  {
+    "objectID": "slides/slides-session-09.html#assistant-not-replacement",
+    "href": "slides/slides-session-09.html#assistant-not-replacement",
+    "title": "Session 9: Iterative Prompt Improvement & Error Analysis",
+    "section": "Assistant, not replacement",
+    "text": "Assistant, not replacement\nYou just measured a prompted LLM against a trained model on the same test set. Neither is “the answer” — each has costs (data to train vs. prompt, reproducibility, interpretability).\n\nAnd back to where the running example started — Huang & Mizumoto (2025):\n\n“Human teachers must ultimately remain at the core of language teaching and learning.”\n\nThe LLM is a tool you evaluate and supervise, not a verdict you accept."
   },
   {
     "objectID": "resources/extra/index.html",
@@ -2256,7 +2326,14 @@
     "href": "slides/slides-session-08.html#learning-objectives",
     "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nGet and store a Gemini API key (Colab Secrets) and make reproducible calls (temperature=0, seed).\nRun the zero-shot → few-shot → chain-of-thought progression on CEFR, re-evaluating each on a validation set.\nScore the final prompt once on the held-out test set.\nPrompt for structured output and recognise JSON as the {id, text, label} format."
+  },
+  {
+    "objectID": "slides/slides-session-08.html#same-anatomy-new-task",
+    "href": "slides/slides-session-08.html#same-anatomy-new-task",
+    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
+    "section": "Same anatomy, new task",
+    "text": "Same anatomy, new task\nThe CEFR prompt you’ll write is Huang & Mizumoto’s Ex 2 structure, re-cast for classification:\n\n\n\n\n\n\n\nEx 2 — writing feedback (S7)\nCEFR classification (today)\n\n\n\n\nInstruction: “review and give feedback”\n“classify this sentence’s CEFR level”\n\n\nContext: the 5-item Criteria rubric\nthe CEFR level descriptors\n\n\nInput data: “My paragraph”\nthe learner sentence {text}\n\n\nOutput indicator: “only feedback, no rewrite”\n“return only the label” → structured / JSON\n\n\n\n\nAnd the few-shot examples come from the pool — never the gold set you score on (contamination, S7)."
   },
   {
     "objectID": "slides/slides-session-08.html#run-classification-in-colab-1",
@@ -2298,21 +2375,28 @@
     "href": "slides/slides-session-02.html#how-today-works",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "How today works",
-    "text": "How today works\n\nSlides give the idea for each step (a minute or two).\nThen you do it in Colab — right away, while it’s fresh.\nType the code, don’t copy it. The little effort is the point: it’s how it sticks.\n\nTwo kinds of Colab moment:\n\n👀 Let’s follow — run the cell together and watch what happens.\n🧪 Let’s try — your turn: change something and re-run.\n\n\n\n\n\n\n\nTip\n\n\nErrors are normal and expected today. Reading them is a skill we practise, not a sign anything is broken."
+    "text": "How today works\n\nSlides give the idea for each step (a minute or two).\nThen you do it in Colab — right away, while it’s fresh.\n\nTwo kinds of Colab moment:\n\n👀 Let’s follow — run the cell together and watch what happens.\n🧪 Let’s try — your turn: change something and re-run.\n\n\n\n\n\n\n\nTip\n\n\nErrors are normal and expected today. Reading them is a skill we practise, not a sign anything is broken."
+  },
+  {
+    "objectID": "slides/slides-session-02.html#before-we-begin",
+    "href": "slides/slides-session-02.html#before-we-begin",
+    "title": "Session 2: Colab Onboarding & Your First LLM Call",
+    "section": "Before we begin",
+    "text": "Before we begin\nWhy do we learn Python syntax when LLM can write for us?\n\nThe role is changing; human conceptualize and supervise.\nAI cannot take responsibility of your work.\nReview is still your job; reading and being able to explain what is happening is critical."
   },
   {
     "objectID": "slides/slides-session-02.html#what-colab-is",
     "href": "slides/slides-session-02.html#what-colab-is",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "What Colab is",
-    "text": "What Colab is\nColab = an online Python notebook Google offers (run code without installing anything).\nA notebook = a document of cells you run one at a time.\n\nText cells (like this slide) — notes.\nCode cells — Python that runs on a runtime (a free computer Google lends you in the cloud).\nRun a cell with Shift + Enter.\n\n\nNothing installs on your laptop. If the runtime disconnects, you just re-run the cells."
+    "text": "What Colab is\nColab = an online Python notebook Google offers (run code without installing anything).\nA notebook = a document of cells you run one at a time.\n\nText cells (like this slide) — notes.\nCode cells — Python that runs on a runtime (a free computer Google lends you in the cloud).\nRun a cell with Shift + Enter.\n\nNothing installs on your laptop. If the runtime disconnects, you just re-run the cells."
   },
   {
     "objectID": "slides/slides-session-02.html#why-this-matters",
     "href": "slides/slides-session-02.html#why-this-matters",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "Why this matters",
-    "text": "Why this matters\nThis is the room you’ll work in all week — every session runs here.\n\nAnd one thing will happen: you’ll hit a red error. That’s not failure — it’s Python telling you exactly what it couldn’t do. Read the last line to understand what you’ll need to do."
+    "text": "Why this matters\nThis is the workspace you’ll use for every work — every session runs here.\nAnd one thing will happen: you’ll hit a red error. That’s not failure — it’s Python telling you exactly what it couldn’t do. Read the last line to understand what you’ll need to do."
   },
   {
     "objectID": "slides/slides-session-02.html#lets-follow-in-colab",
@@ -2340,7 +2424,7 @@
     "href": "slides/slides-session-02.html#the-whole-idea-in-one-line",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "The whole idea, in one line",
-    "text": "The whole idea, in one line\nYou send the model text (a prompt); it sends text back (a reply).\nreply = generate_text(\"...your prompt...\")\n\n\ngenerate_text(...) does the call (we set it up for you — no API key today).\nreply = ... stores the answer in a variable named reply, so you can use it later."
+    "text": "The whole idea, in one line\nYou send the model text (a prompt); it sends text back (a reply).\nreply = generate_text(\"...your prompt...\")\n\n\ngenerate_text(...) does the call (we set it up for you — no API key today).\nreply = ... stores the answer in a variable named reply, so you can use it later.\n\n\n\nOne call = one answer. That reply isn’t the truth — it’s data to check. In Session 6 you’ll score answers like this against a human gold standard."
   },
   {
     "objectID": "slides/slides-session-02.html#why-this-matters-1",
@@ -2457,37 +2541,163 @@
   {
     "objectID": "slides/slides-session-01.html#agenda",
     "href": "slides/slides-session-01.html#agenda",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nWhat LLMs are & how they fit linguistic analysis\nThe NLP tasks we’ll tackle in this course\nCourse overview & self-introductions"
+    "text": "📋 Agenda\n\nSelf-introductions\nWhy this course\nThe 5-day map & objectives\nWhat do you know about LLM?\nWhat an LLM is — and why it’s relevant\nLLM follows instructions — a no-code demo\nBut — we need evaluation\nDiscussion"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#introduce-yourself---round-1",
+    "href": "slides/slides-session-01.html#introduce-yourself---round-1",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Introduce yourself - Round 1",
+    "text": "Introduce yourself - Round 1\nTell us:\n\nyour name\nWhat you enjoy doing while you are not doing research"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#round-2",
+    "href": "slides/slides-session-01.html#round-2",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Round 2",
+    "text": "Round 2\nTell us: - What is your research interest"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#round-3",
+    "href": "slides/slides-session-01.html#round-3",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Round 3",
+    "text": "Round 3\n\nWhy you decided to take this course\nAny goals\nAny concerns"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#llms-are-everywhere-now",
+    "href": "slides/slides-session-01.html#llms-are-everywhere-now",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "LLMs are everywhere now",
+    "text": "LLMs are everywhere now\nLarge language models are now common tools — for writing, translating, coding, searching.\nSo the question isn’t whether linguists will use them. It’s how to use them responsibly for linguistic analysis."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#linguistic-annotation-promising-but-costly",
+    "href": "slides/slides-session-01.html#linguistic-annotation-promising-but-costly",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Linguistic annotation: promising but costly",
+    "text": "Linguistic annotation: promising but costly\nOne especially promising use is annotation — labelling language data for analysis.\n\nBut careful annotation is expensive: expert time, training, guidelines, double-coding.\nIf an LLM could annotate reliably, then it facilitates research.\n\nThe tempting question: can an LLM just do it for us?"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#adequacy-must-be-evaluated-not-assumed",
+    "href": "slides/slides-session-01.html#adequacy-must-be-evaluated-not-assumed",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Adequacy must be evaluated, not assumed",
+    "text": "Adequacy must be evaluated, not assumed\nHere’s the seed of the whole course:\n\nAn LLM’s output is only useful if it’s adequate — and adequacy has to be evaluated, not assumed.\n\nBy Friday you will have critically evaluated an LLM on your own annotation task"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#one-simple-goal-of-the-course",
+    "href": "slides/slides-session-01.html#one-simple-goal-of-the-course",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "One simple Goal of the course",
+    "text": "One simple Goal of the course\nCan we trust an LLM on identifying collocation?\nUntil today\n\nWell, maybe?\n\nOR\n\nAre there any paper on this?\n\nAfter this course\n\nLet’s find out!\n\nEach day earns one piece of the method. By Friday you own the whole loop."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#what-well-do-this-week",
+    "href": "slides/slides-session-01.html#what-well-do-this-week",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "What we’ll do this week",
+    "text": "What we’ll do this week\n\n\n\nDay\nFocus\n\n\n\n\n1\nWhat is LLM, Python basics, call an LLM\n\n\n2\nGold standard + agreement — the yardstick\n\n\n3\nPrompt + iterate against metrics\n\n\n4\nMethod + assemble the pipeline\n\n\n5\nYour own data + present"
   },
   {
     "objectID": "slides/slides-session-01.html#learning-objectives",
     "href": "slides/slides-session-01.html#learning-objectives",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nDescribe, at a high level, what a Large Language Model is.\nName the three NLP tasks this course targets — classification, annotation, extraction — and give an example of each.\nSay what machine learning is and how ML models are built.\nExplain, at a high level, how LLMs are trained and how they produce natural language."
   },
   {
-    "objectID": "slides/slides-session-01.html#what-are-llms-1",
-    "href": "slides/slides-session-01.html#what-are-llms-1",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
-    "section": "What are LLMs?",
-    "text": "What are LLMs?"
+    "objectID": "slides/slides-session-01.html#the-one-idea-for-today",
+    "href": "slides/slides-session-01.html#the-one-idea-for-today",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "The one idea for today",
+    "text": "The one idea for today\n\nAn LLM is a judge you must check, not an oracle — and it fits the linguistic tasks you already care about.\n\nEverything this week is a way of checking that judge. Today we build the case for why checking is the whole point."
   },
   {
-    "objectID": "slides/slides-session-01.html#nlp-tasks-for-linguistic-analysis-1",
-    "href": "slides/slides-session-01.html#nlp-tasks-for-linguistic-analysis-1",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
-    "section": "NLP tasks for linguistic analysis",
-    "text": "NLP tasks for linguistic analysis"
+    "objectID": "slides/slides-session-01.html#large-language-model",
+    "href": "slides/slides-session-01.html#large-language-model",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Large Language Model",
+    "text": "Large Language Model\n\nstatistical machine-learning model\nautoregressive\ntransformer"
   },
   {
-    "objectID": "slides/slides-session-01.html#course-overview-introductions-1",
-    "href": "slides/slides-session-01.html#course-overview-introductions-1",
-    "title": "Session 1: Introduction to LLMs & NLP Tasks",
-    "section": "Course overview & introductions",
-    "text": "Course overview & introductions"
+    "objectID": "slides/slides-session-01.html#a-quick-detour-how-does-a-model-learn",
+    "href": "slides/slides-session-01.html#a-quick-detour-how-does-a-model-learn",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "A quick detour: how does a model learn?",
+    "text": "A quick detour: how does a model learn?\nMachine learning = a model learns patterns from data instead of being hand-coded with rules.\n\nRule-based: a human writes the rules.\nML: the model infers the rules from labelled examples.\n\n\nThis is the shift that made modern NLP — and it’s why data (annotation!) matters so much."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#how-llms-are-trained",
+    "href": "slides/slides-session-01.html#how-llms-are-trained",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "How LLMs are trained",
+    "text": "How LLMs are trained\nAn LLM is trained by self-supervised pretraining on huge amounts of text:\n\nThe task: predict the next word, over and over, on billions of sentences.\nNo hand-labelling needed — the text is its own answer key.\n\n\nProducing natural language is just that same next-word prediction, run forward — which is why it sounds fluent."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#reason-1-the-llm-is-the-product-of-nlp",
+    "href": "slides/slides-session-01.html#reason-1-the-llm-is-the-product-of-nlp",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Reason 1 — the LLM is the product of NLP",
+    "text": "Reason 1 — the LLM is the product of NLP\nThe LLM isn’t alien to linguistics. It’s the current endpoint of a decades-long NLP lineage:\nrule-based → statistical → neural → pretrained transformers → LLMs\n\nEach step learned more from data and less from hand-written rules. The LLM is where that curve is right now."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#reason-2-the-llm-re-absorbs-the-classic-tasks",
+    "href": "slides/slides-session-01.html#reason-2-the-llm-re-absorbs-the-classic-tasks",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Reason 2 — the LLM re-absorbs the classic tasks",
+    "text": "Reason 2 — the LLM re-absorbs the classic tasks\nHistorically, each task had its own bespoke model — POS tagger, NER model, parser, classifier, coreference model.\n\nWith scale + pretraining + prompting, one model does many tasks — just by being asked.\n\n\nThe three we target — classification · annotation · extraction — are exactly those task types. (Transformer = the enabler; prompting = why the tasks reappear.) → S4 re-meets these with linguistic examples (Eguchi & Kyle 2024)."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#summary",
+    "href": "slides/slides-session-01.html#summary",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Summary",
+    "text": "Summary\nLLM is: - a type of statistical machine-learning model, which learn to predict the next token given the previous sequence (autoregressive), leveraging the state-of-the-art transformer architecture as basis."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#throw-language-data-at-an-llm",
+    "href": "slides/slides-session-01.html#throw-language-data-at-an-llm",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Throw language data at an LLM",
+    "text": "Throw language data at an LLM\nLet’s just try it — no code:\n\npaste some real language data into a chat LLM,\nask it to label / analyze it,\nread the output together.\n\n\nWhat did it get right? What looks off? And the question that runs the whole course: how would we ever know — beyond eyeballing?"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#the-inversion",
+    "href": "slides/slides-session-01.html#the-inversion",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "The inversion",
+    "text": "The inversion\nClassic NLP consumed annotation to build models.\nNow the model can produce annotation. The arrow flips:\nbefore: humans annotate → train the model now: the model annotates → and who checks it?"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#trained-to-sound-right-not-be-right",
+    "href": "slides/slides-session-01.html#trained-to-sound-right-not-be-right",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Trained to sound right, not be right",
+    "text": "Trained to sound right, not be right\nAn LLM is optimized to produce fluent, plausible text.\nPlausible is not the same as correct. So we check its labels against a human gold standard, using NLP’s own metrics:\n\ninter-annotator agreement (percent + Cohen’s κ)\nprecision / recall / F1, confusion matrix"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#the-punchline",
+    "href": "slides/slides-session-01.html#the-punchline",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "The punchline",
+    "text": "The punchline\n\n\n\n\n\n\nImportant\n\n\nThis course is the evaluation half of NLP, applied to LLMs.\n\n\n\nNLP’s training half we mostly leave aside. Its evaluation half is exactly the rigor an LLM’s outputs need — and it’s what you’ll spend the week learning to run."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#your-turn",
+    "href": "slides/slides-session-01.html#your-turn",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Your turn",
+    "text": "Your turn\n\nWhat was new information to you about LLM?\nWhat do you want to know more about?"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#what-well-do-this-week-1",
+    "href": "slides/slides-session-01.html#what-well-do-this-week-1",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "What we’ll do this week",
+    "text": "What we’ll do this week\n\n\n\nDay\nFocus\n\n\n\n\n1\nWhat is LLM, Python basics, call an LLM\n\n\n2\nGold standard + agreement — the yardstick\n\n\n3\nPrompt + iterate against metrics\n\n\n4\nMethod + assemble the pipeline\n\n\n5\nYour own data + present"
   },
   {
     "objectID": "slides/slides-session-11.html#agenda",
@@ -2529,35 +2739,112 @@
     "href": "slides/slides-session-04.html#agenda",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nAnnotation principles\nThe NLP pipeline for applied linguistics\nIntroduction to gold-standard dataset construction"
+    "text": "📋 Agenda\nThree moves — anchored throughout in Eguchi & Kyle (2024):\n\nA · What NLP tasks are there — the task taxonomy, now concrete in linguistics\nB · How NLP is evaluated — the workflow, and how it transfers to LLMs\nC · The annotation-&-evaluation workflow — what you’ll run hands-on in S5–S6"
   },
   {
     "objectID": "slides/slides-session-04.html#learning-objectives",
     "href": "slides/slides-session-04.html#learning-objectives",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nPlace a linguistic annotation task in the classic NLP taxonomy (identify · extract · categorize, by unit of analysis).\nExplain why the course targets sentence and text categorization — and why error annotation is the exception.\nDescribe the NLP evaluation workflow (gold → predictions → metrics) and how it transfers from a trained model to a prompted LLM.\nOperationalize a linguistic category into an annotation scheme with coding guidelines.\nExplain inter-annotator agreement: percent agreement vs. why Cohen’s κ corrects for chance.\nRead a confusion matrix and conceptual P / R / F1.\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: labelled data is only trustworthy if the category is operationalized and two coders agree beyond chance."
   },
   {
-    "objectID": "slides/slides-session-04.html#annotation-principles-1",
-    "href": "slides/slides-session-04.html#annotation-principles-1",
+    "objectID": "slides/slides-session-04.html#what-is-annotation",
+    "href": "slides/slides-session-04.html#what-is-annotation",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
-    "section": "Annotation principles",
-    "text": "Annotation principles"
+    "section": "What is annotation?",
+    "text": "What is annotation?\nAnnotation = adding interpretive labels to language.\n\nPOS — noun / verb / adjective…\nWord sense — which meaning of bank?\nStance / engagement — is the writer hedging, endorsing?\nDiscourse moves — what is this sentence doing in the argument?\nError tags, CEFR level, …\n\nThe common shape: a unit of language → a label. That’s the whole game."
   },
   {
-    "objectID": "slides/slides-session-04.html#the-nlp-pipeline-1",
-    "href": "slides/slides-session-04.html#the-nlp-pipeline-1",
+    "objectID": "slides/slides-session-04.html#annotation-is-the-foundation-of-corpus-linguistics",
+    "href": "slides/slides-session-04.html#annotation-is-the-foundation-of-corpus-linguistics",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
-    "section": "The NLP pipeline",
-    "text": "The NLP pipeline"
+    "section": "Annotation is the foundation of corpus linguistics",
+    "text": "Annotation is the foundation of corpus linguistics\nRaw text is only searchable by word form.\n\nAnnotation makes it searchable and analyzable at the level of meaning and function — that’s what turns a pile of text into a corpus you can ask questions of."
   },
   {
-    "objectID": "slides/slides-session-04.html#gold-standard-construction-1",
-    "href": "slides/slides-session-04.html#gold-standard-construction-1",
+    "objectID": "slides/slides-session-04.html#annotation-is-the-fuel-of-nlp",
+    "href": "slides/slides-session-04.html#annotation-is-the-fuel-of-nlp",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
-    "section": "Gold-standard construction",
-    "text": "Gold-standard construction"
+    "section": "Annotation is the fuel of NLP",
+    "text": "Annotation is the fuel of NLP\nClassic NLP systems are supervised: they learn from human-annotated gold data.\n\nSomeone labels thousands of examples → the system learns the pattern.\nNo annotation, no model.\n\n\nSo NLP has always depended on annotation. Today we look at how that annotation is done well — and how we evaluate it."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#classic-tasks-in-linguistics",
+    "href": "slides/slides-session-04.html#classic-tasks-in-linguistics",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Classic tasks, in linguistics",
+    "text": "Classic tasks, in linguistics\nVia Eguchi & Kyle (2024) — each task = input → output over a unit of analysis, doing one of identify · extract · categorize:\n\nPOS tagging & dependency parsing — label every token.\nNER — find and type spans (names, places…).\nSpan categorization — their epistemic-stance / Engagement Analyzer example.\nText classification — one label for a whole text.\n\n\nSame three verbs, different unit — that’s the whole taxonomy."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#organize-by-unit-output",
+    "href": "slides/slides-session-04.html#organize-by-unit-output",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Organize by unit + output",
+    "text": "Organize by unit + output\n\nToken-level sequence labelling — POS, NER (one label per token).\nSpan categorization — stance spans (label a stretch of text).\nUnit categorization → one label per unit — a sentence or a whole text.\n\n\nThe last row is the one that yields clean, evaluable gold data. That’s where the course lives."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#narrow-the-course-focus-and-why",
+    "href": "slides/slides-session-04.html#narrow-the-course-focus-and-why",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Narrow the course focus — and why",
+    "text": "Narrow the course focus — and why\nWe do sentence categorization and text categorization:\n\none label per unit → clean gold, a confusion matrix, P / R / F1;\nthe canonical {id, text, label} schema you met in S3.\n\n\nSpan / sequence tasks carry boundary + partial-match problems — too heavy for 5 days.\n\n\n\n\n\n\nTip\n\n\nThe evaluation you can teach in a week determines the tasks you can target."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#optional-challenge-path-error-annotation",
+    "href": "slides/slides-session-04.html#optional-challenge-path-error-annotation",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Optional challenge path — error annotation",
+    "text": "Optional challenge path — error annotation\nThe AutoErrorAnalyzer track has two routes:\n\nDefault — sentence-level: one label per unit; rides the taught pipeline like every other track.\nStretch — locate-a-span-then-categorize: the real error-annotation task. Breaks one-label-per-unit; needs span matching + partial-match scoring.\n\n\nOffered as an instructor-supported stretch, not an excluded case — a coding-guidelines + span-scoring spec is provided for teams who take it."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#the-nlp-evaluation-workflow",
+    "href": "slides/slides-session-04.html#the-nlp-evaluation-workflow",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "The NLP evaluation workflow",
+    "text": "The NLP evaluation workflow\nEguchi & Kyle (2024) walk the full loop:\nbuild a gold standard → a system produces predictions → score predictions against gold.\n\nWe borrow the evaluation half — not the training half."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#model-prompted-llm",
+    "href": "slides/slides-session-04.html#model-prompted-llm",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Model → prompted LLM",
+    "text": "Model → prompted LLM\n\nClassic NLP trains a supervised model on gold (context, not our method).\nThis course replaces the model with a prompted LLM…\n…but evaluates it the same way.\n\n\nThat transfer is the whole reason this workflow matters here."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#what-evaluation-means",
+    "href": "slides/slides-session-04.html#what-evaluation-means",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "What “evaluation” means",
+    "text": "What “evaluation” means\n\nP / R / F1, and macro-F1 across classes.\nConfusion matrix — where the errors actually go.\nCohen’s κ — agreement corrected for chance.\nTrain / validation / test — the held-out logic (seed now; applied when we tune prompts in S7–S8)."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#reading-a-22-confusion-matrix",
+    "href": "slides/slides-session-04.html#reading-a-22-confusion-matrix",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Reading a 2×2 confusion matrix",
+    "text": "Reading a 2×2 confusion matrix\nRows = gold, columns = prediction:\n\n\n\n\nPred +\nPred −\n\n\n\n\nGold +\nTP\nFN\n\n\nGold −\nFP\nTN\n\n\n\n\n\nPrecision = TP / (TP + FP) — of what it flagged, how much was right?\nRecall = TP / (TP + FN) — of what was actually positive, how much did it catch?\nF1 = harmonic mean of the two.\n\n\n\n\n\n\n\nNote\n\n\nκ asks the harder question: how much do two labellers agree beyond what chance alone would give?"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#design-the-annotation-scheme",
+    "href": "slides/slides-session-04.html#design-the-annotation-scheme",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Design the annotation scheme",
+    "text": "Design the annotation scheme\n\nAdapt or design an annotation scheme + coding guidelines.\nOperationalize the category: turn a fuzzy construct into a decidable rule a second coder can follow.\n\n\nIf two trained coders can’t agree on it, a model can’t be trusted on it either."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#annotate-blind-agreement-gold",
+    "href": "slides/slides-session-04.html#annotate-blind-agreement-gold",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Annotate blind → agreement → gold",
+    "text": "Annotate blind → agreement → gold\n\nTwo coders annotate the same items blind.\nMeasure inter-annotator agreement — percent + κ.\nAdjudicate disagreements → a gold standard.\n\n\n\n\n\n\n\nTip\n\n\nYou’ll run exactly this in S5."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#evaluate-a-model-against-gold",
+    "href": "slides/slides-session-04.html#evaluate-a-model-against-gold",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Evaluate a model against gold",
+    "text": "Evaluate a model against gold\nSame metrics, two different comparisons:\n\nannotator vs. annotator → inter-annotator agreement (IAA)\ngold vs. model → model evaluation\n\n\n\n\n\n\n\nTip\n\n\nYou’ll run this in S6 — the frozen predictions stand in for a trained model."
   },
   {
     "objectID": "slides/slides-session-06.html#agenda",
@@ -2796,7 +3083,7 @@
     "href": "sessions/day3/session-09.html#learning-objectives",
     "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
     "section": "Learning objectives",
-    "text": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nUse show_errors to find misclassifications, hypothesize a fix, and re-run — the same generic → structured refinement you saw in Huang & Mizumoto’s Example Prompt 1 → 2 (Session 7), now driven by error data.\nCompare macro-F1 across iteration rounds.\nBenchmark the best LLM prompt against a pre-trained spaCy classifier on the same held-out CEFR test set.\nInterpret what supervised fine-tuning buys and costs versus zero-training prompting — the LLM as an assistant to evaluate and supervise, not a verdict to accept.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",

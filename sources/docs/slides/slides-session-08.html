@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7319ef940ecc18a51fa7d51b60c4dbfa.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-786aa19b3b784cc15a2029c072583b99.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -128,18 +128,14 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center quarto-title-block">
+  <p class="kicker">Linguistic Data Analysis II · Day 3</p>
   <h1 class="title">Session 8: Hands-on: LLM Classification &amp; Prompt Iteration</h1>
   <p class="subtitle">Day 3 · Prompt Design &amp; Iteration (3-2)</p>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Masaki EGUCHI, Ph.D. 
-</div>
-</div>
-</div>
-
+  <div class="title-meta">
+    <p class="author">Masaki EGUCHI, Ph.D.</p>
+    <p class="institute">Tohoku University · Summer 2026</p>
+  </div>
 </section>
 <section class="slide level2">
 
@@ -161,7 +157,54 @@ Masaki EGUCHI, Ph.D.
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Get and store a <strong>Gemini API key</strong> (Colab Secrets) and make <strong>reproducible</strong> calls (<code>temperature=0</code>, <code>seed</code>).</li>
+<li>Run the <strong>zero-shot → few-shot → chain-of-thought</strong> progression on CEFR, re-evaluating each on a validation set.</li>
+<li>Score the final prompt <strong>once</strong> on the held-out test set.</li>
+<li>Prompt for <strong>structured output</strong> and recognise <strong>JSON</strong> as the <code>{id, text, label}</code> format.</li>
+</ul>
+</section></section>
+<section>
+<section id="from-feedback-to-classification" class="title-slide slide level1 center">
+<h1>From feedback to classification</h1>
+
+</section>
+<section id="same-anatomy-new-task" class="slide level2 smaller">
+<h2>Same anatomy, new task</h2>
+<p>The CEFR prompt you’ll write is <strong>Huang &amp; Mizumoto’s Ex 2 structure</strong>, re-cast for classification:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ex 2 — writing feedback (S7)</th>
+<th>CEFR classification (today)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Instruction:</strong> “review and give feedback”</td>
+<td>“classify this sentence’s <strong>CEFR level</strong>”</td>
+</tr>
+<tr class="even">
+<td><strong>Context:</strong> the 5-item Criteria rubric</td>
+<td>the <strong>CEFR level descriptors</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Input data:</strong> “My paragraph”</td>
+<td>the learner <strong>sentence</strong> <code>{text}</code></td>
+</tr>
+<tr class="even">
+<td><strong>Output indicator:</strong> “only feedback, no rewrite”</td>
+<td>“<strong>return only the label</strong>” → structured / JSON</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>And the <strong>few-shot examples</strong> come from the <strong>pool</strong> — <em>never</em> the gold set you score on (contamination, S7).</p>
+</div>
 </section></section>
 <section>
 <section id="run-classification-in-colab" class="title-slide slide level1 center">

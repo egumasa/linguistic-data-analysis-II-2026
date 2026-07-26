@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7319ef940ecc18a51fa7d51b60c4dbfa.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-5222b0819fedac50371f8e47cce628d3.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -128,18 +128,14 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center quarto-title-block">
+  <p class="kicker">Linguistic Data Analysis II · Day 3</p>
   <h1 class="title">Session 9: Iterative Prompt Improvement &amp; Error Analysis</h1>
   <p class="subtitle">Day 3 · Prompt Design &amp; Iteration (3-3)</p>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Masaki EGUCHI, Ph.D. 
-</div>
-</div>
-</div>
-
+  <div class="title-meta">
+    <p class="author">Masaki EGUCHI, Ph.D.</p>
+    <p class="institute">Tohoku University · Summer 2026</p>
+  </div>
 </section>
 <section class="slide level2">
 
@@ -161,7 +157,12 @@ Masaki EGUCHI, Ph.D.
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Use <code>show_errors</code> to find misclassifications, hypothesize a fix, and re-run.</li>
+<li>Compare <strong>macro-F1</strong> across iteration rounds.</li>
+<li>Benchmark the best LLM prompt against a <strong>pre-trained spaCy classifier</strong> on the same test set.</li>
+<li>Interpret what supervised fine-tuning <strong>buys and costs</strong> versus zero-training prompting.</li>
+</ul>
 </section></section>
 <section>
 <section id="error-analysis" class="title-slide slide level1 center">
@@ -177,6 +178,31 @@ Masaki EGUCHI, Ph.D.
 <h1>Iterating the prompt</h1>
 
 </section>
+<section id="the-same-move-you-already-saw" class="slide level2 smaller">
+<h2>The same move you already saw</h2>
+<p>Back in S7, <strong>Huang &amp; Mizumoto’s Ex 1 → Ex 2</strong> was a generic prompt tightened into a structured one.</p>
+<div class="fragment">
+<p>That’s exactly the loop here — only now it’s <strong>driven by data, not intuition</strong>:</p>
+<ol type="1">
+<li><strong>read the errors</strong> (<code>show_errors</code>) — where does the prompt fail?</li>
+<li><strong>tighten one thing</strong> — usually the <em>Criteria</em> / label descriptors.</li>
+<li><strong>re-measure</strong> macro-F1 — did it actually help?</li>
+</ol>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Change <strong>one</strong> thing per round, so you know <em>what</em> moved the number.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="iterating-the-prompt-1" class="slide level2">
 <h2>Iterating the prompt</h2>
 <!-- to be added -->
@@ -189,6 +215,22 @@ Masaki EGUCHI, Ph.D.
 <section id="under-the-hood-1" class="slide level2">
 <h2>Under the hood</h2>
 <!-- to be added -->
+</section></section>
+<section>
+<section id="the-llm-is-one-option-not-the-only-one" class="title-slide slide level1 center">
+<h1>The LLM is one option, not the only one</h1>
+
+</section>
+<section id="assistant-not-replacement" class="slide level2 smaller">
+<h2>Assistant, not replacement</h2>
+<p>You just measured a prompted LLM <strong>against a trained model</strong> on the same test set. Neither is “the answer” — each has costs (data to train vs.&nbsp;prompt, reproducibility, interpretability).</p>
+<div class="fragment">
+<p>And back to where the running example started — Huang &amp; Mizumoto (2025):</p>
+<blockquote>
+<p><em>“Human teachers must ultimately remain at the core of language teaching and learning.”</em></p>
+</blockquote>
+<p>The LLM is a tool you <strong>evaluate and supervise</strong>, not a verdict you accept.</p>
+</div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>

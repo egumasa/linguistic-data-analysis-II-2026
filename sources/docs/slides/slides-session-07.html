@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7319ef940ecc18a51fa7d51b60c4dbfa.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bde00274b4a677e175132b983751c62b.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -128,67 +128,269 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center quarto-title-block">
+  <p class="kicker">Linguistic Data Analysis II · Day 3</p>
   <h1 class="title">Session 7: Prompt Design: Zero-shot vs Few-shot</h1>
   <p class="subtitle">Day 3 · Prompt Design &amp; Iteration (3-1)</p>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Masaki EGUCHI, Ph.D. 
-</div>
-</div>
-</div>
-
+  <div class="title-meta">
+    <p class="author">Masaki EGUCHI, Ph.D.</p>
+    <p class="institute">Tohoku University · Summer 2026</p>
+  </div>
 </section>
 <section class="slide level2">
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
+<!-- Built from course-design.md S7 (Day 3 — Prompt design & iteration). Running example:
+     Huang & Mizumoto (2025), Ex 1 → Ex 2 — carried into S8 (mapped onto CEFR) and S9 (iteration).
+     promptingguide.ai is the students' self-study technique map. -->
 </section>
 <section>
 <section id="session-7-prompt-design-zero-shot-vs-few-shot" class="title-slide slide level1 center">
-<h1>Session 7: Prompt Design: Zero-shot vs Few-shot</h1>
+<h1>Session 7: Prompt Design — Zero-shot vs Few-shot</h1>
 
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
 <ul>
-<li>Prompt-design principles</li>
-<li>Zero-shot vs.&nbsp;few-shot prompting</li>
-<li>Strategies for effective prompt engineering</li>
+<li>The <strong>anatomy</strong> of a prompt — four elements</li>
+<li><strong>Zero-shot vs.&nbsp;few-shot</strong>, and <strong>chain-of-thought</strong></li>
+<li>The wider <strong>design space</strong> — what to <em>run</em> vs.&nbsp;what to <em>know about</em></li>
+<li>Two traps: <strong>contamination</strong> and the <strong>validation/test split</strong></li>
 </ul>
+<p>Our worked example all session: <strong>Huang &amp; Mizumoto (2025)</strong> — writing-feedback prompts.</p>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li><strong>Name the four prompt elements</strong> — <em>instruction · context · input data · output indicator</em> — and locate each in a real prompt.</li>
+<li>Distinguish <strong>zero-shot</strong> from <strong>few-shot</strong> prompting and judge <strong>when examples help</strong>.</li>
+<li>Explain <strong>chain-of-thought</strong> and where it earns its keep.</li>
+<li>Place a technique on the <strong>run-it-this-week vs.&nbsp;know-it-exists</strong> line.</li>
+<li>Explain the <strong>train/test contamination</strong> trap and why you <strong>tune on validation, report on test</strong>.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The message of the day: <em>prompting is a <strong>design space</strong>, not a single trick — small structural choices move the score.</em></p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="prompt-design-principles" class="title-slide slide level1 center">
-<h1>Prompt-design principles</h1>
+<section id="the-anatomy-of-a-prompt" class="title-slide slide level1 center">
+<h1>The anatomy of a prompt</h1>
 
 </section>
-<section id="prompt-design-principles-1" class="slide level2">
-<h2>Prompt-design principles</h2>
-<!-- to be added -->
+<section id="prompting-is-a-design-space" class="slide level2">
+<h2>Prompting <em>is</em> a design space</h2>
+<p>An LLM does what the <strong>prompt</strong> tells it to. Change the prompt, change the output — and the score.</p>
+<div class="fragment">
+<p>So a prompt is not a magic phrase you either know or don’t. It has <strong>parts you can design deliberately</strong> — and today we learn those parts on one concrete example.</p>
+</div>
+</section>
+<section id="four-elements-of-a-prompt" class="slide level2 smaller">
+<h2>Four elements of a prompt</h2>
+<p>Chen et al.&nbsp;(2023), via <strong>Huang &amp; Mizumoto (2025)</strong> — an effective prompt typically has four parts:</p>
+<ul>
+<li><strong>Instruction</strong> — what the model should <em>do</em> (start with a verb: <em>classify, summarize, explain</em>).</li>
+<li><strong>Context</strong> — the background, role, rubric, or level that scopes the task.</li>
+<li><strong>Input data</strong> — the actual text to be processed.</li>
+<li><strong>Output indicator</strong> — the <em>form</em> of the answer (format, tone, “only feedback, no rewrite”).</li>
+</ul>
+<div class="fragment">
+<p>If one of the four is missing, the output usually misses too.</p>
+</div>
+</section>
+<section id="the-running-example-writing-feedback" class="slide level2 smaller">
+<h2>The running example — writing feedback</h2>
+<p><strong>Huang &amp; Mizumoto’s Example Prompt 2</strong> — a structured paragraph-feedback prompt for an EFL class:</p>
+<blockquote>
+<p><strong>Task</strong> — Based on the following criteria, review the following paragraph and provide specific feedback… <strong>I am not seeking rewrite, give me only feedback.</strong></p>
+<p><strong>Criteria</strong> — 1. Hook / Attention-grabber · 2. Background / Context · 3. Thesis statement · 4. Organization · 5. Clarity &amp; coherence</p>
+<p><strong>My paragraph</strong> — <em>(paste your paragraph here)</em></p>
+</blockquote>
+<div class="fragment">
+<p>Read the four elements straight off it:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>In this prompt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Instruction</strong></td>
+<td>“review… and provide specific feedback”</td>
+</tr>
+<tr class="even">
+<td><strong>Context</strong></td>
+<td>the 5-item <strong>Criteria</strong> rubric</td>
+</tr>
+<tr class="odd">
+<td><strong>Input data</strong></td>
+<td>“My paragraph”</td>
+</tr>
+<tr class="even">
+<td><strong>Output indicator</strong></td>
+<td>“only feedback, no rewrite”</td>
+</tr>
+</tbody>
+</table>
+</div>
 </section></section>
 <section>
-<section id="zero-shot-vs.-few-shot" class="title-slide slide level1 center">
-<h1>Zero-shot vs.&nbsp;few-shot</h1>
+<section id="zero-shot-few-shot-chain-of-thought" class="title-slide slide level1 center">
+<h1>Zero-shot, few-shot, chain-of-thought</h1>
 
 </section>
-<section id="zero-shot-vs.-few-shot-1" class="slide level2">
+<section id="zero-shot-vs.-few-shot" class="slide level2 smaller">
 <h2>Zero-shot vs.&nbsp;few-shot</h2>
-<!-- to be added -->
+<ul>
+<li><strong>Zero-shot</strong> — instruction only, <strong>no examples</strong>. The model relies on what it already knows. Great for simple, familiar tasks.</li>
+<li><strong>Few-shot</strong> — you include <strong>a few worked examples</strong> <em>(input → correct label)</em> right in the prompt, so the model infers the pattern.</li>
+</ul>
+<div class="fragment">
+<p><strong>When do examples help?</strong> When the task is specialized, the label set is your own, or the format must be exact. Two tips (promptingguide.ai):</p>
+<ul>
+<li>keep a <strong>consistent format</strong> across all examples;</li>
+<li>make the examples’ <strong>label space representative</strong> — don’t show only one class.</li>
+</ul>
+</div>
+</section>
+<section id="chain-of-thought-cot" class="slide level2 smaller">
+<h2>Chain-of-thought (CoT)</h2>
+<p>Ask the model to <strong>reason in steps</strong> before answering (Wei et al., 2022).</p>
+<p><strong>Huang &amp; Mizumoto’s Example Prompt 1</strong> is CoT feedback:</p>
+<blockquote>
+<p><em>First,</em> read the paragraph to understand its main idea. <em>Next,</em> check the structure… <em>Then,</em> identify grammatical errors. <em>After that,</em> assess clarity and coherence. <strong>Provide feedback based on these steps.</strong></p>
+</blockquote>
+<div class="fragment">
+<p>Zero-shot CoT is often just one added line — <strong>“Let’s think step by step”</strong> (Kojima et al., 2022).</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>CoT earns its keep on tasks that need <strong>sequential judgement</strong> — reviewing writing, or deciding a borderline label.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="iterating-a-prompt-ex-1-ex-2" class="slide level2 smaller">
+<h2>Iterating a prompt: Ex 1 → Ex 2</h2>
+<p>The <em>same</em> feedback task, tightened:</p>
+<ul>
+<li><strong>Ex 1 (generic)</strong> — “give feedback on this paragraph, step by step.” Works, but vague.</li>
+<li><strong>Ex 2 (structured)</strong> — split into <strong>Task / Criteria / My paragraph</strong>, add the output indicator “only feedback.”</li>
+</ul>
+<div class="fragment">
+<p>That move — generic → structured — is <strong>prompt iteration</strong>. You’ll do the data-driven version of it in <strong>S9</strong>, reading the errors and tightening the <em>Criteria</em>.</p>
+</div>
 </section></section>
 <section>
-<section id="effective-prompting-strategies" class="title-slide slide level1 center">
-<h1>Effective prompting strategies</h1>
+<section id="the-wider-design-space" class="title-slide slide level1 center">
+<h1>The wider design space</h1>
 
 </section>
-<section id="effective-prompting-strategies-1" class="slide level2">
-<h2>Effective prompting strategies</h2>
-<!-- to be added -->
+<section id="run-it-this-week-vs.-know-it-exists" class="slide level2 smaller">
+<h2>Run it this week vs.&nbsp;know it exists</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Run it in S8</strong></th>
+<th><strong>Know it exists</strong> (name &amp; reason, don’t run)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>zero-shot</td>
+<td><strong>self-consistency</strong> — sample N, majority-vote (a reproducibility lever → S10)</td>
+</tr>
+<tr class="even">
+<td>few-shot</td>
+<td><strong>RAG</strong> — ground the model on the annotation manual / codebook (≈ <em>dynamic</em> few-shot)</td>
+</tr>
+<tr class="odd">
+<td>chain-of-thought</td>
+<td><strong>agentic / multi-step</strong> — the model plans → critiques its own label → revises</td>
+</tr>
+<tr class="even">
+<td>structured output</td>
+<td>(ReAct, Reflexion, prompt chaining…)</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Your self-study map for all of these: <strong><a href="https://www.promptingguide.ai/techniques">promptingguide.ai/techniques</a></strong>.</p>
+</div>
+</section>
+<section id="two-traps-before-you-tune" class="slide level2 smaller">
+<h2>Two traps before you tune</h2>
+<ul>
+<li><strong>Train/test contamination</strong> — never draw your <strong>few-shot examples from the gold set</strong> you score on. The model would be “shown the answers.”</li>
+<li><strong>Validation vs.&nbsp;test</strong> — <strong>tune</strong> the prompt on a small <strong>validation</strong> set; <strong>report</strong> the final number <strong>once</strong> on a held-out <strong>test</strong> set.</li>
+</ul>
+<div class="fragment">
+<p>Both protect the one thing an evaluation is for: <strong>an honest estimate of how the prompt does on unseen text.</strong></p>
+</div>
+</section></section>
+<section>
+<section id="coming-up" class="title-slide slide level1 center">
+<h1>Coming up</h1>
+
+</section>
+<section id="bridge-to-s8-same-anatomy-new-task" class="slide level2 smaller">
+<h2>Bridge to S8 — same anatomy, new task</h2>
+<p>Next session you build a real classification pipeline — and the <strong>CEFR prompt is the same four elements</strong>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ex 2 (feedback)</th>
+<th>CEFR classification (S8)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Instruction: “provide feedback”</td>
+<td>“classify this sentence’s CEFR level”</td>
+</tr>
+<tr class="even">
+<td>Context: the 5-item rubric</td>
+<td>the <strong>CEFR level descriptors</strong></td>
+</tr>
+<tr class="odd">
+<td>Input: “My paragraph”</td>
+<td>the learner <strong>sentence</strong></td>
+</tr>
+<tr class="even">
+<td>Output indicator: “only feedback”</td>
+<td>“<strong>return only the label</strong>” → JSON</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><strong>S8</strong> — run zero → few → CoT on CEFR, with a Gemini API key. <strong>S9</strong> — read the errors, iterate, and benchmark against a trained model.</p>
+</div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>

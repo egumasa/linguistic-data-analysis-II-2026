@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Masaki EGUCHI, Ph.D.">
-  <title>Linguistic Data Analysis II (Summer 2026) – Session 1: Introduction to LLMs &amp; NLP Tasks</title>
+  <title>Linguistic Data Analysis II (Summer 2026) – Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7319ef940ecc18a51fa7d51b60c4dbfa.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bde00274b4a677e175132b983751c62b.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -128,67 +128,332 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Session 1: Introduction to LLMs &amp; NLP Tasks</h1>
+<section id="title-slide" class="center quarto-title-block">
+  <p class="kicker">Linguistic Data Analysis II · Day 1</p>
+  <h1 class="title">Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis</h1>
   <p class="subtitle">Day 1 · Introduction &amp; First Experience (1-1)</p>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Masaki EGUCHI, Ph.D. 
-</div>
-</div>
-</div>
-
+  <div class="title-meta">
+    <p class="author">Masaki EGUCHI, Ph.D.</p>
+    <p class="institute">Tohoku University · Summer 2026</p>
+  </div>
 </section>
 <section class="slide level2">
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
+<!-- OUTLINE DECK — slide-by-slide beat list for review. Bodies are condensed bullets, not
+     final prose; once the structure is approved these get written out in the S2/S3 style
+     (framing paragraph + `. . .` fragments + callouts). Derived from course-design.md S1
+     (the 7-beat single argument, "Five-day arc" block). -->
 </section>
 <section>
-<section id="session-1-introduction-to-llms-nlp-tasks" class="title-slide slide level1 center">
-<h1>Session 1: Introduction to LLMs &amp; NLP Tasks</h1>
+<section id="session-1-introduction-to-llms-as-tools" class="title-slide slide level1 center">
+<h1>Session 1: Introduction to LLMs as Tools</h1>
 
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
+<ol start="0" type="1">
+<li>Self-introductions</li>
+<li>Why this course</li>
+<li>The 5-day map &amp; objectives</li>
+<li>What do you know about LLM?</li>
+<li>What an LLM is — and why it’s relevant</li>
+<li>LLM follows instructions — a no-code demo</li>
+<li>But — we need evaluation</li>
+<li>Discussion</li>
+</ol>
+</section></section>
+<section>
+<section id="self-introductions" class="title-slide slide level1 center">
+<h1>0 · Self-introductions</h1>
+
+</section>
+<section id="introduce-yourself---round-1" class="slide level2">
+<h2>Introduce yourself - Round 1</h2>
+<p>Tell us:</p>
 <ul>
-<li>What LLMs are &amp; how they fit linguistic analysis</li>
-<li>The NLP tasks we’ll tackle in this course</li>
-<li>Course overview &amp; self-introductions</li>
+<li>your <strong>name</strong></li>
+<li>What you enjoy doing while you are not doing research</li>
 </ul>
+</section>
+<section id="round-2" class="slide level2">
+<h2>Round 2</h2>
+<p>Tell us: - What is your research interest</p>
+</section>
+<section id="round-3" class="slide level2">
+<h2>Round 3</h2>
+<ul>
+<li>Why you decided to take this course</li>
+<li>Any goals</li>
+<li>Any concerns</li>
+</ul>
+</section></section>
+<section>
+<section id="why-this-course" class="title-slide slide level1 center">
+<h1>1 · Why this course</h1>
+
+</section>
+<section id="llms-are-everywhere-now" class="slide level2">
+<h2>LLMs are everywhere now</h2>
+<p>Large language models are now <strong>common tools</strong> — for writing, translating, coding, searching.</p>
+<p>So the question isn’t <em>whether</em> linguists will use them. It’s <strong>how to use them responsibly</strong> for linguistic analysis.</p>
+</section>
+<section id="linguistic-annotation-promising-but-costly" class="slide level2">
+<h2>Linguistic annotation: promising but costly</h2>
+<p>One especially promising use is <strong>annotation</strong> — labelling language data for analysis.</p>
+<ul>
+<li>But careful annotation is <strong>expensive</strong>: expert time, training, guidelines, double-coding.</li>
+<li>If an LLM could annotate reliably, then it facilitates research.</li>
+</ul>
+<p>The tempting question: <em>can an LLM just do it for us?</em></p>
+</section>
+<section id="adequacy-must-be-evaluated-not-assumed" class="slide level2">
+<h2>Adequacy must be evaluated, not assumed</h2>
+<p>Here’s the seed of the whole course:</p>
+<blockquote>
+<p>An LLM’s output is only useful if it’s <strong>adequate</strong> — and adequacy has to be <strong>evaluated, not assumed.</strong></p>
+</blockquote>
+<p><strong>By Friday you will have <em>critically evaluated</em> an LLM on your own annotation task</strong></p>
+</section>
+<section id="one-simple-goal-of-the-course" class="slide level2">
+<h2>One simple Goal of the course</h2>
+<p>Can we trust an LLM on identifying collocation?</p>
+<p><strong>Until today</strong></p>
+<ul>
+<li>Well, maybe?</li>
+</ul>
+<p>OR</p>
+<ul>
+<li>Are there any paper on this?</li>
+</ul>
+<p><strong>After this course</strong></p>
+<ul>
+<li>Let’s find out!</li>
+</ul>
+<p>Each day earns one piece of the method. By Friday you own the whole loop.</p>
+</section></section>
+<section>
+<section id="the-5-day-map" class="title-slide slide level1 center">
+<h1>2 · The 5-day map</h1>
+
+</section>
+<section id="what-well-do-this-week" class="slide level2 smaller">
+<h2>What we’ll do this week</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Day</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1</strong></td>
+<td>What is LLM, Python basics, call an LLM</td>
+</tr>
+<tr class="even">
+<td><strong>2</strong></td>
+<td>Gold standard + agreement — <strong>the yardstick</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>3</strong></td>
+<td>Prompt + iterate against metrics</td>
+</tr>
+<tr class="even">
+<td><strong>4</strong></td>
+<td>Method + assemble the pipeline</td>
+</tr>
+<tr class="odd">
+<td><strong>5</strong></td>
+<td>Your own data + present</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Describe, at a high level, <strong>what a Large Language Model is</strong>.</li>
+<li>Name the three NLP tasks this course targets — <strong>classification, annotation, extraction</strong> — and give an example of each.</li>
+<li>Say what <strong>machine learning</strong> is and how ML models are built.</li>
+<li>Explain, at a high level, <strong>how LLMs are trained</strong> and how they produce natural language.</li>
+</ul>
+</section>
+<section id="the-one-idea-for-today" class="slide level2 smaller">
+<h2>The one idea for today</h2>
+<blockquote>
+<p>An LLM is a <strong>judge you must check</strong>, not an oracle — and it fits the linguistic tasks you already care about.</p>
+</blockquote>
+<p>Everything this week is a way of <em>checking</em> that judge. Today we build the case for <strong>why</strong> checking is the whole point.</p>
 </section></section>
+<section id="what-do-you-know-about-llm" class="title-slide slide level1 center">
+<h1>3 · What do you know about LLM?</h1>
+<ul>
+<li><p>What is a Large Language Model (or LLM)?</p>
+<p>Explain in your own words.</p></li>
+</ul>
+</section>
+
 <section>
-<section id="what-are-llms" class="title-slide slide level1 center">
-<h1>What are LLMs?</h1>
+<section id="what-is-an-llm-and-why-its-relevant" class="title-slide slide level1 center">
+<h1>4 · What is an LLM — and why it’s relevant</h1>
 
 </section>
-<section id="what-are-llms-1" class="slide level2">
-<h2>What are LLMs?</h2>
-<!-- to be added -->
+<section id="large-language-model" class="slide level2">
+<h2>Large Language Model</h2>
+<ul>
+<li>statistical machine-learning model</li>
+<li>autoregressive</li>
+<li>transformer</li>
+</ul>
+</section>
+<section id="a-quick-detour-how-does-a-model-learn" class="slide level2 smaller">
+<h2>A quick detour: how does a model <em>learn</em>?</h2>
+<p><strong>Machine learning</strong> = a model <strong>learns patterns from data</strong> instead of being hand-coded with rules.</p>
+<ul>
+<li>Rule-based: <em>a human writes the rules.</em></li>
+<li>ML: <em>the model infers the rules from labelled examples.</em></li>
+</ul>
+<div class="fragment">
+<p>This is the shift that made modern NLP — and it’s why data (annotation!) matters so much.</p>
+</div>
+</section>
+<section id="how-llms-are-trained" class="slide level2 smaller">
+<h2>How LLMs are trained</h2>
+<p>An LLM is trained by <strong>self-supervised pretraining</strong> on huge amounts of text:</p>
+<ul>
+<li>The task: <strong>predict the next word</strong>, over and over, on billions of sentences.</li>
+<li>No hand-labelling needed — the text is its own answer key.</li>
+</ul>
+<div class="fragment">
+<p>Producing natural language is just <strong>that same next-word prediction, run forward</strong> — which is why it <em>sounds</em> fluent.</p>
+</div>
+</section>
+<section id="reason-1-the-llm-is-the-product-of-nlp" class="slide level2 smaller">
+<h2>Reason 1 — the LLM is the <em>product</em> of NLP</h2>
+<p>The LLM isn’t alien to linguistics. It’s the <strong>current endpoint</strong> of a decades-long NLP lineage:</p>
+<p><strong>rule-based → statistical → neural → pretrained transformers → LLMs</strong></p>
+<div class="fragment">
+<p>Each step learned more from data and less from hand-written rules. The LLM is where that curve is <em>right now</em>.</p>
+</div>
+</section>
+<section id="reason-2-the-llm-re-absorbs-the-classic-tasks" class="slide level2 smaller">
+<h2>Reason 2 — the LLM <em>re-absorbs</em> the classic tasks</h2>
+<p>Historically, <strong>each task had its own bespoke model</strong> — POS tagger, NER model, parser, classifier, coreference model.</p>
+<div class="fragment">
+<p>With scale + pretraining + <strong>prompting</strong>, <strong>one model does many tasks</strong> — just by being asked.</p>
+</div>
+<div class="fragment">
+<p>The three we target — <strong>classification · annotation · extraction</strong> — are exactly those task types. <em>(Transformer = the enabler; prompting = why the tasks reappear.)</em> → S4 re-meets these with linguistic examples (Eguchi &amp; Kyle 2024).</p>
+</div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<p>LLM is: - a type of statistical machine-learning model, which learn to predict the next token given the previous sequence (autoregressive), leveraging the state-of-the-art transformer architecture as basis.</p>
 </section></section>
 <section>
-<section id="nlp-tasks-for-linguistic-analysis" class="title-slide slide level1 center">
-<h1>NLP tasks for linguistic analysis</h1>
+<section id="llm-follows-language-instructions" class="title-slide slide level1 center">
+<h1>5 · LLM follows language instructions</h1>
 
 </section>
-<section id="nlp-tasks-for-linguistic-analysis-1" class="slide level2">
-<h2>NLP tasks for linguistic analysis</h2>
-<!-- to be added -->
+<section id="throw-language-data-at-an-llm" class="slide level2 smaller">
+<h2>Throw language data at an LLM</h2>
+<p>Let’s just <strong>try it</strong> — no code:</p>
+<ul>
+<li>paste some real language data into a chat LLM,</li>
+<li>ask it to label / analyze it,</li>
+<li>read the output together.</li>
+</ul>
+<div class="fragment">
+<p><strong>What did it get right? What looks off?</strong> And the question that runs the whole course: <em>how would we ever <strong>know</strong> — beyond eyeballing?</em></p>
+</div>
 </section></section>
 <section>
-<section id="course-overview-introductions" class="title-slide slide level1 center">
-<h1>Course overview &amp; introductions</h1>
+<section id="but-we-need-evaluation" class="title-slide slide level1 center">
+<h1>6 · But — we need evaluation</h1>
 
 </section>
-<section id="course-overview-introductions-1" class="slide level2">
-<h2>Course overview &amp; introductions</h2>
-<!-- to be added -->
+<section id="the-inversion" class="slide level2 smaller">
+<h2>The inversion</h2>
+<p>Classic NLP <strong>consumed</strong> annotation to <em>build</em> models.</p>
+<p>Now the model can <strong>produce</strong> annotation. The arrow flips:</p>
+<p><strong>before:</strong> humans annotate → train the model <strong>now:</strong> the model annotates → <em>and who checks it?</em></p>
+</section>
+<section id="trained-to-sound-right-not-be-right" class="slide level2 smaller">
+<h2>Trained to <em>sound</em> right, not <em>be</em> right</h2>
+<p>An LLM is optimized to produce <strong>fluent, plausible</strong> text.</p>
+<p>Plausible is <strong>not</strong> the same as <strong>correct</strong>. So we check its labels against a <strong>human gold standard</strong>, using NLP’s own metrics:</p>
+<ul>
+<li><strong>inter-annotator agreement</strong> (percent + Cohen’s κ)</li>
+<li><strong>precision / recall / F1</strong>, <strong>confusion matrix</strong></li>
+</ul>
+</section>
+<section id="the-punchline" class="slide level2 smaller">
+<h2>The punchline</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>This course is the <strong>evaluation half of NLP, applied to LLMs.</strong></p>
+</div>
+</div>
+</div>
+<p>NLP’s <em>training</em> half we mostly leave aside. Its <strong>evaluation</strong> half is exactly the rigor an LLM’s outputs need — and it’s what you’ll spend the week learning to run.</p>
+</section></section>
+<section>
+<section id="discussion" class="title-slide slide level1 center">
+<h1>7 · Discussion</h1>
+
+</section>
+<section id="your-turn" class="slide level2 smaller">
+<h2>Your turn</h2>
+<ul>
+<li>What was new information to you about LLM?</li>
+<li>What do you want to know more about?</li>
+</ul>
+</section></section>
+<section>
+<section id="recap-the-5-day-map" class="title-slide slide level1 center">
+<h1>Recap · The 5-day map</h1>
+
+</section>
+<section id="what-well-do-this-week-1" class="slide level2 smaller">
+<h2>What we’ll do this week</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Day</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1</strong></td>
+<td>What is LLM, Python basics, call an LLM</td>
+</tr>
+<tr class="even">
+<td><strong>2</strong></td>
+<td>Gold standard + agreement — <strong>the yardstick</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>3</strong></td>
+<td>Prompt + iterate against metrics</td>
+</tr>
+<tr class="even">
+<td><strong>4</strong></td>
+<td>Method + assemble the pipeline</td>
+</tr>
+<tr class="odd">
+<td><strong>5</strong></td>
+<td>Your own data + present</td>
+</tr>
+</tbody>
+</table>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
