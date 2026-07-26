@@ -1,7 +1,14 @@
 ---
 title: "Session 9: Iterative Prompt Improvement & Error Analysis"
 subtitle: "Day 3 · Prompt Design & Iteration (3-3)"
-format: revealjs
+kicker: "Linguistic Data Analysis II · Day 3"
+format:
+  revealjs:
+    # Per-deck flavor. slides-v2 = shared rules; slide-<flavor> = palette only.
+    theme:
+      - default
+      - ../assets/css/slides-v2.scss
+      - ../assets/css/slide-warm.scss
 metadata-files:
   - _slides.yml
 ---
@@ -20,7 +27,10 @@ metadata-files:
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Use `show_errors` to find misclassifications, hypothesize a fix, and re-run.
+- Compare **macro-F1** across iteration rounds.
+- Benchmark the best LLM prompt against a **pre-trained spaCy classifier** on the same test set.
+- Interpret what supervised fine-tuning **buys and costs** versus zero-training prompting.
 
 # Error analysis
 
@@ -29,6 +39,22 @@ By the end of this session, you will be able to:
 <!-- to be added -->
 
 # Iterating the prompt
+
+## The same move you already saw {.smaller}
+
+Back in S7, **Huang & Mizumoto's Ex 1 → Ex 2** was a generic prompt tightened into a structured one.
+
+. . .
+
+That's exactly the loop here — only now it's **driven by data, not intuition**:
+
+1. **read the errors** (`show_errors`) — where does the prompt fail?
+2. **tighten one thing** — usually the *Criteria* / label descriptors.
+3. **re-measure** macro-F1 — did it actually help?
+
+::: {.callout-tip}
+Change **one** thing per round, so you know *what* moved the number.
+:::
 
 ## Iterating the prompt
 
@@ -39,5 +65,19 @@ By the end of this session, you will be able to:
 ## Under the hood
 
 <!-- to be added -->
+
+# The LLM is one option, not the only one
+
+## Assistant, not replacement {.smaller}
+
+You just measured a prompted LLM **against a trained model** on the same test set. Neither is "the answer" — each has costs (data to train vs. prompt, reproducibility, interpretability).
+
+. . .
+
+And back to where the running example started — Huang & Mizumoto (2025):
+
+> *"Human teachers must ultimately remain at the core of language teaching and learning."*
+
+The LLM is a tool you **evaluate and supervise**, not a verdict you accept.
 
 # Any questions?

@@ -1,0 +1,55 @@
+/* =========================================
+   slide-warm — variable-only flavor
+   Pair with slides-v2:  theme: [default, slides-v2.scss, slide-warm.scss]
+
+   Author: Masaki Eguchi
+   Created: 2026-07-26
+   Description: Clay/terracotta primary with a muted-rose accent on a
+                cream ground. Soft, editorial, easy on the eyes.
+                Carries ONLY the palette — all layout and component
+                rules live in slides-v2.
+   ========================================= */
+
+/*-- scss:defaults --*/
+$body-bg: #F4ECDD;
+$body-color: #2B2620;
+$link-color: #9C4A22;
+
+/*-- scss:rules --*/
+:root {
+  /* Primary — clay / terracotta scale */
+  --primary-05: #4A2312;
+  --primary-10: #6B341A;
+  --primary-20: #833F1F;
+  --primary-30: #9C4A22;
+  --primary-40: #C06A3A;
+  --primary-50: #CE865B;
+  --primary-60: #DBA07E;
+  --primary-70: #E7BC9F;
+  --primary-80: #F0D2BD;
+  --primary-90: #F3E2D6;
+  --primary-95: #FAEFE6;
+  --primary:    #9C4A22;
+
+  /* Accent — muted rose scale */
+  --accent-10: #3E1620;
+  --accent-20: #5E2431;
+  --accent-30: #833546;
+  --accent-40: #9E445A;
+  --accent-50: #B5546A;
+  --accent-60: #C87688;
+  --accent-70: #D99BAA;
+  --accent-80: #E8BDC7;
+  --accent-90: #F3DCE1;
+  --accent-95: #FAF0F2;
+  --accent:    #B5546A;
+
+  --warn: #C08A2E;
+
+  --white:    #FFFFFF;
+  --ground:   #F4ECDD;
+  --surface:  #FFFDF8;
+  --ink:      #2B2620;
+  --ink-soft: #6A6055;
+  --rule:     #E6D9C8;
+}

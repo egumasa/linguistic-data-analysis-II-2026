@@ -1,7 +1,15 @@
 ---
 title: "Session 3: Python Practice & Mini-Project Setup"
 subtitle: "Day 1 · Introduction & First Experience (1-3)"
-format: revealjs
+kicker: "Linguistic Data Analysis II · Day 1"
+format:
+  revealjs:
+    theme:
+      # Paths resolve relative to this deck (sources/slides/) → sources/assets/.
+      # slides-v2 = shared layout/component rules; slide-<flavor> = palette only.
+      - default
+      - ../assets/css/slides-v2.scss
+      - ../assets/css/slide-warm.scss
 metadata-files:
   - _slides.yml
 ---
@@ -88,6 +96,10 @@ On **Day 2**, the **sentence** is the unit you **annotate by hand** and the unit
 
 Getting segmentation right is not a side quest — it's the foundation the whole gold standard sits on.
 
+. . .
+
+This is your **unit of analysis** — the thing you attach one label to. Sometimes it's the **sentence** (segment first, like here); sometimes it's the **whole text** (an essay gets one rating). Session 4 formalizes this as *sentence categorization* vs *text categorization*.
+
 ## 🧪 Let's try — the sentencizer {.smaller}
 
 ```python
@@ -147,6 +159,20 @@ print(ask("Despite the rain, the game went ahead."))
 
 Now labelling a sentence is just `ask(...)`.
 
+## One prediction, one record {.smaller}
+
+When you label a sentence, keep the result in a small, fixed shape:
+
+```python
+prediction = {"id": 1, "text": "Despite the rain, the game went ahead.", "label": ask(...)}
+```
+
+. . .
+
+::: {.callout-note}
+This `{id, text, label}` **record** — *text in → label out* — is the **canonical schema** you'll use every day this week. Every gold set and every model output is just a **list of these**.
+:::
+
 # 4 · Your turn
 
 ## Guided practice {.smaller}
@@ -171,5 +197,24 @@ Some library cells use a **list comprehension** like `[row["label"] for row in r
 . . .
 
 Choosing now means your group is ready to start the project on **Day 4**. See the [Final Project](../final-project/index.md) page for the tracks.
+
+# 作戦会議 — strategy huddle
+
+## Open your 作戦シート {.smaller}
+
+Class tutorials only ever use the **CEFR** demo. This ~10–15 min team huddle is where you carry each day's mechanic onto **your own track**.
+
+Start your **作戦シート** (*project design log*) — today's four entries:
+
+1. **Track** — which dataset your group picked.
+2. **Problem statement** — one line: *what are you labelling, and why?*
+3. **Unit of analysis** — sentence or whole text?
+4. **Draft label set** — your first guess at the categories.
+
+. . .
+
+::: {.callout-tip}
+You'll add to this sheet again at the end of **Day 2** and **Day 3**. By then it's a **study design** — and it prefills your final report.
+:::
 
 # Any questions?

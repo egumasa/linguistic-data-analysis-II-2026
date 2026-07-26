@@ -1,43 +1,265 @@
 ---
-title: "Session 1: Introduction to LLMs & NLP Tasks"
+title: "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis"
 subtitle: "Day 1 · Introduction & First Experience (1-1)"
-format: revealjs
+kicker: "Linguistic Data Analysis II · Day 1"
+format:
+  revealjs:
+    # Per-deck flavor. slides-v2 = shared rules; slide-<flavor> = palette only.
+    theme:
+      - default
+      - ../assets/css/slides-v2.scss
+      - ../assets/css/slide-forest.scss
 metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
+<!-- OUTLINE DECK — slide-by-slide beat list for review. Bodies are condensed bullets, not
+     final prose; once the structure is approved these get written out in the S2/S3 style
+     (framing paragraph + `. . .` fragments + callouts). Derived from course-design.md S1
+     (the 7-beat single argument, "Five-day arc" block). -->
 
-# Session 1: Introduction to LLMs & NLP Tasks
+# Session 1: Introduction to LLMs as Tools
 
 ## 📋 Agenda
 
-- What LLMs are & how they fit linguistic analysis
-- The NLP tasks we'll tackle in this course
-- Course overview & self-introductions
+0. Self-introductions
+1. Why this course
+2. The 5-day map & objectives
+3. What do you know about LLM?
+4. What an LLM is — and why it's relevant
+5. LLM follows instructions — a no-code demo
+6. But — we need evaluation
+7. Discussion
+
+
+ 
+# 0 · Self-introductions
+
+## Introduce yourself - Round 1
+
+Tell us:
+
+- your **name** 
+- What you enjoy doing while you are not doing research
+
+## Round 2
+
+Tell us:
+- What is your research interest
+
+## Round 3
+
+- Why you decided to take this course
+- Any goals
+- Any concerns
+
+# 1 · Why this course
+
+## LLMs are everywhere now
+
+Large language models are now **common tools** — for writing, translating, coding, searching.
+
+So the question isn't *whether* linguists will use them. It's **how to use them responsibly** for linguistic analysis.
+
+## Linguistic annotation: promising but costly
+
+One especially promising use is **annotation** — labelling language data for analysis.
+
+- But careful annotation is **expensive**: expert time, training, guidelines, double-coding.
+- If an LLM could annotate reliably, then it facilitates research.
+
+The tempting question: *can an LLM just do it for us?*
+
+## Adequacy must be evaluated, not assumed
+
+Here's the seed of the whole course:
+
+> An LLM's output is only useful if it's **adequate** — and adequacy has to be **evaluated, not assumed.**
+
+
+**By Friday you will have *critically evaluated* an LLM on your own annotation task**
+
+
+## One simple Goal of the course
+
+Can we trust an LLM on identifying collocation?
+
+**Until today**
+
+- Well, maybe? 
+
+OR 
+
+- Are there any paper on this?
+
+**After this course**
+
+- Let's find out! 
+
+
+Each day earns one piece of the method. By Friday you own the whole loop.
+
+# 2 · The 5-day map
+
+## What we'll do this week {.smaller}
+
+| Day | Focus |
+|-----|-------|
+| **1** | What is LLM, Python basics, call an LLM |
+| **2** | Gold standard + agreement — **the yardstick** |
+| **3** | Prompt + iterate against metrics |
+| **4** | Method + assemble the pipeline |
+| **5** | Your own data + present |
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Describe, at a high level, **what a Large Language Model is**.
+- Name the three NLP tasks this course targets — **classification, annotation, extraction** — and give an example of each.
+- Say what **machine learning** is and how ML models are built.
+- Explain, at a high level, **how LLMs are trained** and how they produce natural language.
 
-# What are LLMs?
+## The one idea for today {.smaller}
 
-## What are LLMs?
+> An LLM is a **judge you must check**, not an oracle — and it fits the linguistic tasks you already care about.
 
-<!-- to be added -->
 
-# NLP tasks for linguistic analysis
+Everything this week is a way of *checking* that judge. Today we build the case for **why** checking is the whole point.
 
-## NLP tasks for linguistic analysis
+# 3 · What do you know about LLM?
 
-<!-- to be added -->
+- What is a Large Language Model (or LLM)?
 
-# Course overview & introductions
+  Explain in your own words.
 
-## Course overview & introductions
 
-<!-- to be added -->
+# 4 · What is an LLM — and why it's relevant
+
+## Large Language Model
+
+- statistical machine-learning model 
+- autoregressive
+- transformer
+
+
+## A quick detour: how does a model *learn*? {.smaller}
+
+**Machine learning** = a model **learns patterns from data** instead of being hand-coded with rules.
+
+- Rule-based: *a human writes the rules.*
+- ML: *the model infers the rules from labelled examples.*
+
+. . .
+
+This is the shift that made modern NLP — and it's why data (annotation!) matters so much.
+
+## How LLMs are trained {.smaller}
+
+An LLM is trained by **self-supervised pretraining** on huge amounts of text:
+
+- The task: **predict the next word**, over and over, on billions of sentences.
+- No hand-labelling needed — the text is its own answer key.
+
+. . .
+
+Producing natural language is just **that same next-word prediction, run forward** — which is why it *sounds* fluent.
+
+## Reason 1 — the LLM is the *product* of NLP {.smaller}
+
+The LLM isn't alien to linguistics. It's the **current endpoint** of a decades-long NLP lineage:
+
+**rule-based → statistical → neural → pretrained transformers → LLMs**
+
+. . .
+
+Each step learned more from data and less from hand-written rules. The LLM is where that curve is *right now*.
+
+## Reason 2 — the LLM *re-absorbs* the classic tasks {.smaller}
+
+Historically, **each task had its own bespoke model** — POS tagger, NER model, parser, classifier, coreference model.
+
+. . .
+
+With scale + pretraining + **prompting**, **one model does many tasks** — just by being asked.
+
+. . .
+
+The three we target — **classification · annotation · extraction** — are exactly those task types.
+*(Transformer = the enabler; prompting = why the tasks reappear.)* → S4 re-meets these with linguistic examples (Eguchi & Kyle 2024).
+
+
+## Summary
+
+LLM is:
+- a type of statistical machine-learning model, which learn to predict the next token given the previous sequence (autoregressive), leveraging the state-of-the-art transformer architecture as basis.
+
+
+# 5 · LLM follows language instructions
+
+## Throw language data at an LLM {.smaller}
+
+Let's just **try it** — no code:
+
+- paste some real language data into a chat LLM,
+- ask it to label / analyze it,
+- read the output together.
+
+. . .
+
+**What did it get right? What looks off?** And the question that runs the whole course:
+*how would we ever **know** — beyond eyeballing?*
+
+
+# 6 · But — we need evaluation
+
+## The inversion {.smaller}
+
+Classic NLP **consumed** annotation to *build* models.
+
+Now the model can **produce** annotation. The arrow flips:
+
+**before:** humans annotate → train the model
+**now:** the model annotates → *and who checks it?*
+
+## Trained to *sound* right, not *be* right {.smaller}
+
+An LLM is optimized to produce **fluent, plausible** text.
+
+
+Plausible is **not** the same as **correct**. So we check its labels against a **human gold standard**, using NLP's own metrics:
+
+- **inter-annotator agreement** (percent + Cohen's κ)
+- **precision / recall / F1**, **confusion matrix**
+
+
+## The punchline {.smaller}
+
+::: {.callout-important}
+This course is the **evaluation half of NLP, applied to LLMs.**
+:::
+
+NLP's *training* half we mostly leave aside. Its **evaluation** half is exactly the rigor an LLM's outputs need — and it's what you'll spend the week learning to run.
+
+
+# 7 · Discussion 
+
+## Your turn {.smaller}
+
+- What was new information to you about LLM?
+- What do you want to know more about? 
+
+
+# Recap · The 5-day map
+
+## What we'll do this week {.smaller}
+
+| Day | Focus |
+|-----|-------|
+| **1** | What is LLM, Python basics, call an LLM |
+| **2** | Gold standard + agreement — **the yardstick** |
+| **3** | Prompt + iterate against metrics |
+| **4** | Method + assemble the pipeline |
+| **5** | Your own data + present |
 
 # Any questions?

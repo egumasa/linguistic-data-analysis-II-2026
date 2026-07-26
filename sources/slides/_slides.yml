@@ -1,7 +1,8 @@
 # Shared reveal.js config for all session slide decks.
-# Referenced from each deck via `metadata-files: [../_slides.yml]`.
-# Adapted from the LDA I (2025) slide system; theme reuses assets/css/slides.scss.
+# Referenced from each deck via `metadata-files: [_slides.yml]`.
+# Theme = slides-v2 (shared layout/component rules) + slide-forest (palette only).
 author: "Masaki EGUCHI, Ph.D."
+institute: "Tohoku University · Summer 2026"
 date-modified: last-modified
 lang: en
 highlight-style: github
@@ -10,10 +11,12 @@ code-annotations: hover
 footer: "Linguistic Data Analysis II"
 format:
   revealjs:
-    theme:
-      - default
-      # Path resolves relative to each deck (sources/slides/) → sources/assets/.
-      - ../assets/css/slides.scss
+    # NOTE: theme is set PER DECK ([default, slides-v2.scss, slide-<flavor>.scss]),
+    # not here — metadata-files load LAST in Quarto's theme cascade, so a theme in
+    # this shared file would override each deck's chosen flavor.
+    # Custom title slide (adds the .kicker eyebrow from each deck's `kicker:` field).
+    template-partials:
+      - title-slide.html
     background-transition: none
     slide-number: true
     chalkboard: true

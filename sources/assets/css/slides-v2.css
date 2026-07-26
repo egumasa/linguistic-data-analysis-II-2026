@@ -1,0 +1,328 @@
+/* =========================================
+   slides-v2 — common Reveal.js deck base (plain-CSS twin)
+
+   Author: Masaki Eguchi
+   Created: 2026-07-26
+   Description: Vanilla-CSS mirror of slides-v2.scss for use as a
+                regular stylesheet (e.g. a `css:` include). The
+                `.scss` is canonical; keep this in sync with it.
+                Pair with a variable-only flavor sheet that
+                redefines the :root tokens.
+   ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@400;500;600;700&display=swap');
+
+/* Fallback palette (neutral slate); a flavor sheet redefines these tokens. */
+:root {
+  --primary-05: #1E242C;
+  --primary-10: #2A323D;
+  --primary-20: #37414F;
+  --primary-30: #455161;
+  --primary-40: #5C6B7E;
+  --primary-50: #7A889B;
+  --primary-60: #9AA6B6;
+  --primary-70: #BAC3CF;
+  --primary-80: #D2D8E0;
+  --primary-90: #E4E8ED;
+  --primary-95: #F1F3F6;
+  --primary:    #3F4A5A;
+
+  --accent-10: #0E2A28;
+  --accent-20: #163E3A;
+  --accent-30: #205852;
+  --accent-40: #2F726A;
+  --accent-50: #3F8C82;
+  --accent-60: #62A79E;
+  --accent-70: #8DC2BB;
+  --accent-80: #B6D8D3;
+  --accent-90: #DCEBE9;
+  --accent-95: #EEF6F5;
+  --accent:    #3F8C82;
+
+  --warn: #B08A2E;
+
+  --white:    #FFFFFF;
+  --ground:   #F4F5F6;
+  --surface:  #FFFFFF;
+  --ink:      #24262B;
+  --ink-soft: #5A5E66;
+  --rule:     #D5D9DE;
+
+  --code-font: "Fira Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.reveal {
+  /* Editorial serif; "M PLUS 2" tail keeps Japanese glyphs rendering. */
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "M PLUS 2", serif;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal code, .reveal pre {
+  font-family: var(--code-font);
+}
+
+.reveal h1, .reveal h2, .reveal h3 {
+  font-weight: 800;
+  text-align: left;
+  color: var(--ink);
+}
+
+.reveal h2 {
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--primary-40);
+  margin-bottom: 0.8em;
+}
+
+/* Title slide — color the viewport while the title slide is present
+   (Reveal paints slide backgrounds in a separate layer). */
+.reveal-viewport:has(.reveal .slides section#title-slide.present) {
+  background: var(--primary);
+}
+/* Editorial title layout (see title-slide.html partial). */
+#title-slide {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  padding: 0 6% !important;
+}
+#title-slide .kicker {
+  color: rgba(255,255,255,0.72) !important;
+  font-size: 0.62em !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  margin: 0 0 1.2em 0 !important;
+}
+#title-slide h1,
+#title-slide .title {
+  color: var(--white) !important;
+  font-size: 1.9em !important;
+  font-weight: 800 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 0 0.3em 0 !important;
+  max-width: 85%;
+}
+#title-slide .subtitle {
+  color: rgba(255,255,255,0.92) !important;
+  font-size: 0.95em !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  max-width: 70%;
+}
+#title-slide .title-meta {
+  margin-top: 2.4em !important;
+}
+#title-slide .author {
+  color: rgba(255,255,255,0.9) !important;
+  font-size: 0.7em !important;
+  font-weight: 600 !important;
+  margin: 0 0 0.2em 0 !important;
+}
+#title-slide .institute,
+#title-slide .date {
+  color: rgba(255,255,255,0.6) !important;
+  font-size: 0.58em !important;
+  font-weight: 400 !important;
+  margin: 0 !important;
+}
+
+/* Level 1 section dividers */
+.reveal-viewport { background: var(--ground); }
+.reveal-viewport:has(.reveal .slides section.slide.present.level1) {
+  background: var(--primary);
+}
+.reveal .slides section.slide.present.level1 > :is(h1, h2, h3) {
+  color: var(--primary-90) !important;
+}
+.reveal .slides section.slide.present.level1 > p {
+  color: rgba(255,255,255,0.9) !important;
+}
+
+/* TOC */
+#TOC {
+  padding: 40px 40px !important;
+  box-sizing: border-box !important;
+  display: block !important;
+}
+#TOC h2 { margin-top: 0 !important; }
+
+/* Level 2 content slides */
+.reveal .slides section.slide.level2 {
+  padding: 40px 40px !important;
+  box-sizing: border-box !important;
+  display: block !important;
+}
+.reveal .slides section.slide.level2 > h2:first-child {
+  margin-top: 0 !important;
+}
+
+/* Regular slides */
+.reveal .slides section .slide-content {
+  display: block !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.reveal .slides section.slide,
+.reveal .slides section#TOC {
+  padding: 40px 40px !important;
+  box-sizing: border-box !important;
+}
+
+/* Lists */
+.reveal section > ul > li,
+.reveal section > ol > li {
+  margin-bottom: 0.4em;
+}
+
+/* Tables */
+.reveal table th {
+  background: var(--primary);
+  color: var(--white);
+}
+.reveal table td {
+  border-bottom: 1px solid var(--rule);
+}
+.reveal table tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--primary-90) 40%, transparent);
+}
+
+/* Components */
+.deck-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+}
+.deck-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1.5em;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.deck-callout {
+  border-left: 6px solid var(--primary);
+  background: var(--surface);
+  padding: 1em;
+  border-radius: 8px;
+}
+.deck-callout--accent {
+  border-left: 6px solid var(--accent);
+  background: var(--surface);
+  padding: 1em;
+  border-radius: 8px;
+}
+
+/* Card-style callouts by type */
+.reveal .callout.callout-style-default.callout-note,
+.reveal .callout.callout-style-default.callout-tip,
+.reveal .callout.callout-style-default.callout-important,
+.reveal .callout.callout-style-default.callout-warning{
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+.reveal .callout.callout-style-default .callout-icon-container{
+  display: none !important;
+}
+.reveal .callout.callout-style-default .callout-header{
+  margin: 0 !important;
+  padding: 16px 18px !important;
+  border: 0 !important;
+}
+.reveal .callout.callout-style-default .callout-title-container{
+  font-weight: 800 !important;
+  font-size: 1.6em !important;
+  line-height: 1.1 !important;
+}
+.reveal .callout.callout-style-default .callout-body-container{
+  padding: 16px 18px 18px 18px !important;
+  background: var(--surface) !important;
+}
+.reveal .callout.callout-style-default.callout-note{
+  border: 1px solid var(--primary-40) !important;
+}
+.reveal .callout.callout-style-default.callout-note .callout-header{
+  background: var(--primary-40) !important;
+}
+.reveal .callout.callout-style-default.callout-note .callout-title-container{
+  color: var(--white) !important;
+}
+.reveal .callout.callout-style-default.callout-tip{
+  border: 2px solid var(--primary-90) !important;
+}
+.reveal .callout.callout-style-default.callout-tip .callout-header{
+  background: var(--primary-90) !important;
+}
+.reveal .callout.callout-style-default.callout-tip .callout-title-container{
+  color: var(--primary-05) !important;
+}
+.reveal .callout.callout-style-default.callout-important{
+  border: 2px solid var(--accent-50) !important;
+}
+.reveal .callout.callout-style-default.callout-important .callout-header{
+  background: var(--accent-50) !important;
+}
+.reveal .callout.callout-style-default.callout-important .callout-title-container{
+  color: var(--white) !important;
+}
+.reveal .callout.callout-style-default.callout-warning{
+  border: 2px solid var(--warn) !important;
+}
+.reveal .callout.callout-style-default.callout-warning .callout-header{
+  background: var(--warn) !important;
+}
+.reveal .callout.callout-style-default.callout-warning .callout-title-container{
+  color: var(--ink) !important;
+}
+
+/* Body-title bars */
+.deck-bodytitle{
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  padding: 14px 18px;
+}
+.deck-bodytitle--fit{
+  display: inline-block;
+  width: auto;
+}
+.deck-bodytitle--fill-primary{ background: var(--primary-40); color: var(--white); }
+.deck-bodytitle--fill-accent { background: var(--accent-50); color: var(--white); }
+.deck-bodytitle--soft-primary{ background: var(--primary-90); color: var(--ink); }
+.deck-bodytitle--soft-accent { background: var(--accent-90);  color: var(--ink); }
+.deck-bodytitle--outline-primary{ background: transparent; color: var(--ink); border: 2px solid var(--primary-40); }
+.deck-bodytitle--outline-accent { background: transparent; color: var(--ink); border: 2px solid var(--accent-50); }
+.deck-bodytitle--underline-primary,
+.deck-bodytitle--underline-accent{
+  background: transparent;
+  color: var(--ink);
+  padding: 0 0 10px 0;
+  min-width: 420px;
+}
+.deck-bodytitle--underline-primary{ border-bottom: 3px solid var(--primary-40); }
+.deck-bodytitle--underline-accent { border-bottom: 3px solid var(--accent-50); }
+
+/* Pills */
+.deck-pill{
+  display: inline-block;
+  font-weight: 800;
+  padding: 10px 26px;
+  border-radius: 999px;
+  line-height: 1;
+}
+.deck-pill--fill-primary{ background: var(--primary-40); color: var(--white); }
+.deck-pill--fill-accent { background: var(--accent-50); color: var(--white); }
+.deck-pill--outline-primary{ background: transparent; color: var(--ink); border: 3px solid var(--primary-40); }
+.deck-pill--outline-accent { background: transparent; color: var(--ink); border: 3px solid var(--accent-50); }

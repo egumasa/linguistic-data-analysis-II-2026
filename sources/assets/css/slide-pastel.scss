@@ -1,0 +1,55 @@
+/* =========================================
+   slide-pastel — variable-only flavor
+   Pair with slides-v2:  theme: [default, slides-v2.scss, slide-pastel.scss]
+
+   Author: Masaki Eguchi
+   Created: 2026-07-26
+   Description: Dusty indigo primary with peach/gold accents on a
+                near-white ground. Gentle, low-contrast, easy on the
+                eyes. Carries ONLY the palette — all layout and
+                component rules live in slides-v2.
+   ========================================= */
+
+/*-- scss:defaults --*/
+$body-bg: #EBEBF4;
+$body-color: #2C2C38;
+$link-color: #545C8C;
+
+/*-- scss:rules --*/
+:root {
+  /* Primary — dusty indigo scale */
+  --primary-05: #2C2E4A;
+  --primary-10: #3A3F66;
+  --primary-20: #474D7A;
+  --primary-30: #545C8C;
+  --primary-40: #7B83B0;
+  --primary-50: #969DC4;
+  --primary-60: #AEB4D3;
+  --primary-70: #C4C8E0;
+  --primary-80: #D6D9EC;
+  --primary-90: #E3E5F1;
+  --primary-95: #F0F1F8;
+  --primary:    #545C8C;
+
+  /* Accent — peach scale */
+  --accent-10: #4A241A;
+  --accent-20: #6B3527;
+  --accent-30: #8E4936;
+  --accent-40: #AE5F49;
+  --accent-50: #C77B62;
+  --accent-60: #D6987F;
+  --accent-70: #E4B4A0;
+  --accent-80: #EFCDBE;
+  --accent-90: #F6E3DA;
+  --accent-95: #FBF0EB;
+  --accent:    #C77B62;
+
+  --warn: #B99A3E;
+
+  --white:    #FFFFFF;
+  --ground:   #EBEBF4;
+  --surface:  #FFFFFF;
+  --ink:      #2C2C38;
+  --ink-soft: #5C5C6A;
+  --rule:     #D8DAE8;
+}

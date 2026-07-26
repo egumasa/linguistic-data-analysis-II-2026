@@ -1,43 +1,171 @@
 ---
 title: "Session 7: Prompt Design: Zero-shot vs Few-shot"
 subtitle: "Day 3 · Prompt Design & Iteration (3-1)"
-format: revealjs
+kicker: "Linguistic Data Analysis II · Day 3"
+format:
+  revealjs:
+    # Per-deck flavor. slides-v2 = shared rules; slide-<flavor> = palette only.
+    theme:
+      - default
+      - ../assets/css/slides-v2.scss
+      - ../assets/css/slide-forest.scss
 metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
+<!-- Built from course-design.md S7 (Day 3 — Prompt design & iteration). Running example:
+     Huang & Mizumoto (2025), Ex 1 → Ex 2 — carried into S8 (mapped onto CEFR) and S9 (iteration).
+     promptingguide.ai is the students' self-study technique map. -->
 
-# Session 7: Prompt Design: Zero-shot vs Few-shot
+# Session 7: Prompt Design — Zero-shot vs Few-shot
 
 ## 📋 Agenda
 
-- Prompt-design principles
-- Zero-shot vs. few-shot prompting
-- Strategies for effective prompt engineering
+- The **anatomy** of a prompt — four elements
+- **Zero-shot vs. few-shot**, and **chain-of-thought**
+- The wider **design space** — what to *run* vs. what to *know about*
+- Two traps: **contamination** and the **validation/test split**
+
+Our worked example all session: **Huang & Mizumoto (2025)** — writing-feedback prompts.
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- **Name the four prompt elements** — *instruction · context · input data · output indicator* — and locate each in a real prompt.
+- Distinguish **zero-shot** from **few-shot** prompting and judge **when examples help**.
+- Explain **chain-of-thought** and where it earns its keep.
+- Place a technique on the **run-it-this-week vs. know-it-exists** line.
+- Explain the **train/test contamination** trap and why you **tune on validation, report on test**.
 
-# Prompt-design principles
+::: {.callout-note}
+The message of the day: *prompting is a **design space**, not a single trick — small structural choices move the score.*
+:::
 
-## Prompt-design principles
+# The anatomy of a prompt
 
-<!-- to be added -->
+## Prompting *is* a design space
 
-# Zero-shot vs. few-shot
+An LLM does what the **prompt** tells it to. Change the prompt, change the output — and the score.
 
-## Zero-shot vs. few-shot
+. . .
 
-<!-- to be added -->
+So a prompt is not a magic phrase you either know or don't. It has **parts you can design deliberately** — and today we learn those parts on one concrete example.
 
-# Effective prompting strategies
+## Four elements of a prompt {.smaller}
 
-## Effective prompting strategies
+Chen et al. (2023), via **Huang & Mizumoto (2025)** — an effective prompt typically has four parts:
 
-<!-- to be added -->
+- **Instruction** — what the model should *do* (start with a verb: *classify, summarize, explain*).
+- **Context** — the background, role, rubric, or level that scopes the task.
+- **Input data** — the actual text to be processed.
+- **Output indicator** — the *form* of the answer (format, tone, "only feedback, no rewrite").
+
+. . .
+
+If one of the four is missing, the output usually misses too.
+
+## The running example — writing feedback {.smaller}
+
+**Huang & Mizumoto's Example Prompt 2** — a structured paragraph-feedback prompt for an EFL class:
+
+> **Task** — Based on the following criteria, review the following paragraph and provide specific feedback… **I am not seeking rewrite, give me only feedback.**
+>
+> **Criteria** — 1. Hook / Attention-grabber · 2. Background / Context · 3. Thesis statement · 4. Organization · 5. Clarity & coherence
+>
+> **My paragraph** — *(paste your paragraph here)*
+
+. . .
+
+Read the four elements straight off it:
+
+| Element | In this prompt |
+|---|---|
+| **Instruction** | "review… and provide specific feedback" |
+| **Context** | the 5-item **Criteria** rubric |
+| **Input data** | "My paragraph" |
+| **Output indicator** | "only feedback, no rewrite" |
+
+# Zero-shot, few-shot, chain-of-thought
+
+## Zero-shot vs. few-shot {.smaller}
+
+- **Zero-shot** — instruction only, **no examples**. The model relies on what it already knows. Great for simple, familiar tasks.
+- **Few-shot** — you include **a few worked examples** *(input → correct label)* right in the prompt, so the model infers the pattern.
+
+. . .
+
+**When do examples help?** When the task is specialized, the label set is your own, or the format must be exact. Two tips (promptingguide.ai):
+
+- keep a **consistent format** across all examples;
+- make the examples' **label space representative** — don't show only one class.
+
+## Chain-of-thought (CoT) {.smaller}
+
+Ask the model to **reason in steps** before answering (Wei et al., 2022).
+
+**Huang & Mizumoto's Example Prompt 1** is CoT feedback:
+
+> *First,* read the paragraph to understand its main idea. *Next,* check the structure… *Then,* identify grammatical errors. *After that,* assess clarity and coherence. **Provide feedback based on these steps.**
+
+. . .
+
+Zero-shot CoT is often just one added line — **"Let's think step by step"** (Kojima et al., 2022).
+
+::: {.callout-tip}
+CoT earns its keep on tasks that need **sequential judgement** — reviewing writing, or deciding a borderline label.
+:::
+
+## Iterating a prompt: Ex 1 → Ex 2 {.smaller}
+
+The *same* feedback task, tightened:
+
+- **Ex 1 (generic)** — "give feedback on this paragraph, step by step." Works, but vague.
+- **Ex 2 (structured)** — split into **Task / Criteria / My paragraph**, add the output indicator "only feedback."
+
+. . .
+
+That move — generic → structured — is **prompt iteration**. You'll do the data-driven version of it in **S9**, reading the errors and tightening the *Criteria*.
+
+# The wider design space
+
+## Run it this week vs. know it exists {.smaller}
+
+| **Run it in S8** | **Know it exists** (name & reason, don't run) |
+|---|---|
+| zero-shot | **self-consistency** — sample N, majority-vote (a reproducibility lever → S10) |
+| few-shot | **RAG** — ground the model on the annotation manual / codebook (≈ *dynamic* few-shot) |
+| chain-of-thought | **agentic / multi-step** — the model plans → critiques its own label → revises |
+| structured output | (ReAct, Reflexion, prompt chaining…) |
+
+. . .
+
+Your self-study map for all of these: **[promptingguide.ai/techniques](https://www.promptingguide.ai/techniques)**.
+
+## Two traps before you tune {.smaller}
+
+- **Train/test contamination** — never draw your **few-shot examples from the gold set** you score on. The model would be "shown the answers."
+- **Validation vs. test** — **tune** the prompt on a small **validation** set; **report** the final number **once** on a held-out **test** set.
+
+. . .
+
+Both protect the one thing an evaluation is for: **an honest estimate of how the prompt does on unseen text.**
+
+# Coming up
+
+## Bridge to S8 — same anatomy, new task {.smaller}
+
+Next session you build a real classification pipeline — and the **CEFR prompt is the same four elements**:
+
+| Ex 2 (feedback) | CEFR classification (S8) |
+|---|---|
+| Instruction: "provide feedback" | "classify this sentence's CEFR level" |
+| Context: the 5-item rubric | the **CEFR level descriptors** |
+| Input: "My paragraph" | the learner **sentence** |
+| Output indicator: "only feedback" | "**return only the label**" → JSON |
+
+. . .
+
+**S8** — run zero → few → CoT on CEFR, with a Gemini API key. **S9** — read the errors, iterate, and benchmark against a trained model.
 
 # Any questions?

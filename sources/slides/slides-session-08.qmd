@@ -1,7 +1,14 @@
 ---
 title: "Session 8: Hands-on: LLM Classification & Prompt Iteration"
 subtitle: "Day 3 · Prompt Design & Iteration (3-2)"
-format: revealjs
+kicker: "Linguistic Data Analysis II · Day 3"
+format:
+  revealjs:
+    # Per-deck flavor. slides-v2 = shared rules; slide-<flavor> = palette only.
+    theme:
+      - default
+      - ../assets/css/slides-v2.scss
+      - ../assets/css/slide-pastel.scss
 metadata-files:
   - _slides.yml
 ---
@@ -20,7 +27,27 @@ metadata-files:
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Get and store a **Gemini API key** (Colab Secrets) and make **reproducible** calls (`temperature=0`, `seed`).
+- Run the **zero-shot → few-shot → chain-of-thought** progression on CEFR, re-evaluating each on a validation set.
+- Score the final prompt **once** on the held-out test set.
+- Prompt for **structured output** and recognise **JSON** as the `{id, text, label}` format.
+
+# From feedback to classification
+
+## Same anatomy, new task {.smaller}
+
+The CEFR prompt you'll write is **Huang & Mizumoto's Ex 2 structure**, re-cast for classification:
+
+| Ex 2 — writing feedback (S7) | CEFR classification (today) |
+|---|---|
+| **Instruction:** "review and give feedback" | "classify this sentence's **CEFR level**" |
+| **Context:** the 5-item Criteria rubric | the **CEFR level descriptors** |
+| **Input data:** "My paragraph" | the learner **sentence** `{text}` |
+| **Output indicator:** "only feedback, no rewrite" | "**return only the label**" → structured / JSON |
+
+. . .
+
+And the **few-shot examples** come from the **pool** — *never* the gold set you score on (contamination, S7).
 
 # Run classification in Colab
 

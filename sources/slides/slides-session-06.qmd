@@ -1,7 +1,14 @@
 ---
 title: "Session 6: Evaluation Metrics"
 subtitle: "Day 2 · Annotation, Gold Standards & Metrics (2-3)"
-format: revealjs
+kicker: "Linguistic Data Analysis II · Day 2"
+format:
+  revealjs:
+    # Per-deck flavor. slides-v2 = shared rules; slide-<flavor> = palette only.
+    theme:
+      - default
+      - ../assets/css/slides-v2.scss
+      - ../assets/css/slide-warm.scss
 metadata-files:
   - _slides.yml
 ---

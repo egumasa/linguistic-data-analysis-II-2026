@@ -1,0 +1,55 @@
+/* =========================================
+   slide-forest — variable-only flavor
+   Pair with slides-v2:  theme: [default, slides-v2.scss, slide-forest.scss]
+
+   Author: Masaki Eguchi
+   Created: 2026-07-26
+   Description: Deep pine primary with a brass accent on a warm
+                off-white ground. Calm, scholarly, easy on the eyes.
+                Carries ONLY the palette — all layout and component
+                rules live in slides-v2.
+   ========================================= */
+
+/*-- scss:defaults --*/
+$body-bg: #EAEEE5;
+$body-color: #232A26;
+$link-color: #2E5D4B;
+
+/*-- scss:rules --*/
+:root {
+  /* Primary — pine scale */
+  --primary-05: #13291F;
+  --primary-10: #1D4234;
+  --primary-20: #285740;
+  --primary-30: #356E52;
+  --primary-40: #4C8169;
+  --primary-50: #6A9C84;
+  --primary-60: #8CB6A2;
+  --primary-70: #AFCDBE;
+  --primary-80: #C9DED3;
+  --primary-90: #DCEAE2;
+  --primary-95: #EDF4EF;
+  --primary:    #2E5D4B;
+
+  /* Accent — brass scale */
+  --accent-10: #3D2E08;
+  --accent-20: #5C450D;
+  --accent-30: #7E5F16;
+  --accent-40: #937021;
+  --accent-50: #A8802E;
+  --accent-60: #C09B4E;
+  --accent-70: #D4B778;
+  --accent-80: #E4CE9E;
+  --accent-90: #F0E6CC;
+  --accent-95: #F8F1DE;
+  --accent:    #A8802E;
+
+  --warn: #B5642E;
+
+  --white:    #FFFFFF;
+  --ground:   #EAEEE5;
+  --surface:  #FFFFFF;
+  --ink:      #232A26;
+  --ink-soft: #59615A;
+  --rule:     #CDD6CB;
+}

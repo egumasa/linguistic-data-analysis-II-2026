@@ -1,7 +1,15 @@
 ---
 title: "Session 2: Colab Onboarding & Your First LLM Call"
 subtitle: "Day 1 · Introduction & First Experience (1-2)"
-format: revealjs
+kicker: "Linguistic Data Analysis II · Day 1"
+format:
+  revealjs:
+    theme:
+      # Paths resolve relative to this deck (sources/slides/) → sources/assets/.
+      # slides-v2 = shared layout/component rules; slide-<flavor> = palette only.
+      - default
+      - ../assets/css/slides-v2.scss
+      - ../assets/css/slide-pastel.scss
 metadata-files:
   - _slides.yml
 ---
@@ -29,7 +37,6 @@ By the end of this session, you will be able to:
 
 - Slides give the **idea** for each step (a minute or two).
 - Then you **do it in Colab** — right away, while it's fresh.
-- **Type the code, don't copy it.** The little effort is the point: it's how it sticks.
 
 Two kinds of Colab moment:
 
@@ -39,6 +46,16 @@ Two kinds of Colab moment:
 ::: {.callout-tip}
 Errors are normal and expected today. Reading them is a skill we practise, not a sign anything is broken.
 :::
+
+
+## Before we begin 
+
+Why do we learn Python syntax when LLM can write for us?
+
+- The role is changing; human conceptualize and supervise.
+- AI cannot take responsibility of your work.
+- `Review` is still your job; reading and being able to explain what is happening is critical.
+
 
 # 1 · Colab basics — run a cell, read an error
 
@@ -52,15 +69,12 @@ A **notebook** = a document of **cells** you run one at a time.
 - **Code cells** — Python that runs on a **runtime** (a free computer Google lends you in the cloud).
 - Run a cell with **Shift + Enter**.
 
-. . .
-
 Nothing installs on your laptop. If the runtime disconnects, you just re-run the cells.
 
 ## Why this matters
 
-This is the **room you'll work in all week** — every session runs here.
+This is the **workspace you'll use for every work** — every session runs here.
 
-. . .
 
 And one thing *will* happen: you'll hit a **red error**. That's not failure — it's Python telling you exactly what it couldn't do. **Read the last line** to understand what you'll need to do.
 
@@ -129,6 +143,10 @@ reply = generate_text("...your prompt...")
 
 - `generate_text(...)` does the call (we set it up for you — no API key today).
 - `reply = ...` **stores** the answer in a variable named `reply`, so you can use it later.
+
+. . .
+
+One call = **one answer**. That reply isn't the truth — it's **data to check.** In Session 6 you'll *score* answers like this against a human gold standard.
 
 ## Why this matters
 
@@ -283,7 +301,7 @@ You built a prompt from data and sent it — the core move of the whole course.
 
 # Any questions?
 
-## Coming up in Session 3
+## Coming up in Session 3 
 
 You can call the model **once**. Next: run it over a **whole list of sentences** —
 
