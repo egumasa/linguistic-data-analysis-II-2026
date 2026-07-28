@@ -142,7 +142,7 @@
 <!-- OUTLINE DECK — slide-by-slide beat list for review. Bodies are condensed bullets, not
      final prose; once the structure is approved these get written out in the S2/S3 style
      (framing paragraph + `. . .` fragments + callouts). Derived from course-design.md S4
-     (lines 323–373), the three-move A → B → C outline, anchored in Eguchi & Kyle (2024). -->
+     (S4 §Outline), the three-move A → B → C outline, anchored in Eguchi & Kyle (2024). -->
 </section>
 <section>
 <section id="session-4-annotation-principles-inter-annotator-agreement" class="title-slide slide level1 center">
@@ -151,7 +151,6 @@
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
-<p>Three moves — anchored throughout in <strong>Eguchi &amp; Kyle (2024)</strong>:</p>
 <ol type="1">
 <li><strong>A · What NLP tasks are there</strong> — the task taxonomy, now concrete in linguistics</li>
 <li><strong>B · How NLP is evaluated</strong> — the workflow, and how it transfers to <strong>LLMs</strong></li>
@@ -163,11 +162,10 @@
 <p>By the end of this session, you will be able to:</p>
 <ul>
 <li>Place a linguistic annotation task in the classic NLP taxonomy (<em>identify · extract · categorize</em>, by <strong>unit of analysis</strong>).</li>
-<li>Explain why the course targets <strong>sentence</strong> and <strong>text categorization</strong> — and why <strong>error annotation</strong> is the exception.</li>
 <li>Describe the NLP <strong>evaluation workflow</strong> (gold → predictions → metrics) and how it transfers from a trained model to a prompted <strong>LLM</strong>.</li>
 <li>Operationalize a linguistic category into an <strong>annotation scheme</strong> with coding guidelines.</li>
-<li>Explain <strong>inter-annotator agreement</strong>: percent agreement vs.&nbsp;why <strong>Cohen’s κ</strong> corrects for chance.</li>
-<li>Read a <strong>confusion matrix</strong> and conceptual <strong>P / R / F1</strong>.</li>
+<li>Explain <strong>inter-annotator agreement</strong>: percent agreement vs.&nbsp;why <strong>Cohen’s κ</strong> corrects for chance — including <strong>quadratic weighted κ</strong> for <em>ordered</em> labels.</li>
+<li>Read a <strong>confusion matrix</strong> and <strong>compute P / R / F1</strong> from its four cells (TP · TN · FP · FN).</li>
 </ul>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -190,7 +188,7 @@
 </section>
 <section id="what-is-annotation" class="slide level2 smaller">
 <h2>What is annotation?</h2>
-<p><strong>Annotation</strong> = adding <strong>interpretive labels</strong> to language.</p>
+<p><strong>Annotation</strong> = adding <strong>interpretive labels</strong> to the available linguistic data.</p>
 <ul>
 <li><strong>POS</strong> — noun / verb / adjective…</li>
 <li><strong>Word sense</strong> — which meaning of <em>bank</em>?</li>
@@ -198,38 +196,92 @@
 <li><strong>Discourse moves</strong> — what is this sentence <em>doing</em> in the argument?</li>
 <li><strong>Error tags</strong>, <strong>CEFR level</strong>, …</li>
 </ul>
-<p>The common shape: <strong>a unit of language → a label.</strong> That’s the whole game.</p>
 </section>
-<section id="annotation-is-the-foundation-of-corpus-linguistics" class="slide level2">
-<h2>Annotation is the foundation of corpus linguistics</h2>
-<p>Raw text is only searchable by <strong>word form</strong>.</p>
-<div class="fragment">
-<p>Annotation makes it searchable and analyzable at the level of <strong>meaning and function</strong> — that’s what turns a pile of text into a <em>corpus you can ask questions of</em>.</p>
-</div>
-</section>
-<section id="annotation-is-the-fuel-of-nlp" class="slide level2 smaller">
-<h2>Annotation is the fuel of NLP</h2>
-<p>Classic NLP systems are <strong>supervised</strong>: they <strong>learn from human-annotated gold data</strong>.</p>
+<section id="annotation" class="slide level2">
+<h2>Annotation</h2>
+<p><strong>Annotation</strong>: Putting <em>labels</em> on a specific <em>unit of analysis</em></p>
 <ul>
-<li>Someone labels thousands of examples → the system learns the pattern.</li>
-<li>No annotation, no model.</li>
-</ul>
-<div class="fragment">
-<p>So NLP has <em>always</em> <strong>depended on</strong> annotation. Today we look at <em>how</em> that annotation is done well — and how we <strong>evaluate</strong> it.</p>
-</div>
-</section>
-<section id="classic-tasks-in-linguistics" class="slide level2 smaller">
-<h2>Classic tasks, in linguistics</h2>
-<p>Via <strong>Eguchi &amp; Kyle (2024)</strong> — each task = <em>input → output</em> over a <strong>unit of analysis</strong>, doing one of <em>identify · extract · categorize</em>:</p>
+<li><p><strong>Label</strong>:</p>
 <ul>
-<li><strong>POS tagging &amp; dependency parsing</strong> — label every token.</li>
-<li><strong>NER</strong> — find and type spans (names, places…).</li>
-<li><strong>Span categorization</strong> — their epistemic-stance / Engagement Analyzer example.</li>
-<li><strong>Text classification</strong> — one label for a whole text.</li>
+<li>The actual value (often category) we put as a result of the annotation</li>
+</ul></li>
+<li><p><strong>Unit of analysis</strong>:</p>
+<ul>
+<li>The chunk/layer that the specific annotation will be put on.
+<ul>
+<li>Morphology</li>
+<li>Word</li>
+<li>Multiword Units</li>
+<li>Sentence</li>
+<li>Paragraph …</li>
+</ul></li>
+</ul></li>
 </ul>
-<div class="fragment">
-<p>Same three verbs, different unit — that’s the whole taxonomy.</p>
+</section>
+<section id="part-of-speech" class="slide level2 smaller">
+<h2>Part of Speech</h2>
+<p><strong>POS tagging</strong> = label every token with its grammatical category (NOUN, VERB, ADJ…). One label <em>per token</em> — the simplest sequence-labelling task.</p>
+<p><code>The_DET dogs_NOUN ran_VERB quickly_ADV ._PUNCT</code></p>
+<ul>
+<li>Penn Tag</li>
+<li></li>
+</ul>
+</section>
+<section id="word-sense-disambiguation" class="slide level2">
+<h2>Word Sense Disambiguation</h2>
+<p><strong>Word-sense disambiguation</strong> = decide <em>which meaning</em> a word carries in context. Same form, different sense.</p>
+<ul>
+<li><em>She sat on the <strong>bank</strong> of the river.</em> → <strong>riverbank</strong></li>
+<li><em>She deposited the cheque at the <strong>bank</strong>.</em> → <strong>financial institution</strong></li>
+</ul>
+<p>The token is identical — only context resolves the sense. Harder than POS: the label set is <em>per word</em>, not a fixed grammar.</p>
+</section>
+<section id="syntactic-dependency" class="slide level2">
+<h2>Syntactic Dependency</h2>
+<p><strong>Dependency parsing</strong> = link each token to its <strong>head</strong>, building a tree; the top is the <strong>ROOT</strong>. Still token-level, but the label is a <em>relation between tokens</em>.</p>
+
+<img data-src="../assets/img/nlp-tasks/dep-1.png" class="r-stretch quarto-figure-center"><p class="caption">Dependency tree for <em>I play baseball</em> — <code>I</code> →nsubj→ <code>play</code> (ROOT), <code>baseball</code> →dobj→ <code>play</code></p></section>
+<section id="stance" class="slide level2">
+<h2>Stance</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Stance annotation</strong> = label how a writer <em>positions</em> themselves toward a proposition — <strong>hedging</strong> vs.&nbsp;<strong>endorsing</strong>.</p>
+<p>Unit of analysis is a <strong>span</strong> .</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../assets/img/nlp-tasks/engagement.png"></p>
+<figcaption>Engagement Span Annotation (Eguchi &amp; Kyle, 2023)</figcaption>
+</figure>
 </div>
+</div></div>
+</section>
+<section id="discourse-moves" class="slide level2 smaller">
+<h2>Discourse Moves</h2>
+<p><strong>Move analysis</strong> = label what a stretch of text <em>does</em> rhetorically. Classic <strong>CARS</strong> model for research-article introductions (Swales):</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Move</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Move 1</td>
+<td>Establishing a research territory</td>
+</tr>
+<tr class="even">
+<td>Move 2</td>
+<td>Establishing a niche</td>
+</tr>
+<tr class="odd">
+<td>Move 3</td>
+<td>Presenting the present work</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kim &amp; Lu (2024)</strong> had GPT annotate these moves — near-perfect when fine-tuned, though <em>steps</em> stayed hard. Unit: <strong>sentence/clause → one label</strong>.</p>
 </section>
 <section id="organize-by-unit-output" class="slide level2">
 <h2>Organize by unit + output</h2>
@@ -238,44 +290,24 @@
 <li><strong>Span categorization</strong> — stance spans (label a <em>stretch</em> of text).</li>
 <li><strong>Unit categorization → one label per unit</strong> — a <strong>sentence</strong> or a <strong>whole text</strong>.</li>
 </ul>
-<div class="fragment">
-<p>The last row is the one that yields clean, evaluable gold data. That’s where the course lives.</p>
-</div>
 </section>
-<section id="narrow-the-course-focus-and-why" class="slide level2 smaller">
-<h2>Narrow the course focus — and why</h2>
-<p>We do <strong>sentence categorization</strong> and <strong>text categorization</strong>:</p>
+<section id="the-scope-of-the-current-course" class="slide level2">
+<h2>The scope of the current course</h2>
+<p>We will focus mostly on <strong>sentence categorization</strong> and <strong>text categorization</strong>:</p>
 <ul>
-<li>one label per unit → clean gold, a <strong>confusion matrix</strong>, <strong>P / R / F1</strong>;</li>
-<li>the canonical <code>{id, text, label}</code> schema you met in S3.</li>
+<li>The evaluation code is easy to build</li>
+<li>the canonical <code>{id, text, label}</code> schema you met in S3 is sufficient.</li>
+<li>Span / sequence tasks carry <strong>boundary + partial-match</strong> problems and is too heavy for 5 days.</li>
 </ul>
-<div class="fragment">
-<p>Span / sequence tasks carry <strong>boundary + partial-match</strong> problems — too heavy for 5 days.</p>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p><em>The evaluation you can teach in a week determines the tasks you can target.</em></p>
-</div>
-</div>
-</div>
-</div>
 </section>
-<section id="optional-challenge-path-error-annotation" class="slide level2 smaller">
-<h2>Optional challenge path — error annotation</h2>
-<p>The <strong>AutoErrorAnalyzer</strong> track has two routes:</p>
+<section id="note-on-the-error-annotation" class="slide level2">
+<h2>Note on the error annotation</h2>
+<p>Originally, the <strong>AutoErrorAnalyzer</strong> track has two routes:</p>
 <ul>
 <li><strong>Default — sentence-level:</strong> one label per unit; rides the taught pipeline like every other track.</li>
 <li><strong>Stretch — locate-a-span-then-categorize:</strong> the <em>real</em> error-annotation task. Breaks one-label-per-unit; needs <strong>span matching + partial-match scoring</strong>.</li>
 </ul>
-<div class="fragment">
-<p>Offered as an <strong>instructor-supported stretch</strong>, not an excluded case — a coding-guidelines + span-scoring spec is provided for teams who take it.</p>
-</div>
+<p>You can pick which route you will do. A bit more challenging but more rewarding.</p>
 </section></section>
 <section>
 <section id="b-how-nlp-evaluates-a-system-and-how-it-transfers-to-llms" class="title-slide slide level1 center">
@@ -286,9 +318,7 @@
 <h2>The NLP evaluation workflow</h2>
 <p>Eguchi &amp; Kyle (2024) walk the full loop:</p>
 <p><strong>build a gold standard → a system produces predictions → score predictions against gold.</strong></p>
-<div class="fragment">
 <p>We borrow the <strong>evaluation half</strong> — not the training half.</p>
-</div>
 </section>
 <section id="model-prompted-llm" class="slide level2">
 <h2>Model → prompted LLM</h2>
@@ -297,11 +327,9 @@
 <li>This course <strong>replaces the model with a prompted LLM</strong>…</li>
 <li>…but <strong>evaluates it the same way.</strong></li>
 </ul>
-<div class="fragment">
 <p>That transfer is the whole reason this workflow matters here.</p>
-</div>
 </section>
-<section id="what-evaluation-means" class="slide level2 smaller">
+<section id="what-evaluation-means" class="slide level2">
 <h2>What “evaluation” means</h2>
 <ul>
 <li><strong>P / R / F1</strong>, and <strong>macro-F1</strong> across classes.</li>
@@ -310,9 +338,9 @@
 <li><strong>Train / validation / test</strong> — the held-out logic (seed now; applied when we tune prompts in S7–S8).</li>
 </ul>
 </section>
-<section id="reading-a-22-confusion-matrix" class="slide level2 smaller">
-<h2>Reading a 2×2 confusion matrix</h2>
-<p>Rows = <strong>gold</strong>, columns = <strong>prediction</strong>:</p>
+<section id="the-four-outcomes-tp-tn-fp-fn" class="slide level2">
+<h2>The four outcomes: TP · TN · FP · FN</h2>
+<p>First pick <strong>one class as <em>positive</em></strong> — say, “<em>this sentence hedges</em>.” Every prediction then lands in one of four cells. Rows = <strong>gold</strong> (the truth), columns = the <strong>prediction</strong>:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -325,56 +353,266 @@
 <tr class="odd">
 <td>Gold <strong>+</strong></td>
 <td style="text-align: center;"><strong>TP</strong></td>
-<td style="text-align: center;">FN</td>
+<td style="text-align: center;"><strong>FN</strong></td>
 </tr>
 <tr class="even">
 <td>Gold <strong>−</strong></td>
-<td style="text-align: center;">FP</td>
+<td style="text-align: center;"><strong>FP</strong></td>
 <td style="text-align: center;"><strong>TN</strong></td>
 </tr>
 </tbody>
 </table>
-<div class="fragment">
 <ul>
-<li><strong>Precision</strong> = TP / (TP + FP) — of what it <em>flagged</em>, how much was right?</li>
-<li><strong>Recall</strong> = TP / (TP + FN) — of what was <em>actually positive</em>, how much did it catch?</li>
-<li><strong>F1</strong> = harmonic mean of the two.</li>
+<li><strong>TP</strong> (true positive) — flagged as hedging, <em>and it was</em>. ✅</li>
+<li><strong>FP</strong> (false positive) — flagged as hedging, <em>but it wasn’t</em> — a <strong>false alarm</strong>.</li>
+<li><strong>FN</strong> (false negative) — left alone, <em>but it really was hedging</em> — a <strong>miss</strong>.</li>
+<li><strong>TN</strong> (true negative) — correctly left alone. ✅</li>
 </ul>
-<div class="callout callout-note callout-titled callout-style-default">
+</section>
+<section id="precision-recall" class="slide level2">
+<h2>Precision &amp; Recall</h2>
+<p>Two questions about the <strong>positive</strong> class, from the same four cells. Say our detector scored the following on a batch of sentences:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">Pred <strong>+</strong></th>
+<th style="text-align: center;">Pred <strong>−</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gold <strong>+</strong></td>
+<td style="text-align: center;"><strong>TP = 8</strong></td>
+<td style="text-align: center;"><strong>FN = 4</strong></td>
+</tr>
+<tr class="even">
+<td>Gold <strong>−</strong></td>
+<td style="text-align: center;"><strong>FP = 2</strong></td>
+<td style="text-align: center;"><strong>TN = —</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Precision</strong> — <em>of what it flagged, how much was right?</em></p>
+<p><strong>Recall</strong> — <em>of what was actually positive, how much did it catch?</em></p>
+</section>
+<section id="precision-recall-1" class="slide level2">
+<h2>Precision &amp; Recall</h2>
+<p><strong>Precision</strong> — <em>of what it flagged, how much was right?</em></p>
+<p><span class="math display">\[\text{Precision} = \frac{TP}{TP + FP} = \frac{8}{8 + 2} = 0.80\]</span></p>
+<p><strong>Recall</strong> — <em>of what was actually positive, how much did it catch?</em></p>
+<p><span class="math display">\[\text{Recall} = \frac{TP}{TP + FN} = \frac{8}{8 + 4} = 0.67\]</span></p>
+<p><strong>F1</strong> — the <strong>harmonic mean</strong>, so one high score can’t hide one low one:</p>
+<p><span class="math display">\[F_1 = 2 \cdot \frac{P \cdot R}{P + R} = 2 \cdot \frac{0.80 \cdot 0.67}{0.80 + 0.67} \approx 0.73\]</span></p>
+</section>
+<section id="two-coders-same-sentences-accuracy" class="slide level2">
+<h2>Two coders, same sentences — Accuracy</h2>
+<p>Not let’s say two annotators label the <strong>same 50 sentences</strong> (+/−):</p>
+<table class="agreement-matrix" style="width:auto; margin:0 auto; border-collapse:collapse; text-align:center;">
+<thead>
+<tr>
+<th rowspan="2" colspan="2" style="border:none;">
+</th>
+<th colspan="2" style="width:5em;">
+Coder B
+</th>
+<th rowspan="2" style="width:5em;">
+Total
+</th>
+</tr>
+<tr>
+<th style="width:2.5em; height:1.6em;">
++
+</th>
+<th style="width:2.5em; height:1.6em;">
+−
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th rowspan="2" style="width:5em;">
+Coder A
+</th>
+<th style="width:2.5em; height:2.4em;">
++
+</th>
+<td style="width:2.5em;">
+<strong>10</strong>
+</td>
+<td style="width:2.5em;">
+5
+</td>
+<td>
+<strong>15</strong> <span style="opacity:.6;">(30%)</span>
+</td>
+</tr>
+<tr>
+<th style="height:2.4em;">
+−
+</th>
+<td>
+5
+</td>
+<td>
+<strong>30</strong>
+</td>
+<td>
+<strong>35</strong> <span style="opacity:.6;">(70%)</span>
+</td>
+</tr>
+<tr>
+<th colspan="2">
+Total
+</th>
+<td>
+<strong>15</strong><br><span style="opacity:.6;">(30%)</span>
+</td>
+<td>
+<strong>35</strong><br><span style="opacity:.6;">(70%)</span>
+</td>
+<td>
+50
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Observed agreement</strong> = the diagonal ÷ total:</p>
+<p><span class="math display">\[p_o = \frac{10 + 30}{50} = 0.80\]</span></p>
+</section>
+<section id="cohens-κ-agreement-beyond-chance" class="slide level2">
+<h2>Cohen’s κ — agreement beyond chance</h2>
+<p>Cohen’s <strong>κ</strong> (the <em>two-rater, nominal</em> case) subtracts the agreement you’d expect <strong>by chance</strong>:</p>
+<p><span class="math display">\[\kappa = \frac{p_o - p_e}{1 - p_e}\]</span> <span class="math inline">\(p_e\)</span> = the agreement they’d hit <strong>by luck</strong>, using each coder’s own <strong>marginal rate</strong> (row/column totals ÷ 50).</p>
+</section>
+<section id="cohens-κ-agreement-beyond-chance-1" class="slide level2">
+<h2>Cohen’s κ — agreement beyond chance</h2>
+<p>For each label, multiply the two coders’ rates:</p>
+<p><span class="math display">\[p_e = \underbrace{P(A{+})\cdot P(B{+})}_{\text{both say }+} \;+\; \underbrace{P(A{-})\cdot P(B{-})}_{\text{both say }-}\]</span></p>
+<p>Here both coders marked “+” <strong>15/50 = 0.30</strong> and “−” <strong>35/50 = 0.70</strong>:</p>
+<p><span class="math display">\[p_e = (0.30)(0.30) + (0.70)(0.70) = 0.58 \qquad \Rightarrow \qquad \kappa = \frac{0.80 - 0.58}{1 - 0.58} \approx 0.52\]</span></p>
+</section>
+<section id="how-much-κ-is-enough" class="slide level2">
+<h2>How much κ is enough?</h2>
+<p>There’s no single cut-off — you read κ against a <strong>benchmark</strong>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Cohen’s κ</th>
+<th style="text-align: left;">Landis &amp; Koch (1977)</th>
+<th style="text-align: left;">McHugh (2012)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">&lt; 0.00</td>
+<td style="text-align: left;">Poor</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.00–0.20</td>
+<td style="text-align: left;">Slight</td>
+<td style="text-align: left;">None</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0.21–0.40</td>
+<td style="text-align: left;">Fair</td>
+<td style="text-align: left;">Minimal</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.41–0.60</td>
+<td style="text-align: left;"><strong>Moderate</strong></td>
+<td style="text-align: left;">Weak</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0.61–0.80</td>
+<td style="text-align: left;"><strong>Substantial</strong></td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.81–1.00</td>
+<td style="text-align: left;">Almost perfect</td>
+<td style="text-align: left;">Strong</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Note</strong></p>
+<p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p><strong>κ</strong> asks the harder question: how much do two labellers agree <em>beyond what chance alone would give</em>?</p>
+<p>Our two coders’ raw <strong>80 %</strong> agreement is only <strong>κ ≈ 0.52</strong> once chance is removed — <strong>inadequate</strong> on that rule. That gap is the whole point.</p>
 </div>
 </div>
 </div>
-</div>
+</section>
+<section id="ordered-labels-quadratic-weighted-κ" class="slide level2">
+<h2>Ordered labels: quadratic weighted κ</h2>
+<p>Plain κ treats <strong>every</strong> disagreement as equally bad — scoring <strong>A1 → A2 exactly as wrong as A1 → C2</strong>. But CEFR levels are <strong>ordinal</strong> (A1 &lt; A2 &lt; … &lt; C2): a near miss <em>should</em> hurt less.</p>
+<p><strong>Weighted κ</strong> puts a penalty <span class="math inline">\(w_{ij}\)</span> on each off-diagonal cell. With <strong>quadratic</strong> weights over <span class="math inline">\(N\)</span> ordered levels (indices <span class="math inline">\(i, j\)</span>):</p>
+<p><span class="math display">\[w_{ij} = \frac{(i - j)^2}{(N - 1)^2}, \qquad \kappa_w = 1 - \frac{\sum_{ij} w_{ij}\,O_{ij}}{\sum_{ij} w_{ij}\,E_{ij}}\]</span></p>
+<p>For CEFR (<span class="math inline">\(N = 6\)</span>): an <strong>off-by-one</strong> slip weighs <span class="math inline">\(\tfrac{1}{25} = 0.04\)</span> (barely penalized); a far-apart <strong>A1 ↔︎ C2</strong> weighs <span class="math inline">\(\tfrac{25}{25} = 1.0\)</span> (full penalty).</p>
 </section></section>
 <section>
-<section id="c-workflow-annotation-procedure-evaluation" class="title-slide slide level1 center">
-<h1>C · Workflow — annotation procedure &amp; evaluation</h1>
+<section id="c-the-define-first-workflow-you-cant-evaluate-what-you-havent-defined" class="title-slide slide level1 center">
+<h1>C · The define-first workflow — you can’t evaluate what you haven’t defined</h1>
 
 </section>
-<section id="design-the-annotation-scheme" class="slide level2">
-<h2>Design the annotation scheme</h2>
+<section id="why-define-the-task-first" class="slide level2 smaller">
+<h2>Why define the task first?</h2>
+<p>An LLM’s <strong>P / R / F1 is only meaningful against a gold standard</strong> — and a gold standard only exists once the category is <strong>operationalized</strong> well enough that two coders agree beyond chance.</p>
 <ul>
-<li>Adapt or design an <strong>annotation scheme</strong> + coding guidelines.</li>
-<li><strong>Operationalize</strong> the category: turn a fuzzy construct into a <em>decidable</em> rule a second coder can follow.</li>
+<li>No gold → the score has nothing to compare against.</li>
+<li>Fuzzy category → coders disagree → no trustworthy gold in the first place.</li>
 </ul>
-<div class="fragment">
-<p>If two trained coders can’t agree on it, a model can’t be trusted on it either.</p>
-</div>
+<p>So before we prompt anything, we <strong>define the task well enough that humans can agree on it.</strong></p>
 </section>
-<section id="annotate-blind-agreement-gold" class="slide level2">
-<h2>Annotate blind → agreement → gold</h2>
+<section id="the-loop-we-borrow-model-agnostic" class="slide level2 smaller">
+<h2>The loop we borrow — model-agnostic</h2>
+<p><strong>Eguchi &amp; Kyle (2024)</strong> lay out an 11-step tool-building pipeline. It runs <strong>define → operationalize → gold → evaluate</strong> — the <em>model comes almost last</em>:</p>
+<ul>
+<li>The steps that <strong>define the task</strong> and <strong>judge the output</strong> don’t care <em>what</em> produces the labels.</li>
+<li>So we keep them and <strong>swap their trained model for a prompted LLM.</strong></li>
+<li>E&amp;K even suggest <strong>LLM prompting as a first scoping move</strong> — to see which categories are hard.</li>
+</ul>
+</section>
+<section id="define-the-annotation-task" class="slide level2 smaller">
+<h2>① Define the annotation task</h2>
+<p><em>(E&amp;K Steps 1–3)</em></p>
+<ul>
+<li><strong>Scope &amp; purpose</strong> — who uses it, on what texts, for what output?</li>
+<li><strong>Design the task</strong> — <em>input → output</em> over a <strong>unit of analysis</strong> (identify / extract / categorize).</li>
+<li><strong>Reuse or draft</strong> — adopt an existing scheme / tag set if one fits; else draft from the literature.</li>
+<li><strong>Choose the metrics now</strong> (P / R / F1, κ) — so evaluation is <em>planned</em>, not retrofitted.</li>
+<li><strong>Sample data</strong> to represent the domain (proficiency, L1) and <strong>fix the unit</strong>.</li>
+</ul>
+</section>
+<section id="operationalize-into-a-scheme-guidelines" class="slide level2 smaller">
+<h2>② Operationalize into a scheme + guidelines</h2>
+<p><em>(E&amp;K Steps 4–5; <strong>Fuoli, 2018</strong>)</em></p>
+<ul>
+<li>Turn the fuzzy construct into a <strong>decidable rule</strong> a second coder can follow.</li>
+<li><strong>Pilot</strong> on a handful of items — run the whole pipeline once, end to end.</li>
+</ul>
+<p>Fuoli’s three principles:</p>
+<ol type="1">
+<li><strong>All choices accounted for.</strong></li>
+<li><strong>Guidelines tested &amp; refined</strong> until reliable.</li>
+<li><strong>Reliability always assessed</strong> — and reported.</li>
+</ol>
+<p>If two trained coders can’t agree on it, a model can’t be trusted on it either.</p>
+</section>
+<section id="build-the-gold-standard" class="slide level2 smaller">
+<h2>③ Build the gold standard</h2>
+<p><em>(E&amp;K Step 6 → you’ll run this in <strong>S5</strong>)</em></p>
 <ol type="1">
 <li>Two coders annotate the same items <strong>blind</strong>.</li>
 <li>Measure <strong>inter-annotator agreement</strong> — percent <strong>+ κ</strong>.</li>
+<li>Read the confusion matrix → <strong>refine the scheme, re-annotate</strong>.</li>
 <li><strong>Adjudicate</strong> disagreements → a <strong>gold standard</strong>.</li>
 </ol>
 <div class="callout callout-tip callout-titled callout-style-default">
@@ -386,40 +624,47 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>You’ll run exactly this in <strong>S5</strong>.</p>
+<p>Keep the pre-adjudication human agreement — it becomes your <strong>benchmark</strong>.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="evaluate-a-model-against-gold" class="slide level2">
-<h2>Evaluate a model against gold</h2>
-<p>Same metrics, two different comparisons:</p>
+<section id="set-the-target-human-agreement" class="slide level2 smaller">
+<h2>④ Set the target = human agreement</h2>
+<p><em>(E&amp;K Step 8a)</em> — the realistic ceiling for <strong>any</strong> model is the <strong>human IAA</strong>.</p>
 <ul>
-<li><strong>annotator vs.&nbsp;annotator</strong> → <strong>inter-annotator agreement (IAA)</strong></li>
-<li><strong>gold vs.&nbsp;model</strong> → <strong>model evaluation</strong></li>
+<li>E&amp;K expected <strong>~0.70 F1</strong> because their coders agreed at <strong>~0.67 κ</strong>.</li>
 </ul>
-<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>You’ll run this in <strong>S6</strong> — the frozen predictions stand in for a trained model.</p>
+<p>The hinge of the whole story: <em>the better you define the task, the higher humans agree — and the more you can legitimately ask of the LLM.</em></p>
 </div>
 </div>
 </div>
-</section></section>
-<section id="coming-up" class="title-slide slide level1 center">
-<h1>Coming up</h1>
-<ul>
-<li><strong>S5 — Gold-Standard Annotation &amp; Agreement</strong> <em>(hands-on)</em>: build the gold standard and measure agreement — executes <strong>Phase C</strong>.</li>
-<li><strong>S6 — Gold Standards &amp; Evaluation Metrics</strong> <em>(hands-on)</em>: score a model against that gold — executes <strong>Phase B</strong>.</li>
-</ul>
 </section>
-
+<section id="evaluate-the-llm-against-gold" class="slide level2 smaller">
+<h2>⑤ Evaluate the LLM against gold</h2>
+<p><em>(E&amp;K Step 9 → you’ll run this in <strong>S6</strong>)</em> — same metrics, two comparisons:</p>
+<ul>
+<li><strong>annotator vs.&nbsp;annotator</strong> → <strong>inter-annotator agreement (IAA)</strong></li>
+<li><strong>gold vs.&nbsp;model</strong> → <strong>model evaluation</strong></li>
+</ul>
+<p>Report <strong>P / R / F1 + macro-F1 + κ</strong>, and read the <strong>confusion matrix</strong> for <em>where</em> it fails. Here the “model” is a <strong>prompted LLM</strong>.</p>
+</section>
+<section id="coming-up" class="slide level2">
+<h2>Coming up</h2>
+<ul>
+<li><strong>S5 — Gold-Standard Annotation &amp; Agreement</strong> <em>(hands-on)</em>: build the gold standard and measure agreement — executes <strong>Phases ①–③</strong>.</li>
+<li><strong>S6 — Gold Standards &amp; Evaluation Metrics</strong> <em>(hands-on)</em>: score an LLM against that gold — executes <strong>Phases ④–⑤</strong>.</li>
+</ul>
+</section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
 
@@ -609,7 +854,7 @@
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1100,
 
         height: 700,
 

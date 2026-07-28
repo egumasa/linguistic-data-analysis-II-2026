@@ -16,13 +16,12 @@ metadata-files:
 <!-- OUTLINE DECK — slide-by-slide beat list for review. Bodies are condensed bullets, not
      final prose; once the structure is approved these get written out in the S2/S3 style
      (framing paragraph + `. . .` fragments + callouts). Derived from course-design.md S4
-     (lines 323–373), the three-move A → B → C outline, anchored in Eguchi & Kyle (2024). -->
+     (S4 §Outline), the three-move A → B → C outline, anchored in Eguchi & Kyle (2024). -->
 
 # Session 4: Annotation Principles & Inter-Annotator Agreement
 
 ## 📋 Agenda
 
-Three moves — anchored throughout in **Eguchi & Kyle (2024)**:
 
 1. **A · What NLP tasks are there** — the task taxonomy, now concrete in linguistics
 2. **B · How NLP is evaluated** — the workflow, and how it transfers to **LLMs**
@@ -33,11 +32,10 @@ Three moves — anchored throughout in **Eguchi & Kyle (2024)**:
 By the end of this session, you will be able to:
 
 - Place a linguistic annotation task in the classic NLP taxonomy (*identify · extract · categorize*, by **unit of analysis**).
-- Explain why the course targets **sentence** and **text categorization** — and why **error annotation** is the exception.
 - Describe the NLP **evaluation workflow** (gold → predictions → metrics) and how it transfers from a trained model to a prompted **LLM**.
 - Operationalize a linguistic category into an **annotation scheme** with coding guidelines.
-- Explain **inter-annotator agreement**: percent agreement vs. why **Cohen's κ** corrects for chance.
-- Read a **confusion matrix** and conceptual **P / R / F1**.
+- Explain **inter-annotator agreement**: percent agreement vs. why **Cohen's κ** corrects for chance — including **quadratic weighted κ** for *ordered* labels.
+- Read a **confusion matrix** and **compute P / R / F1** from its four cells (TP · TN · FP · FN).
 
 ::: {.callout-note}
 The message of the day: *labelled data is only trustworthy if the category is **operationalized** and two coders agree **beyond chance**.*
@@ -47,7 +45,7 @@ The message of the day: *labelled data is only trustworthy if the category is **
 
 ## What is annotation? {.smaller}
 
-**Annotation** = adding **interpretive labels** to language.
+**Annotation** = adding **interpretive labels** to the available linguistic data.
 
 - **POS** — noun / verb / adjective…
 - **Word sense** — which meaning of *bank*?
@@ -55,39 +53,79 @@ The message of the day: *labelled data is only trustworthy if the category is **
 - **Discourse moves** — what is this sentence *doing* in the argument?
 - **Error tags**, **CEFR level**, …
 
-The common shape: **a unit of language → a label.** That's the whole game.
+## Annotation
 
-## Annotation is the foundation of corpus linguistics
+**Annotation**: Putting *labels* on a specific *unit of analysis*
 
-Raw text is only searchable by **word form**.
+- **Label**: 
+  
+  - The actual value (often category) we put as a result of the annotation
 
-. . .
+- **Unit of analysis**: 
 
-Annotation makes it searchable and analyzable at the level of **meaning and function** — that's what turns a pile of text into a *corpus you can ask questions of*.
+  - The chunk/layer that the specific annotation will be put on.
+    - Morphology
+    - Word
+    - Multiword Units
+    - Sentence
+    - Paragraph ...
 
-## Annotation is the fuel of NLP {.smaller}
 
-Classic NLP systems are **supervised**: they **learn from human-annotated gold data**.
+## Part of Speech {.smaller}
 
-- Someone labels thousands of examples → the system learns the pattern.
-- No annotation, no model.
+**POS tagging** = label every token with its grammatical category (NOUN, VERB, ADJ…). One label *per token* — the simplest sequence-labelling task.
 
-. . .
+`The_DET dogs_NOUN ran_VERB quickly_ADV ._PUNCT`
 
-So NLP has *always* **depended on** annotation. Today we look at *how* that annotation is done well — and how we **evaluate** it.
+- Penn Tag
+- 
 
-## Classic tasks, in linguistics {.smaller}
+## Word Sense Disambiguation
 
-Via **Eguchi & Kyle (2024)** — each task = *input → output* over a **unit of analysis**, doing one of *identify · extract · categorize*:
+**Word-sense disambiguation** = decide *which meaning* a word carries in context. Same form, different sense.
 
-- **POS tagging & dependency parsing** — label every token.
-- **NER** — find and type spans (names, places…).
-- **Span categorization** — their epistemic-stance / Engagement Analyzer example.
-- **Text classification** — one label for a whole text.
+- *She sat on the **bank** of the river.* → **riverbank**
+- *She deposited the cheque at the **bank**.* → **financial institution**
 
-. . .
 
-Same three verbs, different unit — that's the whole taxonomy.
+The token is identical — only context resolves the sense. Harder than POS: the label set is *per word*, not a fixed grammar.
+
+## Syntactic Dependency
+
+**Dependency parsing** = link each token to its **head**, building a tree; the top is the **ROOT**. Still token-level, but the label is a *relation between tokens*.
+
+![Dependency tree for *I play baseball* — `I` →nsubj→ `play` (ROOT), `baseball` →dobj→ `play`](../assets/img/nlp-tasks/dep-1.png)
+
+
+## Stance
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**Stance annotation** = label how a writer *positions* themselves toward a proposition — **hedging** vs. **endorsing**.
+
+Unit of analysis is a **span** .
+:::
+
+::: {.column width="50%"}
+![Engagement Span Annotation (Eguchi & Kyle, 2023)](../assets/img/nlp-tasks/engagement.png)
+:::
+
+::::
+
+## Discourse Moves {.smaller}
+
+**Move analysis** = label what a stretch of text *does* rhetorically. Classic **CARS** model for research-article introductions (Swales):
+
+| Move | Function |
+|------|----------|
+| Move 1 | Establishing a research territory |
+| Move 2 | Establishing a niche |
+| Move 3 | Presenting the present work |
+
+**Kim & Lu (2024)** had GPT annotate these moves — near-perfect when fine-tuned, though *steps* stayed hard. Unit: **sentence/clause → one label**.
+
 
 ## Organize by unit + output
 
@@ -95,35 +133,23 @@ Same three verbs, different unit — that's the whole taxonomy.
 - **Span categorization** — stance spans (label a *stretch* of text).
 - **Unit categorization → one label per unit** — a **sentence** or a **whole text**.
 
-. . .
 
-The last row is the one that yields clean, evaluable gold data. That's where the course lives.
+## The scope of the current course
 
-## Narrow the course focus — and why {.smaller}
+We will focus mostly on **sentence categorization** and **text categorization**:
 
-We do **sentence categorization** and **text categorization**:
+- The evaluation code is easy to build
+- the canonical `{id, text, label}` schema you met in S3 is sufficient.
+- Span / sequence tasks carry **boundary + partial-match** problems and is too heavy for 5 days.
 
-- one label per unit → clean gold, a **confusion matrix**, **P / R / F1**;
-- the canonical `{id, text, label}` schema you met in S3.
+## Note on the error annotation 
 
-. . .
-
-Span / sequence tasks carry **boundary + partial-match** problems — too heavy for 5 days.
-
-::: {.callout-tip}
-*The evaluation you can teach in a week determines the tasks you can target.*
-:::
-
-## Optional challenge path — error annotation {.smaller}
-
-The **AutoErrorAnalyzer** track has two routes:
+Originally, the **AutoErrorAnalyzer** track has two routes:
 
 - **Default — sentence-level:** one label per unit; rides the taught pipeline like every other track.
 - **Stretch — locate-a-span-then-categorize:** the *real* error-annotation task. Breaks one-label-per-unit; needs **span matching + partial-match scoring**.
 
-. . .
-
-Offered as an **instructor-supported stretch**, not an excluded case — a coding-guidelines + span-scoring spec is provided for teams who take it.
+You can pick which route you will do. A bit more challenging but more rewarding.
 
 # B · How NLP evaluates a system — and how it transfers to LLMs
 
@@ -133,7 +159,6 @@ Eguchi & Kyle (2024) walk the full loop:
 
 **build a gold standard → a system produces predictions → score predictions against gold.**
 
-. . .
 
 We borrow the **evaluation half** — not the training half.
 
@@ -143,71 +168,230 @@ We borrow the **evaluation half** — not the training half.
 - This course **replaces the model with a prompted LLM**…
 - …but **evaluates it the same way.**
 
-. . .
 
 That transfer is the whole reason this workflow matters here.
 
-## What "evaluation" means {.smaller}
+## What "evaluation" means
 
 - **P / R / F1**, and **macro-F1** across classes.
 - **Confusion matrix** — where the errors actually go.
 - **Cohen's κ** — agreement corrected for chance.
 - **Train / validation / test** — the held-out logic (seed now; applied when we tune prompts in S7–S8).
 
-## Reading a 2×2 confusion matrix {.smaller}
+## The four outcomes: TP · TN · FP · FN
 
-Rows = **gold**, columns = **prediction**:
+First pick **one class as *positive*** — say, "*this sentence hedges*." Every prediction then lands in one of four cells. Rows = **gold** (the truth), columns = the **prediction**:
 
 |              | Pred **+** | Pred **−** |
 |--------------|:----------:|:----------:|
-| Gold **+**   | **TP**     | FN         |
-| Gold **−**   | FP         | **TN**     |
+| Gold **+**   | **TP**     | **FN**     |
+| Gold **−**   | **FP**     | **TN**     |
 
-. . .
 
-- **Precision** = TP / (TP + FP) — of what it *flagged*, how much was right?
-- **Recall** = TP / (TP + FN) — of what was *actually positive*, how much did it catch?
-- **F1** = harmonic mean of the two.
+- **TP** (true positive) — flagged as hedging, *and it was*. ✅
+- **FP** (false positive) — flagged as hedging, *but it wasn't* — a **false alarm**.
+- **FN** (false negative) — left alone, *but it really was hedging* — a **miss**.
+- **TN** (true negative) — correctly left alone. ✅
 
-::: {.callout-note}
-**κ** asks the harder question: how much do two labellers agree *beyond what chance alone would give*?
+
+## Precision & Recall
+
+Two questions about the **positive** class, from the same four cells. Say our detector scored the following on a batch of sentences:
+
+|              | Pred **+** | Pred **−** |
+|--------------|:----------:|:----------:|
+| Gold **+**   | **TP = 8** | **FN = 4** |
+| Gold **−**   | **FP = 2** | **TN = —** |
+
+
+**Precision** — *of what it flagged, how much was right?*
+
+**Recall** — *of what was actually positive, how much did it catch?*
+
+
+## Precision & Recall
+
+**Precision** — *of what it flagged, how much was right?*
+
+$$\text{Precision} = \frac{TP}{TP + FP} = \frac{8}{8 + 2} = 0.80$$
+
+**Recall** — *of what was actually positive, how much did it catch?*
+
+$$\text{Recall} = \frac{TP}{TP + FN} = \frac{8}{8 + 4} = 0.67$$
+
+
+**F1** — the **harmonic mean**, so one high score can't hide one low one:
+
+$$F_1 = 2 \cdot \frac{P \cdot R}{P + R} = 2 \cdot \frac{0.80 \cdot 0.67}{0.80 + 0.67} \approx 0.73$$
+
+## Two coders, same sentences — Accuracy
+
+Not let's say two annotators label the **same 50 sentences** (+/−):
+
+<table class="agreement-matrix" style="width:auto; margin:0 auto; border-collapse:collapse; text-align:center;">
+  <thead>
+    <tr>
+      <th rowspan="2" colspan="2" style="border:none;"></th>
+      <th colspan="2" style="width:5em;">Coder B</th>
+      <th rowspan="2" style="width:5em;">Total</th>
+    </tr>
+    <tr>
+      <th style="width:2.5em; height:1.6em;">+</th>
+      <th style="width:2.5em; height:1.6em;">−</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" style="width:5em;">Coder A</th>
+      <th style="width:2.5em; height:2.4em;">+</th>
+      <td style="width:2.5em;"><strong>10</strong></td>
+      <td style="width:2.5em;">5</td>
+      <td><strong>15</strong> <span style="opacity:.6;">(30%)</span></td>
+    </tr>
+    <tr>
+      <th style="height:2.4em;">−</th>
+      <td>5</td>
+      <td><strong>30</strong></td>
+      <td><strong>35</strong> <span style="opacity:.6;">(70%)</span></td>
+    </tr>
+    <tr>
+      <th colspan="2">Total</th>
+      <td><strong>15</strong><br><span style="opacity:.6;">(30%)</span></td>
+      <td><strong>35</strong><br><span style="opacity:.6;">(70%)</span></td>
+      <td>50</td>
+    </tr>
+  </tbody>
+</table>
+
+**Observed agreement** = the diagonal ÷ total:
+
+$$p_o = \frac{10 + 30}{50} = 0.80$$
+
+## Cohen's κ — agreement beyond chance
+
+Cohen's **κ** (the *two-rater, nominal* case) subtracts the agreement you'd expect **by chance**:
+
+$$\kappa = \frac{p_o - p_e}{1 - p_e}$$
+$p_e$ = the agreement they'd hit **by luck**, using each coder's own **marginal rate** (row/column totals ÷ 50). 
+
+## Cohen's κ — agreement beyond chance
+
+For each label, multiply the two coders' rates:
+
+$$p_e = \underbrace{P(A{+})\cdot P(B{+})}_{\text{both say }+} \;+\; \underbrace{P(A{-})\cdot P(B{-})}_{\text{both say }-}$$
+
+Here both coders marked "+" **15/50 = 0.30** and "−" **35/50 = 0.70**:
+
+$$p_e = (0.30)(0.30) + (0.70)(0.70) = 0.58 \qquad \Rightarrow \qquad \kappa = \frac{0.80 - 0.58}{1 - 0.58} \approx 0.52$$
+
+## How much κ is enough?
+
+There's no single cut-off — you read κ against a **benchmark**.
+
+| Cohen's κ | Landis & Koch (1977) | McHugh (2012) |
+|:---------:|:---------------------|:--------------|
+| < 0.00    | Poor                 | —             |
+| 0.00–0.20 | Slight               | None          |
+| 0.21–0.40 | Fair                 | Minimal       |
+| 0.41–0.60 | **Moderate**         | Weak          |
+| 0.61–0.80 | **Substantial**      | Moderate      |
+| 0.81–1.00 | Almost perfect       | Strong        |
+
+
+::: {.callout-tip}
+Our two coders' raw **80 %** agreement is only **κ ≈ 0.52** once chance is removed — **inadequate** on that rule. That gap is the whole point.
 :::
 
-# C · Workflow — annotation procedure & evaluation
+## Ordered labels: quadratic weighted κ
 
-## Design the annotation scheme
+Plain κ treats **every** disagreement as equally bad — scoring **A1 → A2 exactly as wrong as A1 → C2**. But CEFR levels are **ordinal** (A1 < A2 < … < C2): a near miss *should* hurt less.
 
-- Adapt or design an **annotation scheme** + coding guidelines.
-- **Operationalize** the category: turn a fuzzy construct into a *decidable* rule a second coder can follow.
+**Weighted κ** puts a penalty $w_{ij}$ on each off-diagonal cell. With **quadratic** weights over $N$ ordered levels (indices $i, j$):
 
-. . .
+$$w_{ij} = \frac{(i - j)^2}{(N - 1)^2}, \qquad \kappa_w = 1 - \frac{\sum_{ij} w_{ij}\,O_{ij}}{\sum_{ij} w_{ij}\,E_{ij}}$$
+
+
+For CEFR ($N = 6$): an **off-by-one** slip weighs $\tfrac{1}{25} = 0.04$ (barely penalized); a far-apart **A1 ↔ C2** weighs $\tfrac{25}{25} = 1.0$ (full penalty).
+
+
+# C · The define-first workflow — you can't evaluate what you haven't defined
+
+## Why define the task first? {.smaller}
+
+An LLM's **P / R / F1 is only meaningful against a gold standard** — and a gold standard only exists once the category is **operationalized** well enough that two coders agree beyond chance.
+
+- No gold → the score has nothing to compare against.
+- Fuzzy category → coders disagree → no trustworthy gold in the first place.
+
+So before we prompt anything, we **define the task well enough that humans can agree on it.**
+
+## The loop we borrow — model-agnostic {.smaller}
+
+**Eguchi & Kyle (2024)** lay out an 11-step tool-building pipeline. It runs **define → operationalize → gold → evaluate** — the *model comes almost last*:
+
+- The steps that **define the task** and **judge the output** don't care *what* produces the labels.
+- So we keep them and **swap their trained model for a prompted LLM.**
+- E&K even suggest **LLM prompting as a first scoping move** — to see which categories are hard.
+
+## ① Define the annotation task {.smaller}
+
+*(E&K Steps 1–3)*
+
+- **Scope & purpose** — who uses it, on what texts, for what output?
+- **Design the task** — *input → output* over a **unit of analysis** (identify / extract / categorize).
+- **Reuse or draft** — adopt an existing scheme / tag set if one fits; else draft from the literature.
+- **Choose the metrics now** (P / R / F1, κ) — so evaluation is *planned*, not retrofitted.
+- **Sample data** to represent the domain (proficiency, L1) and **fix the unit**.
+
+## ② Operationalize into a scheme + guidelines {.smaller}
+
+*(E&K Steps 4–5; **Fuoli, 2018**)*
+
+- Turn the fuzzy construct into a **decidable rule** a second coder can follow.
+- **Pilot** on a handful of items — run the whole pipeline once, end to end.
+
+Fuoli's three principles:
+
+1. **All choices accounted for.**
+2. **Guidelines tested & refined** until reliable.
+3. **Reliability always assessed** — and reported.
 
 If two trained coders can't agree on it, a model can't be trusted on it either.
 
-## Annotate blind → agreement → gold
+## ③ Build the gold standard {.smaller}
+
+*(E&K Step 6 → you'll run this in **S5**)*
 
 1. Two coders annotate the same items **blind**.
 2. Measure **inter-annotator agreement** — percent **+ κ**.
-3. **Adjudicate** disagreements → a **gold standard**.
+3. Read the confusion matrix → **refine the scheme, re-annotate**.
+4. **Adjudicate** disagreements → a **gold standard**.
 
 ::: {.callout-tip}
-You'll run exactly this in **S5**.
+Keep the pre-adjudication human agreement — it becomes your **benchmark**.
 :::
 
-## Evaluate a model against gold
+## ④ Set the target = human agreement {.smaller}
 
-Same metrics, two different comparisons:
+*(E&K Step 8a)* — the realistic ceiling for **any** model is the **human IAA**.
+
+- E&K expected **~0.70 F1** because their coders agreed at **~0.67 κ**.
+
+::: {.callout-note}
+The hinge of the whole story: *the better you define the task, the higher humans agree — and the more you can legitimately ask of the LLM.*
+:::
+
+## ⑤ Evaluate the LLM against gold {.smaller}
+
+*(E&K Step 9 → you'll run this in **S6**)* — same metrics, two comparisons:
 
 - **annotator vs. annotator** → **inter-annotator agreement (IAA)**
 - **gold vs. model** → **model evaluation**
 
-::: {.callout-tip}
-You'll run this in **S6** — the frozen predictions stand in for a trained model.
-:::
+Report **P / R / F1 + macro-F1 + κ**, and read the **confusion matrix** for *where* it fails. Here the "model" is a **prompted LLM**.
 
-# Coming up
-
-- **S5 — Gold-Standard Annotation & Agreement** *(hands-on)*: build the gold standard and measure agreement — executes **Phase C**.
-- **S6 — Gold Standards & Evaluation Metrics** *(hands-on)*: score a model against that gold — executes **Phase B**.
+## Coming up
+- **S5 — Gold-Standard Annotation & Agreement** *(hands-on)*: build the gold standard and measure agreement — executes **Phases ①–③**.
+- **S6 — Gold Standards & Evaluation Metrics** *(hands-on)*: score an LLM against that gold — executes **Phases ④–⑤**.
 
 # Any questions?
