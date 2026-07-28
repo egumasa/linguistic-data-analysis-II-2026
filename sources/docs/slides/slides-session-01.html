@@ -299,34 +299,167 @@
 <h1>4 · What is an LLM — and why it’s relevant</h1>
 
 </section>
-<section id="large-language-model" class="slide level2">
-<h2>Large Language Model</h2>
-<p>In order to understand what LLM is, we should understand:</p>
+<section id="the-plan-follow-one-example" class="slide level2 smaller">
+<h2>The plan — follow one example</h2>
+<p>An LLM is a kind of <strong>statistical machine-learning model</strong>.</p>
+<p>To see its significance, we need to take a detour:</p>
 <ol type="1">
-<li>Statistical machine-learning model</li>
-<li>Autoregressive models</li>
-<li>Transformer architecture</li>
+<li><strong>Machine learning</strong> — what “learning from data” means</li>
+<li><strong>NLP</strong> — machine learning applied to <em>language</em></li>
+<li>How NLP researchers try to <strong>encode</strong> meaning</li>
+<li><strong>Transformers</strong> architecture and its application to LLM</li>
 </ol>
-<p>We will address each.</p>
 </section>
 <section id="statistical-machine-learning-model" class="slide level2">
 <h2>Statistical machine-learning model</h2>
-<p><strong>Machine learning</strong> = a model <strong>learns patterns from data</strong> instead of being hand-coded with rules.</p>
+<p><strong>Statistical Machine learning</strong> = a model <strong>learns patterns from data</strong> instead of being hand-coded with rules.</p>
 <ul>
-<li>Rule-based: <em>a human writes the rules.</em></li>
-<li>ML: <em>the model infers the rules from examples.</em></li>
+<li>Rule-based ML: <em>a human writes the rules.</em></li>
+<li>Statistical ML: <em>the model infers the rules from examples.</em></li>
 </ul>
-<p>ML model typically learns probablistic representation from statistical regularity in the data.</p>
+<p>An ML model learns a <strong>probabilistic representation</strong> from statistical regularity in the data — <em>which patterns tend to go with which outcome.</em></p>
 </section>
-<section id="example---spam-email-detection" class="slide level2">
-<h2>Example - Spam email detection</h2>
+<section id="example-spam-detection" class="slide level2 smaller">
+<h2>Example — spam detection</h2>
+<p>The classic ML task: given an email, decide <strong>spam / not-spam</strong>.</p>
+<ul>
+<li><p><strong>Rule-based:</strong> block anything containing <code>FREE</code>, <code>WINNER</code>, <code>$$$</code> → brittle; spammers just write “F R E E”, and you block real mail.</p></li>
+<li><p><strong>ML:</strong> show the model thousands of emails already <strong>labelled</strong> spam / not-spam. It <em>learns on its own</em> which words (and combinations) predict spam.</p></li>
+</ul>
+<p>The rules are <strong>inferred from examples</strong>, not written by hand.</p>
 </section>
-<section id="autoregressive-model" class="slide level2">
-<h2>Autoregressive model</h2>
-<p>Models that predicts a data at a given time (timepoint <em>T</em>), given the input that preceeds it (<em>T-1</em>).</p>
+<section id="what-is-the-predictor-in-the-ml-model" class="slide level2">
+<h2>What is the predictor in the ML model?</h2>
+<p>The idea of ML is like creating a smart regression model.</p>
+<p>But then we need <strong>predictors</strong> (input features) to make predictons.</p>
+<p>Three different classes of technologies. - One-hot text vector - Static Embeddings - Contextual Embeddings</p>
 </section>
-<section id="transformer-architecture" class="slide level2">
+<section id="one-hot-text-vector" class="slide level2 smaller">
+<h2>One-hot text vector</h2>
+<p>Each vocabulary word is a <strong>slot</strong>. A word flips on its own slot — <strong>1 if present, 0 if not</strong>. Add the words up → the email’s <strong>bag-of-words vector</strong>, and <em>that</em> is what the classifier reads.</p>
+<style>
+.spam-pipe{display:flex;align-items:stretch;justify-content:center;gap:.5rem;flex-wrap:wrap;font-size:.6rem;margin-top:.4rem}
+.spam-pipe .pnode{display:flex;flex-direction:column;gap:.3rem;align-items:center;justify-content:center;
+  background:var(--surface);border:1.5px solid var(--primary-70);border-radius:.5rem;padding:.5rem .6rem}
+.spam-pipe .cap{font-size:.72em;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.spam-pipe .subcap{font-size:.68em;color:var(--ink-soft);font-style:italic}
+.spam-pipe .email-txt{font-family:ui-monospace,Menlo,monospace;line-height:1.3;color:var(--ink)}
+.spam-pipe .parrow{display:flex;align-items:center;font-size:1.4em;font-weight:700;color:var(--primary)}
+.oh-grid{display:grid;grid-template-columns:46px repeat(6,20px);gap:3px;align-items:center}
+.oh-grid .rl{font-family:ui-monospace,Menlo,monospace;font-size:.9em;text-align:right;color:var(--ink)}
+.oh-grid .hl{writing-mode:vertical-rl;transform:rotate(180deg);font-size:.82em;color:var(--ink-soft);justify-self:center;height:44px}
+.oh-grid .c{width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:3px;
+  border:1px solid var(--primary-80);font-size:.9em;color:var(--ink-soft)}
+.oh-grid .c.on{background:var(--accent);border-color:var(--accent);color:var(--white);font-weight:700}
+.vec{display:flex;gap:3px}
+.vec .c{width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:3px;
+  border:1px solid var(--primary-80);font-size:.9em;color:var(--ink-soft)}
+.vec .c.on{background:var(--accent);border-color:var(--accent);color:var(--white);font-weight:700}
+.fcell{width:26px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:3px;
+  border:1px solid var(--primary-80);font-size:.82em;color:var(--ink)}
+.gauge{background:var(--warn);color:var(--white);border-radius:1rem;padding:.15rem .55rem;font-weight:700;white-space:nowrap}
+.verdict{font-weight:700;color:var(--warn)}
+</style>
+
+<div class="spam-pipe">
+  <div class="pnode">
+    <div class="cap">Email</div>
+    <div class="email-txt">claim your<br>free prize</div>
+  </div>
+  <div class="parrow">→</div>
+  <div class="pnode">
+    <div class="cap">One-hot / word</div>
+    <div class="oh-grid">
+      <div></div><div class="hl">claim</div><div class="hl">your</div><div class="hl">free</div><div class="hl">prize</div><div class="hl">meet</div><div class="hl">notes</div>
+      <div class="rl">claim</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c">0</div>
+      <div class="rl">your</div><div class="c">0</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c">0</div>
+      <div class="rl">free</div><div class="c">0</div><div class="c">0</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div><div class="c">0</div>
+      <div class="rl">prize</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div>
+    </div>
+  </div>
+  <div class="parrow">Σ</div>
+  <div class="pnode">
+    <div class="cap">Bag-of-words</div>
+    <div class="vec"><div class="c on">1</div><div class="c on">1</div><div class="c on">1</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div></div>
+    <div class="subcap">sparse · mostly 0</div>
+  </div>
+  <div class="parrow">→</div>
+  <div class="pnode">
+    <div class="cap">Classifier</div>
+    <div class="gauge">P(spam)=0.94</div>
+    <div class="verdict">🚫 spam</div>
+  </div>
+</div>
+<div class="fragment smaller">
+<p><strong>Cost:</strong> the vector is as long as the whole vocabulary (tens of thousands of slots), and <em>“free”</em> and <em>“complimentary”</em> are just two unrelated slots — no notion that they <em>mean</em> the same.</p>
+</div>
+</section>
+<section id="static-embeddings" class="slide level2 smaller">
+<h2>Static embeddings</h2>
+<p>An <strong>embedding</strong> is a <em>learned</em> <strong>dense</strong> vector for each word — trained so that words with <strong>similar meaning sit close together</strong> (Latent Semantic Analysis, Word2Vec). Look up each word, <strong>average</strong> them → the email’s vector.</p>
+<div class="spam-pipe">
+  <div class="pnode">
+    <div class="cap">Email</div>
+    <div class="email-txt">claim your<br>free prize</div>
+  </div>
+  <div class="parrow">→</div>
+  <div class="pnode">
+    <div class="cap">Embedding lookup</div>
+    <div class="oh-grid" style="grid-template-columns:46px repeat(4,26px)">
+      <div class="rl">claim</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 62%,transparent)">.8</div><div class="fcell">.1</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 32%,transparent)">-.3</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 44%,transparent)">.6</div>
+      <div class="rl">your</div><div class="fcell">.0</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 18%,transparent)">.2</div><div class="fcell">.1</div><div class="fcell">-.1</div>
+      <div class="rl">free</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 68%,transparent)">.9</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 24%,transparent)">-.2</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 42%,transparent)">-.4</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 52%,transparent)">.7</div>
+      <div class="rl">prize</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 52%,transparent)">.7</div><div class="fcell">.0</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 24%,transparent)">-.2</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 40%,transparent)">.5</div>
+    </div>
+    <div class="subcap">4 dims shown (really ~300)</div>
+  </div>
+  <div class="parrow">⌀</div>
+  <div class="pnode">
+    <div class="cap">Avg → doc vector</div>
+    <div class="vec"><div class="fcell" style="background:color-mix(in srgb,var(--accent) 48%,transparent)">.6</div><div class="fcell">.0</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 28%,transparent)">-.2</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 36%,transparent)">.4</div></div>
+    <div class="subcap">dense · short</div>
+  </div>
+  <div class="parrow">→</div>
+  <div class="pnode">
+    <div class="cap">Classifier</div>
+    <div class="gauge">P(spam)=0.91</div>
+    <div class="verdict">🚫 spam</div>
+  </div>
+</div>
+<div class="fragment smaller">
+<p><strong>Win:</strong> <em>“free”</em> and <em>“complimentary”</em> now have <strong>nearby</strong> vectors → the model generalises to words it never saw labelled. <strong>Still</strong> ignores word order (it’s an average). → next, <strong>context</strong>.</p>
+</div>
+</section>
+<section id="the-limit-of-static-embeddings" class="slide level2">
+<h2>The limit of Static embeddings</h2>
+<p>But meaning of a word depends on order and context:</p>
+<ul>
+<li>“your account is <strong>free</strong> of charge” ✅ not spam</li>
+<li>“claim your <strong>FREE</strong> prize now” 🚫 spam</li>
+</ul>
+<p>Same word, opposite signal. We need a model that reads each word <strong>relative to the others</strong>.</p>
+</section>
+<section id="transformer-architecture" class="slide level2 smaller">
 <h2>Transformer architecture</h2>
+<ul>
+<li>Reads a <strong>whole sequence at once</strong></li>
+<li><strong>Attention:</strong> every word decides <em>which other words are relevant to it</em></li>
+<li>Output: <strong>context-sensitive</strong> representations of each word</li>
+</ul>
+<p>There are two ways to <em>train</em> a transformer — and they give two model families.</p>
+</section>
+<section id="two-training-objectives" class="slide level2 smaller">
+<h2>Two training objectives</h2>
+<ul>
+<li><p><strong>Masked language model</strong> <em>(e.g.&nbsp;BERT)</em> — hide a word, predict the blank: “claim your ___ prize” → <code>FREE</code>. Good at <strong>understanding</strong> → classification, tagging.</p></li>
+<li><p><strong>Autoregressive model</strong> <em>(e.g.&nbsp;GPT)</em> — predict the <strong>next</strong> word, left to right: “claim your” → “free” → “prize”… Good at <strong>generating</strong> text. <strong>← this is the LLM.</strong></p></li>
+</ul>
+</section>
+<section id="autoregressive-model-the-llm" class="slide level2 smaller">
+<h2>Autoregressive model = the LLM</h2>
+<p>Predicts the token at time <em>T</em> given everything before it (<em>T−1, T−2, …</em>).</p>
+<p>$ P(w_T w_1, w_2, , w_{T-1}) $</p>
+<p>Run that forward, one token at a time → fluent, coherent text. That is exactly what a chat LLM does when it answers you.</p>
 </section>
 <section id="how-llms-are-trained" class="slide level2 smaller">
 <h2>How LLMs are trained</h2>
@@ -353,13 +486,19 @@
 <div class="fragment">
 <p>With scale + pretraining + <strong>prompting</strong>, <strong>one model does many tasks</strong> — just by being asked.</p>
 </div>
-<div class="fragment">
-<p>The three we target — <strong>classification · annotation · extraction</strong> — are exactly those task types. <em>(Transformer = the enabler; prompting = why the tasks reappear.)</em> → S4 re-meets these with linguistic examples (Eguchi &amp; Kyle 2024).</p>
-</div>
 </section>
-<section id="summary" class="slide level2">
+<section id="summary" class="slide level2 smaller">
 <h2>Summary</h2>
-<p>LLM is: - a type of statistical machine-learning model, which learn to predict the next token given the previous sequence (autoregressive), leveraging the state-of-the-art transformer architecture as basis.</p>
+<p>An <strong>LLM</strong> is:</p>
+<ul>
+<li>a <strong>statistical machine-learning model</strong> — it learns patterns from data,</li>
+<li>of the <strong>autoregressive</strong> kind — it predicts the next token given the previous sequence,</li>
+<li>built on the <strong>transformer</strong> architecture — attention lets it read context,</li>
+<li>trained by <strong>next-word prediction</strong> on huge amounts of text.</li>
+</ul>
+<div class="fragment">
+<p>And it’s the <strong>current endpoint of NLP</strong> — the same lineage that once did spam detection now does <em>your</em> linguistic tasks by being <strong>prompted</strong>.</p>
+</div>
 </section></section>
 <section>
 <section id="llm-follows-language-instructions" class="title-slide slide level1 center">

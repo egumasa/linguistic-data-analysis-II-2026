@@ -116,7 +116,6 @@ Each day earns one piece of the method. By Friday you own the whole loop.
 By the end of this session, you will be able to:
 
 - Describe, at a high level, **what a Large Language Model is**.
-- Name the three NLP tasks this course targets — **classification, annotation, extraction** — and give an example of each.
 - Say what **machine learning** is and how ML models are built.
 - Explain, at a high level, **how LLMs are trained** and how they produce natural language.
 
@@ -136,38 +135,177 @@ Everything this week is a way of *checking* that judge. Today we build the case 
 
 # 4 · What is an LLM — and why it's relevant
 
-## Large Language Model
+## The plan — follow one example {.smaller}
 
-In order to understand what LLM is, we should understand:
+An LLM is a kind of **statistical machine-learning model**. 
 
-1. Statistical machine-learning model 
-2. Autoregressive models
-3. Transformer architecture
+To see its significance, we need to take a detour:
 
-We will address each.
+1. **Machine learning** — what "learning from data" means
+2. **NLP** — machine learning applied to *language*
+3. How NLP researchers try to **encode** meaning 
+4. **Transformers** architecture and its application to LLM
 
 
 ## Statistical machine-learning model
 
-**Machine learning** = a model **learns patterns from data** instead of being hand-coded with rules.
+**Statistical Machine learning** = a model **learns patterns from data** instead of being hand-coded with rules.
 
-- Rule-based: *a human writes the rules.*
-- ML: *the model infers the rules from examples.*
+- Rule-based ML: *a human writes the rules.*
+- Statistical ML: *the model infers the rules from examples.*
 
-ML model typically learns probablistic representation from statistical regularity in the data. 
+An ML model learns a **probabilistic representation** from statistical regularity in the data — *which patterns tend to go with which outcome.*
 
-## Example - Spam email detection
+## Example — spam detection {.smaller}
 
+The classic ML task: given an email, decide **spam / not-spam**.
 
+- **Rule-based:** block anything containing `FREE`, `WINNER`, `$$$`
+  → brittle; spammers just write "F R E E", and you block real mail.
 
-## Autoregressive model
+- **ML:** show the model thousands of emails already **labelled** spam / not-spam.
+  It *learns on its own* which words (and combinations) predict spam.
 
-Models that predicts a data at a given time (timepoint *T*), given the input that preceeds it (*T-1*).
+The rules are **inferred from examples**, not written by hand.
+
+## What is the predictor in the ML model? 
+
+The idea of ML is like creating a smart regression model.
+
+But then we need **predictors** (input features) to make predictons.
+
+Three different classes of technologies.
+
+- One-hot text vector
+- Static Embeddings
+- Contextual Embeddings
+
+## One-hot text vector {.smaller}
+
+Each vocabulary word is a **slot**. A word flips on its own slot — **1 if present, 0 if not**. Add the words up → the email's **bag-of-words vector**, and *that* is what the classifier reads.
+
+```{=html}
+<style>
+.spam-pipe{display:flex;align-items:stretch;justify-content:center;gap:.5rem;flex-wrap:wrap;font-size:.6rem;margin-top:.4rem}
+.spam-pipe .pnode{display:flex;flex-direction:column;gap:.3rem;align-items:center;justify-content:center;
+  background:var(--surface);border:1.5px solid var(--primary-70);border-radius:.5rem;padding:.5rem .6rem}
+.spam-pipe .cap{font-size:.72em;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.spam-pipe .subcap{font-size:.68em;color:var(--ink-soft);font-style:italic}
+.spam-pipe .email-txt{font-family:ui-monospace,Menlo,monospace;line-height:1.3;color:var(--ink)}
+.spam-pipe .parrow{display:flex;align-items:center;font-size:1.4em;font-weight:700;color:var(--primary)}
+.oh-grid{display:grid;grid-template-columns:46px repeat(6,20px);gap:3px;align-items:center}
+.oh-grid .rl{font-family:ui-monospace,Menlo,monospace;font-size:.9em;text-align:right;color:var(--ink)}
+.oh-grid .hl{writing-mode:vertical-rl;transform:rotate(180deg);font-size:.82em;color:var(--ink-soft);justify-self:center;height:44px}
+.oh-grid .c{width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:3px;
+  border:1px solid var(--primary-80);font-size:.9em;color:var(--ink-soft)}
+.oh-grid .c.on{background:var(--accent);border-color:var(--accent);color:var(--white);font-weight:700}
+.vec{display:flex;gap:3px}
+.vec .c{width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:3px;
+  border:1px solid var(--primary-80);font-size:.9em;color:var(--ink-soft)}
+.vec .c.on{background:var(--accent);border-color:var(--accent);color:var(--white);font-weight:700}
+.fcell{width:26px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:3px;
+  border:1px solid var(--primary-80);font-size:.82em;color:var(--ink)}
+.gauge{background:var(--warn);color:var(--white);border-radius:1rem;padding:.15rem .55rem;font-weight:700;white-space:nowrap}
+.verdict{font-weight:700;color:var(--warn)}
+</style>
+
+<div class="spam-pipe">
+  <div class="pnode">
+    <div class="cap">Email</div>
+    <div class="email-txt">claim your<br>free prize</div>
+  </div>
+  <div class="parrow">→</div>
+  <div class="pnode">
+    <div class="cap">One-hot / word</div>
+    <div class="oh-grid">
+      <div></div><div class="hl">claim</div><div class="hl">your</div><div class="hl">free</div><div class="hl">prize</div><div class="hl">meet</div><div class="hl">notes</div>
+      <div class="rl">claim</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c">0</div>
+      <div class="rl">your</div><div class="c">0</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c">0</div>
+      <div class="rl">free</div><div class="c">0</div><div class="c">0</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div><div class="c">0</div>
+      <div class="rl">prize</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div>
+    </div>
+  </div>
+  <div class="parrow">Σ</div>
+  <div class="pnode">
+    <div class="cap">Bag-of-words</div>
+    <div class="vec"><div class="c on">1</div><div class="c on">1</div><div class="c on">1</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div></div>
+    <div class="subcap">sparse · mostly 0</div>
+  </div>
+  <div class="parrow">→</div>
+  <div class="pnode">
+    <div class="cap">Classifier</div>
+    <div class="gauge">P(spam)=0.94</div>
+    <div class="verdict">🚫 spam</div>
+  </div>
+</div>
+```
+
+::: {.fragment .smaller}
+**Cost:** the vector is as long as the whole vocabulary (tens of thousands of slots), and *"free"* and *"complimentary"* are just two unrelated slots — no notion that they *mean* the same.
+:::
+
+## Static embeddings {.smaller}
+
+An **embedding** is a *learned* **dense** vector for each word — trained so that words with **similar meaning sit close together** (Latent Semantic Analysis, Word2Vec). 
+
+Look up each word, **average** them → the email's vector.
+
+```{=html}
+<div class="spam-pipe">
+  <div class="pnode">
+    <div class="cap">Email</div>
+    <div class="email-txt">claim your<br>free prize</div>
+  </div>
+  <div class="parrow">→</div>
+  <div class="pnode">
+    <div class="cap">Embedding lookup</div>
+    <div class="oh-grid" style="grid-template-columns:46px repeat(4,26px)">
+      <div class="rl">claim</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 62%,transparent)">.8</div><div class="fcell">.1</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 32%,transparent)">-.3</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 44%,transparent)">.6</div>
+      <div class="rl">your</div><div class="fcell">.0</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 18%,transparent)">.2</div><div class="fcell">.1</div><div class="fcell">-.1</div>
+      <div class="rl">free</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 68%,transparent)">.9</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 24%,transparent)">-.2</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 42%,transparent)">-.4</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 52%,transparent)">.7</div>
+      <div class="rl">prize</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 52%,transparent)">.7</div><div class="fcell">.0</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 24%,transparent)">-.2</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 40%,transparent)">.5</div>
+    </div>
+    <div class="subcap">4 dims shown (really ~300)</div>
+  </div>
+  <div class="parrow">⌀</div>
+  <div class="pnode">
+    <div class="cap">Avg → doc vector</div>
+    <div class="vec"><div class="fcell" style="background:color-mix(in srgb,var(--accent) 48%,transparent)">.6</div><div class="fcell">.0</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 28%,transparent)">-.2</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 36%,transparent)">.4</div></div>
+    <div class="subcap">dense · short</div>
+  </div>
+  <div class="parrow">→</div>
+  <div class="pnode">
+    <div class="cap">Classifier</div>
+    <div class="gauge">P(spam)=0.91</div>
+    <div class="verdict">🚫 spam</div>
+  </div>
+</div>
+```
+
+::: {.fragment .smaller}
+**Win:** *"free"* and *"complimentary"* now have **nearby** vectors → the model generalises to words it never saw labelled. **Still** ignores word order (it's an average). → next, **context**.
+:::
+
+## The limit of Static embeddings
+
+Meaning of a word depends on order and context:
+
+- "your account is **free** of charge" ✅ not spam
+- "claim your **FREE** prize now" 🚫 spam
+
+Same word, opposite signal. This is because:
+
+- Many words are polysemous or homographic
+- Isolated word does not adds up to the meaning of the whole
+  - idioms such as *kick the bucket*
 
 
 ## Transformer architecture
 
+- **Attention:** every word decides *which other words are relevant to it*
+- Output: **context-sensitive** representations of each word and a document
 
+[edit later]
 
 ## How LLMs are trained {.smaller}
 
@@ -176,38 +314,34 @@ An LLM is trained by **self-supervised pretraining** on huge amounts of text:
 - The task: **predict the next word**, over and over, on billions of sentences.
 - No hand-labelling needed — the text is its own answer key.
 
-. . .
-
 Producing natural language is just **that same next-word prediction, run forward** — which is why it *sounds* fluent.
 
-## Reason 1 — the LLM is the *product* of NLP {.smaller}
+## Autoregressive model = the LLM {.smaller}
 
-The LLM isn't alien to linguistics. It's the **current endpoint** of a decades-long NLP lineage:
+Predicts the token at time *T* given everything before it (*T−1, T−2, …*).
 
-**rule-based → statistical → neural → pretrained transformers → LLMs**
-
-. . .
-
-Each step learned more from data and less from hand-written rules. The LLM is where that curve is *right now*.
-
-## Reason 2 — the LLM *re-absorbs* the classic tasks {.smaller}
-
-Historically, **each task had its own bespoke model** — POS tagger, NER model, parser, classifier, coreference model.
-
-. . .
-
-With scale + pretraining + **prompting**, **one model does many tasks** — just by being asked.
-
-. . .
-
-The three we target — **classification · annotation · extraction** — are exactly those task types.
-*(Transformer = the enabler; prompting = why the tasks reappear.)* → S4 re-meets these with linguistic examples (Eguchi & Kyle 2024).
+$ P(w_T \mid w_1, w_2, \dots, w_{T-1}) $
 
 
-## Summary
+Run that forward, one token at a time → fluent, coherent text.
+That is exactly what a chat LLM does when it answers you.
 
-LLM is:
-- a type of statistical machine-learning model, which learn to predict the next token given the previous sequence (autoregressive), leveraging the state-of-the-art transformer architecture as basis.
+
+## The LLM *re-absorbs* the classic tasks {.smaller}
+
+Historically, **each task had its own model** — POS tagger, NER model, parser, coreference model.
+
+With scale + pretraining + **prompting**, **one model can do many tasks**.
+
+
+## Summary {.smaller}
+
+An **LLM** is:
+
+- a **statistical machine-learning model** — it learns patterns from data,
+- of the **autoregressive** kind — it predicts the next token given the previous sequence,
+- built on the **transformer** architecture — attention lets it read context,
+- trained by **next-word prediction** on huge amounts of text.
 
 
 # 5 · LLM follows language instructions
@@ -219,8 +353,6 @@ Let's just **try it** — no code:
 - paste some real language data into a chat LLM,
 - ask it to label / analyze it,
 - read the output together.
-
-. . .
 
 **What did it get right? What looks off?** And the question that runs the whole course:
 *how would we ever **know** — beyond eyeballing?*
@@ -247,6 +379,7 @@ Plausible is **not** the same as **correct**. So we check its labels against a *
 - **inter-annotator agreement** (percent + Cohen's κ)
 - **precision / recall / F1**, **confusion matrix**
 
+We'll cover these on Day 2.
 
 ## The punchline {.smaller}
 
