@@ -332,7 +332,11 @@ def libs(*names):
 LIB_SHEETS = code(
     '#@title 🔧 Library cell: Google Sheets annotation round-trip { display-mode: "form" }',
     "# Helper — you don't need to read this. Run it and move on.",
-    'ANNOTATION_HEADER = ["id", "text", "label_a", "label_b", "final", "notes"]',
+    '# Sheet column headers (the annotation template uses these exact names):',
+    'COL_ID, COL_TEXT = "ID", "Text"',
+    'COL_A, COL_B = "CoderA", "CoderB"',
+    'COL_FINAL, COL_NOTES = "Final", "Note"',
+    'ANNOTATION_HEADER = [COL_ID, COL_TEXT, COL_A, COL_B, COL_FINAL, COL_NOTES]',
     '',
     'def _sheets_client():',
     '    """Authorise gspread with your Google account (a pop-up asks for permission)."""',
@@ -358,13 +362,22 @@ LIB_SHEETS = code(
     '    print("Open it:", sheet.url)',
     '    return sheet.url',
     '',
-    'def load_annotation_sheet(title):',
-    '    """Read your annotation sheet back as a list of row dicts."""',
-    '    rows = _sheets_client().open(title).sheet1.get_all_records()',
-    '    print(f"Read {len(rows)} rows from \'{title}\'.")',
+    'def load_annotation_sheet(sheet_id):',
+    '    """Read your annotation sheet back as a list of row dicts.',
+    '    `sheet_id` is the long id in the sheet\'s URL:',
+    '        docs.google.com/spreadsheets/d/<THIS PART>/edit',
+    '    Pasting the whole URL works too — either way opens the exact sheet, so two',
+    '    copies that share a name (\\"Copy of ...\\") are never confused."""',
+    '    client = _sheets_client()',
+    '    if str(sheet_id).startswith("http"):',
+    '        sheet = client.open_by_url(sheet_id)',
+    '    else:',
+    '        sheet = client.open_by_key(sheet_id)',
+    '    rows = sheet.sheet1.get_all_records()',
+    '    print(f"Read {len(rows)} rows.")',
     '    return rows',
     '',
-    'def to_canonical(rows, labels, column="final"):',
+    'def to_canonical(rows, labels, column=COL_FINAL):',
     '    """Turn annotation rows into canonical gold: [{"id","text","label"}, ...].',
     '    Blank rows are skipped; labels outside `labels` are reported, not silently kept."""',
     '    gold, blank, invalid = [], 0, []',
@@ -373,33 +386,46 @@ LIB_SHEETS = code(
     '        if not label:',
     '            blank += 1',
     '        elif label not in labels:',
-    '            invalid.append((row.get("id"), label))',
+    '            invalid.append((row.get(COL_ID), label))',
     '        else:',
-    '            gold.append({"id": int(row["id"]), "text": str(row["text"]), "label": label})',
+    '            gold.append({"id": int(row[COL_ID]), "text": str(row[COL_TEXT]), "label": label})',
     '    print(f"{len(gold)} usable · {blank} still blank · {len(invalid)} invalid")',
     '    if invalid:',
     '        print("  fix these in the sheet, then re-run:", invalid[:10])',
     '    return gold',
     '',
-    'def annotator_agreement(rows, a="label_a", b="label_b"):',
-    '    """Percent agreement + Cohen\'s κ between the two annotator columns."""',
+    'def annotator_agreement(rows, a=COL_A, b=COL_B):',
+    '    """Percent agreement + Cohen\'s κ between the two annotator columns, PLUS an',
+    '    annotator-vs-annotator confusion matrix (the diagonal is where you agreed;',
+    '    off-diagonal cells show which label pairs the two of you confuse)."""',
     '    from sklearn.metrics import cohen_kappa_score',
     '    pairs = [(str(r.get(a, "")).strip(), str(r.get(b, "")).strip()) for r in rows]',
     '    pairs = [(x, y) for x, y in pairs if x and y]',
     '    if not pairs:',
     '        print("No rows where BOTH annotators have labelled. Nothing to compare yet.")',
     '        return None',
+    '    a_labels = [x for x, _ in pairs]',
+    '    b_labels = [y for _, y in pairs]',
     '    percent = sum(x == y for x, y in pairs) / len(pairs)',
-    '    kappa = cohen_kappa_score([x for x, _ in pairs], [y for _, y in pairs])',
+    '    kappa = cohen_kappa_score(a_labels, b_labels)',
     '    print(f"{len(pairs)} doubly-annotated · agreement {percent:.1%} · Cohen\'s κ {kappa:.3f}")',
+    '    # annotator-vs-annotator confusion matrix (mirrors the gold-vs-model evaluate()):',
+    '    labels = sorted(set(a_labels) | set(b_labels))',
+    '    cm = confusion_matrix(a_labels, b_labels, labels=labels)',
+    '    plt.figure(figsize=(5.5, 4.5))',
+    '    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",',
+    '                xticklabels=labels, yticklabels=labels)',
+    '    plt.xlabel("Annotator B"); plt.ylabel("Annotator A")',
+    '    plt.title("Annotator-vs-annotator confusion matrix")',
+    '    plt.tight_layout(); plt.show()',
     '    return {"n": len(pairs), "percent_agreement": percent, "kappa": kappa}',
     '',
-    'def disagreements(rows, a="label_a", b="label_b"):',
+    'def disagreements(rows, a=COL_A, b=COL_B):',
     '    """The rows your two annotators labelled differently — your adjudication list."""',
     '    out = [r for r in rows',
     '           if str(r.get(a, "")).strip() and str(r.get(b, "")).strip()',
     '           and str(r[a]).strip() != str(r[b]).strip()]',
-    '    print(f"{len(out)} rows to adjudicate. Agree on a `final` label for each in the sheet.")',
+    '    print(f"{len(out)} rows to adjudicate. Agree on a `Final` label for each in the sheet.")',
     '    return pd.DataFrame(out)',
     '',
     'def compare_to_published(gold, published):',
@@ -846,17 +872,27 @@ def day2():
         'errors = show_errors(gold, predictions)',
         'errors.head(15)     # ...or errors[errors["gold"] == "C2"] to see the hard end')]
 
-    # ---- Part B: build a gold standard by hand, in a Google Sheet ----
-    # The graded home of the "gold-standard construction" outcome (session 2-2):
-    # sample → annotate blind in a Sheet → agreement → adjudicate → canonical JSON
-    # → compare against the published gold.
+    # ---- Part B: build a gold standard by hand — the A–F lab spine ----
+    # The graded home of the "gold-standard construction" outcome (session 2-2). Work is
+    # DIVIDED BY ACTIVITY across three surfaces that share one A–F spine (see the S5 slides):
+    #   slides own the concepts · the Google Sheet owns the human judgment (A–C, re-annotate
+    #   in E) · this notebook owns the numbers (D–F). Colab first runs at step D — steps
+    #   A–C are code-free. Cross-reference BY the A–F label, never by cell/slide number.
     cells += [md(
         "## Part B · Corpus Lab — build a gold standard yourself",
         "",
-        "So far the gold labels were handed to you. Now you make some. You will annotate ~20 "
-        "sentences **by hand in a Google Sheet**, with your partner labelling the same "
-        "sentences independently, then bring the result back into Python as a canonical gold "
-        "file — the same `{\"id\", \"text\", \"label\"}` shape you loaded in Part A.",
+        "So far the gold labels were handed to you. Now you make some. Today's work is split "
+        "across **three surfaces that share one spine**, the six steps **A–F**:",
+        "",
+        "- **Slides** teach the *concepts* — how to sample (A), why annotate blind (C), how to "
+        "read a confusion matrix (D–E).",
+        "- **A Google Sheet** holds the *human judgment* — you and your partner annotate there "
+        "(C), and re-annotate there (E).",
+        "- **This notebook** does the *numbers* — it reads the sheet and measures, adjudicates, "
+        "and exports (**D–F**).",
+        "",
+        "So **steps A–C need no code**; this notebook first runs at **step D**. Each header "
+        "below prints the same `A–F` label as the slides — find your place by the *letter*.",
         "",
         "::: {.callout-note}",
         "## Why a spreadsheet?",
@@ -865,80 +901,110 @@ def day2():
         "the tool; it is that you feel how often two careful people disagree, and what it "
         "takes to resolve that into a single defensible label.",
         ":::")]
-    cells += [LIB_SHEETS]
+
+    # A–C: code-free (slides + Sheet). The notebook just tells students where to go.
     cells += [md(
-        "### B1 — Draw ~20 sentences to annotate   ✏️ YOU EDIT",
+        "### A · Sample → copy your track's sheet   *(E&K Step 3 · ①)*",
         "",
-        "We sample from the same CEFR set you just evaluated — but the sheet gets **only the "
-        "ids and the sentences**, never the labels. That way your annotation is genuinely "
-        "independent, and at the end you can check it against the published gold.")]
-    cells += [code(
-        'import random',
-        '',
-        'N_ITEMS = 20            # ✏️ how many sentences to annotate',
-        'random.seed(42)         # fixed seed = the same sample every run',
-        '',
-        'to_annotate = random.sample(gold, N_ITEMS)',
-        'print(f"{len(to_annotate)} sentences drawn. First:", to_annotate[0]["text"])')]
+        "The sample is **already drawn for you** — one template Sheet per track, with the "
+        "columns **`ID · Text · CoderA · CoderB · Final · Note`** and only `ID` and `Text` "
+        "filled in (never the labels, so your annotation is genuinely "
+        "independent). *How* it was sampled — represent the domain, fix the unit, a seed for "
+        "reproducibility — is the slide concept; the exact draw is in the reference appendix at "
+        "the end of this notebook.",
+        "",
+        "**Open your track's template Sheet → `File → Make a copy`** into your own Drive. Then "
+        "grab your copy's **id** from its URL — the long string between `/d/` and `/edit` in "
+        "`docs.google.com/spreadsheets/d/`**`<id>`**`/edit`. You'll paste it into step D. (Opening "
+        "by id, not name, means two copies that share the name \"Copy of …\" are never confused.)")]
     cells += [md(
-        "### B2 — Create your annotation sheet",
+        "### B · Apply the operationalized scheme   *(E&K Steps 4–5; Fuoli · ②)*",
         "",
-        "This creates a Sheet **in your own Drive** and prints a link. Colab will ask "
-        "permission to access your Google account — that is the `authenticate_user()` "
-        "pop-up; accept it with your Tohoku account.",
-        "",
-        "In the sheet, one of you fills **`label_a`** and the other fills **`label_b`** — "
-        "*without looking at each other's column*. Leave `final` blank for now. Use `notes` "
-        "for anything you found hard to decide; those notes are useful evidence later.")]
-    cells += [code(
-        'SHEET_NAME = "lda2_day2_annotation"     # ✏️ rename if you like',
-        '',
-        'create_annotation_sheet(SHEET_NAME, to_annotate, LEVELS)')]
+        "Before you label, restate the **decidable rule** you're annotating against (the scheme "
+        "your team drafted in the earlier sessions) and skim the guidelines and per-level "
+        "examples. One label per unit; know your label set cold. → interpret this on **step B** "
+        "(slides).")]
     cells += [md(
+        "### C · Annotate blind, in pairs   *(E&K Step 6 · ③)*",
+        "",
+        "This step happens **entirely in the Sheet — no code.** One of you fills **`CoderA`** "
+        "and the other fills **`CoderB`**, *without looking at each other's column*. Leave "
+        "`Final` blank for now. Use `Note` for anything you found hard to decide; those notes "
+        "are your evidence in step E.",
+        "",
         "::: {.callout-important}",
         "## Stop here and go annotate",
-        "Open the link above and label all ~20 sentences in **both** annotator columns before "
-        "running the next cell. Come back when the sheet is filled in.",
+        "Label all ~20 rows in **both** annotator columns before running the next cell. Come "
+        "back to Colab when the sheet is filled in — the notebook picks up at **step D**.",
         ":::")]
+
+    # D–F: the executable round-trip. LIB_SHEETS is the only helper Part B needs.
+    cells += [LIB_SHEETS]
     cells += [md(
-        "### B3 — Read it back and measure your agreement",
+        "### D · Measure agreement   *(E&K Step 6 · ③)*   ✏️ YOU EDIT",
         "",
-        "How often did the two of you pick the same level? **Cohen's κ** corrects that for "
-        "the agreement you would expect by chance alone — you will code it yourself in Part C.")]
+        "Colab opens here. Read your copied sheet back in, then measure how much the two of you "
+        "agreed: **percent agreement**, **Cohen's κ** (agreement corrected for chance), and an "
+        "**annotator-vs-annotator confusion matrix** — the diagonal is where you agreed, the "
+        "off-diagonal cells show *which label pairs* you confuse.",
+        "",
+        "::: {.callout-note collapse=\"true\"}",
+        "## How to read what this prints — the interpretation (step D, slides)",
+        "Percent agreement flatters two coders who both lean on the same label — they agree a "
+        "lot *by luck*. **Cohen's κ** strips that luck out, so trust the κ, not the percentage "
+        "(recall S4: 80% raw agreement was only κ ≈ 0.52). Then read the matrix for the *one "
+        "off-diagonal cell* dragging κ down — that specific label pair is your to-do list for "
+        "step E. You will code κ yourself from scratch in **Part C**.",
+        ":::")]
     cells += [code(
-        'rows = load_annotation_sheet(SHEET_NAME)',
+        'SHEET_ID = "1AbCdEf...paste_yours"   # ✏️ the id in YOUR copied sheet\'s URL',
+        '                                     #    (…/spreadsheets/d/THIS/edit) — the whole URL works too',
+        '',
+        'rows = load_annotation_sheet(SHEET_ID)',
         'annotator_agreement(rows)')]
     cells += [md(
-        "### B4 — Adjudicate the disagreements",
+        "### E · Read the matrix → refine → re-annotate   *(E&K Step 6; Fuoli princ. 2 · ③)*",
         "",
-        "Every row below is one your two annotators saw differently. Talk each one through, "
-        "decide a single label, and type it into the **`final`** column in the sheet. For the "
-        "rows you already agreed on, `final` is just that agreed label.",
+        "A low κ is a diagnosis of your **scheme**, not your annotating. `disagreements(rows)` "
+        "lists every row the two of you saw differently — the items behind those off-diagonal "
+        "cells.",
         "",
-        "Keep track of *why* you disagreed — is the sentence genuinely borderline, or is the "
-        "scheme underspecified? That distinction is the heart of your mini-project report.")]
+        "::: {.callout-note collapse=\"true\"}",
+        "## What to do with this list — the judgment (step E, slides)",
+        "For the label pair the matrix flagged, **refine the scheme / guidelines** so that "
+        "ambiguity becomes decidable (add a rule, a boundary case, an example). Then go back to "
+        "the **Sheet** and re-label the affected items, and re-run **step D** to see κ move. "
+        "Iterate until agreement is acceptable — that is Fuoli's principle 2 in action.",
+        ":::")]
     cells += [code('disagreements(rows)')]
     cells += [md(
-        "### B5 — Import it as a gold standard   ✏️ YOU EDIT",
+        "::: {.callout-important}",
+        "## Go re-annotate, then re-run step D",
+        "Make your scheme edits, re-label the confused items **in the Sheet**, then run step D "
+        "again. Repeat until κ is acceptable before moving to step F.",
+        ":::")]
+    cells += [md(
+        "### F · Adjudicate → gold   *(E&K Step 6 → feeds ④⑤)*   ✏️ YOU EDIT",
         "",
-        "Once every row has a `final` label, read the sheet again and convert it to the "
-        "canonical form. `to_canonical` refuses anything that is not one of your allowed "
-        "labels, so typos surface here rather than silently corrupting your gold set.")]
+        "The last disagreements don't refine away — you **decide** them. Fill a single `Final` "
+        "label for every row in the Sheet (for rows you already agreed on, `Final` is just that "
+        "agreed label), then read it back and convert it to canonical form. `to_canonical` "
+        "refuses anything that isn't one of your allowed labels, so typos surface here rather "
+        "than silently corrupting your gold set.")]
     cells += [code(
-        'rows = load_annotation_sheet(SHEET_NAME)       # re-read, now with `final` filled in',
-        'my_gold = to_canonical(rows, LEVELS, column="final")',
+        'rows = load_annotation_sheet(SHEET_ID)       # re-read, now with `Final` filled in',
+        'my_gold = to_canonical(rows, LEVELS)         # reads the `Final` column',
         'my_gold[:3]')]
     cells += [md(
-        "### B6 — How does your gold compare with the published gold?",
-        "",
-        "The CEFR-SP labels came from language-education professionals, and we kept only "
-        "sentences where two of them agreed. Where you differ from them, you are not simply "
-        "*wrong* — but each difference is worth a look.")]
+        "**How does your gold compare with the published gold?** The CEFR-SP labels came from "
+        "language-education professionals, and we kept only sentences where two of them agreed. "
+        "Differing from them is **not** simply *wrong* — Arase's own experts agreed exactly "
+        "only 37.6% of the time — but each difference is worth a look and a defensible reason. "
+        "→ interpret this on **step F** (slides).")]
     cells += [code('compare_to_published(my_gold, gold)')]
     cells += [md(
-        "### B7 — Save your gold set to your Drive",
-        "",
-        "Your gold set belongs in **your** Drive, not the course repo. See "
+        "**Save your gold set to your Drive** — it belongs in **your** Drive, not the course "
+        "repo, and it becomes S6's yardstick. See "
         "[Housing your data in Google Drive](../resources/tools/google-drive-data.md).")]
     cells += [code(
         '# ✏️ Uncomment in Colab to save:',
@@ -946,6 +1012,31 @@ def day2():
         '# with open("/content/drive/MyDrive/my_gold_day2.json", "w", encoding="utf-8") as f:',
         '#     json.dump(my_gold, f, ensure_ascii=False, indent=2)',
         '# print("saved", len(my_gold), "items")')]
+    # Reference appendix: how the per-track template sheets were produced. Framed by what it
+    # does (not who runs it) per CLAUDE.md; kept as a NON-executable fenced block so
+    # "Runtime → Run all" never re-creates sheets. The create_annotation_sheet helper lives
+    # in LIB_SHEETS above; this shows the seeded draw that fed it, one sheet per track.
+    cells += [md(
+        "::: {.callout-note collapse=\"true\"}",
+        "## Reference — how the template sheets were built (you don't run this)",
+        "",
+        "The template Sheet you copied in step A was generated once, ahead of the session, so "
+        "the sample is fixed and reproducible. It uses the `create_annotation_sheet` helper "
+        "(loaded above) fed by a **seeded** random draw — one sheet per track (`cefr`, "
+        "`cars50`, `raamove`, `l2_errors`). Shown here so the sampling is transparent; you do "
+        "**not** run it.",
+        "",
+        "```python",
+        "import random",
+        "",
+        "N_ITEMS = 20            # how many sentences to annotate",
+        "random.seed(42)         # fixed seed = the same sample every time it is drawn",
+        "",
+        "to_annotate = random.sample(gold, N_ITEMS)   # `gold` = your track's labelled pool",
+        "# The sheet gets ids + text only — never the labels — so annotation stays blind:",
+        "create_annotation_sheet(\"lda2_day2_cefr\", to_annotate, LEVELS)",
+        "```",
+        ":::")]
 
     # ---- Part C: metrics-from-scratch lab ----
     cells += [md(
