@@ -7,8 +7,12 @@ toc: true
 ## Why this guide
 
 In the worked tutorials, the course hands you data over a URL — e.g. Day 2's
-[`day2_gold_standards_and_evaluation.ipynb`](../../notebooks/day2_gold_standards_and_evaluation.ipynb) loads a committed CEFR gold set
+[`day2-s6_evaluation_metrics.ipynb`](../../notebooks/day2-s6_evaluation_metrics.ipynb) loads a committed CEFR gold set
 straight from GitHub, so it *just runs*. That is how the course ships **shared** data.
+
+You go the other way for the first time in
+[`day2-s5_gold_standard_construction.ipynb`](../../notebooks/day2-s5_gold_standard_construction.ipynb): the gold set you and your partner
+adjudicate is *yours*, so step F saves it to your Drive with the mount-and-save recipe below.
 
 For the **mini-project** you flip roles: you *build your own* gold set (download → reshape →
 sample a subset) and you need somewhere to keep it. That place is **your Google Drive** — not

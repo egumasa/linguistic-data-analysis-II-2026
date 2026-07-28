@@ -118,8 +118,10 @@ runs that build and then checks every gold file against the schema.
 
 ## Worked tutorials & mini-project tracks
 
-- [Day 2 notebook — Gold standards & evaluation](../../notebooks/day2_gold_standards_and_evaluation.ipynb)
-  (on-ramp with CEFR-SP; plus annotating your own gold set in a Google Sheet)
+- [Day 2 · S5 — Build a gold standard](../../notebooks/day2-s5_gold_standard_construction.ipynb)
+  (annotate your own gold set in a Google Sheet, measure agreement, adjudicate)
+- [Day 2 · S6 — Gold standards & evaluation metrics](../../notebooks/day2-s6_evaluation_metrics.ipynb)
+  (on-ramp with CEFR-SP: P/R/F1, confusion matrix, then the metrics from scratch)
 - [Day 3 tutorial — Prompt design & iteration](../../notebooks/day3_prompt_design.ipynb)
   (zero-shot → few-shot → chain-of-thought, on CEFR-SP)
 - [Mini-project starter tracks](./mini-project-tracks.md)

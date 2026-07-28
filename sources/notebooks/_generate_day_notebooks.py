@@ -194,15 +194,20 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
         simple += ["json", "urllib.request"]
     if "run_prompt" in lib_names:
         simple += ["re"]
-    want_sklearn = "evaluate" in lib_names
-    want_viz = bool(lib_names & {"evaluate", "show_errors"})   # pandas/seaborn/plt
+    # `sheets` draws a confusion matrix too (annotator-vs-annotator), so it needs the
+    # same plotting stack as `evaluate` — but not classification_report.
+    want_report = "evaluate" in lib_names
+    want_matrix = bool(lib_names & {"evaluate", "sheets"})
+    want_viz = bool(lib_names & {"evaluate", "show_errors", "sheets"})   # pandas/seaborn/plt
 
     lines = ['#@title 📦 Setup — run me first { display-mode: "form" }',
              "# Helper — you don't need to read this. Run it and move on."]
     if simple:
         lines.append("import " + ", ".join(sorted(set(simple))))
-    if want_sklearn:
+    if want_report:
         lines.append("from sklearn.metrics import classification_report, confusion_matrix")
+    elif want_matrix:
+        lines.append("from sklearn.metrics import confusion_matrix")
     if want_viz:
         lines.append("import pandas as pd, seaborn as sns, matplotlib.pyplot as plt")
     src = "\n".join(lines)
@@ -222,7 +227,7 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
     status = "Setup done."
     if backend:
         status += " LLM backend: {_backend}."
-    if want_sklearn:
+    if want_matrix:
         status += " scikit-learn ready."
     src += f'\nprint(f"{status}")'
     return code(src)
@@ -310,21 +315,6 @@ LIB_LOAD_PREDICTIONS = code(
     '    print(f"Loaded {len(predictions)} frozen predictions.")',
     '    return predictions')
 
-# name → 🔧 cell. A day requests only what it calls via libs(...).
-LIB = {
-    "load_gold": LIB_LOAD_GOLD,
-    "run_prompt": LIB_RUN_PROMPT,
-    "evaluate": LIB_EVALUATE,
-    "show_errors": LIB_SHOW_ERRORS,
-    "predictions": LIB_LOAD_PREDICTIONS,
-}
-
-
-def libs(*names):
-    """The 🔧 pipeline cells for a day, in the given order. Keep the names here in
-    sync with the lib_names passed to setup_cell (they drive the day's imports)."""
-    return [LIB[n] for n in names]
-
 # Manual annotation round-trip: Colab writes a Google Sheet into the student's own
 # Drive, they label it by hand in the browser (two annotator columns, so agreement
 # falls out), then Colab reads it back and canonicalises it to {id,text,label}.
@@ -352,29 +342,37 @@ LIB_SHEETS = code(
     '    copied across, so you annotate blind. Returns the sheet URL."""',
     '    sheet = _sheets_client().create(title)',
     '    worksheet = sheet.sheet1',
+    '    worksheet.update_title("round1")   # first round lives in the \'round1\' tab',
     '    rows = []',
     '    for item in items:',
     '        rows.append([item["id"], item["text"], "", "", "", ""])',
     '    worksheet.update([ANNOTATION_HEADER] + rows)',
     '    worksheet.freeze(rows=1)',
-    '    print(f"Created \'{title}\' with {len(rows)} rows to annotate.")',
+    '    print(f"Created \'{title}\' with {len(rows)} rows in tab \'round1\'.")',
     '    print("Allowed labels:", ", ".join(labels))',
     '    print("Open it:", sheet.url)',
     '    return sheet.url',
     '',
-    'def load_annotation_sheet(sheet_id):',
-    '    """Read your annotation sheet back as a list of row dicts.',
+    'def load_annotation_sheet(sheet_id, worksheet="round1"):',
+    '    """Read one TAB of your annotation sheet back as a list of row dicts.',
     '    `sheet_id` is the long id in the sheet\'s URL:',
     '        docs.google.com/spreadsheets/d/<THIS PART>/edit',
     '    Pasting the whole URL works too — either way opens the exact sheet, so two',
-    '    copies that share a name (\\"Copy of ...\\") are never confused."""',
+    '    copies that share a name (\\"Copy of ...\\") are never confused.',
+    '    `worksheet` is the TAB name (a \\"round\\"): each round lives in its own tab, so',
+    '    re-annotating in round2 never overwrites round1 — the analysis stays reproducible."""',
     '    client = _sheets_client()',
     '    if str(sheet_id).startswith("http"):',
     '        sheet = client.open_by_url(sheet_id)',
     '    else:',
     '        sheet = client.open_by_key(sheet_id)',
-    '    rows = sheet.sheet1.get_all_records()',
-    '    print(f"Read {len(rows)} rows.")',
+    '    try:',
+    '        ws = sheet.worksheet(worksheet)',
+    '    except Exception:',
+    '        tabs = [w.title for w in sheet.worksheets()]',
+    '        raise ValueError(f"No tab named {worksheet!r}. Tabs in this sheet: {tabs}")',
+    '    rows = ws.get_all_records()',
+    '    print(f"Read {len(rows)} rows from tab \'{worksheet}\'.")',
     '    return rows',
     '',
     'def to_canonical(rows, labels, column=COL_FINAL):',
@@ -443,38 +441,78 @@ LIB_SHEETS = code(
     '                         and g["label"] != lookup[g["id"]]])')
 
 
-def how_to_use(day, title, part_a, part_b, part_c=None):
-    parts = [f"- **Part A · Tutorial** — {part_a}",
-             f"- **Part B · Corpus Lab** — {part_b}"]
-    if part_c:
-        parts.append(f"- **Part C · Corpus Lab** — {part_c}")
-    return md(
-        f"# {title}",
-        "",
-        f"*Day {day} — Linguistic Data Analysis II*",
-        "",
-        "### How to use this notebook",
-        "",
-        f"This is your **single submission for the day**. It has "
-        f"{'three' if part_c else 'two'} parts:",
-        "",
-        *parts,
-        "",
+# name → 🔧 cell. A day requests only what it calls via libs(...).
+LIB = {
+    "load_gold": LIB_LOAD_GOLD,
+    "run_prompt": LIB_RUN_PROMPT,
+    "evaluate": LIB_EVALUATE,
+    "show_errors": LIB_SHOW_ERRORS,
+    "predictions": LIB_LOAD_PREDICTIONS,
+    "sheets": LIB_SHEETS,
+}
+
+
+def libs(*names):
+    """The 🔧 pipeline cells for a day, in the given order. Keep the names here in
+    sync with the lib_names passed to setup_cell (they drive the day's imports)."""
+    return [LIB[n] for n in names]
+
+
+_NUMBER = {1: "one", 2: "two", 3: "three"}
+
+
+def how_to_use(day, title, *parts, note=None):
+    """A notebook's opening cell.
+
+    parts : (kind, description) pairs — ("Tutorial", ...) / ("Corpus Lab", ...) —
+            lettered Part A, B, C in the order given. Pass none for a notebook that
+            is one continuous lab (Day 2's S5 notebook, whose only letters are A–F).
+    note  : an extra line for days that ship more than one notebook.
+    """
+    lines = [f"# {title}",
+             "",
+             f"*Day {day} — Linguistic Data Analysis II*",
+             ""]
+    if note:
+        lines += [note, ""]
+    lines += ["### How to use this notebook", ""]
+    if parts:
+        # A day with a `note` ships more than one notebook, so it isn't "the" submission.
+        lead = "" if note else "This is your **single submission for the day**. "
+        lines += [f"{lead}It has {_NUMBER[len(parts)]} parts:", ""]
+        lines += [f"- **Part {letter} · {kind}** — {description}"
+                  for letter, (kind, description) in zip("ABC", parts)]
+        lines += [""]
+    lines += [
         "You only edit the cells marked **✏️ YOU EDIT**. Cells marked **🔧 Library cell** "
         "are pre-written — run them, don't change them.",
         "",
         "➡️ Work top to bottom. When you're done, **Runtime → Run all**, then "
-        "**File → Download → Download `.ipynb`** and submit that file.")
+        "**File → Download → Download `.ipynb`** and submit that file."]
+    return md(*lines)
 
 
-SUBMISSION = md(
-    "***",
-    "## ✅ Before you submit",
-    "",
-    "1. **Runtime → Run all** and check every cell ran without error.",
-    "2. Tutorial outputs are visible (tables / charts / the model's answers).",
-    "3. Every Corpus Lab self-check prints ✅ (or your TODO answers are filled in).",
-    "4. **File → Download → Download `.ipynb`** and upload that one file.")
+_TUTORIAL_CHECKS = ["Tutorial outputs are visible (tables / charts / the model's answers).",
+                    "Every Corpus Lab self-check prints ✅ (or your TODO answers are "
+                    "filled in)."]
+
+
+def submission(note=None, checks=None):
+    """The closing checklist.
+
+    checks : the middle "what should be visible" items, for a notebook that isn't the
+             usual tutorial + lab pair.
+    note   : replaces the final upload step for days spread over more than one notebook.
+    """
+    items = ["**Runtime → Run all** and check every cell ran without error.",
+             *(checks or _TUTORIAL_CHECKS),
+             "**File → Download → Download `.ipynb`** and upload "
+             + (note or "that one file.")]
+    return md(
+        "***",
+        "## ✅ Before you submit",
+        "",
+        *(f"{i}. {item}" for i, item in enumerate(items, 1)))
 
 
 def todo(*lines):
@@ -490,8 +528,9 @@ def todo(*lines):
 def day1():
     cells = [how_to_use(
         1, "Day 1 · Your first LLM call & reading its data",
-        "call a language model, then learn to read the data it hands back.",
-        "segment text into sentences, run the model over a list, then practice the basics.")]
+        ("Tutorial", "call a language model, then learn to read the data it hands back."),
+        ("Corpus Lab", "segment text into sentences, run the model over a list, then "
+                       "practice the basics."))]
 
     # ---- Part A: Colab survival → first LLM call → data types → f-strings ----
     cells += [md(
@@ -743,21 +782,227 @@ def day1():
         "See the [Final Project](../final-project/index.md) page for the tracks and what the "
         "project involves.")]
 
-    cells += [SUBMISSION]
+    cells += [submission()]
     save("day1_python_and_first_llm.ipynb", cells)
 
 
-# ============================================================ DAY 2
-def day2():
+# Day 2 is the only day with two notebooks — one per hands-on session — so its
+# "how to use" / "before you submit" cells say so rather than "your single submission".
+_DAY2_NOTE = ("**Day 2 has two notebooks, one per hands-on session** — S5 builds a gold "
+              "standard by hand ({this}), S6 measures a model against one ({other}). "
+              "Submit both at the end of the day.")
+_DAY2_UPLOAD = "**both** of today's Day-2 notebooks."
+
+
+# ==================================================== DAY 2 · S5 (gold standard)
+def day2_s5():
     cells = [how_to_use(
-        2, "Day 2 · Gold standards & evaluation",
-        "load a gold standard → evaluate a **frozen** set of model predictions → read "
-        "precision / recall / F1 + a confusion matrix → inspect the errors, on an "
-        "easy-to-judge task (CEFR sentence level).",
-        "build a gold standard yourself — annotate ~20 sentences by hand in a Google "
-        "Sheet, measure your agreement, adjudicate, and import it back as canonical JSON.",
-        "code the evaluation metrics (precision, recall, F1, Cohen's κ) by hand, then "
-        "check them against scikit-learn.")]
+        2, "Day 2 · S5 — Build a gold standard",
+        note=_DAY2_NOTE.format(this="this one", other="`day2-s6_evaluation_metrics.ipynb`"))]
+
+    # The graded home of the "gold-standard construction" outcome (session 2-2). Work is
+    # DIVIDED BY ACTIVITY across three surfaces that share one A–F spine (see the S5 slides):
+    #   slides own the concepts · the Google Sheet owns the human judgment (A–C, re-annotate
+    #   in E) · this notebook owns the numbers (D–F). Colab first runs at step D — steps
+    #   A–C are code-free. Cross-reference BY the A–F label, never by cell/slide number.
+    # This whole notebook IS the lab, so A–F are its only letters — no Part A/B/C here.
+    cells += [md(
+        "## Build a gold standard yourself",
+        "",
+        "So far the gold labels have been handed to you. Now you make some. This session's work "
+        "is split across **three surfaces that share one spine**, the six steps **A–F**:",
+        "",
+        "- **Slides** teach the *concepts* — how to sample (A), why annotate blind (C), how to "
+        "read a confusion matrix (D–E).",
+        "- **A Google Sheet** holds the *human judgment* — you and your partner annotate there "
+        "(C), and re-annotate there (E).",
+        "- **This notebook** does the *numbers* — it reads the sheet and measures, adjudicates, "
+        "and exports (**D–F**).",
+        "",
+        "So **steps A–C need no code**; this notebook first runs at **step D**. Each header "
+        "below prints the same `A–F` label as the slides — find your place by the *letter*.",
+        "",
+        "::: {.callout-note}",
+        "## Why a spreadsheet?",
+        "Annotation is a *judgement* task, not a coding task — a sheet is the fastest honest "
+        "way to do it, and it is what most annotation projects actually use. The point is not "
+        "the tool; it is that you feel how often two careful people disagree, and what it "
+        "takes to resolve that into a single defensible label.",
+        ":::")]
+
+    # A–C: code-free (slides + Sheet). The notebook just tells students where to go.
+    cells += [md(
+        "### A · Sample → copy your track's sheet   *(E&K Step 3 · ①)*",
+        "",
+        "The sample is **already drawn for you** — one template Sheet per track, whose first "
+        "tab is **`round1`** with the columns **`ID · Text · CoderA · CoderB · Final · Note`** "
+        "and only `ID` and `Text` filled in (never the labels, so your annotation is genuinely "
+        "independent). *How* it was sampled — represent the domain, fix the unit, a seed for "
+        "reproducibility — is the slide concept; the exact draw is in the reference appendix at "
+        "the end of this notebook.",
+        "",
+        "**Open your track's template Sheet → `File → Make a copy`** into your own Drive. Then "
+        "grab your copy's **id** from its URL — the long string between `/d/` and `/edit` in "
+        "`docs.google.com/spreadsheets/d/`**`<id>`**`/edit`. You'll paste it into step D. (Opening "
+        "by id, not name, means two copies that share the name \"Copy of …\" are never confused.)")]
+    cells += [md(
+        "### B · Apply the operationalized scheme   *(E&K Steps 4–5; Fuoli · ②)*",
+        "",
+        "Before you label, restate the **decidable rule** you're annotating against (the scheme "
+        "your team drafted in the earlier sessions) and skim the guidelines and per-level "
+        "examples. One label per unit; know your label set cold. → interpret this on **step B** "
+        "(slides).")]
+    cells += [md(
+        "### C · Annotate blind, in pairs   *(E&K Step 6 · ③)*",
+        "",
+        "This step happens **entirely in the Sheet — no code**, in the **`round1`** tab. One of "
+        "you fills **`CoderA`** and the other fills **`CoderB`**, *without looking at each "
+        "other's column*. Leave "
+        "`Final` blank for now. Use `Note` for anything you found hard to decide; those notes "
+        "are your evidence in step E.",
+        "",
+        "::: {.callout-important}",
+        "## Stop here and go annotate",
+        "Label all ~20 rows in **both** annotator columns before running the next cell. Come "
+        "back to Colab when the sheet is filled in — the notebook picks up at **step D**.",
+        ":::")]
+
+    # D–F: the executable round-trip. Setup lives HERE, not at the top, because Colab
+    # first runs at step D — steps A–C are done in the slides and the Sheet.
+    cells += [md(
+        "### D · Measure agreement   *(E&K Step 6 · ③)*   ✏️ YOU EDIT",
+        "",
+        "Colab opens here — run the two helper cells below first. Then read your copied sheet "
+        "back in and measure how much the two of you "
+        "agreed: **percent agreement**, **Cohen's κ** (agreement corrected for chance), and an "
+        "**annotator-vs-annotator confusion matrix** — the diagonal is where you agreed, the "
+        "off-diagonal cells show *which label pairs* you confuse.",
+        "",
+        "::: {.callout-note collapse=\"true\"}",
+        "## How to read what this prints — the interpretation (step D, slides)",
+        "Percent agreement flatters two coders who both lean on the same label — they agree a "
+        "lot *by luck*. **Cohen's κ** strips that luck out, so trust the κ, not the percentage "
+        "(recall S4: 80% raw agreement was only κ ≈ 0.52). Then read the matrix for the *one "
+        "off-diagonal cell* dragging κ down — that specific label pair is your to-do list for "
+        "step E. You will code κ yourself from scratch in the S6 notebook.",
+        ":::")]
+    s5_libs = ["sheets", "load_gold"]
+    cells += [setup_cell(
+        backend=None,          # S5 never calls a model — the judgment is yours
+        lib_names=s5_libs,
+        gold_url=CEFR_GOLD_URL,
+        gold_comment="CEFR-SP gold set — the published labels you compare against in step F.")]
+    cells += libs("sheets")
+    cells += [code(
+        'SHEET_ID = "1AbCdEf...paste_yours"   # ✏️ the id in YOUR copied sheet\'s URL',
+        '                                     #    (…/spreadsheets/d/THIS/edit) — the whole URL works too',
+        'ROUND    = "round1"                  # ✏️ which round\'s tab to analyze',
+        '',
+        'rows = load_annotation_sheet(SHEET_ID, ROUND)',
+        'annotator_agreement(rows)')]
+    cells += [md(
+        "### E · Read the matrix → refine → re-annotate   *(E&K Step 6; Fuoli princ. 2 · ③)*",
+        "",
+        "A low κ is a diagnosis of your **scheme**, not your annotating. `disagreements(rows)` "
+        "lists every row the two of you saw differently — the items behind those off-diagonal "
+        "cells.",
+        "",
+        "::: {.callout-note collapse=\"true\"}",
+        "## What to do with this list — the judgment (step E, slides)",
+        "For the label pair the matrix flagged, **refine the scheme / guidelines** so that "
+        "ambiguity becomes decidable (add a rule, a boundary case, an example). Then re-annotate "
+        "in a **fresh round tab** (below) and re-run **step D** to see κ move. Iterate until "
+        "agreement is acceptable — that is Fuoli's principle 2 in action.",
+        ":::")]
+    cells += [code('disagreements(rows)')]
+    cells += [md(
+        "::: {.callout-important}",
+        "## Re-annotate in a fresh round tab, then re-run step D",
+        "Don't overwrite `round1`. In the Sheet, **right-click the `round1` tab → Duplicate**, "
+        "rename the copy **`round2`**, and re-label the confused items *there*. Then set "
+        "**`ROUND = \"round2\"`** in step D and re-run it. `round1` stays intact — so every run "
+        "is reproducible, and you can watch κ climb round over round. Repeat (round3, …) until κ "
+        "is acceptable before moving to step F.",
+        ":::")]
+    cells += [md(
+        "### F · Adjudicate → gold   *(E&K Step 6 → feeds ④⑤)*   ✏️ YOU EDIT",
+        "",
+        "The last disagreements don't refine away — you **decide** them. In your **latest round "
+        "tab**, fill a single `Final` "
+        "label for every row (for rows you already agreed on, `Final` is just that "
+        "agreed label), then read it back and convert it to canonical form. `to_canonical` "
+        "refuses anything that isn't one of your allowed labels, so typos surface here rather "
+        "than silently corrupting your gold set.")]
+    cells += [code(
+        'rows = load_annotation_sheet(SHEET_ID, ROUND)   # re-read your latest round, `Final` filled in',
+        'my_gold = to_canonical(rows, LEVELS)            # reads the `Final` column',
+        'my_gold[:3]')]
+    cells += [md(
+        "**How does your gold compare with the published gold?** The CEFR-SP labels came from "
+        "language-education professionals, and we kept only sentences where two of them agreed. "
+        "Differing from them is **not** simply *wrong* — Arase's own experts agreed exactly "
+        "only 37.6% of the time — but each difference is worth a look and a defensible reason. "
+        "→ interpret this on **step F** (slides).")]
+    cells += libs("load_gold")
+    cells += [code(
+        'published = load_gold(GOLD_URL)      # the CEFR-SP labels, for comparison only',
+        'compare_to_published(my_gold, published)')]
+    cells += [md(
+        "**Save your gold set to your Drive** — it belongs in **your** Drive, not the course "
+        "repo, and it becomes S6's yardstick. See "
+        "[Housing your data in Google Drive](../resources/tools/google-drive-data.md).")]
+    cells += [code(
+        '# ✏️ Uncomment in Colab to save:',
+        '# from google.colab import drive; drive.mount("/content/drive")',
+        '# with open("/content/drive/MyDrive/my_gold_day2.json", "w", encoding="utf-8") as f:',
+        '#     json.dump(my_gold, f, ensure_ascii=False, indent=2)',
+        '# print("saved", len(my_gold), "items")')]
+    # Reference appendix: how the per-track template sheets were produced. Framed by what it
+    # does (not who runs it) per CLAUDE.md; kept as a NON-executable fenced block so
+    # "Runtime → Run all" never re-creates sheets. The create_annotation_sheet helper lives
+    # in LIB_SHEETS above; this shows the seeded draw that fed it, one sheet per track.
+    cells += [md(
+        "::: {.callout-note collapse=\"true\"}",
+        "## Reference — how the template sheets were built (you don't run this)",
+        "",
+        "The template Sheet you copied in step A was generated once, ahead of the session, so "
+        "the sample is fixed and reproducible. It uses the `create_annotation_sheet` helper "
+        "(loaded above) fed by a **seeded** random draw — one sheet per track (`cefr`, "
+        "`cars50`, `raamove`, `l2_errors`). Shown here so the sampling is transparent; you do "
+        "**not** run it.",
+        "",
+        "```python",
+        "import random",
+        "",
+        "N_ITEMS = 20            # how many sentences to annotate",
+        "random.seed(42)         # fixed seed = the same sample every time it is drawn",
+        "",
+        "to_annotate = random.sample(gold, N_ITEMS)   # `gold` = your track's labelled pool",
+        "# The sheet gets ids + text only — never the labels — so annotation stays blind:",
+        "create_annotation_sheet(\"lda2_day2_cefr\", to_annotate, LEVELS)",
+        "```",
+        ":::")]
+
+    cells += [submission(
+        note=_DAY2_UPLOAD,
+        checks=["Your agreement numbers and the annotator-vs-annotator matrix are visible "
+                "(step D), for the **last** round you ran.",
+                "`my_gold` printed a list of `{id, text, label}` records, and step F's "
+                "comparison against the published gold ran (step F)."])]
+    save("day2-s5_gold_standard_construction.ipynb", cells)
+
+
+# =================================================== DAY 2 · S6 (evaluation metrics)
+def day2_s6():
+    cells = [how_to_use(
+        2, "Day 2 · S6 — Gold standards & evaluation metrics",
+        ("Tutorial", "load a gold standard → evaluate a **frozen** set of model predictions "
+                     "→ read precision / recall / F1 + a confusion matrix → inspect the "
+                     "errors, on an easy-to-judge task (CEFR sentence level)."),
+        ("Corpus Lab", "code the evaluation metrics (precision, recall, F1, Cohen's κ) by "
+                       "hand, then check them against scikit-learn."),
+        note=_DAY2_NOTE.format(
+            this="`day2-s5_gold_standard_construction.ipynb`", other="this one"))]
 
     # ---- Part A: the CEFR pipeline tutorial (ported from 02_gold_and_eval) ----
     cells += [md(
@@ -775,14 +1020,14 @@ def day2():
         "You'll run the model yourself (with the key) from Day 3 on.",
         ":::")]
     cells += [md("### Setup — run this first")]
-    day2_libs = ["load_gold", "predictions", "evaluate", "show_errors"]
+    s6_libs = ["load_gold", "predictions", "evaluate", "show_errors"]
     cells += [setup_cell(
         backend=None,          # frozen predictions — Day 2 never calls a model
-        lib_names=day2_libs,
+        lib_names=s6_libs,
         gold_url=CEFR_GOLD_URL,
         gold_comment="CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.",
         predictions_url=CEFR_PREDICTIONS_DAY2_URL)]
-    cells += libs(*day2_libs)
+    cells += libs(*s6_libs)
     cells += [md(
         "### Warm-up — what a *gold file* actually is",
         "",
@@ -872,177 +1117,12 @@ def day2():
         'errors = show_errors(gold, predictions)',
         'errors.head(15)     # ...or errors[errors["gold"] == "C2"] to see the hard end')]
 
-    # ---- Part B: build a gold standard by hand — the A–F lab spine ----
-    # The graded home of the "gold-standard construction" outcome (session 2-2). Work is
-    # DIVIDED BY ACTIVITY across three surfaces that share one A–F spine (see the S5 slides):
-    #   slides own the concepts · the Google Sheet owns the human judgment (A–C, re-annotate
-    #   in E) · this notebook owns the numbers (D–F). Colab first runs at step D — steps
-    #   A–C are code-free. Cross-reference BY the A–F label, never by cell/slide number.
+    # ---- Part B: metrics-from-scratch lab ----
     cells += [md(
-        "## Part B · Corpus Lab — build a gold standard yourself",
+        "## Part B · Corpus Lab — code the metrics from scratch",
         "",
-        "So far the gold labels were handed to you. Now you make some. Today's work is split "
-        "across **three surfaces that share one spine**, the six steps **A–F**:",
-        "",
-        "- **Slides** teach the *concepts* — how to sample (A), why annotate blind (C), how to "
-        "read a confusion matrix (D–E).",
-        "- **A Google Sheet** holds the *human judgment* — you and your partner annotate there "
-        "(C), and re-annotate there (E).",
-        "- **This notebook** does the *numbers* — it reads the sheet and measures, adjudicates, "
-        "and exports (**D–F**).",
-        "",
-        "So **steps A–C need no code**; this notebook first runs at **step D**. Each header "
-        "below prints the same `A–F` label as the slides — find your place by the *letter*.",
-        "",
-        "::: {.callout-note}",
-        "## Why a spreadsheet?",
-        "Annotation is a *judgement* task, not a coding task — a sheet is the fastest honest "
-        "way to do it, and it is what most annotation projects actually use. The point is not "
-        "the tool; it is that you feel how often two careful people disagree, and what it "
-        "takes to resolve that into a single defensible label.",
-        ":::")]
-
-    # A–C: code-free (slides + Sheet). The notebook just tells students where to go.
-    cells += [md(
-        "### A · Sample → copy your track's sheet   *(E&K Step 3 · ①)*",
-        "",
-        "The sample is **already drawn for you** — one template Sheet per track, with the "
-        "columns **`ID · Text · CoderA · CoderB · Final · Note`** and only `ID` and `Text` "
-        "filled in (never the labels, so your annotation is genuinely "
-        "independent). *How* it was sampled — represent the domain, fix the unit, a seed for "
-        "reproducibility — is the slide concept; the exact draw is in the reference appendix at "
-        "the end of this notebook.",
-        "",
-        "**Open your track's template Sheet → `File → Make a copy`** into your own Drive. Then "
-        "grab your copy's **id** from its URL — the long string between `/d/` and `/edit` in "
-        "`docs.google.com/spreadsheets/d/`**`<id>`**`/edit`. You'll paste it into step D. (Opening "
-        "by id, not name, means two copies that share the name \"Copy of …\" are never confused.)")]
-    cells += [md(
-        "### B · Apply the operationalized scheme   *(E&K Steps 4–5; Fuoli · ②)*",
-        "",
-        "Before you label, restate the **decidable rule** you're annotating against (the scheme "
-        "your team drafted in the earlier sessions) and skim the guidelines and per-level "
-        "examples. One label per unit; know your label set cold. → interpret this on **step B** "
-        "(slides).")]
-    cells += [md(
-        "### C · Annotate blind, in pairs   *(E&K Step 6 · ③)*",
-        "",
-        "This step happens **entirely in the Sheet — no code.** One of you fills **`CoderA`** "
-        "and the other fills **`CoderB`**, *without looking at each other's column*. Leave "
-        "`Final` blank for now. Use `Note` for anything you found hard to decide; those notes "
-        "are your evidence in step E.",
-        "",
-        "::: {.callout-important}",
-        "## Stop here and go annotate",
-        "Label all ~20 rows in **both** annotator columns before running the next cell. Come "
-        "back to Colab when the sheet is filled in — the notebook picks up at **step D**.",
-        ":::")]
-
-    # D–F: the executable round-trip. LIB_SHEETS is the only helper Part B needs.
-    cells += [LIB_SHEETS]
-    cells += [md(
-        "### D · Measure agreement   *(E&K Step 6 · ③)*   ✏️ YOU EDIT",
-        "",
-        "Colab opens here. Read your copied sheet back in, then measure how much the two of you "
-        "agreed: **percent agreement**, **Cohen's κ** (agreement corrected for chance), and an "
-        "**annotator-vs-annotator confusion matrix** — the diagonal is where you agreed, the "
-        "off-diagonal cells show *which label pairs* you confuse.",
-        "",
-        "::: {.callout-note collapse=\"true\"}",
-        "## How to read what this prints — the interpretation (step D, slides)",
-        "Percent agreement flatters two coders who both lean on the same label — they agree a "
-        "lot *by luck*. **Cohen's κ** strips that luck out, so trust the κ, not the percentage "
-        "(recall S4: 80% raw agreement was only κ ≈ 0.52). Then read the matrix for the *one "
-        "off-diagonal cell* dragging κ down — that specific label pair is your to-do list for "
-        "step E. You will code κ yourself from scratch in **Part C**.",
-        ":::")]
-    cells += [code(
-        'SHEET_ID = "1AbCdEf...paste_yours"   # ✏️ the id in YOUR copied sheet\'s URL',
-        '                                     #    (…/spreadsheets/d/THIS/edit) — the whole URL works too',
-        '',
-        'rows = load_annotation_sheet(SHEET_ID)',
-        'annotator_agreement(rows)')]
-    cells += [md(
-        "### E · Read the matrix → refine → re-annotate   *(E&K Step 6; Fuoli princ. 2 · ③)*",
-        "",
-        "A low κ is a diagnosis of your **scheme**, not your annotating. `disagreements(rows)` "
-        "lists every row the two of you saw differently — the items behind those off-diagonal "
-        "cells.",
-        "",
-        "::: {.callout-note collapse=\"true\"}",
-        "## What to do with this list — the judgment (step E, slides)",
-        "For the label pair the matrix flagged, **refine the scheme / guidelines** so that "
-        "ambiguity becomes decidable (add a rule, a boundary case, an example). Then go back to "
-        "the **Sheet** and re-label the affected items, and re-run **step D** to see κ move. "
-        "Iterate until agreement is acceptable — that is Fuoli's principle 2 in action.",
-        ":::")]
-    cells += [code('disagreements(rows)')]
-    cells += [md(
-        "::: {.callout-important}",
-        "## Go re-annotate, then re-run step D",
-        "Make your scheme edits, re-label the confused items **in the Sheet**, then run step D "
-        "again. Repeat until κ is acceptable before moving to step F.",
-        ":::")]
-    cells += [md(
-        "### F · Adjudicate → gold   *(E&K Step 6 → feeds ④⑤)*   ✏️ YOU EDIT",
-        "",
-        "The last disagreements don't refine away — you **decide** them. Fill a single `Final` "
-        "label for every row in the Sheet (for rows you already agreed on, `Final` is just that "
-        "agreed label), then read it back and convert it to canonical form. `to_canonical` "
-        "refuses anything that isn't one of your allowed labels, so typos surface here rather "
-        "than silently corrupting your gold set.")]
-    cells += [code(
-        'rows = load_annotation_sheet(SHEET_ID)       # re-read, now with `Final` filled in',
-        'my_gold = to_canonical(rows, LEVELS)         # reads the `Final` column',
-        'my_gold[:3]')]
-    cells += [md(
-        "**How does your gold compare with the published gold?** The CEFR-SP labels came from "
-        "language-education professionals, and we kept only sentences where two of them agreed. "
-        "Differing from them is **not** simply *wrong* — Arase's own experts agreed exactly "
-        "only 37.6% of the time — but each difference is worth a look and a defensible reason. "
-        "→ interpret this on **step F** (slides).")]
-    cells += [code('compare_to_published(my_gold, gold)')]
-    cells += [md(
-        "**Save your gold set to your Drive** — it belongs in **your** Drive, not the course "
-        "repo, and it becomes S6's yardstick. See "
-        "[Housing your data in Google Drive](../resources/tools/google-drive-data.md).")]
-    cells += [code(
-        '# ✏️ Uncomment in Colab to save:',
-        '# from google.colab import drive; drive.mount("/content/drive")',
-        '# with open("/content/drive/MyDrive/my_gold_day2.json", "w", encoding="utf-8") as f:',
-        '#     json.dump(my_gold, f, ensure_ascii=False, indent=2)',
-        '# print("saved", len(my_gold), "items")')]
-    # Reference appendix: how the per-track template sheets were produced. Framed by what it
-    # does (not who runs it) per CLAUDE.md; kept as a NON-executable fenced block so
-    # "Runtime → Run all" never re-creates sheets. The create_annotation_sheet helper lives
-    # in LIB_SHEETS above; this shows the seeded draw that fed it, one sheet per track.
-    cells += [md(
-        "::: {.callout-note collapse=\"true\"}",
-        "## Reference — how the template sheets were built (you don't run this)",
-        "",
-        "The template Sheet you copied in step A was generated once, ahead of the session, so "
-        "the sample is fixed and reproducible. It uses the `create_annotation_sheet` helper "
-        "(loaded above) fed by a **seeded** random draw — one sheet per track (`cefr`, "
-        "`cars50`, `raamove`, `l2_errors`). Shown here so the sampling is transparent; you do "
-        "**not** run it.",
-        "",
-        "```python",
-        "import random",
-        "",
-        "N_ITEMS = 20            # how many sentences to annotate",
-        "random.seed(42)         # fixed seed = the same sample every time it is drawn",
-        "",
-        "to_annotate = random.sample(gold, N_ITEMS)   # `gold` = your track's labelled pool",
-        "# The sheet gets ids + text only — never the labels — so annotation stays blind:",
-        "create_annotation_sheet(\"lda2_day2_cefr\", to_annotate, LEVELS)",
-        "```",
-        ":::")]
-
-    # ---- Part C: metrics-from-scratch lab ----
-    cells += [md(
-        "## Part C · Corpus Lab — code the metrics from scratch",
-        "",
-        "`evaluate()` above printed precision, recall, F1 and a confusion matrix *for* you. "
+        "`evaluate()` above printed precision, recall, F1 and a confusion matrix *for* you, and "
+        "in S5 `annotator_agreement()` printed Cohen's κ for you. "
         "Now you write those formulas yourself, from plain lists of labels — no imports, no "
         "numpy. Once you have coded them, the numbers scikit-learn reports in your final "
         "project will never be a black box.",
@@ -1141,17 +1221,18 @@ def day2():
         '      if all(results) else',
         '      f"{results.count(False)} of {len(results)} checks FAILED — fix and re-run.")')]
 
-    cells += [SUBMISSION]
-    save("day2_gold_standards_and_evaluation.ipynb", cells)
+    cells += [submission(note=_DAY2_UPLOAD)]
+    save("day2-s6_evaluation_metrics.ipynb", cells)
 
 
 # ============================================================ DAY 3
 def day3():
     cells = [how_to_use(
         3, "Day 3 · Prompt design & iteration",
-        "improve a prompt through zero-shot → few-shot → chain-of-thought on the SAME "
-        "CEFR-SP task, comparing macro-F1 at each step.",
-        "run your own prompt-iteration study and error analysis (to be written).")]
+        ("Tutorial", "improve a prompt through zero-shot → few-shot → chain-of-thought on "
+                     "the SAME CEFR-SP task, comparing macro-F1 at each step."),
+        ("Corpus Lab", "run your own prompt-iteration study and error analysis "
+                       "(to be written)."))]
 
     cells += [md(
         "## Part A · Tutorial — three ways to prompt",
@@ -1392,7 +1473,7 @@ def day3():
         "|---|---|:--:|",
         "| … | … | … |")]
 
-    cells += [SUBMISSION]
+    cells += [submission()]
     save("day3_prompt_design.ipynb", cells)
 
 
@@ -1400,8 +1481,9 @@ def day3():
 def day4():
     cells = [how_to_use(
         4, "Day 4 · Pipeline assembly & sampling your gold set",
-        "sample a balanced gold subset from a dataset pool, ready for QC.",
-        "quality-control and adjudicate your sampled gold set (to be written).")]
+        ("Tutorial", "sample a balanced gold subset from a dataset pool, ready for QC."),
+        ("Corpus Lab", "quality-control and adjudicate your sampled gold set "
+                       "(to be written)."))]
 
     cells += [md(
         "## Part A · Tutorial — sample a balanced gold subset",
@@ -1473,7 +1555,7 @@ def day4():
         "3. Discuss and resolve them — and record *what changed* (this feeds your report's "
         "\"Scheme & gold\" section).")]
 
-    cells += [SUBMISSION]
+    cells += [submission()]
     save("day4_pipeline_and_sampling.ipynb", cells)
 
 
@@ -1481,8 +1563,9 @@ def day4():
 def day5():
     cells = [how_to_use(
         5, "Day 5 · Project finalization",
-        "assemble your full pipeline end-to-end and produce your final evaluation.",
-        "finalize your one-page report and notebook (to be written).")]
+        ("Tutorial", "assemble your full pipeline end-to-end and produce your final "
+                     "evaluation."),
+        ("Corpus Lab", "finalize your one-page report and notebook (to be written)."))]
 
     cells += [md(
         "## Part A · Tutorial — assemble & finalize",
@@ -1519,13 +1602,14 @@ def day5():
         "4. **Error analysis** — concrete misses; model's fault or the scheme's?",
         "5. **Limitations** — stochasticity, contamination risk, what the numbers don't show.")]
 
-    cells += [SUBMISSION]
+    cells += [submission()]
     save("day5_project_finalization.ipynb", cells)
 
 
 if __name__ == "__main__":
     day1()
-    day2()
+    day2_s5()          # Day 2 ships two notebooks — one per hands-on session
+    day2_s6()
     day3()
     day4()
     day5()

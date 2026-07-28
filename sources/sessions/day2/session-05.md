@@ -27,7 +27,8 @@ This hands-on is where the **construction** objective is assessed — building a
 
 ## Agenda
 
-Works through **Part B** of the Day 2 notebook — a Google Sheets annotation round-trip.
+Works through `day2-s5_gold_standard_construction.ipynb` — a Google Sheets annotation round-trip,
+run as six steps **A–F** shared by the slides, the Sheet and Colab.
 
 1. **Draw ~20 sentences** from the provided pool for your track.
 2. **Annotate by hand** — each person in the pair annotates the same 20 items in a Google Sheet (two annotator columns, so agreement falls out).
@@ -44,7 +45,7 @@ No new reading for this session — see the Day 2 reading (Eguchi & Kyle, 2024) 
 ## Slides & Colab
 
 <!--
-- Notebook (tutorial + Corpus Lab): [`day2_gold_standards_and_evaluation.ipynb`](../../notebooks/day2_gold_standards_and_evaluation.ipynb) —
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)
+- Notebook (Corpus Lab, steps A–F): [`day2-s5_gold_standard_construction.ipynb`](../../notebooks/day2-s5_gold_standard_construction.ipynb) —
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s5_gold_standard_construction.ipynb)
 - Slides: [Session 5 slides](../../slides/slides-session-05.html){target="_blank"}
 -->

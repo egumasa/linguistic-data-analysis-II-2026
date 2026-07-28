@@ -23,7 +23,7 @@ track is the same:
 Each track rebuilds a ready gold file **and** a full pool to sample your own subset from.
 
 Rebuild the gold files: [`README.md`](./README.md) · provenance & licenses: [`SOURCES.md`](./SOURCES.md) ·
-the pipeline: [Day 2](../../notebooks/day2_gold_standards_and_evaluation.ipynb) & [Day 3](../../notebooks/day3_prompt_design.ipynb) notebooks.
+the pipeline: [Day 2](../../notebooks/day2-s6_evaluation_metrics.ipynb) & [Day 3](../../notebooks/day3_prompt_design.ipynb) notebooks.
 
 ::: {.callout-tip}
 ## Keep your data in your own Drive

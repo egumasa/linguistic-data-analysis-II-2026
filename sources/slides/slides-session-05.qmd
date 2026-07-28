@@ -17,8 +17,8 @@ metadata-files:
      (distinct from E&K numbered *Steps* and the circled ①②③ *phases*) are the shared spine
      printed on all three surfaces — slides / Google Sheet / Colab. Work is divided by ACTIVITY:
      slides own the concepts, the Sheet owns the human judgment, Colab owns the numbers.
-     Cross-reference BY A–F LABEL, never by slide number. Grounded in the Day-2 notebook Part B
-     round-trip (see sessions/day2/session-05.md). -->
+     Cross-reference BY A–F LABEL, never by slide number. Grounded in the
+     day2-s5_gold_standard_construction.ipynb round-trip (see sessions/day2/session-05.md). -->
 
 # Session 5: Hands-on — Gold-Standard Annotation & Agreement
 
@@ -215,8 +215,8 @@ A confusion matrix isn't a verdict on your annotating — it's a diagnosis of yo
 *This is **Fuoli's principle 2** in action — guidelines are tested and refined until reliable. If two trained coders still can't agree, no model can be trusted on it either.*
 
 ::: {.callout-important}
-## Go re-annotate
-Make your scheme edits, then return to the **Sheet** and re-label the confused items. Back in Colab, `disagreements(rows)` lists exactly what to revisit; re-run step D to see κ move.
+## Re-annotate in a fresh round tab
+Make your scheme edits, then **duplicate the `round1` tab → `round2`** and re-label the confused items *there* — never overwrite round1. Back in Colab, `disagreements(rows)` lists what to revisit; set `ROUND = "round2"` and re-run step D to see κ move. Each round is preserved, so the analysis stays reproducible and you watch κ climb round over round.
 :::
 
 # F · Adjudicate → gold *(E&K Step 6 → feeds ④⑤)*

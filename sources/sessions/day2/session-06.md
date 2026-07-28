@@ -23,7 +23,7 @@ By the end of this session you will be able to:
 
 ## Agenda
 
-Works through **Part A** of the Day 2 notebook, which runs on **frozen predictions** — no API key, no live model, so everyone's numbers come out identical every run.
+Works through `day2-s6_evaluation_metrics.ipynb`, which runs on **frozen predictions** — no API key, no live model, so everyone's numbers come out identical every run.
 
 1. **Warm-up: what a gold file is** — parse a `{id, text, label}` record, index into it, and meet `with open(...)` for files.
 2. **Load the gold standard and the frozen predictions** the fixed prompt produced.
@@ -39,7 +39,7 @@ No new reading for this session — see the Day 2 reading (Eguchi & Kyle, 2024) 
 ## Slides & Colab
 
 <!--
-- Notebook (tutorial + Corpus Lab): [`day2_gold_standards_and_evaluation.ipynb`](../../notebooks/day2_gold_standards_and_evaluation.ipynb) —
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)
+- Notebook (tutorial + Corpus Lab): [`day2-s6_evaluation_metrics.ipynb`](../../notebooks/day2-s6_evaluation_metrics.ipynb) —
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s6_evaluation_metrics.ipynb)
 - Slides: [Session 6 slides](../../slides/slides-session-06.html){target="_blank"}
 -->

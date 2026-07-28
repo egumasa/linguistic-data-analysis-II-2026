@@ -67,7 +67,8 @@ website:
           href: notebooks/index.md
           contents:
             - notebooks/day1_python_and_first_llm.ipynb
-            - notebooks/day2_gold_standards_and_evaluation.ipynb
+            - notebooks/day2-s5_gold_standard_construction.ipynb
+            - notebooks/day2-s6_evaluation_metrics.ipynb
             - notebooks/day3_prompt_design.ipynb
             - notebooks/day4_pipeline_and_sampling.ipynb
             - notebooks/day5_project_finalization.ipynb
