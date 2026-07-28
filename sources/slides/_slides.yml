@@ -17,6 +17,9 @@ format:
     # Custom title slide (adds the .kicker eyebrow from each deck's `kicker:` field).
     template-partials:
       - title-slide.html
+    # Logical slide width (reveal.js default is 960). Widened a bit for more
+    # horizontal room; height left at the default 700 so the aspect ratio widens.
+    width: 1100
     background-transition: none
     slide-number: true
     chalkboard: true
