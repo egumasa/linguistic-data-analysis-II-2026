@@ -13,38 +13,234 @@ metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
+<!-- Executes S4's Phase C (E&K Step 6 · ③) as a six-step lab spine A–F. The A–F labels
+     (distinct from E&K numbered *Steps* and the circled ①②③ *phases*) are the shared spine
+     printed on all three surfaces — slides / Google Sheet / Colab. Work is divided by ACTIVITY:
+     slides own the concepts, the Sheet owns the human judgment, Colab owns the numbers.
+     Cross-reference BY A–F LABEL, never by slide number. Grounded in the Day-2 notebook Part B
+     round-trip (see sessions/day2/session-05.md). -->
 
-# Session 5: Hands-on: Gold-Standard Annotation & Agreement
+# Session 5: Hands-on — Gold-Standard Annotation & Agreement
 
 ## 📋 Agenda
 
-- Re-annotate a sample using a prepared scheme
-- Compute inter-annotator agreement
-- Compare against the published gold and against LLM annotations
+Today you **build a gold standard** for your track — the graded *construction* skill. The work is split across **three surfaces**, and one spine (**A–F**) runs through all of them:
 
-## 🎯 Learning Objectives
+- **These slides** teach the *concepts* — how to sample, why annotate blind, how to read a matrix.
+- **A Google Sheet** holds the *human judgment* — you and your partner annotate there.
+- **Colab** does the *numbers* — import the Sheet, measure agreement, adjudicate, export.
+
+::: {.callout-note}
+This is the **construction** skill — *graded once, here.* Give the annotation real care.
+:::
+
+## 🎯 Learning Objectives {.smaller}
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Working in a pair, each **annotate the same ~20 sentences** by hand against a prepared scheme.
+- Import the sheet into Colab and compute **percent agreement, Cohen's κ**, and an annotator-vs-annotator **confusion matrix**.
+- **Read the confusion matrix** to see *where* you disagree, then **refine the scheme and re-annotate** — iterate until agreement is acceptable.
+- **Adjudicate** the remaining disagreements, **compare to the published gold**, and interpret the differences.
+- Export your annotations as a canonical **`{id, text, label}`** gold set.
 
-# Re-annotate a sample
 
-## Re-annotate a sample
 
-<!-- to be added -->
+# Recap — the define-first workflow
 
-# Inter-annotator agreement
+## Recap: where this sits {.smaller}
 
-## Inter-annotator agreement
+S4 laid out the **define-first workflow** — five phases that turn a fuzzy construct into a number you can trust. Today we run its middle phase, **③**.
 
-<!-- to be added -->
+- **① Define the task** *(scope · input→output · metrics · sample)*
+- **② Operationalize** *(decidable rule · pilot · Fuoli's principles)*
+- **③ Build the gold standard** ← **you are here** *(blind → IAA → refine → adjudicate)*
+- ④ Target = human agreement · ⑤ Evaluate the LLM → **next session (S6)**
 
-# Compare: gold vs. LLM
+::: {.callout-tip}
+The agreement tool you build today is the *same* one S6 uses to score a model — swap one column.
+:::
 
-## Compare: gold vs. LLM
+# Arase et al. (2022) — the same 5 stages, for real
 
-<!-- to be added -->
+## Arase et al. (2022) — the same 5 stages {.smaller}
+
+Before you build your own gold, look at a published one that ran this exact workflow — on the very task you're about to try.
+
+
+| Stage | What Arase et al. did |
+|--|-----|
+| **① Define** | Sentence → CEFR level (A1–C2); reuse CEFR; fix metrics up front (macro-F1 + weighted κ) |
+| **② Operationalize** | "A1 = an A1 learner can readily understand it"; guidelines + per-level examples; piloted on 228 |
+| **③ Gold** | 2 experts (r = .75/.73), blind, ~20k sentences; **37.6% exact, 88.4% within one grade** |
+| **④ Target** | Human ceiling r ≈ .73–.75; a prediction counts if it matches *either* expert |
+| **⑤ Evaluate** | macro-F1 **84.5%**, weighted κ **.628** — Day 3 swaps in a prompted LLM |
+
+## What a CEFR level looks like {.smaller}
+
+Their annotators judged **whole sentences** against can-do *reading* descriptors — one example per level (Arase et al., Table 1):
+
+| CEFR Level| Example sentence |
+|--|--------|
+| **A1** | She had a beautiful necklace around her neck. |
+| **A2** | Some experts say the classes should be changed. |
+| **B1** | Historically there have also been negative consequences. |
+| **B2** | Alligators are generally timid towards humans and tend to walk or swim away if one approaches. |
+| **C1** | The metal-carbon bond in organometallic compounds is generally highly covalent. |
+| **C2** | In the past, non-photosynthetic plants were mistakenly thought to get food by breaking down organic matter in a manner similar to saprotrophic fungi. |
+
+
+::: {.callout-tip}
+Not just word difficulty — *grammar, abstraction, and world knowledge* climb too. Their **own** two experts agreed exactly only **37.6%** of the time (88.4% within one grade). **This is the judgment you're about to make — expect to differ from the gold.**
+:::
+
+# How today is divided — one spine, three surfaces
+
+## The six-step spine (A–F) {.smaller}
+
+Everything today is **phase ③** (Eguchi & Kyle Step 6), broken into six steps. The **same A–F labels** appear on every surface, so you always know where you are — *find your place by the letter, not the slide number.*
+
+| Step | Where you work | What happens |
+|--|--|----|
+| **A · Sample** | slide + Sheet | *concept:* how to draw a representative ~20; you **copy** your track's sheet |
+| **B · Apply the scheme** | slide + guidelines | restate the decidable rule you'll annotate against |
+| **C · Annotate blind** | **Sheet** | each partner labels the same items, independently |
+| **D · Measure agreement** | **Colab** + slide | % agreement · Cohen's κ · annotator-vs-annotator matrix |
+| **E · Read → refine → re-annotate** | slide + **Sheet** | where do you diverge? fix the scheme, re-label |
+| **F · Adjudicate → gold** | **Colab** + slide | resolve, compare to published, export `{id,text,label}` |
+
+. . .
+
+::: {.callout-tip}
+You bounce **out** to the Sheet twice (annotate in C, re-annotate in E) and back. Colab opens at **D** and stays open. The slides run alongside as your interpretation reference.
+:::
+
+# A · Sample — represent the domain *(E&K Step 3 · ①)*
+
+## Draw a sample that stands for the domain {.smaller}
+
+A gold standard is only as trustworthy as the sample it's built on. Before anyone labels anything, decide *what* you're drawing.
+
+- **Representative** — cover the range you care about (proficiency, L1, register) so your κ isn't an accident of an easy slice.
+- **Right-sized** — enough to measure agreement, small enough to double-annotate by hand (~20 today).
+- **Reproducible** — a fixed random **seed** means the "same 20" every time; anyone can re-draw your exact sample.
+- **One fixed unit** — one label per **unit of analysis** (here, the sentence). Settle this before you start.
+
+::: {.callout-note}
+Today the sample is **already drawn for you** — one sheet per track. You'll learn *how* it was sampled here, and just **copy** it in a moment. (The draw itself lives in Colab as a reference cell.)
+:::
+
+# B · Apply the operationalized scheme *(E&K Steps 4–5; Fuoli · ②)*
+
+## Restate the rule before you label {.smaller}
+
+You already have an **operationalized scheme** from the earlier sessions — a *decidable rule* a second person can follow. Now you apply it.
+
+
+- **Restate the rule and the unit** — one label per unit; know your label set cold.
+- **Skim the guidelines and per-level examples** *before* you annotate, not while you annotate.
+- **Don't invent as you go** — if the rule can't decide a case, that's a note for step E, not a private house rule.
+
+*This is ① and ② made concrete: a decidable rule, applied to a real sample.*
+
+::: {.callout-important}
+## Copy your track's sheet, then go annotate
+Open your track's **template Sheet** → **File → Make a copy** into your own Drive. Note the copied title — Colab needs it in step D. Then move to **step C**.
+:::
+
+# C · Annotate blind, in pairs *(E&K Step 6 · ③)*
+
+## Two people, same items, no peeking {.smaller}
+
+This is the heart of it, and it happens **entirely in the Sheet** — no code.
+
+- Each partner labels the **same ~20 items** in the sheet you copied.
+- **Two annotator columns** (`label_a`, `label_b`) → agreement falls straight out in step D.
+- **Blind** = no peeking at your partner's column, no discussing as you go.
+
+
+The disagreements are the point — they show where the scheme is still fuzzy. **Don't** smooth them over now.
+
+::: {.callout-note}
+**Your turn:** label all ~20 rows in your own column, independently. Use the `notes` column for anything you found genuinely hard to decide — those notes are your evidence in step E.
+:::
+
+# D · Measure agreement *(E&K Step 6 · ③)*
+
+## Percent agreement vs. Cohen's κ {.smaller}
+
+Now Colab opens for the first time. It reads your sheet and reports three numbers — but the *reading* of them happens here.
+
+. . .
+
+- **Percent agreement** — the raw diagonal. Easy, but flattering: two coders who both say "B1" most of the time agree a lot **by luck**.
+- **Cohen's κ** — agreement *corrected for chance*. This is the honest number.
+
+. . .
+
+::: {.callout-tip}
+Recall from S4: **80% raw agreement was only κ ≈ 0.52** once chance was removed. Trust the κ.
+:::
+
+*→ run this in **step D** (Colab): `load_annotation_sheet` → `annotator_agreement`.*
+
+## Read the confusion matrix {.smaller}
+
+The κ tells you *how much* you disagree. The **annotator-vs-annotator confusion matrix** tells you *where*.
+
+. . .
+
+- **Rows = annotator A, columns = annotator B** — one cell per label pair.
+- **The diagonal** is where you agreed; **off-diagonal cells** are your disagreements.
+- A cluster in one off-diagonal cell (say **B1 ↔ B2**) is a signpost: *that* boundary is under-defined.
+
+. . .
+
+Don't just note *that* κ is low — find the **specific label pair** dragging it down. That cell is your to-do list for step E.
+
+# E · Read the matrix → refine → re-annotate *(E&K Step 6; Fuoli princ. 2 · ③)*
+
+## Fix the scheme, then label again {.smaller}
+
+A confusion matrix isn't a verdict on your annotating — it's a diagnosis of your **scheme**.
+
+. . .
+
+- Take the **off-diagonal cells** — which label pairs get confused?
+- **Refine the scheme / guidelines** so that ambiguity becomes decidable (add a rule, a boundary case, an example).
+- **Re-annotate** the affected items; recompute κ. Iterate until agreement is acceptable.
+
+. . .
+
+*This is **Fuoli's principle 2** in action — guidelines are tested and refined until reliable. If two trained coders still can't agree, no model can be trusted on it either.*
+
+::: {.callout-important}
+## Go re-annotate
+Make your scheme edits, then return to the **Sheet** and re-label the confused items. Back in Colab, `disagreements(rows)` lists exactly what to revisit; re-run step D to see κ move.
+:::
+
+# F · Adjudicate → gold *(E&K Step 6 → feeds ④⑤)*
+
+## Resolve, compare, export {.smaller}
+
+The last disagreements don't refine away — you **decide** them. That's adjudication, and it's the graded step.
+
+. . .
+
+- Talk through the **remaining disagreements** and agree a single `final` label for each.
+- **Compare to the published gold** — where do you differ, and *why*? A difference isn't automatically an error.
+- **Export** the canonical **`{id, text, label}`** set — this is S6's yardstick, and the input to ④⑤.
+
+. . .
+
+::: {.callout-note}
+Differing from the published gold ≠ being wrong. Arase's *own* experts agreed exactly only 37.6% of the time. What matters is that your disagreement is **defensible** — that's the argument your mini-project has to make.
+:::
+
+*→ run this in **step F** (Colab): `to_canonical` → `compare_to_published` → save to Drive.*
+
+# Coming up
+
+- **S6 — Gold Standards & Evaluation Metrics** *(hands-on)*: your gold becomes the **target** (④); we **score an LLM against it** (⑤) with the same κ / confusion-matrix tools — you just swap the *annotator B* column for the *model* column.
 
 # Any questions?

@@ -139,53 +139,447 @@
 </section>
 <section class="slide level2">
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
+<!-- Executes S4's Phase C (E&K Step 6 · ③) as a six-step lab spine A–F. The A–F labels
+     (distinct from E&K numbered *Steps* and the circled ①②③ *phases*) are the shared spine
+     printed on all three surfaces — slides / Google Sheet / Colab. Work is divided by ACTIVITY:
+     slides own the concepts, the Sheet owns the human judgment, Colab owns the numbers.
+     Cross-reference BY A–F LABEL, never by slide number. Grounded in the Day-2 notebook Part B
+     round-trip (see sessions/day2/session-05.md). -->
 </section>
 <section>
 <section id="session-5-hands-on-gold-standard-annotation-agreement" class="title-slide slide level1 center">
-<h1>Session 5: Hands-on: Gold-Standard Annotation &amp; Agreement</h1>
+<h1>Session 5: Hands-on — Gold-Standard Annotation &amp; Agreement</h1>
 
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
+<p>Today you <strong>build a gold standard</strong> for your track — the graded <em>construction</em> skill. The work is split across <strong>three surfaces</strong>, and one spine (<strong>A–F</strong>) runs through all of them:</p>
 <ul>
-<li>Re-annotate a sample using a prepared scheme</li>
-<li>Compute inter-annotator agreement</li>
-<li>Compare against the published gold and against LLM annotations</li>
+<li><strong>These slides</strong> teach the <em>concepts</em> — how to sample, why annotate blind, how to read a matrix.</li>
+<li><strong>A Google Sheet</strong> holds the <em>human judgment</em> — you and your partner annotate there.</li>
+<li><strong>Colab</strong> does the <em>numbers</em> — import the Sheet, measure agreement, adjudicate, export.</li>
 </ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>This is the <strong>construction</strong> skill — <em>graded once, here.</em> Give the annotation real care.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="learning-objectives" class="slide level2">
+<section id="learning-objectives" class="slide level2 smaller">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Working in a pair, each <strong>annotate the same ~20 sentences</strong> by hand against a prepared scheme.</li>
+<li>Import the sheet into Colab and compute <strong>percent agreement, Cohen’s κ</strong>, and an annotator-vs-annotator <strong>confusion matrix</strong>.</li>
+<li><strong>Read the confusion matrix</strong> to see <em>where</em> you disagree, then <strong>refine the scheme and re-annotate</strong> — iterate until agreement is acceptable.</li>
+<li><strong>Adjudicate</strong> the remaining disagreements, <strong>compare to the published gold</strong>, and interpret the differences.</li>
+<li>Export your annotations as a canonical <strong><code>{id, text, label}</code></strong> gold set.</li>
+</ul>
 </section></section>
 <section>
-<section id="re-annotate-a-sample" class="title-slide slide level1 center">
-<h1>Re-annotate a sample</h1>
+<section id="recap-the-define-first-workflow" class="title-slide slide level1 center">
+<h1>Recap — the define-first workflow</h1>
 
 </section>
-<section id="re-annotate-a-sample-1" class="slide level2">
-<h2>Re-annotate a sample</h2>
-<!-- to be added -->
+<section id="recap-where-this-sits" class="slide level2 smaller">
+<h2>Recap: where this sits</h2>
+<p>S4 laid out the <strong>define-first workflow</strong> — five phases that turn a fuzzy construct into a number you can trust. Today we run its middle phase, <strong>③</strong>.</p>
+<ul>
+<li><strong>① Define the task</strong> <em>(scope · input→output · metrics · sample)</em></li>
+<li><strong>② Operationalize</strong> <em>(decidable rule · pilot · Fuoli’s principles)</em></li>
+<li><strong>③ Build the gold standard</strong> ← <strong>you are here</strong> <em>(blind → IAA → refine → adjudicate)</em></li>
+<li>④ Target = human agreement · ⑤ Evaluate the LLM → <strong>next session (S6)</strong></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>The agreement tool you build today is the <em>same</em> one S6 uses to score a model — swap one column.</p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="inter-annotator-agreement" class="title-slide slide level1 center">
-<h1>Inter-annotator agreement</h1>
+<section id="arase-et-al.-2022-the-same-5-stages-for-real" class="title-slide slide level1 center">
+<h1>Arase et al.&nbsp;(2022) — the same 5 stages, for real</h1>
 
 </section>
-<section id="inter-annotator-agreement-1" class="slide level2">
-<h2>Inter-annotator agreement</h2>
-<!-- to be added -->
+<section id="arase-et-al.-2022-the-same-5-stages" class="slide level2 smaller">
+<h2>Arase et al.&nbsp;(2022) — the same 5 stages</h2>
+<p>Before you build your own gold, look at a published one that ran this exact workflow — on the very task you’re about to try.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 71%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>What Arase et al.&nbsp;did</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>① Define</strong></td>
+<td>Sentence → CEFR level (A1–C2); reuse CEFR; fix metrics up front (macro-F1 + weighted κ)</td>
+</tr>
+<tr class="even">
+<td><strong>② Operationalize</strong></td>
+<td>“A1 = an A1 learner can readily understand it”; guidelines + per-level examples; piloted on 228</td>
+</tr>
+<tr class="odd">
+<td><strong>③ Gold</strong></td>
+<td>2 experts (r = .75/.73), blind, ~20k sentences; <strong>37.6% exact, 88.4% within one grade</strong></td>
+</tr>
+<tr class="even">
+<td><strong>④ Target</strong></td>
+<td>Human ceiling r ≈ .73–.75; a prediction counts if it matches <em>either</em> expert</td>
+</tr>
+<tr class="odd">
+<td><strong>⑤ Evaluate</strong></td>
+<td>macro-F1 <strong>84.5%</strong>, weighted κ <strong>.628</strong> — Day 3 swaps in a prompted LLM</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-a-cefr-level-looks-like" class="slide level2 smaller">
+<h2>What a CEFR level looks like</h2>
+<p>Their annotators judged <strong>whole sentences</strong> against can-do <em>reading</em> descriptors — one example per level (Arase et al., Table 1):</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 80%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>CEFR Level</th>
+<th>Example sentence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A1</strong></td>
+<td>She had a beautiful necklace around her neck.</td>
+</tr>
+<tr class="even">
+<td><strong>A2</strong></td>
+<td>Some experts say the classes should be changed.</td>
+</tr>
+<tr class="odd">
+<td><strong>B1</strong></td>
+<td>Historically there have also been negative consequences.</td>
+</tr>
+<tr class="even">
+<td><strong>B2</strong></td>
+<td>Alligators are generally timid towards humans and tend to walk or swim away if one approaches.</td>
+</tr>
+<tr class="odd">
+<td><strong>C1</strong></td>
+<td>The metal-carbon bond in organometallic compounds is generally highly covalent.</td>
+</tr>
+<tr class="even">
+<td><strong>C2</strong></td>
+<td>In the past, non-photosynthetic plants were mistakenly thought to get food by breaking down organic matter in a manner similar to saprotrophic fungi.</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Not just word difficulty — <em>grammar, abstraction, and world knowledge</em> climb too. Their <strong>own</strong> two experts agreed exactly only <strong>37.6%</strong> of the time (88.4% within one grade). <strong>This is the judgment you’re about to make — expect to differ from the gold.</strong></p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="compare-gold-vs.-llm" class="title-slide slide level1 center">
-<h1>Compare: gold vs.&nbsp;LLM</h1>
+<section id="how-today-is-divided-one-spine-three-surfaces" class="title-slide slide level1 center">
+<h1>How today is divided — one spine, three surfaces</h1>
 
 </section>
-<section id="compare-gold-vs.-llm-1" class="slide level2">
-<h2>Compare: gold vs.&nbsp;LLM</h2>
-<!-- to be added -->
+<section id="the-six-step-spine-af" class="slide level2 smaller">
+<h2>The six-step spine (A–F)</h2>
+<p>Everything today is <strong>phase ③</strong> (Eguchi &amp; Kyle Step 6), broken into six steps. The <strong>same A–F labels</strong> appear on every surface, so you always know where you are — <em>find your place by the letter, not the slide number.</em></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Where you work</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A · Sample</strong></td>
+<td>slide + Sheet</td>
+<td><em>concept:</em> how to draw a representative ~20; you <strong>copy</strong> your track’s sheet</td>
+</tr>
+<tr class="even">
+<td><strong>B · Apply the scheme</strong></td>
+<td>slide + guidelines</td>
+<td>restate the decidable rule you’ll annotate against</td>
+</tr>
+<tr class="odd">
+<td><strong>C · Annotate blind</strong></td>
+<td><strong>Sheet</strong></td>
+<td>each partner labels the same items, independently</td>
+</tr>
+<tr class="even">
+<td><strong>D · Measure agreement</strong></td>
+<td><strong>Colab</strong> + slide</td>
+<td>% agreement · Cohen’s κ · annotator-vs-annotator matrix</td>
+</tr>
+<tr class="odd">
+<td><strong>E · Read → refine → re-annotate</strong></td>
+<td>slide + <strong>Sheet</strong></td>
+<td>where do you diverge? fix the scheme, re-label</td>
+</tr>
+<tr class="even">
+<td><strong>F · Adjudicate → gold</strong></td>
+<td><strong>Colab</strong> + slide</td>
+<td>resolve, compare to published, export <code>{id,text,label}</code></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>You bounce <strong>out</strong> to the Sheet twice (annotate in C, re-annotate in E) and back. Colab opens at <strong>D</strong> and stays open. The slides run alongside as your interpretation reference.</p>
+</div>
+</div>
+</div>
+</div>
 </section></section>
+<section>
+<section id="a-sample-represent-the-domain-ek-step-3-①" class="title-slide slide level1 center">
+<h1>A · Sample — represent the domain <em>(E&amp;K Step 3 · ①)</em></h1>
+
+</section>
+<section id="draw-a-sample-that-stands-for-the-domain" class="slide level2 smaller">
+<h2>Draw a sample that stands for the domain</h2>
+<p>A gold standard is only as trustworthy as the sample it’s built on. Before anyone labels anything, decide <em>what</em> you’re drawing.</p>
+<ul>
+<li><strong>Representative</strong> — cover the range you care about (proficiency, L1, register) so your κ isn’t an accident of an easy slice.</li>
+<li><strong>Right-sized</strong> — enough to measure agreement, small enough to double-annotate by hand (~20 today).</li>
+<li><strong>Reproducible</strong> — a fixed random <strong>seed</strong> means the “same 20” every time; anyone can re-draw your exact sample.</li>
+<li><strong>One fixed unit</strong> — one label per <strong>unit of analysis</strong> (here, the sentence). Settle this before you start.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Today the sample is <strong>already drawn for you</strong> — one sheet per track. You’ll learn <em>how</em> it was sampled here, and just <strong>copy</strong> it in a moment. (The draw itself lives in Colab as a reference cell.)</p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="b-apply-the-operationalized-scheme-ek-steps-45-fuoli-②" class="title-slide slide level1 center">
+<h1>B · Apply the operationalized scheme <em>(E&amp;K Steps 4–5; Fuoli · ②)</em></h1>
+
+</section>
+<section id="restate-the-rule-before-you-label" class="slide level2 smaller">
+<h2>Restate the rule before you label</h2>
+<p>You already have an <strong>operationalized scheme</strong> from the earlier sessions — a <em>decidable rule</em> a second person can follow. Now you apply it.</p>
+<ul>
+<li><strong>Restate the rule and the unit</strong> — one label per unit; know your label set cold.</li>
+<li><strong>Skim the guidelines and per-level examples</strong> <em>before</em> you annotate, not while you annotate.</li>
+<li><strong>Don’t invent as you go</strong> — if the rule can’t decide a case, that’s a note for step E, not a private house rule.</li>
+</ul>
+<p><em>This is ① and ② made concrete: a decidable rule, applied to a real sample.</em></p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Copy your track’s sheet, then go annotate</strong></p>
+</div>
+<div class="callout-content">
+<p>Open your track’s <strong>template Sheet</strong> → <strong>File → Make a copy</strong> into your own Drive. Note the copied title — Colab needs it in step D. Then move to <strong>step C</strong>.</p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="c-annotate-blind-in-pairs-ek-step-6-③" class="title-slide slide level1 center">
+<h1>C · Annotate blind, in pairs <em>(E&amp;K Step 6 · ③)</em></h1>
+
+</section>
+<section id="two-people-same-items-no-peeking" class="slide level2 smaller">
+<h2>Two people, same items, no peeking</h2>
+<p>This is the heart of it, and it happens <strong>entirely in the Sheet</strong> — no code.</p>
+<ul>
+<li>Each partner labels the <strong>same ~20 items</strong> in the sheet you copied.</li>
+<li><strong>Two annotator columns</strong> (<code>label_a</code>, <code>label_b</code>) → agreement falls straight out in step D.</li>
+<li><strong>Blind</strong> = no peeking at your partner’s column, no discussing as you go.</li>
+</ul>
+<p>The disagreements are the point — they show where the scheme is still fuzzy. <strong>Don’t</strong> smooth them over now.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Your turn:</strong> label all ~20 rows in your own column, independently. Use the <code>notes</code> column for anything you found genuinely hard to decide — those notes are your evidence in step E.</p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="d-measure-agreement-ek-step-6-③" class="title-slide slide level1 center">
+<h1>D · Measure agreement <em>(E&amp;K Step 6 · ③)</em></h1>
+
+</section>
+<section id="percent-agreement-vs.-cohens-κ" class="slide level2 smaller">
+<h2>Percent agreement vs.&nbsp;Cohen’s κ</h2>
+<p>Now Colab opens for the first time. It reads your sheet and reports three numbers — but the <em>reading</em> of them happens here.</p>
+<div class="fragment">
+<ul>
+<li><strong>Percent agreement</strong> — the raw diagonal. Easy, but flattering: two coders who both say “B1” most of the time agree a lot <strong>by luck</strong>.</li>
+<li><strong>Cohen’s κ</strong> — agreement <em>corrected for chance</em>. This is the honest number.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Recall from S4: <strong>80% raw agreement was only κ ≈ 0.52</strong> once chance was removed. Trust the κ.</p>
+</div>
+</div>
+</div>
+<p><em>→ run this in <strong>step D</strong> (Colab): <code>load_annotation_sheet</code> → <code>annotator_agreement</code>.</em></p>
+</div>
+</section>
+<section id="read-the-confusion-matrix" class="slide level2 smaller">
+<h2>Read the confusion matrix</h2>
+<p>The κ tells you <em>how much</em> you disagree. The <strong>annotator-vs-annotator confusion matrix</strong> tells you <em>where</em>.</p>
+<div class="fragment">
+<ul>
+<li><strong>Rows = annotator A, columns = annotator B</strong> — one cell per label pair.</li>
+<li><strong>The diagonal</strong> is where you agreed; <strong>off-diagonal cells</strong> are your disagreements.</li>
+<li>A cluster in one off-diagonal cell (say <strong>B1 ↔︎ B2</strong>) is a signpost: <em>that</em> boundary is under-defined.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Don’t just note <em>that</em> κ is low — find the <strong>specific label pair</strong> dragging it down. That cell is your to-do list for step E.</p>
+</div>
+</section></section>
+<section>
+<section id="e-read-the-matrix-refine-re-annotate-ek-step-6-fuoli-princ.-2-③" class="title-slide slide level1 center">
+<h1>E · Read the matrix → refine → re-annotate <em>(E&amp;K Step 6; Fuoli princ. 2 · ③)</em></h1>
+
+</section>
+<section id="fix-the-scheme-then-label-again" class="slide level2 smaller">
+<h2>Fix the scheme, then label again</h2>
+<p>A confusion matrix isn’t a verdict on your annotating — it’s a diagnosis of your <strong>scheme</strong>.</p>
+<div class="fragment">
+<ul>
+<li>Take the <strong>off-diagonal cells</strong> — which label pairs get confused?</li>
+<li><strong>Refine the scheme / guidelines</strong> so that ambiguity becomes decidable (add a rule, a boundary case, an example).</li>
+<li><strong>Re-annotate</strong> the affected items; recompute κ. Iterate until agreement is acceptable.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><em>This is <strong>Fuoli’s principle 2</strong> in action — guidelines are tested and refined until reliable. If two trained coders still can’t agree, no model can be trusted on it either.</em></p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Go re-annotate</strong></p>
+</div>
+<div class="callout-content">
+<p>Make your scheme edits, then return to the <strong>Sheet</strong> and re-label the confused items. Back in Colab, <code>disagreements(rows)</code> lists exactly what to revisit; re-run step D to see κ move.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="f-adjudicate-gold-ek-step-6-feeds-④⑤" class="title-slide slide level1 center">
+<h1>F · Adjudicate → gold <em>(E&amp;K Step 6 → feeds ④⑤)</em></h1>
+
+</section>
+<section id="resolve-compare-export" class="slide level2 smaller">
+<h2>Resolve, compare, export</h2>
+<p>The last disagreements don’t refine away — you <strong>decide</strong> them. That’s adjudication, and it’s the graded step.</p>
+<div class="fragment">
+<ul>
+<li>Talk through the <strong>remaining disagreements</strong> and agree a single <code>final</code> label for each.</li>
+<li><strong>Compare to the published gold</strong> — where do you differ, and <em>why</em>? A difference isn’t automatically an error.</li>
+<li><strong>Export</strong> the canonical <strong><code>{id, text, label}</code></strong> set — this is S6’s yardstick, and the input to ④⑤.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Differing from the published gold ≠ being wrong. Arase’s <em>own</em> experts agreed exactly only 37.6% of the time. What matters is that your disagreement is <strong>defensible</strong> — that’s the argument your mini-project has to make.</p>
+</div>
+</div>
+</div>
+<p><em>→ run this in <strong>step F</strong> (Colab): <code>to_canonical</code> → <code>compare_to_published</code> → save to Drive.</em></p>
+</div>
+</section></section>
+<section id="coming-up" class="title-slide slide level1 center">
+<h1>Coming up</h1>
+<ul>
+<li><strong>S6 — Gold Standards &amp; Evaluation Metrics</strong> <em>(hands-on)</em>: your gold becomes the <strong>target</strong> (④); we <strong>score an LLM against it</strong> (⑤) with the same κ / confusion-matrix tools — you just swap the <em>annotator B</em> column for the <em>model</em> column.</li>
+</ul>
+</section>
+
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
 
@@ -375,7 +769,7 @@
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1100,
 
         height: 700,
 
