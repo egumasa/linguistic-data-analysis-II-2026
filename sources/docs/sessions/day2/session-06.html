@@ -355,8 +355,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/day2_gold_standards_and_evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 2 · Gold standards &amp; evaluation</span></a>
+  <a href="../../notebooks/day2-s5_gold_standard_construction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 2 · S5 — Build a gold standard</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/day2-s6_evaluation_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 2 · S6 — Gold standards &amp; evaluation metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -446,7 +452,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="agenda" class="level2">
 <h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
-<p>Works through <strong>Part A</strong> of the Day 2 notebook, which runs on <strong>frozen predictions</strong> — no API key, no live model, so everyone’s numbers come out identical every run.</p>
+<p>Works through <code>day2-s6_evaluation_metrics.ipynb</code>, which runs on <strong>frozen predictions</strong> — no API key, no live model, so everyone’s numbers come out identical every run.</p>
 <ol type="1">
 <li><strong>Warm-up: what a gold file is</strong> — parse a <code>{id, text, label}</code> record, index into it, and meet <code>with open(...)</code> for files.</li>
 <li><strong>Load the gold standard and the frozen predictions</strong> the fixed prompt produced.</li>
@@ -462,8 +468,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="slides-colab" class="level2">
 <h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
 <!--
-- Notebook (tutorial + Corpus Lab): [`day2_gold_standards_and_evaluation.ipynb`](../../notebooks/day2_gold_standards_and_evaluation.ipynb) —
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)
+- Notebook (tutorial + Corpus Lab): [`day2-s6_evaluation_metrics.ipynb`](../../notebooks/day2-s6_evaluation_metrics.ipynb) —
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s6_evaluation_metrics.ipynb)
 - Slides: [Session 6 slides](../../slides/slides-session-06.html){target="_blank"}
 -->
 
@@ -956,7 +962,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>Works through **Part A** of the Day 2 notebook, which runs on **frozen predictions** — no API key, no live model, so everyone's numbers come out identical every run.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>Works through <span class="in">`day2-s6_evaluation_metrics.ipynb`</span>, which runs on **frozen predictions** — no API key, no live model, so everyone's numbers come out identical every run.</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Warm-up: what a gold file is** — parse a <span class="in">`{id, text, label}`</span> record, index into it, and meet <span class="in">`with open(...)`</span> for files.</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Load the gold standard and the frozen predictions** the fixed prompt produced.</span>
@@ -972,8 +978,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">- Notebook (tutorial + Corpus Lab): [`day2_gold_standards_and_evaluation.ipynb`](../../notebooks/day2_gold_standards_and_evaluation.ipynb) —</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2_gold_standards_and_evaluation.ipynb)</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">- Notebook (tutorial + Corpus Lab): [`day2-s6_evaluation_metrics.ipynb`](../../notebooks/day2-s6_evaluation_metrics.ipynb) —</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s6_evaluation_metrics.ipynb)</span></span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">- Slides: [Session 6 slides](../../slides/slides-session-06.html){target="_blank"}</span></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>

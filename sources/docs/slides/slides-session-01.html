@@ -274,7 +274,6 @@
 <p>By the end of this session, you will be able to:</p>
 <ul>
 <li>Describe, at a high level, <strong>what a Large Language Model is</strong>.</li>
-<li>Name the three NLP tasks this course targets — <strong>classification, annotation, extraction</strong> — and give an example of each.</li>
 <li>Say what <strong>machine learning</strong> is and how ML models are built.</li>
 <li>Explain, at a high level, <strong>how LLMs are trained</strong> and how they produce natural language.</li>
 </ul>
@@ -332,7 +331,12 @@
 <h2>What is the predictor in the ML model?</h2>
 <p>The idea of ML is like creating a smart regression model.</p>
 <p>But then we need <strong>predictors</strong> (input features) to make predictons.</p>
-<p>Three different classes of technologies. - One-hot text vector - Static Embeddings - Contextual Embeddings</p>
+<p>Three different classes of technologies.</p>
+<ul>
+<li>One-hot text vector</li>
+<li>Static Embeddings</li>
+<li>Contextual Embeddings</li>
+</ul>
 </section>
 <section id="one-hot-text-vector" class="slide level2 smaller">
 <h2>One-hot text vector</h2>
@@ -396,7 +400,8 @@
 </section>
 <section id="static-embeddings" class="slide level2 smaller">
 <h2>Static embeddings</h2>
-<p>An <strong>embedding</strong> is a <em>learned</em> <strong>dense</strong> vector for each word — trained so that words with <strong>similar meaning sit close together</strong> (Latent Semantic Analysis, Word2Vec). Look up each word, <strong>average</strong> them → the email’s vector.</p>
+<p>An <strong>embedding</strong> is a <em>learned</em> <strong>dense</strong> vector for each word — trained so that words with <strong>similar meaning sit close together</strong> (Latent Semantic Analysis, Word2Vec).</p>
+<p>Look up each word, <strong>average</strong> them → the email’s vector.</p>
 <div class="spam-pipe">
   <div class="pnode">
     <div class="cap">Email</div>
@@ -432,34 +437,27 @@
 </section>
 <section id="the-limit-of-static-embeddings" class="slide level2">
 <h2>The limit of Static embeddings</h2>
-<p>But meaning of a word depends on order and context:</p>
+<p>Meaning of a word depends on order and context:</p>
 <ul>
 <li>“your account is <strong>free</strong> of charge” ✅ not spam</li>
 <li>“claim your <strong>FREE</strong> prize now” 🚫 spam</li>
 </ul>
-<p>Same word, opposite signal. We need a model that reads each word <strong>relative to the others</strong>.</p>
+<p>Same word, opposite signal. This is because:</p>
+<ul>
+<li>Many words are polysemous or homographic</li>
+<li>Isolated word does not adds up to the meaning of the whole
+<ul>
+<li>idioms such as <em>kick the bucket</em></li>
+</ul></li>
+</ul>
 </section>
-<section id="transformer-architecture" class="slide level2 smaller">
+<section id="transformer-architecture" class="slide level2">
 <h2>Transformer architecture</h2>
 <ul>
-<li>Reads a <strong>whole sequence at once</strong></li>
 <li><strong>Attention:</strong> every word decides <em>which other words are relevant to it</em></li>
-<li>Output: <strong>context-sensitive</strong> representations of each word</li>
+<li>Output: <strong>context-sensitive</strong> representations of each word and a document</li>
 </ul>
-<p>There are two ways to <em>train</em> a transformer — and they give two model families.</p>
-</section>
-<section id="two-training-objectives" class="slide level2 smaller">
-<h2>Two training objectives</h2>
-<ul>
-<li><p><strong>Masked language model</strong> <em>(e.g.&nbsp;BERT)</em> — hide a word, predict the blank: “claim your ___ prize” → <code>FREE</code>. Good at <strong>understanding</strong> → classification, tagging.</p></li>
-<li><p><strong>Autoregressive model</strong> <em>(e.g.&nbsp;GPT)</em> — predict the <strong>next</strong> word, left to right: “claim your” → “free” → “prize”… Good at <strong>generating</strong> text. <strong>← this is the LLM.</strong></p></li>
-</ul>
-</section>
-<section id="autoregressive-model-the-llm" class="slide level2 smaller">
-<h2>Autoregressive model = the LLM</h2>
-<p>Predicts the token at time <em>T</em> given everything before it (<em>T−1, T−2, …</em>).</p>
-<p>$ P(w_T w_1, w_2, , w_{T-1}) $</p>
-<p>Run that forward, one token at a time → fluent, coherent text. That is exactly what a chat LLM does when it answers you.</p>
+<p>[edit later]</p>
 </section>
 <section id="how-llms-are-trained" class="slide level2 smaller">
 <h2>How LLMs are trained</h2>
@@ -468,24 +466,18 @@
 <li>The task: <strong>predict the next word</strong>, over and over, on billions of sentences.</li>
 <li>No hand-labelling needed — the text is its own answer key.</li>
 </ul>
-<div class="fragment">
 <p>Producing natural language is just <strong>that same next-word prediction, run forward</strong> — which is why it <em>sounds</em> fluent.</p>
-</div>
 </section>
-<section id="reason-1-the-llm-is-the-product-of-nlp" class="slide level2 smaller">
-<h2>Reason 1 — the LLM is the <em>product</em> of NLP</h2>
-<p>The LLM isn’t alien to linguistics. It’s the <strong>current endpoint</strong> of a decades-long NLP lineage:</p>
-<p><strong>rule-based → statistical → neural → pretrained transformers → LLMs</strong></p>
-<div class="fragment">
-<p>Each step learned more from data and less from hand-written rules. The LLM is where that curve is <em>right now</em>.</p>
-</div>
+<section id="autoregressive-model-the-llm" class="slide level2 smaller">
+<h2>Autoregressive model = the LLM</h2>
+<p>Predicts the token at time <em>T</em> given everything before it (<em>T−1, T−2, …</em>).</p>
+<p>$ P(w_T w_1, w_2, , w_{T-1}) $</p>
+<p>Run that forward, one token at a time → fluent, coherent text. That is exactly what a chat LLM does when it answers you.</p>
 </section>
-<section id="reason-2-the-llm-re-absorbs-the-classic-tasks" class="slide level2 smaller">
-<h2>Reason 2 — the LLM <em>re-absorbs</em> the classic tasks</h2>
-<p>Historically, <strong>each task had its own bespoke model</strong> — POS tagger, NER model, parser, classifier, coreference model.</p>
-<div class="fragment">
-<p>With scale + pretraining + <strong>prompting</strong>, <strong>one model does many tasks</strong> — just by being asked.</p>
-</div>
+<section id="the-llm-re-absorbs-the-classic-tasks" class="slide level2 smaller">
+<h2>The LLM <em>re-absorbs</em> the classic tasks</h2>
+<p>Historically, <strong>each task had its own model</strong> — POS tagger, NER model, parser, coreference model.</p>
+<p>With scale + pretraining + <strong>prompting</strong>, <strong>one model can do many tasks</strong>.</p>
 </section>
 <section id="summary" class="slide level2 smaller">
 <h2>Summary</h2>
@@ -496,9 +488,6 @@
 <li>built on the <strong>transformer</strong> architecture — attention lets it read context,</li>
 <li>trained by <strong>next-word prediction</strong> on huge amounts of text.</li>
 </ul>
-<div class="fragment">
-<p>And it’s the <strong>current endpoint of NLP</strong> — the same lineage that once did spam detection now does <em>your</em> linguistic tasks by being <strong>prompted</strong>.</p>
-</div>
 </section></section>
 <section>
 <section id="llm-follows-language-instructions" class="title-slide slide level1 center">
@@ -513,9 +502,7 @@
 <li>ask it to label / analyze it,</li>
 <li>read the output together.</li>
 </ul>
-<div class="fragment">
 <p><strong>What did it get right? What looks off?</strong> And the question that runs the whole course: <em>how would we ever <strong>know</strong> — beyond eyeballing?</em></p>
-</div>
 </section></section>
 <section>
 <section id="but-we-need-evaluation" class="title-slide slide level1 center">
@@ -536,6 +523,7 @@
 <li><strong>inter-annotator agreement</strong> (percent + Cohen’s κ)</li>
 <li><strong>precision / recall / F1</strong>, <strong>confusion matrix</strong></li>
 </ul>
+<p>We’ll cover these on Day 2.</p>
 </section>
 <section id="the-punchline" class="slide level2 smaller">
 <h2>The punchline</h2>
@@ -793,7 +781,7 @@
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1100,
 
         height: 700,
 
