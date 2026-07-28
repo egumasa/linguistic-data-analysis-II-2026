@@ -136,7 +136,7 @@
     "href": "notebooks/day2_gold_standards_and_evaluation.html#part-b-corpus-lab-build-a-gold-standard-yourself",
     "title": "Day 2 · Gold standards & evaluation",
     "section": "Part B · Corpus Lab — build a gold standard yourself",
-    "text": "Part B · Corpus Lab — build a gold standard yourself\nSo far the gold labels were handed to you. Now you make some. You will annotate ~20 sentences by hand in a Google Sheet, with your partner labelling the same sentences independently, then bring the result back into Python as a canonical gold file — the same {\"id\", \"text\", \"label\"} shape you loaded in Part A.\n\n\n\n\n\n\nNoteWhy a spreadsheet?\n\n\n\nAnnotation is a judgement task, not a coding task — a sheet is the fastest honest way to do it, and it is what most annotation projects actually use. The point is not the tool; it is that you feel how often two careful people disagree, and what it takes to resolve that into a single defensible label.\n\n\n\n\nShow code\n#@title 🔧 Library cell: Google Sheets annotation round-trip { display-mode: \"form\" }\n# Helper — you don't need to read this. Run it and move on.\nANNOTATION_HEADER = [\"id\", \"text\", \"label_a\", \"label_b\", \"final\", \"notes\"]\n\ndef _sheets_client():\n    \"\"\"Authorise gspread with your Google account (a pop-up asks for permission).\"\"\"\n    from google.colab import auth\n    import google.auth, gspread\n    auth.authenticate_user()\n    creds, _ = google.auth.default()\n    return gspread.authorize(creds)\n\ndef create_annotation_sheet(title, items, labels):\n    \"\"\"Create a Sheet in YOUR Drive: one row per item, blank columns to label.\n    `items` are {\"id\",\"text\",...} dicts — any existing label is deliberately NOT\n    copied across, so you annotate blind. Returns the sheet URL.\"\"\"\n    sheet = _sheets_client().create(title)\n    worksheet = sheet.sheet1\n    rows = []\n    for item in items:\n        rows.append([item[\"id\"], item[\"text\"], \"\", \"\", \"\", \"\"])\n    worksheet.update([ANNOTATION_HEADER] + rows)\n    worksheet.freeze(rows=1)\n    print(f\"Created '{title}' with {len(rows)} rows to annotate.\")\n    print(\"Allowed labels:\", \", \".join(labels))\n    print(\"Open it:\", sheet.url)\n    return sheet.url\n\ndef load_annotation_sheet(title):\n    \"\"\"Read your annotation sheet back as a list of row dicts.\"\"\"\n    rows = _sheets_client().open(title).sheet1.get_all_records()\n    print(f\"Read {len(rows)} rows from '{title}'.\")\n    return rows\n\ndef to_canonical(rows, labels, column=\"final\"):\n    \"\"\"Turn annotation rows into canonical gold: [{\"id\",\"text\",\"label\"}, ...].\n    Blank rows are skipped; labels outside `labels` are reported, not silently kept.\"\"\"\n    gold, blank, invalid = [], 0, []\n    for row in rows:\n        label = str(row.get(column, \"\")).strip()\n        if not label:\n            blank += 1\n        elif label not in labels:\n            invalid.append((row.get(\"id\"), label))\n        else:\n            gold.append({\"id\": int(row[\"id\"]), \"text\": str(row[\"text\"]), \"label\": label})\n    print(f\"{len(gold)} usable · {blank} still blank · {len(invalid)} invalid\")\n    if invalid:\n        print(\"  fix these in the sheet, then re-run:\", invalid[:10])\n    return gold\n\ndef annotator_agreement(rows, a=\"label_a\", b=\"label_b\"):\n    \"\"\"Percent agreement + Cohen's κ between the two annotator columns.\"\"\"\n    from sklearn.metrics import cohen_kappa_score\n    pairs = [(str(r.get(a, \"\")).strip(), str(r.get(b, \"\")).strip()) for r in rows]\n    pairs = [(x, y) for x, y in pairs if x and y]\n    if not pairs:\n        print(\"No rows where BOTH annotators have labelled. Nothing to compare yet.\")\n        return None\n    percent = sum(x == y for x, y in pairs) / len(pairs)\n    kappa = cohen_kappa_score([x for x, _ in pairs], [y for _, y in pairs])\n    print(f\"{len(pairs)} doubly-annotated · agreement {percent:.1%} · Cohen's κ {kappa:.3f}\")\n    return {\"n\": len(pairs), \"percent_agreement\": percent, \"kappa\": kappa}\n\ndef disagreements(rows, a=\"label_a\", b=\"label_b\"):\n    \"\"\"The rows your two annotators labelled differently — your adjudication list.\"\"\"\n    out = [r for r in rows\n           if str(r.get(a, \"\")).strip() and str(r.get(b, \"\")).strip()\n           and str(r[a]).strip() != str(r[b]).strip()]\n    print(f\"{len(out)} rows to adjudicate. Agree on a `final` label for each in the sheet.\")\n    return pd.DataFrame(out)\n\ndef compare_to_published(gold, published):\n    \"\"\"How often does YOUR final label match the published gold, item by item?\"\"\"\n    lookup = {item[\"id\"]: item[\"label\"] for item in published}\n    shared = [(g[\"label\"], lookup[g[\"id\"]]) for g in gold if g[\"id\"] in lookup]\n    if not shared:\n        print(\"No overlapping ids — did you keep the ids the sheet gave you?\")\n        return None\n    agree = sum(mine == theirs for mine, theirs in shared)\n    print(f\"{agree}/{len(shared)} match the published label ({agree / len(shared):.1%})\")\n    return pd.DataFrame([{\"id\": g[\"id\"], \"yours\": g[\"label\"], \"published\": lookup[g[\"id\"]],\n                          \"text\": g[\"text\"]}\n                         for g in gold if g[\"id\"] in lookup\n                         and g[\"label\"] != lookup[g[\"id\"]]])\n\n\n\nB1 — Draw ~20 sentences to annotate ✏️ YOU EDIT\nWe sample from the same CEFR set you just evaluated — but the sheet gets only the ids and the sentences, never the labels. That way your annotation is genuinely independent, and at the end you can check it against the published gold.\n\n\nShow code\nimport random\n\nN_ITEMS = 20            # ✏️ how many sentences to annotate\nrandom.seed(42)         # fixed seed = the same sample every run\n\nto_annotate = random.sample(gold, N_ITEMS)\nprint(f\"{len(to_annotate)} sentences drawn. First:\", to_annotate[0][\"text\"])\n\n\n\n\nB2 — Create your annotation sheet\nThis creates a Sheet in your own Drive and prints a link. Colab will ask permission to access your Google account — that is the authenticate_user() pop-up; accept it with your Tohoku account.\nIn the sheet, one of you fills label_a and the other fills label_b — without looking at each other’s column. Leave final blank for now. Use notes for anything you found hard to decide; those notes are useful evidence later.\n\n\nShow code\nSHEET_NAME = \"lda2_day2_annotation\"     # ✏️ rename if you like\n\ncreate_annotation_sheet(SHEET_NAME, to_annotate, LEVELS)\n\n\n\n\n\n\n\n\nImportantStop here and go annotate\n\n\n\nOpen the link above and label all ~20 sentences in both annotator columns before running the next cell. Come back when the sheet is filled in.\n\n\n\n\nB3 — Read it back and measure your agreement\nHow often did the two of you pick the same level? Cohen’s κ corrects that for the agreement you would expect by chance alone — you will code it yourself in Part C.\n\n\nShow code\nrows = load_annotation_sheet(SHEET_NAME)\nannotator_agreement(rows)\n\n\n\n\nB4 — Adjudicate the disagreements\nEvery row below is one your two annotators saw differently. Talk each one through, decide a single label, and type it into the final column in the sheet. For the rows you already agreed on, final is just that agreed label.\nKeep track of why you disagreed — is the sentence genuinely borderline, or is the scheme underspecified? That distinction is the heart of your mini-project report.\n\n\nShow code\ndisagreements(rows)\n\n\n\n\nB5 — Import it as a gold standard ✏️ YOU EDIT\nOnce every row has a final label, read the sheet again and convert it to the canonical form. to_canonical refuses anything that is not one of your allowed labels, so typos surface here rather than silently corrupting your gold set.\n\n\nShow code\nrows = load_annotation_sheet(SHEET_NAME)       # re-read, now with `final` filled in\nmy_gold = to_canonical(rows, LEVELS, column=\"final\")\nmy_gold[:3]\n\n\n\n\nB6 — How does your gold compare with the published gold?\nThe CEFR-SP labels came from language-education professionals, and we kept only sentences where two of them agreed. Where you differ from them, you are not simply wrong — but each difference is worth a look.\n\n\nShow code\ncompare_to_published(my_gold, gold)\n\n\n\n\nB7 — Save your gold set to your Drive\nYour gold set belongs in your Drive, not the course repo. See Housing your data in Google Drive.\n\n\nShow code\n# ✏️ Uncomment in Colab to save:\n# from google.colab import drive; drive.mount(\"/content/drive\")\n# with open(\"/content/drive/MyDrive/my_gold_day2.json\", \"w\", encoding=\"utf-8\") as f:\n#     json.dump(my_gold, f, ensure_ascii=False, indent=2)\n# print(\"saved\", len(my_gold), \"items\")",
+    "text": "Part B · Corpus Lab — build a gold standard yourself\nSo far the gold labels were handed to you. Now you make some. Today’s work is split across three surfaces that share one spine, the six steps A–F:\n\nSlides teach the concepts — how to sample (A), why annotate blind (C), how to read a confusion matrix (D–E).\nA Google Sheet holds the human judgment — you and your partner annotate there (C), and re-annotate there (E).\nThis notebook does the numbers — it reads the sheet and measures, adjudicates, and exports (D–F).\n\nSo steps A–C need no code; this notebook first runs at step D. Each header below prints the same A–F label as the slides — find your place by the letter.\n\n\n\n\n\n\nNoteWhy a spreadsheet?\n\n\n\nAnnotation is a judgement task, not a coding task — a sheet is the fastest honest way to do it, and it is what most annotation projects actually use. The point is not the tool; it is that you feel how often two careful people disagree, and what it takes to resolve that into a single defensible label.\n\n\n\nA · Sample → copy your track’s sheet (E&K Step 3 · ①)\nThe sample is already drawn for you — one template Sheet per track, with the columns ID · Text · CoderA · CoderB · Final · Note and only ID and Text filled in (never the labels, so your annotation is genuinely independent). How it was sampled — represent the domain, fix the unit, a seed for reproducibility — is the slide concept; the exact draw is in the reference appendix at the end of this notebook.\nOpen your track’s template Sheet → File → Make a copy into your own Drive. Then grab your copy’s id from its URL — the long string between /d/ and /edit in docs.google.com/spreadsheets/d/&lt;id&gt;/edit. You’ll paste it into step D. (Opening by id, not name, means two copies that share the name “Copy of …” are never confused.)\n\n\nB · Apply the operationalized scheme (E&K Steps 4–5; Fuoli · ②)\nBefore you label, restate the decidable rule you’re annotating against (the scheme your team drafted in the earlier sessions) and skim the guidelines and per-level examples. One label per unit; know your label set cold. → interpret this on step B (slides).\n\n\nC · Annotate blind, in pairs (E&K Step 6 · ③)\nThis step happens entirely in the Sheet — no code. One of you fills CoderA and the other fills CoderB, without looking at each other’s column. Leave Final blank for now. Use Note for anything you found hard to decide; those notes are your evidence in step E.\n\n\n\n\n\n\nImportantStop here and go annotate\n\n\n\nLabel all ~20 rows in both annotator columns before running the next cell. Come back to Colab when the sheet is filled in — the notebook picks up at step D.\n\n\n\n\nShow code\n#@title 🔧 Library cell: Google Sheets annotation round-trip { display-mode: \"form\" }\n# Helper — you don't need to read this. Run it and move on.\n# Sheet column headers (the annotation template uses these exact names):\nCOL_ID, COL_TEXT = \"ID\", \"Text\"\nCOL_A, COL_B = \"CoderA\", \"CoderB\"\nCOL_FINAL, COL_NOTES = \"Final\", \"Note\"\nANNOTATION_HEADER = [COL_ID, COL_TEXT, COL_A, COL_B, COL_FINAL, COL_NOTES]\n\ndef _sheets_client():\n    \"\"\"Authorise gspread with your Google account (a pop-up asks for permission).\"\"\"\n    from google.colab import auth\n    import google.auth, gspread\n    auth.authenticate_user()\n    creds, _ = google.auth.default()\n    return gspread.authorize(creds)\n\ndef create_annotation_sheet(title, items, labels):\n    \"\"\"Create a Sheet in YOUR Drive: one row per item, blank columns to label.\n    `items` are {\"id\",\"text\",...} dicts — any existing label is deliberately NOT\n    copied across, so you annotate blind. Returns the sheet URL.\"\"\"\n    sheet = _sheets_client().create(title)\n    worksheet = sheet.sheet1\n    rows = []\n    for item in items:\n        rows.append([item[\"id\"], item[\"text\"], \"\", \"\", \"\", \"\"])\n    worksheet.update([ANNOTATION_HEADER] + rows)\n    worksheet.freeze(rows=1)\n    print(f\"Created '{title}' with {len(rows)} rows to annotate.\")\n    print(\"Allowed labels:\", \", \".join(labels))\n    print(\"Open it:\", sheet.url)\n    return sheet.url\n\ndef load_annotation_sheet(sheet_id):\n    \"\"\"Read your annotation sheet back as a list of row dicts.\n    `sheet_id` is the long id in the sheet's URL:\n        docs.google.com/spreadsheets/d/&lt;THIS PART&gt;/edit\n    Pasting the whole URL works too — either way opens the exact sheet, so two\n    copies that share a name (\\\"Copy of ...\\\") are never confused.\"\"\"\n    client = _sheets_client()\n    if str(sheet_id).startswith(\"http\"):\n        sheet = client.open_by_url(sheet_id)\n    else:\n        sheet = client.open_by_key(sheet_id)\n    rows = sheet.sheet1.get_all_records()\n    print(f\"Read {len(rows)} rows.\")\n    return rows\n\ndef to_canonical(rows, labels, column=COL_FINAL):\n    \"\"\"Turn annotation rows into canonical gold: [{\"id\",\"text\",\"label\"}, ...].\n    Blank rows are skipped; labels outside `labels` are reported, not silently kept.\"\"\"\n    gold, blank, invalid = [], 0, []\n    for row in rows:\n        label = str(row.get(column, \"\")).strip()\n        if not label:\n            blank += 1\n        elif label not in labels:\n            invalid.append((row.get(COL_ID), label))\n        else:\n            gold.append({\"id\": int(row[COL_ID]), \"text\": str(row[COL_TEXT]), \"label\": label})\n    print(f\"{len(gold)} usable · {blank} still blank · {len(invalid)} invalid\")\n    if invalid:\n        print(\"  fix these in the sheet, then re-run:\", invalid[:10])\n    return gold\n\ndef annotator_agreement(rows, a=COL_A, b=COL_B):\n    \"\"\"Percent agreement + Cohen's κ between the two annotator columns, PLUS an\n    annotator-vs-annotator confusion matrix (the diagonal is where you agreed;\n    off-diagonal cells show which label pairs the two of you confuse).\"\"\"\n    from sklearn.metrics import cohen_kappa_score\n    pairs = [(str(r.get(a, \"\")).strip(), str(r.get(b, \"\")).strip()) for r in rows]\n    pairs = [(x, y) for x, y in pairs if x and y]\n    if not pairs:\n        print(\"No rows where BOTH annotators have labelled. Nothing to compare yet.\")\n        return None\n    a_labels = [x for x, _ in pairs]\n    b_labels = [y for _, y in pairs]\n    percent = sum(x == y for x, y in pairs) / len(pairs)\n    kappa = cohen_kappa_score(a_labels, b_labels)\n    print(f\"{len(pairs)} doubly-annotated · agreement {percent:.1%} · Cohen's κ {kappa:.3f}\")\n    # annotator-vs-annotator confusion matrix (mirrors the gold-vs-model evaluate()):\n    labels = sorted(set(a_labels) | set(b_labels))\n    cm = confusion_matrix(a_labels, b_labels, labels=labels)\n    plt.figure(figsize=(5.5, 4.5))\n    sns.heatmap(cm, annot=True, fmt=\"d\", cmap=\"Blues\",\n                xticklabels=labels, yticklabels=labels)\n    plt.xlabel(\"Annotator B\"); plt.ylabel(\"Annotator A\")\n    plt.title(\"Annotator-vs-annotator confusion matrix\")\n    plt.tight_layout(); plt.show()\n    return {\"n\": len(pairs), \"percent_agreement\": percent, \"kappa\": kappa}\n\ndef disagreements(rows, a=COL_A, b=COL_B):\n    \"\"\"The rows your two annotators labelled differently — your adjudication list.\"\"\"\n    out = [r for r in rows\n           if str(r.get(a, \"\")).strip() and str(r.get(b, \"\")).strip()\n           and str(r[a]).strip() != str(r[b]).strip()]\n    print(f\"{len(out)} rows to adjudicate. Agree on a `Final` label for each in the sheet.\")\n    return pd.DataFrame(out)\n\ndef compare_to_published(gold, published):\n    \"\"\"How often does YOUR final label match the published gold, item by item?\"\"\"\n    lookup = {item[\"id\"]: item[\"label\"] for item in published}\n    shared = [(g[\"label\"], lookup[g[\"id\"]]) for g in gold if g[\"id\"] in lookup]\n    if not shared:\n        print(\"No overlapping ids — did you keep the ids the sheet gave you?\")\n        return None\n    agree = sum(mine == theirs for mine, theirs in shared)\n    print(f\"{agree}/{len(shared)} match the published label ({agree / len(shared):.1%})\")\n    return pd.DataFrame([{\"id\": g[\"id\"], \"yours\": g[\"label\"], \"published\": lookup[g[\"id\"]],\n                          \"text\": g[\"text\"]}\n                         for g in gold if g[\"id\"] in lookup\n                         and g[\"label\"] != lookup[g[\"id\"]]])\n\n\n\n\nD · Measure agreement (E&K Step 6 · ③) ✏️ YOU EDIT\nColab opens here. Read your copied sheet back in, then measure how much the two of you agreed: percent agreement, Cohen’s κ (agreement corrected for chance), and an annotator-vs-annotator confusion matrix — the diagonal is where you agreed, the off-diagonal cells show which label pairs you confuse.\n\n\n\n\n\n\nNoteHow to read what this prints — the interpretation (step D, slides)\n\n\n\n\n\nPercent agreement flatters two coders who both lean on the same label — they agree a lot by luck. Cohen’s κ strips that luck out, so trust the κ, not the percentage (recall S4: 80% raw agreement was only κ ≈ 0.52). Then read the matrix for the one off-diagonal cell dragging κ down — that specific label pair is your to-do list for step E. You will code κ yourself from scratch in Part C.\n\n\n\n\n\nShow code\nSHEET_ID = \"1AbCdEf...paste_yours\"   # ✏️ the id in YOUR copied sheet's URL\n                                     #    (…/spreadsheets/d/THIS/edit) — the whole URL works too\n\nrows = load_annotation_sheet(SHEET_ID)\nannotator_agreement(rows)\n\n\n\n\nE · Read the matrix → refine → re-annotate (E&K Step 6; Fuoli princ. 2 · ③)\nA low κ is a diagnosis of your scheme, not your annotating. disagreements(rows) lists every row the two of you saw differently — the items behind those off-diagonal cells.\n\n\n\n\n\n\nNoteWhat to do with this list — the judgment (step E, slides)\n\n\n\n\n\nFor the label pair the matrix flagged, refine the scheme / guidelines so that ambiguity becomes decidable (add a rule, a boundary case, an example). Then go back to the Sheet and re-label the affected items, and re-run step D to see κ move. Iterate until agreement is acceptable — that is Fuoli’s principle 2 in action.\n\n\n\n\n\nShow code\ndisagreements(rows)\n\n\n\n\n\n\n\n\nImportantGo re-annotate, then re-run step D\n\n\n\nMake your scheme edits, re-label the confused items in the Sheet, then run step D again. Repeat until κ is acceptable before moving to step F.\n\n\n\n\nF · Adjudicate → gold (E&K Step 6 → feeds ④⑤) ✏️ YOU EDIT\nThe last disagreements don’t refine away — you decide them. Fill a single Final label for every row in the Sheet (for rows you already agreed on, Final is just that agreed label), then read it back and convert it to canonical form. to_canonical refuses anything that isn’t one of your allowed labels, so typos surface here rather than silently corrupting your gold set.\n\n\nShow code\nrows = load_annotation_sheet(SHEET_ID)       # re-read, now with `Final` filled in\nmy_gold = to_canonical(rows, LEVELS)         # reads the `Final` column\nmy_gold[:3]\n\n\nHow does your gold compare with the published gold? The CEFR-SP labels came from language-education professionals, and we kept only sentences where two of them agreed. Differing from them is not simply wrong — Arase’s own experts agreed exactly only 37.6% of the time — but each difference is worth a look and a defensible reason. → interpret this on step F (slides).\n\n\nShow code\ncompare_to_published(my_gold, gold)\n\n\nSave your gold set to your Drive — it belongs in your Drive, not the course repo, and it becomes S6’s yardstick. See Housing your data in Google Drive.\n\n\nShow code\n# ✏️ Uncomment in Colab to save:\n# from google.colab import drive; drive.mount(\"/content/drive\")\n# with open(\"/content/drive/MyDrive/my_gold_day2.json\", \"w\", encoding=\"utf-8\") as f:\n#     json.dump(my_gold, f, ensure_ascii=False, indent=2)\n# print(\"saved\", len(my_gold), \"items\")\n\n\n\n\n\n\n\n\nNoteReference — how the template sheets were built (you don’t run this)\n\n\n\n\n\nThe template Sheet you copied in step A was generated once, ahead of the session, so the sample is fixed and reproducible. It uses the create_annotation_sheet helper (loaded above) fed by a seeded random draw — one sheet per track (cefr, cars50, raamove, l2_errors). Shown here so the sampling is transparent; you do not run it.\nimport random\n\nN_ITEMS = 20            # how many sentences to annotate\nrandom.seed(42)         # fixed seed = the same sample every time it is drawn\n\nto_annotate = random.sample(gold, N_ITEMS)   # `gold` = your track's labelled pool\n# The sheet gets ids + text only — never the labels — so annotation stays blind:\ncreate_annotation_sheet(\"lda2_day2_cefr\", to_annotate, LEVELS)",
     "crumbs": [
       "Sessions",
       "Daily notebooks",
@@ -708,7 +708,7 @@
     "href": "slides/slides-session-07.html#learning-objectives",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nName the four prompt elements — instruction · context · input data · output indicator — and locate each in a real prompt.\nDistinguish zero-shot from few-shot prompting and judge when examples help.\nExplain chain-of-thought and where it earns its keep.\nPlace a technique on the run-it-this-week vs. know-it-exists line.\nExplain the train/test contamination trap and why you tune on validation, report on test.\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: prompting is a design space, not a single trick — small structural choices move the score."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nName the four prompt elements — instruction · context · input data · output indicator — and locate each in a real prompt.\nDistinguish zero-shot from few-shot prompting and judge when examples help — and read a real results table (Kim & Lu, 2024) to see what each buys and where prompting plateaus.\nExplain chain-of-thought and where it earns its keep.\nPlace a technique on the run-it-this-week vs. know-it-exists line.\nExplain the train/test contamination trap and why you tune on validation, report on test.\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: prompting is a design space, not a single trick — small structural choices move the score."
   },
   {
     "objectID": "slides/slides-session-07.html#prompting-is-a-design-space",
@@ -750,7 +750,7 @@
     "href": "slides/slides-session-07.html#iterating-a-prompt-ex-1-ex-2",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "Iterating a prompt: Ex 1 → Ex 2",
-    "text": "Iterating a prompt: Ex 1 → Ex 2\nThe same feedback task, tightened:\n\nEx 1 (generic) — “give feedback on this paragraph, step by step.” Works, but vague.\nEx 2 (structured) — split into Task / Criteria / My paragraph, add the output indicator “only feedback.”\n\n\nThat move — generic → structured — is prompt iteration. You’ll do the data-driven version of it in S9, reading the errors and tightening the Criteria."
+    "text": "Iterating a prompt: Ex 1 → Ex 2\nThe same feedback task, tightened:\n\nEx 1 (generic) — “give feedback on this paragraph, step by step.” Works, but vague.\nEx 2 (structured) — split into Task / Criteria / My paragraph, add the output indicator “only feedback.”\n\n\nThat move — generic → structured — is prompt iteration. The data-driven version is error analysis: read where the model is wrong (the confusion matrix), tighten the Criteria that cause those errors, and the score goes up — exactly Kim & Lu’s initial → refined jump. You’ll run that loop yourself in S9."
   },
   {
     "objectID": "slides/slides-session-07.html#run-it-this-week-vs.-know-it-exists",
@@ -841,14 +841,14 @@
     "href": "slides/slides-session-05.html#agenda",
     "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nRe-annotate a sample using a prepared scheme\nCompute inter-annotator agreement\nCompare against the published gold and against LLM annotations"
+    "text": "📋 Agenda\nToday you build a gold standard for your track — the graded construction skill. The work is split across three surfaces, and one spine (A–F) runs through all of them:\n\nThese slides teach the concepts — how to sample, why annotate blind, how to read a matrix.\nA Google Sheet holds the human judgment — you and your partner annotate there.\nColab does the numbers — import the Sheet, measure agreement, adjudicate, export.\n\n\n\n\n\n\n\nNote\n\n\nThis is the construction skill — graded once, here. Give the annotation real care."
   },
   {
     "objectID": "slides/slides-session-05.html#learning-objectives",
     "href": "slides/slides-session-05.html#learning-objectives",
     "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:"
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nWorking in a pair, each annotate the same ~20 sentences by hand against a prepared scheme.\nImport the sheet into Colab and compute percent agreement, Cohen’s κ, and an annotator-vs-annotator confusion matrix.\nRead the confusion matrix to see where you disagree, then refine the scheme and re-annotate — iterate until agreement is acceptable.\nAdjudicate the remaining disagreements, compare to the published gold, and interpret the differences.\nExport your annotations as a canonical {id, text, label} gold set."
   },
   {
     "objectID": "slides/slides-session-05.html#re-annotate-a-sample-1",
@@ -2648,14 +2648,14 @@
     "href": "slides/slides-session-01.html#reason-2-the-llm-re-absorbs-the-classic-tasks",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Reason 2 — the LLM re-absorbs the classic tasks",
-    "text": "Reason 2 — the LLM re-absorbs the classic tasks\nHistorically, each task had its own bespoke model — POS tagger, NER model, parser, classifier, coreference model.\n\nWith scale + pretraining + prompting, one model does many tasks — just by being asked.\n\n\nThe three we target — classification · annotation · extraction — are exactly those task types. (Transformer = the enabler; prompting = why the tasks reappear.) → S4 re-meets these with linguistic examples (Eguchi & Kyle 2024)."
+    "text": "Reason 2 — the LLM re-absorbs the classic tasks\nHistorically, each task had its own bespoke model — POS tagger, NER model, parser, classifier, coreference model.\n\nWith scale + pretraining + prompting, one model does many tasks — just by being asked."
   },
   {
     "objectID": "slides/slides-session-01.html#summary",
     "href": "slides/slides-session-01.html#summary",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Summary",
-    "text": "Summary\nLLM is: - a type of statistical machine-learning model, which learn to predict the next token given the previous sequence (autoregressive), leveraging the state-of-the-art transformer architecture as basis."
+    "text": "Summary\nAn LLM is:\n\na statistical machine-learning model — it learns patterns from data,\nof the autoregressive kind — it predicts the next token given the previous sequence,\nbuilt on the transformer architecture — attention lets it read context,\ntrained by next-word prediction on huge amounts of text.\n\n\nAnd it’s the current endpoint of NLP — the same lineage that once did spam detection now does your linguistic tasks by being prompted."
   },
   {
     "objectID": "slides/slides-session-01.html#throw-language-data-at-an-llm",
@@ -2739,21 +2739,21 @@
     "href": "slides/slides-session-04.html#agenda",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\nThree moves — anchored throughout in Eguchi & Kyle (2024):\n\nA · What NLP tasks are there — the task taxonomy, now concrete in linguistics\nB · How NLP is evaluated — the workflow, and how it transfers to LLMs\nC · The annotation-&-evaluation workflow — what you’ll run hands-on in S5–S6"
+    "text": "📋 Agenda\n\nA · What NLP tasks are there — the task taxonomy, now concrete in linguistics\nB · How NLP is evaluated — the workflow, and how it transfers to LLMs\nC · The annotation-&-evaluation workflow — what you’ll run hands-on in S5–S6"
   },
   {
     "objectID": "slides/slides-session-04.html#learning-objectives",
     "href": "slides/slides-session-04.html#learning-objectives",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nPlace a linguistic annotation task in the classic NLP taxonomy (identify · extract · categorize, by unit of analysis).\nExplain why the course targets sentence and text categorization — and why error annotation is the exception.\nDescribe the NLP evaluation workflow (gold → predictions → metrics) and how it transfers from a trained model to a prompted LLM.\nOperationalize a linguistic category into an annotation scheme with coding guidelines.\nExplain inter-annotator agreement: percent agreement vs. why Cohen’s κ corrects for chance.\nRead a confusion matrix and conceptual P / R / F1.\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: labelled data is only trustworthy if the category is operationalized and two coders agree beyond chance."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nPlace a linguistic annotation task in the classic NLP taxonomy (identify · extract · categorize, by unit of analysis).\nDescribe the NLP evaluation workflow (gold → predictions → metrics) and how it transfers from a trained model to a prompted LLM.\nOperationalize a linguistic category into an annotation scheme with coding guidelines.\nExplain inter-annotator agreement: percent agreement vs. why Cohen’s κ corrects for chance — including quadratic weighted κ for ordered labels.\nRead a confusion matrix and compute P / R / F1 from its four cells (TP · TN · FP · FN).\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: labelled data is only trustworthy if the category is operationalized and two coders agree beyond chance."
   },
   {
     "objectID": "slides/slides-session-04.html#what-is-annotation",
     "href": "slides/slides-session-04.html#what-is-annotation",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "What is annotation?",
-    "text": "What is annotation?\nAnnotation = adding interpretive labels to language.\n\nPOS — noun / verb / adjective…\nWord sense — which meaning of bank?\nStance / engagement — is the writer hedging, endorsing?\nDiscourse moves — what is this sentence doing in the argument?\nError tags, CEFR level, …\n\nThe common shape: a unit of language → a label. That’s the whole game."
+    "text": "What is annotation?\nAnnotation = adding interpretive labels to the available linguistic data.\n\nPOS — noun / verb / adjective…\nWord sense — which meaning of bank?\nStance / engagement — is the writer hedging, endorsing?\nDiscourse moves — what is this sentence doing in the argument?\nError tags, CEFR level, …"
   },
   {
     "objectID": "slides/slides-session-04.html#annotation-is-the-foundation-of-corpus-linguistics",
@@ -2781,7 +2781,7 @@
     "href": "slides/slides-session-04.html#organize-by-unit-output",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Organize by unit + output",
-    "text": "Organize by unit + output\n\nToken-level sequence labelling — POS, NER (one label per token).\nSpan categorization — stance spans (label a stretch of text).\nUnit categorization → one label per unit — a sentence or a whole text.\n\n\nThe last row is the one that yields clean, evaluable gold data. That’s where the course lives."
+    "text": "Organize by unit + output\n\nToken-level sequence labelling — POS, NER (one label per token).\nSpan categorization — stance spans (label a stretch of text).\nUnit categorization → one label per unit — a sentence or a whole text."
   },
   {
     "objectID": "slides/slides-session-04.html#narrow-the-course-focus-and-why",
@@ -2802,14 +2802,14 @@
     "href": "slides/slides-session-04.html#the-nlp-evaluation-workflow",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "The NLP evaluation workflow",
-    "text": "The NLP evaluation workflow\nEguchi & Kyle (2024) walk the full loop:\nbuild a gold standard → a system produces predictions → score predictions against gold.\n\nWe borrow the evaluation half — not the training half."
+    "text": "The NLP evaluation workflow\nEguchi & Kyle (2024) walk the full loop:\nbuild a gold standard → a system produces predictions → score predictions against gold.\nWe borrow the evaluation half — not the training half."
   },
   {
     "objectID": "slides/slides-session-04.html#model-prompted-llm",
     "href": "slides/slides-session-04.html#model-prompted-llm",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Model → prompted LLM",
-    "text": "Model → prompted LLM\n\nClassic NLP trains a supervised model on gold (context, not our method).\nThis course replaces the model with a prompted LLM…\n…but evaluates it the same way.\n\n\nThat transfer is the whole reason this workflow matters here."
+    "text": "Model → prompted LLM\n\nClassic NLP trains a supervised model on gold (context, not our method).\nThis course replaces the model with a prompted LLM…\n…but evaluates it the same way.\n\nThat transfer is the whole reason this workflow matters here."
   },
   {
     "objectID": "slides/slides-session-04.html#what-evaluation-means",
@@ -2830,7 +2830,7 @@
     "href": "slides/slides-session-04.html#design-the-annotation-scheme",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Design the annotation scheme",
-    "text": "Design the annotation scheme\n\nAdapt or design an annotation scheme + coding guidelines.\nOperationalize the category: turn a fuzzy construct into a decidable rule a second coder can follow.\n\n\nIf two trained coders can’t agree on it, a model can’t be trusted on it either."
+    "text": "Design the annotation scheme\n\nAdapt or design an annotation scheme + coding guidelines.\nOperationalize the category: turn a fuzzy construct into a decidable rule a second coder can follow.\n\nIf two trained coders can’t agree on it, a model can’t be trusted on it either."
   },
   {
     "objectID": "slides/slides-session-04.html#annotate-blind-agreement-gold",
@@ -3577,7 +3577,7 @@
     "href": "slides/slides-session-01.html#statistical-machine-learning-model",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Statistical machine-learning model",
-    "text": "Statistical machine-learning model\nMachine learning = a model learns patterns from data instead of being hand-coded with rules.\n\nRule-based: a human writes the rules.\nML: the model infers the rules from examples.\n\nML model typically learns probablistic representation from statistical regularity in the data."
+    "text": "Statistical machine-learning model\nStatistical Machine learning = a model learns patterns from data instead of being hand-coded with rules.\n\nRule-based ML: a human writes the rules.\nStatistical ML: the model infers the rules from examples.\n\nAn ML model learns a probabilistic representation from statistical regularity in the data — which patterns tend to go with which outcome."
   },
   {
     "objectID": "slides/slides-session-01.html#example---spam-email-detection",
@@ -3598,6 +3598,445 @@
     "href": "slides/slides-session-01.html#transformer-architecture",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Transformer architecture",
-    "text": "Transformer architecture"
+    "text": "Transformer architecture\n\nReads a whole sequence at once\nAttention: every word decides which other words are relevant to it\nOutput: context-sensitive representations of each word\n\nThere are two ways to train a transformer — and they give two model families."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#the-plan-follow-one-example",
+    "href": "slides/slides-session-01.html#the-plan-follow-one-example",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "The plan — follow one example",
+    "text": "The plan — follow one example\nAn LLM is a kind of statistical machine-learning model.\nTo see its significance, we need to take a detour:\n\nMachine learning — what “learning from data” means\nNLP — machine learning applied to language\nHow NLP researchers try to encode meaning\nTransformers architecture and its application to LLM"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#example-spam-detection",
+    "href": "slides/slides-session-01.html#example-spam-detection",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Example — spam detection",
+    "text": "Example — spam detection\nThe classic ML task: given an email, decide spam / not-spam.\n\nRule-based: block anything containing FREE, WINNER, $$$ → brittle; spammers just write “F R E E”, and you block real mail.\nML: show the model thousands of emails already labelled spam / not-spam. It learns on its own which words (and combinations) predict spam.\n\nThe rules are inferred from examples, not written by hand."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#what-is-the-predictor-in-the-ml-model",
+    "href": "slides/slides-session-01.html#what-is-the-predictor-in-the-ml-model",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "What is the predictor in the ML model?",
+    "text": "What is the predictor in the ML model?\nThe idea of ML is like creating a smart regression model.\nBut then we need predictors (input features) to make predictons.\nThree different classes of technologies. - One-hot text vector - Static Embeddings - Contextual Embeddings"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#one-hot-text-vector",
+    "href": "slides/slides-session-01.html#one-hot-text-vector",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "One-hot text vector",
+    "text": "One-hot text vector\nEach vocabulary word is a slot. A word flips on its own slot — 1 if present, 0 if not. Add the words up → the email’s bag-of-words vector, and that is what the classifier reads.\n\n\n\n  \n    Email\n    claim yourfree prize\n  \n  →\n  \n    One-hot / word\n    \n      claimyourfreeprizemeetnotes\n      claim100000\n      your010000\n      free001000\n      prize000100\n    \n  \n  Σ\n  \n    Bag-of-words\n    111100\n    sparse · mostly 0\n  \n  →\n  \n    Classifier\n    P(spam)=0.94\n    🚫 spam\n  \n\n\nCost: the vector is as long as the whole vocabulary (tens of thousands of slots), and “free” and “complimentary” are just two unrelated slots — no notion that they mean the same."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#static-embeddings",
+    "href": "slides/slides-session-01.html#static-embeddings",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Static embeddings",
+    "text": "Static embeddings\nAn embedding is a learned dense vector for each word — trained so that words with similar meaning sit close together (Latent Semantic Analysis, Word2Vec). Look up each word, average them → the email’s vector.\n\n  \n    Email\n    claim yourfree prize\n  \n  →\n  \n    Embedding lookup\n    \n      claim.8.1-.3.6\n      your.0.2.1-.1\n      free.9-.2-.4.7\n      prize.7.0-.2.5\n    \n    4 dims shown (really ~300)\n  \n  ⌀\n  \n    Avg → doc vector\n    .6.0-.2.4\n    dense · short\n  \n  →\n  \n    Classifier\n    P(spam)=0.91\n    🚫 spam\n  \n\n\nWin: “free” and “complimentary” now have nearby vectors → the model generalises to words it never saw labelled. Still ignores word order (it’s an average). → next, context."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#the-limit-of-static-embeddings",
+    "href": "slides/slides-session-01.html#the-limit-of-static-embeddings",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "The limit of Static embeddings",
+    "text": "The limit of Static embeddings\nBut meaning of a word depends on order and context:\n\n“your account is free of charge” ✅ not spam\n“claim your FREE prize now” 🚫 spam\n\nSame word, opposite signal. We need a model that reads each word relative to the others."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#two-training-objectives",
+    "href": "slides/slides-session-01.html#two-training-objectives",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Two training objectives",
+    "text": "Two training objectives\n\nMasked language model (e.g. BERT) — hide a word, predict the blank: “claim your ___ prize” → FREE. Good at understanding → classification, tagging.\nAutoregressive model (e.g. GPT) — predict the next word, left to right: “claim your” → “free” → “prize”… Good at generating text. ← this is the LLM."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#autoregressive-model-the-llm",
+    "href": "slides/slides-session-01.html#autoregressive-model-the-llm",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Autoregressive model = the LLM",
+    "text": "Autoregressive model = the LLM\nPredicts the token at time T given everything before it (T−1, T−2, …).\n$ P(w_T w_1, w_2, , w_{T-1}) $\nRun that forward, one token at a time → fluent, coherent text. That is exactly what a chat LLM does when it answers you."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#the-llm-re-absorbs-the-classic-tasks",
+    "href": "slides/slides-session-01.html#the-llm-re-absorbs-the-classic-tasks",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "The LLM re-absorbs the classic tasks",
+    "text": "The LLM re-absorbs the classic tasks\nHistorically, each task had its own model — POS tagger, NER model, parser, coreference model.\nWith scale + pretraining + prompting, one model can do many tasks."
+  },
+  {
+    "objectID": "sessions/day3/session-07.html#conceptual-discussion-zero-shot-vs.-few-shot-in-kim-lu-2024",
+    "href": "sessions/day3/session-07.html#conceptual-discussion-zero-shot-vs.-few-shot-in-kim-lu-2024",
+    "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
+    "section": "Conceptual discussion: zero-shot vs. few-shot in Kim & Lu (2024)",
+    "text": "Conceptual discussion: zero-shot vs. few-shot in Kim & Lu (2024)\nWe use Kim & Lu (2024) as our worked case for what zero- and few-shot prompting actually buy you on a hard linguistic task — annotating rhetorical move-steps in research-article introductions against a modified Swales (1990) CARS model (3 moves, ~17 steps; their Table 1).\n\nThe two settings, defined\n\nZero-shot — the model gets only a natural-language prompt: the task description, the move/step definitions, the tag set, and the unit of annotation (here, the sentence). No worked examples. It must map the instructions onto the text on its own.\nFew-shot (K-shot) — the prompt also includes K worked examples (paired input text + correct annotation) before the sentence to be labeled. Kim & Lu use three-shot: three fully annotated introductions (38 sentences) sampled from the training set. Increasing K is the “learning” in few-shot learning — no weights change; the examples just condition the response (their framing follows Brown et al., 2020).\n\nCrucially, they cross this with a second dimension — prompt refinement (an initial prompt vs. a version sharpened after inspecting the validation-set confusion matrix) — so we can see zero/few-shot and prompt quality as separable levers.\n\n\nWhat the numbers show (test set, move / step accuracy)\n\n\n\nSetting\nMove acc.\nStep acc.\n\n\n\n\nInitial prompt · zero-shot\n42.9%\n17.0%\n\n\nInitial prompt · three-shot\n46.2%\n18.7%\n\n\nRefined prompt · zero-shot\n50.5%\n19.8%\n\n\nRefined prompt · three-shot\n52.7%\n25.3%\n\n\n(for reference) Fine-tuned, 80 samples\n92.3%\n80.2%\n\n\n\n(Kim & Lu, 2024, Table 2.)\n\n\nTakeaways for prompt design\n\nFew-shot helps, but modestly — and not always significantly on its own. Adding three examples to the initial prompt did not produce a statistically significant gain (McNemar’s test, move χ² = 0.543, p = 0.461). Examples are not a magic fix for an under-specified task.\nThe examples and the instructions compound. Only refined prompt + three-shot together beat the zero-shot baseline significantly (move χ² = 4.817, p = 0.028; step χ² = 5.600, p = 0.018). Lesson: spend effort on clear, specific instructions before (and alongside) adding examples.\nFew-shot mainly buys recall. Across settings, precision was consistently higher than recall; adding examples and refining the prompt pulled recall up (the model stopped under-applying the harder tags). This is a precision/recall trade-off worth naming when we evaluate in Sessions 8–9.\nHarder, more contextual tasks resist prompting alone. Move-step annotation needs discourse-level context (Biber et al., 2007), so even the best prompt-only setting (~53% move / ~25% step) trailed fine-tuning badly. This motivates the “run-it-this-week vs. know-it-exists” line: zero/few-shot are your everyday tools; fine-tuning is the escalation when prompting plateaus.\n\nDiscussion prompts. When would three carefully chosen examples beat a longer instruction? How would you pick which examples to show? Why might few-shot raise recall but not precision?",
+    "crumbs": [
+      "Sessions",
+      "Day 3 · Prompt Design & Iteration",
+      "Session 7: Prompt Design — Zero-shot vs Few-shot"
+    ]
+  },
+  {
+    "objectID": "slides/slides-session-07.html#sharpening-the-instruction-structure-persona",
+    "href": "slides/slides-session-07.html#sharpening-the-instruction-structure-persona",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Sharpening the instruction — structure & persona",
+    "text": "Sharpening the instruction — structure & persona\nThe instruction element does the most work, so it rewards a little care:\n\nLead with a verb and be specific — “classify this sentence into one CEFR level (A1–C2)” beats “tell me about this sentence.”\nGive it a persona / role — “You are an experienced EFL writing tutor…” scopes the tone, standards, and vocabulary the model reaches for.\n\n\nPersona helps, but keep it honest: it nudges style, not knowledge. The four elements still do the heavy lifting."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#what-examples-actually-buy-kim-lu-2024",
+    "href": "slides/slides-session-07.html#what-examples-actually-buy-kim-lu-2024",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "What examples actually buy — Kim & Lu (2024)",
+    "text": "What examples actually buy — Kim & Lu (2024)\nA hard linguistic task: labelling rhetorical move-steps in research-article introductions (modified Swales CARS: 3 moves / ~17 steps) with GPT-3.5. Unit of annotation = the sentence.\n\nThey crossed two separable levers:\n\nzero-shot vs. three-shot — the prompt alone vs. the prompt + 3 fully annotated introductions (38 sentences, drawn from the training set — not the gold test set).\ninitial vs. refined prompt — the instruction sharpened after reading the validation-set confusion matrix.\n\n\n\n\n\n\n\nImportant\n\n\nNotice: the few-shot examples come from training, never from the gold set you score on. (More on that trap shortly.)"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#the-numbers-prompt-only-has-a-ceiling",
+    "href": "slides/slides-session-07.html#the-numbers-prompt-only-has-a-ceiling",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "The numbers — prompt-only has a ceiling",
+    "text": "The numbers — prompt-only has a ceiling\nTest-set accuracy, move / step (their Table 2):\n\n\n  initial promptrefined prompt\n  zero-shot\n    42.9% / 17.0%\n    50.5% / 19.8%\n  three-shot\n    46.2% / 18.7%\n    52.7% / 25.3%\n\nFine-tuning on 80 samples → 92.3% / 80.2% — far above the best prompt (the S12 escalation).\n\nEvery lever helps a little; refined + three-shot is best — but prompt-only tops out near 53% move accuracy. That gap to fine-tuning is the ceiling."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#four-things-the-numbers-teach",
+    "href": "slides/slides-session-07.html#four-things-the-numbers-teach",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Four things the numbers teach",
+    "text": "Four things the numbers teach\n\nFew-shot helps, but modestly — adding 3 examples to the initial prompt was not significant on its own (McNemar move χ²=0.543, p=0.46).\nExamples and instructions compound — only refined + three-shot beat the zero-shot baseline significantly (move p=0.028, step p=0.018). Sharpen the instruction and add examples.\nFew-shot mainly buys recall — precision ran higher than recall; examples pulled recall up. (That precision/recall trade-off returns in S8/S9.)\nContext-heavy tasks resist prompting alone — the best prompt-only setting still trailed fine-tuning badly: run-it-this-week (prompt) vs. escalate-when-it-plateaus (fine-tune).\n\n\n\n\n\n\n\nNote\n\n\nDiscuss: When would 3 well-chosen examples beat a longer instruction? How do you pick which examples to show? Why might few-shot raise recall but not precision?"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#part-of-speech",
+    "href": "slides/slides-session-04.html#part-of-speech",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Part of Speech",
+    "text": "Part of Speech\nPOS tagging = label every token with its grammatical category (NOUN, VERB, ADJ…). One label per token — the simplest sequence-labelling task.\nThe_DET dogs_NOUN ran_VERB quickly_ADV ._PUNCT\n\nPenn Tag"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#word-sense",
+    "href": "slides/slides-session-04.html#word-sense",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Word Sense",
+    "text": "Word Sense\nWord-sense disambiguation = decide which meaning a word carries in context. Same form, different sense.\n\nShe sat on the bank of the river. → riverbank\nShe deposited the cheque at the bank. → financial institution\n\nThe token is identical — only context resolves the sense. Harder than POS: the label set is per word, not a fixed grammar."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#syntactic-dependency",
+    "href": "slides/slides-session-04.html#syntactic-dependency",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Syntactic Dependency",
+    "text": "Syntactic Dependency\nDependency parsing = link each token to its head, building a tree; the top is the ROOT. Still token-level, but the label is a relation between tokens.\n\nDependency tree for I play baseball — I →nsubj→ play (ROOT), baseball →dobj→ play"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#stance",
+    "href": "slides/slides-session-04.html#stance",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Stance",
+    "text": "Stance\n\n\nStance annotation = label how a writer positions themselves toward a proposition — hedging vs. endorsing.\nUnit of analysis is a span .\n\n\n\n\nEngagement Span Annotation (Eguchi & Kyle, 2023)"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#discourse-moves",
+    "href": "slides/slides-session-04.html#discourse-moves",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Discourse Moves",
+    "text": "Discourse Moves\nMove analysis = label what a stretch of text does rhetorically. Classic CARS model for research-article introductions (Swales):\n\n\n\nMove\nFunction\n\n\n\n\nMove 1\nEstablishing a research territory\n\n\nMove 2\nEstablishing a niche\n\n\nMove 3\nPresenting the present work\n\n\n\nKim & Lu (2024) had GPT annotate these moves — near-perfect when fine-tuned, though steps stayed hard. Unit: sentence/clause → one label."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#the-four-outcomes-tp-tn-fp-fn",
+    "href": "slides/slides-session-04.html#the-four-outcomes-tp-tn-fp-fn",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "The four outcomes: TP · TN · FP · FN",
+    "text": "The four outcomes: TP · TN · FP · FN\nFirst pick one class as positive — say, “this sentence hedges.” Every prediction then lands in one of four cells. Rows = gold (the truth), columns = the prediction:\n\n\n\n\nPred +\nPred −\n\n\n\n\nGold +\nTP\nFN\n\n\nGold −\nFP\nTN\n\n\n\n\nTP (true positive) — flagged as hedging, and it was. ✅\nFP (false positive) — flagged as hedging, but it wasn’t — a false alarm.\nFN (false negative) — left alone, but it really was hedging — a miss.\nTN (true negative) — correctly left alone. ✅"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#precision-recall",
+    "href": "slides/slides-session-04.html#precision-recall",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Precision & Recall",
+    "text": "Precision & Recall\nTwo questions about the positive class, from the same four cells. Say our detector scored the following on a batch of sentences:\n\n\n\n\nPred +\nPred −\n\n\n\n\nGold +\nTP = 8\nFN = 4\n\n\nGold −\nFP = 2\nTN = —\n\n\n\nPrecision — of what it flagged, how much was right?\nRecall — of what was actually positive, how much did it catch?"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#two-coders-same-sentences-how-much-do-they-agree",
+    "href": "slides/slides-session-04.html#two-coders-same-sentences-how-much-do-they-agree",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Two coders, same sentences — how much do they agree?",
+    "text": "Two coders, same sentences — how much do they agree?\nNot let’s say two annotators label the same 50 sentences (+/−):\n\n\n\n\n\n\nCoder B\n\n\n\n\n+\n\n\n−\n\n\n\n\n\n\nCoder A\n\n\n+\n\n\n10\n\n\n5\n\n\n\n\n−\n\n\n5\n\n\n30\n\n\n\n\nObserved agreement = the diagonal ÷ total:\n\\[p_o = \\frac{10 + 30}{50} = 0.80\\]\n\nLooks great — until you realise two coders who just guessed would still agree a lot of the time. How much of that 80% is real, and how much is luck?"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#cohens-κ-agreement-beyond-chance",
+    "href": "slides/slides-session-04.html#cohens-κ-agreement-beyond-chance",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Cohen’s κ — agreement beyond chance",
+    "text": "Cohen’s κ — agreement beyond chance\nCohen’s κ (the two-rater, nominal case) subtracts the agreement you’d expect by chance:\n\\[\\kappa = \\frac{p_o - p_e}{1 - p_e}\\] \\(p_e\\) = the agreement they’d hit by luck, using each coder’s own marginal rate (row/column totals ÷ 50)."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#ordered-labels-quadratic-weighted-κ",
+    "href": "slides/slides-session-04.html#ordered-labels-quadratic-weighted-κ",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Ordered labels: quadratic weighted κ",
+    "text": "Ordered labels: quadratic weighted κ\nPlain κ treats every disagreement as equally bad — scoring A1 → A2 exactly as wrong as A1 → C2. But CEFR levels are ordinal (A1 &lt; A2 &lt; … &lt; C2): a near miss should hurt less.\nWeighted κ puts a penalty \\(w_{ij}\\) on each off-diagonal cell. With quadratic weights over \\(N\\) ordered levels (indices \\(i, j\\)):\n\\[w_{ij} = \\frac{(i - j)^2}{(N - 1)^2}, \\qquad \\kappa_w = 1 - \\frac{\\sum_{ij} w_{ij}\\,O_{ij}}{\\sum_{ij} w_{ij}\\,E_{ij}}\\]\nFor CEFR (\\(N = 6\\)): an off-by-one slip weighs \\(\\tfrac{1}{25} = 0.04\\) (barely penalized); a far-apart A1 ↔︎ C2 weighs \\(\\tfrac{25}{25} = 1.0\\) (full penalty)."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#annotation",
+    "href": "slides/slides-session-04.html#annotation",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Annotation",
+    "text": "Annotation\nAnnotation: Putting labels on a specific unit of analysis\n\nLabel:\n\nThe actual value (often category) we put as a result of the annotation\n\nUnit of analysis:\n\nThe chunk/layer that the specific annotation will be put on.\n\nMorphology\nWord\nMultiword Units\nSentence\nParagraph …"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#the-scope-of-the-current-course",
+    "href": "slides/slides-session-04.html#the-scope-of-the-current-course",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "The scope of the current course",
+    "text": "The scope of the current course\nWe will focus mostly on sentence categorization and text categorization:\n\nThe evaluation code is easy to build\nthe canonical {id, text, label} schema you met in S3 is sufficient.\nSpan / sequence tasks carry boundary + partial-match problems and is too heavy for 5 days."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#note-on-the-error-annotation",
+    "href": "slides/slides-session-04.html#note-on-the-error-annotation",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Note on the error annotation",
+    "text": "Note on the error annotation\nOriginally, the AutoErrorAnalyzer track has two routes:\n\nDefault — sentence-level: one label per unit; rides the taught pipeline like every other track.\nStretch — locate-a-span-then-categorize: the real error-annotation task. Breaks one-label-per-unit; needs span matching + partial-match scoring.\n\nYou can pick which route you will do. A bit more challenging but more rewarding."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#word-sense-disambiguation",
+    "href": "slides/slides-session-04.html#word-sense-disambiguation",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Word Sense Disambiguation",
+    "text": "Word Sense Disambiguation\nWord-sense disambiguation = decide which meaning a word carries in context. Same form, different sense.\n\nShe sat on the bank of the river. → riverbank\nShe deposited the cheque at the bank. → financial institution\n\nThe token is identical — only context resolves the sense. Harder than POS: the label set is per word, not a fixed grammar."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#precision-recall-1",
+    "href": "slides/slides-session-04.html#precision-recall-1",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Precision & Recall",
+    "text": "Precision & Recall\nPrecision — of what it flagged, how much was right?\n\\[\\text{Precision} = \\frac{TP}{TP + FP} = \\frac{8}{8 + 2} = 0.80\\]\nRecall — of what was actually positive, how much did it catch?\n\\[\\text{Recall} = \\frac{TP}{TP + FN} = \\frac{8}{8 + 4} = 0.67\\]\nF1 — the harmonic mean, so one high score can’t hide one low one:\n\\[F_1 = 2 \\cdot \\frac{P \\cdot R}{P + R} = 2 \\cdot \\frac{0.80 \\cdot 0.67}{0.80 + 0.67} \\approx 0.73\\]"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#two-coders-same-sentences-accuracy-and-kappa",
+    "href": "slides/slides-session-04.html#two-coders-same-sentences-accuracy-and-kappa",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Two coders, same sentences — Accuracy and Kappa",
+    "text": "Two coders, same sentences — Accuracy and Kappa\nNot let’s say two annotators label the same 50 sentences (+/−):\n\n\n\n\n\n\nCoder B\n\n\n\n\n+\n\n\n−\n\n\n\n\n\n\nCoder A\n\n\n+\n\n\n10\n\n\n5\n\n\n\n\n−\n\n\n5\n\n\n30\n\n\n\n\nObserved agreement = the diagonal ÷ total:\n\\[p_o = \\frac{10 + 30}{50} = 0.80\\]\n\nLooks great — until you realise two coders who just guessed would still agree a lot of the time. How much of that 80% is real, and how much is luck?"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#two-coders-same-sentences-accuracy",
+    "href": "slides/slides-session-04.html#two-coders-same-sentences-accuracy",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Two coders, same sentences — Accuracy",
+    "text": "Two coders, same sentences — Accuracy\nNot let’s say two annotators label the same 50 sentences (+/−):\n\n\n\n\n\n\nCoder B\n\n\nTotal\n\n\n\n\n+\n\n\n−\n\n\n\n\n\n\nCoder A\n\n\n+\n\n\n10\n\n\n5\n\n\n15 (30%)\n\n\n\n\n−\n\n\n5\n\n\n30\n\n\n35 (70%)\n\n\n\n\nTotal\n\n\n15(30%)\n\n\n35(70%)\n\n\n50\n\n\n\n\nObserved agreement = the diagonal ÷ total:\n\\[p_o = \\frac{10 + 30}{50} = 0.80\\]"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#how-much-κ-is-enough",
+    "href": "slides/slides-session-04.html#how-much-κ-is-enough",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "How much κ is enough?",
+    "text": "How much κ is enough?\nThere’s no single cut-off — you read κ against a benchmark.\n\n\n\nCohen’s κ\nLandis & Koch (1977)\nMcHugh (2012)\n\n\n\n\n&lt; 0.00\nPoor\n—\n\n\n0.00–0.20\nSlight\nNone\n\n\n0.21–0.40\nFair\nMinimal\n\n\n0.41–0.60\nModerate\nWeak\n\n\n0.61–0.80\nSubstantial\nModerate\n\n\n0.81–1.00\nAlmost perfect\nStrong\n\n\n\n\n\n\n\n\n\nTip\n\n\nOur two coders’ raw 80 % agreement is only κ ≈ 0.52 once chance is removed — inadequate on that rule. That gap is the whole point."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#cohens-κ-agreement-beyond-chance-1",
+    "href": "slides/slides-session-04.html#cohens-κ-agreement-beyond-chance-1",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Cohen’s κ — agreement beyond chance",
+    "text": "Cohen’s κ — agreement beyond chance\nFor each label, multiply the two coders’ rates:\n\\[p_e = \\underbrace{P(A{+})\\cdot P(B{+})}_{\\text{both say }+} \\;+\\; \\underbrace{P(A{-})\\cdot P(B{-})}_{\\text{both say }-}\\]\nHere both coders marked “+” 15/50 = 0.30 and “−” 35/50 = 0.70:\n\\[p_e = (0.30)(0.30) + (0.70)(0.70) = 0.58 \\qquad \\Rightarrow \\qquad \\kappa = \\frac{0.80 - 0.58}{1 - 0.58} \\approx 0.52\\]"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#why-define-the-task-first",
+    "href": "slides/slides-session-04.html#why-define-the-task-first",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Why define the task first?",
+    "text": "Why define the task first?\nAn LLM’s P / R / F1 is only meaningful against a gold standard — and a gold standard only exists once the category is operationalized well enough that two coders agree beyond chance.\n\nNo gold → the score has nothing to compare against.\nFuzzy category → coders disagree → no trustworthy gold in the first place.\n\nSo before we prompt anything, we define the task well enough that humans can agree on it."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#the-loop-we-borrow-model-agnostic",
+    "href": "slides/slides-session-04.html#the-loop-we-borrow-model-agnostic",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "The loop we borrow — model-agnostic",
+    "text": "The loop we borrow — model-agnostic\nEguchi & Kyle (2024) lay out an 11-step tool-building pipeline. It runs define → operationalize → gold → evaluate — the model comes almost last:\n\nThe steps that define the task and judge the output don’t care what produces the labels.\nSo we keep them and swap their trained model for a prompted LLM.\nE&K even suggest LLM prompting as a first scoping move — to see which categories are hard."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#define-the-annotation-task",
+    "href": "slides/slides-session-04.html#define-the-annotation-task",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "① Define the annotation task",
+    "text": "① Define the annotation task\n(E&K Steps 1–3)\n\nScope & purpose — who uses it, on what texts, for what output?\nDesign the task — input → output over a unit of analysis (identify / extract / categorize).\nReuse or draft — adopt an existing scheme / tag set if one fits; else draft from the literature.\nChoose the metrics now (P / R / F1, κ) — so evaluation is planned, not retrofitted.\nSample data to represent the domain (proficiency, L1) and fix the unit."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#operationalize-into-a-scheme-guidelines",
+    "href": "slides/slides-session-04.html#operationalize-into-a-scheme-guidelines",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "② Operationalize into a scheme + guidelines",
+    "text": "② Operationalize into a scheme + guidelines\n(E&K Steps 4–5; Fuoli, 2018)\n\nTurn the fuzzy construct into a decidable rule a second coder can follow.\nPilot on a handful of items — run the whole pipeline once, end to end.\n\nFuoli’s three principles:\n\nAll choices accounted for.\nGuidelines tested & refined until reliable.\nReliability always assessed — and reported.\n\nIf two trained coders can’t agree on it, a model can’t be trusted on it either."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#build-the-gold-standard",
+    "href": "slides/slides-session-04.html#build-the-gold-standard",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "③ Build the gold standard",
+    "text": "③ Build the gold standard\n(E&K Step 6 → you’ll run this in S5)\n\nTwo coders annotate the same items blind.\nMeasure inter-annotator agreement — percent + κ.\nRead the confusion matrix → refine the scheme, re-annotate.\nAdjudicate disagreements → a gold standard.\n\n\n\n\n\n\n\nTip\n\n\nKeep the pre-adjudication human agreement — it becomes your benchmark."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#set-the-target-human-agreement",
+    "href": "slides/slides-session-04.html#set-the-target-human-agreement",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "④ Set the target = human agreement",
+    "text": "④ Set the target = human agreement\n(E&K Step 8a) — the realistic ceiling for any model is the human IAA.\n\nE&K expected ~0.70 F1 because their coders agreed at ~0.67 κ.\n\n\n\n\n\n\n\nNote\n\n\nThe hinge of the whole story: the better you define the task, the higher humans agree — and the more you can legitimately ask of the LLM."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#evaluate-the-llm-against-gold",
+    "href": "slides/slides-session-04.html#evaluate-the-llm-against-gold",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "⑤ Evaluate the LLM against gold",
+    "text": "⑤ Evaluate the LLM against gold\n(E&K Step 9 → you’ll run this in S6) — same metrics, two comparisons:\n\nannotator vs. annotator → inter-annotator agreement (IAA)\ngold vs. model → model evaluation\n\nReport P / R / F1 + macro-F1 + κ, and read the confusion matrix for where it fails. Here the “model” is a prompted LLM."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#recap-where-this-sits",
+    "href": "slides/slides-session-05.html#recap-where-this-sits",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Recap: where this sits",
+    "text": "Recap: where this sits\nS4 laid out the define-first workflow — five phases that turn a fuzzy construct into a number you can trust. Today we run its middle phase, ③.\n\n① Define the task (scope · input→output · metrics · sample)\n② Operationalize (decidable rule · pilot · Fuoli’s principles)\n③ Build the gold standard ← you are here (blind → IAA → refine → adjudicate)\n④ Target = human agreement · ⑤ Evaluate the LLM → next session (S6)\n\n\n\n\n\n\n\nTip\n\n\nThe agreement tool you build today is the same one S6 uses to score a model — swap one column."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#draw-scope-your-sample",
+    "href": "slides/slides-session-05.html#draw-scope-your-sample",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Draw & scope your sample",
+    "text": "Draw & scope your sample\n\nDraw ~20 sentences from your track’s pool.\nRestate the operationalized scheme and the unit of analysis you’re labelling — one label per unit.\nSkim the guidelines / examples before you start, not while you annotate.\n\nThis is ① and ② made concrete: a decidable rule, applied to a real sample."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#annotate-blind-in-pairs",
+    "href": "slides/slides-session-05.html#annotate-blind-in-pairs",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Annotate blind, in pairs",
+    "text": "Annotate blind, in pairs\n\nEach partner labels the same ~20 items in a Google Sheet.\nTwo annotator columns → agreement falls straight out.\nBlind = no peeking at your partner’s column, no discussing as you go.\n\nThe disagreements are the point — they show where the scheme is still fuzzy."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#measure-agreement-in-colab",
+    "href": "slides/slides-session-05.html#measure-agreement-in-colab",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Measure agreement in Colab",
+    "text": "Measure agreement in Colab\nImport the sheet → compute:\n\nPercent agreement — the raw diagonal.\nCohen’s κ — agreement corrected for chance.\nAnnotator-vs-annotator confusion matrix — where the two of you diverge."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#read-the-matrix-refine-re-annotate",
+    "href": "slides/slides-session-05.html#read-the-matrix-refine-re-annotate",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Read the matrix → refine → re-annotate",
+    "text": "Read the matrix → refine → re-annotate\n\nFind the off-diagonal cells — which label pairs get confused?\nRefine the scheme / guidelines to resolve that ambiguity.\nRe-annotate the disagreements; recompute κ. Iterate to acceptable agreement.\n\nFuoli’s principle 2 in action — guidelines are tested and refined until reliable."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#adjudicate-gold",
+    "href": "slides/slides-session-05.html#adjudicate-gold",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Adjudicate → gold",
+    "text": "Adjudicate → gold\n\nResolve the remaining disagreements to a single final label.\nCompare to the published gold — where do you differ, and why?\nExport the canonical {id, text, label} set."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#coming-up",
+    "href": "slides/slides-session-04.html#coming-up",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Coming up",
+    "text": "Coming up\n\nS5 — Gold-Standard Annotation & Agreement (hands-on): build the gold standard and measure agreement — executes Phases ①–③.\nS6 — Gold Standards & Evaluation Metrics (hands-on): score an LLM against that gold — executes Phases ④–⑤."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#in-arase-et-al.-2022",
+    "href": "slides/slides-session-04.html#in-arase-et-al.-2022",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "⑤ … in Arase et al. (2022)",
+    "text": "⑤ … in Arase et al. (2022)\nSame metrics chosen in ①, run against the gold: macro-F1 + weighted κ + confusion matrix.\n\nBest system: macro-F1 84.5%, weighted κ 0.628.\nmacro-F1 was the right call — it exposes whether the rare A1/C2 levels are found, which accuracy would hide.\nConfusion matrix showed sentence-CEFR ≠ document readability (Newsela levels scatter).\n\n\n\n\n\n\n\nTip\n\n\nThe producer here was a trained model — Day 3 swaps in a prompted LLM on the same gold and same metrics. That swap is the point of ①–④."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#in-arase-et-al.-2022-1",
+    "href": "slides/slides-session-04.html#in-arase-et-al.-2022-1",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "⑤ … in Arase et al. (2022)",
+    "text": "⑤ … in Arase et al. (2022)\nSame metrics chosen in ①, run against the gold: macro-F1 + weighted κ + confusion matrix.\n\nBest system: macro-F1 84.5%, weighted κ 0.628.\nmacro-F1 was the right call — it exposes whether the rare A1/C2 levels are found, which accuracy would hide.\nConfusion matrix showed sentence-CEFR ≠ document readability (Newsela levels scatter).\n\n\n\n\n\n\n\nTip\n\n\nThe producer here was a trained model — Day 3 swaps in a prompted LLM on the same gold and same metrics. That swap is the point of ①–④."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#in-arase-et-al.-2022-2",
+    "href": "slides/slides-session-04.html#in-arase-et-al.-2022-2",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "⑤ … in Arase et al. (2022)",
+    "text": "⑤ … in Arase et al. (2022)\nSame metrics chosen in ①, run against the gold: macro-F1 + weighted κ + confusion matrix.\n\nBest system: macro-F1 84.5%, weighted κ 0.628.\nmacro-F1 was the right call — it exposes whether the rare A1/C2 levels are found, which accuracy would hide.\nConfusion matrix showed sentence-CEFR ≠ document readability (Newsela levels scatter).\n\n\n\n\n\n\n\nTip\n\n\nThe producer here was a trained model — Day 3 swaps in a prompted LLM on the same gold and same metrics. That swap is the point of ①–④."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#in-arase-et-al.-2022-3",
+    "href": "slides/slides-session-04.html#in-arase-et-al.-2022-3",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "⑤ … in Arase et al. (2022)",
+    "text": "⑤ … in Arase et al. (2022)\nSame metrics chosen in ①, run against the gold: macro-F1 + weighted κ + confusion matrix.\n\nBest system: macro-F1 84.5%, weighted κ 0.628.\nmacro-F1 was the right call — it exposes whether the rare A1/C2 levels are found, which accuracy would hide.\nConfusion matrix showed sentence-CEFR ≠ document readability (Newsela levels scatter).\n\n\n\n\n\n\n\nTip\n\n\nThe producer here was a trained model — Day 3 swaps in a prompted LLM on the same gold and same metrics. That swap is the point of ①–④."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#in-arase-et-al.-2022-4",
+    "href": "slides/slides-session-04.html#in-arase-et-al.-2022-4",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "⑤ … in Arase et al. (2022)",
+    "text": "⑤ … in Arase et al. (2022)\nSame metrics chosen in ①, run against the gold: macro-F1 + weighted κ + confusion matrix.\n\nBest system: macro-F1 84.5%, weighted κ 0.628.\nmacro-F1 was the right call — it exposes whether the rare A1/C2 levels are found, which accuracy would hide.\nConfusion matrix showed sentence-CEFR ≠ document readability (Newsela levels scatter).\n\n\n\n\n\n\n\nTip\n\n\nThe producer here was a trained model — Day 3 swaps in a prompted LLM on the same gold and same metrics. That swap is the point of ①–④."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#arase-et-al.-2022-the-same-5-stages",
+    "href": "slides/slides-session-05.html#arase-et-al.-2022-the-same-5-stages",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Arase et al. (2022) — the same 5 stages",
+    "text": "Arase et al. (2022) — the same 5 stages\nBefore you build your own gold, look at a published one that ran this exact workflow — on the very task you’re about to try.\n\n\n\n\n\n\n\nStage\nWhat Arase et al. did\n\n\n\n\n① Define\nSentence → CEFR level (A1–C2); reuse CEFR; fix metrics up front (macro-F1 + weighted κ)\n\n\n② Operationalize\n“A1 = an A1 learner can readily understand it”; guidelines + per-level examples; piloted on 228\n\n\n③ Gold\n2 experts (r = .75/.73), blind, ~20k sentences; 37.6% exact, 88.4% within one grade\n\n\n④ Target\nHuman ceiling r ≈ .73–.75; a prediction counts if it matches either expert\n\n\n⑤ Evaluate\nmacro-F1 84.5%, weighted κ .628 — Day 3 swaps in a prompted LLM"
+  },
+  {
+    "objectID": "slides/slides-session-05.html#what-a-cefr-level-looks-like",
+    "href": "slides/slides-session-05.html#what-a-cefr-level-looks-like",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "What a CEFR level looks like",
+    "text": "What a CEFR level looks like\nTheir annotators judged whole sentences against can-do reading descriptors — one example per level (Arase et al., Table 1):\n\n\n\n\n\n\n\nCEFR Level\nExample sentence\n\n\n\n\nA1\nShe had a beautiful necklace around her neck.\n\n\nA2\nSome experts say the classes should be changed.\n\n\nB1\nHistorically there have also been negative consequences.\n\n\nB2\nAlligators are generally timid towards humans and tend to walk or swim away if one approaches.\n\n\nC1\nThe metal-carbon bond in organometallic compounds is generally highly covalent.\n\n\nC2\nIn the past, non-photosynthetic plants were mistakenly thought to get food by breaking down organic matter in a manner similar to saprotrophic fungi.\n\n\n\n\n\n\n\n\n\nTip\n\n\nNot just word difficulty — grammar, abstraction, and world knowledge climb too. Their own two experts agreed exactly only 37.6% of the time (88.4% within one grade). This is the judgment you’re about to make — expect to differ from the gold."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#the-six-step-spine-af",
+    "href": "slides/slides-session-05.html#the-six-step-spine-af",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "The six-step spine (A–F)",
+    "text": "The six-step spine (A–F)\nEverything today is phase ③ (Eguchi & Kyle Step 6), broken into six steps. The same A–F labels appear on every surface, so you always know where you are — find your place by the letter, not the slide number.\n\n\n\n\n\n\n\n\nStep\nWhere you work\nWhat happens\n\n\n\n\nA · Sample\nslide + Sheet\nconcept: how to draw a representative ~20; you copy your track’s sheet\n\n\nB · Apply the scheme\nslide + guidelines\nrestate the decidable rule you’ll annotate against\n\n\nC · Annotate blind\nSheet\neach partner labels the same items, independently\n\n\nD · Measure agreement\nColab + slide\n% agreement · Cohen’s κ · annotator-vs-annotator matrix\n\n\nE · Read → refine → re-annotate\nslide + Sheet\nwhere do you diverge? fix the scheme, re-label\n\n\nF · Adjudicate → gold\nColab + slide\nresolve, compare to published, export {id,text,label}\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nYou bounce out to the Sheet twice (annotate in C, re-annotate in E) and back. Colab opens at D and stays open. The slides run alongside as your interpretation reference."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#draw-a-sample-that-stands-for-the-domain",
+    "href": "slides/slides-session-05.html#draw-a-sample-that-stands-for-the-domain",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Draw a sample that stands for the domain",
+    "text": "Draw a sample that stands for the domain\nA gold standard is only as trustworthy as the sample it’s built on. Before anyone labels anything, decide what you’re drawing.\n\nRepresentative — cover the range you care about (proficiency, L1, register) so your κ isn’t an accident of an easy slice.\nRight-sized — enough to measure agreement, small enough to double-annotate by hand (~20 today).\nReproducible — a fixed random seed means the “same 20” every time; anyone can re-draw your exact sample.\nOne fixed unit — one label per unit of analysis (here, the sentence). Settle this before you start.\n\n\n\n\n\n\n\nNote\n\n\nToday the sample is already drawn for you — one sheet per track. You’ll learn how it was sampled here, and just copy it in a moment. (The draw itself lives in Colab as a reference cell.)"
+  },
+  {
+    "objectID": "slides/slides-session-05.html#restate-the-rule-before-you-label",
+    "href": "slides/slides-session-05.html#restate-the-rule-before-you-label",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Restate the rule before you label",
+    "text": "Restate the rule before you label\nYou already have an operationalized scheme from the earlier sessions — a decidable rule a second person can follow. Now you apply it.\n\nRestate the rule and the unit — one label per unit; know your label set cold.\nSkim the guidelines and per-level examples before you annotate, not while you annotate.\nDon’t invent as you go — if the rule can’t decide a case, that’s a note for step E, not a private house rule.\n\nThis is ① and ② made concrete: a decidable rule, applied to a real sample.\n\n\n\n\n\n\nCopy your track’s sheet, then go annotate\n\n\nOpen your track’s template Sheet → File → Make a copy into your own Drive. Note the copied title — Colab needs it in step D. Then move to step C."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#two-people-same-items-no-peeking",
+    "href": "slides/slides-session-05.html#two-people-same-items-no-peeking",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Two people, same items, no peeking",
+    "text": "Two people, same items, no peeking\nThis is the heart of it, and it happens entirely in the Sheet — no code.\n\nEach partner labels the same ~20 items in the sheet you copied.\nTwo annotator columns (label_a, label_b) → agreement falls straight out in step D.\nBlind = no peeking at your partner’s column, no discussing as you go.\n\nThe disagreements are the point — they show where the scheme is still fuzzy. Don’t smooth them over now.\n\n\n\n\n\n\nNote\n\n\nYour turn: label all ~20 rows in your own column, independently. Use the notes column for anything you found genuinely hard to decide — those notes are your evidence in step E."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#percent-agreement-vs.-cohens-κ",
+    "href": "slides/slides-session-05.html#percent-agreement-vs.-cohens-κ",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Percent agreement vs. Cohen’s κ",
+    "text": "Percent agreement vs. Cohen’s κ\nNow Colab opens for the first time. It reads your sheet and reports three numbers — but the reading of them happens here.\n\n\nPercent agreement — the raw diagonal. Easy, but flattering: two coders who both say “B1” most of the time agree a lot by luck.\nCohen’s κ — agreement corrected for chance. This is the honest number.\n\n\n\n\n\n\n\n\n\nTip\n\n\nRecall from S4: 80% raw agreement was only κ ≈ 0.52 once chance was removed. Trust the κ.\n\n\n\n→ run this in step D (Colab): load_annotation_sheet → annotator_agreement."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#read-the-confusion-matrix",
+    "href": "slides/slides-session-05.html#read-the-confusion-matrix",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Read the confusion matrix",
+    "text": "Read the confusion matrix\nThe κ tells you how much you disagree. The annotator-vs-annotator confusion matrix tells you where.\n\n\nRows = annotator A, columns = annotator B — one cell per label pair.\nThe diagonal is where you agreed; off-diagonal cells are your disagreements.\nA cluster in one off-diagonal cell (say B1 ↔︎ B2) is a signpost: that boundary is under-defined.\n\n\n\nDon’t just note that κ is low — find the specific label pair dragging it down. That cell is your to-do list for step E."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#fix-the-scheme-then-label-again",
+    "href": "slides/slides-session-05.html#fix-the-scheme-then-label-again",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Fix the scheme, then label again",
+    "text": "Fix the scheme, then label again\nA confusion matrix isn’t a verdict on your annotating — it’s a diagnosis of your scheme.\n\n\nTake the off-diagonal cells — which label pairs get confused?\nRefine the scheme / guidelines so that ambiguity becomes decidable (add a rule, a boundary case, an example).\nRe-annotate the affected items; recompute κ. Iterate until agreement is acceptable.\n\n\n\nThis is Fuoli’s principle 2 in action — guidelines are tested and refined until reliable. If two trained coders still can’t agree, no model can be trusted on it either.\n\n\n\n\n\n\nGo re-annotate\n\n\nMake your scheme edits, then return to the Sheet and re-label the confused items. Back in Colab, disagreements(rows) lists exactly what to revisit; re-run step D to see κ move."
+  },
+  {
+    "objectID": "slides/slides-session-05.html#resolve-compare-export",
+    "href": "slides/slides-session-05.html#resolve-compare-export",
+    "title": "Session 5: Hands-on: Gold-Standard Annotation & Agreement",
+    "section": "Resolve, compare, export",
+    "text": "Resolve, compare, export\nThe last disagreements don’t refine away — you decide them. That’s adjudication, and it’s the graded step.\n\n\nTalk through the remaining disagreements and agree a single final label for each.\nCompare to the published gold — where do you differ, and why? A difference isn’t automatically an error.\nExport the canonical {id, text, label} set — this is S6’s yardstick, and the input to ④⑤.\n\n\n\n\n\n\n\n\n\nNote\n\n\nDiffering from the published gold ≠ being wrong. Arase’s own experts agreed exactly only 37.6% of the time. What matters is that your disagreement is defensible — that’s the argument your mini-project has to make.\n\n\n\n→ run this in step F (Colab): to_canonical → compare_to_published → save to Drive."
   }
 ]
