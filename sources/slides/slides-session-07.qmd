@@ -33,7 +33,7 @@ Our worked example all session: **Huang & Mizumoto (2025)** — writing-feedback
 By the end of this session, you will be able to:
 
 - **Name the four prompt elements** — *instruction · context · input data · output indicator* — and locate each in a real prompt.
-- Distinguish **zero-shot** from **few-shot** prompting and judge **when examples help**.
+- Distinguish **zero-shot** from **few-shot** prompting and judge **when examples help** — and read a real results table (Kim & Lu, 2024) to see what each buys and where prompting **plateaus**.
 - Explain **chain-of-thought** and where it earns its keep.
 - Place a technique on the **run-it-this-week vs. know-it-exists** line.
 - Explain the **train/test contamination** trap and why you **tune on validation, report on test**.
@@ -64,6 +64,17 @@ Chen et al. (2023), via **Huang & Mizumoto (2025)** — an effective prompt typi
 . . .
 
 If one of the four is missing, the output usually misses too.
+
+## Sharpening the instruction — structure & persona {.smaller}
+
+The *instruction* element does the most work, so it rewards a little care:
+
+- **Lead with a verb and be specific** — "classify this sentence into one CEFR level (A1–C2)" beats "tell me about this sentence."
+- **Give it a persona / role** — *"You are an experienced EFL writing tutor…"* scopes the tone, standards, and vocabulary the model reaches for.
+
+. . .
+
+Persona helps, but keep it honest: it nudges *style*, not knowledge. The **four elements** still do the heavy lifting.
 
 ## The running example — writing feedback {.smaller}
 
@@ -100,6 +111,66 @@ Read the four elements straight off it:
 - keep a **consistent format** across all examples;
 - make the examples' **label space representative** — don't show only one class.
 
+## What examples actually buy — Kim & Lu (2024) {.smaller}
+
+A hard linguistic task: labelling **rhetorical move-steps** in research-article introductions (modified Swales **CARS**: 3 moves / ~17 steps) with **GPT-3.5**. Unit of annotation = the **sentence**.
+
+. . .
+
+They crossed **two separable levers**:
+
+- **zero-shot vs. three-shot** — the prompt alone vs. the prompt **+ 3 fully annotated introductions** (38 sentences, drawn from the **training** set — *not* the gold test set).
+- **initial vs. refined prompt** — the instruction sharpened after reading the **validation-set confusion matrix**.
+
+::: {.callout-important}
+Notice: the few-shot examples come from **training**, never from the gold set you score on. (More on that trap shortly.)
+:::
+
+## The numbers — prompt-only has a ceiling {.smaller}
+
+Test-set accuracy, **move / step** (their Table 2):
+
+```{=html}
+<style>
+.kl-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:.35rem;align-items:stretch;font-size:.8rem;margin:.4rem 0}
+.kl-grid .kh{font-size:.72em;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:.2rem}
+.kl-grid .rl{font-weight:600;color:var(--ink);display:flex;align-items:center;padding:.2rem .5rem}
+.kl-grid .cell{background:var(--surface);border:1.5px solid var(--primary-80);border-radius:.5rem;
+  padding:.5rem .6rem;text-align:center;color:var(--ink)}
+.kl-grid .cell .big{font-weight:700;font-size:1.05em}
+.kl-grid .cell.best{border-color:var(--accent);border-width:2px}
+.kl-grid .cell.best .big{color:var(--accent)}
+.kl-ceiling{margin-top:.5rem;background:var(--warn);color:var(--white);border-radius:.5rem;
+  padding:.45rem .7rem;font-size:.8rem;font-weight:600}
+</style>
+<div class="kl-grid">
+  <div></div><div class="kh">initial prompt</div><div class="kh">refined prompt</div>
+  <div class="rl">zero-shot</div>
+    <div class="cell"><span class="big">42.9%</span> / 17.0%</div>
+    <div class="cell"><span class="big">50.5%</span> / 19.8%</div>
+  <div class="rl">three-shot</div>
+    <div class="cell"><span class="big">46.2%</span> / 18.7%</div>
+    <div class="cell best"><span class="big">52.7%</span> / 25.3%</div>
+</div>
+<div class="kl-ceiling">Fine-tuning on 80 samples → <strong>92.3% / 80.2%</strong> — far above the best prompt (the S12 escalation).</div>
+```
+
+. . .
+
+Every lever helps a little; **refined + three-shot** is best — but prompt-only tops out near **53%** move accuracy. That gap to fine-tuning is the ceiling.
+
+## Four things the numbers teach {.smaller}
+
+1. **Few-shot helps, but modestly** — adding 3 examples to the *initial* prompt was **not** significant on its own (McNemar move χ²=0.543, *p*=0.46).
+2. **Examples and instructions compound** — only **refined + three-shot** beat the zero-shot baseline significantly (move *p*=0.028, step *p*=0.018). Sharpen the instruction **and** add examples.
+3. **Few-shot mainly buys recall** — precision ran higher than recall; examples pulled recall up. (That precision/recall trade-off returns in S8/S9.)
+4. **Context-heavy tasks resist prompting alone** — the best prompt-only setting still trailed fine-tuning badly: *run-it-this-week (prompt)* vs. *escalate-when-it-plateaus (fine-tune)*.
+
+::: {.callout-note}
+**Discuss:** When would 3 well-chosen examples beat a longer instruction? How do you pick *which* examples to show? Why might few-shot raise recall but not precision?
+:::
+
 ## Chain-of-thought (CoT) {.smaller}
 
 Ask the model to **reason in steps** before answering (Wei et al., 2022).
@@ -125,7 +196,7 @@ The *same* feedback task, tightened:
 
 . . .
 
-That move — generic → structured — is **prompt iteration**. You'll do the data-driven version of it in **S9**, reading the errors and tightening the *Criteria*.
+That move — generic → structured — is **prompt iteration**. The data-driven version is **error analysis**: read *where* the model is wrong (the confusion matrix), tighten the *Criteria* that cause those errors, and the score goes up — exactly Kim & Lu's *initial → refined* jump. You'll run that loop yourself in **S9**.
 
 # The wider design space
 

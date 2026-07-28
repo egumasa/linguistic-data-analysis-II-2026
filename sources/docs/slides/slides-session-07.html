@@ -163,7 +163,7 @@
 <p>By the end of this session, you will be able to:</p>
 <ul>
 <li><strong>Name the four prompt elements</strong> — <em>instruction · context · input data · output indicator</em> — and locate each in a real prompt.</li>
-<li>Distinguish <strong>zero-shot</strong> from <strong>few-shot</strong> prompting and judge <strong>when examples help</strong>.</li>
+<li>Distinguish <strong>zero-shot</strong> from <strong>few-shot</strong> prompting and judge <strong>when examples help</strong> — and read a real results table (Kim &amp; Lu, 2024) to see what each buys and where prompting <strong>plateaus</strong>.</li>
 <li>Explain <strong>chain-of-thought</strong> and where it earns its keep.</li>
 <li>Place a technique on the <strong>run-it-this-week vs.&nbsp;know-it-exists</strong> line.</li>
 <li>Explain the <strong>train/test contamination</strong> trap and why you <strong>tune on validation, report on test</strong>.</li>
@@ -205,6 +205,17 @@
 </ul>
 <div class="fragment">
 <p>If one of the four is missing, the output usually misses too.</p>
+</div>
+</section>
+<section id="sharpening-the-instruction-structure-persona" class="slide level2 smaller">
+<h2>Sharpening the instruction — structure &amp; persona</h2>
+<p>The <em>instruction</em> element does the most work, so it rewards a little care:</p>
+<ul>
+<li><strong>Lead with a verb and be specific</strong> — “classify this sentence into one CEFR level (A1–C2)” beats “tell me about this sentence.”</li>
+<li><strong>Give it a persona / role</strong> — <em>“You are an experienced EFL writing tutor…”</em> scopes the tone, standards, and vocabulary the model reaches for.</li>
+</ul>
+<div class="fragment">
+<p>Persona helps, but keep it honest: it nudges <em>style</em>, not knowledge. The <strong>four elements</strong> still do the heavy lifting.</p>
 </div>
 </section>
 <section id="the-running-example-writing-feedback" class="slide level2 smaller">
@@ -264,6 +275,82 @@
 </ul>
 </div>
 </section>
+<section id="what-examples-actually-buy-kim-lu-2024" class="slide level2 smaller">
+<h2>What examples actually buy — Kim &amp; Lu (2024)</h2>
+<p>A hard linguistic task: labelling <strong>rhetorical move-steps</strong> in research-article introductions (modified Swales <strong>CARS</strong>: 3 moves / ~17 steps) with <strong>GPT-3.5</strong>. Unit of annotation = the <strong>sentence</strong>.</p>
+<div class="fragment">
+<p>They crossed <strong>two separable levers</strong>:</p>
+<ul>
+<li><strong>zero-shot vs.&nbsp;three-shot</strong> — the prompt alone vs.&nbsp;the prompt <strong>+ 3 fully annotated introductions</strong> (38 sentences, drawn from the <strong>training</strong> set — <em>not</em> the gold test set).</li>
+<li><strong>initial vs.&nbsp;refined prompt</strong> — the instruction sharpened after reading the <strong>validation-set confusion matrix</strong>.</li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Notice: the few-shot examples come from <strong>training</strong>, never from the gold set you score on. (More on that trap shortly.)</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-numbers-prompt-only-has-a-ceiling" class="slide level2 smaller">
+<h2>The numbers — prompt-only has a ceiling</h2>
+<p>Test-set accuracy, <strong>move / step</strong> (their Table 2):</p>
+<style>
+.kl-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:.35rem;align-items:stretch;font-size:.8rem;margin:.4rem 0}
+.kl-grid .kh{font-size:.72em;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:.2rem}
+.kl-grid .rl{font-weight:600;color:var(--ink);display:flex;align-items:center;padding:.2rem .5rem}
+.kl-grid .cell{background:var(--surface);border:1.5px solid var(--primary-80);border-radius:.5rem;
+  padding:.5rem .6rem;text-align:center;color:var(--ink)}
+.kl-grid .cell .big{font-weight:700;font-size:1.05em}
+.kl-grid .cell.best{border-color:var(--accent);border-width:2px}
+.kl-grid .cell.best .big{color:var(--accent)}
+.kl-ceiling{margin-top:.5rem;background:var(--warn);color:var(--white);border-radius:.5rem;
+  padding:.45rem .7rem;font-size:.8rem;font-weight:600}
+</style>
+<div class="kl-grid">
+  <div></div><div class="kh">initial prompt</div><div class="kh">refined prompt</div>
+  <div class="rl">zero-shot</div>
+    <div class="cell"><span class="big">42.9%</span> / 17.0%</div>
+    <div class="cell"><span class="big">50.5%</span> / 19.8%</div>
+  <div class="rl">three-shot</div>
+    <div class="cell"><span class="big">46.2%</span> / 18.7%</div>
+    <div class="cell best"><span class="big">52.7%</span> / 25.3%</div>
+</div>
+<div class="kl-ceiling">Fine-tuning on 80 samples → <strong>92.3% / 80.2%</strong> — far above the best prompt (the S12 escalation).</div>
+<div class="fragment">
+<p>Every lever helps a little; <strong>refined + three-shot</strong> is best — but prompt-only tops out near <strong>53%</strong> move accuracy. That gap to fine-tuning is the ceiling.</p>
+</div>
+</section>
+<section id="four-things-the-numbers-teach" class="slide level2 smaller">
+<h2>Four things the numbers teach</h2>
+<ol type="1">
+<li><strong>Few-shot helps, but modestly</strong> — adding 3 examples to the <em>initial</em> prompt was <strong>not</strong> significant on its own (McNemar move χ²=0.543, <em>p</em>=0.46).</li>
+<li><strong>Examples and instructions compound</strong> — only <strong>refined + three-shot</strong> beat the zero-shot baseline significantly (move <em>p</em>=0.028, step <em>p</em>=0.018). Sharpen the instruction <strong>and</strong> add examples.</li>
+<li><strong>Few-shot mainly buys recall</strong> — precision ran higher than recall; examples pulled recall up. (That precision/recall trade-off returns in S8/S9.)</li>
+<li><strong>Context-heavy tasks resist prompting alone</strong> — the best prompt-only setting still trailed fine-tuning badly: <em>run-it-this-week (prompt)</em> vs.&nbsp;<em>escalate-when-it-plateaus (fine-tune)</em>.</li>
+</ol>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Discuss:</strong> When would 3 well-chosen examples beat a longer instruction? How do you pick <em>which</em> examples to show? Why might few-shot raise recall but not precision?</p>
+</div>
+</div>
+</div>
+</section>
 <section id="chain-of-thought-cot" class="slide level2 smaller">
 <h2>Chain-of-thought (CoT)</h2>
 <p>Ask the model to <strong>reason in steps</strong> before answering (Wei et al., 2022).</p>
@@ -296,7 +383,7 @@
 <li><strong>Ex 2 (structured)</strong> — split into <strong>Task / Criteria / My paragraph</strong>, add the output indicator “only feedback.”</li>
 </ul>
 <div class="fragment">
-<p>That move — generic → structured — is <strong>prompt iteration</strong>. You’ll do the data-driven version of it in <strong>S9</strong>, reading the errors and tightening the <em>Criteria</em>.</p>
+<p>That move — generic → structured — is <strong>prompt iteration</strong>. The data-driven version is <strong>error analysis</strong>: read <em>where</em> the model is wrong (the confusion matrix), tighten the <em>Criteria</em> that cause those errors, and the score goes up — exactly Kim &amp; Lu’s <em>initial → refined</em> jump. You’ll run that loop yourself in <strong>S9</strong>.</p>
 </div>
 </section></section>
 <section>
