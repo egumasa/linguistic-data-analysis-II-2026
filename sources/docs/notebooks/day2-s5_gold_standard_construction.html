@@ -434,11 +434,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="build-a-gold-standard-yourself" class="level2">
 <h2 class="anchored" data-anchor-id="build-a-gold-standard-yourself">Build a gold standard yourself</h2>
-<p>So far the gold labels have been handed to you. Now you make some. This session’s work is split across <strong>three surfaces that share one spine</strong>, the six steps <strong>A–F</strong>:</p>
+<p>So far the gold labels have been handed to you. Now you make some. The work is split across <strong>three surfaces that share one spine</strong>, the six steps <strong>A–F</strong>:</p>
 <ul>
-<li><strong>Slides</strong> teach the <em>concepts</em> — how to sample (A), why annotate blind (C), how to read a confusion matrix (D–E).</li>
-<li><strong>A Google Sheet</strong> holds the <em>human judgment</em> — you and your partner annotate there (C), and re-annotate there (E).</li>
-<li><strong>This notebook</strong> does the <em>numbers</em> — it reads the sheet and measures, adjudicates, and exports (<strong>D–F</strong>).</li>
+<li><strong>Slides</strong> — the <em>concepts</em>: how to sample (A), why annotate blind (C), how to read a confusion matrix (D–E).</li>
+<li><strong>A Google Sheet</strong> — the <em>human judgment</em>: you and your partner annotate (C) and re-annotate (E) there.</li>
+<li><strong>This notebook</strong> — the <em>numbers</em>: it reads the sheet, measures, adjudicates and exports (<strong>D–F</strong>).</li>
 </ul>
 <p>So <strong>steps A–C need no code</strong>; this notebook first runs at <strong>step D</strong>. Each header below prints the same <code>A–F</code> label as the slides — find your place by the <em>letter</em>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -451,21 +451,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Annotation is a <em>judgement</em> task, not a coding task — a sheet is the fastest honest way to do it, and it is what most annotation projects actually use. The point is not the tool; it is that you feel how often two careful people disagree, and what it takes to resolve that into a single defensible label.</p>
+<p>Annotation is a <em>judgement</em> task, not a coding task, and a sheet is what most annotation projects actually use. The point is to feel how often two careful people disagree, and what it takes to resolve that into a single defensible label.</p>
 </div>
 </div>
 <section id="a-sample-copy-your-tracks-sheet-ek-step-3-①" class="level3">
 <h3 class="anchored" data-anchor-id="a-sample-copy-your-tracks-sheet-ek-step-3-①">A · Sample → copy your track’s sheet <em>(E&amp;K Step 3 · ①)</em></h3>
-<p>The sample is <strong>already drawn for you</strong> — one template Sheet per track, whose first tab is <strong><code>round1</code></strong> with the columns <strong><code>ID · Text · CoderA · CoderB · Final · Note</code></strong> and only <code>ID</code> and <code>Text</code> filled in (never the labels, so your annotation is genuinely independent). <em>How</em> it was sampled — represent the domain, fix the unit, a seed for reproducibility — is the slide concept; the exact draw is in the reference appendix at the end of this notebook.</p>
-<p><strong>Open your track’s template Sheet → <code>File → Make a copy</code></strong> into your own Drive. Then grab your copy’s <strong>id</strong> from its URL — the long string between <code>/d/</code> and <code>/edit</code> in <code>docs.google.com/spreadsheets/d/</code><strong><code>&lt;id&gt;</code></strong><code>/edit</code>. You’ll paste it into step D. (Opening by id, not name, means two copies that share the name “Copy of …” are never confused.)</p>
+<p>The sample is <strong>already drawn for you</strong> — one template Sheet per track. Its first tab is <strong><code>round1</code></strong>, with the columns <strong><code>ID · Text · CoderA · CoderB · Final · Note</code></strong> and only <code>ID</code> and <code>Text</code> filled in, never the labels, so your annotation is genuinely independent. <em>How</em> it was sampled — represent the domain, fix the unit, a seed for reproducibility — is the slide concept; the exact draw is in the reference appendix at the end.</p>
+<p><strong>Open your track’s template Sheet → <code>File → Make a copy</code></strong> into your own Drive. Then take your copy’s <strong>id</strong> from its URL — the long string between <code>/d/</code> and <code>/edit</code>. You’ll paste it into step D. (Opening by id, not name, means two copies both called “Copy of …” are never confused.)</p>
 </section>
 <section id="b-apply-the-operationalized-scheme-ek-steps-45-fuoli-②" class="level3">
 <h3 class="anchored" data-anchor-id="b-apply-the-operationalized-scheme-ek-steps-45-fuoli-②">B · Apply the operationalized scheme <em>(E&amp;K Steps 4–5; Fuoli · ②)</em></h3>
-<p>Before you label, restate the <strong>decidable rule</strong> you’re annotating against (the scheme your team drafted in the earlier sessions) and skim the guidelines and per-level examples. One label per unit; know your label set cold. → interpret this on <strong>step B</strong> (slides).</p>
+<p>Before you label, restate the <strong>decidable rule</strong> you’re annotating against — the scheme your team drafted in the earlier sessions — and skim the guidelines and per-level examples. One label per unit; know your label set cold. → interpret this on <strong>step B</strong> (slides).</p>
 </section>
 <section id="c-annotate-blind-in-pairs-ek-step-6-③" class="level3">
 <h3 class="anchored" data-anchor-id="c-annotate-blind-in-pairs-ek-step-6-③">C · Annotate blind, in pairs <em>(E&amp;K Step 6 · ③)</em></h3>
-<p>This step happens <strong>entirely in the Sheet — no code</strong>, in the <strong><code>round1</code></strong> tab. One of you fills <strong><code>CoderA</code></strong> and the other fills <strong><code>CoderB</code></strong>, <em>without looking at each other’s column</em>. Leave <code>Final</code> blank for now. Use <code>Note</code> for anything you found hard to decide; those notes are your evidence in step E.</p>
+<p><strong>Entirely in the Sheet — no code</strong>, in the <strong><code>round1</code></strong> tab. One of you fills <strong><code>CoderA</code></strong> and the other <strong><code>CoderB</code></strong>, <em>without looking at each other’s column</em>. Leave <code>Final</code> blank. Use <code>Note</code> for anything you found hard to decide; those notes are your evidence in step E.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -482,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="d-measure-agreement-ek-step-6-③-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="d-measure-agreement-ek-step-6-③-you-edit">D · Measure agreement <em>(E&amp;K Step 6 · ③)</em> ✏️ YOU EDIT</h3>
-<p>Colab opens here — run the two helper cells below first. Then read your copied sheet back in and measure how much the two of you agreed: <strong>percent agreement</strong>, <strong>Cohen’s κ</strong> (agreement corrected for chance), and an <strong>annotator-vs-annotator confusion matrix</strong> — the diagonal is where you agreed, the off-diagonal cells show <em>which label pairs</em> you confuse.</p>
+<p>Colab opens here — run the two helper cells below first. Then read your copied sheet back in and measure how much the two of you agreed: <strong>percent agreement</strong>, <strong>Cohen’s κ</strong> (agreement corrected for chance), and an <strong>annotator-vs-annotator confusion matrix</strong>, whose off-diagonal cells show <em>which label pairs</em> you confuse.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -495,7 +495,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Percent agreement flatters two coders who both lean on the same label — they agree a lot <em>by luck</em>. <strong>Cohen’s κ</strong> strips that luck out, so trust the κ, not the percentage (recall S4: 80% raw agreement was only κ ≈ 0.52). Then read the matrix for the <em>one off-diagonal cell</em> dragging κ down — that specific label pair is your to-do list for step E. You will code κ yourself from scratch in the S6 notebook.</p>
+<p>Percent agreement flatters two coders who both lean on the same label — they agree a lot <em>by luck</em>. <strong>Cohen’s κ</strong> strips that luck out, so trust the κ, not the percentage (recall S4: 80% raw agreement was only κ ≈ 0.52). Then find the <em>one off-diagonal cell</em> dragging κ down — that label pair is your to-do list for step E. You will code κ yourself from scratch in the S6 notebook.</p>
 </div>
 </div>
 </div>
@@ -519,146 +519,148 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: Google Sheets annotation round-trip { display-mode: "form" }</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sheet column headers (the annotation template uses these exact names):</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>COL_ID, COL_TEXT <span class="op">=</span> <span class="st">"ID"</span>, <span class="st">"Text"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>COL_A, COL_B <span class="op">=</span> <span class="st">"CoderA"</span>, <span class="st">"CoderB"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>COL_FINAL, COL_NOTES <span class="op">=</span> <span class="st">"Final"</span>, <span class="st">"Note"</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>ANNOTATION_HEADER <span class="op">=</span> [COL_ID, COL_TEXT, COL_A, COL_B, COL_FINAL, COL_NOTES]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _sheets_client():</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Authorise gspread with your Google account (a pop-up asks for permission)."""</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google.colab <span class="im">import</span> auth</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> google.auth, gspread</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    auth.authenticate_user()           <span class="co"># the pop-up: "let Colab use your Sheets"</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    creds, _ <span class="op">=</span> google.auth.default()   <span class="co"># the permission slip that pop-up produced</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gspread.authorize(creds)    <span class="co"># a logged-in connection to Google Sheets</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_annotation_sheet(title, items, labels):</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Create a Sheet in YOUR Drive: one row per item, blank columns to label.</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">    `items` are {"id","text",...} dicts — any existing label is deliberately NOT</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">    copied across, so you annotate blind. Returns the sheet URL."""</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: make an empty spreadsheet in your own Drive </span><span class="al">###</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    sheet <span class="op">=</span> _sheets_client().create(title)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    worksheet <span class="op">=</span> sheet.sheet1</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    worksheet.update_title(<span class="st">"round1"</span>)   <span class="co"># first round lives in the 'round1' tab</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: one row per item — id and text filled in, label columns left blank </span><span class="al">###</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> items:</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="co">#                id            text          CoderA CoderB Final Note</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        rows.append([item[<span class="st">"id"</span>], item[<span class="st">"text"</span>], <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>])</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: write it all in one go, then pin the header row </span><span class="al">###</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    worksheet.update([ANNOTATION_HEADER] <span class="op">+</span> rows)   <span class="co"># header first, then the data</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    worksheet.freeze(rows<span class="op">=</span><span class="dv">1</span>)                       <span class="co"># header stays put as you scroll</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Created '</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss">' with </span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> rows in tab 'round1'."</span>)</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Allowed labels:"</span>, <span class="st">", "</span>.join(labels))</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Open it:"</span>, sheet.url)</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sheet.url</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_annotation_sheet(sheet_id, worksheet<span class="op">=</span><span class="st">"round1"</span>):</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read one TAB of your annotation sheet back as a list of row dicts.</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">    `sheet_id` is the long id in the sheet's URL:</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">        docs.google.com/spreadsheets/d/&lt;THIS PART&gt;/edit</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">    Pasting the whole URL works too — either way opens the exact sheet, so two</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co">    copies that share a name (</span><span class="ch">\"</span><span class="co">Copy of ...</span><span class="ch">\"</span><span class="co">) are never confused.</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">    `worksheet` is the TAB name (a </span><span class="ch">\"</span><span class="co">round</span><span class="ch">\"</span><span class="co">): each round lives in its own tab, so</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co">    re-annotating in round2 never overwrites round1 — the analysis stays reproducible."""</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: open the sheet — a pasted URL and a bare id both work </span><span class="al">###</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> _sheets_client()</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(sheet_id).startswith(<span class="st">"http"</span>):</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        sheet <span class="op">=</span> client.open_by_url(sheet_id)</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        sheet <span class="op">=</span> client.open_by_key(sheet_id)</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: find the tab (the "round") — and say which tabs exist if it is missing </span><span class="al">###</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> sheet.worksheet(worksheet)</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        tabs <span class="op">=</span> [w.title <span class="cf">for</span> w <span class="kw">in</span> sheet.worksheets()]   <span class="co"># what IS in this sheet</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"No tab named </span><span class="sc">{</span>worksheet<span class="sc">!r}</span><span class="ss">. Tabs in this sheet: </span><span class="sc">{</span>tabs<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: read every row as a dict keyed by the header names </span><span class="al">###</span></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> ws.get_all_records()        <span class="co"># [{"ID": 1, "Text": "...", "CoderA": "B1", ...}, ...]</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Read </span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> rows from tab '</span><span class="sc">{</span>worksheet<span class="sc">}</span><span class="ss">'."</span>)</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rows</span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_canonical(rows, labels, column<span class="op">=</span>COL_FINAL):</span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Turn annotation rows into canonical gold: [{"id","text","label"}, ...].</span></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="co">    Blank rows are skipped; labels outside `labels` are reported, not silently kept."""</span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: sort every row into one of three piles </span><span class="al">###</span></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    gold, blank, invalid <span class="op">=</span> [], <span class="dv">0</span>, []     <span class="co"># usable rows · not labelled yet · typos</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> rows:</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        label <span class="op">=</span> <span class="bu">str</span>(row.get(column, <span class="st">""</span>)).strip()   <span class="co"># .strip() drops stray spaces</span></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> label:</span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>            blank <span class="op">+=</span> <span class="dv">1</span>                    <span class="co"># nobody has filled this row in yet</span></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> label <span class="kw">not</span> <span class="kw">in</span> labels:</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>            invalid.append((row.get(COL_ID), label))   <span class="co"># e.g. "b1" or "B11"</span></span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>            gold.append({<span class="st">"id"</span>: <span class="bu">int</span>(row[COL_ID]), <span class="st">"text"</span>: <span class="bu">str</span>(row[COL_TEXT]), <span class="st">"label"</span>: label})</span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: report all three counts, so nothing is dropped silently </span><span class="al">###</span></span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> usable · </span><span class="sc">{</span>blank<span class="sc">}</span><span class="ss"> still blank · </span><span class="sc">{</span><span class="bu">len</span>(invalid)<span class="sc">}</span><span class="ss"> invalid"</span>)</span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> invalid:</span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"  fix these in the sheet, then re-run:"</span>, invalid[:<span class="dv">10</span>])   <span class="co"># first 10</span></span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gold</span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> annotator_agreement(rows, a<span class="op">=</span>COL_A, b<span class="op">=</span>COL_B):</span>
-<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Percent agreement + Cohen's κ between the two annotator columns, PLUS an</span></span>
-<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="co">    annotator-vs-annotator confusion matrix (the diagonal is where you agreed;</span></span>
-<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="co">    off-diagonal cells show which label pairs the two of you confuse)."""</span></span>
-<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> sklearn.metrics <span class="im">import</span> cohen_kappa_score</span>
-<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: keep only the rows where BOTH annotators actually chose a label </span><span class="al">###</span></span>
-<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">=</span> [(<span class="bu">str</span>(r.get(a, <span class="st">""</span>)).strip(), <span class="bu">str</span>(r.get(b, <span class="st">""</span>)).strip()) <span class="cf">for</span> r <span class="kw">in</span> rows]</span>
-<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">=</span> [(x, y) <span class="cf">for</span> x, y <span class="kw">in</span> pairs <span class="cf">if</span> x <span class="kw">and</span> y]    <span class="co"># drop half-finished rows</span></span>
-<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> pairs:</span>
-<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"No rows where BOTH annotators have labelled. Nothing to compare yet."</span>)</span>
-<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: two metrics — raw agreement, and agreement corrected for chance </span><span class="al">###</span></span>
-<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>    a_labels <span class="op">=</span> [x <span class="cf">for</span> x, _ <span class="kw">in</span> pairs]                 <span class="co"># annotator A's choices</span></span>
-<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>    b_labels <span class="op">=</span> [y <span class="cf">for</span> _, y <span class="kw">in</span> pairs]                 <span class="co"># annotator B's choices</span></span>
-<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>    percent <span class="op">=</span> <span class="bu">sum</span>(x <span class="op">==</span> y <span class="cf">for</span> x, y <span class="kw">in</span> pairs) <span class="op">/</span> <span class="bu">len</span>(pairs)   <span class="co"># how often you matched</span></span>
-<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>    kappa <span class="op">=</span> cohen_kappa_score(a_labels, b_labels)    <span class="co"># ...minus the luck</span></span>
-<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(pairs)<span class="sc">}</span><span class="ss"> doubly-annotated · agreement </span><span class="sc">{</span>percent<span class="sc">:.1%}</span><span class="ss"> · Cohen's κ </span><span class="sc">{</span>kappa<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: draw WHICH labels you two confuse, not just how often </span><span class="al">###</span></span>
-<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>    <span class="co"># annotator-vs-annotator confusion matrix (mirrors the gold-vs-model evaluate()):</span></span>
-<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">set</span>(a_labels) <span class="op">|</span> <span class="bu">set</span>(b_labels))   <span class="co"># every label either of you used</span></span>
-<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(a_labels, b_labels, labels<span class="op">=</span>labels)</span>
-<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
-<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,</span>
-<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>                xticklabels<span class="op">=</span>labels, yticklabels<span class="op">=</span>labels)</span>
-<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Annotator B"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Annotator A"</span>)   <span class="co"># diagonal = you agreed</span></span>
-<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Annotator-vs-annotator confusion matrix"</span>)</span>
-<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()<span class="op">;</span> plt.show()</span>
-<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"n"</span>: <span class="bu">len</span>(pairs), <span class="st">"percent_agreement"</span>: percent, <span class="st">"kappa"</span>: kappa}</span>
-<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> disagreements(rows, a<span class="op">=</span>COL_A, b<span class="op">=</span>COL_B):</span>
-<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The rows your two annotators labelled differently — your adjudication list."""</span></span>
-<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>    <span class="co"># keep a row only if both annotators labelled it AND they chose differently:</span></span>
-<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> [r <span class="cf">for</span> r <span class="kw">in</span> rows</span>
-<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>           <span class="cf">if</span> <span class="bu">str</span>(r.get(a, <span class="st">""</span>)).strip() <span class="kw">and</span> <span class="bu">str</span>(r.get(b, <span class="st">""</span>)).strip()</span>
-<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>           <span class="kw">and</span> <span class="bu">str</span>(r[a]).strip() <span class="op">!=</span> <span class="bu">str</span>(r[b]).strip()]</span>
-<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(out)<span class="sc">}</span><span class="ss"> rows to adjudicate. Agree on a `Final` label for each in the sheet."</span>)</span>
-<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(out)</span>
-<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_to_published(gold, published):</span>
-<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""How often does YOUR final label match the published gold, item by item?"""</span></span>
-<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: look up the published label for every id </span><span class="al">###</span></span>
-<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a>    lookup <span class="op">=</span> {item[<span class="st">"id"</span>]: item[<span class="st">"label"</span>] <span class="cf">for</span> item <span class="kw">in</span> published}   <span class="co"># id -&gt; their label</span></span>
-<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>    shared <span class="op">=</span> [(g[<span class="st">"label"</span>], lookup[g[<span class="st">"id"</span>]]) <span class="cf">for</span> g <span class="kw">in</span> gold <span class="cf">if</span> g[<span class="st">"id"</span>] <span class="kw">in</span> lookup]</span>
-<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> shared:</span>
-<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"No overlapping ids — did you keep the ids the sheet gave you?"</span>)</span>
-<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: count the matches, then show only the rows where you differ </span><span class="al">###</span></span>
-<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>    agree <span class="op">=</span> <span class="bu">sum</span>(mine <span class="op">==</span> theirs <span class="cf">for</span> mine, theirs <span class="kw">in</span> shared)</span>
-<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>agree<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(shared)<span class="sc">}</span><span class="ss"> match the published label (</span><span class="sc">{</span>agree <span class="op">/</span> <span class="bu">len</span>(shared)<span class="sc">:.1%}</span><span class="ss">)"</span>)</span>
-<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame([{<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"yours"</span>: g[<span class="st">"label"</span>], <span class="st">"published"</span>: lookup[g[<span class="st">"id"</span>]],</span>
-<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"text"</span>: g[<span class="st">"text"</span>]}</span>
-<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>                         <span class="cf">for</span> g <span class="kw">in</span> gold <span class="cf">if</span> g[<span class="st">"id"</span>] <span class="kw">in</span> lookup</span>
-<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>                         <span class="kw">and</span> g[<span class="st">"label"</span>] <span class="op">!=</span> lookup[g[<span class="st">"id"</span>]]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   Google Sheets annotation round-trip</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Sheet column headers (the annotation template uses these exact names):</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>COL_ID, COL_TEXT <span class="op">=</span> <span class="st">"ID"</span>, <span class="st">"Text"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>COL_A, COL_B <span class="op">=</span> <span class="st">"CoderA"</span>, <span class="st">"CoderB"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>COL_FINAL, COL_NOTES <span class="op">=</span> <span class="st">"Final"</span>, <span class="st">"Note"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>ANNOTATION_HEADER <span class="op">=</span> [COL_ID, COL_TEXT, COL_A, COL_B, COL_FINAL, COL_NOTES]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _sheets_client():</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Authorise gspread with your Google account (a pop-up asks for permission)."""</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google.colab <span class="im">import</span> auth</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> google.auth, gspread</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    auth.authenticate_user()           <span class="co"># the pop-up: "let Colab use your Sheets"</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    creds, _ <span class="op">=</span> google.auth.default()   <span class="co"># the permission slip that pop-up produced</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gspread.authorize(creds)    <span class="co"># a logged-in connection to Google Sheets</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_annotation_sheet(title, items, labels):</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Create a Sheet in YOUR Drive: one row per item, blank columns to label.</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">    `items` are {"id","text",...} dicts — any existing label is deliberately NOT</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">    copied across, so you annotate blind. Returns the sheet URL."""</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: make an empty spreadsheet in your own Drive </span><span class="al">###</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    sheet <span class="op">=</span> _sheets_client().create(title)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    worksheet <span class="op">=</span> sheet.sheet1</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    worksheet.update_title(<span class="st">"round1"</span>)   <span class="co"># first round lives in the 'round1' tab</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: one row per item — id and text filled in, label columns left blank </span><span class="al">###</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="co">#                id            text          CoderA CoderB Final Note</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        rows.append([item[<span class="st">"id"</span>], item[<span class="st">"text"</span>], <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>])</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: write it all in one go, then pin the header row </span><span class="al">###</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    worksheet.update([ANNOTATION_HEADER] <span class="op">+</span> rows)   <span class="co"># header first, then the data</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    worksheet.freeze(rows<span class="op">=</span><span class="dv">1</span>)                       <span class="co"># header stays put as you scroll</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Created '</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss">' with </span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> rows in tab 'round1'."</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Allowed labels:"</span>, <span class="st">", "</span>.join(labels))</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Open it:"</span>, sheet.url)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sheet.url</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_annotation_sheet(sheet_id, worksheet<span class="op">=</span><span class="st">"round1"</span>):</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read one TAB of your annotation sheet back as a list of row dicts.</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">    `sheet_id` is the long id in the sheet's URL:</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co">        docs.google.com/spreadsheets/d/&lt;THIS PART&gt;/edit</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">    Pasting the whole URL works too — either way opens the exact sheet, so two</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co">    copies that share a name (</span><span class="ch">\"</span><span class="co">Copy of ...</span><span class="ch">\"</span><span class="co">) are never confused.</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co">    `worksheet` is the TAB name (a </span><span class="ch">\"</span><span class="co">round</span><span class="ch">\"</span><span class="co">): each round lives in its own tab, so</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co">    re-annotating in round2 never overwrites round1 — the analysis stays reproducible."""</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: open the sheet — a pasted URL and a bare id both work </span><span class="al">###</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> _sheets_client()</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(sheet_id).startswith(<span class="st">"http"</span>):</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        sheet <span class="op">=</span> client.open_by_url(sheet_id)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        sheet <span class="op">=</span> client.open_by_key(sheet_id)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: find the tab (the "round") — and say which tabs exist if it is missing </span><span class="al">###</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> sheet.worksheet(worksheet)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        tabs <span class="op">=</span> [w.title <span class="cf">for</span> w <span class="kw">in</span> sheet.worksheets()]   <span class="co"># what IS in this sheet</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"No tab named </span><span class="sc">{</span>worksheet<span class="sc">!r}</span><span class="ss">. Tabs in this sheet: </span><span class="sc">{</span>tabs<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: read every row as a dict keyed by the header names </span><span class="al">###</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> ws.get_all_records()        <span class="co"># [{"ID": 1, "Text": "...", "CoderA": "B1", ...}, ...]</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Read </span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> rows from tab '</span><span class="sc">{</span>worksheet<span class="sc">}</span><span class="ss">'."</span>)</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rows</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_canonical(rows, labels, column<span class="op">=</span>COL_FINAL):</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Turn annotation rows into canonical gold: [{"id","text","label"}, ...].</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="co">    Blank rows are skipped; labels outside `labels` are reported, not silently kept."""</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: sort every row into one of three piles </span><span class="al">###</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    gold, blank, invalid <span class="op">=</span> [], <span class="dv">0</span>, []     <span class="co"># usable rows · not labelled yet · typos</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> rows:</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        label <span class="op">=</span> <span class="bu">str</span>(row.get(column, <span class="st">""</span>)).strip()   <span class="co"># .strip() drops stray spaces</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> label:</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>            blank <span class="op">+=</span> <span class="dv">1</span>                    <span class="co"># nobody has filled this row in yet</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> label <span class="kw">not</span> <span class="kw">in</span> labels:</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>            invalid.append((row.get(COL_ID), label))   <span class="co"># e.g. "b1" or "B11"</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>            gold.append({<span class="st">"id"</span>: <span class="bu">int</span>(row[COL_ID]), <span class="st">"text"</span>: <span class="bu">str</span>(row[COL_TEXT]), <span class="st">"label"</span>: label})</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: report all three counts, so nothing is dropped silently </span><span class="al">###</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> usable · </span><span class="sc">{</span>blank<span class="sc">}</span><span class="ss"> still blank · </span><span class="sc">{</span><span class="bu">len</span>(invalid)<span class="sc">}</span><span class="ss"> invalid"</span>)</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> invalid:</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"  fix these in the sheet, then re-run:"</span>, invalid[:<span class="dv">10</span>])   <span class="co"># first 10</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gold</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> annotator_agreement(rows, a<span class="op">=</span>COL_A, b<span class="op">=</span>COL_B):</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Percent agreement + Cohen's κ between the two annotator columns, PLUS an</span></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="co">    annotator-vs-annotator confusion matrix (the diagonal is where you agreed;</span></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="co">    off-diagonal cells show which label pairs the two of you confuse)."""</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> sklearn.metrics <span class="im">import</span> cohen_kappa_score</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: keep only the rows where BOTH annotators actually chose a label </span><span class="al">###</span></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">=</span> [(<span class="bu">str</span>(r.get(a, <span class="st">""</span>)).strip(), <span class="bu">str</span>(r.get(b, <span class="st">""</span>)).strip()) <span class="cf">for</span> r <span class="kw">in</span> rows]</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">=</span> [(x, y) <span class="cf">for</span> x, y <span class="kw">in</span> pairs <span class="cf">if</span> x <span class="kw">and</span> y]    <span class="co"># drop half-finished rows</span></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> pairs:</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"No rows where BOTH annotators have labelled. Nothing to compare yet."</span>)</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: two metrics — raw agreement, and agreement corrected for chance </span><span class="al">###</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>    a_labels <span class="op">=</span> [x <span class="cf">for</span> x, _ <span class="kw">in</span> pairs]                 <span class="co"># annotator A's choices</span></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>    b_labels <span class="op">=</span> [y <span class="cf">for</span> _, y <span class="kw">in</span> pairs]                 <span class="co"># annotator B's choices</span></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>    percent <span class="op">=</span> <span class="bu">sum</span>(x <span class="op">==</span> y <span class="cf">for</span> x, y <span class="kw">in</span> pairs) <span class="op">/</span> <span class="bu">len</span>(pairs)   <span class="co"># how often you matched</span></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>    kappa <span class="op">=</span> cohen_kappa_score(a_labels, b_labels)    <span class="co"># ...minus the luck</span></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(pairs)<span class="sc">}</span><span class="ss"> doubly-annotated · agreement </span><span class="sc">{</span>percent<span class="sc">:.1%}</span><span class="ss"> · Cohen's κ </span><span class="sc">{</span>kappa<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: draw WHICH labels you two confuse, not just how often </span><span class="al">###</span></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>    <span class="co"># annotator-vs-annotator confusion matrix (mirrors the gold-vs-model evaluate()):</span></span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">set</span>(a_labels) <span class="op">|</span> <span class="bu">set</span>(b_labels))   <span class="co"># every label either of you used</span></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(a_labels, b_labels, labels<span class="op">=</span>labels)</span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>                xticklabels<span class="op">=</span>labels, yticklabels<span class="op">=</span>labels)</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Annotator B"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Annotator A"</span>)   <span class="co"># diagonal = you agreed</span></span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Annotator-vs-annotator confusion matrix"</span>)</span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"n"</span>: <span class="bu">len</span>(pairs), <span class="st">"percent_agreement"</span>: percent, <span class="st">"kappa"</span>: kappa}</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> disagreements(rows, a<span class="op">=</span>COL_A, b<span class="op">=</span>COL_B):</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The rows your two annotators labelled differently — your adjudication list."""</span></span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>    <span class="co"># keep a row only if both annotators labelled it AND they chose differently:</span></span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> [r <span class="cf">for</span> r <span class="kw">in</span> rows</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>           <span class="cf">if</span> <span class="bu">str</span>(r.get(a, <span class="st">""</span>)).strip() <span class="kw">and</span> <span class="bu">str</span>(r.get(b, <span class="st">""</span>)).strip()</span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>           <span class="kw">and</span> <span class="bu">str</span>(r[a]).strip() <span class="op">!=</span> <span class="bu">str</span>(r[b]).strip()]</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(out)<span class="sc">}</span><span class="ss"> rows to adjudicate. Agree on a `Final` label for each in the sheet."</span>)</span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(out)</span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_to_published(gold, published):</span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""How often does YOUR final label match the published gold, item by item?"""</span></span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: look up the published label for every id </span><span class="al">###</span></span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>    lookup <span class="op">=</span> {item[<span class="st">"id"</span>]: item[<span class="st">"label"</span>] <span class="cf">for</span> item <span class="kw">in</span> published}   <span class="co"># id -&gt; their label</span></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>    shared <span class="op">=</span> [(g[<span class="st">"label"</span>], lookup[g[<span class="st">"id"</span>]]) <span class="cf">for</span> g <span class="kw">in</span> gold <span class="cf">if</span> g[<span class="st">"id"</span>] <span class="kw">in</span> lookup]</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> shared:</span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"No overlapping ids — did you keep the ids the sheet gave you?"</span>)</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: count the matches, then show only the rows where you differ </span><span class="al">###</span></span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>    agree <span class="op">=</span> <span class="bu">sum</span>(mine <span class="op">==</span> theirs <span class="cf">for</span> mine, theirs <span class="kw">in</span> shared)</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>agree<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(shared)<span class="sc">}</span><span class="ss"> match the published label (</span><span class="sc">{</span>agree <span class="op">/</span> <span class="bu">len</span>(shared)<span class="sc">:.1%}</span><span class="ss">)"</span>)</span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame([{<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"yours"</span>: g[<span class="st">"label"</span>], <span class="st">"published"</span>: lookup[g[<span class="st">"id"</span>]],</span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"text"</span>: g[<span class="st">"text"</span>]}</span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>                         <span class="cf">for</span> g <span class="kw">in</span> gold <span class="cf">if</span> g[<span class="st">"id"</span>] <span class="kw">in</span> lookup</span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a>                         <span class="kw">and</span> g[<span class="st">"label"</span>] <span class="op">!=</span> lookup[g[<span class="st">"id"</span>]]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="cell-9" class="cell">
@@ -688,7 +690,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>For the label pair the matrix flagged, <strong>refine the scheme / guidelines</strong> so that ambiguity becomes decidable (add a rule, a boundary case, an example). Then re-annotate in a <strong>fresh round tab</strong> (below) and re-run <strong>step D</strong> to see κ move. Iterate until agreement is acceptable — that is Fuoli’s principle 2 in action.</p>
+<p>For the label pair the matrix flagged, <strong>refine the scheme / guidelines</strong> until the ambiguity becomes decidable: add a rule, a boundary case, an example. Then re-annotate in a <strong>fresh round tab</strong> (below) and re-run <strong>step D</strong> to see κ move. Iterate until agreement is acceptable — Fuoli’s principle 2 in action.</p>
 </div>
 </div>
 </div>
@@ -708,13 +710,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Don’t overwrite <code>round1</code>. In the Sheet, <strong>right-click the <code>round1</code> tab → Duplicate</strong>, rename the copy <strong><code>round2</code></strong>, and re-label the confused items <em>there</em>. Then set <strong><code>ROUND = "round2"</code></strong> in step D and re-run it. <code>round1</code> stays intact — so every run is reproducible, and you can watch κ climb round over round. Repeat (round3, …) until κ is acceptable before moving to step F.</p>
+<p>Don’t overwrite <code>round1</code>. In the Sheet, <strong>right-click the <code>round1</code> tab → Duplicate</strong>, rename the copy <strong><code>round2</code></strong>, and re-label the confused items <em>there</em>. Then set <strong><code>ROUND = "round2"</code></strong> in step D and re-run it. <code>round1</code> stays intact, so every run is reproducible and you can watch κ climb round over round. Repeat (round3, …) until κ is acceptable, then move to step F.</p>
 </div>
 </div>
 </section>
 <section id="f-adjudicate-gold-ek-step-6-feeds-④⑤-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="f-adjudicate-gold-ek-step-6-feeds-④⑤-you-edit">F · Adjudicate → gold <em>(E&amp;K Step 6 → feeds ④⑤)</em> ✏️ YOU EDIT</h3>
-<p>The last disagreements don’t refine away — you <strong>decide</strong> them. In your <strong>latest round tab</strong>, fill a single <code>Final</code> label for every row (for rows you already agreed on, <code>Final</code> is just that agreed label), then read it back and convert it to canonical form. <code>to_canonical</code> refuses anything that isn’t one of your allowed labels, so typos surface here rather than silently corrupting your gold set.</p>
+<p>The last disagreements don’t refine away — you <strong>decide</strong> them. In your <strong>latest round tab</strong>, fill a single <code>Final</code> label for every row (where you already agreed, <code>Final</code> is that agreed label), then read it back and convert it to canonical form. <code>to_canonical</code> refuses anything that isn’t one of your allowed labels, so typos surface here rather than silently corrupting your gold set.</p>
 <div id="cell-14" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -723,21 +725,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>my_gold[:<span class="dv">3</span>]                                     <span class="co"># peek at the first three items</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p><strong>How does your gold compare with the published gold?</strong> The CEFR-SP labels came from language-education professionals, and we kept only sentences where two of them agreed. Differing from them is <strong>not</strong> simply <em>wrong</em> — Arase’s own experts agreed exactly only 37.6% of the time — but each difference is worth a look and a defensible reason. → interpret this on <strong>step F</strong> (slides).</p>
+<p><strong>How does your gold compare with the published gold?</strong> The CEFR-SP labels came from language-education professionals, keeping only sentences where two of them agreed. Differing from them is not simply <em>wrong</em> — Arase’s own experts agreed exactly only 37.6% of the time — but each difference needs a look and a defensible reason. → interpret this on <strong>step F</strong> (slides).</p>
 <div id="cell-16" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: "form" }</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: load_gold { display-mode: "form" }</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_gold(url_or_path):</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read the canonical gold JSON: [{'id','text','label'}, ...]."""</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):                 <span class="co"># a web address?</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)  <span class="co"># download it</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(raw)                              <span class="co"># JSON text -&gt; list of dicts</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                                   <span class="co"># otherwise a file on disk</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(<span class="bu">open</span>(url_or_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read())</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items. First one:"</span>, gold[<span class="dv">0</span>])  <span class="co"># proof it worked</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gold</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   load_gold(url_or_path) → gold</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_gold(url_or_path):</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read the canonical gold JSON: [{'id','text','label'}, ...]."""</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):                 <span class="co"># a web address?</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)  <span class="co"># download it</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(raw)                              <span class="co"># JSON text -&gt; list of dicts</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                                   <span class="co"># otherwise a file on disk</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(<span class="bu">open</span>(url_or_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read())</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items. First one:"</span>, gold[<span class="dv">0</span>])  <span class="co"># proof it worked</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gold</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="cell-17" class="cell">
@@ -770,7 +774,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The template Sheet you copied in step A was generated once, ahead of the session, so the sample is fixed and reproducible. It uses the <code>create_annotation_sheet</code> helper (loaded above) fed by a <strong>seeded</strong> random draw — one sheet per track (<code>cefr</code>, <code>cars50</code>, <code>raamove</code>, <code>l2_errors</code>). Shown here so the sampling is transparent; you do <strong>not</strong> run it.</p>
+<p>The template Sheet you copied in step A was generated once, ahead of the session, so the sample is fixed and reproducible: the <code>create_annotation_sheet</code> helper (loaded above) fed by a <strong>seeded</strong> random draw, one sheet per track (<code>cefr</code>, <code>cars50</code>, <code>raamove</code>, <code>l2_errors</code>). Shown so the sampling is transparent; you do <strong>not</strong> run it.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>N_ITEMS <span class="op">=</span> <span class="dv">20</span>            <span class="co"># how many sentences to annotate</span></span>

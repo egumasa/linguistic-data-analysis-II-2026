@@ -393,19 +393,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#part-a-tutorial-three-ways-to-prompt" id="toc-part-a-tutorial-three-ways-to-prompt" class="nav-link" data-scroll-target="#part-a-tutorial-three-ways-to-prompt">Part A · Tutorial — three ways to prompt</a>
   <ul class="collapse">
   <li><a href="#setup-run-this-first" id="toc-setup-run-this-first" class="nav-link" data-scroll-target="#setup-run-this-first">Setup — run this first</a></li>
-  <li><a href="#why-your-calls-dont-crash-the-lab-two-different-clocks" id="toc-why-your-calls-dont-crash-the-lab-two-different-clocks" class="nav-link" data-scroll-target="#why-your-calls-dont-crash-the-lab-two-different-clocks">Why your calls don’t crash the lab — two different clocks</a></li>
-  <li><a href="#piece-1-always-leave-a-gap-between-calls-pacing" id="toc-piece-1-always-leave-a-gap-between-calls-pacing" class="nav-link" data-scroll-target="#piece-1-always-leave-a-gap-between-calls-pacing">Piece 1 — always leave a gap between calls (pacing)</a></li>
-  <li><a href="#piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again" id="toc-piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again" class="nav-link" data-scroll-target="#piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again">Piece 2 — if you still get told to slow down, wait and try again</a></li>
-  <li><a href="#putting-the-two-pieces-together" id="toc-putting-the-two-pieces-together" class="nav-link" data-scroll-target="#putting-the-two-pieces-together">Putting the two pieces together</a></li>
   </ul></li>
   <li><a href="#two-sets-two-jobs" id="toc-two-sets-two-jobs" class="nav-link" data-scroll-target="#two-sets-two-jobs">Two sets, two jobs</a>
   <ul class="collapse">
   <li><a href="#iteration-0-zero-shot-you-edit" id="toc-iteration-0-zero-shot-you-edit" class="nav-link" data-scroll-target="#iteration-0-zero-shot-you-edit">Iteration 0 — zero-shot ✏️ YOU EDIT</a></li>
   <li><a href="#iteration-1-few-shot-you-edit" id="toc-iteration-1-few-shot-you-edit" class="nav-link" data-scroll-target="#iteration-1-few-shot-you-edit">Iteration 1 — few-shot ✏️ YOU EDIT</a></li>
   <li><a href="#iteration-2-chain-of-thought-cot-you-edit" id="toc-iteration-2-chain-of-thought-cot-you-edit" class="nav-link" data-scroll-target="#iteration-2-chain-of-thought-cot-you-edit">Iteration 2 — chain-of-thought (CoT) ✏️ YOU EDIT</a></li>
-  <li><a href="#where-is-your-best-prompt-still-wrong" id="toc-where-is-your-best-prompt-still-wrong" class="nav-link" data-scroll-target="#where-is-your-best-prompt-still-wrong">Where is your best prompt still wrong?</a></li>
   <li><a href="#compare-the-three" id="toc-compare-the-three" class="nav-link" data-scroll-target="#compare-the-three">Compare the three</a></li>
   <li><a href="#the-held-out-run-once-and-only-once-you-edit" id="toc-the-held-out-run-once-and-only-once-you-edit" class="nav-link" data-scroll-target="#the-held-out-run-once-and-only-once-you-edit">The held-out run — once, and only once ✏️ YOU EDIT</a></li>
+  </ul></li>
+  <li><a href="#why-your-calls-didnt-crash-the-lab-two-different-clocks" id="toc-why-your-calls-didnt-crash-the-lab-two-different-clocks" class="nav-link" data-scroll-target="#why-your-calls-didnt-crash-the-lab-two-different-clocks">Why your calls didn’t crash the lab — two different clocks</a>
+  <ul class="collapse">
+  <li><a href="#piece-1-always-leave-a-gap-between-calls-pacing" id="toc-piece-1-always-leave-a-gap-between-calls-pacing" class="nav-link" data-scroll-target="#piece-1-always-leave-a-gap-between-calls-pacing">Piece 1 — always leave a gap between calls (pacing)</a></li>
+  <li><a href="#piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again" id="toc-piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again" class="nav-link" data-scroll-target="#piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again">Piece 2 — if you still get told to slow down, wait and try again</a></li>
+  <li><a href="#putting-the-two-pieces-together" id="toc-putting-the-two-pieces-together" class="nav-link" data-scroll-target="#putting-the-two-pieces-together">Putting the two pieces together</a></li>
   </ul></li>
   <li><a href="#part-b-corpus-lab-your-own-prompt-iteration-study" id="toc-part-b-corpus-lab-your-own-prompt-iteration-study" class="nav-link" data-scroll-target="#part-b-corpus-lab-your-own-prompt-iteration-study">Part B · Corpus Lab — your own prompt-iteration study</a>
   <ul class="collapse">
@@ -481,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>Record the macro-F1 (the <code>macro avg</code> row of <code>evaluate</code>) after each run so you can tell a story about what helped.</p>
+<p>Record the macro-F1 (the <code>macro avg</code> row of <code>evaluate</code>) after each run, so you can say which technique helped.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -492,7 +493,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Days 1–2 used Colab’s built-in Gemini (or a frozen file). From Day 3 on you call the model live and need your prompt runs to be <strong>reproducible</strong> (<code>temperature=0</code> + a fixed seed), so the notebook switches to the <strong>Gemini API</strong>. Get a free key and add it to Colab <strong>Secrets</strong> as <code>GEMINI_API_KEY</code> — one-time, ~2 minutes, no install. Full steps: <a href="../resources/tools/gemini-api-key.html">Get a free Gemini API key</a>. When the setup cell prints <code>LLM backend: Gemini API (...)</code> you’re set; if it still says <code>Colab Gemini</code>, your secret isn’t set or its notebook-access toggle is off. Don’t worry about rate limits crashing your loop — that’s already handled, and explained right after Setup, below.</p>
+<p>Days 1–2 used Colab’s built-in Gemini (or a frozen file). From Day 3 on you call the model live and need your prompt runs to be <strong>reproducible</strong> (<code>temperature=0</code> + a fixed seed), so the notebook switches to the <strong>Gemini API</strong>. Get a free key and add it to Colab <strong>Secrets</strong> as <code>GEMINI_API_KEY</code> — one-time, ~2 minutes, no install. Full steps: <a href="../resources/tools/gemini-api-key.html">Get a free Gemini API key</a>. When the setup cell prints <code>LLM backend: Gemini API (...)</code> you’re set; if it still says <code>Colab Gemini</code>, your secret isn’t set or its notebook-access toggle is off. Rate limits are already handled for you, and explained at the end of Part A.</p>
 </div>
 </div>
 <section id="setup-run-this-first" class="level3">
@@ -608,175 +609,85 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done. LLM backend: </span><span class="sc">{</span>_backend<span class="sc">}</span><span class="ss">. scikit-learn ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-</section>
-<section id="why-your-calls-dont-crash-the-lab-two-different-clocks" class="level3">
-<h3 class="anchored" data-anchor-id="why-your-calls-dont-crash-the-lab-two-different-clocks">Why your calls don’t crash the lab — two different clocks</h3>
-<p>The free tier limits you in <strong>two independent ways</strong>, on two different clocks:</p>
-<ul>
-<li><strong>RPM</strong> — requests per <em>minute</em>. A speed limit: how fast you’re allowed to call.</li>
-<li><strong>RPD</strong> — requests per <em>day</em>. A fuel tank: how much you’re allowed to use, total, today.</li>
-</ul>
-<p>A plain <code>for</code> loop over 72 sentences can blow through the RPM speed limit in the first few seconds — long before it’s used any meaningful share of the day’s fuel tank. This isn’t hypothetical: while building this course, a loop tripped a 15-per-minute cap after only 16 calls in one minute, while just 126 of that day’s 500-call budget had been used. The fix isn’t “use less” — it’s “go slower, and know which kind of limit you hit.”</p>
-<p>Your Setup cell above already has a guard built in that does exactly this. The rest of this section walks through it, piece by piece — you don’t need it to keep working, but it’s worth understanding what’s protecting your Corpus Lab.</p>
-</section>
-<section id="piece-1-always-leave-a-gap-between-calls-pacing" class="level3">
-<h3 class="anchored" data-anchor-id="piece-1-always-leave-a-gap-between-calls-pacing">Piece 1 — always leave a gap between calls (pacing)</h3>
-<p>The simplest fix: never call the model faster than the speed limit allows. If the limit is 15 calls per minute, that’s one call every <code>60 / 15 = 4</code> seconds — so before each call, check how long it’s been since the <em>last</em> one, and wait out the difference.</p>
-<p>That means the function has to <strong>remember</strong> when the last call happened, across calls. Normally a function forgets everything the moment it returns — its local variables disappear. The <code>global</code> keyword is how you tell Python “no, remember this one, and share it across every call.” That’s the only new keyword in this whole guard.</p>
-<p>Try it below — no model, no internet, just pacing:</p>
-<div id="cell-8" class="cell">
+<div id="cell-6" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: two things to remember — when we last called, and how long to wait </span><span class="al">###</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>_demo_last_call <span class="op">=</span> <span class="fl">0.0</span>        <span class="co"># remembered BETWEEN calls, thanks to `global`</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>DEMO_INTERVAL <span class="op">=</span> <span class="dv">2</span>            <span class="co"># seconds (the real guard uses 4.4s or 13.2s)</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: before each call, wait out whatever time is still owed </span><span class="al">###</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> wait_your_turn():</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> _demo_last_call   <span class="co"># "remember this one, and share it across calls"</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    wait <span class="op">=</span> DEMO_INTERVAL <span class="op">-</span> (time.monotonic() <span class="op">-</span> _demo_last_call)   <span class="co"># time still owed</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:                                     <span class="co"># too soon — sit it out</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  waiting </span><span class="sc">{</span>wait<span class="sc">:.1f}</span><span class="ss">s so we don't call too often..."</span>)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        time.sleep(wait)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    _demo_last_call <span class="op">=</span> time.monotonic()               <span class="co"># note when this call happened</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  → calling now!"</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: three calls in a row — watch the gap appear between them </span><span class="al">###</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    wait_your_turn()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again" class="level3">
-<h3 class="anchored" data-anchor-id="piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again">Piece 2 — if you still get told to slow down, wait and try again</h3>
-<p>Pacing alone isn’t quite enough — the server can still say “too fast, try again later,” and a network hiccup can raise an error for reasons that have nothing to do with rate limits at all. <code>try</code>/<code>except</code> is Python’s way of saying: <em>try this, and if it breaks, do something else instead of crashing.</em></p>
-<p>The something-else here depends on <strong>what kind of failure it is</strong>, which we can tell from the error message:</p>
-<ul>
-<li><strong>Not rate-limit shaped at all</strong> (a typo in your prompt, a dropped connection) — a real bug. Don’t retry it; let it raise so you notice.</li>
-<li><strong>Per-minute limit</strong> — wait a bit and try again; the limit refills every minute, so this is temporary.</li>
-<li><strong>Per-day limit</strong> — retrying is pointless. It won’t refill until tomorrow no matter how long you wait, so the guard gives up immediately with a clear message instead of silently hanging.</li>
-</ul>
-<p>A small demo — no model, just the <code>try</code>/<code>except</code> shape, retrying until it works:</p>
-<div id="cell-10" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: a stand-in for the real model — it fails twice, then works </span><span class="al">###</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>attempt_count <span class="op">=</span> <span class="dv">0</span>            <span class="co"># how many times we have called it so far</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> flaky_call():</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Pretends to fail twice, then succeeds — like a real rate-limited call."""</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> attempt_count     <span class="co"># keep the count between calls</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    attempt_count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> attempt_count <span class="op">&lt;=</span> <span class="dv">2</span>:                                   <span class="co"># the first two tries</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">"429 rate limit — please slow down"</span>)  <span class="co"># ...blow up</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"success!"</span>                                        <span class="co"># the third works</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: try it, and if it breaks, go round again instead of crashing </span><span class="al">###</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):     <span class="co"># up to three goes</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> flaky_call()</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Got:"</span>, result)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span>                <span class="co"># it worked — stop looping</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> error:   <span class="co"># it broke — `error` holds the message</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  attempt </span><span class="sc">{</span>attempt<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> failed (</span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">) — trying again..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="putting-the-two-pieces-together" class="level3">
-<h3 class="anchored" data-anchor-id="putting-the-two-pieces-together">Putting the two pieces together</h3>
-<p>“Always wait a bit” (piece 1) plus “if told to slow down, wait longer and try again, but give up right away on a <em>daily</em> limit” (piece 2) is <strong>exactly</strong> what’s inside <code>generate_text</code> in the Setup cell above. You’ve been calling it since your very first prompt on Day 1, and it’s been quietly protecting every call — it’ll protect every Corpus Lab loop you write from here on, too.</p>
-<p>If you’re curious to see the fancier version — one that also <strong>remembers past answers so you never pay for the same prompt twice</strong> — see <a href="../resources/extra/handling-rate-limits.html"><code>resources/extra/handling-rate-limits.ipynb</code></a>. It uses one more advanced idea we haven’t covered yet (a function that builds and returns another function), but the underlying logic is identical to what you just read.</p>
-<div id="cell-12" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: "form" }</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_gold(url_or_path):</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read the canonical gold JSON: [{'id','text','label'}, ...]."""</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):                 <span class="co"># a web address?</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)  <span class="co"># download it</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(raw)                              <span class="co"># JSON text -&gt; list of dicts</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                                   <span class="co"># otherwise a file on disk</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(<span class="bu">open</span>(url_or_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read())</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items. First one:"</span>, gold[<span class="dv">0</span>])  <span class="co"># proof it worked</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gold</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div id="cell-13" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: "form" }</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _extract_level(text):</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply."""</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The model may answer "B2" or "I would say B2." — search rather than assume.</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.search(<span class="vs">r"</span><span class="dv">\b</span><span class="kw">(</span><span class="pp">[ABC][12]</span><span class="kw">)</span><span class="dv">\b</span><span class="vs">"</span>, <span class="bu">str</span>(text).upper())</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> m.group(<span class="dv">1</span>) <span class="cf">if</span> m <span class="cf">else</span> <span class="st">"??"</span>      <span class="co"># "??" = no level found in the reply</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_prompt(prompt, gold):</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Send each item's `text` to the LLM via {text}, collect predicted labels."""</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> []                                  <span class="co"># answers, in gold order</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(gold, <span class="dv">1</span>):                <span class="co"># i counts 1, 2, 3, ...</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        reply <span class="op">=</span> generate_text(prompt.<span class="bu">format</span>(text<span class="op">=</span>item[<span class="st">"text"</span>]))  <span class="co"># {text} &lt;- sentence</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        predictions.append(_extract_level(reply))     <span class="co"># keep just the level</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">12</span> <span class="op">==</span> <span class="dv">0</span>:                               <span class="co"># every 12th item...</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  ...</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> done"</span>)       <span class="co"># ...show progress</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Got </span><span class="sc">{</span><span class="bu">len</span>(predictions)<span class="sc">}</span><span class="ss"> predictions."</span>)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div id="cell-14" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + κ + confusion matrix { display-mode: "form" }</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(gold, predictions, ordered<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Score predictions against gold: per-class P/R/F1 + macro, Cohen's κ, and a</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">    confusion-matrix heatmap.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">    ordered=True adds QUADRATIC WEIGHTED κ — use it only when the labels sit on a</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">    scale (A1 &lt; A2 &lt; ... &lt; C2), so that a near miss counts as a smaller error than</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">    a far one. For unordered categories, plain κ is the one to report."""</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: line the two label lists up, gold first </span><span class="al">###</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> []                          <span class="co"># the correct labels, from the gold set</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> gold:</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        y_true.append(item[<span class="st">"label"</span>])</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> predictions                 <span class="co"># the model's labels, in the same order</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: per-class precision / recall / F1, as a text table </span><span class="al">###</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: one overall number — agreement corrected for chance </span><span class="al">###</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Cohen's kappa            </span><span class="sc">{</span>cohen_kappa_score(y_true, y_pred)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ordered:                          <span class="co"># only when the labels sit on a scale</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS,</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>                                     weights<span class="op">=</span><span class="st">"quadratic"</span>)   <span class="co"># near misses hurt less</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Cohen's kappa (weighted) </span><span class="sc">{</span>weighted<span class="sc">:.3f}</span><span class="ss">   &lt;- labels are ordered"</span>)</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 4: draw the same information as a picture </span><span class="al">###</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)   <span class="co"># counts per gold/pred pair</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,     <span class="co"># annot=True writes the counts</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>                xticklabels<span class="op">=</span>LEVELS, yticklabels<span class="op">=</span>LEVELS)</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Predicted"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Gold"</span>)<span class="op">;</span> plt.title(<span class="st">"Confusion matrix"</span>)</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div id="cell-15" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: "form" }</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_errors(gold, predictions):</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The items the model got wrong, as a table you can read and argue about."""</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):   <span class="co"># walk gold and predictions side by side</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="op">!=</span> p:               <span class="co"># keep only the disagreements</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            rows.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"gold"</span>: g[<span class="st">"label"</span>], <span class="st">"pred"</span>: p, <span class="st">"text"</span>: g[<span class="st">"text"</span>]})</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> wrong."</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)             <span class="co"># a table, so Colab displays it nicely</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: load_gold, run_prompt, evaluate, show_errors { display-mode: "form" }</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   load_gold(url_or_path) → gold</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   run_prompt(prompt, gold) → predictions</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   evaluate(gold, predictions) → P/R/F1 + κ + confusion matrix</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_errors(gold, predictions) → misclassified table</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_gold(url_or_path):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read the canonical gold JSON: [{'id','text','label'}, ...]."""</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):                 <span class="co"># a web address?</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)  <span class="co"># download it</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(raw)                              <span class="co"># JSON text -&gt; list of dicts</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                                   <span class="co"># otherwise a file on disk</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(<span class="bu">open</span>(url_or_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read())</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items. First one:"</span>, gold[<span class="dv">0</span>])  <span class="co"># proof it worked</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gold</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _extract_level(text):</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply."""</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The model may answer "B2" or "I would say B2." — search rather than assume.</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.search(<span class="vs">r"</span><span class="dv">\b</span><span class="kw">(</span><span class="pp">[ABC][12]</span><span class="kw">)</span><span class="dv">\b</span><span class="vs">"</span>, <span class="bu">str</span>(text).upper())</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> m.group(<span class="dv">1</span>) <span class="cf">if</span> m <span class="cf">else</span> <span class="st">"??"</span>      <span class="co"># "??" = no level found in the reply</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_prompt(prompt, gold):</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Send each item's `text` to the LLM via {text}, collect predicted labels."""</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> []                                  <span class="co"># answers, in gold order</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(gold, <span class="dv">1</span>):                <span class="co"># i counts 1, 2, 3, ...</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        reply <span class="op">=</span> generate_text(prompt.<span class="bu">format</span>(text<span class="op">=</span>item[<span class="st">"text"</span>]))  <span class="co"># {text} &lt;- sentence</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        predictions.append(_extract_level(reply))     <span class="co"># keep just the level</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">12</span> <span class="op">==</span> <span class="dv">0</span>:                               <span class="co"># every 12th item...</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  ...</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> done"</span>)       <span class="co"># ...show progress</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Got </span><span class="sc">{</span><span class="bu">len</span>(predictions)<span class="sc">}</span><span class="ss"> predictions."</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(gold, predictions, ordered<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Score predictions against gold: per-class P/R/F1 + macro, Cohen's κ, and a</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">    confusion-matrix heatmap.</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co">    ordered=True adds QUADRATIC WEIGHTED κ — use it only when the labels sit on a</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">    scale (A1 &lt; A2 &lt; ... &lt; C2), so that a near miss counts as a smaller error than</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">    a far one. For unordered categories, plain κ is the one to report."""</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: line the two label lists up, gold first </span><span class="al">###</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> []                          <span class="co"># the correct labels, from the gold set</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> gold:</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        y_true.append(item[<span class="st">"label"</span>])</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> predictions                 <span class="co"># the model's labels, in the same order</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: per-class precision / recall / F1, as a text table </span><span class="al">###</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: one overall number — agreement corrected for chance </span><span class="al">###</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Cohen's kappa            </span><span class="sc">{</span>cohen_kappa_score(y_true, y_pred)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ordered:                          <span class="co"># only when the labels sit on a scale</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS,</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>                                     weights<span class="op">=</span><span class="st">"quadratic"</span>)   <span class="co"># near misses hurt less</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Cohen's kappa (weighted) </span><span class="sc">{</span>weighted<span class="sc">:.3f}</span><span class="ss">   &lt;- labels are ordered"</span>)</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 4: draw the same information as a picture </span><span class="al">###</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)   <span class="co"># counts per gold/pred pair</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,     <span class="co"># annot=True writes the counts</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>                xticklabels<span class="op">=</span>LEVELS, yticklabels<span class="op">=</span>LEVELS)</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Predicted"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Gold"</span>)<span class="op">;</span> plt.title(<span class="st">"Confusion matrix"</span>)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_errors(gold, predictions):</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The items the model got wrong, as a table you can read and argue about."""</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):   <span class="co"># walk gold and predictions side by side</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="op">!=</span> p:               <span class="co"># keep only the disagreements</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>            rows.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"gold"</span>: g[<span class="st">"label"</span>], <span class="st">"pred"</span>: p, <span class="st">"text"</span>: g[<span class="st">"text"</span>]})</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> wrong."</span>)</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)             <span class="co"># a table, so Colab displays it nicely</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -810,75 +721,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>Why bother? If you try five prompts on the 72 sentences and keep the one that scored highest, that score is no longer an estimate of how the prompt does on <em>new</em> sentences — you picked it <em>because</em> it suited those 72. The number is inflated and you have no way to say by how much. Tuning somewhere else and reporting once keeps the final figure honest. This is the split S7 introduced.</p>
-<div id="cell-17" class="cell">
+<p>If you try five prompts on the 72 sentences and keep the highest score, that score no longer estimates how the prompt does on <em>new</em> sentences — you picked it <em>because</em> it suited those 72, so the number is inflated and you cannot say by how much. Tuning somewhere else and reporting once keeps the final figure honest. This is the split S7 introduced.</p>
+<div id="cell-8" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>val  <span class="op">=</span> load_gold(VAL_URL)    <span class="co"># 24 sentences — tune every prompt against these</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gold <span class="op">=</span> load_gold(GOLD_URL)   <span class="co"># 72 sentences — held out; scored ONCE at the end</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(val), <span class="st">"validation items ·"</span>, <span class="bu">len</span>(gold), <span class="st">"held-out test items"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>val  <span class="op">=</span> load_gold(VAL_URL)    <span class="co"># 24 sentences — tune every prompt against these</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>gold <span class="op">=</span> load_gold(GOLD_URL)   <span class="co"># 72 sentences — held out; scored ONCE at the end</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(val), <span class="st">"validation items ·"</span>, <span class="bu">len</span>(gold), <span class="st">"held-out test items"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="iteration-0-zero-shot-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="iteration-0-zero-shot-you-edit">Iteration 0 — zero-shot ✏️ YOU EDIT</h3>
 <p>Just describe the task. This is your baseline; note its macro-F1.</p>
-<div id="cell-19" class="cell">
+<div id="cell-10" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ everything between the triple quotes is the prompt — edit it freely.</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># `{text}` is the slot each sentence gets dropped into; keep it.</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>PROMPT_ZERO <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>pred_zero <span class="op">=</span> run_prompt(PROMPT_ZERO, val)   <span class="co"># ask the model about the 24 validation items</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_zero, ordered<span class="op">=</span><span class="va">True</span>)     <span class="co"># score it — note the macro-F1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ everything between the triple quotes is the prompt — edit it freely.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># `{text}` is the slot each sentence gets dropped into; keep it.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>PROMPT_ZERO <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>pred_zero <span class="op">=</span> run_prompt(PROMPT_ZERO, val)   <span class="co"># ask the model about the 24 validation items</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_zero, ordered<span class="op">=</span><span class="va">True</span>)     <span class="co"># score it — note the macro-F1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="iteration-1-few-shot-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="iteration-1-few-shot-you-edit">Iteration 1 — few-shot ✏️ YOU EDIT</h3>
-<p>Add a few <strong>labeled examples</strong> so the model can pattern-match. The examples below are hand-written. If you want more, write your own — but never lift one from <code>val</code> or <code>gold</code>, or you are showing the model the answers to its own test.</p>
-<div id="cell-21" class="cell">
+<p>Add a few <strong>labeled examples</strong> so the model can pattern-match. The ones below are hand-written; write your own if you want more, but never take one from <code>val</code> or <code>gold</code>, or you are showing the model the answers to its own test.</p>
+<div id="cell-12" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ same prompt as before, plus labelled examples. Add, remove or reword them —</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but never use a sentence from `gold`, or you are testing on your own answers.</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>PROMPT_FEWSHOT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2. Answer with the level only.</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">Examples:</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "I have a cat." -&gt; A1</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "She went to the shops because she needed some milk." -&gt; A2</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "The results suggest a modest but consistent improvement." -&gt; B2</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "Notwithstanding these caveats, the framework generalises well." -&gt; C2</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>pred_few <span class="op">=</span> run_prompt(PROMPT_FEWSHOT, val)   <span class="co"># same 24 sentences, new prompt</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_few, ordered<span class="op">=</span><span class="va">True</span>)        <span class="co"># did macro-F1 move?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ same prompt as before, plus labelled examples. Add, remove or reword them —</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but never use a sentence from `gold`, or you are testing on your own answers.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>PROMPT_FEWSHOT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2. Answer with the level only.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">Examples:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "I have a cat." -&gt; A1</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "She went to the shops because she needed some milk." -&gt; A2</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "The results suggest a modest but consistent improvement." -&gt; B2</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "Notwithstanding these caveats, the framework generalises well." -&gt; C2</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>pred_few <span class="op">=</span> run_prompt(PROMPT_FEWSHOT, val)   <span class="co"># same 24 sentences, new prompt</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_few, ordered<span class="op">=</span><span class="va">True</span>)        <span class="co"># did macro-F1 move?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="iteration-2-chain-of-thought-cot-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="iteration-2-chain-of-thought-cot-you-edit">Iteration 2 — chain-of-thought (CoT) ✏️ YOU EDIT</h3>
 <p>Ask the model to <strong>reason first, then answer</strong>. Giving it room to think often helps on borderline items.</p>
-<div id="cell-23" class="cell">
+<div id="cell-14" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ this prompt asks for reasoning BEFORE the answer. The "do NOT mention any</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># other level" line matters: run_prompt keeps the FIRST level it sees in the reply.</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>PROMPT_COT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">Think step by step about the vocabulary and grammar, then decide the level.</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">Do NOT mention any other CEFR level while reasoning.</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="st">End your answer with the final level on its own, exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>pred_cot <span class="op">=</span> run_prompt(PROMPT_COT, val)   <span class="co"># slower: the model writes more each time</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_cot, ordered<span class="op">=</span><span class="va">True</span>)    <span class="co"># best of the three so far?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ this prompt asks for reasoning BEFORE the answer. The "do NOT mention any</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># other level" line matters: run_prompt keeps the FIRST level it sees in the reply.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>PROMPT_COT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">Think step by step about the vocabulary and grammar, then decide the level.</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">Do NOT mention any other CEFR level while reasoning.</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">End your answer with the final level on its own, exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>pred_cot <span class="op">=</span> run_prompt(PROMPT_COT, val)   <span class="co"># slower: the model writes more each time</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_cot, ordered<span class="op">=</span><span class="va">True</span>)    <span class="co"># best of the three so far?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -891,19 +802,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>run_prompt</code> grabs the <em>first</em> CEFR level it sees in the reply. With chain-of-thought the model may mention a level mid-reasoning, so the parser can pick the wrong one — which is exactly why the prompt says <em>don’t mention other levels</em>. If CoT scores <em>worse</em> than few-shot, check <code>show_errors</code> to see whether it’s the model or the parser.</p>
+<p><code>run_prompt</code> takes the <em>first</em> CEFR level it sees in the reply. With chain-of-thought the model may mention a level mid-reasoning, so the parser can pick the wrong one — which is why the prompt says <em>don’t mention other levels</em>. If CoT scores <em>worse</em> than few-shot, check <code>show_errors</code> to see whether it’s the model or the parser.</p>
 </div>
-</div>
-</section>
-<section id="where-is-your-best-prompt-still-wrong" class="level3">
-<h3 class="anchored" data-anchor-id="where-is-your-best-prompt-still-wrong">Where is your best prompt still wrong?</h3>
-<p><code>show_errors</code> lists the sentences your chain-of-thought prompt got wrong — the raw material for the Corpus Lab below. Skim them and note which level is hardest, and whether any miss is really the <em>parser</em> grabbing the wrong level rather than the model being wrong.</p>
-<div id="cell-26" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(val, pred_cot)   <span class="co"># every validation sentence the CoT prompt got wrong</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)                        <span class="co"># the first 15 of them</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div>
 </section>
 <section id="compare-the-three" class="level3">
@@ -934,50 +834,129 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-held-out-run-once-and-only-once-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="the-held-out-run-once-and-only-once-you-edit">The held-out run — once, and only once ✏️ YOU EDIT</h3>
-<p>Pick your best prompt from the table above, and score it on the 72 sentences you have not touched all session. <strong>This is the number you report.</strong></p>
-<p>Expect it to be <em>lower</em> than your validation score. That gap is not a mistake — it is the honest cost of having chosen a prompt by looking at results, and it is why the held-out set was kept back. A rule you can carry into the mini-project: if you run this cell, look at the answer, then go back and edit a prompt, the 72 items have stopped being held out. Tune on <code>val</code>, come back, run once.</p>
-<div id="cell-29" class="cell">
+<p>Pick your best prompt from the table above and score it on the 72 sentences you have not touched all session. <strong>This is the number you report.</strong></p>
+<p>Expect it to be <em>lower</em> than your validation score. That gap is the cost of having chosen a prompt by looking at results, and it is why the held-out set was kept back. Carry this rule into the mini-project: if you run this cell, look at the answer, then go back and edit a prompt, the 72 items have stopped being held out. Tune on <code>val</code>, come back, run once.</p>
+<div id="cell-18" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ swap in whichever of PROMPT_ZERO / PROMPT_FEWSHOT / PROMPT_COT scored best.</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>BEST_PROMPT <span class="op">=</span> PROMPT_COT</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>pred_test <span class="op">=</span> run_prompt(BEST_PROMPT, gold)   <span class="co"># the 72 held-out sentences</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>evaluate(gold, pred_test, ordered<span class="op">=</span><span class="va">True</span>)     <span class="co"># ← report THIS macro-F1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ swap in whichever of PROMPT_ZERO / PROMPT_FEWSHOT / PROMPT_COT scored best.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>BEST_PROMPT <span class="op">=</span> PROMPT_COT</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>pred_test <span class="op">=</span> run_prompt(BEST_PROMPT, gold)   <span class="co"># the 72 held-out sentences</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>evaluate(gold, pred_test, ordered<span class="op">=</span><span class="va">True</span>)     <span class="co"># ← report THIS macro-F1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 </section>
+<section id="why-your-calls-didnt-crash-the-lab-two-different-clocks" class="level2">
+<h2 class="anchored" data-anchor-id="why-your-calls-didnt-crash-the-lab-two-different-clocks">Why your calls didn’t crash the lab — two different clocks</h2>
+<p>The free tier limits you in <strong>two independent ways</strong>, on two different clocks:</p>
+<ul>
+<li><strong>RPM</strong> — requests per <em>minute</em>: how fast you’re allowed to call.</li>
+<li><strong>RPD</strong> — requests per <em>day</em>: how many calls you’re allowed in total, today.</li>
+</ul>
+<p>A plain <code>for</code> loop over 72 sentences can pass the RPM limit in the first few seconds, long before it has used much of the day’s RPD budget. While building this course, a loop tripped a 15-per-minute cap after only 16 calls in one minute, with just 126 of that day’s 500 calls used. So the fix is not to use less, but to go slower and know which kind of limit you hit.</p>
+<p>The Setup cell has a guard that does this, and it has been running under every call you made. The rest of this section walks through it — you don’t need it to keep working, but it protects every Corpus Lab loop you write.</p>
+<section id="piece-1-always-leave-a-gap-between-calls-pacing" class="level3">
+<h3 class="anchored" data-anchor-id="piece-1-always-leave-a-gap-between-calls-pacing">Piece 1 — always leave a gap between calls (pacing)</h3>
+<p>Never call the model faster than the limit allows. At 15 calls per minute that is one call every <code>60 / 15 = 4</code> seconds, so before each call, check how long it has been since the last one and wait out the difference.</p>
+<p>So the function has to <strong>remember</strong> when the last call happened. Normally a function forgets its local variables the moment it returns; the <code>global</code> keyword tells Python to keep this one and share it across every call. That is the only new keyword in the guard.</p>
+<p>Try it below — no model, no internet, just pacing:</p>
+<div id="cell-21" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: two things to remember — when we last called, and how long to wait </span><span class="al">###</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>_demo_last_call <span class="op">=</span> <span class="fl">0.0</span>        <span class="co"># remembered BETWEEN calls, thanks to `global`</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>DEMO_INTERVAL <span class="op">=</span> <span class="dv">2</span>            <span class="co"># seconds (the real guard uses 4.4s or 13.2s)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: before each call, wait out whatever time is still owed </span><span class="al">###</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> wait_your_turn():</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> _demo_last_call   <span class="co"># "remember this one, and share it across calls"</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    wait <span class="op">=</span> DEMO_INTERVAL <span class="op">-</span> (time.monotonic() <span class="op">-</span> _demo_last_call)   <span class="co"># time still owed</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:                                     <span class="co"># too soon — sit it out</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  waiting </span><span class="sc">{</span>wait<span class="sc">:.1f}</span><span class="ss">s so we don't call too often..."</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        time.sleep(wait)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    _demo_last_call <span class="op">=</span> time.monotonic()               <span class="co"># note when this call happened</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  → calling now!"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: three calls in a row — watch the gap appear between them </span><span class="al">###</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    wait_your_turn()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again" class="level3">
+<h3 class="anchored" data-anchor-id="piece-2-if-you-still-get-told-to-slow-down-wait-and-try-again">Piece 2 — if you still get told to slow down, wait and try again</h3>
+<p>Pacing alone isn’t enough: the server can still say “too fast, try again later”, and a network failure can raise an error for reasons unrelated to rate limits. <code>try</code>/<code>except</code> says <em>try this, and if it breaks, do something else instead of crashing.</em> What to do depends on the kind of failure, which the error message tells you:</p>
+<ul>
+<li><strong>Not rate-limit shaped</strong> (a typo in your prompt, a dropped connection) — a real bug. Don’t retry; let it raise so you notice.</li>
+<li><strong>Per-minute limit</strong> — wait and try again; it refills every minute.</li>
+<li><strong>Per-day limit</strong> — retrying is pointless, since it won’t refill until tomorrow. The guard gives up immediately with a clear message instead of hanging.</li>
+</ul>
+<p>A demo — no model, just the <code>try</code>/<code>except</code> shape, retrying until it works:</p>
+<div id="cell-23" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: a stand-in for the real model — it fails twice, then works </span><span class="al">###</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>attempt_count <span class="op">=</span> <span class="dv">0</span>            <span class="co"># how many times we have called it so far</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> flaky_call():</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Pretends to fail twice, then succeeds — like a real rate-limited call."""</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> attempt_count     <span class="co"># keep the count between calls</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    attempt_count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> attempt_count <span class="op">&lt;=</span> <span class="dv">2</span>:                                   <span class="co"># the first two tries</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">"429 rate limit — please slow down"</span>)  <span class="co"># ...blow up</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"success!"</span>                                        <span class="co"># the third works</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: try it, and if it breaks, go round again instead of crashing </span><span class="al">###</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):     <span class="co"># up to three goes</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> flaky_call()</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Got:"</span>, result)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span>                <span class="co"># it worked — stop looping</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> error:   <span class="co"># it broke — `error` holds the message</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  attempt </span><span class="sc">{</span>attempt<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> failed (</span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">) — trying again..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="putting-the-two-pieces-together" class="level3">
+<h3 class="anchored" data-anchor-id="putting-the-two-pieces-together">Putting the two pieces together</h3>
+<p>“Always wait a bit” (piece 1) plus “if told to slow down, wait longer and try again, but give up at once on a <em>daily</em> limit” (piece 2) is what is inside <code>generate_text</code> in the Setup cell above. You have been calling it since your first prompt on Day 1, and it protects every Corpus Lab loop you write from here on.</p>
+<p>A fuller version — one that also <strong>remembers past answers so you never pay for the same prompt twice</strong> — is in <a href="../resources/extra/handling-rate-limits.html"><code>resources/extra/handling-rate-limits.ipynb</code></a>. It uses one idea we haven’t covered (a function that builds and returns another function), but the logic is identical to what you just read.</p>
+</section>
+</section>
 <section id="part-b-corpus-lab-your-own-prompt-iteration-study" class="level2">
 <h2 class="anchored" data-anchor-id="part-b-corpus-lab-your-own-prompt-iteration-study">Part B · Corpus Lab — your own prompt-iteration study</h2>
-<p>Part A handed you three prompts. Now you write the fourth, and — more importantly — you say <strong>in advance</strong> what you expect it to do.</p>
-<p>That is the whole discipline of this lab. Anyone can try ten prompts and keep the best. What makes it a <em>study</em> is that each change comes with a reason and a prediction, so that when the number moves you can say <strong>why</strong>. A change that helps for a reason you named is a finding. One that helps for no reason you can give is a lucky guess, and you cannot defend it in the Q&amp;A.</p>
+<p>Part A handed you three prompts. Now you write the fourth, and say <strong>in advance</strong> what you expect it to do.</p>
+<p>Anyone can try ten prompts and keep the best. What makes it a <em>study</em> is that each change comes with a reason and a prediction, so that when the number moves you can say <strong>why</strong>. A change that helps for a reason you named is a finding; one that helps for no reason you can give is a lucky guess you cannot defend in the Q&amp;A.</p>
 <p>Everything here runs on <code>val</code>. The 72 held-out items stay closed.</p>
 <section id="step-1-find-the-models-worst-class" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-find-the-models-worst-class">Step 1 · Find the model’s worst class</h3>
-<p>You do not need new code for this — <code>evaluate</code> already printed it. Scroll back to your best prompt’s report and read <strong>down the F1 column</strong>: one or two levels will be far below the rest. That is where the macro-F1 is being lost, because macro-F1 averages the classes equally.</p>
-<p>Then run the cell below and <strong>read three of the actual sentences</strong> for that level. The counts tell you where the misses are; only the sentences tell you why. A level missed because its sentences are genuinely borderline needs a different fix from one missed because your prompt never described it.</p>
-<div id="cell-32" class="cell">
+<p>No new code needed — <code>evaluate</code> already printed it. Scroll back to your best prompt’s report and read <strong>down the F1 column</strong>: one or two levels will be far below the rest. That is where the macro-F1 is being lost, because macro-F1 averages the classes equally.</p>
+<p>Then run the cell below and <strong>read three of the actual sentences</strong> for that level. The counts tell you where the misses are; only the sentences tell you why. A level missed because its sentences are genuinely borderline needs a different fix from one missed because your prompt never described it. A third case: the model reasoned its way to the right level and the parser kept an earlier one it mentioned along the way — that is a prompt-wording problem, not a model problem.</p>
+<div id="cell-27" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(val, pred_cot)   <span class="co"># swap pred_cot for whichever prompt scored best</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(val, pred_cot)   <span class="co"># swap pred_cot for whichever prompt scored best</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-2-write-your-prediction-down-first-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-write-your-prediction-down-first-you-edit">Step 2 · Write your prediction down first ✏️ YOU EDIT</h3>
 <p>Fill in all three strings <strong>before</strong> you touch the prompt. This is the cell that turns the next step from tinkering into an experiment.</p>
-<div id="cell-34" class="cell">
+<div id="cell-29" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ fill in the three strings. Nothing else in this cell changes.</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>WORST_CLASS <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># the level with the lowest F1 in Step 1</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>MY_CHANGE   <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># the ONE thing you will change, in a short phrase</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>I_PREDICT   <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># what you expect to happen, and why you expect it</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Targeting </span><span class="sc">{</span>WORST_CLASS<span class="sc">}</span><span class="ss">. Change: </span><span class="sc">{</span>MY_CHANGE<span class="sc">}</span><span class="ss">."</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Prediction: </span><span class="sc">{</span>I_PREDICT<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ fill in the three strings. Nothing else in this cell changes.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>WORST_CLASS <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># the level with the lowest F1 in Step 1</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>MY_CHANGE   <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># the ONE thing you will change, in a short phrase</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>I_PREDICT   <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># what you expect to happen, and why you expect it</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Targeting </span><span class="sc">{</span>WORST_CLASS<span class="sc">}</span><span class="ss">. Change: </span><span class="sc">{</span>MY_CHANGE<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Prediction: </span><span class="sc">{</span>I_PREDICT<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -990,7 +969,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If you add examples <em>and</em> rewrite the instruction <em>and</em> ask for reasoning, and the score moves, you have learned nothing about which of the three did it. Change one thing, score it, keep or discard, then change the next.</p>
+<p>If you add examples <em>and</em> rewrite the instruction <em>and</em> ask for reasoning, and the score moves, you have learned nothing about which of the three did it. Change one thing, score it, keep or discard it, then change the next.</p>
 <p>Ideas worth trying, roughly cheapest first: describe the weak level explicitly · add two examples <em>of that level</em> · say what separates it from its neighbour · give the model an out (“if unsure between two adjacent levels, choose the lower”).</p>
 </div>
 </div>
@@ -998,36 +977,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-3-make-the-change-and-score-it-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-make-the-change-and-score-it-you-edit">Step 3 · Make the change and score it ✏️ YOU EDIT</h3>
 <p>Start from your best Part-A prompt and make the one change you just described.</p>
-<div id="cell-37" class="cell">
+<div id="cell-32" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ everything between the triple quotes is yours. Keep the {text} slot.</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>PROMPT_MINE <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>pred_mine <span class="op">=</span> run_prompt(PROMPT_MINE, val)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_mine, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ everything between the triple quotes is yours. Keep the {text} slot.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>PROMPT_MINE <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>pred_mine <span class="op">=</span> run_prompt(PROMPT_MINE, val)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_mine, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-4-check-the-class-you-actually-targeted" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-check-the-class-you-actually-targeted">Step 4 · Check the class you actually targeted</h3>
-<p>Compare the <strong>F1 for <code>WORST_CLASS</code></strong> in the report you just printed against the same row in Step 1’s report. Macro-F1 can rise while the level you aimed at gets <em>worse</em> — another level quietly improved and carried the average. So check the row you predicted, not the headline number.</p>
+<p>Compare the <strong>F1 for <code>WORST_CLASS</code></strong> in the report you just printed against the same row in Step 1’s report. Macro-F1 can rise while the level you aimed at gets <em>worse</em>, because another level improved and carried the average — so check the row you predicted, not the headline number.</p>
 <p>The table below lists what your prompt still gets wrong. If the same sentences are still there, your change missed them; if new ones appeared, you traded one error for another.</p>
-<div id="cell-39" class="cell">
+<div id="cell-34" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>errors_mine <span class="op">=</span> show_errors(val, pred_mine)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>errors_mine.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>errors_mine <span class="op">=</span> show_errors(val, pred_mine)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>errors_mine.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-5-log-it-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="step-5-log-it-you-edit">Step 5 · Log it ✏️ YOU EDIT</h3>
-<p>Fill in the table. The last column is the one that matters: <strong>was your prediction right?</strong> “No” is a perfectly good answer and costs you nothing — an honest wrong prediction you can explain beats a right one you cannot.</p>
+<p>Fill in the table. The last column is the one that matters: <strong>was your prediction right?</strong> “No” costs you nothing — a wrong prediction you can explain beats a right one you cannot.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 14%">
@@ -1074,7 +1053,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>If you have time, go round again: Steps 2–4 with one more change. Two logged iterations with reasons beat five undocumented ones.</p>
+<p>If you have time, repeat Steps 2–4 with one more change. Two logged iterations with reasons beat five undocumented ones.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1085,7 +1064,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You scored the 72 items once, at the end of Part A. Running that cell again now — after choosing a prompt by looking at validation results — would report a number you tuned toward. Your mini-project repeats this whole loop on your own track’s data, where the same rule applies.</p>
+<p>You scored the 72 items once, at the end of Part A. Running that cell again now, after choosing a prompt by looking at validation results, would report a number you tuned toward. Your mini-project repeats this loop on your own track’s data, where the same rule applies.</p>
 </div>
 </div>
 <hr>
