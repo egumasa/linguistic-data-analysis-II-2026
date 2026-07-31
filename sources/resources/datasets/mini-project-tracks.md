@@ -29,7 +29,7 @@ Every track ships a small **demo** file so it runs the moment you clone, plus a 
 full **pool** you sample from:
 
 ```bash
-python scripts/prep_datasets.py raamove     # cefr · raamove · cars50 · l2_errors · icnale
+python scripts/prep_datasets.py raamove     # raamove · cars50 · l2_errors · icnale
 ```
 
 Provenance & licences: [`SOURCES.md`](./SOURCES.md) · the helpers you will call:
@@ -44,20 +44,6 @@ Drive](../tools/google-drive-data.md) for the mount → save → load round-trip
 :::
 
 ## Tracks
-
-### ★☆☆ Sentence proficiency level (CEFR-SP)
-
-The on-ramp, and the same data as the Day 1–3 tutorials. Track: `cefr`. Pool:
-`cefr_pool.json` (3,183 sentences, A1–C2, heavily imbalanced towards B1/B2).
-
-Because you already know this task, the *mechanics* stop being the hard part and the
-**judgment** becomes the point: the published labels keep only sentences where both original
-annotators agreed, so when your own adjudication disagrees with them, that is worth
-explaining. Expect near-misses (B1↔B2) to dominate your errors — which is exactly when
-`ordered=True` and weighted κ start to earn their keep.
-
-Extensions: does the model confuse *adjacent* levels only, or does it jump? Does prompting
-with level *descriptors* beat prompting with examples?
 
 ### ★★★ Discourse moves (RAAMove / CaRS-50)
 
@@ -75,7 +61,7 @@ Pools built by `prep_datasets.py`: `raamove_pool.json` (3,069), `cars50_pool.jso
 Extensions: compare abstracts vs. introductions; move-only vs. move+step; few-shot vs. definitions.
 
 RAAMove ships as tidy JSON and is the gentler start; CaRS-50 is harder because judging moves in
-*introductions* needs more context. Expect lower F1 than the CEFR tutorials — the CaRS-50 annotators
+*introductions* needs more context. Expect lower F1 than the Day 2–3 CEFR tutorials — the CaRS-50 annotators
 themselves reached only **κ ≈ 0.43**, so "the model is wrong" and "the scheme is fuzzy" are both live
 explanations, and telling them apart is the interesting part of your analysis.
 

@@ -28,14 +28,14 @@ lda2_project_groupA/
 ├── notebooks/
 │   └── mini_project.ipynb                   ← run end to end, outputs visible
 ├── prompts/
-│   ├── cefr_v0.txt  cefr_v1.txt             ← the iteration trail
-│   └── cefr.txt                             ← final
+│   ├── raamove_v0.txt  raamove_v1.txt       ← the iteration trail
+│   └── raamove.txt                          ← final
 ├── data/gold/
-│   └── cefr_groupA_gold.json                ← your adjudicated gold (step 2)
+│   └── raamove_groupA_gold.json             ← your adjudicated gold (step 2)
 ├── outputs/
-│   ├── cefr_groupA_predictions.json         ← the FROZEN predictions (step 4)
-│   ├── cefr_groupA_predictions.csv
-│   └── cefr_groupA_report.md
+│   ├── raamove_groupA_predictions.json      ← the FROZEN predictions (step 4)
+│   ├── raamove_groupA_predictions.csv
+│   └── raamove_groupA_report.md
 ├── scripts/                                 ← the plumbing, unmodified
 └── slides.pdf                               ← your 5 slides
 ```

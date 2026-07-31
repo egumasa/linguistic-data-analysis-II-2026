@@ -75,13 +75,12 @@ Your F1 is then stable, and anyone can re-run your analysis on exactly the outpu
 
 ## Choose a track
 
-Five, easy to hard. Details, licences and provenance: [Replication
+Four, easy to hard. Details, licences and provenance: [Replication
 Datasets](../resources/datasets/index.md) and [Mini-Project Starter
 Tracks](../resources/datasets/mini-project-tracks.md).
 
 | Track | Task | Difficulty |
 |---|---|---|
-| `cefr` | CEFR sentence level (A1–C2) | ★☆☆ the on-ramp |
 | `raamove` | Rhetorical moves in RA abstracts (8) | ★★☆ |
 | `cars50` | CARS moves in RA introductions | ★★★ the annotators themselves got κ ≈ 0.43 |
 | `l2_errors` | L2 error type, or error detection | ★★★ also benchmarkable against the published tool |
