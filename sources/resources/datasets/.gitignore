@@ -15,3 +15,18 @@ __pycache__/
 # because the notebook fetches it by raw-GitHub URL — if it is missing, Day 2 dies
 # at Step 2 for every student. Just the 72 predicted labels, no source text.
 !gold/predictions_day2.json
+
+# Third exception: Day 3 tunes prompts on a validation set so the 72-item gold stays a
+# held-out test set (tuning and reporting on the same items is the contamination S7
+# teaches against). 24 items, 4 per level, disjoint from cefr_sentences.json; fetched by
+# raw-GitHub URL like the files above, so it has to be committed.
+# Rebuild with: python3 prep_datasets.py cefr_val
+!gold/cefr_val.json
+
+# Fourth exception: Day 4 teaches balanced SAMPLING, which needs a pool to sample
+# from — and it fetches it by raw-GitHub URL, so the pool has to be committed.
+# cefr_pool.json (3,183 items) is too big to ship, so this is a 335-item draw that
+# deliberately keeps the natural imbalance (A1 12 … B1 123): rare levels yielding
+# fewer items IS the lesson. Same CC BY-SA 3.0 CEFR-SP Wiki-Auto source as
+# cefr_sentences.json, so committing it raises no new licensing question.
+!gold/cefr_pool_demo.json
