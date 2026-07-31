@@ -13,8 +13,6 @@ metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-
 # Session 9: Iterative Prompt Improvement & Error Analysis
 
 ## 📋 Agenda
@@ -29,14 +27,57 @@ By the end of this session, you will be able to:
 
 - Use `show_errors` to find misclassifications, hypothesize a fix, and re-run.
 - Compare **macro-F1** across iteration rounds.
-- Benchmark the best LLM prompt against a **pre-trained spaCy classifier** on the same test set.
-- Interpret what supervised fine-tuning **buys and costs** versus zero-training prompting.
+- Place your result next to the **published supervised results** for the same corpus — and say what that comparison does and does not license.
+- Interpret what supervised training **buys and costs** versus zero-training prompting.
 
 # Error analysis
 
-## Error analysis
+## The number tells you *that*. The errors tell you *why*. {.smaller}
 
-<!-- to be added -->
+macro-F1 went from 0.31 to 0.34. **So what changed?**
+
+. . .
+
+You cannot answer that from the average. You have to look at what the model actually got wrong.
+
+. . .
+
+``` python
+errors = show_errors(val, pred_cot)
+errors.head(15)
+```
+
+Four columns: `id · gold · pred · text`.
+
+## Read down the F1 column first
+
+`evaluate` already printed per-class F1. One or two levels will sit far below the rest.
+
+. . .
+
+That is where macro-F1 is being lost — because it weights every class equally, **a collapsed rare class costs as much as a collapsed common one.**
+
+. . .
+
+Then read **three actual sentences** from that level. Counts locate the problem; only the sentences explain it.
+
+## Two very different diagnoses {.smaller}
+
+::: {.callout-note}
+## "The model is wrong"
+The sentence is clearly B1, the model said C1, and your scheme is unambiguous about it. → **a prompt problem**
+:::
+
+. . .
+
+::: {.callout-important}
+## "The scheme is fuzzy"
+You and your partner would also disagree about this sentence. → **not fixable by prompting**
+:::
+
+. . .
+
+Telling these apart is the single most valuable skill in your final report.
 
 # Iterating the prompt
 
@@ -56,21 +97,108 @@ That's exactly the loop here — only now it's **driven by data, not intuition**
 Change **one** thing per round, so you know *what* moved the number.
 :::
 
-## Iterating the prompt
+## Say what you expect, before you run it {.smaller}
 
-<!-- to be added -->
+Three lines, filled in **before** you touch the prompt:
+
+``` python
+WORST_CLASS = "…"   # the level with the lowest F1
+MY_CHANGE   = "…"   # the ONE thing you will change
+I_PREDICT   = "…"   # what you expect, and why
+```
+
+. . .
+
+This is what makes it a **study** rather than tinkering. A change that helps for a reason you named is a finding; one that helps for no reason you can give is a lucky guess.
+
+. . .
+
+Being wrong costs nothing. Being unable to say what you expected costs marks.
+
+## Check the class you aimed at {.smaller}
+
+Macro-F1 can **rise** while the level you targeted gets **worse** — another class quietly improved and carried the average.
+
+. . .
+
+So compare the F1 row for `WORST_CLASS`, before and after. Not the headline.
+
+. . .
+
+| # | Change | Why I expected it to help | macro-F1 | Target F1 | Right? |
+|---|---|---|:--:|:--:|:--:|
+| 0 | *(no change)* | — | … | … | — |
+| 1 | … | … | … | … | … |
+
+Two logged rounds with reasons beat five undocumented ones.
 
 # Under the hood
 
-## Under the hood
+## What `run_prompt` has been doing {.smaller}
 
-<!-- to be added -->
+A read-only tour of the helper you have called all day — no editing, just so it is not a black box.
+
+. . .
+
+1. Drop each sentence into the `{text}` slot → one prompt per item.
+2. Call the model, **paced** so you stay under 15 requests/minute.
+3. On a `429`, wait and retry; on a *daily* quota error, stop immediately.
+4. Scan the reply for the first CEFR level and keep it.
+5. Return a plain list of labels, in gold order.
+
+. . .
+
+Step 4 is the fragile one — and it is why the CoT prompt forbids mentioning other levels.
 
 # The LLM is one option, not the only one
 
+## How good is 0.36, really? {.smaller}
+
+Arase, Uchida & Kajiwara (2022) — the paper behind this corpus — trained models on **this exact task** (their Table 6):
+
+| System | macro-F1 | weighted κ |
+|---|:--:|:--:|
+| Bag-of-words + SVM | 41.2 | 0.354 |
+| *k*-NN over frozen BERT | 38.8 | 0.373 |
+| BERT-Base, loss-weighted | 82.5 | 0.609 |
+| Their proposed model | **84.5** | **0.628** |
+| *Our zero-shot prompt (72 items)* | *≈36* | *0.849* |
+
+## Two uncomfortable readings {.smaller}
+
+**1. Zero-shot prompting lands near bag-of-words — not near BERT.**
+
+The gap to 84.5 is what a labelled training set buys. CEFR-SP took trained experts to build. That is the cost side of the trade.
+
+. . .
+
+**2. Our weighted κ looks *better* than theirs. It is not.**
+
+. . .
+
+Their test set is 3,012 sentences with the natural imbalance; ours is a balanced 72. **κ is sensitive to the marginals.**
+
+. . .
+
+A number that flatters you across two different test sets is exactly the comparison a reader should refuse — and the one your report must not make.
+
+## What this licenses {.smaller}
+
+::: {.callout-important}
+"The model got 0.36" means nothing until you can say **0.36 compared to what, on which items**.
+:::
+
+. . .
+
+Claimable: *"a zero-shot prompt reaches roughly bag-of-words performance on this task"*.
+
+. . .
+
+Not claimable: *"our prompt beat the published model on agreement"*.
+
 ## Assistant, not replacement {.smaller}
 
-You just measured a prompted LLM **against a trained model** on the same test set. Neither is "the answer" — each has costs (data to train vs. prompt, reproducibility, interpretability).
+Neither approach is "the answer" — each has costs: data to train vs. a prompt to write, reproducibility, interpretability.
 
 . . .
 

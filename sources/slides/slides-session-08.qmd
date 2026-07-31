@@ -13,8 +13,6 @@ metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-
 # Session 8: Hands-on: LLM Classification & Prompt Iteration
 
 ## 📋 Agenda
@@ -47,24 +45,181 @@ The CEFR prompt you'll write is **Huang & Mizumoto's Ex 2 structure**, re-cast f
 
 . . .
 
-And the **few-shot examples** come from the **pool** — *never* the gold set you score on (contamination, S7).
-
-# Run classification in Colab
-
-## Run classification in Colab
-
-<!-- to be added -->
-
-# Evaluate the outputs
-
-## Evaluate the outputs
-
-<!-- to be added -->
+And the **few-shot examples** are **written by you** — *never* lifted from the set you score on (contamination, S7).
 
 # Your Gemini API key
 
-## Your Gemini API key
+## Today you call the model yourself
 
-<!-- to be added -->
+Days 1–2 were keyless: Day 1 used Colab's built-in model, Day 2 used a **frozen** prediction file.
+
+. . .
+
+From today the calls are **yours**, which means they must be **reproducible** — so we move to the Gemini API, where `temperature` and `seed` exist.
+
+## Four steps, five minutes
+
+1. Go to **Google AI Studio** → *Get API key* → create one.
+2. In Colab: the **🔑 key icon** in the left sidebar (Secrets).
+3. Name it exactly `GEMINI_API_KEY`, paste the value.
+4. Toggle **Notebook access** on.
+
+. . .
+
+Re-run the Setup cell. It should say `LLM backend: api`.
+
+::: {.callout-note}
+Full walkthrough with screenshots: [`resources/tools/gemini-api-key.md`](../resources/tools/gemini-api-key.md)
+:::
+
+## Why a key at all {.smaller}
+
+|  | Colab's built-in model | Gemini API (today) |
+|---|---|---|
+| Setup | none | a key, once |
+| `temperature` | not exposed | **`0`** |
+| `seed` | not exposed | **`42`** |
+| Same prompt twice | may differ | same answer |
+
+. . .
+
+Reproducibility is not a nicety here — **your reported numbers have to survive someone re-running them.**
+
+## Two clocks, not one {.smaller}
+
+The free tier limits you **two independent ways**:
+
+- **RPM** — 15 requests per *minute*
+- **RPD** — 500 requests per *day*
+
+. . .
+
+Almost every surprising `429` is the **per-minute** one, hit while the daily budget is barely touched.
+
+. . .
+
+`generate_text` has been pacing your calls and retrying since Day 1 — you'll meet the code that does it in the notebook.
+
+# Run classification in Colab
+
+## Two sets, two jobs {.smaller}
+
+| File | Size | What it is for |
+|---|:--:|---|
+| `val` | 24 | **Tune on this.** Every prompt you try is scored here. |
+| `gold` | 72 | **Report on this.** Touched once, at the very end. |
+
+. . .
+
+Try five prompts on the 72 and keep the best, and that score is no longer an estimate of performance on *new* sentences — you picked it **because** it suited those 72.
+
+. . .
+
+Tune somewhere else. Report once. This is the split from S7, now with files attached.
+
+## Round 0 — zero-shot
+
+Just describe the task.
+
+``` python
+PROMPT_ZERO = """You are an expert rater of English sentence
+difficulty using the CEFR scale.
+Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.
+Answer with the level only.
+
+Sentence: {text}"""
+
+pred_zero = run_prompt(PROMPT_ZERO, val)
+evaluate(val, pred_zero, ordered=True)
+```
+
+. . .
+
+`{text}` is the slot each sentence drops into. **Keep it.**
+
+## Round 1 — few-shot
+
+Add labelled examples so the model can pattern-match.
+
+``` python
+Examples:
+Sentence: "I have a cat." -> A1
+Sentence: "She went to the shops because she needed milk." -> A2
+Sentence: "The results suggest a modest improvement." -> B2
+```
+
+. . .
+
+Write your own. Do **not** copy one out of `val` or `gold` — that is showing the model the answers to its own test.
+
+## Round 2 — chain-of-thought
+
+Ask it to reason first, then answer.
+
+``` python
+Think step by step about the vocabulary and grammar,
+then decide the level.
+Do NOT mention any other CEFR level while reasoning.
+End with the final level on its own.
+```
+
+. . .
+
+::: {.callout-warning}
+`run_prompt` keeps the **first** CEFR level it sees in the reply. That is why the prompt forbids mentioning others — otherwise the *parser*, not the model, produces the error.
+:::
+
+# Evaluate the outputs
+
+## Read the report, not just the average {.smaller}
+
+`evaluate` prints per-class precision, recall and F1 — then macro-F1, plain κ and weighted κ.
+
+. . .
+
+**Macro-F1 averages the classes equally.** So one collapsed level drags the whole number down, and the report tells you *which* one.
+
+. . .
+
+Fill in the table as you go:
+
+| Iteration | macro-F1 (val) |
+|---|:--:|
+| 0 · zero-shot | … |
+| 1 · few-shot | … |
+| 2 · chain-of-thought | … |
+
+## The held-out run — once
+
+Pick your best prompt. Score it on the 72.
+
+``` python
+pred_test = run_prompt(BEST_PROMPT, gold)
+evaluate(gold, pred_test, ordered=True)
+```
+
+. . .
+
+Expect it to be **lower** than your validation score.
+
+. . .
+
+That gap is not a mistake — it is the honest cost of having chosen a prompt by looking at results. Look at this number, then go back and edit, and the 72 have stopped being held out.
+
+## Structured output
+
+So far the model returns a bare label. For real pipelines you want it to return **data**:
+
+``` json
+{"id": 17, "label": "B2"}
+```
+
+. . .
+
+That is the same `{id, text, label}` schema from Day 1 — **JSON** is just the file format it travels in.
+
+. . .
+
+Asking for JSON is an *output indicator* (S7's fourth element), and it is what makes the reply parseable instead of guessable.
 
 # Any questions?
