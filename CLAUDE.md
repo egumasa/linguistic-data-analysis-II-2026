@@ -54,6 +54,22 @@ All site content lives under `sources/`:
 - `sources/resources/tools/` and `sources/resources/corpora/` — how-to guides (AntConc, BYU corpora, JASP, Python/Colab setup; corpus inventories).
 - `assets/css/` — `style.scss` (site theme, extends the `litera` Bootswatch theme) and `slides.scss`. `.scss` files are the sources; `.css` files are generated.
 
+### Say it plainly — no metaphors
+
+Students here are graduate applied-linguistics students, many of them working in a second language. A figure of speech costs them a translation step and buys nothing.
+
+**Never dress a technical statement up as an image, a wager, or a piece of equipment.** Say what the thing is and what it is for.
+
+- ❌ "get one honest number to beat" → ✅ "a first score, before you change anything"
+- ❌ "your steering wheel, not your result" → ✅ "use it to decide what to change next; do not report it"
+- ❌ "a re-roll of the dice" → ✅ "the same prompt run a second time"
+- ❌ "reading it back is not superstition" → ✅ "reading it back checks that the file you will report from is the file you think it is"
+- ❌ "F1 is the scoreboard" · "the model's blind spot" · "the prompt is a contract"
+
+The same rule covers flourishes that carry no information: no "and that is the whole trick", no "here is where it gets interesting", no one-word sentences for emphasis. Emphasis is **bold**, not drama.
+
+This binds **`sources/slides/` as well as `sources/notebooks/`**, and applies to every kind of text — slide bullets, page prose, markdown cells, code comments, and error messages alike.
+
 ### No student/instructor audience labels
 
 **Assume students will see every file in the repo.** Never describe a file as "instructor-facing", "instructor-only", "student-facing", or "for students" — not in prose, headings, table columns, directory-tree comments, docstrings, or notebook cells. A reader who opens a file labeled "instructor-only" learns nothing useful about it and may assume they weren't meant to be there.
