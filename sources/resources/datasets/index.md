@@ -92,7 +92,7 @@ it into one clean shape is half the work of building a gold standard.
 
 | Dataset | Open in Colab | Produces |
 |---------|---------------|----------|
-| CEFR-SP | [`download_cefr_sp.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_cefr_sp.ipynb) | `cefr_sentences.json` |
+| CEFR-SP | [`download_cefr_sp.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_cefr_sp.ipynb) | `cefr_sentences.json` + `cefr_pool.json` |
 | RAAMove | [`download_raamove.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_raamove.ipynb) | `raamove_moves.json` |
 | CaRS-50 | [`download_cars50.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_cars50.ipynb) | `cars50_moves.json` |
 | AutoErrorAnalyzer | [`download_autoerroranalyzer.ipynb`](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_autoerroranalyzer.ipynb) | `l2_errors.json` |

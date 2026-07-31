@@ -178,9 +178,42 @@ save("download_cefr_sp.ipynb", [
     md("## Step 6 — Save it"),
     code("OUT_FILE = \"cefr_sentences.json\""),
     code(SAVE_CELL),
+    md("## Step 7 — Also save the *full* pool",
+       "",
+       "Step 5 threw most of the data away on purpose: 12 items per level is the right size "
+       "for a tutorial you hand-check. But the Day 3 prompt-tuning work and the final "
+       "mini-project both want the whole thing — a larger set to draw fresh samples from, and "
+       "items to use as few-shot examples that are *not* in your gold set.",
+       "",
+       "So save every agreed sentence too, in the same schema. Same rows as Step 3, just "
+       "numbered from 1."),
+    code("POOL_FILE = \"cefr_pool.json\"\n"
+         "\n"
+         "### Step 7.1: give every reshaped row an id, in order ###\n"
+         "pool = [{\"id\": i + 1, \"text\": x[\"text\"], \"label\": x[\"label\"]}\n"
+         "        for i, x in enumerate(rows)]\n"
+         "\n"
+         "### Step 7.2: write it out ###\n"
+         "with open(POOL_FILE, \"w\", encoding=\"utf-8\") as f:\n"
+         "    json.dump(pool, f, ensure_ascii=False, indent=2)\n"
+         "\n"
+         "from collections import Counter\n"
+         "print(f\"Saved {len(pool)} items to {POOL_FILE}\")\n"
+         "print(\"per label:\", dict(Counter(x[\"label\"] for x in pool)))"),
+    md("Note how **unbalanced** the pool is compared with your gold set — B1 and B2 dominate, "
+       "A1 and C2 are scarce. That is what the real data looks like, and it is why Step 5 "
+       "sampled evenly instead of just taking the first 72 rows."),
     md("---",
-       "Done! You built `cefr_sentences.json` from raw research data. Next: use it in the "
-       "**Day 2 tutorial** (annotation → evaluation)."),
+       "Done! You built two files from raw research data:",
+       "",
+       "- `cefr_sentences.json` — the balanced 72-item gold set",
+       "- `cefr_pool.json` — every agreed sentence (~3,200), to sample from later",
+       "",
+       "⚠️ Both live in the Colab session and **disappear when the runtime disconnects** — "
+       "save them to your Google Drive before you close the tab.",
+       "",
+       "Next: use them in the **Day 2 tutorial** (annotation → evaluation) and the "
+       "**Day 3 tutorial** (prompt design)."),
 ])
 
 # ===================================================================== RAAMove
