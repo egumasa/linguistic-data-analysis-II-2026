@@ -68,11 +68,11 @@ One especially promising use is **annotation** — labelling language data for a
 - But careful annotation is **expensive**: expert time, training, guidelines, double-coding.
 - If an LLM could annotate reliably, then it facilitates research.
 
-The tempting question: *can an LLM just do it for us?*
+So the question arises: *can an LLM do this annotation for us?*
 
 ## Adequacy must be evaluated, not assumed
 
-Here's the seed of the whole course:
+This is the central claim of the course:
 
 > An LLM's output is only useful if it's **adequate** — and adequacy has to be **evaluated, not assumed.**
 
@@ -97,7 +97,7 @@ OR
 - Let's find out! 
 
 
-Each day earns one piece of the method. By Friday you own the whole loop.
+Each day adds one part of the method. By Friday you can run the whole procedure yourself.
 
 # 2 · The 5-day map
 
@@ -106,7 +106,7 @@ Each day earns one piece of the method. By Friday you own the whole loop.
 | Day | Focus |
 |-----|-------|
 | **1** | What is LLM, Python basics, call an LLM |
-| **2** | Gold standard + agreement — **the yardstick** |
+| **2** | Gold standard + agreement — **how to measure quality** |
 | **3** | Prompt + iterate against metrics |
 | **4** | Method + assemble the pipeline |
 | **5** | Your own data + present |
@@ -121,10 +121,10 @@ By the end of this session, you will be able to:
 
 ## The one idea for today {.smaller}
 
-> An LLM is a **judge you must check**, not an oracle — and it fits the linguistic tasks you already care about.
+> An LLM produces annotations, and **you must check them against a gold standard** before you report them. It can be applied to the linguistic tasks you already work on.
 
 
-Everything this week is a way of *checking* that judge. Today we build the case for **why** checking is the whole point.
+Everything this week is a method for doing that checking. Today we explain **why** the checking is necessary.
 
 # 3 · What do you know about LLM?
 
@@ -139,7 +139,7 @@ Everything this week is a way of *checking* that judge. Today we build the case 
 
 An LLM is a kind of **statistical machine-learning model**. 
 
-To see its significance, we need to take a detour:
+To explain what that means, we cover four topics:
 
 1. **Machine learning** — what "learning from data" means
 2. **NLP** — machine learning applied to *language*
@@ -161,7 +161,7 @@ An ML model learns a **probabilistic representation** from statistical regularit
 The classic ML task: given an email, decide **spam / not-spam**.
 
 - **Rule-based:** block anything containing `FREE`, `WINNER`, `$$$`
-  → brittle; spammers just write "F R E E", and you block real mail.
+  → this fails easily: spammers write "F R E E", and you block real mail.
 
 - **ML:** show the model thousands of emails already **labelled** spam / not-spam.
   It *learns on its own* which words (and combinations) predict spam.
@@ -170,9 +170,9 @@ The rules are **inferred from examples**, not written by hand.
 
 ## What is the predictor in the ML model? 
 
-The idea of ML is like creating a smart regression model.
+An ML model works in the same way as a regression model: it maps input features to an outcome.
 
-But then we need **predictors** (input features) to make predictons.
+So we need **predictors** (input features) to make predictions.
 
 Three different classes of technologies.
 
@@ -182,7 +182,7 @@ Three different classes of technologies.
 
 ## One-hot text vector {.smaller}
 
-Each vocabulary word is a **slot**. A word flips on its own slot — **1 if present, 0 if not**. Add the words up → the email's **bag-of-words vector**, and *that* is what the classifier reads.
+Each vocabulary word has its own position in the vector — **1 if the word is present, 0 if not**. Add the words up → the email's **bag-of-words vector**, and *that* is what the classifier reads.
 
 ```{=html}
 <style>
@@ -241,7 +241,7 @@ Each vocabulary word is a **slot**. A word flips on its own slot — **1 if pres
 ```
 
 ::: {.fragment .smaller}
-**Cost:** the vector is as long as the whole vocabulary (tens of thousands of slots), and *"free"* and *"complimentary"* are just two unrelated slots — no notion that they *mean* the same.
+**Limitation:** the vector is as long as the whole vocabulary (tens of thousands of positions), and *"free"* and *"complimentary"* are two unrelated positions — the representation does not record that they *mean* the same.
 :::
 
 ## Static embeddings {.smaller}
@@ -283,7 +283,7 @@ Look up each word, **average** them → the email's vector.
 ```
 
 ::: {.fragment .smaller}
-**Win:** *"free"* and *"complimentary"* now have **nearby** vectors → the model generalises to words it never saw labelled. **Still** ignores word order (it's an average). → next, **context**.
+**Improvement:** *"free"* and *"complimentary"* now have **nearby** vectors, so the model generalises to words it never saw labelled. It **still** ignores word order, because it is an average. Next: **context**.
 :::
 
 ## The limit of Static embeddings
@@ -293,7 +293,7 @@ Meaning of a word depends on order and context:
 - "your account is **free** of charge" ✅ not spam
 - "claim your **FREE** prize now" 🚫 spam
 
-Same word, opposite signal. This is because:
+The same word gives opposite evidence in the two sentences. There are two reasons:
 
 - Many words are polysemous or homographic
 - Isolated word does not adds up to the meaning of the whole
@@ -316,7 +316,7 @@ Take the two *free*s from the last slide:
 
 . . .
 
-Same string, **two different vectors** — because the neighbours differ. Static embeddings could not do this; there was only ever one vector for *free*.
+The same word form now has **two different vectors**, because the surrounding words differ. Static embeddings could not do this; there was only ever one vector for *free*.
 
 ## Why this matters for you {.smaller}
 
@@ -333,7 +333,7 @@ A bag-of-words model cannot represent that. A transformer can.
 . . .
 
 ::: {.callout-warning}
-"Can represent it" is not "gets it right." That gap is what the rest of the week measures.
+Being able to represent context is not the same as producing correct labels. Measuring that difference is what the rest of the week is about.
 :::
 
 ## How LLMs are trained {.smaller}
@@ -341,7 +341,7 @@ A bag-of-words model cannot represent that. A transformer can.
 An LLM is trained by **self-supervised pretraining** on huge amounts of text:
 
 - The task: **predict the next word**, over and over, on billions of sentences.
-- No hand-labelling needed — the text is its own answer key.
+- No hand-labelling is needed, because the next word in the text is already the correct answer.
 
 Producing natural language is just **that same next-word prediction, run forward** — which is why it *sounds* fluent.
 
@@ -356,7 +356,7 @@ Run that forward, one token at a time → fluent, coherent text.
 That is exactly what a chat LLM does when it answers you.
 
 
-## The LLM *re-absorbs* the classic tasks {.smaller}
+## One model, many classic tasks {.smaller}
 
 Historically, **each task had its own model** — POS tagger, NER model, parser, coreference model.
 
@@ -375,16 +375,16 @@ An **LLM** is:
 
 # 5 · LLM follows language instructions
 
-## Throw language data at an LLM {.smaller}
+## Give language data to an LLM {.smaller}
 
-Let's just **try it** — no code:
+Let's **try it** — no code:
 
 - paste some real language data into a chat LLM,
 - ask it to label / analyze it,
 - read the output together.
 
-**What did it get right? What looks off?** And the question that runs the whole course:
-*how would we ever **know** — beyond eyeballing?*
+**What did it get right? What looks wrong?** And the question for the whole course:
+*how could we **know** this, other than by reading a few outputs?*
 
 
 # 6 · But — we need evaluation
@@ -393,7 +393,7 @@ Let's just **try it** — no code:
 
 Classic NLP **consumed** annotation to *build* models.
 
-Now the model can **produce** annotation. The arrow flips:
+Now the model can **produce** annotation, so the direction is reversed:
 
 **before:** humans annotate → train the model
 **now:** the model annotates → *and who checks it?*
@@ -410,13 +410,13 @@ Plausible is **not** the same as **correct**. So we check its labels against a *
 
 We'll cover these on Day 2.
 
-## The punchline {.smaller}
+## What this course covers {.smaller}
 
 ::: {.callout-important}
 This course is the **evaluation half of NLP, applied to LLMs.**
 :::
 
-NLP's *training* half we mostly leave aside. Its **evaluation** half is exactly the rigor an LLM's outputs need — and it's what you'll spend the week learning to run.
+We do not cover the *training* part of NLP. The **evaluation** part provides exactly the rigour an LLM's outputs need, and that is what you will learn to run this week.
 
 
 # 7 · Discussion 
@@ -434,7 +434,7 @@ NLP's *training* half we mostly leave aside. Its **evaluation** half is exactly 
 | Day | Focus |
 |-----|-------|
 | **1** | What is LLM, Python basics, call an LLM |
-| **2** | Gold standard + agreement — **the yardstick** |
+| **2** | Gold standard + agreement — **how to measure quality** |
 | **3** | Prompt + iterate against metrics |
 | **4** | Method + assemble the pipeline |
 | **5** | Your own data + present |

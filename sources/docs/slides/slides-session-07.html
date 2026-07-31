@@ -163,9 +163,9 @@
 <p>By the end of this session, you will be able to:</p>
 <ul>
 <li><strong>Name the four prompt elements</strong> — <em>instruction · context · input data · output indicator</em> — and locate each in a real prompt.</li>
-<li>Distinguish <strong>zero-shot</strong> from <strong>few-shot</strong> prompting and judge <strong>when examples help</strong> — and read a real results table (Kim &amp; Lu, 2024) to see what each buys and where prompting <strong>plateaus</strong>.</li>
-<li>Explain <strong>chain-of-thought</strong> and where it earns its keep.</li>
-<li>Place a technique on the <strong>run-it-this-week vs.&nbsp;know-it-exists</strong> line.</li>
+<li>Distinguish <strong>zero-shot</strong> from <strong>few-shot</strong> prompting, judge <strong>when examples help</strong>, and read a real results table (Kim &amp; Lu, 2024) to see what each contributes and where prompting stops improving.</li>
+<li>Explain <strong>chain-of-thought</strong> and which tasks it improves.</li>
+<li>Decide whether a technique is one to <strong>run this week</strong> or one to <strong>know about</strong>.</li>
 <li>Explain the <strong>train/test contamination</strong> trap and why you <strong>tune on validation, report on test</strong>.</li>
 </ul>
 <div class="callout callout-note callout-titled callout-style-default">
@@ -177,7 +177,7 @@
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>The message of the day: <em>prompting is a <strong>design space</strong>, not a single trick — small structural choices move the score.</em></p>
+<p>The message of the day: <em>a prompt has parts you can design, and small changes to those parts change the score.</em></p>
 </div>
 </div>
 </div>
@@ -187,11 +187,11 @@
 <h1>The anatomy of a prompt</h1>
 
 </section>
-<section id="prompting-is-a-design-space" class="slide level2">
-<h2>Prompting <em>is</em> a design space</h2>
-<p>An LLM does what the <strong>prompt</strong> tells it to. Change the prompt, change the output — and the score.</p>
+<section id="a-prompt-has-parts-you-can-design" class="slide level2">
+<h2>A prompt has parts you can design</h2>
+<p>An LLM does what the <strong>prompt</strong> tells it to. Change the prompt and you change the output, and the score.</p>
 <div class="fragment">
-<p>So a prompt is not a magic phrase you either know or don’t. It has <strong>parts you can design deliberately</strong> — and today we learn those parts on one concrete example.</p>
+<p>A prompt is not a fixed phrase that you either know or do not know. It has <strong>parts you can design deliberately</strong>, and today we learn those parts on one concrete example.</p>
 </div>
 </section>
 <section id="four-elements-of-a-prompt" class="slide level2 smaller">
@@ -204,18 +204,18 @@
 <li><strong>Output indicator</strong> — the <em>form</em> of the answer (format, tone, “only feedback, no rewrite”).</li>
 </ul>
 <div class="fragment">
-<p>If one of the four is missing, the output usually misses too.</p>
+<p>If one of the four is missing, the output is usually not what you wanted.</p>
 </div>
 </section>
 <section id="sharpening-the-instruction-structure-persona" class="slide level2 smaller">
 <h2>Sharpening the instruction — structure &amp; persona</h2>
-<p>The <em>instruction</em> element does the most work, so it rewards a little care:</p>
+<p>The <em>instruction</em> element has the largest effect, so write it carefully:</p>
 <ul>
-<li><strong>Lead with a verb and be specific</strong> — “classify this sentence into one CEFR level (A1–C2)” beats “tell me about this sentence.”</li>
-<li><strong>Give it a persona / role</strong> — <em>“You are an experienced EFL writing tutor…”</em> scopes the tone, standards, and vocabulary the model reaches for.</li>
+<li><strong>Start with a verb and be specific</strong> — “classify this sentence into one CEFR level (A1–C2)” is more effective than “tell me about this sentence.”</li>
+<li><strong>Give it a persona / role</strong> — <em>“You are an experienced EFL writing tutor…”</em> sets the tone, standards, and vocabulary of the output.</li>
 </ul>
 <div class="fragment">
-<p>Persona helps, but keep it honest: it nudges <em>style</em>, not knowledge. The <strong>four elements</strong> still do the heavy lifting.</p>
+<p>A persona helps, but it changes <em>style</em>, not knowledge. The <strong>four elements</strong> have the larger effect.</p>
 </div>
 </section>
 <section id="the-running-example-writing-feedback" class="slide level2 smaller">
@@ -279,7 +279,7 @@
 <h2>What examples actually buy — Kim &amp; Lu (2024)</h2>
 <p>A hard linguistic task: labelling <strong>rhetorical move-steps</strong> in research-article introductions (modified Swales <strong>CARS</strong>: 3 moves / ~17 steps) with <strong>GPT-3.5</strong>. Unit of annotation = the <strong>sentence</strong>.</p>
 <div class="fragment">
-<p>They crossed <strong>two separable levers</strong>:</p>
+<p>They tested <strong>two independent variables</strong>:</p>
 <ul>
 <li><strong>zero-shot vs.&nbsp;three-shot</strong> — the prompt alone vs.&nbsp;the prompt <strong>+ 3 fully annotated introductions</strong> (38 sentences, drawn from the <strong>training</strong> set — <em>not</em> the gold test set).</li>
 <li><strong>initial vs.&nbsp;refined prompt</strong> — the instruction sharpened after reading the <strong>validation-set confusion matrix</strong>.</li>
@@ -293,14 +293,14 @@
 <p><strong>Important</strong></p>
 </div>
 <div class="callout-content">
-<p>Notice: the few-shot examples come from <strong>training</strong>, never from the gold set you score on. (More on that trap shortly.)</p>
+<p>Notice: the few-shot examples come from <strong>training</strong>, never from the gold set you score on. (More on this shortly.)</p>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="the-numbers-prompt-only-has-a-ceiling" class="slide level2 smaller">
-<h2>The numbers — prompt-only has a ceiling</h2>
+<section id="the-numbers-prompting-alone-stops-improving" class="slide level2 smaller">
+<h2>The numbers — prompting alone stops improving</h2>
 <p>Test-set accuracy, <strong>move / step</strong> (their Table 2):</p>
 <style>
 .kl-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:.35rem;align-items:stretch;font-size:.8rem;margin:.4rem 0}
@@ -326,7 +326,7 @@
 </div>
 <div class="kl-ceiling">Fine-tuning on 80 samples → <strong>92.3% / 80.2%</strong> — far above the best prompt (the S12 escalation).</div>
 <div class="fragment">
-<p>Every lever helps a little; <strong>refined + three-shot</strong> is best — but prompt-only tops out near <strong>53%</strong> move accuracy. That gap to fine-tuning is the ceiling.</p>
+<p>Each change helps a little, and <strong>refined + three-shot</strong> is best. But prompting alone reaches only about <strong>53%</strong> move accuracy, well below fine-tuning.</p>
 </div>
 </section>
 <section id="four-things-the-numbers-teach" class="slide level2 smaller">
@@ -334,8 +334,8 @@
 <ol type="1">
 <li><strong>Few-shot helps, but modestly</strong> — adding 3 examples to the <em>initial</em> prompt was <strong>not</strong> significant on its own (McNemar move χ²=0.543, <em>p</em>=0.46).</li>
 <li><strong>Examples and instructions compound</strong> — only <strong>refined + three-shot</strong> beat the zero-shot baseline significantly (move <em>p</em>=0.028, step <em>p</em>=0.018). Sharpen the instruction <strong>and</strong> add examples.</li>
-<li><strong>Few-shot mainly buys recall</strong> — precision ran higher than recall; examples pulled recall up. (That precision/recall trade-off returns in S8/S9.)</li>
-<li><strong>Context-heavy tasks resist prompting alone</strong> — the best prompt-only setting still trailed fine-tuning badly: <em>run-it-this-week (prompt)</em> vs.&nbsp;<em>escalate-when-it-plateaus (fine-tune)</em>.</li>
+<li><strong>Few-shot mainly raises recall</strong> — precision was higher than recall, and examples raised recall. (That precision/recall relationship returns in S8/S9.)</li>
+<li><strong>Context-heavy tasks need more than prompting</strong> — the best prompt-only setting was still far below fine-tuning: prompt first, and consider fine-tuning when prompting stops improving.</li>
 </ol>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -369,7 +369,7 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>CoT earns its keep on tasks that need <strong>sequential judgement</strong> — reviewing writing, or deciding a borderline label.</p>
+<p>CoT helps on tasks that need <strong>several judgements in sequence</strong>, such as reviewing writing or deciding a borderline label.</p>
 </div>
 </div>
 </div>
@@ -383,7 +383,7 @@
 <li><strong>Ex 2 (structured)</strong> — split into <strong>Task / Criteria / My paragraph</strong>, add the output indicator “only feedback.”</li>
 </ul>
 <div class="fragment">
-<p>That move — generic → structured — is <strong>prompt iteration</strong>. The data-driven version is <strong>error analysis</strong>: read <em>where</em> the model is wrong (the confusion matrix), tighten the <em>Criteria</em> that cause those errors, and the score goes up — exactly Kim &amp; Lu’s <em>initial → refined</em> jump. You’ll run that loop yourself in <strong>S9</strong>.</p>
+<p>That change — generic → structured — is <strong>prompt iteration</strong>. The data-based version is <strong>error analysis</strong>: find <em>where</em> the model is wrong (the confusion matrix), make the <em>Criteria</em> that cause those errors more precise, and the score rises. This is the same as Kim &amp; Lu’s <em>initial → refined</em> change. You will do this yourself in <strong>S9</strong>.</p>
 </div>
 </section></section>
 <section>
@@ -407,11 +407,11 @@
 <tbody>
 <tr class="odd">
 <td>zero-shot</td>
-<td><strong>self-consistency</strong> — sample N, majority-vote (a reproducibility lever → S10)</td>
+<td><strong>self-consistency</strong> — sample N answers, take the majority (relevant to reproducibility → S10)</td>
 </tr>
 <tr class="even">
 <td>few-shot</td>
-<td><strong>RAG</strong> — ground the model on the annotation manual / codebook (≈ <em>dynamic</em> few-shot)</td>
+<td><strong>RAG</strong> — give the model the annotation manual / codebook to consult (≈ <em>dynamic</em> few-shot)</td>
 </tr>
 <tr class="odd">
 <td>chain-of-thought</td>
@@ -424,17 +424,17 @@
 </tbody>
 </table>
 <div class="fragment">
-<p>Your self-study map for all of these: <strong><a href="https://www.promptingguide.ai/techniques">promptingguide.ai/techniques</a></strong>.</p>
+<p>A reference for all of these: <strong><a href="https://www.promptingguide.ai/techniques">promptingguide.ai/techniques</a></strong>.</p>
 </div>
 </section>
-<section id="two-traps-before-you-tune" class="slide level2 smaller">
-<h2>Two traps before you tune</h2>
+<section id="two-errors-to-avoid-before-you-tune" class="slide level2 smaller">
+<h2>Two errors to avoid before you tune</h2>
 <ul>
-<li><strong>Train/test contamination</strong> — never draw your <strong>few-shot examples from the gold set</strong> you score on. The model would be “shown the answers.”</li>
+<li><strong>Train/test contamination</strong> — never draw your <strong>few-shot examples from the gold set</strong> you score on. The model would then be given the answers to the test items.</li>
 <li><strong>Validation vs.&nbsp;test</strong> — <strong>tune</strong> the prompt on a small <strong>validation</strong> set; <strong>report</strong> the final number <strong>once</strong> on a held-out <strong>test</strong> set.</li>
 </ul>
 <div class="fragment">
-<p>Both protect the one thing an evaluation is for: <strong>an honest estimate of how the prompt does on unseen text.</strong></p>
+<p>Both protect the purpose of an evaluation: <strong>an accurate estimate of how the prompt performs on text it has not seen.</strong></p>
 </div>
 </section></section>
 <section>
@@ -442,8 +442,8 @@
 <h1>Coming up</h1>
 
 </section>
-<section id="bridge-to-s8-same-anatomy-new-task" class="slide level2 smaller">
-<h2>Bridge to S8 — same anatomy, new task</h2>
+<section id="s8-the-same-four-elements-a-new-task" class="slide level2 smaller">
+<h2>S8 — the same four elements, a new task</h2>
 <p>Next session you build a real classification pipeline — and the <strong>CEFR prompt is the same four elements</strong>:</p>
 <table class="caption-top">
 <colgroup>

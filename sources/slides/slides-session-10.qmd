@@ -17,7 +17,7 @@ metadata-files:
 
 ## 📋 Agenda
 
-Three days of *"an LLM is a judge you must check."* Today: **how to report one honestly.**
+For three days you have checked an LLM's output against a gold standard. Today: **how to report the result honestly.**
 
 - **Reproducibility** — pin · log · `temperature=0` + seed · **freeze**
 - **Limits** — hallucination, data contamination, stochasticity
@@ -41,9 +41,7 @@ By the end of this session, you will be able to:
 
 ## The problem, stated plainly
 
-You run your prompt. You get F1 = 0.62. You write it down.
-
-Tomorrow you run the same prompt and get **0.58**.
+You run your prompt and get F1 = 0.62. Tomorrow you run the same prompt and get **0.58**.
 
 . . .
 
@@ -51,7 +49,7 @@ Which number goes in the report?
 
 . . .
 
-Neither — until you can say *why they differ*. A result you cannot reproduce is not yet a finding.
+Neither, until you can say *why they differ*. A result you cannot reproduce is not yet a finding.
 
 ## Four practices
 
@@ -60,7 +58,7 @@ Neither — until you can say *why they differ*. A result you cannot reproduce i
 | 1 | **Pin the model + version** | `gemini-3.1-flash-lite` ≠ `gemini-2.5-flash`. Models are silently retired and replaced. |
 | 2 | **Log the prompt** | as a *file*, versioned — not a string you overwrote |
 | 3 | **`temperature=0` + a fixed seed** | removes the sampling randomness you control |
-| 4 | **Freeze the predictions** | removes the randomness you *don't* control |
+| 4 | **Save the predictions to a file** | removes the variation you *cannot* control |
 
 ## Why `temperature=0` is not enough
 
@@ -76,9 +74,9 @@ It mostly is. But you are calling a **hosted service**:
 
 . . .
 
-So a hosted LLM is only ***best-effort* reproducible**. That is not a bug you can fix — it is a property of the setup you are working in.
+So a hosted LLM is only ***best-effort* reproducible**. You cannot fix this; it is a property of using a hosted service.
 
-## The fix: run once, then freeze
+## The solution: run once, then save the output
 
 ```{.python}
 predictions = run_prompt(PROMPT, gold)          # ← the ONE run
@@ -89,28 +87,28 @@ From then on, every number comes out of **that file**:
 
 ```{.python}
 pred_final = load_predictions("outputs/cefr_groupA_predictions.json")
-evaluate(gold, pred_final, ordered=True)        # same answer, forever
+evaluate(gold, pred_final, ordered=True)        # the same answer every time
 ```
 
 . . .
 
 You did this on **Day 2** — you loaded a frozen predictions file we made for you, which is why the whole class got identical numbers. Now you make your own.
 
-## What freezing buys you
+## What freezing gives you
 
-- Your reported F1 **holds still** while you write the report.
-- Re-running the analysis costs **no quota**.
-- Anyone — including whoever grades it — can recompute your numbers *on exactly the outputs you saw*.
+- **A stable number** — your reported F1 does not change while you write the report.
+- **No quota use** — re-running the analysis makes no further model calls.
+- **Recomputable by others** — anyone, including whoever grades it, can recompute your numbers *from exactly the outputs you saw*.
 
 ::: {.callout-important}
-That last one is the real point. "Reproducible" does not mean *you* can get the number again. It means **someone else can.**
+The third point is the important one. "Reproducible" does not mean *you* can get the number again. It means **someone else can.**
 :::
 
 # LLM limitations
 
 ## Three failure modes
 
-**Hallucination** — the model invents something fluent and wrong.
+**Hallucination** — the model produces fluent output that is incorrect.
 
 **Data contamination** — the model may have seen your test data in training.
 
@@ -118,7 +116,7 @@ That last one is the real point. "Reproducible" does not mean *you* can get the 
 
 . . .
 
-For a *classification* task like yours, the first is mild (the label set is closed) and the third you have just handled. **The second is the one that should worry you.**
+For a *classification* task like yours, the first is limited because the label set is closed, and you have just handled the third. **The second is the one that affects your claims.**
 
 ## Contamination: why it matters here
 
@@ -136,7 +134,7 @@ So when the model labels a sentence correctly, there are two explanations:
 
 . . .
 
-You cannot distinguish them from your F1 alone. Say so.
+You cannot distinguish these two explanations from your F1 alone. State this in your report.
 
 ## What you can honestly claim
 
@@ -150,7 +148,7 @@ You cannot distinguish them from your F1 alone. Say so.
 "On 42 items from CEFR-SP, with this prompt and this model version, macro-F1 was 0.62. The corpus is public and predates the model's training cutoff, so contamination cannot be ruled out."
 :::
 
-The second sentence is *shorter to defend* and *more useful to a reader*.
+The second sentence is *easier to defend* and *more useful to a reader*.
 
 # Ethics
 
@@ -160,15 +158,15 @@ The second sentence is *shorter to defend* and *more useful to a reader*.
 
 **Authorship.** The model is a tool, not a co-author. But *what it did* belongs in your methods: which model, which prompt, which parameters.
 
-**Licences are not decoration.** CEFR-SP is CC BY-**SA**: anything you redistribute from it inherits share-alike. That is why the template's data folder carries its own `LICENSE` file.
+**Licences have practical consequences.** CEFR-SP is CC BY-**SA**: anything you redistribute from it inherits share-alike. That is why the template's data folder carries its own `LICENSE` file.
 
-## The uncomfortable one
+## A limitation of your own study
 
 You are about to measure a model against a gold standard built by **two of you**, on **40 items**, in **25 minutes**.
 
 . . .
 
-That is a small, fast, imperfect gold standard.
+That is a small gold standard, built quickly, and it contains errors.
 
 . . .
 
@@ -183,10 +181,10 @@ So is most of the published literature. The difference between good and bad work
 | 1 | Scheme & gold | **what adjudication changed** |
 | 2 | Prompt iterations | a *reason* per round, not just an F1 |
 | 3 | Evaluation | which class did worst, and what it got confused with |
-| 4 | Error analysis | model's fault or scheme's — with evidence |
+| 4 | Error analysis | model error or unclear scheme — with evidence |
 | 5 | Limitations | ≥2 that apply to **your** run |
 
-## And the thing you may not expect
+## How the report is graded
 
 ::: {.callout-important}
 ## Your F1 is not graded
@@ -195,11 +193,11 @@ A careful study reporting **F1 = 0.31** with a clear account of *why* scores hig
 
 . . .
 
-This is not generosity. It is because a number you cannot explain is not a finding — and the whole course has been about the difference.
+The reason is that a number you cannot explain is not a finding, and that distinction is what the whole course is about.
 
 . . .
 
-So pick the track that will teach you something, not the one that will score well. `cars50` is hardest *because* its own annotators only reached κ ≈ 0.43 — which makes it the best place to show you can tell "the model is wrong" from "the scheme is fuzzy."
+So pick the track that will teach you something, not the one that will produce a high score. `cars50` is the hardest track *because* its own annotators only reached κ ≈ 0.43, which makes it the best track for showing that you can distinguish "the model is wrong" from "the scheme is unclear".
 
 # Any questions?
 

@@ -210,7 +210,7 @@
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
-<p>Three days of <em>“an LLM is a judge you must check.”</em> Today: <strong>how to report one honestly.</strong></p>
+<p>For three days you have checked an LLM’s output against a gold standard. Today: <strong>how to report the result honestly.</strong></p>
 <ul>
 <li><strong>Reproducibility</strong> — pin · log · <code>temperature=0</code> + seed · <strong>freeze</strong></li>
 <li><strong>Limits</strong> — hallucination, data contamination, stochasticity</li>
@@ -248,13 +248,12 @@
 </section>
 <section id="the-problem-stated-plainly" class="slide level2">
 <h2>The problem, stated plainly</h2>
-<p>You run your prompt. You get F1 = 0.62. You write it down.</p>
-<p>Tomorrow you run the same prompt and get <strong>0.58</strong>.</p>
+<p>You run your prompt and get F1 = 0.62. Tomorrow you run the same prompt and get <strong>0.58</strong>.</p>
 <div class="fragment">
 <p>Which number goes in the report?</p>
 </div>
 <div class="fragment">
-<p>Neither — until you can say <em>why they differ</em>. A result you cannot reproduce is not yet a finding.</p>
+<p>Neither, until you can say <em>why they differ</em>. A result you cannot reproduce is not yet a finding.</p>
 </div>
 </section>
 <section id="four-practices" class="slide level2">
@@ -290,8 +289,8 @@
 </tr>
 <tr class="even">
 <td>4</td>
-<td><strong>Freeze the predictions</strong></td>
-<td>removes the randomness you <em>don’t</em> control</td>
+<td><strong>Save the predictions to a file</strong></td>
+<td>removes the variation you <em>cannot</em> control</td>
 </tr>
 </tbody>
 </table>
@@ -308,26 +307,26 @@
 </ul>
 </div>
 <div class="fragment">
-<p>So a hosted LLM is only <strong><em>best-effort</em> reproducible</strong>. That is not a bug you can fix — it is a property of the setup you are working in.</p>
+<p>So a hosted LLM is only <strong><em>best-effort</em> reproducible</strong>. You cannot fix this; it is a property of using a hosted service.</p>
 </div>
 </section>
-<section id="the-fix-run-once-then-freeze" class="slide level2">
-<h2>The fix: run once, then freeze</h2>
+<section id="the-solution-run-once-then-save-the-output" class="slide level2">
+<h2>The solution: run once, then save the output</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>predictions <span class="op">=</span> run_prompt(PROMPT, gold)          <span class="co"># ← the ONE run</span></span>
 <span id="cb1-2"><a></a>save_predictions(predictions, <span class="st">"outputs/cefr_groupA_predictions.json"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>From then on, every number comes out of <strong>that file</strong>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>pred_final <span class="op">=</span> load_predictions(<span class="st">"outputs/cefr_groupA_predictions.json"</span>)</span>
-<span id="cb2-2"><a></a>evaluate(gold, pred_final, ordered<span class="op">=</span><span class="va">True</span>)        <span class="co"># same answer, forever</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a></a>evaluate(gold, pred_final, ordered<span class="op">=</span><span class="va">True</span>)        <span class="co"># the same answer every time</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>You did this on <strong>Day 2</strong> — you loaded a frozen predictions file we made for you, which is why the whole class got identical numbers. Now you make your own.</p>
 </div>
 </section>
-<section id="what-freezing-buys-you" class="slide level2">
-<h2>What freezing buys you</h2>
+<section id="what-freezing-gives-you" class="slide level2">
+<h2>What freezing gives you</h2>
 <ul>
-<li>Your reported F1 <strong>holds still</strong> while you write the report.</li>
-<li>Re-running the analysis costs <strong>no quota</strong>.</li>
-<li>Anyone — including whoever grades it — can recompute your numbers <em>on exactly the outputs you saw</em>.</li>
+<li><strong>A stable number</strong> — your reported F1 does not change while you write the report.</li>
+<li><strong>No quota use</strong> — re-running the analysis makes no further model calls.</li>
+<li><strong>Recomputable by others</strong> — anyone, including whoever grades it, can recompute your numbers <em>from exactly the outputs you saw</em>.</li>
 </ul>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
@@ -338,7 +337,7 @@
 <p><strong>Important</strong></p>
 </div>
 <div class="callout-content">
-<p>That last one is the real point. “Reproducible” does not mean <em>you</em> can get the number again. It means <strong>someone else can.</strong></p>
+<p>The third point is the important one. “Reproducible” does not mean <em>you</em> can get the number again. It means <strong>someone else can.</strong></p>
 </div>
 </div>
 </div>
@@ -350,11 +349,11 @@
 </section>
 <section id="three-failure-modes" class="slide level2">
 <h2>Three failure modes</h2>
-<p><strong>Hallucination</strong> — the model invents something fluent and wrong.</p>
+<p><strong>Hallucination</strong> — the model produces fluent output that is incorrect.</p>
 <p><strong>Data contamination</strong> — the model may have seen your test data in training.</p>
 <p><strong>Stochasticity</strong> — the same input gives different outputs.</p>
 <div class="fragment">
-<p>For a <em>classification</em> task like yours, the first is mild (the label set is closed) and the third you have just handled. <strong>The second is the one that should worry you.</strong></p>
+<p>For a <em>classification</em> task like yours, the first is limited because the label set is closed, and you have just handled the third. <strong>The second is the one that affects your claims.</strong></p>
 </div>
 </section>
 <section id="contamination-why-it-matters-here" class="slide level2">
@@ -372,7 +371,7 @@
 </ol>
 </div>
 <div class="fragment">
-<p>You cannot distinguish them from your F1 alone. Say so.</p>
+<p>You cannot distinguish these two explanations from your F1 alone. State this in your report.</p>
 </div>
 </section>
 <section id="what-you-can-honestly-claim" class="slide level2">
@@ -403,7 +402,7 @@
 </div>
 </div>
 </div>
-<p>The second sentence is <em>shorter to defend</em> and <em>more useful to a reader</em>.</p>
+<p>The second sentence is <em>easier to defend</em> and <em>more useful to a reader</em>.</p>
 </section></section>
 <section>
 <section id="ethics" class="title-slide slide level1 center">
@@ -414,13 +413,13 @@
 <h2>Three things worth ten minutes</h2>
 <p><strong>Privacy.</strong> Learner data is people’s writing. ICNALE is licensed for research use only and may not be redistributed — which is why it is excluded from git and from your submission bundle by name.</p>
 <p><strong>Authorship.</strong> The model is a tool, not a co-author. But <em>what it did</em> belongs in your methods: which model, which prompt, which parameters.</p>
-<p><strong>Licences are not decoration.</strong> CEFR-SP is CC BY-<strong>SA</strong>: anything you redistribute from it inherits share-alike. That is why the template’s data folder carries its own <code>LICENSE</code> file.</p>
+<p><strong>Licences have practical consequences.</strong> CEFR-SP is CC BY-<strong>SA</strong>: anything you redistribute from it inherits share-alike. That is why the template’s data folder carries its own <code>LICENSE</code> file.</p>
 </section>
-<section id="the-uncomfortable-one" class="slide level2">
-<h2>The uncomfortable one</h2>
+<section id="a-limitation-of-your-own-study" class="slide level2">
+<h2>A limitation of your own study</h2>
 <p>You are about to measure a model against a gold standard built by <strong>two of you</strong>, on <strong>40 items</strong>, in <strong>25 minutes</strong>.</p>
 <div class="fragment">
-<p>That is a small, fast, imperfect gold standard.</p>
+<p>That is a small gold standard, built quickly, and it contains errors.</p>
 </div>
 <div class="fragment">
 <p>So is most of the published literature. The difference between good and bad work here is not the size of the gold set — it is <strong>whether you say what it was.</strong></p>
@@ -465,7 +464,7 @@
 <tr class="even">
 <td>4</td>
 <td>Error analysis</td>
-<td>model’s fault or scheme’s — with evidence</td>
+<td>model error or unclear scheme — with evidence</td>
 </tr>
 <tr class="odd">
 <td>5</td>
@@ -475,8 +474,8 @@
 </tbody>
 </table>
 </section>
-<section id="and-the-thing-you-may-not-expect" class="slide level2">
-<h2>And the thing you may not expect</h2>
+<section id="how-the-report-is-graded" class="slide level2">
+<h2>How the report is graded</h2>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -491,10 +490,10 @@
 </div>
 </div>
 <div class="fragment">
-<p>This is not generosity. It is because a number you cannot explain is not a finding — and the whole course has been about the difference.</p>
+<p>The reason is that a number you cannot explain is not a finding, and that distinction is what the whole course is about.</p>
 </div>
 <div class="fragment">
-<p>So pick the track that will teach you something, not the one that will score well. <code>cars50</code> is hardest <em>because</em> its own annotators only reached κ ≈ 0.43 — which makes it the best place to show you can tell “the model is wrong” from “the scheme is fuzzy.”</p>
+<p>So pick the track that will teach you something, not the one that will produce a high score. <code>cars50</code> is the hardest track <em>because</em> its own annotators only reached κ ≈ 0.43, which makes it the best track for showing that you can distinguish “the model is wrong” from “the scheme is unclear”.</p>
 </div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">

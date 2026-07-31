@@ -13,7 +13,7 @@ metadata-files:
   - _slides.yml
 ---
 
-# Session 13: Iterate, then Freeze
+# Session 13: Iterate the Prompt, then Freeze the Run
 
 ## 📋 Agenda
 
@@ -42,9 +42,9 @@ By the end of this session, you will be able to:
 
 . . .
 
-If you change two things and the score moves, you have learned nothing about either.
+If you change two things and the score moves, you cannot tell which change caused it.
 
-## "Added examples" is not a reason
+## "Added examples" is not an explanation
 
 ::: {.callout-warning}
 ## Weak
@@ -56,20 +56,19 @@ If you change two things and the score moves, you have learned nothing about eit
 "Round 0 confused B1 with B2 on 7 of 14 items. Round 1 added one example of each, chosen from the pool. B1 recall rose 0.29 → 0.57; the B1/B2 confusion halved."
 :::
 
-The second one shows you **read the matrix**. That is the skill being assessed.
+The second one shows that you **read the confusion matrix**. That is the skill being assessed.
 
-## Let the matrix choose
+## Use the matrix to choose the next change
 
 ```{.python}
 evaluate(gold, pred0, ordered=True)
 ```
 
-Look at the **off-diagonal cells**, not the headline number:
+Look at the **off-diagonal cells**, not only the macro-F1:
 
-- Which pair is confused most?
-- Is it *adjacent* (B1↔B2) or a jump (A1↔C2)?
-- Adjacent confusion on an ordered scale is a *calibration* problem — often fixable with definitions or anchors.
-- A jump usually means the prompt is being misread.
+- **Most confused pair** — which two labels?
+- **Adjacent** (B1↔B2) — a calibration problem on an ordered scale; often fixable with clearer definitions or anchor examples.
+- **Distant** (A1↔C2) — the model is reading the prompt differently from how you intended.
 
 ## Plain vs. weighted κ
 
@@ -81,9 +80,9 @@ Cohen's kappa (weighted) 0.871   <- labels are ordered
 
 . . .
 
-A huge gap like this means: **the model is nearly always close, and almost never exactly right.**
+A large difference like this means: **the model is usually one level away, and rarely exactly correct.**
 
-That is a completely different finding from "the model is bad" — and only weighted κ shows it.
+That is a different finding from "the model performs badly", and only weighted κ shows it.
 
 ## But only when the labels are a scale
 
@@ -99,7 +98,7 @@ It is **wrong** for error categories — Grammatical is not "closer to" Lexical 
 evaluate(gold, pred, ordered=True, labels=["Low", "Mid", "High"])
 ```
 
-Otherwise the scale is `High < Low < Mid` and the number is meaningless. `evaluate` prints the order it used — read that line.
+Otherwise the scale is `High < Low < Mid` and the number cannot be interpreted. `evaluate` prints the order it used — read that line.
 :::
 
 # Freezing
@@ -121,10 +120,10 @@ Everything from here reads `pred_final`.
 ## One run, one person
 
 ::: {.callout-important}
-Runtimes are **per-person**. Your reported numbers must come out of a single frozen file, so decide who the **driver** is before you start.
+Runtimes are **per-person**. Your reported numbers must come from a single frozen file, so decide **who runs the model** before you start.
 :::
 
-Free tier: ~500 calls/day per key. If the driver runs out mid-session, hand the role — **and the runtime** — to another member. The files stay put in your shared Drive folder.
+Free tier: ~500 calls/day per key. If that person reaches the daily limit during the session, another member takes over and runs the notebook in their own runtime. The files remain in your shared Drive folder.
 
 . . .
 

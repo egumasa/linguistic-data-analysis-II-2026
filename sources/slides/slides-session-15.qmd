@@ -28,14 +28,14 @@ metadata-files:
 - `show_errors` table open and ready
 
 ::: {.callout-note}
-Time is on the talk, not the setup. Have the notebook open before you stand up.
+Your time is for the presentation, not for setting up. Have the notebook open before you start.
 :::
 
 ## The two questions every group gets
 
 ::: {.callout-important}
 ## 1
-**"Show us an item the model got wrong, and tell us whose fault it was — the model's or your scheme's."**
+**"Show us an item the model got wrong, and say whether the cause was the model or your scheme."**
 :::
 
 ::: {.callout-important}
@@ -43,15 +43,15 @@ Time is on the talk, not the setup. Have the notebook open before you stand up.
 **"What did your QC pass change?"**
 :::
 
-Neither is a trick. They are the two questions that separate *having run the cells* from *having done the work*.
+Both questions ask about the analysis, not the code. They distinguish *having run the cells* from *having done the work*.
 
 ## And a reminder
 
 ::: {.callout-tip}
 ## Your F1 is not graded
-A study reporting **0.31** with a clear account of why beats one reporting **0.82** without.
+A study reporting **0.31** with a clear account of why scores higher than one reporting **0.82** without an account.
 
-A low κ is not a penalty either — it is a finding about your scheme.
+A low κ is not a penalty either. It is a finding about your scheme.
 :::
 
 # Wrap-up
@@ -66,19 +66,19 @@ load gold → format prompt → call model → evaluate → inspect errors
 
 . . .
 
-Only the **task** and the **prompt** changed. That is the transferable thing you take out of this week — not any particular model, which will be retired within the year.
+Only the **task** and the **prompt** changed. The pipeline is what transfers to your future work, not any particular model, which will be replaced within a year.
 
 ## The one idea
 
-> **An LLM is a judge you must check.**
+> **An LLM produces annotations, and you must check them against a gold standard before you report them.**
 
 . . .
 
-Checking means: a gold standard you built and can defend · a metric you understand because you once wrote it by hand · a frozen run someone else can reproduce · and an honest account of what your numbers do not show.
+Checking means: a gold standard you built and can defend · a metric you understand because you once computed it by hand · a frozen run someone else can reproduce · and an accurate account of what your numbers do not show.
 
 . . .
 
-None of that is about LLMs. It is what makes any measurement worth reporting.
+None of this is specific to LLMs. It is what makes any measurement worth reporting.
 
 ## Where this goes next
 
@@ -88,7 +88,7 @@ None of that is about LLMs. It is what makes any measurement worth reporting.
 
 . . .
 
-You now have a working pipeline and the habits to use it honestly. That is a reasonable place to start.
+You now have a working pipeline and the practices needed to use it honestly. That is enough to begin your own work.
 
 # Thank you
 

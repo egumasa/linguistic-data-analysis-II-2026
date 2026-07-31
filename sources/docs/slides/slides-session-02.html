@@ -213,8 +213,8 @@
 <ol type="1">
 <li>Colab basics — run a cell, read an error</li>
 <li>Your first LLM call</li>
-<li>What did the model hand back? — data types</li>
-<li>Reaching into your data — indexing</li>
+<li>What the model returns — data types</li>
+<li>Getting values out of your data — indexing</li>
 <li>f-strings — put your data <em>into</em> the prompt</li>
 </ol>
 </section>
@@ -224,7 +224,7 @@
 <ul>
 <li>Sign in to Colab, run a cell (Shift+Enter), and <strong>read a Python error</strong> well enough to fix a typo.</li>
 <li>Send a prompt with <code>generate_text(...)</code>, then edit it and re-run.</li>
-<li>Recognise <code>str</code> / <code>list</code> / <code>dict</code> in what the model hands back, and <strong>index</strong> into a list or dict.</li>
+<li>Recognise <code>str</code> / <code>list</code> / <code>dict</code> in what the model returns, and <strong>index</strong> into a list or dict.</li>
 <li>Build a prompt from a variable with an <strong>f-string</strong>.</li>
 </ul>
 </section>
@@ -281,7 +281,7 @@
 <section id="why-this-matters" class="slide level2">
 <h2>Why this matters</h2>
 <p>This is the <strong>workspace you’ll use for every work</strong> — every session runs here.</p>
-<p>And one thing <em>will</em> happen: you’ll hit a <strong>red error</strong>. That’s not failure — it’s Python telling you exactly what it couldn’t do. <strong>Read the last line</strong> to understand what you’ll need to do.</p>
+<p>You will see <strong>red error messages</strong>. An error message is not a failure: it states which instruction Python could not carry out. <strong>Read the last line</strong> to find out what to fix.</p>
 </section>
 <section id="lets-follow-in-colab" class="slide level2 smaller">
 <h2>👀 Let’s follow — in Colab</h2>
@@ -303,7 +303,7 @@
 <li>Then <strong>misspell</strong> a word or variable on purpose and read the error you get.</li>
 <li>Fix it and re-run.</li>
 </ul>
-<p>Reading that last line is the whole skill — you’ll use it all week.</p>
+<p>Reading that last line is the skill to practise here. You will use it all week.</p>
 </section></section>
 <section>
 <section id="your-first-llm-call" class="title-slide slide level1 center">
@@ -312,19 +312,19 @@
 </section>
 <section id="first-whats-a-variable" class="slide level2 smaller">
 <h2>First — what’s a variable?</h2>
-<p>A <strong>variable</strong> is a <strong>named box</strong> that stores a value.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>level <span class="op">=</span> <span class="st">"A1"</span>        <span class="co"># make a box called `level`, put "A1" in it</span></span>
+<p>A <strong>variable</strong> is a <strong>name</strong> that stores a value.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>level <span class="op">=</span> <span class="st">"A1"</span>        <span class="co"># store the value "A1" under the name `level`</span></span>
 <span id="cb4-2"><a></a><span class="bu">print</span>(level)        <span class="co"># A1  — get the value back by its name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>name = value</code> — the <code>=</code> means <strong>“store this”</strong>, not “equals”.</li>
 <li>Once stored, reuse the value anywhere just by writing its name.</li>
 </ul>
 <div class="fragment">
-<p>Next we’ll store the model’s reply in a box called <code>reply</code>.</p>
+<p>Next we store the model’s reply under the name <code>reply</code>.</p>
 </div>
 </section>
-<section id="the-whole-idea-in-one-line" class="slide level2 smaller">
-<h2>The whole idea, in one line</h2>
+<section id="the-basic-operation-in-one-line" class="slide level2 smaller">
+<h2>The basic operation, in one line</h2>
 <p>You send the model <strong>text</strong> (a <em>prompt</em>); it sends <strong>text</strong> back (a <em>reply</em>).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"...your prompt..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
@@ -334,14 +334,14 @@
 </ul>
 </div>
 <div class="fragment">
-<p>One call = <strong>one answer</strong>. That reply isn’t the truth — it’s <strong>data to check.</strong> In Session 6 you’ll <em>score</em> answers like this against a human gold standard.</p>
+<p>One call = <strong>one answer</strong>. That reply is not correct by definition; it is <strong>data you have to check</strong>. In Session 6 you will <em>score</em> answers like this against a human gold standard.</p>
 </div>
 </section>
 <section id="why-this-matters-1" class="slide level2">
 <h2>Why this matters</h2>
-<p>This one call is the <strong>spine of the whole week</strong>.</p>
+<p>This one call is the basis of everything this week.</p>
 <div class="fragment">
-<p>Classification, annotation, evaluation — everything we do is a <em>variation on this</em>: build a prompt, send it, read the reply. Get comfortable here and the rest is reshaping the text around it.</p>
+<p>Classification, annotation and evaluation are all <em>variations on it</em>: build a prompt, send it, read the reply. Once you can do this, the rest of the course changes the text around this call.</p>
 </div>
 </section>
 <section id="lets-follow-in-colab-1" class="slide level2 smaller">
@@ -357,11 +357,11 @@
 <p>Your turn — <strong>change the prompt</strong> and re-run (a different topic, or another language):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is a corpus?"</span>)</span>
 <span id="cb7-2"><a></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Same code, new answer. The prompt is just text you control.</p>
+<p>The code is the same and the answer is different. The prompt is text that you control.</p>
 </section></section>
 <section>
-<section id="what-did-the-model-hand-back" class="title-slide slide level1 center">
-<h1>3 · What did the model hand back?</h1>
+<section id="what-the-model-returns" class="title-slide slide level1 center">
+<h1>3 · What the model returns</h1>
 
 </section>
 <section id="python-labels-every-value-with-a-type" class="slide level2 smaller">
@@ -381,10 +381,10 @@
 <li><strong><code>int</code></strong> — whole numbers: <code>42</code></li>
 <li><strong><code>float</code></strong> — decimals: <code>3.14</code></li>
 <li><strong><code>bool</code></strong> — <code>True</code> / <code>False</code></li>
-<li><strong><code>tuple</code></strong> — like a list, but fixed and can’t be changed: <code>(1, 2)</code></li>
+<li><strong><code>tuple</code></strong> — like a list, but its contents cannot be changed: <code>(1, 2)</code></li>
 <li><strong><code>None</code></strong> — “nothing here yet”</li>
 </ul>
-<p>No need to memorise — when you see one, you’ll know it’s just another kind of value.</p>
+<p>You do not need to memorise these. When you see one, you will recognise it as another kind of value.</p>
 </section>
 <section id="lets-follow-in-colab-2" class="slide level2 smaller">
 <h2>👀 Let’s follow — in Colab</h2>
@@ -406,13 +406,13 @@
 <p>Print each and check the <code>[ ]</code> / <code>{ }</code> match what you intended.</p>
 </section></section>
 <section>
-<section id="reaching-into-your-data-indexing" class="title-slide slide level1 center">
-<h1>4 · Reaching into your data — indexing</h1>
+<section id="getting-values-out-of-your-data-indexing" class="title-slide slide level1 center">
+<h1>4 · Getting values out of your data — indexing</h1>
 
 </section>
 <section id="getting-one-item-out-indexing" class="slide level2">
 <h2>Getting one item out — indexing</h2>
-<p>Use <strong><code>[...]</code></strong> to reach inside:</p>
+<p>Use <strong><code>[...]</code></strong> to get one item:</p>
 <ul>
 <li>a <strong>list</strong> by <em>position</em> (starts at <strong>0</strong>): <code>sentences[0]</code></li>
 <li>a <strong>dict</strong> by <em>key</em>: <code>record["label"]</code></li>
@@ -424,7 +424,7 @@
 </section>
 <section id="lets-follow-in-colab-3" class="slide level2 smaller">
 <h2>👀 Let’s follow — in Colab</h2>
-<p>Reuse the <code>sentences</code> and <code>record</code> you just built — now reach <strong>inside</strong> them:</p>
+<p>Reuse the <code>sentences</code> and <code>record</code> you just built, and get single items out of them:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="bu">print</span>(<span class="st">"first sentence:"</span>, sentences[<span class="dv">0</span>])       <span class="co"># list — index by position</span></span>
 <span id="cb10-2"><a></a><span class="bu">print</span>(<span class="st">"its gold label:"</span>, record[<span class="st">"label"</span>])    <span class="co"># dict — index by key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
@@ -448,14 +448,14 @@
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>sentence <span class="op">=</span> <span class="st">"Despite the rain, the game went ahead."</span></span>
 <span id="cb11-2"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p><code>{sentence}</code> becomes the actual sentence text inside the prompt — no copy-paste, no gluing strings together.</p>
+<p><code>{sentence}</code> is replaced by the actual sentence text inside the prompt. You do not copy and paste, and you do not join strings manually.</p>
 </div>
 </section>
 <section id="why-this-matters-3" class="slide level2">
 <h2>Why this matters</h2>
 <p>The prompt is now <strong>built from a variable</strong>.</p>
 <div class="fragment">
-<p>Swap in a different sentence and you get a different prompt — automatically. That’s the mechanism for running <strong>one prompt over many sentences</strong>, which is exactly what Session 3 turns into a loop.</p>
+<p>Change the value of <code>sentence</code> and the prompt changes automatically. This is how you run <strong>one prompt over many sentences</strong>, which Session 3 turns into a loop.</p>
 </div>
 </section>
 <section id="lets-follow-in-colab-4" class="slide level2 smaller">
@@ -472,7 +472,7 @@
 <h2>🧪 Let’s try — in Colab</h2>
 <p>Change <code>sentence</code> to one of your own and re-run.</p>
 <div class="fragment">
-<p>You built a prompt from data and sent it — the core move of the whole course.</p>
+<p>You built a prompt from data and sent it. Every later session uses this same operation.</p>
 </div>
 </section></section>
 <section>

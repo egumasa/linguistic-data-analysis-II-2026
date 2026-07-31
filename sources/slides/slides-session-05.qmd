@@ -13,9 +13,9 @@ metadata-files:
   - _slides.yml
 ---
 
-<!-- Executes S4's Phase C (E&K Step 6 · ③) as a six-step lab spine A–F. The A–F labels
-     (distinct from E&K numbered *Steps* and the circled ①②③ *phases*) are the shared spine
-     printed on all three surfaces — slides / Google Sheet / Colab. Work is divided by ACTIVITY:
+<!-- Executes S4's Phase C (E&K Step 6 · ③) as a six-step lab sequence A–F. The A–F labels
+     (distinct from E&K numbered *Steps* and the circled ①②③ *phases*) are the shared step
+     labels printed on all three surfaces — slides / Google Sheet / Colab. Work is divided by ACTIVITY:
      slides own the concepts, the Sheet owns the human judgment, Colab owns the numbers.
      Cross-reference BY A–F LABEL, never by slide number. Grounded in the
      day2-s5_gold_standard_construction.ipynb round-trip (see sessions/day2/session-05.md). -->
@@ -24,7 +24,7 @@ metadata-files:
 
 ## 📋 Agenda
 
-We open with **ten minutes in the Arase paper** — pulling out the two design decisions S4 left for you. Then you **build a gold standard** for your track: the graded *construction* skill, split across **three surfaces**, with one spine (**A–F**) running through all of them:
+We open with **ten minutes in the Arase paper** — pulling out the two design decisions S4 left for you. Then you **build a gold standard** for your track: the graded *construction* skill, split across **three surfaces**, with one shared sequence of steps (**A–F**) used on all of them:
 
 - **These slides** teach the *concepts* — how to sample, why annotate blind, how to read a matrix.
 - **A Google Sheet** holds the *human judgment* — you and your partner annotate there.
@@ -108,7 +108,7 @@ Why both? Correlation asks *do you rank sentences the same way*. Mean difference
 - **A third source on purpose:** Newsela-Auto + Wiki-Auto (8.5k each) — plus **SCoRE** (3.0k), written *for* beginners, because **A-level sentences are otherwise almost absent**.
 
 ::: {.callout-tip}
-These filters weren't decided up front — they ran **several rounds of manual checks over a few hundred samples** before freezing them. Sampling is something you **debug**.
+These filters were not decided in advance — the authors ran **several rounds of manual checks over a few hundred samples** before fixing them. Sampling rules are revised as you test them.
 :::
 
 ## And what came out of it {.smaller}
@@ -125,14 +125,14 @@ Sentences the annotators **agreed on** in the pilot and trial became the **examp
 | **C2** | In the past, non-photosynthetic plants were mistakenly thought to get food by breaking down organic matter in a manner similar to saprotrophic fungi. |
 
 ::: {.callout-tip}
-Not just word difficulty — *grammar, abstraction and world knowledge* climb too. **This is the judgment you're about to make.** Their own two experts matched exactly **37.6%** of the time — so expect to differ, from your partner and from the gold.
+Not just word difficulty — *grammar, abstraction and world knowledge* also increase across the levels. **This is the judgment you're about to make.** Their own two experts matched exactly **37.6%** of the time — so expect to differ, from your partner and from the gold.
 :::
 
-# Now you do it — one spine, three surfaces
+# Now you do it — one sequence of steps, three surfaces
 
 ## Today's goal, as six steps (A–F) {.smaller}
 
-**Your goal:** build a gold standard for your track, and know how far you can trust it. That is **phase ③** (Eguchi & Kyle Step 6) — broken into six steps. The **same A–F labels** appear on every surface, so you always know where you are — *find your place by the letter, not the slide number.*
+**Your goal:** build a gold standard for your track, and know how far you can trust it. That is **phase ③** (Eguchi & Kyle Step 6) — broken into six steps. The **same A–F labels** appear on every surface, so you always know where you are: *find your place by the letter, not the slide number.*
 
 | Step | Where you work | What happens |
 |--|--|----|
@@ -146,7 +146,7 @@ Not just word difficulty — *grammar, abstraction and world knowledge* climb to
 . . .
 
 ::: {.callout-tip}
-You bounce **out** to the Sheet twice (annotate in C, re-annotate in E) and back. Colab opens at **D** and stays open. The slides run alongside as your interpretation reference.
+You move to the Sheet twice (annotate in C, re-annotate in E) and then return. Colab opens at **D** and stays open. The slides run alongside as your interpretation reference.
 :::
 
 # A · Sample — represent the domain *(E&K Step 3 · ①)*
@@ -155,11 +155,11 @@ You bounce **out** to the Sheet twice (annotate in C, re-annotate in E) and back
 
 A gold standard is only as trustworthy as the sample it's built on. Before anyone labels anything, decide *what* you're drawing.
 
-- **Representative** — cover the range you care about (proficiency, L1, register) so your κ isn't an accident of an easy slice.
+- **Representative** — cover the range you care about (proficiency, L1, register), so your κ does not come from an unusually easy subset.
 - **Right-sized** — enough to measure agreement, small enough to double-annotate by hand (~20 today).
-- **Reproducible** — a fixed random **seed** means the "same 20" every time; anyone can re-draw your exact sample.
-- **One fixed unit** — one label per **unit of analysis** (here, the sentence). Settle this before you start.
-- **Exclusions that defend the unit** — Arase's *first-sentence-only, no named entities* rule, which you just found. Anything judged from **outside** the sentence doesn't belong in the pool.
+- **Reproducible** — a fixed random **seed** gives the same 20 items every time; anyone can draw your exact sample again.
+- **One fixed unit** — one label per **unit of analysis** (here, the sentence). Decide this before you start.
+- **Exclusions** — Arase's *first-sentence-only, no named entities* rule, which you just found. Anything that must be judged from **outside** the sentence does not belong in the pool.
 
 ::: {.callout-note}
 Today the sample is **already drawn for you** — one sheet per track. You'll learn *how* it was sampled here, and just **copy** it in a moment. (The draw itself lives in Colab as a reference cell.)
@@ -174,7 +174,7 @@ You already have an **operationalized scheme** from the earlier sessions — a *
 
 - **Restate the rule and the unit** — one label per unit; know your label set cold.
 - **Skim the guidelines and per-level examples** *before* you annotate, not while you annotate.
-- **Don't invent as you go** — if the rule can't decide a case, that's a note for step E, not a private house rule.
+- **Do not invent rules while annotating** — if the scheme cannot decide a case, write it down for step E instead of deciding it privately.
 
 *This is ① and ② made concrete: a decidable rule, applied to a real sample.*
 
@@ -185,16 +185,16 @@ Open your track's **template Sheet** → **File → Make a copy** into your own 
 
 # C · Annotate blind, in pairs *(E&K Step 6 · ③)*
 
-## Two people, same items, no peeking {.smaller}
+## Two people, the same items, independently {.smaller}
 
-This is the heart of it, and it happens **entirely in the Sheet** — no code.
+This is the central step of the session, and it happens **entirely in the Sheet** — no code.
 
 - Each partner labels the **same ~20 items** in the sheet you copied.
 - **Two annotator columns** (`label_a`, `label_b`) → agreement falls straight out in step D.
-- **Blind** = no peeking at your partner's column, no discussing as you go.
+- **Blind** = do not look at your partner's column, and do not discuss items while you label.
 
 
-The disagreements are the point — they show where the scheme is still fuzzy. **Don't** smooth them over now.
+The disagreements are what you need: they show where the scheme is still unclear. **Do not** resolve them yet.
 
 ::: {.callout-note}
 **Your turn:** label all ~20 rows in your own column, independently. Use the `notes` column for anything you found genuinely hard to decide — those notes are your evidence in step E.
@@ -208,13 +208,13 @@ Now Colab opens for the first time. It reads your sheet and reports three number
 
 . . .
 
-- **Percent agreement** — the raw diagonal. Easy, but flattering: two coders who both say "B1" most of the time agree a lot **by luck**.
-- **Cohen's κ** — agreement *corrected for chance*. This is the honest number.
+- **Percent agreement** — the raw diagonal. Simple, but it gives a high score too easily: two coders who both say "B1" most of the time will agree often **by chance**.
+- **Cohen's κ** — agreement *corrected for chance*. Report this one.
 
 . . .
 
 ::: {.callout-tip}
-Recall from S4: **80% raw agreement was only κ ≈ 0.52** once chance was removed. Trust the κ.
+Recall from S4: **80% raw agreement was only κ ≈ 0.52** once chance was removed.
 :::
 
 *→ run this in **step D** (Colab): `load_annotation_sheet` → `annotator_agreement`.*
@@ -227,17 +227,17 @@ The κ tells you *how much* you disagree. The **annotator-vs-annotator confusion
 
 - **Rows = annotator A, columns = annotator B** — one cell per label pair.
 - **The diagonal** is where you agreed; **off-diagonal cells** are your disagreements.
-- A cluster in one off-diagonal cell (say **B1 ↔ B2**) is a signpost: *that* boundary is under-defined.
+- **Many items in one off-diagonal cell** (say **B1 ↔ B2**) indicates that *that* boundary is under-defined in your scheme.
 
 . . .
 
-Don't just note *that* κ is low — find the **specific label pair** dragging it down. That cell is your to-do list for step E.
+Do not stop at *κ is low*. Find the **specific label pair** that produces most of the disagreement. That cell is your task list for step E.
 
 # E · Read the matrix → refine → re-annotate *(E&K Step 6; Fuoli princ. 2 · ③)*
 
 ## Fix the scheme, then label again {.smaller}
 
-A confusion matrix isn't a verdict on your annotating — it's a diagnosis of your **scheme**.
+A confusion matrix does not evaluate you as an annotator. It shows which parts of your **scheme** are unclear.
 
 . . .
 
@@ -251,20 +251,20 @@ A confusion matrix isn't a verdict on your annotating — it's a diagnosis of yo
 
 ::: {.callout-important}
 ## Re-annotate in a fresh round tab
-Make your scheme edits, then **duplicate the `round1` tab → `round2`** and re-label the confused items *there* — never overwrite round1. Back in Colab, `disagreements(rows)` lists what to revisit; set `ROUND = "round2"` and re-run step D to see κ move. Each round is preserved, so the analysis stays reproducible and you watch κ climb round over round.
+Make your scheme edits, then **duplicate the `round1` tab → `round2`** and re-label the confused items *there* — never overwrite round1. Back in Colab, `disagreements(rows)` lists what to revisit; set `ROUND = "round2"` and re-run step D to see κ move. Each round is preserved, so the analysis stays reproducible and you can see how κ changes from round to round.
 :::
 
 # F · Adjudicate → gold *(E&K Step 6 → feeds ④⑤)*
 
 ## Resolve, compare, export {.smaller}
 
-The last disagreements don't refine away — you **decide** them. That's adjudication, and it's the graded step.
+The remaining disagreements cannot be removed by refining the scheme. You **decide** them. That is adjudication, and it is the graded step.
 
 . . .
 
 - Talk through the **remaining disagreements** and agree a single `final` label for each.
 - **Compare to the published gold** — where do you differ, and *why*? A difference isn't automatically an error.
-- **Export** the canonical **`{id, text, label}`** set — this is S6's yardstick, and the input to ④⑤.
+- **Export** the canonical **`{id, text, label}`** set — this is what S6 measures the model against, and the input to ④⑤.
 
 . . .
 

@@ -17,7 +17,7 @@ metadata-files:
 
 ## 📋 Agenda
 
-Hands on keyboards. Your track, your data.
+You work in Colab for this whole session, on your own track and your own data.
 
 - **20 min** — sample a balanced subset, create the annotation sheet
 - **25 min** — annotate **blind**, two of you, independently
@@ -35,7 +35,7 @@ By the end of this session, you will be able to:
 - Draw a **balanced** subset and explain why balance matters for P/R/F1 and the matrix.
 - Annotate independently and blind, and interpret your percent agreement and Cohen's κ.
 - Adjudicate disagreements into one agreed gold set, and record **what changed**.
-- Get a baseline number to beat.
+- Produce a **baseline score**, before you change anything about the prompt.
 
 # Step 1 — Sample
 
@@ -58,41 +58,41 @@ sampled = sample_pool(pool, N_PER_CLASS, SEED)
 
 ## Why balance
 
-With 1229 B1s and 33 C2s, a model that answers "B1" to everything scores well on accuracy and tells you nothing.
+With 1229 B1s and 33 C2s, a model that answers "B1" to every item gets a high accuracy score without using any information.
 
-Balanced sampling makes **per-class** precision and recall readable, and makes the confusion matrix a picture of *what gets confused with what* rather than a picture of the class sizes.
+Balanced sampling makes **per-class** precision and recall readable, and makes the confusion matrix show *which labels are confused with which* instead of showing the class sizes.
 
 . . .
 
 ::: {.callout-note}
-Rare classes simply yield fewer — that is a property of the data, and it belongs in your limitations section.
+Rare classes give you fewer items. That is a property of the data, and it belongs in your limitations section.
 :::
 
 ## Why keep the pool separate
 
-The items you *didn't* sample have a job: they become your **few-shot examples** in step 4.
+The items you did *not* sample have a purpose: they become your **few-shot examples** in step 4.
 
-If your examples came from your gold set, you would be showing the model the answers you are about to test it on.
+If your examples came from your gold set, the model would be given the answers to the items you are about to test it on.
 
 . . .
 
-`build_fewshot` avoids this for you — but only if there is a pool left to draw from. Sample from the **full pool**, not the demo file.
+`build_fewshot` prevents this for you, but only if items remain in the pool. Sample from the **full pool**, not the demo file.
 
 # Step 2 — QC
 
-## The part no model can do
+## The step you must do yourself
 
 The published labels are somebody else's judgment.
 
 . . .
 
-Before you measure a model against them, **two of you** re-annotate the sample independently and blind. Then you find out how far apart you were. Then you argue.
+Before you measure a model against them, **two of you** re-annotate the sample independently and blind. You then measure how far apart you were, and discuss every item you labelled differently.
 
 . . .
 
-This is the same A–F round-trip you did by hand in **Session 5** — now on your own track.
+These are the same A–F steps you did by hand in **Session 5**, now on your own track.
 
-## Blind means blind
+## What "blind" means here
 
 `create_annotation_sheet` deliberately does **not** copy the published label across.
 
@@ -107,7 +107,7 @@ This is the same A–F round-trip you did by hand in **Session 5** — now on yo
 CoderA and CoderB fill their own columns without looking at each other's. `Final` stays empty until you have talked.
 
 ::: {.callout-tip}
-The Sheet is a real Google Sheet — everyone can work in it at once. It is the one part of the repo that is genuinely concurrent.
+The Sheet is a real Google Sheet, so all group members can work in it at the same time.
 :::
 
 ## Then measure
@@ -126,7 +126,7 @@ disagreements(rows)
 
 ## Adjudicate
 
-The 12 rows you disagreed on are not noise. They are the places where **your scheme is unclear** — and they are the same places the model will struggle.
+The 12 rows you disagreed on are not random error. They are the places where **your scheme is unclear**, and they are usually the same places where the model makes errors.
 
 . . .
 
@@ -140,7 +140,7 @@ compare_to_published(gold, sampled)
 
 . . .
 
-Those 5 differences are a finding about the corpus, not a mistake by you.
+Those 5 differences are a finding about the corpus, not an error on your part.
 
 ## The consequence
 
@@ -149,11 +149,11 @@ Those 5 differences are a finding about the corpus, not a mistake by you.
 Not the published labels.
 :::
 
-That is what makes this session load-bearing. The boundaries you argue about here are the ones you will point at on Day 5 when you explain why the model missed something.
+This is why this session matters. The label boundaries you discuss here are the ones you will refer to on Day 5 when you explain the model's errors.
 
 # Step 3 — Baseline
 
-## Small, on purpose
+## Keep the baseline run small
 
 ```{.python}
 f1_by_round = {}
@@ -164,18 +164,18 @@ f1_by_round["0 zero-shot"] = evaluate(gold, pred0, ordered=True)
 
 ::: {.callout-warning}
 ## Keep `N_PER_CLASS = 2` for now
-One full-size round is ~40 model calls and **≥3 minutes of enforced pacing**. The free tier gives you ~500 calls a day. Iterate small; save the full run for the one you freeze tomorrow.
+One full-size round is ~40 model calls and **≥3 minutes of enforced pacing**. The free tier gives you ~500 calls a day. Run small tests now, and save the full-size run for the version you freeze tomorrow.
 :::
 
 ## Write the plainest prompt you can
 
-Resist making it good.
+Do not try to improve it yet.
 
-The point of a baseline is that later rounds have something to be measured **against** — and that you find out what the model does with no help at all.
+A baseline gives later rounds something to be measured **against**, and shows what the model does with no additional instructions or examples.
 
 . . .
 
-A baseline that is already tuned tells you nothing about whether your tuning worked.
+If the baseline is already tuned, you cannot tell whether your later changes improved anything.
 
 # Any questions?
 

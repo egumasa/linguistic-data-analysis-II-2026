@@ -19,7 +19,7 @@ metadata-files:
 
 - Error analysis of misclassifications
 - Iterate the prompt over 2–3 cycles
-- A short under-the-hood walkthrough
+- A walkthrough of what `run_prompt` does internally
 
 ## 🎯 Learning Objectives
 
@@ -28,13 +28,13 @@ By the end of this session, you will be able to:
 - Use `show_errors` to find misclassifications, hypothesize a fix, and re-run.
 - Compare **macro-F1** across iteration rounds.
 - Place your result next to the **published supervised results** for the same corpus — and say what that comparison does and does not license.
-- Interpret what supervised training **buys and costs** versus zero-training prompting.
+- State what supervised training gives you, and what it requires, compared with zero-training prompting.
 
 # Error analysis
 
-## The number tells you *that*. The errors tell you *why*. {.smaller}
+## The number shows the change; the errors show the reason {.smaller}
 
-macro-F1 went from 0.31 to 0.34. **So what changed?**
+macro-F1 went from 0.31 to 0.34. **What changed?**
 
 . . .
 
@@ -55,13 +55,13 @@ Four columns: `id · gold · pred · text`.
 
 . . .
 
-That is where macro-F1 is being lost — because it weights every class equally, **a collapsed rare class costs as much as a collapsed common one.**
+That is where macro-F1 is being lost. Because macro-F1 weights every class equally, **a rare class with F1 near zero lowers the average as much as a common one does.**
 
 . . .
 
-Then read **three actual sentences** from that level. Counts locate the problem; only the sentences explain it.
+Then read **three actual sentences** from that level. The counts show you where the problem is; the sentences show you what it is.
 
-## Two very different diagnoses {.smaller}
+## Two different causes {.smaller}
 
 ::: {.callout-note}
 ## "The model is wrong"
@@ -77,17 +77,17 @@ You and your partner would also disagree about this sentence. → **not fixable 
 
 . . .
 
-Telling these apart is the single most valuable skill in your final report.
+Distinguishing these two cases is the most important analytic skill in your final report.
 
 # Iterating the prompt
 
-## The same move you already saw {.smaller}
+## The same change you already saw {.smaller}
 
 Back in S7, **Huang & Mizumoto's Ex 1 → Ex 2** was a generic prompt tightened into a structured one.
 
 . . .
 
-That's exactly the loop here — only now it's **driven by data, not intuition**:
+That is the same procedure as here, except that now the change is **based on your error data, not on intuition**:
 
 1. **read the errors** (`show_errors`) — where does the prompt fail?
 2. **tighten one thing** — usually the *Criteria* / label descriptors.
@@ -109,19 +109,19 @@ I_PREDICT   = "…"   # what you expect, and why
 
 . . .
 
-This is what makes it a **study** rather than tinkering. A change that helps for a reason you named is a finding; one that helps for no reason you can give is a lucky guess.
+This is what makes the work a **study**. A change that helps for a reason you stated in advance is a finding; a change that helps for no reason you can state is not.
 
 . . .
 
-Being wrong costs nothing. Being unable to say what you expected costs marks.
+An incorrect prediction does not lower your mark. Not stating a prediction at all does.
 
 ## Check the class you aimed at {.smaller}
 
-Macro-F1 can **rise** while the level you targeted gets **worse** — another class quietly improved and carried the average.
+Macro-F1 can **rise** while the level you targeted gets **worse**, because a different class improved and raised the average.
 
 . . .
 
-So compare the F1 row for `WORST_CLASS`, before and after. Not the headline.
+So compare the F1 row for `WORST_CLASS` before and after, not only the macro-F1.
 
 . . .
 
@@ -130,17 +130,17 @@ So compare the F1 row for `WORST_CLASS`, before and after. Not the headline.
 | 0 | *(no change)* | — | … | … | — |
 | 1 | … | … | … | … | … |
 
-Two logged rounds with reasons beat five undocumented ones.
+Two recorded rounds with stated reasons are worth more than five undocumented ones.
 
-# Under the hood
+# Inside `run_prompt`
 
 ## What `run_prompt` has been doing {.smaller}
 
-A read-only tour of the helper you have called all day — no editing, just so it is not a black box.
+We read the helper you have called all day. You do not edit it; the purpose is that you can describe what it does.
 
 . . .
 
-1. Drop each sentence into the `{text}` slot → one prompt per item.
+1. Insert each sentence at the `{text}` position → one prompt per item.
 2. Call the model, **paced** so you stay under 15 requests/minute.
 3. On a `429`, wait and retry; on a *daily* quota error, stop immediately.
 4. Scan the reply for the first CEFR level and keep it.
@@ -148,7 +148,7 @@ A read-only tour of the helper you have called all day — no editing, just so i
 
 . . .
 
-Step 4 is the fragile one — and it is why the CoT prompt forbids mentioning other levels.
+Step 4 is the step that most easily fails, which is why the CoT prompt forbids mentioning other levels.
 
 # The LLM is one option, not the only one
 
@@ -164,11 +164,11 @@ Arase, Uchida & Kajiwara (2022) — the paper behind this corpus — trained mod
 | Their proposed model | **84.5** | **0.628** |
 | *Our zero-shot prompt (72 items)* | *≈36* | *0.849* |
 
-## Two uncomfortable readings {.smaller}
+## Two readings you should not avoid {.smaller}
 
-**1. Zero-shot prompting lands near bag-of-words — not near BERT.**
+**1. Zero-shot prompting scores near bag-of-words, not near BERT.**
 
-The gap to 84.5 is what a labelled training set buys. CEFR-SP took trained experts to build. That is the cost side of the trade.
+The difference up to 84.5 is what a labelled training set gives you. Building CEFR-SP required trained experts, and that is what such a training set costs.
 
 . . .
 
@@ -180,7 +180,7 @@ Their test set is 3,012 sentences with the natural imbalance; ours is a balanced
 
 . . .
 
-A number that flatters you across two different test sets is exactly the comparison a reader should refuse — and the one your report must not make.
+A higher number obtained on a different test set is not a valid comparison, and your report must not make it.
 
 ## What this licenses {.smaller}
 
@@ -194,7 +194,7 @@ Claimable: *"a zero-shot prompt reaches roughly bag-of-words performance on this
 
 . . .
 
-Not claimable: *"our prompt beat the published model on agreement"*.
+Not claimable: *"our prompt scored higher than the published model on agreement"*.
 
 ## Assistant, not replacement {.smaller}
 
@@ -206,6 +206,6 @@ And back to where the running example started — Huang & Mizumoto (2025):
 
 > *"Human teachers must ultimately remain at the core of language teaching and learning."*
 
-The LLM is a tool you **evaluate and supervise**, not a verdict you accept.
+The LLM is a tool you **evaluate and supervise**. You do not accept its output without checking it.
 
 # Any questions?

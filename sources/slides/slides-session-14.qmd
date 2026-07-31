@@ -32,15 +32,15 @@ By the end of this session, you will be able to:
 
 # Error analysis
 
-## The two findings hiding in one table
+## Two different findings in one table
 
 ```{.python}
 errors = show_errors(gold, pred_final)
 ```
 
-**The model's fault** — the label is clear, a competent annotator would agree, the model still missed it.
+**A model error** — the correct label is clear, a competent annotator would agree, and the model still labelled it wrongly.
 
-**The scheme's fault** — the item is genuinely borderline.
+**A scheme problem** — the item is genuinely borderline.
 
 . . .
 
@@ -57,7 +57,7 @@ If the model's errors cluster on the items **you** disagreed about, that is a re
 
 . . .
 
-That sentence is worth more than any F1 you could report.
+A sentence like this is worth more in your report than the F1 value itself.
 
 ## Be concrete
 
@@ -68,12 +68,12 @@ That sentence is worth more than any F1 you could report.
 
 ::: {.callout-tip}
 ## Strong
-"id 6 — *'Pseudogenes are generally thought of as the last stage…'* — gold C1, predicted C2. The sentence is syntactically simple but lexically dense; our scheme weights syntax, the model appears to weight vocabulary. **Scheme's fault**: our own coders split on this one."
+"id 6 — *'Pseudogenes are generally thought of as the last stage…'* — gold C1, predicted C2. The sentence is syntactically simple but lexically dense; our scheme weights syntax, and the model appears to weight vocabulary. **A scheme problem**: our own coders disagreed on this item."
 :::
 
 # The report
 
-## The scaffold does the arithmetic
+## The scaffold computes the numbers for you
 
 `export_results` fills in your label set, per-label counts, and the F1-per-round table.
 
@@ -85,7 +85,7 @@ Everything in *italics* is yours:
 4. limitations that apply to **your** run
 
 ::: {.callout-warning}
-A section left as the scaffold's own prose scores **zero**. `make_submission.py` warns you.
+A section left with the scaffold's own text scores **zero**. `make_submission.py` warns you about this.
 :::
 
 ## Limitations that are actually yours
@@ -108,22 +108,22 @@ A section left as the scaffold's own prose scores **zero**. `make_submission.py`
 python scripts/make_submission.py --group groupA
 ```
 
-Keeps the folder structure — `scripts/ · prompts/ · data/ · outputs/` — because that layout **is** the S10 checklist made physical, and because the notebook's `../` paths need it.
+**Keeps** the folder structure — `scripts/ · prompts/ · data/ · outputs/` — because that layout follows the S10 checklist, and because the notebook's `../` paths require it.
 
-Leaves out: `.git/`, `.venv/`, **your `.env`**, the big pools, anything ICNALE.
+**Leaves out**: `.git/`, `.venv/`, **your `.env`**, the large pool files, and anything from ICNALE.
 
-Tells you what is missing.
+**Reports** anything that is missing.
 
 ## Then check it reproduces
 
 ::: {.callout-important}
 ## Restart the runtime and Run all
-If your notebook only works in the session where you built it up cell by cell, **it does not reproduce** — and reproducing is the claim you are making.
+If your notebook only runs in the session where you built it cell by cell, **it does not reproduce**, and reproducibility is what you are claiming.
 :::
 
 . . .
 
-The bundle is self-contained for the claim that matters: given your gold set and your frozen predictions, anyone can recompute your numbers with **no API key and no network**.
+The bundle is self-contained for the claim you are making: given your gold set and your frozen predictions, anyone can recompute your numbers with **no API key and no network access**.
 
 ## Five slides
 
@@ -135,7 +135,7 @@ One per report section:
 4. Error analysis
 5. Limitations
 
-**Every member speaks.** Have your `show_errors` table open before you start.
+**Every group member speaks.** Have your `show_errors` table open before you start.
 
 # Any questions?
 

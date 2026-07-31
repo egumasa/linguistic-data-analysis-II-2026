@@ -231,11 +231,11 @@
 <h1>Error analysis</h1>
 
 </section>
-<section id="the-two-findings-hiding-in-one-table" class="slide level2">
-<h2>The two findings hiding in one table</h2>
+<section id="two-different-findings-in-one-table" class="slide level2">
+<h2>Two different findings in one table</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>errors <span class="op">=</span> show_errors(gold, pred_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>The model’s fault</strong> — the label is clear, a competent annotator would agree, the model still missed it.</p>
-<p><strong>The scheme’s fault</strong> — the item is genuinely borderline.</p>
+<p><strong>A model error</strong> — the correct label is clear, a competent annotator would agree, and the model still labelled it wrongly.</p>
+<p><strong>A scheme problem</strong> — the item is genuinely borderline.</p>
 <div class="fragment">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -259,7 +259,7 @@
 <p><em>“The model’s B1/B2 confusions fall almost entirely on the 12 items our annotators also disagreed on. We read this as a property of the scheme’s boundary rather than a failure of the model.”</em></p>
 </blockquote>
 <div class="fragment">
-<p>That sentence is worth more than any F1 you could report.</p>
+<p>A sentence like this is worth more in your report than the F1 value itself.</p>
 </div>
 </section>
 <section id="be-concrete" class="slide level2">
@@ -286,7 +286,7 @@
 <p><strong>Strong</strong></p>
 </div>
 <div class="callout-content">
-<p>“id 6 — <em>‘Pseudogenes are generally thought of as the last stage…’</em> — gold C1, predicted C2. The sentence is syntactically simple but lexically dense; our scheme weights syntax, the model appears to weight vocabulary. <strong>Scheme’s fault</strong>: our own coders split on this one.”</p>
+<p>“id 6 — <em>‘Pseudogenes are generally thought of as the last stage…’</em> — gold C1, predicted C2. The sentence is syntactically simple but lexically dense; our scheme weights syntax, and the model appears to weight vocabulary. <strong>A scheme problem</strong>: our own coders disagreed on this item.”</p>
 </div>
 </div>
 </div>
@@ -296,8 +296,8 @@
 <h1>The report</h1>
 
 </section>
-<section id="the-scaffold-does-the-arithmetic" class="slide level2">
-<h2>The scaffold does the arithmetic</h2>
+<section id="the-scaffold-computes-the-numbers-for-you" class="slide level2">
+<h2>The scaffold computes the numbers for you</h2>
 <p><code>export_results</code> fills in your label set, per-label counts, and the F1-per-round table.</p>
 <p>Everything in <em>italics</em> is yours:</p>
 <ol type="1">
@@ -315,7 +315,7 @@
 <p><strong>Warning</strong></p>
 </div>
 <div class="callout-content">
-<p>A section left as the scaffold’s own prose scores <strong>zero</strong>. <code>make_submission.py</code> warns you.</p>
+<p>A section left with the scaffold’s own text scores <strong>zero</strong>. <code>make_submission.py</code> warns you about this.</p>
 </div>
 </div>
 </div>
@@ -357,9 +357,9 @@
 <section id="one-command" class="slide level2">
 <h2>One command</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="ex">python</span> scripts/make_submission.py <span class="at">--group</span> groupA</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Keeps the folder structure — <code>scripts/ · prompts/ · data/ · outputs/</code> — because that layout <strong>is</strong> the S10 checklist made physical, and because the notebook’s <code>../</code> paths need it.</p>
-<p>Leaves out: <code>.git/</code>, <code>.venv/</code>, <strong>your <code>.env</code></strong>, the big pools, anything ICNALE.</p>
-<p>Tells you what is missing.</p>
+<p><strong>Keeps</strong> the folder structure — <code>scripts/ · prompts/ · data/ · outputs/</code> — because that layout follows the S10 checklist, and because the notebook’s <code>../</code> paths require it.</p>
+<p><strong>Leaves out</strong>: <code>.git/</code>, <code>.venv/</code>, <strong>your <code>.env</code></strong>, the large pool files, and anything from ICNALE.</p>
+<p><strong>Reports</strong> anything that is missing.</p>
 </section>
 <section id="then-check-it-reproduces" class="slide level2">
 <h2>Then check it reproduces</h2>
@@ -372,12 +372,12 @@
 <p><strong>Restart the runtime and Run all</strong></p>
 </div>
 <div class="callout-content">
-<p>If your notebook only works in the session where you built it up cell by cell, <strong>it does not reproduce</strong> — and reproducing is the claim you are making.</p>
+<p>If your notebook only runs in the session where you built it cell by cell, <strong>it does not reproduce</strong>, and reproducibility is what you are claiming.</p>
 </div>
 </div>
 </div>
 <div class="fragment">
-<p>The bundle is self-contained for the claim that matters: given your gold set and your frozen predictions, anyone can recompute your numbers with <strong>no API key and no network</strong>.</p>
+<p>The bundle is self-contained for the claim you are making: given your gold set and your frozen predictions, anyone can recompute your numbers with <strong>no API key and no network access</strong>.</p>
 </div>
 </section>
 <section id="five-slides" class="slide level2">
@@ -390,7 +390,7 @@
 <li>Error analysis</li>
 <li>Limitations</li>
 </ol>
-<p><strong>Every member speaks.</strong> Have your <code>show_errors</code> table open before you start.</p>
+<p><strong>Every group member speaks.</strong> Have your <code>show_errors</code> table open before you start.</p>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>

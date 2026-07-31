@@ -166,7 +166,7 @@
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>Time is on the talk, not the setup. Have the notebook open before you stand up.</p>
+<p>Your time is for the presentation, not for setting up. Have the notebook open before you start.</p>
 </div>
 </div>
 </div>
@@ -182,7 +182,7 @@
 <p><strong>1</strong></p>
 </div>
 <div class="callout-content">
-<p><strong>“Show us an item the model got wrong, and tell us whose fault it was — the model’s or your scheme’s.”</strong></p>
+<p><strong>“Show us an item the model got wrong, and say whether the cause was the model or your scheme.”</strong></p>
 </div>
 </div>
 </div>
@@ -199,7 +199,7 @@
 </div>
 </div>
 </div>
-<p>Neither is a trick. They are the two questions that separate <em>having run the cells</em> from <em>having done the work</em>.</p>
+<p>Both questions ask about the analysis, not the code. They distinguish <em>having run the cells</em> from <em>having done the work</em>.</p>
 </section>
 <section id="and-a-reminder" class="slide level2">
 <h2>And a reminder</h2>
@@ -212,8 +212,8 @@
 <p><strong>Your F1 is not graded</strong></p>
 </div>
 <div class="callout-content">
-<p>A study reporting <strong>0.31</strong> with a clear account of why beats one reporting <strong>0.82</strong> without.</p>
-<p>A low κ is not a penalty either — it is a finding about your scheme.</p>
+<p>A study reporting <strong>0.31</strong> with a clear account of why scores higher than one reporting <strong>0.82</strong> without an account.</p>
+<p>A low κ is not a penalty either. It is a finding about your scheme.</p>
 </div>
 </div>
 </div>
@@ -228,19 +228,19 @@
 <p>Whatever you annotated, the pipeline did not change:</p>
 <pre><code>load gold → format prompt → call model → evaluate → inspect errors</code></pre>
 <div class="fragment">
-<p>Only the <strong>task</strong> and the <strong>prompt</strong> changed. That is the transferable thing you take out of this week — not any particular model, which will be retired within the year.</p>
+<p>Only the <strong>task</strong> and the <strong>prompt</strong> changed. The pipeline is what transfers to your future work, not any particular model, which will be replaced within a year.</p>
 </div>
 </section>
 <section id="the-one-idea" class="slide level2">
 <h2>The one idea</h2>
 <blockquote>
-<p><strong>An LLM is a judge you must check.</strong></p>
+<p><strong>An LLM produces annotations, and you must check them against a gold standard before you report them.</strong></p>
 </blockquote>
 <div class="fragment">
-<p>Checking means: a gold standard you built and can defend · a metric you understand because you once wrote it by hand · a frozen run someone else can reproduce · and an honest account of what your numbers do not show.</p>
+<p>Checking means: a gold standard you built and can defend · a metric you understand because you once computed it by hand · a frozen run someone else can reproduce · and an accurate account of what your numbers do not show.</p>
 </div>
 <div class="fragment">
-<p>None of that is about LLMs. It is what makes any measurement worth reporting.</p>
+<p>None of this is specific to LLMs. It is what makes any measurement worth reporting.</p>
 </div>
 </section>
 <section id="where-this-goes-next" class="slide level2">
@@ -251,7 +251,7 @@
 <li><strong>The open questions</strong> — contamination, prompt sensitivity, whether “agreement with humans” is the right target at all</li>
 </ul>
 <div class="fragment">
-<p>You now have a working pipeline and the habits to use it honestly. That is a reasonable place to start.</p>
+<p>You now have a working pipeline and the practices needed to use it honestly. That is enough to begin your own work.</p>
 </div>
 </section></section>
 <section id="thank-you" class="title-slide slide level1 center">

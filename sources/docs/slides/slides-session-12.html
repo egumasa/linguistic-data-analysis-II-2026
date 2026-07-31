@@ -210,7 +210,7 @@
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
-<p>Hands on keyboards. Your track, your data.</p>
+<p>You work in Colab for this whole session, on your own track and your own data.</p>
 <ul>
 <li><strong>20 min</strong> — sample a balanced subset, create the annotation sheet</li>
 <li><strong>25 min</strong> — annotate <strong>blind</strong>, two of you, independently</li>
@@ -238,7 +238,7 @@
 <li>Draw a <strong>balanced</strong> subset and explain why balance matters for P/R/F1 and the matrix.</li>
 <li>Annotate independently and blind, and interpret your percent agreement and Cohen’s κ.</li>
 <li>Adjudicate disagreements into one agreed gold set, and record <strong>what changed</strong>.</li>
-<li>Get a baseline number to beat.</li>
+<li>Produce a <strong>baseline score</strong>, before you change anything about the prompt.</li>
 </ul>
 </section></section>
 <section>
@@ -258,8 +258,8 @@
 </section>
 <section id="why-balance" class="slide level2">
 <h2>Why balance</h2>
-<p>With 1229 B1s and 33 C2s, a model that answers “B1” to everything scores well on accuracy and tells you nothing.</p>
-<p>Balanced sampling makes <strong>per-class</strong> precision and recall readable, and makes the confusion matrix a picture of <em>what gets confused with what</em> rather than a picture of the class sizes.</p>
+<p>With 1229 B1s and 33 C2s, a model that answers “B1” to every item gets a high accuracy score without using any information.</p>
+<p>Balanced sampling makes <strong>per-class</strong> precision and recall readable, and makes the confusion matrix show <em>which labels are confused with which</em> instead of showing the class sizes.</p>
 <div class="fragment">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -270,7 +270,7 @@
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>Rare classes simply yield fewer — that is a property of the data, and it belongs in your limitations section.</p>
+<p>Rare classes give you fewer items. That is a property of the data, and it belongs in your limitations section.</p>
 </div>
 </div>
 </div>
@@ -278,10 +278,10 @@
 </section>
 <section id="why-keep-the-pool-separate" class="slide level2">
 <h2>Why keep the pool separate</h2>
-<p>The items you <em>didn’t</em> sample have a job: they become your <strong>few-shot examples</strong> in step 4.</p>
-<p>If your examples came from your gold set, you would be showing the model the answers you are about to test it on.</p>
+<p>The items you did <em>not</em> sample have a purpose: they become your <strong>few-shot examples</strong> in step 4.</p>
+<p>If your examples came from your gold set, the model would be given the answers to the items you are about to test it on.</p>
 <div class="fragment">
-<p><code>build_fewshot</code> avoids this for you — but only if there is a pool left to draw from. Sample from the <strong>full pool</strong>, not the demo file.</p>
+<p><code>build_fewshot</code> prevents this for you, but only if items remain in the pool. Sample from the <strong>full pool</strong>, not the demo file.</p>
 </div>
 </section></section>
 <section>
@@ -289,18 +289,18 @@
 <h1>Step 2 — QC</h1>
 
 </section>
-<section id="the-part-no-model-can-do" class="slide level2">
-<h2>The part no model can do</h2>
+<section id="the-step-you-must-do-yourself" class="slide level2">
+<h2>The step you must do yourself</h2>
 <p>The published labels are somebody else’s judgment.</p>
 <div class="fragment">
-<p>Before you measure a model against them, <strong>two of you</strong> re-annotate the sample independently and blind. Then you find out how far apart you were. Then you argue.</p>
+<p>Before you measure a model against them, <strong>two of you</strong> re-annotate the sample independently and blind. You then measure how far apart you were, and discuss every item you labelled differently.</p>
 </div>
 <div class="fragment">
-<p>This is the same A–F round-trip you did by hand in <strong>Session 5</strong> — now on your own track.</p>
+<p>These are the same A–F steps you did by hand in <strong>Session 5</strong>, now on your own track.</p>
 </div>
 </section>
-<section id="blind-means-blind" class="slide level2">
-<h2>Blind means blind</h2>
+<section id="what-blind-means-here" class="slide level2">
+<h2>What “blind” means here</h2>
 <p><code>create_annotation_sheet</code> deliberately does <strong>not</strong> copy the published label across.</p>
 <pre><code>| ID | Text                          | CoderA | CoderB | Final | Note |
 |----|-------------------------------|--------|--------|-------|------|
@@ -316,7 +316,7 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>The Sheet is a real Google Sheet — everyone can work in it at once. It is the one part of the repo that is genuinely concurrent.</p>
+<p>The Sheet is a real Google Sheet, so all group members can work in it at the same time.</p>
 </div>
 </div>
 </div>
@@ -335,7 +335,7 @@
 </section>
 <section id="adjudicate" class="slide level2">
 <h2>Adjudicate</h2>
-<p>The 12 rows you disagreed on are not noise. They are the places where <strong>your scheme is unclear</strong> — and they are the same places the model will struggle.</p>
+<p>The 12 rows you disagreed on are not random error. They are the places where <strong>your scheme is unclear</strong>, and they are usually the same places where the model makes errors.</p>
 <div class="fragment">
 <p>For each: agree a <code>Final</code> label, and note <em>why</em>. Then:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>gold <span class="op">=</span> to_canonical(rows, LABELS)</span>
@@ -343,7 +343,7 @@
 <span id="cb5-3"><a></a><span class="co"># 37 / 42 match the published label (88.1%)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
-<p>Those 5 differences are a finding about the corpus, not a mistake by you.</p>
+<p>Those 5 differences are a finding about the corpus, not an error on your part.</p>
 </div>
 </section>
 <section id="the-consequence" class="slide level2">
@@ -361,15 +361,15 @@
 </div>
 </div>
 </div>
-<p>That is what makes this session load-bearing. The boundaries you argue about here are the ones you will point at on Day 5 when you explain why the model missed something.</p>
+<p>This is why this session matters. The label boundaries you discuss here are the ones you will refer to on Day 5 when you explain the model’s errors.</p>
 </section></section>
 <section>
 <section id="step-3-baseline" class="title-slide slide level1 center">
 <h1>Step 3 — Baseline</h1>
 
 </section>
-<section id="small-on-purpose" class="slide level2">
-<h2>Small, on purpose</h2>
+<section id="keep-the-baseline-run-small" class="slide level2">
+<h2>Keep the baseline run small</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>f1_by_round <span class="op">=</span> {}</span>
 <span id="cb6-2"><a></a>PROMPT <span class="op">=</span> load_prompt(PROMPT_FILE)</span>
 <span id="cb6-3"><a></a>pred0 <span class="op">=</span> run_prompt(PROMPT, gold)</span>
@@ -383,17 +383,17 @@
 <p><strong>Keep <code>N_PER_CLASS = 2</code> for now</strong></p>
 </div>
 <div class="callout-content">
-<p>One full-size round is ~40 model calls and <strong>≥3 minutes of enforced pacing</strong>. The free tier gives you ~500 calls a day. Iterate small; save the full run for the one you freeze tomorrow.</p>
+<p>One full-size round is ~40 model calls and <strong>≥3 minutes of enforced pacing</strong>. The free tier gives you ~500 calls a day. Run small tests now, and save the full-size run for the version you freeze tomorrow.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="write-the-plainest-prompt-you-can" class="slide level2">
 <h2>Write the plainest prompt you can</h2>
-<p>Resist making it good.</p>
-<p>The point of a baseline is that later rounds have something to be measured <strong>against</strong> — and that you find out what the model does with no help at all.</p>
+<p>Do not try to improve it yet.</p>
+<p>A baseline gives later rounds something to be measured <strong>against</strong>, and shows what the model does with no additional instructions or examples.</p>
 <div class="fragment">
-<p>A baseline that is already tuned tells you nothing about whether your tuning worked.</p>
+<p>If the baseline is already tuned, you cannot tell whether your later changes improved anything.</p>
 </div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">

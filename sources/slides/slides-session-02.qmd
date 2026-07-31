@@ -20,8 +20,8 @@ metadata-files:
 
 1. Colab basics — run a cell, read an error
 2. Your first LLM call
-3. What did the model hand back? — data types
-4. Reaching into your data — indexing
+3. What the model returns — data types
+4. Getting values out of your data — indexing
 5. f-strings — put your data *into* the prompt
 
 ## 🎯 Learning Objectives
@@ -30,7 +30,7 @@ By the end of this session, you will be able to:
 
 - Sign in to Colab, run a cell (Shift+Enter), and **read a Python error** well enough to fix a typo.
 - Send a prompt with `generate_text(...)`, then edit it and re-run.
-- Recognise `str` / `list` / `dict` in what the model hands back, and **index** into a list or dict.
+- Recognise `str` / `list` / `dict` in what the model returns, and **index** into a list or dict.
 - Build a prompt from a variable with an **f-string**.
 
 ## How today works {.smaller}
@@ -76,7 +76,7 @@ Nothing installs on your laptop. If the runtime disconnects, you just re-run the
 This is the **workspace you'll use for every work** — every session runs here.
 
 
-And one thing *will* happen: you'll hit a **red error**. That's not failure — it's Python telling you exactly what it couldn't do. **Read the last line** to understand what you'll need to do.
+You will see **red error messages**. An error message is not a failure: it states which instruction Python could not carry out. **Read the last line** to find out what to fix.
 
 ## 👀 Let's follow — in Colab {.smaller}
 
@@ -110,17 +110,17 @@ Your turn:
 - Then **misspell** a word or variable on purpose and read the error you get.
 - Fix it and re-run.
 
-Reading that last line is the whole skill — you'll use it all week.
+Reading that last line is the skill to practise here. You will use it all week.
 
 
 # 2 · Your first LLM call
 
 ## First — what's a variable? {.smaller}
 
-A **variable** is a **named box** that stores a value.
+A **variable** is a **name** that stores a value.
 
 ```python
-level = "A1"        # make a box called `level`, put "A1" in it
+level = "A1"        # store the value "A1" under the name `level`
 print(level)        # A1  — get the value back by its name
 ```
 
@@ -129,9 +129,9 @@ print(level)        # A1  — get the value back by its name
 
 . . .
 
-Next we'll store the model's reply in a box called `reply`.
+Next we store the model's reply under the name `reply`.
 
-## The whole idea, in one line {.smaller}
+## The basic operation, in one line {.smaller}
 
 You send the model **text** (a *prompt*); it sends **text** back (a *reply*).
 
@@ -146,15 +146,15 @@ reply = generate_text("...your prompt...")
 
 . . .
 
-One call = **one answer**. That reply isn't the truth — it's **data to check.** In Session 6 you'll *score* answers like this against a human gold standard.
+One call = **one answer**. That reply is not correct by definition; it is **data you have to check**. In Session 6 you will *score* answers like this against a human gold standard.
 
 ## Why this matters
 
-This one call is the **spine of the whole week**.
+This one call is the basis of everything this week.
 
 . . .
 
-Classification, annotation, evaluation — everything we do is a *variation on this*: build a prompt, send it, read the reply. Get comfortable here and the rest is reshaping the text around it.
+Classification, annotation and evaluation are all *variations on it*: build a prompt, send it, read the reply. Once you can do this, the rest of the course changes the text around this call.
 
 ## 👀 Let's follow — in Colab {.smaller}
 
@@ -177,9 +177,9 @@ reply = generate_text("In one sentence, what is a corpus?")
 print(reply)
 ```
 
-Same code, new answer. The prompt is just text you control.
+The code is the same and the answer is different. The prompt is text that you control.
 
-# 3 · What did the model hand back?
+# 3 · What the model returns
 
 ## Python labels every value with a **type** {.smaller}
 
@@ -200,10 +200,10 @@ Here are some more frequent variable types.
 - **`int`** — whole numbers: `42`
 - **`float`** — decimals: `3.14`
 - **`bool`** — `True` / `False`
-- **`tuple`** — like a list, but fixed and can't be changed: `(1, 2)`
+- **`tuple`** — like a list, but its contents cannot be changed: `(1, 2)`
 - **`None`** — "nothing here yet"
 
-No need to memorise — when you see one, you'll know it's just another kind of value.
+You do not need to memorise these. When you see one, you will recognise it as another kind of value.
 
 ## 👀 Let's follow — in Colab {.smaller}
 
@@ -227,11 +227,11 @@ Your turn — build your own:
 
 Print each and check the `[ ]` / `{ }` match what you intended.
 
-# 4 · Reaching into your data — indexing
+# 4 · Getting values out of your data — indexing
 
 ## Getting one item out — indexing
 
-Use **`[...]`** to reach inside:
+Use **`[...]`** to get one item:
 
 - a **list** by *position* (starts at **0**): `sentences[0]`
 - a **dict** by *key*: `record["label"]`
@@ -242,7 +242,7 @@ Every dataset this week is a **`list` of `dict`s** — sentences shaped like `{"
 
 ## 👀 Let's follow — in Colab {.smaller}
 
-Reuse the `sentences` and `record` you just built — now reach **inside** them:
+Reuse the `sentences` and `record` you just built, and get single items out of them:
 
 ```python
 print("first sentence:", sentences[0])       # list — index by position
@@ -271,7 +271,7 @@ prompt = f"What CEFR level (A1-C2) is this sentence? {sentence}"
 
 . . .
 
-`{sentence}` becomes the actual sentence text inside the prompt — no copy-paste, no gluing strings together.
+`{sentence}` is replaced by the actual sentence text inside the prompt. You do not copy and paste, and you do not join strings manually.
 
 ## Why this matters
 
@@ -279,7 +279,7 @@ The prompt is now **built from a variable**.
 
 . . .
 
-Swap in a different sentence and you get a different prompt — automatically. That's the mechanism for running **one prompt over many sentences**, which is exactly what Session 3 turns into a loop.
+Change the value of `sentence` and the prompt changes automatically. This is how you run **one prompt over many sentences**, which Session 3 turns into a loop.
 
 ## 👀 Let's follow — in Colab {.smaller}
 
@@ -300,7 +300,7 @@ Change `sentence` to one of your own and re-run.
 
 . . .
 
-You built a prompt from data and sent it — the core move of the whole course.
+You built a prompt from data and sent it. Every later session uses this same operation.
 
 # Any questions?
 

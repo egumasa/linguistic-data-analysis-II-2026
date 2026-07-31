@@ -33,24 +33,24 @@ Our worked example all session: **Huang & Mizumoto (2025)** — writing-feedback
 By the end of this session, you will be able to:
 
 - **Name the four prompt elements** — *instruction · context · input data · output indicator* — and locate each in a real prompt.
-- Distinguish **zero-shot** from **few-shot** prompting and judge **when examples help** — and read a real results table (Kim & Lu, 2024) to see what each buys and where prompting **plateaus**.
-- Explain **chain-of-thought** and where it earns its keep.
-- Place a technique on the **run-it-this-week vs. know-it-exists** line.
+- Distinguish **zero-shot** from **few-shot** prompting, judge **when examples help**, and read a real results table (Kim & Lu, 2024) to see what each contributes and where prompting stops improving.
+- Explain **chain-of-thought** and which tasks it improves.
+- Decide whether a technique is one to **run this week** or one to **know about**.
 - Explain the **train/test contamination** trap and why you **tune on validation, report on test**.
 
 ::: {.callout-note}
-The message of the day: *prompting is a **design space**, not a single trick — small structural choices move the score.*
+The message of the day: *a prompt has parts you can design, and small changes to those parts change the score.*
 :::
 
 # The anatomy of a prompt
 
-## Prompting *is* a design space
+## A prompt has parts you can design
 
-An LLM does what the **prompt** tells it to. Change the prompt, change the output — and the score.
+An LLM does what the **prompt** tells it to. Change the prompt and you change the output, and the score.
 
 . . .
 
-So a prompt is not a magic phrase you either know or don't. It has **parts you can design deliberately** — and today we learn those parts on one concrete example.
+A prompt is not a fixed phrase that you either know or do not know. It has **parts you can design deliberately**, and today we learn those parts on one concrete example.
 
 ## Four elements of a prompt {.smaller}
 
@@ -63,18 +63,18 @@ Chen et al. (2023), via **Huang & Mizumoto (2025)** — an effective prompt typi
 
 . . .
 
-If one of the four is missing, the output usually misses too.
+If one of the four is missing, the output is usually not what you wanted.
 
 ## Sharpening the instruction — structure & persona {.smaller}
 
-The *instruction* element does the most work, so it rewards a little care:
+The *instruction* element has the largest effect, so write it carefully:
 
-- **Lead with a verb and be specific** — "classify this sentence into one CEFR level (A1–C2)" beats "tell me about this sentence."
-- **Give it a persona / role** — *"You are an experienced EFL writing tutor…"* scopes the tone, standards, and vocabulary the model reaches for.
+- **Start with a verb and be specific** — "classify this sentence into one CEFR level (A1–C2)" is more effective than "tell me about this sentence."
+- **Give it a persona / role** — *"You are an experienced EFL writing tutor…"* sets the tone, standards, and vocabulary of the output.
 
 . . .
 
-Persona helps, but keep it honest: it nudges *style*, not knowledge. The **four elements** still do the heavy lifting.
+A persona helps, but it changes *style*, not knowledge. The **four elements** have the larger effect.
 
 ## The running example — writing feedback {.smaller}
 
@@ -117,16 +117,16 @@ A hard linguistic task: labelling **rhetorical move-steps** in research-article 
 
 . . .
 
-They crossed **two separable levers**:
+They tested **two independent variables**:
 
 - **zero-shot vs. three-shot** — the prompt alone vs. the prompt **+ 3 fully annotated introductions** (38 sentences, drawn from the **training** set — *not* the gold test set).
 - **initial vs. refined prompt** — the instruction sharpened after reading the **validation-set confusion matrix**.
 
 ::: {.callout-important}
-Notice: the few-shot examples come from **training**, never from the gold set you score on. (More on that trap shortly.)
+Notice: the few-shot examples come from **training**, never from the gold set you score on. (More on this shortly.)
 :::
 
-## The numbers — prompt-only has a ceiling {.smaller}
+## The numbers — prompting alone stops improving {.smaller}
 
 Test-set accuracy, **move / step** (their Table 2):
 
@@ -158,14 +158,14 @@ Test-set accuracy, **move / step** (their Table 2):
 
 . . .
 
-Every lever helps a little; **refined + three-shot** is best — but prompt-only tops out near **53%** move accuracy. That gap to fine-tuning is the ceiling.
+Each change helps a little, and **refined + three-shot** is best. But prompting alone reaches only about **53%** move accuracy, well below fine-tuning.
 
 ## Four things the numbers teach {.smaller}
 
 1. **Few-shot helps, but modestly** — adding 3 examples to the *initial* prompt was **not** significant on its own (McNemar move χ²=0.543, *p*=0.46).
 2. **Examples and instructions compound** — only **refined + three-shot** beat the zero-shot baseline significantly (move *p*=0.028, step *p*=0.018). Sharpen the instruction **and** add examples.
-3. **Few-shot mainly buys recall** — precision ran higher than recall; examples pulled recall up. (That precision/recall trade-off returns in S8/S9.)
-4. **Context-heavy tasks resist prompting alone** — the best prompt-only setting still trailed fine-tuning badly: *run-it-this-week (prompt)* vs. *escalate-when-it-plateaus (fine-tune)*.
+3. **Few-shot mainly raises recall** — precision was higher than recall, and examples raised recall. (That precision/recall relationship returns in S8/S9.)
+4. **Context-heavy tasks need more than prompting** — the best prompt-only setting was still far below fine-tuning: prompt first, and consider fine-tuning when prompting stops improving.
 
 ::: {.callout-note}
 **Discuss:** When would 3 well-chosen examples beat a longer instruction? How do you pick *which* examples to show? Why might few-shot raise recall but not precision?
@@ -184,7 +184,7 @@ Ask the model to **reason in steps** before answering (Wei et al., 2022).
 Zero-shot CoT is often just one added line — **"Let's think step by step"** (Kojima et al., 2022).
 
 ::: {.callout-tip}
-CoT earns its keep on tasks that need **sequential judgement** — reviewing writing, or deciding a borderline label.
+CoT helps on tasks that need **several judgements in sequence**, such as reviewing writing or deciding a borderline label.
 :::
 
 ## Iterating a prompt: Ex 1 → Ex 2 {.smaller}
@@ -196,7 +196,7 @@ The *same* feedback task, tightened:
 
 . . .
 
-That move — generic → structured — is **prompt iteration**. The data-driven version is **error analysis**: read *where* the model is wrong (the confusion matrix), tighten the *Criteria* that cause those errors, and the score goes up — exactly Kim & Lu's *initial → refined* jump. You'll run that loop yourself in **S9**.
+That change — generic → structured — is **prompt iteration**. The data-based version is **error analysis**: find *where* the model is wrong (the confusion matrix), make the *Criteria* that cause those errors more precise, and the score rises. This is the same as Kim & Lu's *initial → refined* change. You will do this yourself in **S9**.
 
 # The wider design space
 
@@ -204,27 +204,27 @@ That move — generic → structured — is **prompt iteration**. The data-drive
 
 | **Run it in S8** | **Know it exists** (name & reason, don't run) |
 |---|---|
-| zero-shot | **self-consistency** — sample N, majority-vote (a reproducibility lever → S10) |
-| few-shot | **RAG** — ground the model on the annotation manual / codebook (≈ *dynamic* few-shot) |
+| zero-shot | **self-consistency** — sample N answers, take the majority (relevant to reproducibility → S10) |
+| few-shot | **RAG** — give the model the annotation manual / codebook to consult (≈ *dynamic* few-shot) |
 | chain-of-thought | **agentic / multi-step** — the model plans → critiques its own label → revises |
 | structured output | (ReAct, Reflexion, prompt chaining…) |
 
 . . .
 
-Your self-study map for all of these: **[promptingguide.ai/techniques](https://www.promptingguide.ai/techniques)**.
+A reference for all of these: **[promptingguide.ai/techniques](https://www.promptingguide.ai/techniques)**.
 
-## Two traps before you tune {.smaller}
+## Two errors to avoid before you tune {.smaller}
 
-- **Train/test contamination** — never draw your **few-shot examples from the gold set** you score on. The model would be "shown the answers."
+- **Train/test contamination** — never draw your **few-shot examples from the gold set** you score on. The model would then be given the answers to the test items.
 - **Validation vs. test** — **tune** the prompt on a small **validation** set; **report** the final number **once** on a held-out **test** set.
 
 . . .
 
-Both protect the one thing an evaluation is for: **an honest estimate of how the prompt does on unseen text.**
+Both protect the purpose of an evaluation: **an accurate estimate of how the prompt performs on text it has not seen.**
 
 # Coming up
 
-## Bridge to S8 — same anatomy, new task {.smaller}
+## S8 — the same four elements, a new task {.smaller}
 
 Next session you build a real classification pipeline — and the **CEFR prompt is the same four elements**:
 

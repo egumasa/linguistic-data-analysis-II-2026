@@ -139,9 +139,9 @@
 </section>
 <section class="slide level2">
 
-<!-- Executes S4's Phase C (E&K Step 6 · ③) as a six-step lab spine A–F. The A–F labels
-     (distinct from E&K numbered *Steps* and the circled ①②③ *phases*) are the shared spine
-     printed on all three surfaces — slides / Google Sheet / Colab. Work is divided by ACTIVITY:
+<!-- Executes S4's Phase C (E&K Step 6 · ③) as a six-step lab sequence A–F. The A–F labels
+     (distinct from E&K numbered *Steps* and the circled ①②③ *phases*) are the shared step
+     labels printed on all three surfaces — slides / Google Sheet / Colab. Work is divided by ACTIVITY:
      slides own the concepts, the Sheet owns the human judgment, Colab owns the numbers.
      Cross-reference BY A–F LABEL, never by slide number. Grounded in the
      day2-s5_gold_standard_construction.ipynb round-trip (see sessions/day2/session-05.md). -->
@@ -153,7 +153,7 @@
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
-<p>We open with <strong>ten minutes in the Arase paper</strong> — pulling out the two design decisions S4 left for you. Then you <strong>build a gold standard</strong> for your track: the graded <em>construction</em> skill, split across <strong>three surfaces</strong>, with one spine (<strong>A–F</strong>) running through all of them:</p>
+<p>We open with <strong>ten minutes in the Arase paper</strong> — pulling out the two design decisions S4 left for you. Then you <strong>build a gold standard</strong> for your track: the graded <em>construction</em> skill, split across <strong>three surfaces</strong>, with one shared sequence of steps (<strong>A–F</strong>) used on all of them:</p>
 <ul>
 <li><strong>These slides</strong> teach the <em>concepts</em> — how to sample, why annotate blind, how to read a matrix.</li>
 <li><strong>A Google Sheet</strong> holds the <em>human judgment</em> — you and your partner annotate there.</li>
@@ -323,7 +323,7 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>These filters weren’t decided up front — they ran <strong>several rounds of manual checks over a few hundred samples</strong> before freezing them. Sampling is something you <strong>debug</strong>.</p>
+<p>These filters were not decided in advance — the authors ran <strong>several rounds of manual checks over a few hundred samples</strong> before fixing them. Sampling rules are revised as you test them.</p>
 </div>
 </div>
 </div>
@@ -378,19 +378,19 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>Not just word difficulty — <em>grammar, abstraction and world knowledge</em> climb too. <strong>This is the judgment you’re about to make.</strong> Their own two experts matched exactly <strong>37.6%</strong> of the time — so expect to differ, from your partner and from the gold.</p>
+<p>Not just word difficulty — <em>grammar, abstraction and world knowledge</em> also increase across the levels. <strong>This is the judgment you’re about to make.</strong> Their own two experts matched exactly <strong>37.6%</strong> of the time — so expect to differ, from your partner and from the gold.</p>
 </div>
 </div>
 </div>
 </section></section>
 <section>
-<section id="now-you-do-it-one-spine-three-surfaces" class="title-slide slide level1 center">
-<h1>Now you do it — one spine, three surfaces</h1>
+<section id="now-you-do-it-one-sequence-of-steps-three-surfaces" class="title-slide slide level1 center">
+<h1>Now you do it — one sequence of steps, three surfaces</h1>
 
 </section>
 <section id="todays-goal-as-six-steps-af" class="slide level2 smaller">
 <h2>Today’s goal, as six steps (A–F)</h2>
-<p><strong>Your goal:</strong> build a gold standard for your track, and know how far you can trust it. That is <strong>phase ③</strong> (Eguchi &amp; Kyle Step 6) — broken into six steps. The <strong>same A–F labels</strong> appear on every surface, so you always know where you are — <em>find your place by the letter, not the slide number.</em></p>
+<p><strong>Your goal:</strong> build a gold standard for your track, and know how far you can trust it. That is <strong>phase ③</strong> (Eguchi &amp; Kyle Step 6) — broken into six steps. The <strong>same A–F labels</strong> appear on every surface, so you always know where you are: <em>find your place by the letter, not the slide number.</em></p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 25%">
@@ -447,7 +447,7 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>You bounce <strong>out</strong> to the Sheet twice (annotate in C, re-annotate in E) and back. Colab opens at <strong>D</strong> and stays open. The slides run alongside as your interpretation reference.</p>
+<p>You move to the Sheet twice (annotate in C, re-annotate in E) and then return. Colab opens at <strong>D</strong> and stays open. The slides run alongside as your interpretation reference.</p>
 </div>
 </div>
 </div>
@@ -462,11 +462,11 @@
 <h2>Draw a sample that stands for the domain</h2>
 <p>A gold standard is only as trustworthy as the sample it’s built on. Before anyone labels anything, decide <em>what</em> you’re drawing.</p>
 <ul>
-<li><strong>Representative</strong> — cover the range you care about (proficiency, L1, register) so your κ isn’t an accident of an easy slice.</li>
+<li><strong>Representative</strong> — cover the range you care about (proficiency, L1, register), so your κ does not come from an unusually easy subset.</li>
 <li><strong>Right-sized</strong> — enough to measure agreement, small enough to double-annotate by hand (~20 today).</li>
-<li><strong>Reproducible</strong> — a fixed random <strong>seed</strong> means the “same 20” every time; anyone can re-draw your exact sample.</li>
-<li><strong>One fixed unit</strong> — one label per <strong>unit of analysis</strong> (here, the sentence). Settle this before you start.</li>
-<li><strong>Exclusions that defend the unit</strong> — Arase’s <em>first-sentence-only, no named entities</em> rule, which you just found. Anything judged from <strong>outside</strong> the sentence doesn’t belong in the pool.</li>
+<li><strong>Reproducible</strong> — a fixed random <strong>seed</strong> gives the same 20 items every time; anyone can draw your exact sample again.</li>
+<li><strong>One fixed unit</strong> — one label per <strong>unit of analysis</strong> (here, the sentence). Decide this before you start.</li>
+<li><strong>Exclusions</strong> — Arase’s <em>first-sentence-only, no named entities</em> rule, which you just found. Anything that must be judged from <strong>outside</strong> the sentence does not belong in the pool.</li>
 </ul>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -493,7 +493,7 @@
 <ul>
 <li><strong>Restate the rule and the unit</strong> — one label per unit; know your label set cold.</li>
 <li><strong>Skim the guidelines and per-level examples</strong> <em>before</em> you annotate, not while you annotate.</li>
-<li><strong>Don’t invent as you go</strong> — if the rule can’t decide a case, that’s a note for step E, not a private house rule.</li>
+<li><strong>Do not invent rules while annotating</strong> — if the scheme cannot decide a case, write it down for step E instead of deciding it privately.</li>
 </ul>
 <p><em>This is ① and ② made concrete: a decidable rule, applied to a real sample.</em></p>
 <div class="callout callout-important callout-titled callout-style-default">
@@ -515,15 +515,15 @@
 <h1>C · Annotate blind, in pairs <em>(E&amp;K Step 6 · ③)</em></h1>
 
 </section>
-<section id="two-people-same-items-no-peeking" class="slide level2 smaller">
-<h2>Two people, same items, no peeking</h2>
-<p>This is the heart of it, and it happens <strong>entirely in the Sheet</strong> — no code.</p>
+<section id="two-people-the-same-items-independently" class="slide level2 smaller">
+<h2>Two people, the same items, independently</h2>
+<p>This is the central step of the session, and it happens <strong>entirely in the Sheet</strong> — no code.</p>
 <ul>
 <li>Each partner labels the <strong>same ~20 items</strong> in the sheet you copied.</li>
 <li><strong>Two annotator columns</strong> (<code>label_a</code>, <code>label_b</code>) → agreement falls straight out in step D.</li>
-<li><strong>Blind</strong> = no peeking at your partner’s column, no discussing as you go.</li>
+<li><strong>Blind</strong> = do not look at your partner’s column, and do not discuss items while you label.</li>
 </ul>
-<p>The disagreements are the point — they show where the scheme is still fuzzy. <strong>Don’t</strong> smooth them over now.</p>
+<p>The disagreements are what you need: they show where the scheme is still unclear. <strong>Do not</strong> resolve them yet.</p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -548,8 +548,8 @@
 <p>Now Colab opens for the first time. It reads your sheet and reports three numbers — but the <em>reading</em> of them happens here.</p>
 <div class="fragment">
 <ul>
-<li><strong>Percent agreement</strong> — the raw diagonal. Easy, but flattering: two coders who both say “B1” most of the time agree a lot <strong>by luck</strong>.</li>
-<li><strong>Cohen’s κ</strong> — agreement <em>corrected for chance</em>. This is the honest number.</li>
+<li><strong>Percent agreement</strong> — the raw diagonal. Simple, but it gives a high score too easily: two coders who both say “B1” most of the time will agree often <strong>by chance</strong>.</li>
+<li><strong>Cohen’s κ</strong> — agreement <em>corrected for chance</em>. Report this one.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -562,7 +562,7 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>Recall from S4: <strong>80% raw agreement was only κ ≈ 0.52</strong> once chance was removed. Trust the κ.</p>
+<p>Recall from S4: <strong>80% raw agreement was only κ ≈ 0.52</strong> once chance was removed.</p>
 </div>
 </div>
 </div>
@@ -576,11 +576,11 @@
 <ul>
 <li><strong>Rows = annotator A, columns = annotator B</strong> — one cell per label pair.</li>
 <li><strong>The diagonal</strong> is where you agreed; <strong>off-diagonal cells</strong> are your disagreements.</li>
-<li>A cluster in one off-diagonal cell (say <strong>B1 ↔︎ B2</strong>) is a signpost: <em>that</em> boundary is under-defined.</li>
+<li><strong>Many items in one off-diagonal cell</strong> (say <strong>B1 ↔︎ B2</strong>) indicates that <em>that</em> boundary is under-defined in your scheme.</li>
 </ul>
 </div>
 <div class="fragment">
-<p>Don’t just note <em>that</em> κ is low — find the <strong>specific label pair</strong> dragging it down. That cell is your to-do list for step E.</p>
+<p>Do not stop at <em>κ is low</em>. Find the <strong>specific label pair</strong> that produces most of the disagreement. That cell is your task list for step E.</p>
 </div>
 </section></section>
 <section>
@@ -590,7 +590,7 @@
 </section>
 <section id="fix-the-scheme-then-label-again" class="slide level2 smaller">
 <h2>Fix the scheme, then label again</h2>
-<p>A confusion matrix isn’t a verdict on your annotating — it’s a diagnosis of your <strong>scheme</strong>.</p>
+<p>A confusion matrix does not evaluate you as an annotator. It shows which parts of your <strong>scheme</strong> are unclear.</p>
 <div class="fragment">
 <ul>
 <li>Take the <strong>off-diagonal cells</strong> — which label pairs get confused?</li>
@@ -609,7 +609,7 @@
 <p><strong>Re-annotate in a fresh round tab</strong></p>
 </div>
 <div class="callout-content">
-<p>Make your scheme edits, then <strong>duplicate the <code>round1</code> tab → <code>round2</code></strong> and re-label the confused items <em>there</em> — never overwrite round1. Back in Colab, <code>disagreements(rows)</code> lists what to revisit; set <code>ROUND = "round2"</code> and re-run step D to see κ move. Each round is preserved, so the analysis stays reproducible and you watch κ climb round over round.</p>
+<p>Make your scheme edits, then <strong>duplicate the <code>round1</code> tab → <code>round2</code></strong> and re-label the confused items <em>there</em> — never overwrite round1. Back in Colab, <code>disagreements(rows)</code> lists what to revisit; set <code>ROUND = "round2"</code> and re-run step D to see κ move. Each round is preserved, so the analysis stays reproducible and you can see how κ changes from round to round.</p>
 </div>
 </div>
 </div>
@@ -622,12 +622,12 @@
 </section>
 <section id="resolve-compare-export" class="slide level2 smaller">
 <h2>Resolve, compare, export</h2>
-<p>The last disagreements don’t refine away — you <strong>decide</strong> them. That’s adjudication, and it’s the graded step.</p>
+<p>The remaining disagreements cannot be removed by refining the scheme. You <strong>decide</strong> them. That is adjudication, and it is the graded step.</p>
 <div class="fragment">
 <ul>
 <li>Talk through the <strong>remaining disagreements</strong> and agree a single <code>final</code> label for each.</li>
 <li><strong>Compare to the published gold</strong> — where do you differ, and <em>why</em>? A difference isn’t automatically an error.</li>
-<li><strong>Export</strong> the canonical <strong><code>{id, text, label}</code></strong> set — this is S6’s yardstick, and the input to ④⑤.</li>
+<li><strong>Export</strong> the canonical <strong><code>{id, text, label}</code></strong> set — this is what S6 measures the model against, and the input to ④⑤.</li>
 </ul>
 </div>
 <div class="fragment">

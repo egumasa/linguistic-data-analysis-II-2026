@@ -231,8 +231,8 @@
 <h1>From feedback to classification</h1>
 
 </section>
-<section id="same-anatomy-new-task" class="slide level2 smaller">
-<h2>Same anatomy, new task</h2>
+<section id="the-same-four-elements-a-new-task" class="slide level2 smaller">
+<h2>The same four elements, a new task</h2>
 <p>The CEFR prompt you’ll write is <strong>Huang &amp; Mizumoto’s Ex 2 structure</strong>, re-cast for classification:</p>
 <table class="caption-top">
 <colgroup>
@@ -265,7 +265,7 @@
 </tbody>
 </table>
 <div class="fragment">
-<p>And the <strong>few-shot examples</strong> are <strong>written by you</strong> — <em>never</em> lifted from the set you score on (contamination, S7).</p>
+<p>And the <strong>few-shot examples</strong> are <strong>written by you</strong>, never taken from the set you score on (contamination, S7).</p>
 </div>
 </section></section>
 <section>
@@ -275,9 +275,9 @@
 </section>
 <section id="today-you-call-the-model-yourself" class="slide level2">
 <h2>Today you call the model yourself</h2>
-<p>Days 1–2 were keyless: Day 1 used Colab’s built-in model, Day 2 used a <strong>frozen</strong> prediction file.</p>
+<p>Days 1–2 needed no key: Day 1 used Colab’s built-in model, Day 2 used a <strong>frozen</strong> prediction file.</p>
 <div class="fragment">
-<p>From today the calls are <strong>yours</strong>, which means they must be <strong>reproducible</strong> — so we move to the Gemini API, where <code>temperature</code> and <code>seed</code> exist.</p>
+<p>From today you make the calls yourself, so they must be <strong>reproducible</strong>. We move to the Gemini API, where <code>temperature</code> and <code>seed</code> can be set.</p>
 </div>
 </section>
 <section id="four-steps-five-minutes" class="slide level2">
@@ -339,21 +339,21 @@
 </tbody>
 </table>
 <div class="fragment">
-<p>Reproducibility is not a nicety here — <strong>your reported numbers have to survive someone re-running them.</strong></p>
+<p>Reproducibility is a requirement here: <strong>someone else must be able to re-run your work and get your reported numbers.</strong></p>
 </div>
 </section>
-<section id="two-clocks-not-one" class="slide level2 smaller">
-<h2>Two clocks, not one</h2>
+<section id="two-separate-rate-limits" class="slide level2 smaller">
+<h2>Two separate rate limits</h2>
 <p>The free tier limits you <strong>two independent ways</strong>:</p>
 <ul>
 <li><strong>RPM</strong> — 15 requests per <em>minute</em></li>
 <li><strong>RPD</strong> — 500 requests per <em>day</em></li>
 </ul>
 <div class="fragment">
-<p>Almost every surprising <code>429</code> is the <strong>per-minute</strong> one, hit while the daily budget is barely touched.</p>
+<p>Most unexpected <code>429</code> errors come from the <strong>per-minute</strong> limit, while the daily limit is still far from reached.</p>
 </div>
 <div class="fragment">
-<p><code>generate_text</code> has been pacing your calls and retrying since Day 1 — you’ll meet the code that does it in the notebook.</p>
+<p><code>generate_text</code> has been spacing out your calls and retrying since Day 1. You will read the code that does this in the notebook.</p>
 </div>
 </section></section>
 <section>
@@ -361,8 +361,8 @@
 <h1>Run classification in Colab</h1>
 
 </section>
-<section id="two-sets-two-jobs" class="slide level2 smaller">
-<h2>Two sets, two jobs</h2>
+<section id="two-sets-two-purposes" class="slide level2 smaller">
+<h2>Two sets, two purposes</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -380,15 +380,15 @@
 <tr class="even">
 <td><code>gold</code></td>
 <td style="text-align: center;">72</td>
-<td><strong>Report on this.</strong> Touched once, at the very end.</td>
+<td><strong>Report on this.</strong> Used once, at the very end.</td>
 </tr>
 </tbody>
 </table>
 <div class="fragment">
-<p>Try five prompts on the 72 and keep the best, and that score is no longer an estimate of performance on <em>new</em> sentences — you picked it <strong>because</strong> it suited those 72.</p>
+<p>If you try five prompts on the 72 and keep the best, that score is no longer an estimate of performance on <em>new</em> sentences, because you selected the prompt using those 72 items.</p>
 </div>
 <div class="fragment">
-<p>Tune somewhere else. Report once. This is the split from S7, now with files attached.</p>
+<p>Tune on the validation set, and report once on the test set. This is the split from S7, now as two files.</p>
 </div>
 </section>
 <section id="round-0-zero-shot" class="slide level2">
@@ -404,18 +404,18 @@
 <span id="cb1-8"><a></a>pred_zero <span class="op">=</span> run_prompt(PROMPT_ZERO, val)</span>
 <span id="cb1-9"><a></a>evaluate(val, pred_zero, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p><code>{text}</code> is the slot each sentence drops into. <strong>Keep it.</strong></p>
+<p><code>{text}</code> marks the position where each sentence is inserted. <strong>Keep it in your prompt.</strong></p>
 </div>
 </section>
 <section id="round-1-few-shot" class="slide level2">
 <h2>Round 1 — few-shot</h2>
-<p>Add labelled examples so the model can pattern-match.</p>
+<p>Add labelled examples so the model can infer the pattern.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>Examples:</span>
 <span id="cb2-2"><a></a>Sentence: <span class="st">"I have a cat."</span> <span class="op">-&gt;</span> A1</span>
 <span id="cb2-3"><a></a>Sentence: <span class="st">"She went to the shops because she needed milk."</span> <span class="op">-&gt;</span> A2</span>
 <span id="cb2-4"><a></a>Sentence: <span class="st">"The results suggest a modest improvement."</span> <span class="op">-&gt;</span> B2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Write your own. Do <strong>not</strong> copy one out of <code>val</code> or <code>gold</code> — that is showing the model the answers to its own test.</p>
+<p>Write your own. Do <strong>not</strong> copy one from <code>val</code> or <code>gold</code>: that gives the model the answers to the items you will test it on.</p>
 </div>
 </section>
 <section id="round-2-chain-of-thought" class="slide level2">
@@ -450,7 +450,7 @@
 <h2>Read the report, not just the average</h2>
 <p><code>evaluate</code> prints per-class precision, recall and F1 — then macro-F1, plain κ and weighted κ.</p>
 <div class="fragment">
-<p><strong>Macro-F1 averages the classes equally.</strong> So one collapsed level drags the whole number down, and the report tells you <em>which</em> one.</p>
+<p><strong>Macro-F1 averages the classes equally.</strong> One level with F1 near zero lowers the whole number, and the per-class report shows you <em>which</em> level it is.</p>
 </div>
 <div class="fragment">
 <p>Fill in the table as you go:</p>
@@ -487,7 +487,7 @@
 <p>Expect it to be <strong>lower</strong> than your validation score.</p>
 </div>
 <div class="fragment">
-<p>That gap is not a mistake — it is the honest cost of having chosen a prompt by looking at results. Look at this number, then go back and edit, and the 72 have stopped being held out.</p>
+<p>That difference is not a mistake. It is the expected effect of having chosen a prompt by looking at validation results. If you read this number and then edit the prompt again, the 72 items are no longer held out.</p>
 </div>
 </section>
 <section id="structured-output" class="slide level2">
@@ -498,7 +498,7 @@
 <p>That is the same <code>{id, text, label}</code> schema from Day 1 — <strong>JSON</strong> is just the file format it travels in.</p>
 </div>
 <div class="fragment">
-<p>Asking for JSON is an <em>output indicator</em> (S7’s fourth element), and it is what makes the reply parseable instead of guessable.</p>
+<p>Asking for JSON is an <em>output indicator</em> (S7’s fourth element). It makes the reply readable by code, instead of text you have to interpret.</p>
 </div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">

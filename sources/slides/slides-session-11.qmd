@@ -21,10 +21,10 @@ You have already run every piece of this pipeline. Today you learn to **name the
 
 - **15 min** — the pipeline as one diagram, and where you have met each helper
 - **45 min** — your group writes `PLAN.md`
-- **25 min** — each group states its I/O contract out loud
+- **25 min** — each group states its inputs and outputs, step by step
 
 ::: {.callout-note}
-Not a re-teach. Nothing here is new code — the point is being able to *describe* the flow, which is exactly what the Q&A on Day 5 will ask you to do.
+This session does not teach new code. The aim is to be able to *describe* the flow, which is what the Q&A on Day 5 will ask you to do.
 :::
 
 ## 🎯 Learning Objectives
@@ -88,13 +88,13 @@ Everything after the frozen file reads **the file**, not the model.
 | 3–4 | `evaluate(gold, pred, ordered=True)` | Day 2 S6 · Day 3 | ✅ |
 | 5 | `show_errors(gold, pred)` | Day 3 | ✅ |
 
-**Nine of these are the identical call.** That is why 15 minutes is enough.
+**Nine of these are exactly the same call you have already used.** That is why 15 minutes is enough.
 
 ## The three that are new
 
 ```{.python}
-load_prompt(path)                  # your prompt is a FILE now, so versions survive
-save_predictions(pred, path)       # the freeze from S10, made executable
+load_prompt(path)                  # your prompt is now a FILE, so each version is kept
+save_predictions(pred, path)       # the freezing step from S10, as code
 export_results(track, gold, pred, f1_by_round, out_dir, group=GROUP)
 ```
 
@@ -109,15 +109,15 @@ build_fewshot(PROMPT, pool, gold)  # Day 3: you typed the examples by hand
 
 # `PLAN.md`
 
-## The 作戦シート, finally given a file
+## The 作戦シート, now as a file in your repo
 
 You have been building this plan since S3 — track, scheme, gold source, prompting strategy. Today it becomes one page in your repo.
 
-**It is not graded.** It is a **gate**: no group calls the model until it is signed.
+**It is not graded.** It is a required step: no group calls the model until it is signed.
 
 . . .
 
-Two minutes of writing catches the failures that otherwise cost an hour *after* you have spent quota:
+Two minutes of writing prevents problems that otherwise take an hour to find, *after* you have used your quota:
 
 - label set says `Move 1/2/3`, gold file says `1a/1b`, prompt says "move one" → no error, just a confusing F1
 - labels ordered but not alphabetical → weighted κ computed over `High < Low < Mid`
@@ -139,7 +139,7 @@ Members: …
 ```
 
 ::: {.callout-tip}
-Question 3 exists to catch the ordinal-κ trap. Question 6 asks you to **predict before you test** — which is the whole method in one line.
+Question 3 checks that you use the correct κ for ordered labels. Question 6 asks you to **state your prediction before you test it**, which is the core of the method.
 :::
 
 ## And the table
@@ -163,11 +163,11 @@ Each group, in turn:
 
 . . .
 
-Every step. No notes.
+Do this for every step, without reading from your notes.
 
 . . .
 
-If you can do that, you can answer the Day-5 question *"walk us through what you did"* — which is worth more marks than your F1.
+If you can do that, you can answer the Day-5 question *"describe what you did"*, which is worth more marks than your F1.
 
 # Any questions?
 

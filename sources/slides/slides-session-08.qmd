@@ -32,7 +32,7 @@ By the end of this session, you will be able to:
 
 # From feedback to classification
 
-## Same anatomy, new task {.smaller}
+## The same four elements, a new task {.smaller}
 
 The CEFR prompt you'll write is **Huang & Mizumoto's Ex 2 structure**, re-cast for classification:
 
@@ -45,17 +45,17 @@ The CEFR prompt you'll write is **Huang & Mizumoto's Ex 2 structure**, re-cast f
 
 . . .
 
-And the **few-shot examples** are **written by you** — *never* lifted from the set you score on (contamination, S7).
+And the **few-shot examples** are **written by you**, never taken from the set you score on (contamination, S7).
 
 # Your Gemini API key
 
 ## Today you call the model yourself
 
-Days 1–2 were keyless: Day 1 used Colab's built-in model, Day 2 used a **frozen** prediction file.
+Days 1–2 needed no key: Day 1 used Colab's built-in model, Day 2 used a **frozen** prediction file.
 
 . . .
 
-From today the calls are **yours**, which means they must be **reproducible** — so we move to the Gemini API, where `temperature` and `seed` exist.
+From today you make the calls yourself, so they must be **reproducible**. We move to the Gemini API, where `temperature` and `seed` can be set.
 
 ## Four steps, five minutes
 
@@ -83,9 +83,9 @@ Full walkthrough with screenshots: [`resources/tools/gemini-api-key.md`](../reso
 
 . . .
 
-Reproducibility is not a nicety here — **your reported numbers have to survive someone re-running them.**
+Reproducibility is a requirement here: **someone else must be able to re-run your work and get your reported numbers.**
 
-## Two clocks, not one {.smaller}
+## Two separate rate limits {.smaller}
 
 The free tier limits you **two independent ways**:
 
@@ -94,28 +94,28 @@ The free tier limits you **two independent ways**:
 
 . . .
 
-Almost every surprising `429` is the **per-minute** one, hit while the daily budget is barely touched.
+Most unexpected `429` errors come from the **per-minute** limit, while the daily limit is still far from reached.
 
 . . .
 
-`generate_text` has been pacing your calls and retrying since Day 1 — you'll meet the code that does it in the notebook.
+`generate_text` has been spacing out your calls and retrying since Day 1. You will read the code that does this in the notebook.
 
 # Run classification in Colab
 
-## Two sets, two jobs {.smaller}
+## Two sets, two purposes {.smaller}
 
 | File | Size | What it is for |
 |---|:--:|---|
 | `val` | 24 | **Tune on this.** Every prompt you try is scored here. |
-| `gold` | 72 | **Report on this.** Touched once, at the very end. |
+| `gold` | 72 | **Report on this.** Used once, at the very end. |
 
 . . .
 
-Try five prompts on the 72 and keep the best, and that score is no longer an estimate of performance on *new* sentences — you picked it **because** it suited those 72.
+If you try five prompts on the 72 and keep the best, that score is no longer an estimate of performance on *new* sentences, because you selected the prompt using those 72 items.
 
 . . .
 
-Tune somewhere else. Report once. This is the split from S7, now with files attached.
+Tune on the validation set, and report once on the test set. This is the split from S7, now as two files.
 
 ## Round 0 — zero-shot
 
@@ -135,11 +135,11 @@ evaluate(val, pred_zero, ordered=True)
 
 . . .
 
-`{text}` is the slot each sentence drops into. **Keep it.**
+`{text}` marks the position where each sentence is inserted. **Keep it in your prompt.**
 
 ## Round 1 — few-shot
 
-Add labelled examples so the model can pattern-match.
+Add labelled examples so the model can infer the pattern.
 
 ``` python
 Examples:
@@ -150,7 +150,7 @@ Sentence: "The results suggest a modest improvement." -> B2
 
 . . .
 
-Write your own. Do **not** copy one out of `val` or `gold` — that is showing the model the answers to its own test.
+Write your own. Do **not** copy one from `val` or `gold`: that gives the model the answers to the items you will test it on.
 
 ## Round 2 — chain-of-thought
 
@@ -177,7 +177,7 @@ End with the final level on its own.
 
 . . .
 
-**Macro-F1 averages the classes equally.** So one collapsed level drags the whole number down, and the report tells you *which* one.
+**Macro-F1 averages the classes equally.** One level with F1 near zero lowers the whole number, and the per-class report shows you *which* level it is.
 
 . . .
 
@@ -204,7 +204,7 @@ Expect it to be **lower** than your validation score.
 
 . . .
 
-That gap is not a mistake — it is the honest cost of having chosen a prompt by looking at results. Look at this number, then go back and edit, and the 72 have stopped being held out.
+That difference is not a mistake. It is the expected effect of having chosen a prompt by looking at validation results. If you read this number and then edit the prompt again, the 72 items are no longer held out.
 
 ## Structured output
 
@@ -220,6 +220,6 @@ That is the same `{id, text, label}` schema from Day 1 — **JSON** is just the 
 
 . . .
 
-Asking for JSON is an *output indicator* (S7's fourth element), and it is what makes the reply parseable instead of guessable.
+Asking for JSON is an *output indicator* (S7's fourth element). It makes the reply readable by code, instead of text you have to interpret.
 
 # Any questions?

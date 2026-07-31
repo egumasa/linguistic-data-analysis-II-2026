@@ -38,7 +38,7 @@ By the end of this session, you will be able to:
 
 - Slide for the **idea**, then **do it in Colab**.
 - **Type it, don't copy it.**
-- In Part A you called the model **once**. Today: run it over **many** sentences — the first taste of a real pipeline.
+- In Part A you called the model **once**. Today you run it over **many** sentences, which is the first step toward a full pipeline.
 
 # 1 · From a document to sentences
 
@@ -51,9 +51,9 @@ The obvious idea: cut on every full stop. To do that we **call a method** on the
 
 ## Why this matters
 
-The naive rule looks fine — until it isn't. Abbreviations and decimals contain dots that **aren't** sentence ends.
+The naive rule works on simple text but fails on common cases: abbreviations and decimals contain dots that are **not** sentence ends.
 
-Bad boundaries corrupt everything downstream. So it's worth *seeing* the naive rule fail before we reach for a better tool.
+Incorrect boundaries produce incorrect data in every later step, so it is worth *seeing* the naive rule fail before we use a better tool.
 
 ## 🧪 Let's try — naive split {.smaller}
 
@@ -69,23 +69,23 @@ for piece in naive:              # look at each piece in turn
 
 . . .
 
-Look at the mess: `"Dr"` (from *Dr.*), `"e"` and `"g"` (from *e.g.*), `"3"` and `"14"` (from *3.14*) all split in the wrong places. **Sentence boundaries are not just full stops.**
+Look at the output: `"Dr"` (from *Dr.*), `"e"` and `"g"` (from *e.g.*), `"3"` and `"14"` (from *3.14*) are all split in the wrong places. **Sentence boundaries are not just full stops.**
 
 # 2 · Segmentation with a model
 
-## Borrow a real tool {.smaller}
+## Use an existing library {.smaller}
 
-Instead of our own rule, we **import** a purpose-built library, **spaCy**:
+Instead of our own rule, we **import** a library built for this task, **spaCy**:
 
 ```python
 ### Step 1: build a sentence splitter that knows more than "cut at every dot" ###
-import spacy                       # the NLP toolbox
+import spacy                       # an NLP library
 nlp = spacy.blank("en")            # a minimal English pipeline
 nlp.add_pipe("sentencizer")        # add the rule-based splitter — no download
 ```
 
-- `import spacy` loads the toolbox.
-- The **sentencizer** knows abbreviations and decimals aren't sentence ends.
+- `import spacy` loads the library.
+- The **sentencizer** treats abbreviations and decimals correctly, not as sentence ends.
 
 ## Why this matters {.smaller}
 
@@ -93,7 +93,7 @@ nlp.add_pipe("sentencizer")        # add the rule-based splitter — no download
 On **Day 2**, the **sentence** is the unit you **annotate by hand** and the unit you **feed the LLM**. Bad boundaries → bad gold data → misleading scores.
 :::
 
-Getting segmentation right is not a side quest — it's the foundation the whole gold standard sits on.
+Correct segmentation is required for a correct gold standard: every label is attached to one segment.
 
 . . .
 
@@ -127,11 +127,11 @@ Together: *for each sentence → build a prompt → call the model → tidy the 
 
 ## Why this matters
 
-This little loop is the **seed of the pipeline** you'll assemble later in the week.
+This loop is the first version of the pipeline you assemble later in the week.
 
 . . .
 
-Annotation, classification, evaluation — all of it is "run this call over a list and collect the results." Write it once here; reuse the shape all week.
+Annotation, classification and evaluation all consist of running one call over a list and collecting the results. Write it once here, and reuse the same structure all week.
 
 ## 🧪 Let's try — the loop {.smaller}
 
@@ -152,7 +152,7 @@ Same three steps, packaged so you can reuse them:
 def ask(sentence):                     # `def` names a block of steps
     """Ask the model for the CEFR level of one sentence; return its reply."""
     prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"
-    return generate_text(prompt).strip()   # `return` hands the answer back
+    return generate_text(prompt).strip()   # `return` gives the answer back
 
 print(ask("Despite the rain, the game went ahead."))  # one line does all three steps
 ```
@@ -198,11 +198,11 @@ Some library cells use a **list comprehension** like `[row["label"] for row in r
 
 Choosing now means your group is ready to start the project on **Day 4**. See the [Final Project](../final-project/index.md) page for the tracks.
 
-# 作戦会議 — strategy huddle
+# 作戦会議 — team planning
 
 ## Open your 作戦シート {.smaller}
 
-Class tutorials only ever use the **CEFR** demo. This ~10–15 min team huddle is where you carry each day's mechanic onto **your own track**.
+Class tutorials always use the **CEFR** demo. In this ~10–15 minute team session you apply each day's method to **your own track**.
 
 Start your **作戦シート** (*project design log*) — today's four entries:
 
@@ -214,7 +214,7 @@ Start your **作戦シート** (*project design log*) — today's four entries:
 . . .
 
 ::: {.callout-tip}
-You'll add to this sheet again at the end of **Day 2** and **Day 3**. By then it's a **study design** — and it prefills your final report.
+You will add to this sheet again at the end of **Day 2** and **Day 3**. By then it is a **study design**, and it provides the content for your final report.
 :::
 
 # Any questions?

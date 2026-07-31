@@ -204,11 +204,11 @@
 <li>But careful annotation is <strong>expensive</strong>: expert time, training, guidelines, double-coding.</li>
 <li>If an LLM could annotate reliably, then it facilitates research.</li>
 </ul>
-<p>The tempting question: <em>can an LLM just do it for us?</em></p>
+<p>So the question arises: <em>can an LLM do this annotation for us?</em></p>
 </section>
 <section id="adequacy-must-be-evaluated-not-assumed" class="slide level2">
 <h2>Adequacy must be evaluated, not assumed</h2>
-<p>Here’s the seed of the whole course:</p>
+<p>This is the central claim of the course:</p>
 <blockquote>
 <p>An LLM’s output is only useful if it’s <strong>adequate</strong> — and adequacy has to be <strong>evaluated, not assumed.</strong></p>
 </blockquote>
@@ -229,7 +229,7 @@
 <ul>
 <li>Let’s find out!</li>
 </ul>
-<p>Each day earns one piece of the method. By Friday you own the whole loop.</p>
+<p>Each day adds one part of the method. By Friday you can run the whole procedure yourself.</p>
 </section></section>
 <section>
 <section id="the-5-day-map" class="title-slide slide level1 center">
@@ -252,7 +252,7 @@
 </tr>
 <tr class="even">
 <td><strong>2</strong></td>
-<td>Gold standard + agreement — <strong>the yardstick</strong></td>
+<td>Gold standard + agreement — <strong>how to measure quality</strong></td>
 </tr>
 <tr class="odd">
 <td><strong>3</strong></td>
@@ -281,9 +281,9 @@
 <section id="the-one-idea-for-today" class="slide level2 smaller">
 <h2>The one idea for today</h2>
 <blockquote>
-<p>An LLM is a <strong>judge you must check</strong>, not an oracle — and it fits the linguistic tasks you already care about.</p>
+<p>An LLM produces annotations, and <strong>you must check them against a gold standard</strong> before you report them. It can be applied to the linguistic tasks you already work on.</p>
 </blockquote>
-<p>Everything this week is a way of <em>checking</em> that judge. Today we build the case for <strong>why</strong> checking is the whole point.</p>
+<p>Everything this week is a method for doing that checking. Today we explain <strong>why</strong> the checking is necessary.</p>
 </section></section>
 <section id="what-do-you-know-about-llm" class="title-slide slide level1 center">
 <h1>3 · What do you know about LLM?</h1>
@@ -301,7 +301,7 @@
 <section id="the-plan-follow-one-example" class="slide level2 smaller">
 <h2>The plan — follow one example</h2>
 <p>An LLM is a kind of <strong>statistical machine-learning model</strong>.</p>
-<p>To see its significance, we need to take a detour:</p>
+<p>To explain what that means, we cover four topics:</p>
 <ol type="1">
 <li><strong>Machine learning</strong> — what “learning from data” means</li>
 <li><strong>NLP</strong> — machine learning applied to <em>language</em></li>
@@ -322,15 +322,15 @@
 <h2>Example — spam detection</h2>
 <p>The classic ML task: given an email, decide <strong>spam / not-spam</strong>.</p>
 <ul>
-<li><p><strong>Rule-based:</strong> block anything containing <code>FREE</code>, <code>WINNER</code>, <code>$$$</code> → brittle; spammers just write “F R E E”, and you block real mail.</p></li>
+<li><p><strong>Rule-based:</strong> block anything containing <code>FREE</code>, <code>WINNER</code>, <code>$$$</code> → this fails easily: spammers write “F R E E”, and you block real mail.</p></li>
 <li><p><strong>ML:</strong> show the model thousands of emails already <strong>labelled</strong> spam / not-spam. It <em>learns on its own</em> which words (and combinations) predict spam.</p></li>
 </ul>
 <p>The rules are <strong>inferred from examples</strong>, not written by hand.</p>
 </section>
 <section id="what-is-the-predictor-in-the-ml-model" class="slide level2">
 <h2>What is the predictor in the ML model?</h2>
-<p>The idea of ML is like creating a smart regression model.</p>
-<p>But then we need <strong>predictors</strong> (input features) to make predictons.</p>
+<p>An ML model works in the same way as a regression model: it maps input features to an outcome.</p>
+<p>So we need <strong>predictors</strong> (input features) to make predictions.</p>
 <p>Three different classes of technologies.</p>
 <ul>
 <li>One-hot text vector</li>
@@ -340,7 +340,7 @@
 </section>
 <section id="one-hot-text-vector" class="slide level2 smaller">
 <h2>One-hot text vector</h2>
-<p>Each vocabulary word is a <strong>slot</strong>. A word flips on its own slot — <strong>1 if present, 0 if not</strong>. Add the words up → the email’s <strong>bag-of-words vector</strong>, and <em>that</em> is what the classifier reads.</p>
+<p>Each vocabulary word has its own position in the vector — <strong>1 if the word is present, 0 if not</strong>. Add the words up → the email’s <strong>bag-of-words vector</strong>, and <em>that</em> is what the classifier reads.</p>
 <style>
 .spam-pipe{display:flex;align-items:stretch;justify-content:center;gap:.5rem;flex-wrap:wrap;font-size:.6rem;margin-top:.4rem}
 .spam-pipe .pnode{display:flex;flex-direction:column;gap:.3rem;align-items:center;justify-content:center;
@@ -395,7 +395,7 @@
   </div>
 </div>
 <div class="fragment smaller">
-<p><strong>Cost:</strong> the vector is as long as the whole vocabulary (tens of thousands of slots), and <em>“free”</em> and <em>“complimentary”</em> are just two unrelated slots — no notion that they <em>mean</em> the same.</p>
+<p><strong>Limitation:</strong> the vector is as long as the whole vocabulary (tens of thousands of positions), and <em>“free”</em> and <em>“complimentary”</em> are two unrelated positions — the representation does not record that they <em>mean</em> the same.</p>
 </div>
 </section>
 <section id="static-embeddings" class="slide level2 smaller">
@@ -432,7 +432,7 @@
   </div>
 </div>
 <div class="fragment smaller">
-<p><strong>Win:</strong> <em>“free”</em> and <em>“complimentary”</em> now have <strong>nearby</strong> vectors → the model generalises to words it never saw labelled. <strong>Still</strong> ignores word order (it’s an average). → next, <strong>context</strong>.</p>
+<p><strong>Improvement:</strong> <em>“free”</em> and <em>“complimentary”</em> now have <strong>nearby</strong> vectors, so the model generalises to words it never saw labelled. It <strong>still</strong> ignores word order, because it is an average. Next: <strong>context</strong>.</p>
 </div>
 </section>
 <section id="the-limit-of-static-embeddings" class="slide level2">
@@ -442,7 +442,7 @@
 <li>“your account is <strong>free</strong> of charge” ✅ not spam</li>
 <li>“claim your <strong>FREE</strong> prize now” 🚫 spam</li>
 </ul>
-<p>Same word, opposite signal. This is because:</p>
+<p>The same word gives opposite evidence in the two sentences. There are two reasons:</p>
 <ul>
 <li>Many words are polysemous or homographic</li>
 <li>Isolated word does not adds up to the meaning of the whole
@@ -487,7 +487,7 @@
 </table>
 </div>
 <div class="fragment">
-<p>Same string, <strong>two different vectors</strong> — because the neighbours differ. Static embeddings could not do this; there was only ever one vector for <em>free</em>.</p>
+<p>The same word form now has <strong>two different vectors</strong>, because the surrounding words differ. Static embeddings could not do this; there was only ever one vector for <em>free</em>.</p>
 </div>
 </section>
 <section id="why-this-matters-for-you" class="slide level2 smaller">
@@ -509,7 +509,7 @@
 <p><strong>Warning</strong></p>
 </div>
 <div class="callout-content">
-<p>“Can represent it” is not “gets it right.” That gap is what the rest of the week measures.</p>
+<p>Being able to represent context is not the same as producing correct labels. Measuring that difference is what the rest of the week is about.</p>
 </div>
 </div>
 </div>
@@ -520,7 +520,7 @@
 <p>An LLM is trained by <strong>self-supervised pretraining</strong> on huge amounts of text:</p>
 <ul>
 <li>The task: <strong>predict the next word</strong>, over and over, on billions of sentences.</li>
-<li>No hand-labelling needed — the text is its own answer key.</li>
+<li>No hand-labelling is needed, because the next word in the text is already the correct answer.</li>
 </ul>
 <p>Producing natural language is just <strong>that same next-word prediction, run forward</strong> — which is why it <em>sounds</em> fluent.</p>
 </section>
@@ -530,8 +530,8 @@
 <p>$ P(w_T w_1, w_2, , w_{T-1}) $</p>
 <p>Run that forward, one token at a time → fluent, coherent text. That is exactly what a chat LLM does when it answers you.</p>
 </section>
-<section id="the-llm-re-absorbs-the-classic-tasks" class="slide level2 smaller">
-<h2>The LLM <em>re-absorbs</em> the classic tasks</h2>
+<section id="one-model-many-classic-tasks" class="slide level2 smaller">
+<h2>One model, many classic tasks</h2>
 <p>Historically, <strong>each task had its own model</strong> — POS tagger, NER model, parser, coreference model.</p>
 <p>With scale + pretraining + <strong>prompting</strong>, <strong>one model can do many tasks</strong>.</p>
 </section>
@@ -550,15 +550,15 @@
 <h1>5 · LLM follows language instructions</h1>
 
 </section>
-<section id="throw-language-data-at-an-llm" class="slide level2 smaller">
-<h2>Throw language data at an LLM</h2>
-<p>Let’s just <strong>try it</strong> — no code:</p>
+<section id="give-language-data-to-an-llm" class="slide level2 smaller">
+<h2>Give language data to an LLM</h2>
+<p>Let’s <strong>try it</strong> — no code:</p>
 <ul>
 <li>paste some real language data into a chat LLM,</li>
 <li>ask it to label / analyze it,</li>
 <li>read the output together.</li>
 </ul>
-<p><strong>What did it get right? What looks off?</strong> And the question that runs the whole course: <em>how would we ever <strong>know</strong> — beyond eyeballing?</em></p>
+<p><strong>What did it get right? What looks wrong?</strong> And the question for the whole course: <em>how could we <strong>know</strong> this, other than by reading a few outputs?</em></p>
 </section></section>
 <section>
 <section id="but-we-need-evaluation" class="title-slide slide level1 center">
@@ -568,7 +568,7 @@
 <section id="the-inversion" class="slide level2 smaller">
 <h2>The inversion</h2>
 <p>Classic NLP <strong>consumed</strong> annotation to <em>build</em> models.</p>
-<p>Now the model can <strong>produce</strong> annotation. The arrow flips:</p>
+<p>Now the model can <strong>produce</strong> annotation, so the direction is reversed:</p>
 <p><strong>before:</strong> humans annotate → train the model <strong>now:</strong> the model annotates → <em>and who checks it?</em></p>
 </section>
 <section id="trained-to-sound-right-not-be-right" class="slide level2 smaller">
@@ -581,8 +581,8 @@
 </ul>
 <p>We’ll cover these on Day 2.</p>
 </section>
-<section id="the-punchline" class="slide level2 smaller">
-<h2>The punchline</h2>
+<section id="what-this-course-covers" class="slide level2 smaller">
+<h2>What this course covers</h2>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -596,7 +596,7 @@
 </div>
 </div>
 </div>
-<p>NLP’s <em>training</em> half we mostly leave aside. Its <strong>evaluation</strong> half is exactly the rigor an LLM’s outputs need — and it’s what you’ll spend the week learning to run.</p>
+<p>We do not cover the <em>training</em> part of NLP. The <strong>evaluation</strong> part provides exactly the rigour an LLM’s outputs need, and that is what you will learn to run this week.</p>
 </section></section>
 <section>
 <section id="discussion" class="title-slide slide level1 center">
@@ -631,7 +631,7 @@
 </tr>
 <tr class="even">
 <td><strong>2</strong></td>
-<td>Gold standard + agreement — <strong>the yardstick</strong></td>
+<td>Gold standard + agreement — <strong>how to measure quality</strong></td>
 </tr>
 <tr class="odd">
 <td><strong>3</strong></td>

@@ -213,7 +213,7 @@
 <ul>
 <li>Error analysis of misclassifications</li>
 <li>Iterate the prompt over 2–3 cycles</li>
-<li>A short under-the-hood walkthrough</li>
+<li>A walkthrough of what <code>run_prompt</code> does internally</li>
 </ul>
 </section>
 <section id="learning-objectives" class="slide level2">
@@ -223,7 +223,7 @@
 <li>Use <code>show_errors</code> to find misclassifications, hypothesize a fix, and re-run.</li>
 <li>Compare <strong>macro-F1</strong> across iteration rounds.</li>
 <li>Place your result next to the <strong>published supervised results</strong> for the same corpus — and say what that comparison does and does not license.</li>
-<li>Interpret what supervised training <strong>buys and costs</strong> versus zero-training prompting.</li>
+<li>State what supervised training gives you, and what it requires, compared with zero-training prompting.</li>
 </ul>
 </section></section>
 <section>
@@ -231,9 +231,9 @@
 <h1>Error analysis</h1>
 
 </section>
-<section id="the-number-tells-you-that.-the-errors-tell-you-why." class="slide level2 smaller">
-<h2>The number tells you <em>that</em>. The errors tell you <em>why</em>.</h2>
-<p>macro-F1 went from 0.31 to 0.34. <strong>So what changed?</strong></p>
+<section id="the-number-shows-the-change-the-errors-show-the-reason" class="slide level2 smaller">
+<h2>The number shows the change; the errors show the reason</h2>
+<p>macro-F1 went from 0.31 to 0.34. <strong>What changed?</strong></p>
 <div class="fragment">
 <p>You cannot answer that from the average. You have to look at what the model actually got wrong.</p>
 </div>
@@ -247,14 +247,14 @@
 <h2>Read down the F1 column first</h2>
 <p><code>evaluate</code> already printed per-class F1. One or two levels will sit far below the rest.</p>
 <div class="fragment">
-<p>That is where macro-F1 is being lost — because it weights every class equally, <strong>a collapsed rare class costs as much as a collapsed common one.</strong></p>
+<p>That is where macro-F1 is being lost. Because macro-F1 weights every class equally, <strong>a rare class with F1 near zero lowers the average as much as a common one does.</strong></p>
 </div>
 <div class="fragment">
-<p>Then read <strong>three actual sentences</strong> from that level. Counts locate the problem; only the sentences explain it.</p>
+<p>Then read <strong>three actual sentences</strong> from that level. The counts show you where the problem is; the sentences show you what it is.</p>
 </div>
 </section>
-<section id="two-very-different-diagnoses" class="slide level2 smaller">
-<h2>Two very different diagnoses</h2>
+<section id="two-different-causes" class="slide level2 smaller">
+<h2>Two different causes</h2>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -284,7 +284,7 @@
 </div>
 </div>
 <div class="fragment">
-<p>Telling these apart is the single most valuable skill in your final report.</p>
+<p>Distinguishing these two cases is the most important analytic skill in your final report.</p>
 </div>
 </section></section>
 <section>
@@ -292,11 +292,11 @@
 <h1>Iterating the prompt</h1>
 
 </section>
-<section id="the-same-move-you-already-saw" class="slide level2 smaller">
-<h2>The same move you already saw</h2>
+<section id="the-same-change-you-already-saw" class="slide level2 smaller">
+<h2>The same change you already saw</h2>
 <p>Back in S7, <strong>Huang &amp; Mizumoto’s Ex 1 → Ex 2</strong> was a generic prompt tightened into a structured one.</p>
 <div class="fragment">
-<p>That’s exactly the loop here — only now it’s <strong>driven by data, not intuition</strong>:</p>
+<p>That is the same procedure as here, except that now the change is <strong>based on your error data, not on intuition</strong>:</p>
 <ol type="1">
 <li><strong>read the errors</strong> (<code>show_errors</code>) — where does the prompt fail?</li>
 <li><strong>tighten one thing</strong> — usually the <em>Criteria</em> / label descriptors.</li>
@@ -324,17 +324,17 @@
 <span id="cb2-2"><a></a>MY_CHANGE   <span class="op">=</span> <span class="st">"…"</span>   <span class="co"># the ONE thing you will change</span></span>
 <span id="cb2-3"><a></a>I_PREDICT   <span class="op">=</span> <span class="st">"…"</span>   <span class="co"># what you expect, and why</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>This is what makes it a <strong>study</strong> rather than tinkering. A change that helps for a reason you named is a finding; one that helps for no reason you can give is a lucky guess.</p>
+<p>This is what makes the work a <strong>study</strong>. A change that helps for a reason you stated in advance is a finding; a change that helps for no reason you can state is not.</p>
 </div>
 <div class="fragment">
-<p>Being wrong costs nothing. Being unable to say what you expected costs marks.</p>
+<p>An incorrect prediction does not lower your mark. Not stating a prediction at all does.</p>
 </div>
 </section>
 <section id="check-the-class-you-aimed-at" class="slide level2 smaller">
 <h2>Check the class you aimed at</h2>
-<p>Macro-F1 can <strong>rise</strong> while the level you targeted gets <strong>worse</strong> — another class quietly improved and carried the average.</p>
+<p>Macro-F1 can <strong>rise</strong> while the level you targeted gets <strong>worse</strong>, because a different class improved and raised the average.</p>
 <div class="fragment">
-<p>So compare the F1 row for <code>WORST_CLASS</code>, before and after. Not the headline.</p>
+<p>So compare the F1 row for <code>WORST_CLASS</code> before and after, not only the macro-F1.</p>
 </div>
 <div class="fragment">
 <table class="caption-top">
@@ -375,20 +375,20 @@
 </tr>
 </tbody>
 </table>
-<p>Two logged rounds with reasons beat five undocumented ones.</p>
+<p>Two recorded rounds with stated reasons are worth more than five undocumented ones.</p>
 </div>
 </section></section>
 <section>
-<section id="under-the-hood" class="title-slide slide level1 center">
-<h1>Under the hood</h1>
+<section id="inside-run_prompt" class="title-slide slide level1 center">
+<h1>Inside <code>run_prompt</code></h1>
 
 </section>
 <section id="what-run_prompt-has-been-doing" class="slide level2 smaller">
 <h2>What <code>run_prompt</code> has been doing</h2>
-<p>A read-only tour of the helper you have called all day — no editing, just so it is not a black box.</p>
+<p>We read the helper you have called all day. You do not edit it; the purpose is that you can describe what it does.</p>
 <div class="fragment">
 <ol type="1">
-<li>Drop each sentence into the <code>{text}</code> slot → one prompt per item.</li>
+<li>Insert each sentence at the <code>{text}</code> position → one prompt per item.</li>
 <li>Call the model, <strong>paced</strong> so you stay under 15 requests/minute.</li>
 <li>On a <code>429</code>, wait and retry; on a <em>daily</em> quota error, stop immediately.</li>
 <li>Scan the reply for the first CEFR level and keep it.</li>
@@ -396,7 +396,7 @@
 </ol>
 </div>
 <div class="fragment">
-<p>Step 4 is the fragile one — and it is why the CoT prompt forbids mentioning other levels.</p>
+<p>Step 4 is the step that most easily fails, which is why the CoT prompt forbids mentioning other levels.</p>
 </div>
 </section></section>
 <section>
@@ -444,10 +444,10 @@
 </tbody>
 </table>
 </section>
-<section id="two-uncomfortable-readings" class="slide level2 smaller">
-<h2>Two uncomfortable readings</h2>
-<p><strong>1. Zero-shot prompting lands near bag-of-words — not near BERT.</strong></p>
-<p>The gap to 84.5 is what a labelled training set buys. CEFR-SP took trained experts to build. That is the cost side of the trade.</p>
+<section id="two-readings-you-should-not-avoid" class="slide level2 smaller">
+<h2>Two readings you should not avoid</h2>
+<p><strong>1. Zero-shot prompting scores near bag-of-words, not near BERT.</strong></p>
+<p>The difference up to 84.5 is what a labelled training set gives you. Building CEFR-SP required trained experts, and that is what such a training set costs.</p>
 <div class="fragment">
 <p><strong>2. Our weighted κ looks <em>better</em> than theirs. It is not.</strong></p>
 </div>
@@ -455,7 +455,7 @@
 <p>Their test set is 3,012 sentences with the natural imbalance; ours is a balanced 72. <strong>κ is sensitive to the marginals.</strong></p>
 </div>
 <div class="fragment">
-<p>A number that flatters you across two different test sets is exactly the comparison a reader should refuse — and the one your report must not make.</p>
+<p>A higher number obtained on a different test set is not a valid comparison, and your report must not make it.</p>
 </div>
 </section>
 <section id="what-this-licenses" class="slide level2 smaller">
@@ -477,7 +477,7 @@
 <p>Claimable: <em>“a zero-shot prompt reaches roughly bag-of-words performance on this task”</em>.</p>
 </div>
 <div class="fragment">
-<p>Not claimable: <em>“our prompt beat the published model on agreement”</em>.</p>
+<p>Not claimable: <em>“our prompt scored higher than the published model on agreement”</em>.</p>
 </div>
 </section>
 <section id="assistant-not-replacement" class="slide level2 smaller">
@@ -488,7 +488,7 @@
 <blockquote>
 <p><em>“Human teachers must ultimately remain at the core of language teaching and learning.”</em></p>
 </blockquote>
-<p>The LLM is a tool you <strong>evaluate and supervise</strong>, not a verdict you accept.</p>
+<p>The LLM is a tool you <strong>evaluate and supervise</strong>. You do not accept its output without checking it.</p>
 </div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">

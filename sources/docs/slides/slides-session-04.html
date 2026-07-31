@@ -304,8 +304,8 @@
 <h2>Note on the error annotation</h2>
 <p>Originally, the <strong>AutoErrorAnalyzer</strong> track has two routes:</p>
 <ul>
-<li><strong>Default — sentence-level:</strong> one label per unit; rides the taught pipeline like every other track.</li>
-<li><strong>Stretch — locate-a-span-then-categorize:</strong> the <em>real</em> error-annotation task. Breaks one-label-per-unit; needs <strong>span matching + partial-match scoring</strong>.</li>
+<li><strong>Default — sentence-level:</strong> one label per unit; uses the same pipeline as every other track.</li>
+<li><strong>Stretch — locate-a-span-then-categorize:</strong> the <em>real</em> error-annotation task. It does not fit one-label-per-unit, and needs <strong>span matching + partial-match scoring</strong>.</li>
 </ul>
 <p>You can pick which route you will do. A bit more challenging but more rewarding.</p>
 </section></section>
@@ -316,9 +316,9 @@
 </section>
 <section id="the-nlp-evaluation-workflow" class="slide level2">
 <h2>The NLP evaluation workflow</h2>
-<p>Eguchi &amp; Kyle (2024) walk the full loop:</p>
+<p>Eguchi &amp; Kyle (2024) describe the full workflow:</p>
 <p><strong>build a gold standard → a system produces predictions → score predictions against gold.</strong></p>
-<p>We borrow the <strong>evaluation half</strong> — not the training half.</p>
+<p>We use the <strong>evaluation part</strong> of this workflow, not the training part.</p>
 </section>
 <section id="model-prompted-llm" class="slide level2">
 <h2>Model → prompted LLM</h2>
@@ -327,20 +327,20 @@
 <li>This course <strong>replaces the model with a prompted LLM</strong>…</li>
 <li>…but <strong>evaluates it the same way.</strong></li>
 </ul>
-<p>That transfer is the whole reason this workflow matters here.</p>
+<p>This is why the NLP evaluation workflow applies to this course.</p>
 </section>
 <section id="what-evaluation-means" class="slide level2">
 <h2>What “evaluation” means</h2>
 <ul>
 <li><strong>P / R / F1</strong>, and <strong>macro-F1</strong> across classes.</li>
-<li><strong>Confusion matrix</strong> — where the errors actually go.</li>
+<li><strong>Confusion matrix</strong> — which labels are confused with which.</li>
 <li><strong>Cohen’s κ</strong> — agreement corrected for chance.</li>
 <li><strong>Train / validation / test</strong> — the held-out logic (seed now; applied when we tune prompts in S7–S8).</li>
 </ul>
 </section>
 <section id="the-four-outcomes-tp-tn-fp-fn" class="slide level2">
 <h2>The four outcomes: TP · TN · FP · FN</h2>
-<p>First pick <strong>one class as <em>positive</em></strong> — say, “<em>this sentence hedges</em>.” Every prediction then lands in one of four cells. Rows = <strong>gold</strong> (the truth), columns = the <strong>prediction</strong>:</p>
+<p>First pick <strong>one class as <em>positive</em></strong> — say, “<em>this sentence hedges</em>.” Every prediction then belongs to one of four cells. Rows = <strong>gold</strong> (the truth), columns = the <strong>prediction</strong>:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -363,10 +363,10 @@
 </tbody>
 </table>
 <ul>
-<li><strong>TP</strong> (true positive) — flagged as hedging, <em>and it was</em>. ✅</li>
-<li><strong>FP</strong> (false positive) — flagged as hedging, <em>but it wasn’t</em> — a <strong>false alarm</strong>.</li>
-<li><strong>FN</strong> (false negative) — left alone, <em>but it really was hedging</em> — a <strong>miss</strong>.</li>
-<li><strong>TN</strong> (true negative) — correctly left alone. ✅</li>
+<li><strong>TP</strong> (true positive) — labelled hedging, <em>and it was hedging</em>. ✅</li>
+<li><strong>FP</strong> (false positive) — labelled hedging, <em>but it was not</em>.</li>
+<li><strong>FN</strong> (false negative) — labelled not hedging, <em>but it was hedging</em>.</li>
+<li><strong>TN</strong> (true negative) — labelled not hedging, <em>and it was not</em>. ✅</li>
 </ul>
 </section>
 <section id="precision-recall" class="slide level2">
@@ -393,16 +393,16 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Precision</strong> — <em>of what it flagged, how much was right?</em></p>
-<p><strong>Recall</strong> — <em>of what was actually positive, how much did it catch?</em></p>
+<p><strong>Precision</strong> — <em>of everything it labelled positive, how much was correct?</em></p>
+<p><strong>Recall</strong> — <em>of everything that was actually positive, how much did it identify?</em></p>
 </section>
 <section id="precision-recall-1" class="slide level2">
 <h2>Precision &amp; Recall</h2>
-<p><strong>Precision</strong> — <em>of what it flagged, how much was right?</em></p>
+<p><strong>Precision</strong> — <em>of everything it labelled positive, how much was correct?</em></p>
 <p><span class="math display">\[\text{Precision} = \frac{TP}{TP + FP} = \frac{8}{8 + 2} = 0.80\]</span></p>
-<p><strong>Recall</strong> — <em>of what was actually positive, how much did it catch?</em></p>
+<p><strong>Recall</strong> — <em>of everything that was actually positive, how much did it identify?</em></p>
 <p><span class="math display">\[\text{Recall} = \frac{TP}{TP + FN} = \frac{8}{8 + 4} = 0.67\]</span></p>
-<p><strong>F1</strong> — the <strong>harmonic mean</strong>, so one high score can’t hide one low one:</p>
+<p><strong>F1</strong> — the <strong>harmonic mean</strong>, so a high value on one side cannot compensate for a low value on the other:</p>
 <p><span class="math display">\[F_1 = 2 \cdot \frac{P \cdot R}{P + R} = 2 \cdot \frac{0.80 \cdot 0.67}{0.80 + 0.67} \approx 0.73\]</span></p>
 </section>
 <section id="two-coders-same-sentences-accuracy" class="slide level2">
@@ -483,7 +483,7 @@ Total
 <section id="cohens-κ-agreement-beyond-chance" class="slide level2">
 <h2>Cohen’s κ — agreement beyond chance</h2>
 <p>Cohen’s <strong>κ</strong> (the <em>two-rater, nominal</em> case) subtracts the agreement you’d expect <strong>by chance</strong>:</p>
-<p><span class="math display">\[\kappa = \frac{p_o - p_e}{1 - p_e}\]</span> <span class="math inline">\(p_e\)</span> = the agreement they’d hit <strong>by luck</strong>, using each coder’s own <strong>marginal rate</strong> (row/column totals ÷ 50).</p>
+<p><span class="math display">\[\kappa = \frac{p_o - p_e}{1 - p_e}\]</span> <span class="math inline">\(p_e\)</span> = the agreement they would reach <strong>by chance</strong>, using each coder’s own <strong>marginal rate</strong> (row/column totals ÷ 50).</p>
 </section>
 <section id="cohens-κ-agreement-beyond-chance-1" class="slide level2">
 <h2>Cohen’s κ — agreement beyond chance</h2>
@@ -545,17 +545,17 @@ Total
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>Our two coders’ raw <strong>80 %</strong> agreement is only <strong>κ ≈ 0.52</strong> once chance is removed — <strong>inadequate</strong> on that rule. That gap is the whole point.</p>
+<p>Our two coders’ raw <strong>80 %</strong> agreement is only <strong>κ ≈ 0.52</strong> once chance is removed — <strong>inadequate</strong> on that rule. This difference is why κ is reported instead of raw agreement.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="ordered-labels-quadratic-weighted-κ" class="slide level2">
 <h2>Ordered labels: quadratic weighted κ</h2>
-<p>Plain κ treats <strong>every</strong> disagreement as equally bad — scoring <strong>A1 → A2 exactly as wrong as A1 → C2</strong>. But CEFR levels are <strong>ordinal</strong> (A1 &lt; A2 &lt; … &lt; C2): a near miss <em>should</em> hurt less.</p>
+<p>Plain κ treats <strong>every</strong> disagreement as equally bad — scoring <strong>A1 → A2 exactly as wrong as A1 → C2</strong>. But CEFR levels are <strong>ordinal</strong> (A1 &lt; A2 &lt; … &lt; C2), so an error of one level should count less than an error of five.</p>
 <p><strong>Weighted κ</strong> puts a penalty <span class="math inline">\(w_{ij}\)</span> on each off-diagonal cell. With <strong>quadratic</strong> weights over <span class="math inline">\(N\)</span> ordered levels (indices <span class="math inline">\(i, j\)</span>):</p>
 <p><span class="math display">\[w_{ij} = \frac{(i - j)^2}{(N - 1)^2}, \qquad \kappa_w = 1 - \frac{\sum_{ij} w_{ij}\,O_{ij}}{\sum_{ij} w_{ij}\,E_{ij}}\]</span></p>
-<p>For CEFR (<span class="math inline">\(N = 6\)</span>): an <strong>off-by-one</strong> slip weighs <span class="math inline">\(\tfrac{1}{25} = 0.04\)</span> (barely penalized); a far-apart <strong>A1 ↔︎ C2</strong> weighs <span class="math inline">\(\tfrac{25}{25} = 1.0\)</span> (full penalty).</p>
+<p>For CEFR (<span class="math inline">\(N = 6\)</span>): an error of <strong>one level</strong> weighs <span class="math inline">\(\tfrac{1}{25} = 0.04\)</span> (barely penalized); a distant <strong>A1 ↔︎ C2</strong> error weighs <span class="math inline">\(\tfrac{25}{25} = 1.0\)</span> (full penalty).</p>
 </section></section>
 <section>
 <section id="c-the-define-first-workflow-you-cant-evaluate-what-you-havent-defined" class="title-slide slide level1 center">
@@ -631,7 +631,7 @@ Total
 </section>
 <section id="set-the-target-human-agreement" class="slide level2 smaller">
 <h2>④ Set the target = human agreement</h2>
-<p><em>(E&amp;K Step 8a)</em> — the realistic ceiling for <strong>any</strong> model is the <strong>human IAA</strong>.</p>
+<p><em>(E&amp;K Step 8a)</em> — the highest score you can realistically expect from <strong>any</strong> model is the <strong>human IAA</strong>.</p>
 <ul>
 <li>E&amp;K expected <strong>~0.70 F1</strong> because their coders agreed at <strong>~0.67 κ</strong>.</li>
 </ul>
@@ -644,7 +644,7 @@ Total
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>The hinge of the whole story: <em>the better you define the task, the higher humans agree — and the more you can legitimately ask of the LLM.</em></p>
+<p>The central point: <em>the better you define the task, the higher humans agree — and the more you can legitimately ask of the LLM.</em></p>
 </div>
 </div>
 </div>
@@ -656,7 +656,7 @@ Total
 <li><strong>annotator vs.&nbsp;annotator</strong> → <strong>inter-annotator agreement (IAA)</strong></li>
 <li><strong>gold vs.&nbsp;model</strong> → <strong>model evaluation</strong></li>
 </ul>
-<p>Report <strong>P / R / F1 + macro-F1 + κ</strong>, and read the <strong>confusion matrix</strong> for <em>where</em> it fails. Here the “model” is a <strong>prompted LLM</strong>.</p>
+<p>Report <strong>P / R / F1 + macro-F1 + κ</strong>, and read the <strong>confusion matrix</strong> to see <em>which</em> labels it confuses. Here the “model” is a <strong>prompted LLM</strong>.</p>
 </section></section>
 <section>
 <section id="d-dataset-for-class-tutorials-arase-et-al.-2022" class="title-slide slide level1 center">
@@ -670,7 +670,7 @@ Total
 <ul>
 <li><strong>The problem.</strong> Simplifying text for learners requires knowing <em>how hard a sentence is</em>. But readability corpora are <strong>document</strong>-level and built for <strong>L1</strong> readers — while simplification rewrites <strong>sentences</strong>, for <strong>L2</strong> readers.</li>
 <li><strong>The gap that fixes the task.</strong> Nothing labelled <em>sentence</em> difficulty against <em>language ability</em>. So: <strong>input = one sentence · output = one CEFR level.</strong></li>
-<li><strong>The hard part isn’t the model.</strong> CEFR is a <strong>skill</strong> scale — “can-do” statements about what <em>learners</em> can do. It says nothing about sentences. Making it apply to a sentence <em>is</em> the design problem.</li>
+<li><strong>The difficulty is in the task definition, not the model.</strong> CEFR is a <strong>skill</strong> scale — “can-do” statements about what <em>learners</em> can do. It says nothing about sentences. Making it apply to a sentence <em>is</em> the design problem.</li>
 </ul>
 </section>
 <section id="what-the-labels-look-like" class="slide level2 smaller">
@@ -726,7 +726,7 @@ Total
 <section id="why-this-paper-for-this-course" class="slide level2 smaller">
 <h2>Why this paper, for this course</h2>
 <ul>
-<li><strong>The task is familiar.</strong> Simplification — and judging what level a sentence is pitched at — is something language teachers and applied linguists are intersted in.</li>
+<li><strong>The task is familiar.</strong> Simplification — and judging what level a sentence is pitched at — is something language teachers and applied linguists are interested in.</li>
 <li><strong>The task is simple enough.</strong> One sentence, one label. Simple enough for the tutorial example.</li>
 </ul>
 <p>→ <strong>A good tutorial project.</strong> Interesting enough to be worth doing, small enough to actually finish in five days.</p>

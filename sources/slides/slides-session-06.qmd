@@ -35,29 +35,29 @@ Yesterday's question was *"do two people agree?"* Today's is **"is the model any
 - **作戦会議** — turn today's mechanics onto your own project track.
 
 ::: {.callout-note}
-**The code is on these slides.** You type it in Colab as we go — one small piece at a time, running each piece before the next. Lost? Copy the slide and rejoin.
+**The code is on these slides.** You type it in Colab as we go — one small piece at a time, running each piece before the next. If you fall behind, copy the code from the slide and continue from there.
 :::
 
 ## 🎯 Learning Objectives {.smaller}
 
 By the end of this session, you will be able to:
 
-- Decide, for a single item, which of **TP · FP · FN · TN** it lands in — and write that as an `if`/`elif`.
-- **Loop** over a labelled set, **store** one verdict per item, and **tally** the four counts.
-- Build a **confusion matrix** from those counts, and read it.
-- Compute **precision, recall, F1** and **Cohen's κ** *from scratch*, and say what each one answers.
-- Reproduce all of it with **scikit-learn** — `classification_report`, `confusion_matrix`, `cohen_kappa_score` — on a real 6-class task.
-- Interpret the numbers critically: what a high or low score does and **doesn't** tell you.
+- **Classify one item** as **TP · FP · FN · TN**, and write that decision as an `if`/`elif`.
+- **Loop and tally** — one outcome per item, then the four counts.
+- **Confusion matrix** — build it from those counts and read it.
+- **Precision, recall, F1, Cohen's κ** — compute each from scratch and say what it answers.
+- **scikit-learn** — `classification_report`, `confusion_matrix`, `cohen_kappa_score` on a 6-class task.
+- **Interpretation** — say what a high or low score does and **does not** tell you.
 
 # Where we are
 
 ## Recap: the define-first workflow {.smaller}
 
-S4 laid out five phases. S5 ran ③ — you built a gold standard. Today we spend the numbers you earned.
+S4 laid out five phases. S5 ran ③ — you built a gold standard. Today you evaluate a model against it.
 
 - ① Define the task · ② Operationalize · ③ Build the gold standard *(yesterday)*
-- **④ Target = human agreement** ← the ceiling your κ from S5 set
-- **⑤ Evaluate the model against gold** ← **you are here**
+- **④ Target = human agreement** ← the highest score you can realistically expect, set by your κ from S5
+- **⑤ Evaluate the model against gold** ← **today**
 
 . . .
 
@@ -95,7 +95,7 @@ $$F_1 = 2\cdot\frac{P\cdot R}{P+R} \qquad \kappa = \frac{p_o - p_e}{1 - p_e}$$
 
 . . .
 
-*Knowing a formula and being able to compute it are different things. After today, no number in your project is a black box.*
+*Knowing a formula and being able to compute it are different things. After today, you can explain how every number in your project was calculated.*
 
 # How today works — two passes
 
@@ -114,16 +114,16 @@ We use the **CEFR-SP** set from S5: 72 sentences, 12 per level, and a model's fr
 
 ::: {.callout-important}
 ## Why binary first
-Four cells you can count on your fingers. Everything you build in pass 1 is **exactly** what scikit-learn does in pass 2 — six times over, once per level.
+Four cells are small enough to count by hand. Everything you build in pass 1 is **exactly** what scikit-learn does in pass 2 — six times, once per level.
 :::
 
 ## Today runs on *frozen* predictions {.smaller}
 
 No API key, no live model. The model was run **once**, offline, and its answers committed to a file.
 
-- On Day 1 you saw the model's answers **change from run to run**.
-- When you're learning to *measure* quality, that wobble is noise fighting the lesson.
-- So today **everyone's precision, recall, F1 and κ come out identical**. If your number differs from the slide, you have a bug — not a different model.
+- **Day 1** — you saw the model's answers **change from run to run**.
+- **Problem** — that variation makes it impossible to tell a coding mistake from a model difference.
+- **So today** — **everyone's precision, recall, F1 and κ are identical**. If your number differs from the slide, you have a bug in your code.
 
 *You run the model yourself, live, from Day 3 on.*
 
@@ -176,12 +176,12 @@ Before any code: **how many TP, FP, FN, TN?** Take a minute with your partner.
 
 . . .
 
-- **TP = 3** — rows 18, 21, 27: advanced, and the model said so.
-- **FN = 2** — rows 22, 24: genuinely advanced (C1), and the model **missed** them.
-- **FP = 1** — row 28: the model **cried wolf** on a B2.
-- **TN = 6** — the rest: not advanced, correctly left alone.
+- **TP = 3** — rows 18, 21, 27: advanced, and the model said advanced.
+- **FN = 2** — rows 22, 24: advanced (C1), but the model said not advanced.
+- **FP = 1** — row 28: not advanced (B2), but the model said advanced.
+- **TN = 6** — the rest: not advanced, and the model said not advanced.
 
-**Hold on to these four numbers.** Everything else today is arithmetic on them — and your code has to reproduce them.
+**Keep these four numbers.** Everything else today is arithmetic on them, and your code has to reproduce them.
 
 # Pass 1 · Step 2 — ask one item
 
@@ -200,7 +200,7 @@ print(item["gold"], item["pred"])   # its gold answer, then the model's
 no no
 ```
 
-Row 17: the gold says not advanced, and the model agrees. **One item, two labels** — that is all a metric ever looks at.
+Row 17: the gold says not advanced, and the model says not advanced. Every metric today is computed from pairs like this — **one item, two labels**.
 
 ## Ask it the first question {.smaller}
 
@@ -218,12 +218,12 @@ if item["gold"] == "yes" and item["pred"] == "yes":
 
 ```
 
-**Nothing printed.** Not a bug — the honest answer. Row 17 is not a TP, and one `if` can only ever answer *one* of the four questions.
+**Nothing printed.** This is not a bug. Row 17 is not a TP, and one `if` can only answer *one* of the four questions.
 
 . . .
 
 ::: {.callout-tip}
-An `if` with no `else` is silent when the condition is false. To classify **every** item we need all four questions, and exactly one of them must fire.
+An `if` with no `else` prints nothing when the condition is false. To classify **every** item we need all four questions, and exactly one of them must run.
 :::
 
 # Pass 1 · Step 3 — the four branches
@@ -238,20 +238,20 @@ An `if` with no `else` is silent when the condition is false. To classify **ever
 | gold **yes** | **TP** | **FN** |
 | gold **no**  | **FP** | **TN** |
 
-Four cells. Four branches. **Same order.**
+Four cells, four branches, in the **same order**.
 :::
 
 ::: {.column width="58%"}
 ```python
-# checked top to bottom; the FIRST match wins, so exactly one branch runs:
+# checked top to bottom; only the FIRST match runs, so exactly one branch runs:
 if item["gold"] == "yes" and item["pred"] == "yes":
-    print("TP")      # advanced, and the model agreed
+    print("TP")      # advanced, and the model said advanced
 elif item["gold"] == "no" and item["pred"] == "yes":
-    print("FP")      # a false alarm
+    print("FP")      # not advanced, but the model said advanced
 elif item["gold"] == "yes" and item["pred"] == "no":
-    print("FN")      # a real one, missed
+    print("FN")      # advanced, but the model said not advanced
 else:
-    print("TN")      # not advanced, left alone
+    print("TN")      # not advanced, and the model said not advanced
 ```
 :::
 
@@ -285,20 +285,20 @@ FP
 . . .
 
 ::: {.callout-note}
-**Your turn:** find an item that prints `FN`. *(Hint: rows 22 and 24 — the two the model missed.)*
+**Your turn:** find an item that prints `FN`. *(Hint: rows 22 and 24 — the two advanced sentences the model labelled not advanced.)*
 :::
 
 # Pass 1 · Step 4 — make it a function
 
 ## Twelve items, one rule {.smaller}
 
-You are about to ask that same question of all 12 rows. Copying the ladder twelve times would be absurd — so **name it once**:
+You are about to ask that same question of all 12 rows. Instead of copying the four branches twelve times, **give them a name once**:
 
 ```python
 def outcome(gold_label, pred_label):
-    """Which of the four cells does this one item land in?"""
+    """Which of the four cells does this one item belong to?"""
     if gold_label == "yes" and pred_label == "yes":
-        return "TP"      # `return` hands the answer back, instead of printing it
+        return "TP"      # `return` gives the answer back, instead of printing it
     elif gold_label == "no" and pred_label == "yes":
         return "FP"
     elif gold_label == "yes" and pred_label == "no":
@@ -311,10 +311,10 @@ def outcome(gold_label, pred_label):
 
 Two changes from step 3, and only two: it is **wrapped in `def`**, and every `print` became a **`return`**.
 
-## `print` shows you · `return` hands it back {.smaller}
+## `print` displays · `return` gives the value back {.smaller}
 
 ```python
-print(outcome("yes", "no"))     # gold said advanced, model said no → a miss
+print(outcome("yes", "no"))     # gold said advanced, model said not advanced
 ```
 
 . . .
@@ -325,27 +325,27 @@ FN
 
 . . .
 
-- **`print`** puts a value on the screen and then it is *gone*.
-- **`return`** hands the value back to whoever called the function, so you can **keep it, store it, count it**. That is exactly what step 5 needs.
+- **`print`** — displays a value on the screen; the value is not kept.
+- **`return`** — gives the value back to the code that called the function, so you can **store it and count it**. Step 5 needs this.
 
 . . .
 
 ::: {.callout-tip}
-**Test it by hand before you trust it.** `outcome("yes", "no")` — gold says advanced, model said no → a **miss** → `FN` ✓. Try all four combinations against the table. A function you have not checked is a guess.
+**Test it by hand before you use it.** `outcome("yes", "no")` — gold says advanced, model said not advanced → `FN` ✓. Try all four combinations against the table. Do not use a function you have not tested.
 :::
 
 # Pass 1 · Step 5 — loop, and store every decision
 
-## One verdict per sentence {.smaller}
+## One outcome per sentence {.smaller}
 
 Now run that function over all 12 rows and **keep** the answers — the same "build a list in a loop" pattern you wrote on Day 1:
 
 ```python
-decisions = []                     # start empty; the loop fills it
+decisions = []                     # start empty; the loop adds to it
 for item in items:                 # one pass per row of the table
-    decisions.append(outcome(item["gold"], item["pred"]))   # add its verdict
+    decisions.append(outcome(item["gold"], item["pred"]))   # add its outcome
 
-print(decisions)                   # 12 verdicts, in the table's order
+print(decisions)                   # 12 outcomes, in the table's order
 ```
 
 . . .
@@ -356,30 +356,30 @@ print(decisions)                   # 12 verdicts, in the table's order
 
 . . .
 
-Twelve items in, twelve verdicts out — **in the same order as the table**. Position 6 is `'FN'`: that's row 22, the racing-bicycle sentence the model missed.
+Twelve items in, twelve outcomes out — **in the same order as the table**. Position 6 is `'FN'`: row 22, the racing-bicycle sentence the model labelled not advanced.
 
 ## Why store them, rather than just count? {.smaller}
 
-We could have counted as we went. We keep the list because **the list is the evidence**.
+We could have counted as we went. We keep the list because **the list records every individual decision**.
 
-- A metric is a *summary*. `decisions` is the thing being summarised — you can always go back to it.
-- Every `'FN'` and `'FP'` in that list points at a **specific sentence** you can read and argue about.
-- That is **error analysis**, and it is where the real research questions live: *is this the model's fault, or my scheme's?*
+- **A metric is a summary.** `decisions` is what is being summarised, and you can always return to it.
+- **Each `'FN'` and `'FP'`** points to a **specific sentence** you can read and discuss.
+- **That is error analysis** — the source of your research questions: *is this the model's error, or a problem in my scheme?*
 
 . . .
 
 ::: {.callout-note}
-Later today `show_errors()` does exactly this for you on the 6-class task — it filters the items whose verdict was wrong and prints them. You have just built its engine.
+Later today `show_errors()` does exactly this for you on the 6-class task — it selects the items the model got wrong and prints them. You have just written the same logic yourself.
 :::
 
-# Pass 1 · Step 6 — tally the verdicts
+# Pass 1 · Step 6 — tally the outcomes
 
 ## Count the four outcomes {.smaller}
 
 This is Day 1's `count_labels` exercise, run on a new list:
 
 ```python
-tally = {}                         # a dict: verdict -> how many times
+tally = {}                         # a dict: outcome -> how many times
 for d in decisions:                # d is "TP", "FP", "FN" or "TN"
     tally[d] = tally.get(d, 0) + 1   # count so far (0 if new), plus one
 
@@ -400,7 +400,7 @@ print(tally)
 
 . . .
 
-**Compare to the numbers you counted by hand in step 1: TP = 3, FP = 1, FN = 2, TN = 6.** They match. Your code and your eyes agree.
+**Compare to the numbers you counted by hand in step 1: TP = 3, FP = 1, FN = 2, TN = 6.** They match: your code reproduces your hand count.
 
 # Pass 1 · Step 7 — the confusion matrix
 
@@ -423,16 +423,16 @@ gold no          1        6
 :::
 
 ::: {.column width="55%"}
-- The **diagonal** (3 and 6) is everything the model got right — 9 of 12.
-- The **off-diagonal** (2 and 1) is everything it got wrong, **split by direction**.
-- Two errors are *misses*; one is a *false alarm*. A single accuracy figure would hide that difference completely.
+- **Diagonal** (3 and 6) — everything the model got right: 9 of 12.
+- **Off-diagonal** (2 and 1) — everything it got wrong, **separated by direction**.
+- **Two FN, one FP** — two advanced sentences called not advanced, one non-advanced sentence called advanced. A single accuracy figure would hide that difference.
 :::
 
 ::::
 
 . . .
 
-**Look at the matrix before you compute anything.** The shape of the errors is the finding; the metrics just put a number on it.
+**Look at the matrix before you compute anything.** Where the errors fall is the finding; the metrics only put a number on it.
 
 ## Row totals, column totals {.smaller}
 
@@ -447,12 +447,12 @@ The margins matter — you need them for κ in step 9:
 . . .
 
 - **Rows** = what the gold says. **Columns** = what the model says.
-- Gold called 5 sentences advanced; the model called only **4**. It is slightly **stingy** with the positive label.
-- Watch that habit — in pass 2 it becomes the most visible thing about this model.
+- Gold called 5 sentences advanced; the model called only **4**. It applies the positive label slightly less often than the gold data does.
+- This pattern becomes much clearer in pass 2.
 
 # Pass 1 · Step 8 — precision, recall, F1
 
-## Precision — of what it flagged, how much was right? {.smaller}
+## Precision — of what it called advanced, how much was correct? {.smaller}
 
 **Numbers first**, so you can check it on paper:
 
@@ -488,8 +488,8 @@ def precision(tally):
     tp = tally.get("TP", 0)      # .get(..., 0) so a missing count reads as 0
     fp = tally.get("FP", 0)
     if tp + fp == 0:             # the model never said "yes" at all
-        return 0.0               # no credit earned — and no division by zero
-    return tp / (tp + fp)        # everything it got right, over everything it claimed
+        return 0.0               # no correct positives, and no division by zero
+    return tp / (tp + fp)        # correct positives, over all positive predictions
 
 print(round(precision(tally), 3))   # round to 3 decimal places
 ```
@@ -504,23 +504,23 @@ print(round(precision(tally), 3))   # round to 3 decimal places
 
 ::: {.callout-important}
 ## Always guard the denominator
-If a model never predicts the positive class, `TP + FP` is **0** and Python raises `ZeroDivisionError`. Returning `0.0` says *"it earned no credit"* — which is the honest reading. Every metric you write today gets this guard.
+If a model never predicts the positive class, `TP + FP` is **0** and Python raises `ZeroDivisionError`. Returning `0.0` records that there were no correct positive predictions. Every metric you write today needs this guard.
 :::
 
 ## Recall — your turn {.smaller}
 
-Recall asks the **other** question: *of everything that truly was advanced, how much did we catch?*
+Recall asks the **other** question: *of everything that truly was advanced, how much did we identify?*
 
 $$R = \frac{TP}{TP + FN}$$
 
 ```python
 def recall(tally):
-    """Of everything that TRULY was advanced, how much did we find?"""
+    """Of everything that TRULY was advanced, how much did we identify?"""
     tp = tally.get("TP", 0)
     fn = tally.get("FN", 0)       # ← the only real change
-    if tp + fn == 0:              # nothing was truly advanced — nothing to find
+    if tp + fn == 0:              # nothing was truly advanced, so there is nothing to find
         return 0.0
-    return tp / (tp + fn)         # what it found, over everything there was to find
+    return tp / (tp + fn)         # correct positives, over all true positives in the gold
 
 print(round(recall(tally), 3))
 ```
@@ -533,9 +533,9 @@ print(round(recall(tally), 3))
 
 Three of the five genuinely advanced sentences were found. **Recall = 0.60.**
 
-## F1 — one number, no hiding {.smaller}
+## F1 — precision and recall in one number {.smaller}
 
-Precision and recall pull against each other: flag everything and recall hits 1.0 while precision collapses. **F1** is the harmonic mean, so a high score cannot cover for a low one:
+Precision and recall move in opposite directions: if the model labels everything positive, recall becomes 1.0 and precision becomes very low. **F1** is the harmonic mean, so a high value on one side cannot compensate for a low value on the other:
 
 $$F_1 = 2 \cdot \frac{P \cdot R}{P + R}$$
 
@@ -546,7 +546,7 @@ def f1(tally):
     r = recall(tally)            # ...and the other one
     if p + r == 0:               # both zero — nothing to average
         return 0.0
-    return 2 * p * r / (p + r)   # harmonic mean: a low score drags it down
+    return 2 * p * r / (p + r)   # harmonic mean: a low value on either side lowers it
 
 print(round(precision(tally), 3), round(recall(tally), 3), round(f1(tally), 3))
 ```
@@ -559,19 +559,19 @@ print(round(precision(tally), 3), round(recall(tally), 3), round(f1(tally), 3))
 
 ## What 0.75 vs. 0.60 actually says {.smaller}
 
-The gap between precision and recall **is a description of the model's personality**:
+The gap between precision and recall **describes how the model behaves**:
 
-- **Precision 0.75 > Recall 0.60** → the model is **conservative** about calling something advanced. When it commits, it is usually right; but it lets real C1s slip past as B2.
-- The two it missed (rows 22, 24) were both **C1 → B2** — near misses, not wild errors.
+- **Precision 0.75 > Recall 0.60** — the model applies the label *advanced* less often than the gold data does. When it does apply it, it is usually correct, but it labels some real C1 sentences as B2.
+- **Both errors were C1 → B2** (rows 22, 24) — one level away, not far away.
 
 . . .
 
 ::: {.callout-important}
-## Which error can you live with?
+## Which error matters more in your project?
 That is a **research design** question, not a statistics one.
 
-- Screening texts for a C1 reading list? A **miss** (FN) is expensive — favour recall.
-- Making a claim in a paper about which sentences are advanced? A **false alarm** (FP) is expensive — favour precision.
+- **Selecting texts for a C1 reading list** — an FN (an advanced sentence you do not find) is more serious; favour recall.
+- **Claiming in a paper which sentences are advanced** — an FP (a sentence wrongly called advanced) is more serious; favour precision.
 
 Say which one your project cares about *before* you report a score.
 :::
@@ -596,17 +596,17 @@ print(round(p_o, 3))
 
 . . .
 
-Gold and model agree on 9 of 12 items. Sounds decent — but **so would a lazy model that answered "no" to everything**: it would score 7/12 without knowing anything at all. Raw agreement flatters whoever plays the odds.
+Gold and model agree on 9 of 12 items. That looks acceptable — but **a model that answered "no" to every item** would score 7/12 without using any information at all. Raw agreement gives a high score to a model that simply predicts the most frequent label.
 
-## Agreement you'd get by luck {.smaller}
+## Agreement expected by chance {.smaller}
 
-$p_e$ = the agreement two raters would hit **by chance**, given how often each one uses each label. Multiply their rates, label by label — the row and column totals from step 7:
+$p_e$ = the agreement two raters would reach **by chance**, given how often each one uses each label. Multiply their rates, label by label — the row and column totals from step 7:
 
 ```python
-# each line: how often GOLD says it × how often the MODEL says it = agreement by luck
+# each line: how often GOLD says it × how often the MODEL says it = chance agreement
 p_yes = ((tally["TP"] + tally["FN"]) / n) * ((tally["TP"] + tally["FP"]) / n)
 p_no  = ((tally["FP"] + tally["TN"]) / n) * ((tally["FN"] + tally["TN"]) / n)
-p_e   = p_yes + p_no          # luck on "yes" plus luck on "no"
+p_e   = p_yes + p_no          # chance agreement on "yes" plus chance agreement on "no"
 print(round(p_yes, 3), round(p_no, 3), round(p_e, 3))
 ```
 
@@ -620,16 +620,16 @@ print(round(p_yes, 3), round(p_no, 3), round(p_e, 3))
 
 - `p_yes`: gold says yes **5/12** × model says yes **4/12** = 0.139
 - `p_no`: gold says no **7/12** × model says no **8/12** = 0.389
-- **More than half** the agreement we observed (0.75) was available for free.
+- **More than half** the agreement we observed (0.75) is expected by chance alone.
 
-## κ — the honest number {.smaller}
+## κ — agreement corrected for chance {.smaller}
 
 $$\kappa = \frac{p_o - p_e}{1 - p_e}$$
 
-*How much of the agreement that luck couldn't explain did they actually achieve?*
+*Of the agreement that chance does not explain, how much did they achieve?*
 
 ```python
-# what they beat luck by (p_o - p_e), over how much was left to beat (1 - p_e):
+# observed minus chance agreement (p_o - p_e), over the agreement still available (1 - p_e):
 print(round((p_o - p_e) / (1 - p_e), 3))
 ```
 
@@ -659,7 +659,7 @@ The same gap S4 showed you (80% → κ ≈ 0.52), now computed by your own code.
 
 ::::
 
-## Wrap it up — and notice what you've built {.smaller}
+## The whole calculation as one function {.smaller}
 
 ```python
 def kappa(tally):
@@ -668,10 +668,10 @@ def kappa(tally):
     p_o = (tally["TP"] + tally["TN"]) / n     # agreement we actually observed
     p_yes = ((tally["TP"] + tally["FN"]) / n) * ((tally["TP"] + tally["FP"]) / n)
     p_no = ((tally["FP"] + tally["TN"]) / n) * ((tally["FN"] + tally["TN"]) / n)
-    p_e = p_yes + p_no                        # agreement luck alone would give
-    if 1 - p_e == 0:                          # luck already explains everything
+    p_e = p_yes + p_no                        # agreement expected by chance
+    if 1 - p_e == 0:                          # chance already explains all agreement
         return 0.0
-    return (p_o - p_e) / (1 - p_e)            # how much of the rest they achieved
+    return (p_o - p_e) / (1 - p_e)            # the share of the remaining agreement achieved
 ```
 
 . . .
@@ -715,7 +715,7 @@ precision 0.889   recall 0.667   F1 0.762   kappa 0.667
 
 . . .
 
-**The 12-item slice was not the whole story** — precision rose, recall stayed low. The pattern held: *stingy, but usually right when it commits.* A 12-item sample is enough to learn the mechanics, never enough to judge a model.
+**The 12-item sample did not show everything** — precision rose, recall stayed low. The pattern is the same: the model applies the positive label rarely, but is usually correct when it does. A 12-item sample is enough to learn the procedure, and never enough to evaluate a model.
 
 ## Check yourself against scikit-learn {.smaller}
 
@@ -743,18 +743,18 @@ All 4 checks passed ✅  — your metrics match scikit-learn.
 
 Drop the yes/no simplification. The actual task is: **A1 · A2 · B1 · B2 · C1 · C2**.
 
-- **4 cells → 36.** Counting by hand stops being reasonable.
-- Precision and recall are always *about one positive class* — so with six classes you get **six** precisions, **six** recalls, **six** F1s.
-- The trick is small: to score `C1`, treat **`C1` as "yes" and all five others as "no"** — pass 1, run six times. That is called **one-vs-rest**, and it is all `classification_report` does.
+- **4 cells → 36.** Counting by hand is no longer practical.
+- **One positive class at a time** — with six classes you get **six** precisions, **six** recalls, **six** F1s.
+- **The method is unchanged** — to score `C1`, treat **`C1` as "yes" and all five others as "no"**: pass 1, run six times. This is called **one-vs-rest**, and it is what `classification_report` does.
 
 . . .
 
 ```python
-# ordered=True: the six levels sit on a scale, so also report weighted κ
+# ordered=True: the six levels form a scale, so also report weighted κ
 evaluate(gold, predictions, ordered=True)
 ```
 
-`ordered=True` says these labels sit on a **scale** — which changes which κ you should read. Hold that thought.
+`ordered=True` states that these labels form a **scale**, which changes which κ you should read. We return to this below.
 
 ## Read the report {.smaller}
 
@@ -774,19 +774,19 @@ evaluate(gold, predictions, ordered=True)
 
 . . .
 
-- Every **row** is one pass-1 run: for `C1`, TP/FP/FN/TN with C1 as the positive class.
-- **`support`** = how many gold items that class has — 12 each, by design.
-- **`macro avg`** = the plain average of the six F1s. Every class counts equally, **however rare it is** — which is why it is the honest headline for an imbalanced set.
+- **Each row** is one pass-1 run: for `C1`, TP/FP/FN/TN with C1 as the positive class.
+- **`support`** — how many gold items that class has: 12 each, by design.
+- **`macro avg`** — the plain average of the six F1s. Every class counts equally **however rare it is**, which is why it is the figure to report for an imbalanced set.
 
-## Brace yourself: accuracy is 39% {.smaller}
+## Accuracy is 39% — now look at *how* it is wrong {.smaller}
 
-Before concluding the model is useless — **look at *how* it is wrong.**
+Before concluding that the model is useless, look at the size of its errors.
 
 . . .
 
 - **97% of its answers are within one level** of the gold label.
-- Only two sentences in the whole set miss by two. **Nothing misses by more.**
-- A model that had no idea would scatter A1s against C2s. This one does not.
+- **Only two sentences** in the whole set are two levels away. No answer is further than that.
+- **A model that had not learned the task** would predict C2 for A1 sentences. This one does not.
 
 . . .
 
@@ -816,9 +816,9 @@ The model said **A2 twenty times** and **A1 four times**. It said **C2 exactly o
 
 . . .
 
-- Everything is squeezed toward the **middle** of the scale; the extremes are avoided.
-- Why would a rater — human or machine — under pressure to judge something as fuzzy as "difficulty" **drift to the middle and refuse to commit to the ends**?
-- This is your pass-1 finding again: with "advanced" as positive, precision 0.89 but recall 0.67. **It under-uses the top of the scale.**
+- **Predictions concentrate in the middle** of the scale; the two ends are used rarely.
+- **Why?** When a rater — human or machine — has to judge something as unclear as "difficulty", the middle categories are the safest choice.
+- **Same finding as pass 1** — with "advanced" as positive, precision 0.89 but recall 0.67. **The model under-uses the top of the scale.**
 
 . . .
 
@@ -839,7 +839,7 @@ Cohen's kappa (weighted) 0.849   <- labels are ordered
 
 **Plain κ = 0.27** ("fair" / "minimal") — because plain κ treats **A1 → A2 as exactly as wrong as A1 → C2**.
 
-**Quadratic-weighted κ = 0.85** — because CEFR levels are **ordinal**, and a near miss *should* hurt less:
+**Quadratic-weighted κ = 0.85** — because CEFR levels are **ordinal**, so an error of one level should count less than an error of five:
 
 $$w_{ij} = \frac{(i-j)^2}{(N-1)^2}$$
 
@@ -847,21 +847,21 @@ $$w_{ij} = \frac{(i-j)^2}{(N-1)^2}$$
 
 ::: {.callout-important}
 ## Report the one that matches your labels
-Same predictions, 0.27 or 0.85 depending on a single argument. **Ordered labels → weighted κ. Unordered categories → plain κ.** State which you used and why; a κ without that sentence is unreadable. *(Arase et al. reported weighted κ = .628 on this task.)*
+Same predictions, 0.27 or 0.85 depending on a single argument. **Ordered labels → weighted κ. Unordered categories → plain κ.** State which you used and why; a κ reported without that sentence cannot be interpreted. *(Arase et al. reported weighted κ = .628 on this task.)*
 :::
 
-## Error analysis — the model's fault, or the scheme's? {.smaller}
+## Error analysis — the model's error, or the scheme's? {.smaller}
 
 ```python
 errors = show_errors(gold, predictions)   # a table of every item it got wrong
-errors.head(15)     # ...or errors[errors["gold"] == "C2"] to see the hard end
+errors.head(15)     # ...or errors[errors["gold"] == "C2"] for the highest level
 ```
 
-44 misses — too many to read one by one, and you don't need to. **Skim a dozen**, then look hard at the rows where gold is **C2** or **A1**: the ends of the scale are where the arguments are.
+44 errors — too many to read one by one, and you do not need to. **Read about a dozen**, then look closely at the rows where gold is **C2** or **A1**: disagreements concentrate at the two ends of the scale.
 
 . . .
 
-For each miss you read, ask:
+For each error you read, ask:
 
 1. Is the **gold** defensible here, or is this genuinely borderline?
 2. Would **you and your partner** have agreed on this sentence?
@@ -870,28 +870,28 @@ For each miss you read, ask:
 . . .
 
 ::: {.callout-note}
-Remember rows 19, 23 and 25 — the three obituary sentences. In pass 1's yes/no world the model got all three *right*. In six classes it called every one of them A2 instead of A1. **The question you ask determines the error you can see.**
+Remember rows 19, 23 and 25 — the three obituary sentences. In pass 1's yes/no task the model got all three *right*. In six classes it labelled every one of them A2 instead of A1. **The question you ask determines which errors you can see.**
 :::
 
-# 作戦会議 — Day-2 strategy huddle
+# 作戦会議 — Day-2 team planning
 
-## Turn today onto your own track {.smaller}
+## Apply today's session to your own project {.smaller}
 
-Everything this week has run on CEFR-SP. Your project doesn't. Spend the next **~12 minutes** with your team adding three things to your **作戦シート**:
+Everything this week has used CEFR-SP. Your project uses different data. Spend the next **~12 minutes** with your team adding three things to your **作戦シート**:
 
 1. **A draft annotation scheme** — your label set, plus **one line of guideline per label**. (Steps ①②.)
 2. **Your gold source** — the provided pool, or one you build yourselves? Who annotates, and how many items? (Step ③.)
-3. **The agreement you'd accept** — a κ number, decided **now**, before you see any results. And: **which class is positive**, and whether your labels are **ordered** (→ weighted κ) or not.
+3. **The agreement you would accept** — a κ number, decided **now**, before you see any results. Also state **which class is positive**, and whether your labels are **ordered** (→ weighted κ) or not.
 
 . . .
 
 ::: {.callout-tip}
-Point 3 is the one teams skip and regret. A threshold chosen *after* seeing the number is not a threshold — it's a rationalisation.
+Teams often skip point 3. A threshold chosen *after* seeing the number is not a threshold; it is a justification written afterwards.
 :::
 
 # Coming up
 
-- **S7 — Prompt Design** *(concept)*: the four prompt elements, zero-shot vs. few-shot, and the contamination trap — **why your few-shot examples must never come from the gold set you just learned to score against**.
-- **S8–S9**: you write the prompts, run the model live, and judge each version with **exactly today's metrics**. From here on, "did that prompt help?" is a number you can compute.
+- **S7 — Prompt Design** *(concept)*: the four prompt elements, zero-shot vs. few-shot, and contamination — **why your few-shot examples must never come from the gold set you evaluate against**.
+- **S8–S9**: you write the prompts, run the model live, and evaluate each version with **exactly today's metrics**. From here on, "did that prompt help?" is a number you can compute.
 
 # Any questions?

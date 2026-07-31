@@ -233,7 +233,7 @@
 <ul>
 <li>Slide for the <strong>idea</strong>, then <strong>do it in Colab</strong>.</li>
 <li><strong>Type it, don’t copy it.</strong></li>
-<li>In Part A you called the model <strong>once</strong>. Today: run it over <strong>many</strong> sentences — the first taste of a real pipeline.</li>
+<li>In Part A you called the model <strong>once</strong>. Today you run it over <strong>many</strong> sentences, which is the first step toward a full pipeline.</li>
 </ul>
 </section></section>
 <section>
@@ -248,8 +248,8 @@
 </section>
 <section id="why-this-matters" class="slide level2">
 <h2>Why this matters</h2>
-<p>The naive rule looks fine — until it isn’t. Abbreviations and decimals contain dots that <strong>aren’t</strong> sentence ends.</p>
-<p>Bad boundaries corrupt everything downstream. So it’s worth <em>seeing</em> the naive rule fail before we reach for a better tool.</p>
+<p>The naive rule works on simple text but fails on common cases: abbreviations and decimals contain dots that are <strong>not</strong> sentence ends.</p>
+<p>Incorrect boundaries produce incorrect data in every later step, so it is worth <em>seeing</em> the naive rule fail before we use a better tool.</p>
 </section>
 <section id="lets-try-naive-split" class="slide level2 smaller">
 <h2>🧪 Let’s try — naive split</h2>
@@ -261,7 +261,7 @@
 <span id="cb1-6"><a></a><span class="cf">for</span> piece <span class="kw">in</span> naive:              <span class="co"># look at each piece in turn</span></span>
 <span id="cb1-7"><a></a>    <span class="bu">print</span>(<span class="bu">repr</span>(piece))           <span class="co"># repr() shows the quotes and spaces exactly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Look at the mess: <code>"Dr"</code> (from <em>Dr.</em>), <code>"e"</code> and <code>"g"</code> (from <em>e.g.</em>), <code>"3"</code> and <code>"14"</code> (from <em>3.14</em>) all split in the wrong places. <strong>Sentence boundaries are not just full stops.</strong></p>
+<p>Look at the output: <code>"Dr"</code> (from <em>Dr.</em>), <code>"e"</code> and <code>"g"</code> (from <em>e.g.</em>), <code>"3"</code> and <code>"14"</code> (from <em>3.14</em>) are all split in the wrong places. <strong>Sentence boundaries are not just full stops.</strong></p>
 </div>
 </section></section>
 <section>
@@ -269,16 +269,16 @@
 <h1>2 · Segmentation with a model</h1>
 
 </section>
-<section id="borrow-a-real-tool" class="slide level2 smaller">
-<h2>Borrow a real tool</h2>
-<p>Instead of our own rule, we <strong>import</strong> a purpose-built library, <strong>spaCy</strong>:</p>
+<section id="use-an-existing-library" class="slide level2 smaller">
+<h2>Use an existing library</h2>
+<p>Instead of our own rule, we <strong>import</strong> a library built for this task, <strong>spaCy</strong>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="co">### Step 1: build a sentence splitter that knows more than "cut at every dot" </span><span class="al">###</span></span>
-<span id="cb2-2"><a></a><span class="im">import</span> spacy                       <span class="co"># the NLP toolbox</span></span>
+<span id="cb2-2"><a></a><span class="im">import</span> spacy                       <span class="co"># an NLP library</span></span>
 <span id="cb2-3"><a></a>nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)            <span class="co"># a minimal English pipeline</span></span>
 <span id="cb2-4"><a></a>nlp.add_pipe(<span class="st">"sentencizer"</span>)        <span class="co"># add the rule-based splitter — no download</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><code>import spacy</code> loads the toolbox.</li>
-<li>The <strong>sentencizer</strong> knows abbreviations and decimals aren’t sentence ends.</li>
+<li><code>import spacy</code> loads the library.</li>
+<li>The <strong>sentencizer</strong> treats abbreviations and decimals correctly, not as sentence ends.</li>
 </ul>
 </section>
 <section id="why-this-matters-1" class="slide level2 smaller">
@@ -296,7 +296,7 @@
 </div>
 </div>
 </div>
-<p>Getting segmentation right is not a side quest — it’s the foundation the whole gold standard sits on.</p>
+<p>Correct segmentation is required for a correct gold standard: every label is attached to one segment.</p>
 <div class="fragment">
 <p>This is your <strong>unit of analysis</strong> — the thing you attach one label to. Sometimes it’s the <strong>sentence</strong> (segment first, like here); sometimes it’s the <strong>whole text</strong> (an essay gets one rating). Session 4 formalizes this as <em>sentence categorization</em> vs <em>text categorization</em>.</p>
 </div>
@@ -330,9 +330,9 @@
 </section>
 <section id="why-this-matters-2" class="slide level2">
 <h2>Why this matters</h2>
-<p>This little loop is the <strong>seed of the pipeline</strong> you’ll assemble later in the week.</p>
+<p>This loop is the first version of the pipeline you assemble later in the week.</p>
 <div class="fragment">
-<p>Annotation, classification, evaluation — all of it is “run this call over a list and collect the results.” Write it once here; reuse the shape all week.</p>
+<p>Annotation, classification and evaluation all consist of running one call over a list and collecting the results. Write it once here, and reuse the same structure all week.</p>
 </div>
 </section>
 <section id="lets-try-the-loop" class="slide level2 smaller">
@@ -350,7 +350,7 @@
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> ask(sentence):                     <span class="co"># `def` names a block of steps</span></span>
 <span id="cb5-2"><a></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
 <span id="cb5-3"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb5-4"><a></a>    <span class="cf">return</span> generate_text(prompt).strip()   <span class="co"># `return` hands the answer back</span></span>
+<span id="cb5-4"><a></a>    <span class="cf">return</span> generate_text(prompt).strip()   <span class="co"># `return` gives the answer back</span></span>
 <span id="cb5-5"><a></a></span>
 <span id="cb5-6"><a></a><span class="bu">print</span>(ask(<span class="st">"Despite the rain, the game went ahead."</span>))  <span class="co"># one line does all three steps</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now labelling a sentence is just <code>ask(...)</code>.</p>
@@ -416,13 +416,13 @@
 </div>
 </section></section>
 <section>
-<section id="作戦会議-strategy-huddle" class="title-slide slide level1 center">
-<h1>作戦会議 — strategy huddle</h1>
+<section id="作戦会議-team-planning" class="title-slide slide level1 center">
+<h1>作戦会議 — team planning</h1>
 
 </section>
 <section id="open-your-作戦シート" class="slide level2 smaller">
 <h2>Open your 作戦シート</h2>
-<p>Class tutorials only ever use the <strong>CEFR</strong> demo. This ~10–15 min team huddle is where you carry each day’s mechanic onto <strong>your own track</strong>.</p>
+<p>Class tutorials always use the <strong>CEFR</strong> demo. In this ~10–15 minute team session you apply each day’s method to <strong>your own track</strong>.</p>
 <p>Start your <strong>作戦シート</strong> (<em>project design log</em>) — today’s four entries:</p>
 <ol type="1">
 <li><strong>Track</strong> — which dataset your group picked.</li>
@@ -440,7 +440,7 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>You’ll add to this sheet again at the end of <strong>Day 2</strong> and <strong>Day 3</strong>. By then it’s a <strong>study design</strong> — and it prefills your final report.</p>
+<p>You will add to this sheet again at the end of <strong>Day 2</strong> and <strong>Day 3</strong>. By then it is a <strong>study design</strong>, and it provides the content for your final report.</p>
 </div>
 </div>
 </div>

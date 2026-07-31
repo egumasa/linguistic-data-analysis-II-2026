@@ -204,8 +204,8 @@
   </div>
 </section>
 <section>
-<section id="session-13-iterate-then-freeze" class="title-slide slide level1 center">
-<h1>Session 13: Iterate, then Freeze</h1>
+<section id="session-13-iterate-the-prompt-then-freeze-the-run" class="title-slide slide level1 center">
+<h1>Session 13: Iterate the Prompt, then Freeze the Run</h1>
 
 </section>
 <section id="agenda" class="slide level2">
@@ -260,11 +260,11 @@
 </tbody>
 </table>
 <div class="fragment">
-<p>If you change two things and the score moves, you have learned nothing about either.</p>
+<p>If you change two things and the score moves, you cannot tell which change caused it.</p>
 </div>
 </section>
-<section id="added-examples-is-not-a-reason" class="slide level2">
-<h2>“Added examples” is not a reason</h2>
+<section id="added-examples-is-not-an-explanation" class="slide level2">
+<h2>“Added examples” is not an explanation</h2>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -291,17 +291,16 @@
 </div>
 </div>
 </div>
-<p>The second one shows you <strong>read the matrix</strong>. That is the skill being assessed.</p>
+<p>The second one shows that you <strong>read the confusion matrix</strong>. That is the skill being assessed.</p>
 </section>
-<section id="let-the-matrix-choose" class="slide level2">
-<h2>Let the matrix choose</h2>
+<section id="use-the-matrix-to-choose-the-next-change" class="slide level2">
+<h2>Use the matrix to choose the next change</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>evaluate(gold, pred0, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Look at the <strong>off-diagonal cells</strong>, not the headline number:</p>
+<p>Look at the <strong>off-diagonal cells</strong>, not only the macro-F1:</p>
 <ul>
-<li>Which pair is confused most?</li>
-<li>Is it <em>adjacent</em> (B1↔︎B2) or a jump (A1↔︎C2)?</li>
-<li>Adjacent confusion on an ordered scale is a <em>calibration</em> problem — often fixable with definitions or anchors.</li>
-<li>A jump usually means the prompt is being misread.</li>
+<li><strong>Most confused pair</strong> — which two labels?</li>
+<li><strong>Adjacent</strong> (B1↔︎B2) — a calibration problem on an ordered scale; often fixable with clearer definitions or anchor examples.</li>
+<li><strong>Distant</strong> (A1↔︎C2) — the model is reading the prompt differently from how you intended.</li>
 </ul>
 </section>
 <section id="plain-vs.-weighted-κ" class="slide level2">
@@ -310,8 +309,8 @@
 Cohen's kappa (weighted) 0.871   &lt;- labels are ordered
   scale order used: A1 &lt; A2 &lt; B1 &lt; B2 &lt; C1 &lt; C2</code></pre>
 <div class="fragment">
-<p>A huge gap like this means: <strong>the model is nearly always close, and almost never exactly right.</strong></p>
-<p>That is a completely different finding from “the model is bad” — and only weighted κ shows it.</p>
+<p>A large difference like this means: <strong>the model is usually one level away, and rarely exactly correct.</strong></p>
+<p>That is a different finding from “the model performs badly”, and only weighted κ shows it.</p>
 </div>
 </section>
 <section id="but-only-when-the-labels-are-a-scale" class="slide level2">
@@ -329,7 +328,7 @@ Cohen's kappa (weighted) 0.871   &lt;- labels are ordered
 <div class="callout-content">
 <p><code>Low</code>/<code>Mid</code>/<code>High</code> is ordered but <strong>not alphabetical</strong>. Pass it yourself:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>evaluate(gold, pred, ordered<span class="op">=</span><span class="va">True</span>, labels<span class="op">=</span>[<span class="st">"Low"</span>, <span class="st">"Mid"</span>, <span class="st">"High"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Otherwise the scale is <code>High &lt; Low &lt; Mid</code> and the number is meaningless. <code>evaluate</code> prints the order it used — read that line.</p>
+<p>Otherwise the scale is <code>High &lt; Low &lt; Mid</code> and the number cannot be interpreted. <code>evaluate</code> prints the order it used — read that line.</p>
 </div>
 </div>
 </div>
@@ -362,11 +361,11 @@ Cohen's kappa (weighted) 0.871   &lt;- labels are ordered
 <p><strong>Important</strong></p>
 </div>
 <div class="callout-content">
-<p>Runtimes are <strong>per-person</strong>. Your reported numbers must come out of a single frozen file, so decide who the <strong>driver</strong> is before you start.</p>
+<p>Runtimes are <strong>per-person</strong>. Your reported numbers must come from a single frozen file, so decide <strong>who runs the model</strong> before you start.</p>
 </div>
 </div>
 </div>
-<p>Free tier: ~500 calls/day per key. If the driver runs out mid-session, hand the role — <strong>and the runtime</strong> — to another member. The files stay put in your shared Drive folder.</p>
+<p>Free tier: ~500 calls/day per key. If that person reaches the daily limit during the session, another member takes over and runs the notebook in their own runtime. The files remain in your shared Drive folder.</p>
 <div class="fragment">
 <p>That is one of the reasons the whole group works from one cloned folder.</p>
 </div>
