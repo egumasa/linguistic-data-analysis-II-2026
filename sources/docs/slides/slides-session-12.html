@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Masaki EGUCHI, Ph.D.">
-  <title>Linguistic Data Analysis II (Summer 2026) – Session 12: Project Work: QC the Gold Set &amp; Baseline</title>
+  <title>Linguistic Data Analysis II (Summer 2026) – Session 12: Project Work — Sample &amp; QC the Gold Set</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,8 +28,74 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-5222b0819fedac50371f8e47cce628d3.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-786aa19b3b784cc15a2029c072583b99.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,54 +196,209 @@
 
 <section id="title-slide" class="center quarto-title-block">
   <p class="kicker">Linguistic Data Analysis II · Day 4</p>
-  <h1 class="title">Session 12: Project Work: QC the Gold Set &amp; Baseline</h1>
+  <h1 class="title">Session 12: Project Work — Sample &amp; QC the Gold Set</h1>
   <p class="subtitle">Day 4 · Methodology &amp; Pipeline Assembly (4-3)</p>
   <div class="title-meta">
     <p class="author">Masaki EGUCHI, Ph.D.</p>
     <p class="institute">Tohoku University · Summer 2026</p>
   </div>
 </section>
-<section class="slide level2">
-
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-</section>
 <section>
-<section id="session-12-project-work-qc-the-gold-set-baseline" class="title-slide slide level1 center">
-<h1>Session 12: Project Work: QC the Gold Set &amp; Baseline</h1>
+<section id="session-12-sample-qc" class="title-slide slide level1 center">
+<h1>Session 12: Sample &amp; QC</h1>
 
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
+<p>Hands on keyboards. Your track, your data.</p>
 <ul>
-<li>A quality-control (adjudication) pass on your sampled gold set</li>
-<li>Run a baseline prompt</li>
+<li><strong>20 min</strong> — sample a balanced subset, create the annotation sheet</li>
+<li><strong>25 min</strong> — annotate <strong>blind</strong>, two of you, independently</li>
+<li><strong>25 min</strong> — agreement → disagreements → adjudicate</li>
+<li><strong>10 min</strong> — a baseline prompt, small</li>
 </ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><code>PLAN.md</code> signed first. Steps 1–2 need no model, so nothing is blocked while you wait.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="learning-objectives" class="slide level2">
+<section id="learning-objectives" class="slide level2 smaller">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Draw a <strong>balanced</strong> subset and explain why balance matters for P/R/F1 and the matrix.</li>
+<li>Annotate independently and blind, and interpret your percent agreement and Cohen’s κ.</li>
+<li>Adjudicate disagreements into one agreed gold set, and record <strong>what changed</strong>.</li>
+<li>Get a baseline number to beat.</li>
+</ul>
 </section></section>
 <section>
-<section id="qc-adjudication-pass" class="title-slide slide level1 center">
-<h1>QC / adjudication pass</h1>
+<section id="step-1-sample" class="title-slide slide level1 center">
+<h1>Step 1 — Sample</h1>
 
 </section>
-<section id="qc-adjudication-pass-1" class="slide level2">
-<h2>QC / adjudication pass</h2>
-<!-- to be added -->
+<section id="pool-vs.-sample" class="slide level2">
+<h2>Pool vs.&nbsp;sample</h2>
+<p>A <strong>pool</strong> is everything the corpus has, with its natural imbalance:</p>
+<pre><code>cefr_pool.json → A1: 51 · A2: 246 · B1: 1229 · B2: 1188 · C1: 436 · C2: 33</code></pre>
+<div class="fragment">
+<p>A <strong>sample</strong> is what you study — equal items per label:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>sampled <span class="op">=</span> sample_pool(pool, N_PER_CLASS, SEED)</span>
+<span id="cb2-2"><a></a><span class="co"># Sampled 42 items. Per-label counts: {'A1': 7, 'A2': 7, ... 'C2': 7}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="why-balance" class="slide level2">
+<h2>Why balance</h2>
+<p>With 1229 B1s and 33 C2s, a model that answers “B1” to everything scores well on accuracy and tells you nothing.</p>
+<p>Balanced sampling makes <strong>per-class</strong> precision and recall readable, and makes the confusion matrix a picture of <em>what gets confused with what</em> rather than a picture of the class sizes.</p>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Rare classes simply yield fewer — that is a property of the data, and it belongs in your limitations section.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="why-keep-the-pool-separate" class="slide level2">
+<h2>Why keep the pool separate</h2>
+<p>The items you <em>didn’t</em> sample have a job: they become your <strong>few-shot examples</strong> in step 4.</p>
+<p>If your examples came from your gold set, you would be showing the model the answers you are about to test it on.</p>
+<div class="fragment">
+<p><code>build_fewshot</code> avoids this for you — but only if there is a pool left to draw from. Sample from the <strong>full pool</strong>, not the demo file.</p>
+</div>
 </section></section>
 <section>
-<section id="run-a-baseline-prompt" class="title-slide slide level1 center">
-<h1>Run a baseline prompt</h1>
+<section id="step-2-qc" class="title-slide slide level1 center">
+<h1>Step 2 — QC</h1>
 
 </section>
-<section id="run-a-baseline-prompt-1" class="slide level2">
-<h2>Run a baseline prompt</h2>
-<!-- to be added -->
+<section id="the-part-no-model-can-do" class="slide level2">
+<h2>The part no model can do</h2>
+<p>The published labels are somebody else’s judgment.</p>
+<div class="fragment">
+<p>Before you measure a model against them, <strong>two of you</strong> re-annotate the sample independently and blind. Then you find out how far apart you were. Then you argue.</p>
+</div>
+<div class="fragment">
+<p>This is the same A–F round-trip you did by hand in <strong>Session 5</strong> — now on your own track.</p>
+</div>
+</section>
+<section id="blind-means-blind" class="slide level2">
+<h2>Blind means blind</h2>
+<p><code>create_annotation_sheet</code> deliberately does <strong>not</strong> copy the published label across.</p>
+<pre><code>| ID | Text                          | CoderA | CoderB | Final | Note |
+|----|-------------------------------|--------|--------|-------|------|
+| 1  | Bears do not have good hearing|        |        |       |      |</code></pre>
+<div class="fragment">
+<p>CoderA and CoderB fill their own columns without looking at each other’s. <code>Final</code> stays empty until you have talked.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>The Sheet is a real Google Sheet — everyone can work in it at once. It is the one part of the repo that is genuinely concurrent.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="then-measure" class="slide level2">
+<h2>Then measure</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>rows <span class="op">=</span> load_annotation_sheet(SHEET_ID, ROUND)</span>
+<span id="cb4-2"><a></a>annotator_agreement(rows)</span>
+<span id="cb4-3"><a></a><span class="co"># 42 doubly-annotated · agreement 71.4% · Cohen's kappa 0.657</span></span>
+<span id="cb4-4"><a></a>disagreements(rows)</span>
+<span id="cb4-5"><a></a><span class="co"># 12 rows to adjudicate.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><strong>Write those two numbers down.</strong> They go in report section 1, and they are the evidence that the QC pass happened.</p>
+</div>
+</section>
+<section id="adjudicate" class="slide level2">
+<h2>Adjudicate</h2>
+<p>The 12 rows you disagreed on are not noise. They are the places where <strong>your scheme is unclear</strong> — and they are the same places the model will struggle.</p>
+<div class="fragment">
+<p>For each: agree a <code>Final</code> label, and note <em>why</em>. Then:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>gold <span class="op">=</span> to_canonical(rows, LABELS)</span>
+<span id="cb5-2"><a></a>compare_to_published(gold, sampled)</span>
+<span id="cb5-3"><a></a><span class="co"># 37 / 42 match the published label (88.1%)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<p>Those 5 differences are a finding about the corpus, not a mistake by you.</p>
+</div>
+</section>
+<section id="the-consequence" class="slide level2">
+<h2>The consequence</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Your adjudicated gold is what the model gets scored against</strong></p>
+</div>
+<div class="callout-content">
+<p>Not the published labels.</p>
+</div>
+</div>
+</div>
+<p>That is what makes this session load-bearing. The boundaries you argue about here are the ones you will point at on Day 5 when you explain why the model missed something.</p>
+</section></section>
+<section>
+<section id="step-3-baseline" class="title-slide slide level1 center">
+<h1>Step 3 — Baseline</h1>
+
+</section>
+<section id="small-on-purpose" class="slide level2">
+<h2>Small, on purpose</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>f1_by_round <span class="op">=</span> {}</span>
+<span id="cb6-2"><a></a>PROMPT <span class="op">=</span> load_prompt(PROMPT_FILE)</span>
+<span id="cb6-3"><a></a>pred0 <span class="op">=</span> run_prompt(PROMPT, gold)</span>
+<span id="cb6-4"><a></a>f1_by_round[<span class="st">"0 zero-shot"</span>] <span class="op">=</span> evaluate(gold, pred0, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Keep <code>N_PER_CLASS = 2</code> for now</strong></p>
+</div>
+<div class="callout-content">
+<p>One full-size round is ~40 model calls and <strong>≥3 minutes of enforced pacing</strong>. The free tier gives you ~500 calls a day. Iterate small; save the full run for the one you freeze tomorrow.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="write-the-plainest-prompt-you-can" class="slide level2">
+<h2>Write the plainest prompt you can</h2>
+<p>Resist making it good.</p>
+<p>The point of a baseline is that later rounds have something to be measured <strong>against</strong> — and that you find out what the model does with no help at all.</p>
+<div class="fragment">
+<p>A baseline that is already tuned tells you nothing about whether your tuning worked.</p>
+</div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
+<p>Next: <strong>S13 — iterate the prompt, then freeze.</strong></p>
 
 
 

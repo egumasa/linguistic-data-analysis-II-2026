@@ -28,6 +28,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-786aa19b3b784cc15a2029c072583b99.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -137,57 +203,333 @@
     <p class="institute">Tohoku University · Summer 2026</p>
   </div>
 </section>
-<section class="slide level2">
-
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-</section>
 <section>
-<section id="session-11-plenary-pipeline-assembly" class="title-slide slide level1 center">
-<h1>Session 11: Plenary Pipeline Assembly</h1>
+<section id="session-11-pipeline-assembly" class="title-slide slide level1 center">
+<h1>Session 11: Pipeline Assembly</h1>
 
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
+<p>You have already run every piece of this pipeline. Today you learn to <strong>name the structure</strong>.</p>
 <ul>
-<li>Assemble the project notebook together, step by step</li>
-<li>Pick a mini-project track</li>
-<li>Sample a balanced gold subset from the provided pool</li>
+<li><strong>15 min</strong> — the pipeline as one diagram, and where you have met each helper</li>
+<li><strong>45 min</strong> — your group writes <code>PLAN.md</code></li>
+<li><strong>25 min</strong> — each group states its I/O contract out loud</li>
 </ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Not a re-teach. Nothing here is new code — the point is being able to <em>describe</em> the flow, which is exactly what the Q&amp;A on Day 5 will ask you to do.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Describe the pipeline as a chain of <strong>inputs and outputs</strong> — what each step consumes and produces.</li>
+<li>Point to where in Days 1–3 you ran each helper, and use the same call form again.</li>
+<li>Write your group’s <code>PLAN.md</code> and defend its six lines.</li>
+</ul>
 </section></section>
 <section>
-<section id="assemble-the-notebook" class="title-slide slide level1 center">
-<h1>Assemble the notebook</h1>
+<section id="the-pipeline" class="title-slide slide level1 center">
+<h1>The pipeline</h1>
 
 </section>
-<section id="assemble-the-notebook-1" class="slide level2">
-<h2>Assemble the notebook</h2>
-<!-- to be added -->
+<section id="one-diagram" class="slide level2">
+<h2>One diagram</h2>
+<pre><code>pool ──sample──▶ sampled ──annotate──▶ sheet ──adjudicate──▶ gold
+                                                              │
+                            prompt ─────────────┐             │
+                                                ▼             ▼
+                                          run_prompt ──▶ predictions
+                                                              │
+                                                    save_predictions
+                                                              │
+                                                              ▼
+                                                       FROZEN FILE
+                                                              │
+                                         ┌────────────────────┤
+                                         ▼                    ▼
+                                    evaluate              show_errors
+                                         │                    │
+                                         └──────▶ export ◀─────┘</code></pre>
+</section>
+<section id="read-it-as-data-shapes" class="slide level2">
+<h2>Read it as data shapes</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Arrow</th>
+<th>What flows</th>
+<th>Shape</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>pool → sampled</td>
+<td>~40 items, balanced</td>
+<td><code>[{id, text, label}]</code></td>
+</tr>
+<tr class="even">
+<td>sampled → sheet</td>
+<td>one row per item, <strong>labels blanked</strong></td>
+<td>a Google Sheet</td>
+</tr>
+<tr class="odd">
+<td>sheet → gold</td>
+<td>your adjudicated decisions</td>
+<td><code>[{id, text, label}]</code></td>
+</tr>
+<tr class="even">
+<td>gold + prompt → predictions</td>
+<td>one label per item</td>
+<td><code>["B1", "A2", …]</code></td>
+</tr>
+<tr class="odd">
+<td>predictions → frozen file</td>
+<td>the same list, <strong>on disk</strong></td>
+<td><code>.json</code></td>
+</tr>
+<tr class="even">
+<td>gold + frozen → metrics</td>
+<td>P/R/F1, κ, matrix</td>
+<td>numbers you report</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Everything after the frozen file reads <strong>the file</strong>, not the model.</p>
+</div>
+</section>
+<section id="where-you-have-already-used-these" class="slide level2 smaller">
+<h2>Where you have already used these</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Helper</th>
+<th>You ran it in</th>
+<th>Same call?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><code>load_gold(path)</code></td>
+<td>Day 2 S5 · Day 3</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td><code>sample_pool(pool, n, seed)</code></td>
+<td>Day 4 — as four inline steps</td>
+<td>one call now</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td><code>create_annotation_sheet(...)</code></td>
+<td>Day 2 S5 step A</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>load_annotation_sheet(...)</code></td>
+<td>Day 2 S5 step D</td>
+<td>✅</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td><code>annotator_agreement(rows)</code></td>
+<td>Day 2 S5 step D</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>disagreements(rows)</code></td>
+<td>Day 2 S5 step E</td>
+<td>✅</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td><code>to_canonical(rows, labels)</code></td>
+<td>Day 2 S5 step F</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td>3–4</td>
+<td><code>run_prompt(PROMPT, gold)</code></td>
+<td>Day 3, every round</td>
+<td>✅</td>
+</tr>
+<tr class="odd">
+<td>3–4</td>
+<td><code>evaluate(gold, pred, ordered=True)</code></td>
+<td>Day 2 S6 · Day 3</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td><code>show_errors(gold, pred)</code></td>
+<td>Day 3</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Nine of these are the identical call.</strong> That is why 15 minutes is enough.</p>
+</section>
+<section id="the-three-that-are-new" class="slide level2">
+<h2>The three that are new</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>load_prompt(path)                  <span class="co"># your prompt is a FILE now, so versions survive</span></span>
+<span id="cb2-2"><a></a>save_predictions(pred, path)       <span class="co"># the freeze from S10, made executable</span></span>
+<span id="cb2-3"><a></a>export_results(track, gold, pred, f1_by_round, out_dir, group<span class="op">=</span>GROUP)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>And one that changes shape:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>build_fewshot(PROMPT, pool, gold)  <span class="co"># Day 3: you typed the examples by hand</span></span>
+<span id="cb3-2"><a></a>                                   <span class="co"># now: drawn from the pool, avoiding your gold</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section></section>
 <section>
-<section id="pick-a-track" class="title-slide slide level1 center">
-<h1>Pick a track</h1>
+<section id="plan.md" class="title-slide slide level1 center">
+<h1><code>PLAN.md</code></h1>
 
 </section>
-<section id="pick-a-track-1" class="slide level2">
-<h2>Pick a track</h2>
-<!-- to be added -->
+<section id="the-作戦シート-finally-given-a-file" class="slide level2">
+<h2>The 作戦シート, finally given a file</h2>
+<p>You have been building this plan since S3 — track, scheme, gold source, prompting strategy. Today it becomes one page in your repo.</p>
+<p><strong>It is not graded.</strong> It is a <strong>gate</strong>: no group calls the model until it is signed.</p>
+<div class="fragment">
+<p>Two minutes of writing catches the failures that otherwise cost an hour <em>after</em> you have spent quota:</p>
+<ul>
+<li>label set says <code>Move 1/2/3</code>, gold file says <code>1a/1b</code>, prompt says “move one” → no error, just a confusing F1</li>
+<li>labels ordered but not alphabetical → weighted κ computed over <code>High &lt; Low &lt; Mid</code></li>
+<li>nobody agreed who codes which column → one annotator, no κ</li>
+</ul>
+</div>
+</section>
+<section id="the-six-lines" class="slide level2">
+<h2>The six lines</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a></a><span class="fu"># PLAN — &lt;group&gt;, track &lt;track&gt;</span></span>
+<span id="cb4-2"><a></a>Members: …</span>
+<span id="cb4-3"><a></a></span>
+<span id="cb4-4"><a></a><span class="ss">1. </span>Unit of analysis: (sentence / whole text) — and why</span>
+<span id="cb4-5"><a></a><span class="ss">2. </span>Label set: … (exactly the strings in your gold file)</span>
+<span id="cb4-6"><a></a><span class="ss">3. </span>Are the labels ORDERED? In what order?</span>
+<span id="cb4-7"><a></a><span class="ss">4. </span>Gold: pool file · N_PER_CLASS · SEED · expected total</span>
+<span id="cb4-8"><a></a><span class="ss">5. </span>QC: who is CoderA, who is CoderB, who adjudicates</span>
+<span id="cb4-9"><a></a><span class="ss">6. </span>Prompt plan: baseline, then the ONE change you predict</span>
+<span id="cb4-10"><a></a>   will help — and why</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Question 3 exists to catch the ordinal-κ trap. Question 6 asks you to <strong>predict before you test</strong> — which is the whole method in one line.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="and-the-table" class="slide level2">
+<h2>And the table</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 20%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Step</th>
+<th>Consumes</th>
+<th>Produces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>sample</td>
+<td><code>POOL_PATH</code>, <code>N_PER_CLASS</code>, <code>SEED</code></td>
+<td><code>pool</code>, <code>sampled</code>, <code>LABELS</code></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>QC / adjudicate</td>
+<td><code>sampled</code>, <code>LABELS</code>, the sheet</td>
+<td><code>gold</code></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>baseline</td>
+<td><code>PROMPT</code>, <code>gold</code></td>
+<td><code>pred0</code>, <code>f1_by_round</code></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>iterate + freeze</td>
+<td><code>PROMPT</code>, <code>pool</code>, <code>gold</code></td>
+<td><code>pred_final</code> (a file)</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>error analysis</td>
+<td><code>gold</code>, <code>pred_final</code></td>
+<td>the errors table</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>export</td>
+<td>all of the above</td>
+<td><code>outputs/…_report.md</code></td>
+</tr>
+</tbody>
+</table>
 </section></section>
 <section>
-<section id="sample-a-balanced-gold-subset" class="title-slide slide level1 center">
-<h1>Sample a balanced gold subset</h1>
+<section id="end-state-check" class="title-slide slide level1 center">
+<h1>End-state check</h1>
 
 </section>
-<section id="sample-a-balanced-gold-subset-1" class="slide level2">
-<h2>Sample a balanced gold subset</h2>
-<!-- to be added -->
+<section id="say-it-out-loud" class="slide level2">
+<h2>Say it out loud</h2>
+<p>Each group, in turn:</p>
+<blockquote>
+<p><em>“Step 2 consumes <code>sampled</code> and the sheet, and produces <code>gold</code>.”</em></p>
+</blockquote>
+<div class="fragment">
+<p>Every step. No notes.</p>
+</div>
+<div class="fragment">
+<p>If you can do that, you can answer the Day-5 question <em>“walk us through what you did”</em> — which is worth more marks than your F1.</p>
+</div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
+<p>Next: <strong>S12 — sample, annotate, adjudicate. Your own track, your own data.</strong></p>
 
 
 

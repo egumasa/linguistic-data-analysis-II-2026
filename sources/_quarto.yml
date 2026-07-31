@@ -71,7 +71,20 @@ website:
             - notebooks/day2-s6_evaluation_metrics.ipynb
             - notebooks/day3_prompt_design.ipynb
             - notebooks/day4_pipeline_and_sampling.ipynb
-            - notebooks/day5_project_finalization.ipynb
+
+    - title: "Final Project"
+      style: docked
+      collapse-level: 1
+      search: true
+      contents:
+        - text: "Overview"
+          href: final-project/index.md
+        - final-project/plan.md
+        - final-project/deliverables.md
+        - final-project/rubric.md
+        - final-project/pipeline-cheatsheet.md
+        - text: "Starter tracks"
+          href: resources/datasets/mini-project-tracks.md
 
     - title: "Resources"
       style: docked

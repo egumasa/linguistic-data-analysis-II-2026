@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Day 2 · S6 — Gold standards &amp; evaluation metrics – Linguistic Data Analysis II (Summer 2026)</title>
+<title>Day 2 · S6 — Evaluation metrics – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -104,6 +104,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -167,7 +196,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day2-s6_evaluation_metrics.html">Day 2 · S6 — Gold standards &amp; evaluation metrics</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day2-s6_evaluation_metrics.html">Day 2 · S6 — Evaluation metrics</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -362,7 +391,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../notebooks/day2-s6_evaluation_metrics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Day 2 · S6 — Gold standards &amp; evaluation metrics</span></a>
+ <span class="menu-text">Day 2 · S6 — Evaluation metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -375,12 +404,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../notebooks/day4_pipeline_and_sampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Day 4 · Pipeline assembly &amp; sampling your gold set</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/day5_project_finalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 5 · Project finalization</span></a>
   </div>
 </li>
       </ul>
@@ -396,16 +419,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link active" data-scroll-target="#how-to-use-this-notebook">How to use this notebook</a></li>
-  <li><a href="#part-a-tutorial-the-pipeline-on-cefr-sp" id="toc-part-a-tutorial-the-pipeline-on-cefr-sp" class="nav-link" data-scroll-target="#part-a-tutorial-the-pipeline-on-cefr-sp">Part A · Tutorial — the pipeline on CEFR-SP</a>
+  <li><a href="#setup-run-this-first" id="toc-setup-run-this-first" class="nav-link" data-scroll-target="#setup-run-this-first">Setup — run this first</a>
   <ul class="collapse">
-  <li><a href="#setup-run-this-first" id="toc-setup-run-this-first" class="nav-link" data-scroll-target="#setup-run-this-first">Setup — run this first</a></li>
-  <li><a href="#warm-up-what-a-gold-file-actually-is" id="toc-warm-up-what-a-gold-file-actually-is" class="nav-link" data-scroll-target="#warm-up-what-a-gold-file-actually-is">Warm-up — what a <em>gold file</em> actually is</a></li>
-  <li><a href="#step-1-load-the-gold-standard" id="toc-step-1-load-the-gold-standard" class="nav-link" data-scroll-target="#step-1-load-the-gold-standard">Step 1 — Load the gold standard</a></li>
-  <li><a href="#step-2-the-prompt-and-the-frozen-predictions-it-produced" id="toc-step-2-the-prompt-and-the-frozen-predictions-it-produced" class="nav-link" data-scroll-target="#step-2-the-prompt-and-the-frozen-predictions-it-produced">Step 2 — The prompt, and the frozen predictions it produced</a></li>
-  <li><a href="#step-3-read-the-evaluation" id="toc-step-3-read-the-evaluation" class="nav-link" data-scroll-target="#step-3-read-the-evaluation">Step 3 — Read the evaluation</a></li>
-  <li><a href="#step-4-error-analysis" id="toc-step-4-error-analysis" class="nav-link" data-scroll-target="#step-4-error-analysis">Step 4 — Error analysis</a></li>
+  <li><a href="#what-a-gold-file-actually-is" id="toc-what-a-gold-file-actually-is" class="nav-link" data-scroll-target="#what-a-gold-file-actually-is">What a <em>gold file</em> actually is</a></li>
+  <li><a href="#load-the-gold-standard-and-the-frozen-predictions" id="toc-load-the-gold-standard-and-the-frozen-predictions" class="nav-link" data-scroll-target="#load-the-gold-standard-and-the-frozen-predictions">Load the gold standard and the frozen predictions</a></li>
   </ul></li>
-  <li><a href="#part-b-corpus-lab-code-the-metrics-from-scratch" id="toc-part-b-corpus-lab-code-the-metrics-from-scratch" class="nav-link" data-scroll-target="#part-b-corpus-lab-code-the-metrics-from-scratch">Part B · Corpus Lab — code the metrics from scratch</a></li>
+  <li><a href="#part-a-corpus-lab-build-the-metrics-yourself" id="toc-part-a-corpus-lab-build-the-metrics-yourself" class="nav-link" data-scroll-target="#part-a-corpus-lab-build-the-metrics-yourself">Part A · Corpus Lab — build the metrics yourself</a>
+  <ul class="collapse">
+  <li><a href="#step-1-collapse-to-one-yesno-question" id="toc-step-1-collapse-to-one-yesno-question" class="nav-link" data-scroll-target="#step-1-collapse-to-one-yesno-question">Step 1 · Collapse to one yes/no question</a></li>
+  <li><a href="#step-2-ask-one-item" id="toc-step-2-ask-one-item" class="nav-link" data-scroll-target="#step-2-ask-one-item">Step 2 · Ask one item</a></li>
+  <li><a href="#step-3-the-four-branches" id="toc-step-3-the-four-branches" class="nav-link" data-scroll-target="#step-3-the-four-branches">Step 3 · The four branches</a></li>
+  <li><a href="#step-4-make-it-a-function" id="toc-step-4-make-it-a-function" class="nav-link" data-scroll-target="#step-4-make-it-a-function">Step 4 · Make it a function</a></li>
+  <li><a href="#step-5-loop-and-store-every-decision" id="toc-step-5-loop-and-store-every-decision" class="nav-link" data-scroll-target="#step-5-loop-and-store-every-decision">Step 5 · Loop, and store every decision</a></li>
+  <li><a href="#step-6-tally-the-verdicts" id="toc-step-6-tally-the-verdicts" class="nav-link" data-scroll-target="#step-6-tally-the-verdicts">Step 6 · Tally the verdicts</a></li>
+  <li><a href="#step-7-the-confusion-matrix" id="toc-step-7-the-confusion-matrix" class="nav-link" data-scroll-target="#step-7-the-confusion-matrix">Step 7 · The confusion matrix</a></li>
+  <li><a href="#step-8-precision-recall-f1" id="toc-step-8-precision-recall-f1" class="nav-link" data-scroll-target="#step-8-precision-recall-f1">Step 8 · Precision, recall, F1</a></li>
+  <li><a href="#step-9-cohens-κ" id="toc-step-9-cohens-κ" class="nav-link" data-scroll-target="#step-9-cohens-κ">Step 9 · Cohen’s κ</a></li>
+  <li><a href="#step-10-scale-up-then-check-yourself" id="toc-step-10-scale-up-then-check-yourself" class="nav-link" data-scroll-target="#step-10-scale-up-then-check-yourself">Step 10 · Scale up, then check yourself</a></li>
+  </ul></li>
+  <li><a href="#part-b-tutorial-the-same-job-six-classes-with-scikit-learn" id="toc-part-b-tutorial-the-same-job-six-classes-with-scikit-learn" class="nav-link" data-scroll-target="#part-b-tutorial-the-same-job-six-classes-with-scikit-learn">Part B · Tutorial — the same job, six classes, with scikit-learn</a>
+  <ul class="collapse">
+  <li><a href="#reading-the-report" id="toc-reading-the-report" class="nav-link" data-scroll-target="#reading-the-report">Reading the report</a></li>
+  <li><a href="#read-the-matrix-down-the-columns" id="toc-read-the-matrix-down-the-columns" class="nav-link" data-scroll-target="#read-the-matrix-down-the-columns">Read the matrix <em>down the columns</em></a></li>
+  <li><a href="#two-κ-values-same-predictions" id="toc-two-κ-values-same-predictions" class="nav-link" data-scroll-target="#two-κ-values-same-predictions">Two κ values, same predictions</a></li>
+  <li><a href="#error-analysis-the-models-fault-or-the-schemes" id="toc-error-analysis-the-models-fault-or-the-schemes" class="nav-link" data-scroll-target="#error-analysis-the-models-fault-or-the-schemes">Error analysis — the model’s fault, or the scheme’s?</a></li>
+  </ul></li>
   <li><a href="#before-you-submit" id="toc-before-you-submit" class="nav-link" data-scroll-target="#before-you-submit">✅ Before you submit</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/notebooks/day2-s6_evaluation_metrics.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -413,9 +451,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day2-s6_evaluation_metrics.html">Day 2 · S6 — Gold standards &amp; evaluation metrics</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day2-s6_evaluation_metrics.html">Day 2 · S6 — Evaluation metrics</a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Day 2 · S6 — Gold standards &amp; evaluation metrics</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Day 2 · S6 — Evaluation metrics</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
 </div>
 
 
@@ -438,15 +476,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="how-to-use-this-notebook">How to use this notebook</h3>
 <p>It has two parts:</p>
 <ul>
-<li><strong>Part A · Tutorial</strong> — load a gold standard → evaluate a <strong>frozen</strong> set of model predictions → read precision / recall / F1 + a confusion matrix → inspect the errors, on an easy-to-judge task (CEFR sentence level).</li>
-<li><strong>Part B · Corpus Lab</strong> — code the evaluation metrics (precision, recall, F1, Cohen’s κ) by hand, then check them against scikit-learn.</li>
+<li><strong>Part A · Corpus Lab</strong> — build the metrics yourself — TP/FP/FN/TN → confusion matrix → precision, recall, F1 → Cohen’s κ — on a single yes/no question, then check your code against scikit-learn.</li>
+<li><strong>Part B · Tutorial</strong> — the same job with <strong>scikit-learn</strong> on the real six-level task: <code>classification_report</code>, the confusion matrix, plain vs.&nbsp;weighted κ, and error analysis.</li>
 </ul>
 <p>You only edit the cells marked <strong>✏️ YOU EDIT</strong>. Cells marked <strong>🔧 Library cell</strong> are pre-written — run them, don’t change them.</p>
 <p>➡️ Work top to bottom. When you’re done, <strong>Runtime → Run all</strong>, then <strong>File → Download → Download <code>.ipynb</code></strong> and submit that file.</p>
 </section>
-<section id="part-a-tutorial-the-pipeline-on-cefr-sp" class="level2">
-<h2 class="anchored" data-anchor-id="part-a-tutorial-the-pipeline-on-cefr-sp">Part A · Tutorial — the pipeline on CEFR-SP</h2>
-<p>The task (CEFR sentence level, A1–C2) is easy to judge on purpose — today the <em>mechanics</em> are the lesson, not the labeling.</p>
+<section id="setup-run-this-first" class="level2">
+<h2 class="anchored" data-anchor-id="setup-run-this-first">Setup — run this first</h2>
+<p>Both parts run on the same data: the <strong>CEFR-SP</strong> gold set (72 sentences, 12 per level — the pool your S5 sample was drawn from) and one model’s answer for every one of them.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -457,276 +495,769 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You met the live model on Day 1 and saw its answers change from run to run. When you’re learning to <em>measure</em> quality, that wobble is just noise fighting the lesson — so today the model’s predictions are <strong>pre-computed and committed</strong> to a file. You load them and everyone’s precision / recall / F1 come out <strong>identical every run</strong>. You’ll run the model yourself (with the key) from Day 3 on.</p>
+<p>You met the live model on Day 1 and saw its answers change from run to run. When you’re learning to <em>measure</em> quality, that wobble is just noise fighting the lesson — so today the model’s predictions are <strong>pre-computed and committed</strong> to a file. You load them, and everyone’s precision / recall / F1 / κ come out <strong>identical every run</strong>: if your number differs from the slide, you have a bug, not a different model. You’ll run the model yourself (with the key) from Day 3 on.</p>
 </div>
 </div>
-<section id="setup-run-this-first" class="level3">
-<h3 class="anchored" data-anchor-id="setup-run-this-first">Setup — run this first</h3>
-<div id="cell-4" class="cell">
+<div id="cell-3" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json, urllib.request</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, seaborn <span class="im">as</span> sns, matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>GOLD_URL <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json"</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>LEVELS <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"C1"</span>, <span class="st">"C2"</span>]</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>PREDICTIONS_URL <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/predictions_day2.json"</span>   <span class="co"># frozen model predictions</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done. scikit-learn ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (classification_report, confusion_matrix,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                             cohen_kappa_score)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, seaborn <span class="im">as</span> sns, matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>GOLD_URL <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>LEVELS <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"C1"</span>, <span class="st">"C2"</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>PREDICTIONS_URL <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/predictions_day2.json"</span>   <span class="co"># frozen model predictions</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done. scikit-learn ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-5" class="cell">
+<div id="cell-4" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: "form" }</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_gold(url_or_path):</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read the canonical gold JSON: [{'id','text','label'}, ...]."""</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(raw)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):                 <span class="co"># a web address?</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)  <span class="co"># download it</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(raw)                              <span class="co"># JSON text -&gt; list of dicts</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                                   <span class="co"># otherwise a file on disk</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(<span class="bu">open</span>(url_or_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read())</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items. First one:"</span>, gold[<span class="dv">0</span>])</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items. First one:"</span>, gold[<span class="dv">0</span>])  <span class="co"># proof it worked</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gold</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-6" class="cell">
+<div id="cell-5" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: load_predictions(url_or_path) → predictions { display-mode: "form" }</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_predictions(url_or_path):</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read a frozen predictions list — a committed URL or a local path."""</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        predictions <span class="op">=</span> json.loads(raw)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):                 <span class="co"># a web address?</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)  <span class="co"># download it</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        predictions <span class="op">=</span> json.loads(raw)                       <span class="co"># JSON text -&gt; list</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                                   <span class="co"># otherwise a file on disk</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        predictions <span class="op">=</span> json.loads(<span class="bu">open</span>(url_or_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read())</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(predictions)<span class="sc">}</span><span class="ss"> frozen predictions."</span>)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<div id="cell-6" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: pair_up(gold, predictions, positive) → items { display-mode: "form" }</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pair_up(gold, predictions, positive):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Pair each gold item with the model's prediction, both collapsed to yes/no.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">    `positive` lists the labels that count as "yes" (e.g. ["C1", "C2"]).</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns [{"id", "text", "gold", "pred"}, ...] — one dict per item."""</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    items <span class="op">=</span> []</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):   <span class="co"># gold item and its prediction, side by side</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        items.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>],</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"text"</span>: g[<span class="st">"text"</span>],</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                      <span class="co"># six CEFR levels collapse to two answers: "yes" or "no"</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"gold"</span>: <span class="st">"yes"</span> <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="kw">in</span> positive <span class="cf">else</span> <span class="st">"no"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"pred"</span>: <span class="st">"yes"</span> <span class="cf">if</span> p <span class="kw">in</span> positive <span class="cf">else</span> <span class="st">"no"</span>})</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Paired </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items. Positive class = </span><span class="sc">{</span>positive<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> items</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 <div id="cell-7" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + confusion matrix { display-mode: "form" }</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(gold, predictions):</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> []</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> gold:</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        y_true.append(item[<span class="st">"label"</span>])</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> predictions</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                xticklabels<span class="op">=</span>LEVELS, yticklabels<span class="op">=</span>LEVELS)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Predicted"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Gold"</span>)<span class="op">;</span> plt.title(<span class="st">"Confusion matrix"</span>)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: show_2x2(tally) → the four counts as a square { display-mode: "form" }</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_2x2(tally):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Print a tally of TP/FP/FN/TN as a confusion matrix — rows are the gold</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">    label, columns are the prediction. No arithmetic: the same four numbers,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">    arranged so you can see where the errors went."""</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># .get(..., 0) so a missing outcome shows as 0 rather than crashing:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    tp <span class="op">=</span> tally.get(<span class="st">"TP"</span>, <span class="dv">0</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    fp <span class="op">=</span> tally.get(<span class="st">"FP"</span>, <span class="dv">0</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> tally.get(<span class="st">"FN"</span>, <span class="dv">0</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    tn <span class="op">=</span> tally.get(<span class="st">"TN"</span>, <span class="dv">0</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># :&lt;9 pads a label to 9 characters, :&gt;9 right-aligns a number in 9 — that is all</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the f-strings below are doing: lining the four counts up into a square.</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">''</span><span class="sc">:&lt;9}{</span><span class="st">'pred yes'</span><span class="sc">:&gt;9}{</span><span class="st">'pred no'</span><span class="sc">:&gt;9}</span><span class="ss">"</span>)     <span class="co"># column headings</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'gold yes'</span><span class="sc">:&lt;9}{</span>tp<span class="sc">:&gt;9}{</span>fn<span class="sc">:&gt;9}</span><span class="ss">"</span>)              <span class="co"># top row:    TP  FN</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'gold no'</span><span class="sc">:&lt;9}{</span>fp<span class="sc">:&gt;9}{</span>tn<span class="sc">:&gt;9}</span><span class="ss">"</span>)               <span class="co"># bottom row: FP  TN</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="cell-8" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: "form" }</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_errors(gold, predictions):</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="op">!=</span> p:</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            rows.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"gold"</span>: g[<span class="st">"label"</span>], <span class="st">"pred"</span>: p, <span class="st">"text"</span>: g[<span class="st">"text"</span>]})</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> wrong."</span>)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + κ + confusion matrix { display-mode: "form" }</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(gold, predictions, ordered<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Score predictions against gold: per-class P/R/F1 + macro, Cohen's κ, and a</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">    confusion-matrix heatmap.</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">    ordered=True adds QUADRATIC WEIGHTED κ — use it only when the labels sit on a</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">    scale (A1 &lt; A2 &lt; ... &lt; C2), so that a near miss counts as a smaller error than</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">    a far one. For unordered categories, plain κ is the one to report."""</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: line the two label lists up, gold first </span><span class="al">###</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> []                          <span class="co"># the correct labels, from the gold set</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> gold:</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        y_true.append(item[<span class="st">"label"</span>])</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> predictions                 <span class="co"># the model's labels, in the same order</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: per-class precision / recall / F1, as a text table </span><span class="al">###</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: one overall number — agreement corrected for chance </span><span class="al">###</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Cohen's kappa            </span><span class="sc">{</span>cohen_kappa_score(y_true, y_pred)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ordered:                          <span class="co"># only when the labels sit on a scale</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>                                     weights<span class="op">=</span><span class="st">"quadratic"</span>)   <span class="co"># near misses hurt less</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Cohen's kappa (weighted) </span><span class="sc">{</span>weighted<span class="sc">:.3f}</span><span class="ss">   &lt;- labels are ordered"</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 4: draw the same information as a picture </span><span class="al">###</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)   <span class="co"># counts per gold/pred pair</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,     <span class="co"># annot=True writes the counts</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>                xticklabels<span class="op">=</span>LEVELS, yticklabels<span class="op">=</span>LEVELS)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Predicted"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Gold"</span>)<span class="op">;</span> plt.title(<span class="st">"Confusion matrix"</span>)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-</section>
-<section id="warm-up-what-a-gold-file-actually-is" class="level3">
-<h3 class="anchored" data-anchor-id="warm-up-what-a-gold-file-actually-is">Warm-up — what a <em>gold file</em> actually is</h3>
-<p>Before we load one, let’s see the shape up close. A gold standard is stored as <strong>JSON</strong> text — the same <code>{"id", "text", "label"}</code> records you met on Day 1, written to a file. <code>json.loads(...)</code> turns that text into a Python <strong>list of dicts</strong> you can index into.</p>
-<div id="cell-10" class="cell">
+<div id="cell-9" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="st">'[{"id": 1, "text": "Hello.", "label": "A1"}, {"id": 2, "text": "Nevertheless, the findings were inconclusive.", "label": "C1"}]'</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> json.loads(raw)               <span class="co"># JSON text → list of dicts</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"number of items:"</span>, <span class="bu">len</span>(items))</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first record:"</span>, items[<span class="dv">0</span>])</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"its label:"</span>, items[<span class="dv">0</span>][<span class="st">"label"</span>])   <span class="co"># index: list by position, dict by key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: "form" }</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_errors(gold, predictions):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The items the model got wrong, as a table you can read and argue about."""</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):   <span class="co"># walk gold and predictions side by side</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="op">!=</span> p:               <span class="co"># keep only the disagreements</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            rows.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"gold"</span>: g[<span class="st">"label"</span>], <span class="st">"pred"</span>: p, <span class="st">"text"</span>: g[<span class="st">"text"</span>]})</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> wrong."</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)             <span class="co"># a table, so Colab displays it nicely</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="what-a-gold-file-actually-is" class="level3">
+<h3 class="anchored" data-anchor-id="what-a-gold-file-actually-is">What a <em>gold file</em> actually is</h3>
+<p>Before we load one, look at the shape up close. A gold standard is stored as <strong>JSON</strong> text — the same <code>{"id", "text", "label"}</code> records you met on Day 1, written to a file. <code>json.loads(...)</code> turns that text into a Python <strong>list of dicts</strong> you can index into.</p>
+<div id="cell-11" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="st">'[{"id": 1, "text": "Hello.", "label": "A1"}, {"id": 2, "text": "Nevertheless, the findings were inconclusive.", "label": "C1"}]'</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> json.loads(raw)               <span class="co"># JSON text → list of dicts</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"number of items:"</span>, <span class="bu">len</span>(items))    <span class="co"># two records in that text</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first record:"</span>, items[<span class="dv">0</span>])         <span class="co"># the whole first dict</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"its label:"</span>, items[<span class="dv">0</span>][<span class="st">"label"</span>])   <span class="co"># index: list by position, dict by key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Files are read and written with <strong><code>with open(...) as f:</code></strong> — it opens the file, gives it to you as <code>f</code>, and closes it automatically when the block ends. You won’t write this yourself (the 🔧 Library cells handle it), but you’ll see it, so here it is once, in the open:</p>
-<div id="cell-12" class="cell">
+<div id="cell-13" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"example_gold.json"</span>, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:   <span class="co"># write</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    json.dump(items, f)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"example_gold.json"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:        <span class="co"># read back</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    reloaded <span class="op">=</span> json.loads(f.read())</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"read back"</span>, <span class="bu">len</span>(reloaded), <span class="st">"records — same shape:"</span>, reloaded[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"example_gold.json"</span>, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:   <span class="co"># write</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    json.dump(items, f)              <span class="co"># the list of dicts becomes JSON text on disk</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"example_gold.json"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:        <span class="co"># read back</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    reloaded <span class="op">=</span> json.loads(f.read())  <span class="co"># ...and JSON text becomes a list again</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"read back"</span>, <span class="bu">len</span>(reloaded), <span class="st">"records — same shape:"</span>, reloaded[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="step-1-load-the-gold-standard" class="level3">
-<h3 class="anchored" data-anchor-id="step-1-load-the-gold-standard">Step 1 — Load the gold standard</h3>
+<section id="load-the-gold-standard-and-the-frozen-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="load-the-gold-standard-and-the-frozen-predictions">Load the gold standard and the frozen predictions</h3>
 <p><code>load_gold(...)</code> does exactly the read you just saw, but from a URL. Notice the shape: every dataset this week is <code>{"id", "text", "label"}</code>. That is the <em>only</em> data shape you have to learn.</p>
-<div id="cell-14" class="cell">
+<p>Below the gold is the prompt we sent the model — <code>{text}</code> is where each sentence gets slotted in. We ran it <strong>once</strong> over the gold set and committed the answers, so today you load that frozen file rather than call the model. (From Day 3 you’ll run prompts like this yourself.)</p>
+<div id="cell-15" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>gold <span class="op">=</span> load_gold(GOLD_URL)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>gold <span class="op">=</span> load_gold(GOLD_URL)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The prompt used to produce the frozen predictions (shown for reference — not run today):</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>PROMPT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the pre-computed predictions (same order as `gold`):</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> load_predictions(PREDICTIONS_URL)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="step-2-the-prompt-and-the-frozen-predictions-it-produced" class="level3">
-<h3 class="anchored" data-anchor-id="step-2-the-prompt-and-the-frozen-predictions-it-produced">Step 2 — The prompt, and the frozen predictions it produced</h3>
-<p>Here is the prompt we sent the model — <code>{text}</code> is where each sentence gets slotted in. We ran it <strong>once</strong> over the gold set and committed the predictions, so today you load that frozen file rather than call the model. (From Day 3 you’ll run prompts like this yourself.)</p>
-<div id="cell-16" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The prompt used to produce the frozen predictions (shown for reference — not run today):</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>PROMPT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the pre-computed predictions (same order as `gold`):</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> load_predictions(PREDICTIONS_URL)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
 </section>
-<section id="step-3-read-the-evaluation" class="level3">
-<h3 class="anchored" data-anchor-id="step-3-read-the-evaluation">Step 3 — Read the evaluation</h3>
-<p>Per-level precision / recall / F1 (plus a macro average), then the confusion matrix.</p>
-<p><strong>Brace yourself: overall accuracy is about 39%.</strong> Before you conclude the model is useless, look at <em>how</em> it is wrong. Roughly 97% of its answers are within one level of the gold label — only two sentences in the whole set miss by two, and nothing misses by more. A model guessing at random would scatter A1s against C2s. This one doesn’t. It has the right idea and imprecise thresholds, which is a very different failure from not understanding the task.</p>
-<p>Now read the confusion matrix <strong>down the columns</strong> — how often the model <em>says</em> each level, rather than how often it’s right. The gold set is balanced, 12 sentences per level, so an unbiased rater would use each label about 12 times. Check whether this one does. Ask yourself why a rater — human or machine — under pressure to judge something as fuzzy as “difficulty” might drift toward the middle of a scale and avoid committing to the extremes. You will meet this tendency again in your own annotation work.</p>
-<p>Because the predictions are frozen, these numbers are the same every time you run — that’s the point.</p>
+<section id="part-a-corpus-lab-build-the-metrics-yourself" class="level2">
+<h2 class="anchored" data-anchor-id="part-a-corpus-lab-build-the-metrics-yourself">Part A · Corpus Lab — build the metrics yourself</h2>
+<p>In S5 <code>annotator_agreement()</code> printed Cohen’s κ <em>for</em> you. In a moment <code>evaluate()</code> will print precision, recall and F1 <em>for</em> you too. <strong>First you build them.</strong> Once you have written these formulas, no number in your final project is a black box.</p>
+<p>Work in <strong>ten small steps</strong>. Each one is on a slide with the code and what it prints; type it here, run it, and check your output matches before moving on. Nothing here needs an import — just <code>for</code>, <code>if</code>, and dictionaries.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>If you fall behind, copy the slide
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every cell below is short and self-contained. Copy the code from the slide, run it, and you’re back with the class — then read it and make sure you can say what each line does.</p>
+</div>
+</div>
+<section id="step-1-collapse-to-one-yesno-question" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-collapse-to-one-yesno-question">Step 1 · Collapse to one yes/no question</h3>
+<p>CEFR has six levels. Six levels means <strong>36</strong> confusion-matrix cells — too many to learn on. So for Part A we ask <strong>one</strong> thing:</p>
+<blockquote class="blockquote">
+<p><strong>Is this sentence <em>advanced</em> — C1 or C2?</strong></p>
+</blockquote>
+<p><code>"yes"</code> (C1 or C2) is our <strong>positive class</strong>; everything else is <code>"no"</code>. Precision and recall are <em>always about the positive class</em>, so choosing it is a decision you state out loud, not a technicality.</p>
+<p>Here are 12 of the 72 sentences, already collapsed:</p>
 <div id="cell-18" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>evaluate(gold, predictions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ADVANCED <span class="op">=</span> [<span class="st">"C1"</span>, <span class="st">"C2"</span>]      <span class="co"># the levels that count as "yes"</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Twelve of the 72 sentences with the gold level and the model's answer, both</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># collapsed to yes/no. (`text` is shortened here for display — the full sentences</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># are in `gold`, which you loaded above.)</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> [</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">17</span>, <span class="st">"text"</span>: <span class="st">"Newspaper 's revenue from classifieds advertisements…"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"no"</span>, <span class="st">"pred"</span>: <span class="st">"no"</span>},</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">18</span>, <span class="st">"text"</span>: <span class="st">"Saffron 's aroma is often described by connoisseurs…"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"yes"</span>, <span class="st">"pred"</span>: <span class="st">"yes"</span>},</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">19</span>, <span class="st">"text"</span>: <span class="st">"He died on 26 September 2017 in Paris at the age of…"</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"no"</span>, <span class="st">"pred"</span>: <span class="st">"no"</span>},</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">20</span>, <span class="st">"text"</span>: <span class="st">"Bat : The bat used by the offense can be made out of…"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"no"</span>, <span class="st">"pred"</span>: <span class="st">"no"</span>},</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">21</span>, <span class="st">"text"</span>: <span class="st">"Because oxygen is more electronegative than carbon ,…"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"yes"</span>, <span class="st">"pred"</span>: <span class="st">"yes"</span>},</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">22</span>, <span class="st">"text"</span>: <span class="st">"Racing bicycles used for Criteriums often have subtl…"</span>,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"yes"</span>, <span class="st">"pred"</span>: <span class="st">"no"</span>},</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">23</span>, <span class="st">"text"</span>: <span class="st">"Harris died on 9 May 2019 , at the age of 93 ."</span>,</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"no"</span>, <span class="st">"pred"</span>: <span class="st">"no"</span>},</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">24</span>, <span class="st">"text"</span>: <span class="st">"The first derivative test is used in calculus optimi…"</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"yes"</span>, <span class="st">"pred"</span>: <span class="st">"no"</span>},</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">25</span>, <span class="st">"text"</span>: <span class="st">"She died on June 9 , 2014 , at the age of 103 ."</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"no"</span>, <span class="st">"pred"</span>: <span class="st">"no"</span>},</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">26</span>, <span class="st">"text"</span>: <span class="st">"The forest contains at least 900 plant species ."</span>,</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"no"</span>, <span class="st">"pred"</span>: <span class="st">"no"</span>},</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">27</span>, <span class="st">"text"</span>: <span class="st">"Cryptobranchids are large , fat salamanders , with f…"</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"yes"</span>, <span class="st">"pred"</span>: <span class="st">"yes"</span>},</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="dv">28</span>, <span class="st">"text"</span>: <span class="st">"The seven pitches of any diatonic scale can also be…"</span>,</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>     <span class="st">"gold"</span>: <span class="st">"no"</span>, <span class="st">"pred"</span>: <span class="st">"yes"</span>},</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(items), <span class="st">"items"</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p><strong>Before you write any code, count the four outcomes by hand</strong> — with your partner, off the list above. How many <strong>TP</strong> (gold yes, model yes), <strong>FP</strong> (gold no, model yes), <strong>FN</strong> (gold yes, model no), <strong>TN</strong> (gold no, model no)?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Check your count (open after you’ve counted)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">model <strong>yes</strong></th>
+<th style="text-align: center;">model <strong>no</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>gold <strong>yes</strong></td>
+<td style="text-align: center;"><strong>TP = 3</strong></td>
+<td style="text-align: center;"><strong>FN = 2</strong></td>
+</tr>
+<tr class="even">
+<td>gold <strong>no</strong></td>
+<td style="text-align: center;"><strong>FP = 1</strong></td>
+<td style="text-align: center;"><strong>TN = 6</strong></td>
+</tr>
+</tbody>
+</table>
+<p>TP: rows 18, 21, 27 · FN: rows 22, 24 (real C1s the model missed) · FP: row 28 (it cried wolf on a B2) · TN: the other six.</p>
+<p><strong>Everything else in Part A is arithmetic on these four numbers</strong> — and your code has to reproduce them.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="step-4-error-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="step-4-error-analysis">Step 4 — Error analysis</h3>
-<p>There are 44 misses here — too many to read one by one, and you don’t need to. Skim a dozen, then look specifically at the rows where the gold label is <strong>C2</strong> or <strong>A1</strong>: the ends of the scale are where this model disagrees with the gold most often, so that is where the interesting arguments are.</p>
-<p>For each miss you do read, ask: is the <strong>gold</strong> defensible, or is this a genuinely borderline sentence? <em>“Is the disagreement the model’s fault or the scheme’s?”</em> is the heart of annotation work — and it is the question your mini-project has to answer honestly.</p>
-<div id="cell-20" class="cell">
+<section id="step-2-ask-one-item" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-ask-one-item">Step 2 · Ask one item</h3>
+<p>A metric never looks at more than <strong>one item and two labels</strong> at a time. Start there.</p>
+<div id="cell-21" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(gold, predictions)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] to see the hard end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>item <span class="op">=</span> items[<span class="dv">0</span>]                     <span class="co"># the first of the 12 rows</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>])   <span class="co"># its gold answer, then the model's</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-</section>
-</section>
-<section id="part-b-corpus-lab-code-the-metrics-from-scratch" class="level2">
-<h2 class="anchored" data-anchor-id="part-b-corpus-lab-code-the-metrics-from-scratch">Part B · Corpus Lab — code the metrics from scratch</h2>
-<p><code>evaluate()</code> above printed precision, recall, F1 and a confusion matrix <em>for</em> you, and in S5 <code>annotator_agreement()</code> printed Cohen’s κ for you. Now you write those formulas yourself, from plain lists of labels — no imports, no numpy. Once you have coded them, the numbers scikit-learn reports in your final project will never be a black box.</p>
-<p>Fill in each function (replace its <code>raise NotImplementedError(...)</code>), then run the <strong>self-check</strong> cell — it compares your functions against scikit-learn on a small example and prints ✅ / ❌ for each.</p>
-<div id="cell-22" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — implement each function. All take plain Python lists of labels.</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> confusion_counts(gold, pred, label):</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return {"tp","fp","fn","tn"} for ONE label, treating it as the positive class.</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">        tp: gold IS label AND pred IS label</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">        fp: gold is NOT label BUT pred IS label</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">        fn: gold IS label BUT pred is NOT label</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">        tn: gold is NOT label AND pred is NOT label</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Example (label="B2", gold=["A1","B2","B2"], pred=["A1","B2","C1"]):</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">        {"tp": 1, "fp": 0, "fn": 1, "tn": 1}</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: start tp=fp=fn=tn=0; loop `for g, p in zip(gold, pred):`;</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       if/elif on whether g == label / p == label.</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Count tp, fp, fn, tn and return them in a dict."</span>)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> precision(gold, pred, label):</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""tp / (tp + fp). Of all items CALLED `label`, what fraction really were?</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 if tp + fp == 0 (never divide by zero)."""</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return tp / (tp + fp), or 0.0 if tp + fp == 0."</span>)</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recall(gold, pred, label):</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""tp / (tp + fn). Of all items that TRULY were `label`, what fraction found?</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 if tp + fn == 0."""</span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return tp / (tp + fn), or 0.0 if tp + fn == 0."</span>)</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f1(gold, pred, label):</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Harmonic mean of precision and recall:</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co">        2 * p * r / (p + r).   Return 0.0 if p + r == 0."""</span></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: reuse precision(...) and recall(...) above.</span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the harmonic mean of precision and recall."</span>)</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> macro_f1(gold, pred, labels):</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Plain average of f1(gold, pred, label) over every label in `labels`</span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co">    (every class counts equally, no matter how many items it has)."""</span></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Average f1 over every label in `labels`."</span>)</span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> percent_agreement(a, b):</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fraction of positions where two annotators agree: a[i] == b[i]. 0.0–1.0."""</span></span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the fraction of positions where a[i] == b[i]."</span>)</span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cohen_kappa(a, b):</span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Agreement corrected for chance:  (p_o - p_e) / (1 - p_e).</span></span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="co">        p_o = observed agreement = percent_agreement(a, b)</span></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="co">        p_e = chance agreement = sum over labels of prop_a(label) * prop_b(label),</span></span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="co">              where prop_x(label) = (# times x used label) / N.</span></span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 if 1 - p_e == 0."""</span></span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: labels = set(a) | set(b); N = len(a); a.count(label) counts uses.</span></span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return (p_o - p_e) / (1 - p_e), or 0.0 if 1 - p_e == 0."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
+<p>Row 17: the gold says not advanced, and the model agrees.</p>
+<p>Now ask the first of the four questions — <em>is this a true positive?</em> That means <strong>both</strong> labels are <code>"yes"</code>:</p>
 <div id="cell-23" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check against scikit-learn — run me { display-mode: "form" }</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (precision_score, recall_score, f1_score,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                             cohen_kappa_score)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A small fixture with imbalance and a few mistakes — enough to catch bugs.</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>LAB <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>]</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>]</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"A2"</span>]</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>ann_a <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B2"</span>, <span class="st">"B1"</span>, <span class="st">"A1"</span>]</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>ann_b <span class="op">=</span> [<span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B2"</span>, <span class="st">"A2"</span>, <span class="st">"A2"</span>, <span class="st">"B2"</span>, <span class="st">"B1"</span>, <span class="st">"A1"</span>]</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>TOL, results <span class="op">=</span> <span class="fl">1e-9</span>, []</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _chk(name, got, exp):</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    ok <span class="op">=</span> <span class="bu">abs</span>(got <span class="op">-</span> exp) <span class="op">&lt;</span> TOL</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    results.append(ok)</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), <span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:&lt;22}</span><span class="ss"> yours=</span><span class="sc">{</span>got<span class="sc">:.6f}</span><span class="ss">  sklearn=</span><span class="sc">{</span>exp<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> LAB:</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    _chk(<span class="ss">f"precision(</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">)"</span>, precision(g, p, label),</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>         precision_score(g, p, labels<span class="op">=</span>[label], average<span class="op">=</span><span class="st">"micro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    _chk(<span class="ss">f"recall(</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">)"</span>, recall(g, p, label),</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>         recall_score(g, p, labels<span class="op">=</span>[label], average<span class="op">=</span><span class="st">"micro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    _chk(<span class="ss">f"f1(</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">)"</span>, f1(g, p, label),</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>         f1_score(g, p, labels<span class="op">=</span>[label], average<span class="op">=</span><span class="st">"micro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"macro_f1"</span>, macro_f1(g, p, LAB),</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>     f1_score(g, p, labels<span class="op">=</span>LAB, average<span class="op">=</span><span class="st">"macro"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"percent_agreement"</span>, percent_agreement(ann_a, ann_b),</span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>     <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> x, y <span class="kw">in</span> <span class="bu">zip</span>(ann_a, ann_b) <span class="cf">if</span> x <span class="op">==</span> y) <span class="op">/</span> <span class="bu">len</span>(ann_a))</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"cohen_kappa"</span>, cohen_kappa(ann_a, ann_b), cohen_kappa_score(ann_a, ann_b))</span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">55</span>)</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"All </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> checks passed ✅  — your metrics match scikit-learn."</span></span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="bu">all</span>(results) <span class="cf">else</span></span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span>results<span class="sc">.</span>count(<span class="va">False</span>)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> checks FAILED — fix and re-run."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># `and` means BOTH sides have to be true:</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"TP"</span>)     <span class="co"># only runs when both are "yes"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p><strong>Nothing printed.</strong> That isn’t a bug — it’s the honest answer: row 17 is not a TP, and an <code>if</code> with no <code>else</code> stays silent when its condition is false.</p>
+<p>One <code>if</code> can only ever answer <strong>one</strong> of the four questions. We need all four.</p>
+</section>
+<section id="step-3-the-four-branches" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-the-four-branches">Step 3 · The four branches</h3>
+<p>Four cells in the table → four branches, <strong>in the same order</strong>. <code>elif</code> means <em>“only if none of the above matched”</em>, so the branches are checked top to bottom and <strong>exactly one</strong> runs — every item lands in exactly one cell. The final <code>else</code> needs no condition: if it isn’t TP, FP or FN, it can only be TN.</p>
+<p>✏️ <strong>Change the index and re-run</strong> to see each branch fire.</p>
+<div id="cell-26" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>item <span class="op">=</span> items[<span class="dv">0</span>]      <span class="co"># ✏️ try 1 (a TP), 5 (an FN), 11 (an FP)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>])</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># checked top to bottom; the FIRST match wins, so exactly one branch runs:</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"TP"</span>)      <span class="co"># advanced, and the model agreed</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"no"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"FP"</span>)      <span class="co"># a false alarm</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"no"</span>:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"FN"</span>)      <span class="co"># a real one, missed</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"TN"</span>)      <span class="co"># not advanced, left alone</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="step-4-make-it-a-function" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-make-it-a-function">Step 4 · Make it a function</h3>
+<p>You are about to ask that same question of all 12 rows. Copying the ladder twelve times would be absurd — so <strong>name it once</strong>. Two changes from step 3, and only two: it is wrapped in <code>def</code>, and every <code>print</code> became a <strong><code>return</code></strong>.</p>
+<p><code>print</code> puts a value on the screen and then it is gone; <code>return</code> hands the value back to whoever called the function, so you can <strong>keep it, store it, count it</strong> — which is exactly what step 5 needs.</p>
+<div id="cell-28" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> outcome(gold_label, pred_label):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Which of the four cells does this one item land in?"""</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> gold_label <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"TP"</span>      <span class="co"># `return` hands the answer back, instead of printing it</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> gold_label <span class="op">==</span> <span class="st">"no"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"FP"</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> gold_label <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"no"</span>:</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"FN"</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"TN"</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(outcome(<span class="st">"yes"</span>, <span class="st">"no"</span>))     <span class="co"># gold said advanced, model said no → a miss</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Test it by hand before you trust it
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>outcome("yes", "no")</code> → <strong>FN</strong> ✓. Try all four combinations against the table in step 1. A function you haven’t checked is a guess.</p>
+</div>
+</div>
+</section>
+<section id="step-5-loop-and-store-every-decision" class="level3">
+<h3 class="anchored" data-anchor-id="step-5-loop-and-store-every-decision">Step 5 · Loop, and store every decision</h3>
+<p>Run that function over all 12 rows and <strong>keep</strong> the answers — the same <em>“build a list in a loop”</em> pattern you wrote on Day 1.</p>
+<div id="cell-31" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>decisions <span class="op">=</span> []                     <span class="co"># start empty; the loop fills it</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:                 <span class="co"># one pass per row of the table</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    decisions.append(outcome(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>]))   <span class="co"># add its verdict</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(decisions)                   <span class="co"># 12 verdicts, in the table's order</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Twelve items in, twelve verdicts out, <strong>in the same order as the table</strong>. Position 6 is <code>'FN'</code> — that’s row 22, the racing-bicycle sentence the model missed.</p>
+<p>We <em>could</em> have counted as we went. We keep the list because <strong>the list is the evidence</strong>: a metric is a summary, and <code>decisions</code> is the thing being summarised. Every <code>'FN'</code> and <code>'FP'</code> in it points at a specific sentence you can read and argue about — that is error analysis, and it’s where the research questions live.</p>
+</section>
+<section id="step-6-tally-the-verdicts" class="level3">
+<h3 class="anchored" data-anchor-id="step-6-tally-the-verdicts">Step 6 · Tally the verdicts</h3>
+<p>This is Day 1’s <code>count_labels</code> exercise, run on a new list. <code>tally.get(d, 0)</code> means <em>“how many so far — and if you’ve never seen this one, start from 0”</em>; without the <code>.get</code>, the very first <code>'TN'</code> would crash, because <code>tally["TN"]</code> doesn’t exist yet.</p>
+<div id="cell-34" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tally <span class="op">=</span> {}                         <span class="co"># a dict: verdict -&gt; how many times</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> decisions:                <span class="co"># d is "TP", "FP", "FN" or "TN"</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    tally[d] <span class="op">=</span> tally.get(d, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>   <span class="co"># count so far (0 if new), plus one</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>Compare with what you counted by hand in step 1: TP = 3, FP = 1, FN = 2, TN = 6.</strong> They match — your code and your eyes agree.</p>
+</section>
+<section id="step-7-the-confusion-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="step-7-the-confusion-matrix">Step 7 · The confusion matrix</h3>
+<p>A confusion matrix is <strong>not a new calculation</strong>. It is those same four numbers put in a square, so you can <em>see</em> where the errors went.</p>
+<div id="cell-37" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>show_2x2(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<ul>
+<li>The <strong>diagonal</strong> (3 and 6) is everything the model got right — 9 of 12.</li>
+<li>The <strong>off-diagonal</strong> (2 and 1) is everything it got wrong, <strong>split by direction</strong>: two <em>misses</em> and one <em>false alarm</em>. A single accuracy figure would hide that difference completely.</li>
+</ul>
+<p>Now the margins — you need them for κ in step 9:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">model <strong>yes</strong></th>
+<th style="text-align: center;">model <strong>no</strong></th>
+<th style="text-align: center;"><strong>total</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>gold <strong>yes</strong></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><strong>5</strong></td>
+</tr>
+<tr class="even">
+<td>gold <strong>no</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;"><strong>7</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>total</strong></td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: center;"><strong>12</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The gold set calls 5 sentences advanced; the model calls only <strong>4</strong>. It is slightly <strong>stingy</strong> with the positive label — watch that habit, it comes back in Part B.</p>
+</section>
+<section id="step-8-precision-recall-f1" class="level3">
+<h3 class="anchored" data-anchor-id="step-8-precision-recall-f1">Step 8 · Precision, recall, F1</h3>
+<p><strong>Precision</strong> — <em>of everything the model CALLED advanced, how much really was?</em></p>
+<p><span class="math display">\[P = \frac{TP}{TP + FP}\]</span></p>
+<p>Numbers first, so you can check it on paper — then the same thing read off the tally, so it survives a change of data:</p>
+<div id="cell-40" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">3</span> <span class="op">/</span> (<span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>))                                  <span class="co"># TP / (TP + FP), by hand</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tally[<span class="st">"TP"</span>] <span class="op">/</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]))    <span class="co"># the same, from the tally</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Of the 4 sentences the model called advanced, 3 really were. <strong>Precision = 0.75.</strong></p>
+<p>Now as a function — and note the guard: if a model never predicts the positive class, <code>TP + FP</code> is 0 and Python raises <code>ZeroDivisionError</code>. Returning <code>0.0</code> says <em>“it earned no credit”</em>, which is the honest reading. <strong>Every metric you write today gets this guard.</strong></p>
+<div id="cell-42" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> precision(tally):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Of everything CALLED advanced, how much really was?  TP / (TP + FP)"""</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    tp <span class="op">=</span> tally.get(<span class="st">"TP"</span>, <span class="dv">0</span>)      <span class="co"># .get(..., 0) so a missing count reads as 0</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    fp <span class="op">=</span> tally.get(<span class="st">"FP"</span>, <span class="dv">0</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> tp <span class="op">+</span> fp <span class="op">==</span> <span class="dv">0</span>:             <span class="co"># the model never said "yes" at all</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">0.0</span>               <span class="co"># no credit earned — and no division by zero</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tp <span class="op">/</span> (tp <span class="op">+</span> fp)        <span class="co"># everything it got right, over everything it claimed</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision(tally), <span class="dv">3</span>))   <span class="co"># round to 3 decimal places</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>Recall</strong> asks the <em>other</em> question — <em>of everything that TRULY was advanced, how much did we catch?</em></p>
+<p><span class="math display">\[R = \frac{TP}{TP + FN}\]</span></p>
+<p>✏️ Same shape as <code>precision</code>, with <strong>one</strong> real change: <code>FN</code> instead of <code>FP</code>.</p>
+<div id="cell-44" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recall(tally):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Of everything that TRULY was advanced, how much did we find?"""</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    tp <span class="op">=</span> tally.get(<span class="st">"TP"</span>, <span class="dv">0</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> tally.get(<span class="st">"FN"</span>, <span class="dv">0</span>)       <span class="co"># ← the only real change</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> tp <span class="op">+</span> fn <span class="op">==</span> <span class="dv">0</span>:              <span class="co"># nothing was truly advanced — nothing to find</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)         <span class="co"># what it found, over everything there was to find</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Three of the five genuinely advanced sentences were found. <strong>Recall = 0.60.</strong></p>
+<p>Precision and recall pull against each other: flag everything and recall hits 1.0 while precision collapses. <strong>F1</strong> is the harmonic mean, so a high score can’t cover for a low one:</p>
+<p><span class="math display">\[F_1 = 2 \cdot \frac{P \cdot R}{P + R}\]</span></p>
+<div id="cell-46" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f1(tally):</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Harmonic mean of precision and recall."""</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> precision(tally)         <span class="co"># reuse the function you just wrote</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> recall(tally)            <span class="co"># ...and the other one</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> p <span class="op">+</span> r <span class="op">==</span> <span class="dv">0</span>:               <span class="co"># both zero — nothing to average</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> p <span class="op">*</span> r <span class="op">/</span> (p <span class="op">+</span> r)   <span class="co"># harmonic mean: a low score drags it down</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision(tally), <span class="dv">3</span>), <span class="bu">round</span>(recall(tally), <span class="dv">3</span>), <span class="bu">round</span>(f1(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The gap between P and R describes the model
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Precision 0.75 &gt; recall 0.60</strong> → this model is <strong>conservative</strong> about calling something advanced: when it commits it’s usually right, but it lets real C1s slip past as B2. Both sentences it missed were <strong>C1 → B2</strong> — near misses, not wild errors.</p>
+<p><em>Which error can you live with?</em> is a <strong>research design</strong> question, not a statistics one. Screening texts for a C1 reading list? A miss is expensive — favour recall. Making a claim about which sentences are advanced? A false alarm is expensive — favour precision. Decide <strong>before</strong> you report a score.</p>
+</div>
+</div>
+</section>
+<section id="step-9-cohens-κ" class="level3">
+<h3 class="anchored" data-anchor-id="step-9-cohens-κ">Step 9 · Cohen’s κ</h3>
+<p>Start with the easy number — <strong>observed agreement</strong>, the diagonal over the total:</p>
+<div id="cell-49" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]   <span class="co"># all 12 items</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>p_o <span class="op">=</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n   <span class="co"># the diagonal (both agreed), over the total</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(p_o, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Gold and model agree on 9 of 12. Sounds decent — but <strong>so would a lazy model that answered “no” to everything</strong>: it would score 7/12 while knowing nothing at all. Raw agreement flatters whoever plays the odds.</p>
+<p>So subtract the agreement you’d get <strong>by luck</strong>. <span class="math inline">\(p_e\)</span> multiplies the two raters’ own rates, label by label — the row and column totals from step 7:</p>
+<div id="cell-51" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># each line: how often GOLD says it × how often the MODEL says it = agreement by luck</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>p_yes <span class="op">=</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]) <span class="op">/</span> n)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>p_no  <span class="op">=</span> ((tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>p_e   <span class="op">=</span> p_yes <span class="op">+</span> p_no          <span class="co"># luck on "yes" plus luck on "no"</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(p_yes, <span class="dv">3</span>), <span class="bu">round</span>(p_no, <span class="dv">3</span>), <span class="bu">round</span>(p_e, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<ul>
+<li><code>p_yes</code>: gold says yes <strong>5/12</strong> × model says yes <strong>4/12</strong> = 0.139</li>
+<li><code>p_no</code>: gold says no <strong>7/12</strong> × model says no <strong>8/12</strong> = 0.389</li>
+</ul>
+<p><strong>More than half</strong> the agreement we observed (0.75) was available for free. κ asks how much of what luck <em>couldn’t</em> explain the two of them actually achieved:</p>
+<p><span class="math display">\[\kappa = \frac{p_o - p_e}{1 - p_e}\]</span></p>
+<div id="cell-53" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># what they beat luck by (p_o - p_e), over how much was left to beat (1 - p_e):</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>((p_o <span class="op">-</span> p_e) <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> p_e), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>75% agreement → κ = 0.47</strong> — “moderate” (Landis &amp; Koch) or “weak” (McHugh). The same gap S4 showed you (80% → κ ≈ 0.52), now computed by your own code.</p>
+<p>Wrap it up so you can reuse it:</p>
+<div id="cell-55" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kappa(tally):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Agreement corrected for chance: (p_o - p_e) / (1 - p_e)."""</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]   <span class="co"># every item</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    p_o <span class="op">=</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n     <span class="co"># agreement we actually observed</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    p_yes <span class="op">=</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]) <span class="op">/</span> n)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    p_no <span class="op">=</span> ((tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    p_e <span class="op">=</span> p_yes <span class="op">+</span> p_no                        <span class="co"># agreement luck alone would give</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="dv">1</span> <span class="op">-</span> p_e <span class="op">==</span> <span class="dv">0</span>:                          <span class="co"># luck already explains everything</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (p_o <span class="op">-</span> p_e) <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> p_e)            <span class="co"># how much of the rest they achieved</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(kappa(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>This is yesterday’s function
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nothing in <code>kappa()</code> knows whether the second column came from <strong>your partner</strong> or from <strong>a model</strong>. That is why S5’s agreement number and today’s evaluation number are the same statistic: <strong>κ measures two label columns, whoever produced them.</strong></p>
+</div>
+</div>
+</section>
+<section id="step-10-scale-up-then-check-yourself" class="level3">
+<h3 class="anchored" data-anchor-id="step-10-scale-up-then-check-yourself">Step 10 · Scale up, then check yourself</h3>
+<p>Nothing changes but the input. <code>pair_up</code> pairs each gold item with the model’s answer and collapses both to yes/no — giving all 72 items in exactly the shape your loop already expects.</p>
+<div id="cell-58" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: all 72 items, in the same yes/no shape as the 12 </span><span class="al">###</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>all_items <span class="op">=</span> pair_up(gold, predictions, ADVANCED)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: the SAME loop as step 5 — only the input changed </span><span class="al">###</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>decisions <span class="op">=</span> []</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> all_items:</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    decisions.append(outcome(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>]))</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: the SAME tally as step 6 </span><span class="al">###</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>tally <span class="op">=</span> {}</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> decisions:</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    tally[d] <span class="op">=</span> tally.get(d, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-59" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>show_2x2(tally)                              <span class="co"># the four counts, as a square</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"precision"</span>, <span class="bu">round</span>(precision(tally), <span class="dv">3</span>),   <span class="co"># your functions, unchanged</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"  recall"</span>, <span class="bu">round</span>(recall(tally), <span class="dv">3</span>),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"  F1"</span>, <span class="bu">round</span>(f1(tally), <span class="dv">3</span>),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"  kappa"</span>, <span class="bu">round</span>(kappa(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>The 12-item slice was not the whole story</strong> — precision rose, recall stayed low. The pattern held: <em>stingy, but usually right when it commits.</em> Twelve items is enough to learn the mechanics, never enough to judge a model.</p>
+<p>Now let scikit-learn mark your work:</p>
+<div id="cell-61" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check against scikit-learn — run me { display-mode: "form" }</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> precision_score, recall_score, f1_score</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: the same 72 items as two plain lists — the shape sklearn wants </span><span class="al">###</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>y_gold <span class="op">=</span> []</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> []</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> all_items:</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    y_gold.append(item[<span class="st">"gold"</span>])</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    y_pred.append(item[<span class="st">"pred"</span>])</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: a small checker — is your number the same as sklearn's? </span><span class="al">###</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>TOL, results <span class="op">=</span> <span class="fl">1e-9</span>, []      <span class="co"># TOL: how close counts as "the same"</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _chk(name, got, exp):</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    ok <span class="op">=</span> <span class="bu">abs</span>(got <span class="op">-</span> exp) <span class="op">&lt;</span> TOL   <span class="co"># compare sizes, not exact bits: floats wobble</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    results.append(ok)</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), <span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:&lt;14}</span><span class="ss"> yours=</span><span class="sc">{</span>got<span class="sc">:.6f}</span><span class="ss">  sklearn=</span><span class="sc">{</span>exp<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: run it on all four metrics you wrote </span><span class="al">###</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"precision"</span>, precision(tally),</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>     precision_score(y_gold, y_pred, pos_label<span class="op">=</span><span class="st">"yes"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"recall"</span>, recall(tally),</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>     recall_score(y_gold, y_pred, pos_label<span class="op">=</span><span class="st">"yes"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"f1"</span>, f1(tally),</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>     f1_score(y_gold, y_pred, pos_label<span class="op">=</span><span class="st">"yes"</span>, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>_chk(<span class="st">"cohen_kappa"</span>, kappa(tally), cohen_kappa_score(y_gold, y_pred))</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 4: one overall verdict </span><span class="al">###</span></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">47</span>)              <span class="co"># a divider line, 47 dashes long</span></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"All </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> checks passed ✅  — your metrics match scikit-learn."</span></span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="bu">all</span>(results) <span class="cf">else</span></span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span>results<span class="sc">.</span>count(<span class="va">False</span>)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> checks FAILED — fix and re-run."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>This is the point of Part A
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>sklearn</code> is not doing anything you cannot do. It is doing <strong>exactly what you just wrote</strong> — faster, and for every class at once. From here on, when a report prints <code>0.36</code>, you know precisely which counts produced it.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="part-b-tutorial-the-same-job-six-classes-with-scikit-learn" class="level2">
+<h2 class="anchored" data-anchor-id="part-b-tutorial-the-same-job-six-classes-with-scikit-learn">Part B · Tutorial — the same job, six classes, with scikit-learn</h2>
+<p>Drop the yes/no simplification. The real task is <strong>A1 · A2 · B1 · B2 · C1 · C2</strong>.</p>
+<ul>
+<li><strong>4 cells → 36.</strong> Counting by hand stops being reasonable.</li>
+<li>Precision and recall are always <em>about one positive class</em>, so six classes give you <strong>six</strong> precisions, <strong>six</strong> recalls, <strong>six</strong> F1s.</li>
+<li>The trick is small: to score <code>C1</code>, treat <strong><code>C1</code> as “yes” and the other five as “no”</strong> — Part A, run six times. That is <strong>one-vs-rest</strong>, and it is all <code>classification_report</code> does.</li>
+</ul>
+<p><code>ordered=True</code> tells <code>evaluate</code> that these labels sit on a <strong>scale</strong>, so it also reports <strong>quadratic weighted κ</strong> (see below).</p>
+<div id="cell-64" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ordered=True: the six levels sit on a scale, so also report weighted κ</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>evaluate(gold, predictions, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="reading-the-report" class="level3">
+<h3 class="anchored" data-anchor-id="reading-the-report">Reading the report</h3>
+<ul>
+<li>Every <strong>row</strong> is one Part-A run: for <code>C1</code>, TP/FP/FN/TN with C1 as the positive class.</li>
+<li><strong><code>support</code></strong> is how many gold items that class has — 12 each, by design.</li>
+<li><strong><code>macro avg</code></strong> is the plain average of the six F1s: every class counts equally, <strong>however rare it is</strong>. That’s the honest headline for an imbalanced set.</li>
+</ul>
+<p><strong>Brace yourself: overall accuracy is about 39%.</strong> Before you conclude the model is useless, look at <em>how</em> it is wrong. Roughly <strong>97% of its answers are within one level</strong> of the gold label — only two sentences in the whole set miss by two, and nothing misses by more. A model guessing at random would scatter A1s against C2s. This one doesn’t: it has the right idea and imprecise thresholds, which is a very different failure from not understanding the task — and no single accuracy number can tell the two apart.</p>
+</section>
+<section id="read-the-matrix-down-the-columns" class="level3">
+<h3 class="anchored" data-anchor-id="read-the-matrix-down-the-columns">Read the matrix <em>down the columns</em></h3>
+<p>Rows are gold, so <em>rows</em> tell you what happened to each true level. But read <strong>down the columns</strong> — how often the model <em>says</em> each level. The gold set is balanced, 12 per level, so an unbiased rater would use each label about 12 times.</p>
+<p>This one says <strong>A2 twenty times</strong> and <strong>A1 four times</strong>; it says <strong>C2 exactly once</strong> in 72 chances. Everything is squeezed toward the <strong>middle of the scale</strong>. Ask yourself why a rater — human or machine — under pressure to judge something as fuzzy as “difficulty” might drift to the middle and avoid committing to the extremes. That is your Part-A finding again: precision 0.89 but recall 0.67, because it under-uses the top of the scale. <strong>You will meet this tendency in your own annotation work.</strong></p>
+</section>
+<section id="two-κ-values-same-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="two-κ-values-same-predictions">Two κ values, same predictions</h3>
+<p>Plain <strong>κ = 0.27</strong> (“fair” / “minimal”) — because plain κ treats <strong>A1 → A2 as exactly as wrong as A1 → C2</strong>. Quadratic <strong>weighted κ = 0.85</strong> — because CEFR levels are <strong>ordinal</strong>, and a near miss <em>should</em> hurt less.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Report the one that matches your labels
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Same predictions: 0.27 or 0.85, depending on a single argument. <strong>Ordered labels → weighted κ. Unordered categories → plain κ.</strong> State which you used and why — a κ without that sentence is unreadable. <em>(Arase et al.&nbsp;reported weighted κ = .628 on this task.)</em></p>
+</div>
+</div>
+</section>
+<section id="error-analysis-the-models-fault-or-the-schemes" class="level3">
+<h3 class="anchored" data-anchor-id="error-analysis-the-models-fault-or-the-schemes">Error analysis — the model’s fault, or the scheme’s?</h3>
+<p>There are 44 misses — too many to read one by one, and you don’t need to. Skim a dozen, then look specifically at the rows where the gold label is <strong>C2</strong> or <strong>A1</strong>: the ends of the scale are where this model disagrees with the gold most often, so that is where the interesting arguments are.</p>
+<p>For each miss you read, ask: is the <strong>gold</strong> defensible, or is this a genuinely borderline sentence? Would <strong>you and your partner</strong> have agreed on it? Would a <strong>better-written scheme</strong> have prevented the error? <em>“Is the disagreement the model’s fault or the scheme’s?”</em> is the heart of annotation work — and it’s the question your mini-project has to answer honestly.</p>
+<div id="cell-67" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(gold, predictions)   <span class="co"># a table of every item it got wrong</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] to see the hard end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The question you ask decides the error you can see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Look back at rows 19, 23 and 25 in step 1 — the three obituary sentences. In Part A’s yes/no world the model got all three <strong>right</strong> (correctly “not advanced”). In six classes it called every one of them A2 instead of A1. Same predictions, same gold; a different question made a different error visible.</p>
+</div>
+</div>
 <hr>
+</section>
 </section>
 <section id="before-you-submit" class="level2">
 <h2 class="anchored" data-anchor-id="before-you-submit">✅ Before you submit</h2>

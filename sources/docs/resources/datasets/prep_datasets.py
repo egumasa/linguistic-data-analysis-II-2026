@@ -280,11 +280,36 @@ def build_icnale_gra() -> None:
     write_gold("icnale_gra_scores.json", reid(balanced_sample(reid(rows), per_label=20)), allowed)
 
 
+def build_cefr_val() -> None:
+    """The ~24-item CEFR validation set Day 3 tunes prompts on.
+
+    Day 3 iterates zero-shot -> few-shot -> CoT, and every iteration needs to be scored.
+    Scoring those rounds on `cefr_sentences.json` would mean tuning on the same 72 items
+    the final macro-F1 is reported over -- exactly the contamination S7 teaches against.
+    So the rounds run here, and the 72-item set is touched once, at the end.
+
+    Built from the already-committed pool and gold rather than from raw/, so it cannot
+    perturb `cefr_sentences.json` -- `predictions_day2.json` is frozen against those 72.
+    """
+    pool_path, gold_path = GOLD / "cefr_pool.json", GOLD / "cefr_sentences.json"
+    if not (pool_path.exists() and gold_path.exists()):
+        print("  SKIP cefr_val: run `prep_datasets.py cefr` first (needs the pool + gold).")
+        return
+    pool = json.loads(pool_path.read_text(encoding="utf-8"))
+    gold_texts = {it["text"].strip()
+                  for it in json.loads(gold_path.read_text(encoding="utf-8"))}
+    unseen = [it for it in pool if it["text"].strip() not in gold_texts]
+    write_gold("cefr_val.json", reid(balanced_sample(unseen, per_label=4)),
+               set(CEFR_NUM.values()))
+    print(f"  ({len(pool) - len(unseen)} gold items held out of a {len(pool)}-item pool)")
+
+
 # --------------------------------------------------------------------------- main
 BUILDERS = {
     "raamove": build_raamove,
     "cars50": build_cars50,
     "cefr": build_cefr,
+    "cefr_val": build_cefr_val,
     "l2_errors": build_l2_errors,
     "icnale_gra": build_icnale_gra,
 }

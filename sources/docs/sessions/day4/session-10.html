@@ -362,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/day2-s6_evaluation_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 2 · S6 — Gold standards &amp; evaluation metrics</span></a>
+ <span class="menu-text">Day 2 · S6 — Evaluation metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -375,12 +375,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/day4_pipeline_and_sampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Day 4 · Pipeline assembly &amp; sampling your gold set</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/day5_project_finalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 5 · Project finalization</span></a>
   </div>
 </li>
       </ul>
@@ -396,8 +390,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#agenda" id="toc-agenda" class="nav-link" data-scroll-target="#agenda">Agenda</a></li>
   <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
   <li><a href="#slides-colab" id="toc-slides-colab" class="nav-link" data-scroll-target="#slides-colab">Slides &amp; Colab</a></li>
+  <li><a href="#mini-project" id="toc-mini-project" class="nav-link" data-scroll-target="#mini-project">Mini-project</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/sessions/day4/session-10.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -440,11 +436,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<!-- to be added -->
+<p>By the end of this session you will be able to:</p>
+<ul>
+<li>Name the practices that make an LLM result reproducible — pin the model and version, log the prompt, set <code>temperature=0</code> and a seed, and <strong>run once → freeze the predictions → evaluate off the frozen file</strong>.</li>
+<li>Explain why a hosted LLM is only <em>best-effort</em> reproducible even at <code>temperature=0</code>, and what freezing buys you that a seed alone does not.</li>
+<li>Name the main limits — hallucination, <strong>data contamination</strong>, stochasticity — and say which of them your own study is exposed to.</li>
+<li>Apply a five-section reporting checklist to your own project, and say what your numbers do <strong>not</strong> show.</li>
+</ul>
+</section>
+<section id="agenda" class="level2">
+<h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
+<ol type="1">
+<li><strong>Recap</strong> — three days of “an LLM is a judge you must check”. Today: how to report one honestly.</li>
+<li><strong>Reproducibility in practice</strong> — pin · log · <code>temperature=0</code> + seed · freeze.</li>
+<li><strong>Limits</strong> — hallucination, contamination, stochasticity. Which apply to <em>your</em> track?</li>
+<li><strong>Ethics</strong> — privacy in learner data, authorship, and what you owe a corpus’s licence.</li>
+<li><strong>The reporting checklist</strong> — the five sections your report must cover, and why each exists.</li>
+</ol>
+<p>This session is the switch from tutorial mode to project mode. Everything after it is your own study.</p>
 </section>
 <section id="reading" class="level2">
 <h2 class="anchored" data-anchor-id="reading">Reading</h2>
-<p><strong>Read in full</strong> — revisit the Day 1 primer closely as a reproducibility checklist (see all <a href="../../syllabus/readings.html">course readings</a>):</p>
+<p><strong>Read in full</strong> — revisit the Day 1 primer closely, this time as a reproducibility checklist (see all <a href="../../syllabus/readings.html">course readings</a>):</p>
 <ul>
 <li>Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. <em>Advances in Methods and Practices in Psychological Science, 8</em>(2). <a href="https://doi.org/10.1177/25152459251325174" class="uri">https://doi.org/10.1177/25152459251325174</a></li>
 </ul>
@@ -452,7 +465,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="slides-colab" class="level2">
 <h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
 <!-- Slides: [Session 10 slides](../../slides/slides-session-10.html){target="_blank"} -->
-<!-- Colab notebook link: to be added -->
+</section>
+<section id="mini-project" class="level2">
+<h2 class="anchored" data-anchor-id="mini-project">Mini-project</h2>
+<p>The checklist you build here <strong>is</strong> the report you hand in — see <a href="../../final-project/deliverables.html">Deliverables</a> and the <a href="../../final-project/rubric.html">Rubric</a>.</p>
+<p>Worth knowing now: <strong>your F1 is not graded.</strong> A careful study reporting 0.31 with a clear account of why scores higher than a sloppy one reporting 0.82.</p>
 
 
 <!-- -->
@@ -932,17 +949,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>**Read in full** — revisit the Day 1 primer closely as a reproducibility checklist (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>):</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <span class="ot">&lt;https://doi.org/10.1177/25152459251325174&gt;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Name the practices that make an LLM result reproducible — pin the model and version, log the prompt, set <span class="in">`temperature=0`</span> and a seed, and **run once → freeze the predictions → evaluate off the frozen file**.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Explain why a hosted LLM is only *best-effort* reproducible even at <span class="in">`temperature=0`</span>, and what freezing buys you that a seed alone does not.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Name the main limits — hallucination, **data contamination**, stochasticity — and say which of them your own study is exposed to.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Apply a five-section reporting checklist to your own project, and say what your numbers do **not** show.</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 10 slides](../../slides/slides-session-10.html){target="_blank"} --&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Recap** — three days of "an LLM is a judge you must check". Today: how to report one honestly.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Reproducibility in practice** — pin · log · <span class="in">`temperature=0`</span> + seed · freeze.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Limits** — hallucination, contamination, stochasticity. Which apply to *your* track?</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Ethics** — privacy in learner data, authorship, and what you owe a corpus's licence.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**The reporting checklist** — the five sections your report must cover, and why each exists.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>This session is the switch from tutorial mode to project mode. Everything after it is your own study.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>**Read in full** — revisit the Day 1 primer closely, this time as a reproducibility checklist (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>):</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <span class="ot">&lt;https://doi.org/10.1177/25152459251325174&gt;</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 10 slides](../../slides/slides-session-10.html){target="_blank"} --&gt;</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mini-project</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>The checklist you build here **is** the report you hand in — see</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Deliverables</span><span class="co">](../../final-project/deliverables.md)</span> and the</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Rubric</span><span class="co">](../../final-project/rubric.md)</span>.</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>Worth knowing now: **your F1 is not graded.** A careful study reporting 0.31 with a clear</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>account of why scores higher than a sloppy one reporting 0.82.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

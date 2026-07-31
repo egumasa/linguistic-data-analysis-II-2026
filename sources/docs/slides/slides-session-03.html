@@ -244,16 +244,12 @@
 <section id="the-problem" class="slide level2">
 <h2>The problem</h2>
 <p>Your data arrives as <strong>paragraphs</strong>. But the unit we work with is the <strong>sentence</strong>. So we need to <strong>segment</strong> a paragraph into its sentences.</p>
-<div class="fragment">
 <p>The obvious idea: cut on every full stop. To do that we <strong>call a method</strong> on the string — <code>some_text.split(".")</code> — using a dot (<code>.</code>) to run a built-in action <em>on</em> that value.</p>
-</div>
 </section>
 <section id="why-this-matters" class="slide level2">
 <h2>Why this matters</h2>
 <p>The naive rule looks fine — until it isn’t. Abbreviations and decimals contain dots that <strong>aren’t</strong> sentence ends.</p>
-<div class="fragment">
 <p>Bad boundaries corrupt everything downstream. So it’s worth <em>seeing</em> the naive rule fail before we reach for a better tool.</p>
-</div>
 </section>
 <section id="lets-try-naive-split" class="slide level2 smaller">
 <h2>🧪 Let’s try — naive split</h2>
@@ -261,8 +257,9 @@
 <span id="cb1-2"><a></a>             <span class="st">"e.g. accuracy rose. Scores went from 3.14 to 9."</span>)</span>
 <span id="cb1-3"><a></a></span>
 <span id="cb1-4"><a></a>naive <span class="op">=</span> paragraph.split(<span class="st">"."</span>)     <span class="co"># cut the string at every "."</span></span>
-<span id="cb1-5"><a></a><span class="cf">for</span> piece <span class="kw">in</span> naive:</span>
-<span id="cb1-6"><a></a>    <span class="bu">print</span>(<span class="bu">repr</span>(piece))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a></a><span class="bu">print</span>(<span class="st">"pieces:"</span>, <span class="bu">len</span>(naive))     <span class="co"># how many pieces did that give us?</span></span>
+<span id="cb1-6"><a></a><span class="cf">for</span> piece <span class="kw">in</span> naive:              <span class="co"># look at each piece in turn</span></span>
+<span id="cb1-7"><a></a>    <span class="bu">print</span>(<span class="bu">repr</span>(piece))           <span class="co"># repr() shows the quotes and spaces exactly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>Look at the mess: <code>"Dr"</code> (from <em>Dr.</em>), <code>"e"</code> and <code>"g"</code> (from <em>e.g.</em>), <code>"3"</code> and <code>"14"</code> (from <em>3.14</em>) all split in the wrong places. <strong>Sentence boundaries are not just full stops.</strong></p>
 </div>
@@ -275,9 +272,10 @@
 <section id="borrow-a-real-tool" class="slide level2 smaller">
 <h2>Borrow a real tool</h2>
 <p>Instead of our own rule, we <strong>import</strong> a purpose-built library, <strong>spaCy</strong>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">import</span> spacy</span>
-<span id="cb2-2"><a></a>nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)          <span class="co"># a minimal English pipeline</span></span>
-<span id="cb2-3"><a></a>nlp.add_pipe(<span class="st">"sentencizer"</span>)      <span class="co"># a rule-based sentence splitter — no download</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="co">### Step 1: build a sentence splitter that knows more than "cut at every dot" </span><span class="al">###</span></span>
+<span id="cb2-2"><a></a><span class="im">import</span> spacy                       <span class="co"># the NLP toolbox</span></span>
+<span id="cb2-3"><a></a>nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)            <span class="co"># a minimal English pipeline</span></span>
+<span id="cb2-4"><a></a>nlp.add_pipe(<span class="st">"sentencizer"</span>)        <span class="co"># add the rule-based splitter — no download</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>import spacy</code> loads the toolbox.</li>
 <li>The <strong>sentencizer</strong> knows abbreviations and decimals aren’t sentence ends.</li>
@@ -305,10 +303,11 @@
 </section>
 <section id="lets-try-the-sentencizer" class="slide level2 smaller">
 <h2>🧪 Let’s try — the sentencizer</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>doc <span class="op">=</span> nlp(paragraph)</span>
-<span id="cb3-2"><a></a>sentences <span class="op">=</span> <span class="bu">list</span>(doc.sents)      <span class="co"># spaCy's sentences, as a list</span></span>
-<span id="cb3-3"><a></a><span class="cf">for</span> s <span class="kw">in</span> sentences:</span>
-<span id="cb3-4"><a></a>    <span class="bu">print</span>(<span class="bu">repr</span>(s.text))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="co">### Step 2: run it on the paragraph and look at what came out </span><span class="al">###</span></span>
+<span id="cb3-2"><a></a>doc <span class="op">=</span> nlp(paragraph)               <span class="co"># spaCy reads the text</span></span>
+<span id="cb3-3"><a></a>sentences <span class="op">=</span> <span class="bu">list</span>(doc.sents)        <span class="co"># spaCy's sentence objects, as a list</span></span>
+<span id="cb3-4"><a></a><span class="cf">for</span> s <span class="kw">in</span> sentences:</span>
+<span id="cb3-5"><a></a>    <span class="bu">print</span>(<span class="bu">repr</span>(s.text))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>Compare to the naive split: <em>Dr.&nbsp;Smith</em>, <em>e.g.</em>, and <em>3.14</em> stay intact. <strong>You now have a real list of sentences</strong> — exactly what step 3 loops over.</p>
 </div>
@@ -338,22 +337,22 @@
 </section>
 <section id="lets-try-the-loop" class="slide level2 smaller">
 <h2>🧪 Let’s try — the loop</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:              <span class="co"># repeat everything below for each sentence</span></span>
 <span id="cb4-2"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb4-3"><a></a>    reply <span class="op">=</span> generate_text(prompt).strip()</span>
-<span id="cb4-4"><a></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:</span>
+<span id="cb4-3"><a></a>    reply <span class="op">=</span> generate_text(prompt).strip()   <span class="co"># .strip() removes stray blank space</span></span>
+<span id="cb4-4"><a></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:                    <span class="co"># the model sometimes says nothing at all</span></span>
 <span id="cb4-5"><a></a>        reply <span class="op">=</span> <span class="st">"(no answer)"</span></span>
 <span id="cb4-6"><a></a>    <span class="bu">print</span>(sentence, <span class="st">"→"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="lets-try-wrap-it-in-a-function" class="slide level2 smaller">
 <h2>🧪 Let’s try — wrap it in a function</h2>
 <p>Same three steps, packaged so you can reuse them:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> ask(sentence):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> ask(sentence):                     <span class="co"># `def` names a block of steps</span></span>
 <span id="cb5-2"><a></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
 <span id="cb5-3"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb5-4"><a></a>    <span class="cf">return</span> generate_text(prompt).strip()</span>
+<span id="cb5-4"><a></a>    <span class="cf">return</span> generate_text(prompt).strip()   <span class="co"># `return` hands the answer back</span></span>
 <span id="cb5-5"><a></a></span>
-<span id="cb5-6"><a></a><span class="bu">print</span>(ask(<span class="st">"Despite the rain, the game went ahead."</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-6"><a></a><span class="bu">print</span>(ask(<span class="st">"Despite the rain, the game went ahead."</span>))  <span class="co"># one line does all three steps</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now labelling a sentence is just <code>ask(...)</code>.</p>
 </section>
 <section id="one-prediction-one-record" class="slide level2 smaller">

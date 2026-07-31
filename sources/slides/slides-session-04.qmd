@@ -390,8 +390,49 @@ The hinge of the whole story: *the better you define the task, the higher humans
 
 Report **P / R / F1 + macro-F1 + κ**, and read the **confusion matrix** for *where* it fails. Here the "model" is a **prompted LLM**.
 
+# D · Dataset for class tutorials — Arase et al. (2022)
+
+<!-- The overarching introduction + motivation lives HERE, at the end of S4. S5 opens directly
+     with the guided extraction of §3.1/§3.2 — do NOT re-summarise the paper there. -->
+
+## Arase, Uchida & Kajiwara (2022) {.smaller}
+
+**"CEFR-Based Sentence Difficulty Annotation and Assessment"** (EMNLP 2022) — the **CEFR-SP** corpus: 17k English sentences, each labelled with a **CEFR level** by English-education professionals.
+
+- **The problem.** Simplifying text for learners requires knowing *how hard a sentence is*. But readability corpora are **document**-level and built for **L1** readers — while simplification rewrites **sentences**, for **L2** readers.
+- **The gap that fixes the task.** Nothing labelled *sentence* difficulty against *language ability*. So: **input = one sentence · output = one CEFR level.**
+- **The hard part isn't the model.** CEFR is a **skill** scale — "can-do" statements about what *learners* can do. It says nothing about sentences. Making it apply to a sentence *is* the design problem.
+
+## What the labels look like {.smaller}
+
+One example sentence per level, from the corpus (Arase et al., 2022, Table 1):
+
+| Input — one sentence | → | Output — one level |
+|--------|:--:|:--:|
+| She had a beautiful necklace around her neck. | → | **A1** |
+| Some experts say the classes should be changed. | → | **A2** |
+| Historically there have also been negative consequences. | → | **B1** |
+| Alligators are generally timid towards humans and tend to walk or swim away if one approaches. | → | **B2** |
+| The metal-carbon bond in organometallic compounds is generally highly covalent. | → | **C1** |
+| In the past, non-photosynthetic plants were mistakenly thought to get food by breaking down organic matter in a manner similar to saprotrophic fungi. | → | **C2** |
+
+
+## Why this paper, for this course {.smaller}
+
+- **The task is familiar.** Simplification — and judging what level a sentence is pitched at — is something language teachers and applied linguists are intersted in. 
+- **The task is simple enough.** One sentence, one label. Simple enough for the tutorial example. 
+
+→ **A good tutorial project.** Interesting enough to be worth doing, small enough to actually finish in five days.
+
+::: {.callout-note}
+**Skim §3.1 and §3.2** — about a page and a half. That's where we start the afternoon session.
+:::
+
+
 ## Coming up
-- **S5 — Gold-Standard Annotation & Agreement** *(hands-on)*: build the gold standard and measure agreement — executes **Phases ①–③**.
+- **S5 — Gold-Standard Annotation & Agreement** *(hands-on)*: extract Arase's two design decisions, then build a gold standard and measure agreement — executes **Phases ①–③**.
 - **S6 — Gold Standards & Evaluation Metrics** *(hands-on)*: score an LLM against that gold — executes **Phases ④–⑤**.
+
+
 
 # Any questions?

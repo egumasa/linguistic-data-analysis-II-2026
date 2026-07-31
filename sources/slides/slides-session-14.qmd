@@ -1,5 +1,5 @@
 ---
-title: "Session 14: Project Work: Finalize Report & Notebook"
+title: "Session 14: Project Work — Finalize Report & Notebook"
 subtitle: "Day 5 · Project Finalization & Presentations (5-2)"
 kicker: "Linguistic Data Analysis II · Day 5"
 format:
@@ -8,43 +8,135 @@ format:
     theme:
       - default
       - ../assets/css/slides-v2.scss
-      - ../assets/css/slide-pastel.scss
+      - ../assets/css/slide-forest.scss
 metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-
-# Session 14: Project Work: Finalize Report & Notebook
+# Session 14: Error Analysis & Report
 
 ## 📋 Agenda
 
-- Finalize the one-page report
-- Prepare your presentation
-- Submit the completed notebook
+- **Error analysis** — the highest-value part of the project
+- Writing the four things the scaffold cannot compute
+- Building the bundle, and checking it reproduces
+- Five slides
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Attribute concrete errors to the **model** or to the **scheme**, with a reason.
+- Write limitations specific to your run.
+- Assemble a submission bundle and verify the notebook runs on a fresh runtime.
 
-# Finalize the report
+# Error analysis
 
-## Finalize the report
+## The two findings hiding in one table
 
-<!-- to be added -->
+```{.python}
+errors = show_errors(gold, pred_final)
+```
 
-# Prepare the presentation
+**The model's fault** — the label is clear, a competent annotator would agree, the model still missed it.
 
-## Prepare the presentation
+**The scheme's fault** — the item is genuinely borderline.
 
-<!-- to be added -->
+. . .
 
-# Submit the notebook
+::: {.callout-tip}
+## You already know which are which
+They are the rows you argued about in Session 12. Cross-reference your `disagreements` list against these errors.
+:::
 
-## Submit the notebook
+## Overlap is a finding
 
-<!-- to be added -->
+If the model's errors cluster on the items **you** disagreed about, that is a result:
+
+> *"The model's B1/B2 confusions fall almost entirely on the 12 items our annotators also disagreed on. We read this as a property of the scheme's boundary rather than a failure of the model."*
+
+. . .
+
+That sentence is worth more than any F1 you could report.
+
+## Be concrete
+
+::: {.callout-warning}
+## Weak
+"The model struggled with C1."
+:::
+
+::: {.callout-tip}
+## Strong
+"id 6 — *'Pseudogenes are generally thought of as the last stage…'* — gold C1, predicted C2. The sentence is syntactically simple but lexically dense; our scheme weights syntax, the model appears to weight vocabulary. **Scheme's fault**: our own coders split on this one."
+:::
+
+# The report
+
+## The scaffold does the arithmetic
+
+`export_results` fills in your label set, per-label counts, and the F1-per-round table.
+
+Everything in *italics* is yours:
+
+1. what your adjudication **changed**
+2. the **reason** for each prompt change
+3. the error **attributions**
+4. limitations that apply to **your** run
+
+::: {.callout-warning}
+A section left as the scaffold's own prose scores **zero**. `make_submission.py` warns you.
+:::
+
+## Limitations that are actually yours
+
+::: {.callout-warning}
+## Generic (already in the scaffold)
+"LLM output is stochastic." · "Contamination risk." · "Small sample."
+:::
+
+::: {.callout-tip}
+## Yours
+"Our C2 class has only 7 items because the pool contains 33 in total, so per-class C2 scores are effectively anecdotal." · "We adjudicated 12 of 42 items, so our gold reflects two coders' reading of an ambiguous boundary, not a settled one."
+:::
+
+# Handing in
+
+## One command
+
+```bash
+python scripts/make_submission.py --group groupA
+```
+
+Keeps the folder structure — `scripts/ · prompts/ · data/ · outputs/` — because that layout **is** the S10 checklist made physical, and because the notebook's `../` paths need it.
+
+Leaves out: `.git/`, `.venv/`, **your `.env`**, the big pools, anything ICNALE.
+
+Tells you what is missing.
+
+## Then check it reproduces
+
+::: {.callout-important}
+## Restart the runtime and Run all
+If your notebook only works in the session where you built it up cell by cell, **it does not reproduce** — and reproducing is the claim you are making.
+:::
+
+. . .
+
+The bundle is self-contained for the claim that matters: given your gold set and your frozen predictions, anyone can recompute your numbers with **no API key and no network**.
+
+## Five slides
+
+One per report section:
+
+1. Scheme & gold
+2. Prompt iterations
+3. Evaluation
+4. Error analysis
+5. Limitations
+
+**Every member speaks.** Have your `show_errors` table open before you start.
 
 # Any questions?
+
+Next: **S15 — presentations.**

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Masaki EGUCHI, Ph.D.">
-  <title>Linguistic Data Analysis II (Summer 2026) – Session 13: Project Work: Prompt Iteration &amp; Final Evaluation</title>
+  <title>Linguistic Data Analysis II (Summer 2026) – Session 13: Project Work — Prompt Iteration &amp; Final Evaluation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,8 +28,74 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bde00274b4a677e175132b983751c62b.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-5222b0819fedac50371f8e47cce628d3.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,64 +196,184 @@
 
 <section id="title-slide" class="center quarto-title-block">
   <p class="kicker">Linguistic Data Analysis II · Day 5</p>
-  <h1 class="title">Session 13: Project Work: Prompt Iteration &amp; Final Evaluation</h1>
+  <h1 class="title">Session 13: Project Work — Prompt Iteration &amp; Final Evaluation</h1>
   <p class="subtitle">Day 5 · Project Finalization &amp; Presentations (5-1)</p>
   <div class="title-meta">
     <p class="author">Masaki EGUCHI, Ph.D.</p>
     <p class="institute">Tohoku University · Summer 2026</p>
   </div>
 </section>
-<section class="slide level2">
-
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-</section>
 <section>
-<section id="session-13-project-work-prompt-iteration-final-evaluation" class="title-slide slide level1 center">
-<h1>Session 13: Project Work: Prompt Iteration &amp; Final Evaluation</h1>
+<section id="session-13-iterate-then-freeze" class="title-slide slide level1 center">
+<h1>Session 13: Iterate, then Freeze</h1>
 
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
 <ul>
-<li>Iterate your prompt over 2–3 cycles</li>
-<li>Run the final evaluation</li>
-<li>Begin the in-class one-page report</li>
+<li>Rounds 1 and 2 — <strong>one change each</strong>, predicted in advance</li>
+<li>Reading the confusion matrix to decide what to change next</li>
+<li>The final full-size run — <strong>once</strong> — and freezing it</li>
 </ul>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Change one thing per round, predict its effect, and test it.</li>
+<li>Use a confusion matrix to choose the next change rather than guessing.</li>
+<li>Freeze a run and explain why a seed alone is not enough.</li>
+<li>Report plain and weighted κ, and say which one your labels justify.</li>
+</ul>
 </section></section>
 <section>
-<section id="iterate-your-prompt" class="title-slide slide level1 center">
-<h1>Iterate your prompt</h1>
+<section id="iterating" class="title-slide slide level1 center">
+<h1>Iterating</h1>
 
 </section>
-<section id="iterate-your-prompt-1" class="slide level2">
-<h2>Iterate your prompt</h2>
-<!-- to be added -->
+<section id="one-change-per-round" class="slide level2">
+<h2>One change per round</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Round</th>
+<th>Change</th>
+<th>Macro-F1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>plain instruction + label set</td>
+<td>0.33</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>+ one example per label</td>
+<td>0.46</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>+ definitions for B1 vs B2</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>If you change two things and the score moves, you have learned nothing about either.</p>
+</div>
+</section>
+<section id="added-examples-is-not-a-reason" class="slide level2">
+<h2>“Added examples” is not a reason</h2>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Weak</strong></p>
+</div>
+<div class="callout-content">
+<p>“Round 1: added few-shot examples. F1 went up.”</p>
+</div>
+</div>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Strong</strong></p>
+</div>
+<div class="callout-content">
+<p>“Round 0 confused B1 with B2 on 7 of 14 items. Round 1 added one example of each, chosen from the pool. B1 recall rose 0.29 → 0.57; the B1/B2 confusion halved.”</p>
+</div>
+</div>
+</div>
+<p>The second one shows you <strong>read the matrix</strong>. That is the skill being assessed.</p>
+</section>
+<section id="let-the-matrix-choose" class="slide level2">
+<h2>Let the matrix choose</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>evaluate(gold, pred0, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Look at the <strong>off-diagonal cells</strong>, not the headline number:</p>
+<ul>
+<li>Which pair is confused most?</li>
+<li>Is it <em>adjacent</em> (B1↔︎B2) or a jump (A1↔︎C2)?</li>
+<li>Adjacent confusion on an ordered scale is a <em>calibration</em> problem — often fixable with definitions or anchors.</li>
+<li>A jump usually means the prompt is being misread.</li>
+</ul>
+</section>
+<section id="plain-vs.-weighted-κ" class="slide level2">
+<h2>Plain vs.&nbsp;weighted κ</h2>
+<pre><code>Cohen's kappa            0.200
+Cohen's kappa (weighted) 0.871   &lt;- labels are ordered
+  scale order used: A1 &lt; A2 &lt; B1 &lt; B2 &lt; C1 &lt; C2</code></pre>
+<div class="fragment">
+<p>A huge gap like this means: <strong>the model is nearly always close, and almost never exactly right.</strong></p>
+<p>That is a completely different finding from “the model is bad” — and only weighted κ shows it.</p>
+</div>
+</section>
+<section id="but-only-when-the-labels-are-a-scale" class="slide level2">
+<h2>But only when the labels are a scale</h2>
+<p><code>ordered=True</code> is right for <code>A1 &lt; A2 &lt; … &lt; C2</code> and <code>Move 1 &lt; 2 &lt; 3</code>.</p>
+<p>It is <strong>wrong</strong> for error categories — Grammatical is not “closer to” Lexical than to Mechanical.</p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>And watch the order</strong></p>
+</div>
+<div class="callout-content">
+<p><code>Low</code>/<code>Mid</code>/<code>High</code> is ordered but <strong>not alphabetical</strong>. Pass it yourself:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>evaluate(gold, pred, ordered<span class="op">=</span><span class="va">True</span>, labels<span class="op">=</span>[<span class="st">"Low"</span>, <span class="st">"Mid"</span>, <span class="st">"High"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Otherwise the scale is <code>High &lt; Low &lt; Mid</code> and the number is meaningless. <code>evaluate</code> prints the order it used — read that line.</p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="final-evaluation-run" class="title-slide slide level1 center">
-<h1>Final evaluation run</h1>
+<section id="freezing" class="title-slide slide level1 center">
+<h1>Freezing</h1>
 
 </section>
-<section id="final-evaluation-run-1" class="slide level2">
-<h2>Final evaluation run</h2>
-<!-- to be added -->
-</section></section>
-<section>
-<section id="begin-the-one-page-report" class="title-slide slide level1 center">
-<h1>Begin the one-page report</h1>
-
+<section id="the-final-run" class="slide level2">
+<h2>The final run</h2>
+<ol type="1">
+<li>Pick your best prompt.</li>
+<li>Raise <code>N_PER_CLASS</code> to full size.</li>
+<li>Run it <strong>once</strong>.</li>
+<li>Save it.</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>save_predictions(pred_best, OUT_DIR <span class="op">+</span> <span class="st">"/"</span> <span class="op">+</span> TRACK <span class="op">+</span> <span class="st">"_"</span> <span class="op">+</span> GROUP <span class="op">+</span> <span class="st">"_predictions.json"</span>)</span>
+<span id="cb4-2"><a></a>pred_final <span class="op">=</span> load_predictions(OUT_DIR <span class="op">+</span> <span class="st">"/"</span> <span class="op">+</span> TRACK <span class="op">+</span> <span class="st">"_"</span> <span class="op">+</span> GROUP <span class="op">+</span> <span class="st">"_predictions.json"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Everything from here reads <code>pred_final</code>.</p>
 </section>
-<section id="begin-the-one-page-report-1" class="slide level2">
-<h2>Begin the one-page report</h2>
-<!-- to be added -->
+<section id="one-run-one-person" class="slide level2">
+<h2>One run, one person</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Runtimes are <strong>per-person</strong>. Your reported numbers must come out of a single frozen file, so decide who the <strong>driver</strong> is before you start.</p>
+</div>
+</div>
+</div>
+<p>Free tier: ~500 calls/day per key. If the driver runs out mid-session, hand the role — <strong>and the runtime</strong> — to another member. The files stay put in your shared Drive folder.</p>
+<div class="fragment">
+<p>That is one of the reasons the whole group works from one cloned folder.</p>
+</div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
+<p>Next: <strong>S14 — error analysis, the report, and the bundle.</strong></p>
 
 
 

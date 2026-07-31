@@ -657,11 +657,97 @@ Total
 <li><strong>gold vs.&nbsp;model</strong> → <strong>model evaluation</strong></li>
 </ul>
 <p>Report <strong>P / R / F1 + macro-F1 + κ</strong>, and read the <strong>confusion matrix</strong> for <em>where</em> it fails. Here the “model” is a <strong>prompted LLM</strong>.</p>
+</section></section>
+<section>
+<section id="d-dataset-for-class-tutorials-arase-et-al.-2022" class="title-slide slide level1 center">
+<h1>D · Dataset for class tutorials — Arase et al.&nbsp;(2022)</h1>
+<!-- The overarching introduction + motivation lives HERE, at the end of S4. S5 opens directly
+     with the guided extraction of §3.1/§3.2 — do NOT re-summarise the paper there. -->
+</section>
+<section id="arase-uchida-kajiwara-2022" class="slide level2 smaller">
+<h2>Arase, Uchida &amp; Kajiwara (2022)</h2>
+<p><strong>“CEFR-Based Sentence Difficulty Annotation and Assessment”</strong> (EMNLP 2022) — the <strong>CEFR-SP</strong> corpus: 17k English sentences, each labelled with a <strong>CEFR level</strong> by English-education professionals.</p>
+<ul>
+<li><strong>The problem.</strong> Simplifying text for learners requires knowing <em>how hard a sentence is</em>. But readability corpora are <strong>document</strong>-level and built for <strong>L1</strong> readers — while simplification rewrites <strong>sentences</strong>, for <strong>L2</strong> readers.</li>
+<li><strong>The gap that fixes the task.</strong> Nothing labelled <em>sentence</em> difficulty against <em>language ability</em>. So: <strong>input = one sentence · output = one CEFR level.</strong></li>
+<li><strong>The hard part isn’t the model.</strong> CEFR is a <strong>skill</strong> scale — “can-do” statements about what <em>learners</em> can do. It says nothing about sentences. Making it apply to a sentence <em>is</em> the design problem.</li>
+</ul>
+</section>
+<section id="what-the-labels-look-like" class="slide level2 smaller">
+<h2>What the labels look like</h2>
+<p>One example sentence per level, from the corpus (Arase et al., 2022, Table 1):</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Input — one sentence</th>
+<th style="text-align: center;">→</th>
+<th style="text-align: center;">Output — one level</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>She had a beautiful necklace around her neck.</td>
+<td style="text-align: center;">→</td>
+<td style="text-align: center;"><strong>A1</strong></td>
+</tr>
+<tr class="even">
+<td>Some experts say the classes should be changed.</td>
+<td style="text-align: center;">→</td>
+<td style="text-align: center;"><strong>A2</strong></td>
+</tr>
+<tr class="odd">
+<td>Historically there have also been negative consequences.</td>
+<td style="text-align: center;">→</td>
+<td style="text-align: center;"><strong>B1</strong></td>
+</tr>
+<tr class="even">
+<td>Alligators are generally timid towards humans and tend to walk or swim away if one approaches.</td>
+<td style="text-align: center;">→</td>
+<td style="text-align: center;"><strong>B2</strong></td>
+</tr>
+<tr class="odd">
+<td>The metal-carbon bond in organometallic compounds is generally highly covalent.</td>
+<td style="text-align: center;">→</td>
+<td style="text-align: center;"><strong>C1</strong></td>
+</tr>
+<tr class="even">
+<td>In the past, non-photosynthetic plants were mistakenly thought to get food by breaking down organic matter in a manner similar to saprotrophic fungi.</td>
+<td style="text-align: center;">→</td>
+<td style="text-align: center;"><strong>C2</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="why-this-paper-for-this-course" class="slide level2 smaller">
+<h2>Why this paper, for this course</h2>
+<ul>
+<li><strong>The task is familiar.</strong> Simplification — and judging what level a sentence is pitched at — is something language teachers and applied linguists are intersted in.</li>
+<li><strong>The task is simple enough.</strong> One sentence, one label. Simple enough for the tutorial example.</li>
+</ul>
+<p>→ <strong>A good tutorial project.</strong> Interesting enough to be worth doing, small enough to actually finish in five days.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Skim §3.1 and §3.2</strong> — about a page and a half. That’s where we start the afternoon session.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="coming-up" class="slide level2">
 <h2>Coming up</h2>
 <ul>
-<li><strong>S5 — Gold-Standard Annotation &amp; Agreement</strong> <em>(hands-on)</em>: build the gold standard and measure agreement — executes <strong>Phases ①–③</strong>.</li>
+<li><strong>S5 — Gold-Standard Annotation &amp; Agreement</strong> <em>(hands-on)</em>: extract Arase’s two design decisions, then build a gold standard and measure agreement — executes <strong>Phases ①–③</strong>.</li>
 <li><strong>S6 — Gold Standards &amp; Evaluation Metrics</strong> <em>(hands-on)</em>: score an LLM against that gold — executes <strong>Phases ④–⑤</strong>.</li>
 </ul>
 </section></section>

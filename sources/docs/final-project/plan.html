@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Day 5 · Project finalization – Linguistic Data Analysis II (Summer 2026)</title>
+<title>The PLAN.md gate – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -105,11 +140,11 @@ ul.task-list li input[type="checkbox"] {
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="../sessions/index.html" aria-current="page"> 
+    <a class="nav-link" href="../sessions/index.html"> 
 <span class="menu-text">Sessions</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../final-project/index.html"> 
+    <a class="nav-link active" href="../final-project/index.html" aria-current="page"> 
 <span class="menu-text">Final Project</span></a>
   </li>  
   <li class="nav-item">
@@ -132,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day5_project_finalization.html">Day 5 · Project finalization</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../final-project/plan.html">The PLAN.md gate</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -154,202 +189,40 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sessions/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Schedule</span></a>
+  <a href="../final-project/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 1 · Introduction &amp; First Experience</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sessions/day1/session-01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis</span></a>
+  <a href="../final-project/plan.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">The PLAN.md gate</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sessions/day1/session-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 2: Colab Onboarding &amp; Your First LLM Call</span></a>
+  <a href="../final-project/deliverables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deliverables &amp; submission</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sessions/day1/session-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 3: Python Practice &amp; Mini-Project Setup</span></a>
+  <a href="../final-project/rubric.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rubric</span></a>
   </div>
 </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 2 · Annotation, Gold Standards &amp; Metrics</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sessions/day2/session-04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 4: Annotation Principles &amp; Inter-Annotator Agreement</span></a>
+  <a href="../final-project/pipeline-cheatsheet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pipeline cheat-sheet</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sessions/day2/session-05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 5: Hands-on — Gold-Standard Annotation &amp; Agreement</span></a>
+  <a href="../resources/datasets/mini-project-tracks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Starter tracks</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day2/session-06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 6: Gold Standards &amp; Evaluation Metrics</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 3 · Prompt Design &amp; Iteration</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day3/session-07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 7: Prompt Design — Zero-shot vs Few-shot</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day3/session-08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 8: Hands-on — LLM Classification &amp; Prompt Iteration</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day3/session-09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 9: Error Analysis &amp; Under-the-Hood Walkthrough</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 4 · Methodology &amp; Pipeline Assembly</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day4/session-10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 10: Methodology — Reproducibility, LLM Limits &amp; Ethics</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day4/session-11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 11: Plenary Pipeline Assembly</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day4/session-12.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 12: Project Work — Sample &amp; QC the Gold Set</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Day 5 · Project Finalization &amp; Presentations</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day5/session-13.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 13: Project Work — Prompt Iteration &amp; Final Evaluation</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day5/session-14.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 14: Project Work — Finalize Report &amp; Notebook</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/day5/session-15.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Session 15: Final Presentations &amp; Wrap-up</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../notebooks/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Daily notebooks</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/day1_python_and_first_llm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 1 · Your first LLM call &amp; reading its data</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/day2-s5_gold_standard_construction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 2 · S5 — Build a gold standard</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/day2-s6_evaluation_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 2 · S6 — Gold standards &amp; evaluation metrics</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/day3_prompt_design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 3 · Prompt design &amp; iteration</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/day4_pipeline_and_sampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 4 · Pipeline assembly &amp; sampling your gold set</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/day5_project_finalization.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Day 5 · Project finalization</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -360,19 +233,20 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link active" data-scroll-target="#how-to-use-this-notebook">How to use this notebook</a></li>
-  <li><a href="#part-a-tutorial-assemble-finalize" id="toc-part-a-tutorial-assemble-finalize" class="nav-link" data-scroll-target="#part-a-tutorial-assemble-finalize">Part A · Tutorial — assemble &amp; finalize</a></li>
-  <li><a href="#part-b-corpus-lab-the-one-page-report" id="toc-part-b-corpus-lab-the-one-page-report" class="nav-link" data-scroll-target="#part-b-corpus-lab-the-one-page-report">Part B · Corpus Lab — the one-page report</a></li>
-  <li><a href="#before-you-submit" id="toc-before-you-submit" class="nav-link" data-scroll-target="#before-you-submit">✅ Before you submit</a></li>
+  <li><a href="#why-bother" id="toc-why-bother" class="nav-link active" data-scroll-target="#why-bother">Why bother</a></li>
+  <li><a href="#the-template" id="toc-the-template" class="nav-link" data-scroll-target="#the-template">The template</a></li>
+  <li><a href="#the-rule" id="toc-the-rule" class="nav-link" data-scroll-target="#the-rule">The rule</a></li>
+  <li><a href="#predicting-not-just-planning" id="toc-predicting-not-just-planning" class="nav-link" data-scroll-target="#predicting-not-just-planning">Predicting, not just planning</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/notebooks/day5_project_finalization.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/final-project/plan.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day5_project_finalization.html">Day 5 · Project finalization</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Day 5 · Project finalization</h1>
+<div class="quarto-title-block"><div><h1 class="title">The PLAN.md gate</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">作戦シート — one page, written before you call the model</p>
 </div>
 
 
@@ -389,75 +263,56 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><em>Day 5 — Linguistic Data Analysis II</em></p>
-<section id="how-to-use-this-notebook" class="level3">
-<h3 class="anchored" data-anchor-id="how-to-use-this-notebook">How to use this notebook</h3>
-<p>This is your <strong>single submission for the day</strong>. It has two parts:</p>
+<p>Before your group runs the model even once, you write a one-page <code>PLAN.md</code> and have it signed off. It is <strong>not graded</strong>. It is a gate.</p>
+<section id="why-bother" class="level2">
+<h2 class="anchored" data-anchor-id="why-bother">Why bother</h2>
+<p>You have been building this plan all week without writing it down — the 作戦シート from the <a href="../sessions/day1/session-03.html">S3</a>, <a href="../sessions/day2/session-06.html">S6</a> and <a href="../sessions/day3/session-09.html">S9</a> huddles. This is that sheet, finally given a file.</p>
+<p>Two minutes of writing catches the failures that otherwise cost an hour <em>after</em> you have already spent quota on them:</p>
 <ul>
-<li><strong>Part A · Tutorial</strong> — assemble your full pipeline end-to-end and produce your final evaluation.</li>
-<li><strong>Part B · Corpus Lab</strong> — finalize your one-page report and notebook (to be written).</li>
+<li>Your label set says <code>Move 1/2/3</code>, your gold file says <code>1a/1b/2a</code>, and your prompt says “move one”. Nothing errors — you just get a confusing F1.</li>
+<li>Your labels are ordered but not alphabetical (<code>Low</code>/<code>Mid</code>/<code>High</code>), so the weighted κ is silently computed over <code>High &lt; Low &lt; Mid</code> and reported to three decimal places.</li>
+<li>Nobody agreed who annotates which column, so you have one annotator and no κ at all.</li>
 </ul>
-<p>You only edit the cells marked <strong>✏️ YOU EDIT</strong>. Cells marked <strong>🔧 Library cell</strong> are pre-written — run them, don’t change them.</p>
-<p>➡️ Work top to bottom. When you’re done, <strong>Runtime → Run all</strong>, then <strong>File → Download → Download <code>.ipynb</code></strong> and submit that file.</p>
+<p>Question 3 exists entirely to catch the second one.</p>
 </section>
-<section id="part-a-tutorial-assemble-finalize" class="level2">
-<h2 class="anchored" data-anchor-id="part-a-tutorial-assemble-finalize">Part A · Tutorial — assemble &amp; finalize</h2>
-<p>By today you have all the pieces: a <strong>gold set</strong> (Day 4), a <strong>prompt</strong> you iterated (Day 3), and the <strong>evaluation</strong> pipeline (Day 2). Today you run them together, end-to-end, on your held-out gold set and capture the final numbers.</p>
-<p>The four ready-made track notebooks in the <strong><a href="https://github.com/egumasa/lda2-final-template"><code>lda2-final-template</code></a></strong> repo (<code>notebooks/cefr.ipynb</code>, <code>raamove.ipynb</code>, <code>cars50.ipynb</code>, <code>l2_errors.ipynb</code>) are the fully-worked versions of this pipeline — use the one matching your track as your starting point.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>🚧 TODO — to be written
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The step-by-step finalization walkthrough is still being written. It will cover:</p>
-<ul>
-<li>loading your own gold set from Drive,</li>
-<li>running your best prompt end-to-end,</li>
-<li>producing the final per-class P/R/F1 + confusion matrix,</li>
-<li>and exporting the figures for your slides.</li>
-</ul>
-</div>
-</div>
+<section id="the-template" class="level2">
+<h2 class="anchored" data-anchor-id="the-template">The template</h2>
+<p>Copy this into <code>PLAN.md</code> at the root of your cloned template repo and fill it in.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># PLAN — &lt;group&gt;, track &lt;track&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Members: …</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Unit of analysis: (sentence / whole text) — and why</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Label set: … (exactly the strings that appear in your gold file)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Are the labels ORDERED? If yes, in what order?</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   (this decides LABELS_ORDER in the notebook's CONFIG cell)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Gold: pool file · N_PER_CLASS · SEED · expected total items</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>QC: who codes CoderA, who codes CoderB, who adjudicates</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Prompt plan: your baseline idea, then the ONE change you predict</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>   will help — and why you think so</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> # <span class="pp">|</span> Step <span class="pp">|</span> Consumes <span class="pp">|</span> Produces <span class="pp">|</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|------|----------|----------|</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> sample           <span class="pp">|</span> POOL_PATH, N_PER_CLASS, SEED <span class="pp">|</span> pool, sampled, LABELS <span class="pp">|</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> QC / adjudicate  <span class="pp">|</span> sampled, LABELS, the sheet   <span class="pp">|</span> gold <span class="pp">|</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> baseline         <span class="pp">|</span> PROMPT, gold                 <span class="pp">|</span> pred0, f1_by_round<span class="co">[</span><span class="ot">"0…"</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> iterate + freeze <span class="pp">|</span> PROMPT, pool, gold           <span class="pp">|</span> pred_final (a JSON file) <span class="pp">|</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> error analysis   <span class="pp">|</span> gold, pred_final             <span class="pp">|</span> the errors table <span class="pp">|</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 6 <span class="pp">|</span> export           <span class="pp">|</span> all of the above             <span class="pp">|</span> outputs/…_report.md <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The table is the point of the exercise. If your group can say aloud <em>“step 2 consumes <code>sampled</code> and the sheet, and produces <code>gold</code>”</em>, you understand the pipeline — and that is what the end of <a href="../sessions/day4/session-11.html">Session 11</a> checks.</p>
 </section>
-<section id="part-b-corpus-lab-the-one-page-report" class="level2">
-<h2 class="anchored" data-anchor-id="part-b-corpus-lab-the-one-page-report">Part B · Corpus Lab — the one-page report</h2>
-<p>Your notebook is submitted alongside a one-page report. Draft its five sections here as you finish each analysis (full guidance: <a href="../resources/datasets/mini-project-tracks.html">mini-project tracks</a>).</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>🚧 TODO — to be written
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Report scaffold (to be expanded):</p>
-<ol type="1">
-<li><strong>Scheme &amp; gold</strong> — label set; how you built the gold set; what QC changed.</li>
-<li><strong>Prompt iterations</strong> — table of changes and F1 at each step.</li>
-<li><strong>Evaluation</strong> — per-class precision/recall/F1 + confusion matrix.</li>
-<li><strong>Error analysis</strong> — concrete misses; model’s fault or the scheme’s?</li>
-<li><strong>Limitations</strong> — stochasticity, contamination risk, what the numbers don’t show.</li>
-</ol>
-</div>
-</div>
-<hr>
+<section id="the-rule" class="level2">
+<h2 class="anchored" data-anchor-id="the-rule">The rule</h2>
+<p><strong>No group calls the model until the instructor has read your <code>PLAN.md</code>.</strong> Steps 1 and 2 (sampling and annotation) need no model, so there is plenty to get on with while you wait.</p>
+<p><code>PLAN.md</code> travels in your submission bundle as evidence the gate was passed. A final run made before sign-off is not accepted as the final run.</p>
 </section>
-<section id="before-you-submit" class="level2">
-<h2 class="anchored" data-anchor-id="before-you-submit">✅ Before you submit</h2>
-<ol type="1">
-<li><strong>Runtime → Run all</strong> and check every cell ran without error.</li>
-<li>Tutorial outputs are visible (tables / charts / the model’s answers).</li>
-<li>Every Corpus Lab self-check prints ✅ (or your TODO answers are filled in).</li>
-<li><strong>File → Download → Download <code>.ipynb</code></strong> and upload that one file.</li>
-</ol>
+<section id="predicting-not-just-planning" class="level2">
+<h2 class="anchored" data-anchor-id="predicting-not-just-planning">Predicting, not just planning</h2>
+<p>Question 6 asks what you think will happen. Write it down before you find out.</p>
+<p>This is the cheap version of the habit the whole course is about: an LLM is a judge you have to check, and checking means having an expectation to compare against. A prompt change that helps for a reason you predicted is a finding. One that helps for no reason you can name is a lucky guess — and you will struggle to defend it in the Q&amp;A.</p>
+<p>Being wrong here costs nothing. Reporting round 2 with “we added examples and it went up” — when you cannot say why — costs marks under <a href="../final-project/rubric.html">error analysis</a>.</p>
 
+
+<!-- -->
 
 </section>
 
@@ -919,11 +774,89 @@ ul.task-list li input[type="checkbox"] {
       }
     }
   });
-  </script>
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "The PLAN.md gate"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "作戦シート — one page, written before you call the model"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Before your group runs the model even once, you write a one-page <span class="in">`PLAN.md`</span> and have it</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>signed off. It is **not graded**. It is a gate.</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why bother</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>You have been building this plan all week without writing it down — the 作戦シート from the</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">S3</span><span class="co">](../sessions/day1/session-03.md)</span>, <span class="co">[</span><span class="ot">S6</span><span class="co">](../sessions/day2/session-06.md)</span> and</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">S9</span><span class="co">](../sessions/day3/session-09.md)</span> huddles. This is that sheet, finally given a file.</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>Two minutes of writing catches the failures that otherwise cost an hour *after* you have</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>already spent quota on them:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Your label set says <span class="in">`Move 1/2/3`</span>, your gold file says <span class="in">`1a/1b/2a`</span>, and your prompt says</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  "move one". Nothing errors — you just get a confusing F1.</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Your labels are ordered but not alphabetical (<span class="in">`Low`</span>/<span class="in">`Mid`</span>/<span class="in">`High`</span>), so the weighted κ is</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  silently computed over <span class="in">`High &lt; Low &lt; Mid`</span> and reported to three decimal places.</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Nobody agreed who annotates which column, so you have one annotator and no κ at all.</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>Question 3 exists entirely to catch the second one.</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## The template</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>Copy this into <span class="in">`PLAN.md`</span> at the root of your cloned template repo and fill it in.</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="in">```markdown</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="fu"># PLAN — &lt;group&gt;, track &lt;track&gt;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>Members: …</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Unit of analysis: (sentence / whole text) — and why</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Label set: … (exactly the strings that appear in your gold file)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Are the labels ORDERED? If yes, in what order?</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>   (this decides LABELS_ORDER in the notebook's CONFIG cell)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Gold: pool file · N_PER_CLASS · SEED · expected total items</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>QC: who codes CoderA, who codes CoderB, who adjudicates</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Prompt plan: your baseline idea, then the ONE change you predict</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>   will help — and why you think so</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> # <span class="pp">|</span> Step <span class="pp">|</span> Consumes <span class="pp">|</span> Produces <span class="pp">|</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|------|----------|----------|</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> sample           <span class="pp">|</span> POOL_PATH, N_PER_CLASS, SEED <span class="pp">|</span> pool, sampled, LABELS <span class="pp">|</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> QC / adjudicate  <span class="pp">|</span> sampled, LABELS, the sheet   <span class="pp">|</span> gold <span class="pp">|</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> baseline         <span class="pp">|</span> PROMPT, gold                 <span class="pp">|</span> pred0, f1_by_round<span class="co">[</span><span class="ot">"0…"</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> iterate + freeze <span class="pp">|</span> PROMPT, pool, gold           <span class="pp">|</span> pred_final (a JSON file) <span class="pp">|</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> error analysis   <span class="pp">|</span> gold, pred_final             <span class="pp">|</span> the errors table <span class="pp">|</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 6 <span class="pp">|</span> export           <span class="pp">|</span> all of the above             <span class="pp">|</span> outputs/…_report.md <span class="pp">|</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>The table is the point of the exercise. If your group can say aloud *"step 2 consumes</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="in">`sampled`</span> and the sheet, and produces <span class="in">`gold`</span>"*, you understand the pipeline — and that is</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>what the end of <span class="co">[</span><span class="ot">Session 11</span><span class="co">](../sessions/day4/session-11.md)</span> checks.</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## The rule</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>**No group calls the model until the instructor has read your `PLAN.md`.** Steps 1 and 2</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>(sampling and annotation) need no model, so there is plenty to get on with while you wait.</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="in">`PLAN.md`</span> travels in your submission bundle as evidence the gate was passed. A final run</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>made before sign-off is not accepted as the final run.</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="fu">## Predicting, not just planning</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>Question 6 asks what you think will happen. Write it down before you find out.</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>This is the cheap version of the habit the whole course is about: an LLM is a judge you have</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>to check, and checking means having an expectation to compare against. A prompt change that</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>helps for a reason you predicted is a finding. One that helps for no reason you can name is</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>a lucky guess — and you will struggle to defend it in the Q&amp;A.</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>Being wrong here costs nothing. Reporting round 2 with "we added examples and it went up" —</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>when you cannot say why — costs marks under</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">error analysis</span><span class="co">](rubric.md)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/notebooks/day5_project_finalization.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/final-project/plan.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

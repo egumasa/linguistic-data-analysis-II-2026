@@ -51,8 +51,8 @@ SCHEMA_NOTE = (
 
 SAVE_CELL = (
     "import json\n"
-    "with open(OUT_FILE, \"w\", encoding=\"utf-8\") as f:\n"
-    "    json.dump(gold, f, ensure_ascii=False, indent=2)\n"
+    "with open(OUT_FILE, \"w\", encoding=\"utf-8\") as f:   # open for writing\n"
+    "    json.dump(gold, f, ensure_ascii=False, indent=2)   # list of dicts -> JSON text\n"
     "print(f\"Saved {len(gold)} items to {OUT_FILE}\")\n"
     "gold[:3]  # preview the first three items"
 )
@@ -63,20 +63,24 @@ BALANCE_CELL = (
     "import random\n"
     "from collections import defaultdict\n"
     "\n"
+    "### Step 5.1: the two settings you control ###\n"
     "PER_LABEL = 12          # how many items per label\n"
     "random.seed(42)         # fixed seed = same sample every run (reproducible)\n"
     "\n"
-    "by_label = defaultdict(list)\n"
+    "### Step 5.2: sort every reshaped row into a bucket named after its label ###\n"
+    "by_label = defaultdict(list)   # a dict that starts each new key at []\n"
     "for item in rows:\n"
-    "    by_label[item[\"label\"]].append(item)\n"
+    "    by_label[item[\"label\"]].append(item)   # drop it in its label's bucket\n"
     "\n"
+    "### Step 5.3: shuffle each bucket, then take the first PER_LABEL from it ###\n"
     "gold = []\n"
-    "for label in sorted(by_label):\n"
+    "for label in sorted(by_label):     # sorted() = same label order every run\n"
     "    bucket = by_label[label]\n"
-    "    random.shuffle(bucket)\n"
-    "    gold.extend(bucket[:PER_LABEL])\n"
+    "    random.shuffle(bucket)         # mix, so we don't just take the first ones found\n"
+    "    gold.extend(bucket[:PER_LABEL])   # a rare label simply gives fewer\n"
     "\n"
-    "random.shuffle(gold)\n"
+    "### Step 5.4: mix the labels together, renumber the ids from 1, and report ###\n"
+    "random.shuffle(gold)               # so the labels aren't grouped in blocks\n"
     "gold = [{\"id\": i + 1, \"text\": x[\"text\"], \"label\": x[\"label\"]} for i, x in enumerate(gold)]\n"
     "\n"
     "from collections import Counter\n"
@@ -85,9 +89,9 @@ BALANCE_CELL = (
 
 INSPECT_CELL = (
     "from collections import Counter\n"
-    "counts = Counter(item[\"label\"] for item in rows)\n"
+    "counts = Counter(item[\"label\"] for item in rows)   # tally how often each label appears\n"
     "print(\"total items:\", len(rows))\n"
-    "print(\"label counts:\", dict(counts))\n"
+    "print(\"label counts:\", dict(counts))   # watch for labels with very few items\n"
     "rows[:3]  # peek at the first three reshaped items"
 )
 
@@ -138,9 +142,9 @@ save("download_cefr_sp.ipynb", [
        "Labels are numbers: `1`=A1, `2`=A2, … `6`=C2. Let's print the first few raw lines."),
     code("raw_path = \"CEFR-SP/CEFR-SP/Wiki-Auto/CEFR-SP_Wikiauto_dev.txt\"\n"
          "with open(raw_path, encoding=\"utf-8\") as f:\n"
-         "    sample = [next(f) for _ in range(5)]\n"
+         "    sample = [next(f) for _ in range(5)]   # just the first 5 lines\n"
          "for line in sample:\n"
-         "    print(repr(line))"),
+         "    print(repr(line))   # repr() makes the tabs and newlines visible"),
     md("## Step 3 — Reshape into the canonical schema",
        "",
        "Three decisions, each a real gold-standard-building choice:",
@@ -151,20 +155,22 @@ save("download_cefr_sp.ipynb", [
        "3. **Fit the schema.** Output `{id, text, label}`."),
     code("import glob\n"
          "\n"
+         "### Step 3.1: translate the numeric codes into readable CEFR levels ###\n"
          "CEFR = {\"1\": \"A1\", \"2\": \"A2\", \"3\": \"B1\", \"4\": \"B2\", \"5\": \"C1\", \"6\": \"C2\"}\n"
          "\n"
+         "### Step 3.2: read every file line by line, keeping only what we can trust ###\n"
          "rows = []\n"
-         "for path in glob.glob(\"CEFR-SP/CEFR-SP/Wiki-Auto/*.txt\"):\n"
+         "for path in glob.glob(\"CEFR-SP/CEFR-SP/Wiki-Auto/*.txt\"):   # every .txt in there\n"
          "    with open(path, encoding=\"utf-8\") as f:\n"
          "        for line in f:\n"
-         "            parts = line.rstrip(\"\\n\").split(\"\\t\")\n"
+         "            parts = line.rstrip(\"\\n\").split(\"\\t\")   # one line -> its 3 columns\n"
          "            if len(parts) < 3:\n"
-         "                continue\n"
+         "                continue                       # a short line — skip it\n"
          "            text, a, b = parts[0].strip(), parts[1].strip(), parts[2].strip()\n"
          "            if text and a == b and a in CEFR:      # keep only agreed labels\n"
          "                rows.append({\"text\": text, \"label\": CEFR[a]})\n"
          "\n"
-         "print(\"kept\", len(rows), \"agreed sentences\")"),
+         "print(\"kept\", len(rows), \"agreed sentences\")   # the rest were disagreements"),
     md("## Step 4 — Inspect the labels"),
     code(INSPECT_CELL),
     md("## Step 5 — Build a balanced gold set"),
@@ -198,9 +204,9 @@ save("download_raamove.ipynb", [
        "`labels` (a short move code, e.g. `BAC`)."),
     code("import json\n"
          "with open(\"RAAMove/Intelligence.json\", encoding=\"utf-8\") as f:\n"
-         "    raw = json.load(f)\n"
+         "    raw = json.load(f)   # JSON text on disk -> a Python list of dicts\n"
          "print(\"sentences in this file:\", len(raw))\n"
-         "raw[:3]"),
+         "raw[:3]   # the first three, so you can see the raw keys"),
     md("## Step 3 — Reshape into the canonical schema",
        "",
        "Two decisions:",
@@ -208,15 +214,18 @@ save("download_raamove.ipynb", [
        "1. **Combine both files** (both disciplines) into one dataset.",
        "2. **Expand the move codes** into readable names (`BAC`→`Background`) and fit `{id, text, "
        "label}`."),
-    code("CODES = {\"BAC\": \"Background\", \"GAP\": \"Gap\", \"MTD\": \"Method\",\n"
+    code("### Step 3.1: translate the short move codes into readable names ###\n"
+         "CODES = {\"BAC\": \"Background\", \"GAP\": \"Gap\", \"MTD\": \"Method\",\n"
          "         \"PUR\": \"Purpose\", \"RST\": \"Result\", \"CLN\": \"Conclusion\",\n"
          "         \"CTN\": \"Contribution\", \"IMP\": \"Implication\"}\n"
          "\n"
+         "### Step 3.2: read both discipline files into one list ###\n"
          "rows = []\n"
          "for fname in [\"RAAMove/Intelligence.json\", \"RAAMove/Engineering.json\"]:\n"
          "    with open(fname, encoding=\"utf-8\") as f:\n"
-         "        for r in json.load(f):\n"
+         "        for r in json.load(f):        # r is one raw sentence record\n"
          "            rows.append({\"text\": r[\"text\"].strip(),\n"
+         "                         # .get(code, code): keep the raw code if it's unknown\n"
          "                         \"label\": CODES.get(r[\"labels\"], r[\"labels\"])})\n"
          "\n"
          "print(\"combined sentences:\", len(rows))"),
@@ -254,24 +263,27 @@ save("download_cars50.ipynb", [
        "to understand every line — read it as: *get the file list, then loop and download*.)"),
     code("import urllib.request, json, os, time\n"
          "\n"
+         "### Step 1.1: one way of asking for a URL, used for every request below ###\n"
          "# Mendeley needs a normal browser User-Agent, so we add one to each request.\n"
          "def fetch(url):\n"
          "    req = urllib.request.Request(url, headers={\"User-Agent\": \"Mozilla/5.0\"})\n"
-         "    return urllib.request.urlopen(req, timeout=60)\n"
+         "    return urllib.request.urlopen(req, timeout=60)   # give up after 60s\n"
          "\n"
-         "os.makedirs(\"cars50\", exist_ok=True)\n"
+         "### Step 1.2: ask Mendeley what files this dataset contains ###\n"
+         "os.makedirs(\"cars50\", exist_ok=True)   # a folder to put them in\n"
          "meta = json.load(fetch(\"https://data.mendeley.com/public-api/datasets/kwr9s5c4nk\"))\n"
          "\n"
+         "### Step 1.3: download each file in turn, retrying if the connection drops ###\n"
          "for f in meta[\"files\"]:\n"
          "    url = f[\"content_details\"][\"download_url\"]\n"
-         "    dest = os.path.join(\"cars50\", f[\"filename\"])\n"
+         "    dest = os.path.join(\"cars50\", f[\"filename\"])   # where to save it\n"
          "    for attempt in range(3):          # retry on the occasional dropped connection\n"
          "        try:\n"
          "            with fetch(url) as resp, open(dest, \"wb\") as out:\n"
-         "                out.write(resp.read())\n"
-         "            break\n"
+         "                out.write(resp.read())   # \"wb\" = write bytes, not text\n"
+         "            break                        # got it — on to the next file\n"
          "        except Exception:\n"
-         "            time.sleep(2)\n"
+         "            time.sleep(2)                # wait a moment, then try again\n"
          "\n"
          "print(\"downloaded\", len(os.listdir(\"cars50\")), \"XML files\")"),
     md("## Step 2 — Look at the raw format",
@@ -288,17 +300,22 @@ save("download_cars50.ipynb", [
     code("import glob\n"
          "import xml.etree.ElementTree as ET\n"
          "\n"
+         "# The XML nests like this, and `.iter(\"sentence\")` finds every <sentence>\n"
+         "# anywhere inside, however deeply buried:\n"
+         "#   <biology_intro>...<fulltext><paragraph>\n"
+         "#     <sentence><sentenceID/><text/><step>1b</step></sentence> ...\n"
          "rows = []\n"
-         "for path in glob.glob(\"cars50/*.xml\"):\n"
+         "for path in glob.glob(\"cars50/*.xml\"):   # all 50 files\n"
          "    tree = ET.parse(path)\n"
          "    for sentence in tree.iter(\"sentence\"):\n"
-         "        text_el = sentence.find(\"text\")\n"
-         "        step_el = sentence.find(\"step\")\n"
+         "        text_el = sentence.find(\"text\")   # the <text> inside this <sentence>\n"
+         "        step_el = sentence.find(\"step\")   # ...and its <step>, e.g. \"1b\"\n"
          "        if text_el is None or step_el is None:\n"
-         "            continue\n"
-         "        text = (text_el.text or \"\").strip()\n"
+         "            continue                      # a malformed sentence — skip it\n"
+         "        text = (text_el.text or \"\").strip()   # `or \"\"` guards an empty tag\n"
          "        code = (step_el.text or \"\").strip()\n"
          "        if text and code and code[0].isdigit():\n"
+         "            # code[0] is the leading digit = the Move; the letter is the Step\n"
          "            rows.append({\"text\": text, \"label\": f\"Move {code[0]}\"})\n"
          "\n"
          "print(\"sentences:\", len(rows))"),
@@ -335,6 +352,7 @@ save("download_autoerroranalyzer.ipynb", [
        "The annotations live on the **OSF** project for the paper. We download one CSV directly "
        "by its OSF link."),
     code("import urllib.request\n"
+         "# urlretrieve(from_url, to_filename) — download straight to a file\n"
          "urllib.request.urlretrieve(\"https://osf.io/download/gezat/\", \"data_category.csv\")\n"
          "print(\"downloaded data_category.csv\")"),
     md("## Step 2 — Look at the raw format",
@@ -344,13 +362,13 @@ save("download_autoerroranalyzer.ipynb", [
        "comma-separated error codes, or `NO_ERROR`."),
     code("import csv\n"
          "with open(\"data_category.csv\", encoding=\"utf-8-sig\", newline=\"\") as f:\n"
-         "    reader = csv.DictReader(f)\n"
+         "    reader = csv.DictReader(f)       # reads each row as a dict, keyed by column\n"
          "    print(\"columns:\", reader.fieldnames)\n"
-         "    for i, row in enumerate(reader):\n"
+         "    for i, row in enumerate(reader):   # i counts 0, 1, 2, ...\n"
          "        print(row[\"Sentence\"], \"|GOLD:\", row[\"Human_ErrorCategories\"],\n"
          "              \"|TOOL:\", row[\"AEA_ErrorCategories\"])\n"
          "        if i == 3:\n"
-         "            break"),
+         "            break                    # four rows is enough to see the shape"),
     md("## Step 3 — Reshape into the canonical schema",
        "",
        "The 23 fine error codes are a lot for one task, so we **collapse** them into 3 broad "
@@ -359,29 +377,32 @@ save("download_autoerroranalyzer.ipynb", [
        "1. Map each code to Grammatical / Lexical / Mechanical (`COARSE` below).",
        "2. Use the sentence's **first** error code as its label; `NO_ERROR` → `No error`.",
        "3. Skip sentences whose errors span more than one family (keeps the task single-label)."),
-    code("COARSE = {}\n"
+    code("### Step 3.1: build the taxonomy — each of the 23 codes gets a family ###\n"
+         "COARSE = {}\n"
          "for c in \"ART PREP NUM TENSE VFORM WO AGR DET POSS MOD CONJ STRUCT\".split():\n"
-         "    COARSE[c] = \"Grammatical\"\n"
+         "    COARSE[c] = \"Grammatical\"   # .split() turns that string into a list of codes\n"
          "for c in \"N ADJ ADV V REF EXPR\".split():\n"
          "    COARSE[c] = \"Lexical\"\n"
          "for c in \"SP MIS UNN CWS PUNC\".split():\n"
          "    COARSE[c] = \"Mechanical\"\n"
          "\n"
+         "### Step 3.2: decide ONE label for a sentence that may carry several codes ###\n"
          "def to_label(human_field):\n"
-         "    codes = [c.strip() for c in human_field.split(\",\") if c.strip()]\n"
+         "    codes = [c.strip() for c in human_field.split(\",\") if c.strip()]   # \"ART, SP\"\n"
          "    if not codes:\n"
-         "        return None\n"
+         "        return None                    # nothing annotated — drop the sentence\n"
          "    if codes[0] == \"NO_ERROR\":\n"
          "        return \"No error\"\n"
-         "    families = {COARSE.get(c) for c in codes} - {None}\n"
+         "    families = {COARSE.get(c) for c in codes} - {None}   # the families involved\n"
          "    return families.pop() if len(families) == 1 else None  # skip mixed sentences\n"
          "\n"
+         "### Step 3.3: read the CSV and keep the sentences that survive that rule ###\n"
          "rows = []\n"
          "with open(\"data_category.csv\", encoding=\"utf-8-sig\", newline=\"\") as f:\n"
-         "    for row in csv.DictReader(f):\n"
+         "    for row in csv.DictReader(f):      # each row is a dict keyed by column name\n"
          "        text = (row[\"Sentence\"] or \"\").strip()\n"
          "        label = to_label((row[\"Human_ErrorCategories\"] or \"\").strip())\n"
-         "        if text and label:\n"
+         "        if text and label:             # label is None for mixed/blank rows\n"
          "            rows.append({\"text\": text, \"label\": label})\n"
          "\n"
          "print(\"sentences:\", len(rows))"),
@@ -438,20 +459,22 @@ save("download_icnale_gra.ipynb", [
        "",
        "Decision: turn the continuous score into three **bands**. Adjust the cut-offs to match the "
        "rubric you downloaded."),
-    code("def band(score):\n"
-         "    s = float(score)\n"
-         "    if s < 4:\n"
+    code("### Step 3.1: the cut-offs that turn a number into a band ###\n"
+         "def band(score):\n"
+         "    s = float(score)      # the CSV gives text; float() makes it a number\n"
+         "    if s < 4:             # ✏️ adjust these cut-offs to match your rubric\n"
          "        return \"Low\"\n"
          "    elif s < 7:\n"
          "        return \"Mid\"\n"
-         "    return \"High\"\n"
+         "    return \"High\"        # anything 7 and above\n"
          "\n"
+         "### Step 3.2: read the CSV and band every essay ###\n"
          "rows = []\n"
          "with open(\"essays_scores.csv\", encoding=\"utf-8-sig\", newline=\"\") as f:\n"
-         "    for row in csv.DictReader(f):\n"
+         "    for row in csv.DictReader(f):    # each row is a dict keyed by column name\n"
          "        text = (row.get(\"text\") or \"\").strip()\n"
          "        score = (row.get(\"score\") or \"\").strip()\n"
-         "        if text and score:\n"
+         "        if text and score:           # skip rows missing either column\n"
          "            rows.append({\"text\": text, \"label\": band(score)})\n"
          "\n"
          "print(\"essays:\", len(rows))"),

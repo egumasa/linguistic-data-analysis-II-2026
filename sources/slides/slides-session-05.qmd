@@ -24,7 +24,7 @@ metadata-files:
 
 ## 📋 Agenda
 
-Today you **build a gold standard** for your track — the graded *construction* skill. The work is split across **three surfaces**, and one spine (**A–F**) runs through all of them:
+We open with **ten minutes in the Arase paper** — pulling out the two design decisions S4 left for you. Then you **build a gold standard** for your track: the graded *construction* skill, split across **three surfaces**, with one spine (**A–F**) running through all of them:
 
 - **These slides** teach the *concepts* — how to sample, why annotate blind, how to read a matrix.
 - **A Google Sheet** holds the *human judgment* — you and your partner annotate there.
@@ -46,39 +46,74 @@ By the end of this session, you will be able to:
 
 
 
-# Recap — the define-first workflow
+# Start here — what Arase et al. actually decided
 
-## Recap: where this sits {.smaller}
+<!-- OPENS the session. S4 §D already gave the paper's motivation and the 5-phase table —
+     do NOT re-summarise it. Straight into extraction: 2 excerpts, 1 worksheet, ~10 min
+     including debrief. The answer slides double as the reference for steps A and C. -->
 
-S4 laid out the **define-first workflow** — five phases that turn a fuzzy construct into a number you can trust. Today we run its middle phase, **③**.
+## Two decisions, ten minutes {.smaller}
 
-- **① Define the task** *(scope · input→output · metrics · sample)*
-- **② Operationalize** *(decidable rule · pilot · Fuoli's principles)*
-- **③ Build the gold standard** ← **you are here** *(blind → IAA → refine → adjudicate)*
-- ④ Target = human agreement · ⑤ Evaluate the LLM → **next session (S6)**
+S4 ended on the two decisions the summary table skipped — and they are the two **you** make today:
 
-::: {.callout-tip}
-The agreement tool you build today is the *same* one S6 uses to score a model — swap one column.
+- **Which sentences go into the pool?** → your step **A**
+- **Who is allowed to annotate them?** → your step **C**
+
+. . .
+
+**In pairs, with the two excerpts (§3.2 and §3.1):** fill the worksheet. You are **scanning for specifics** — a number, a criterion, a reason — not reading for comprehension. **7 minutes.**
+
+::: {.callout-note}
+Everything on the sheet is stated **explicitly** in the excerpt except the last row, which asks you to reason. Don't read past the first paragraph of each.
 :::
 
-# Arase et al. (2022) — the same 5 stages, for real
+## The worksheet {.smaller}
 
-## Arase et al. (2022) — the same 5 stages {.smaller}
+| # | Question | |
+|--|-------|--|
+| 1 | How many candidate annotators were recruited? How many were kept? | → C |
+| 2 | What exactly did each candidate do, to be screened? | → C |
+| 3 | **Two** criteria decided who was kept. Both — not just the obvious one. | → C |
+| 4 | Why use only the **first** sentence of a paragraph? | → A |
+| 5 | Name **two** things that got a sentence thrown out. | → A |
+| 6 | They already had 17k sentences from two corpora. Why add a third (SCoRE)? | → A |
 
-Before you build your own gold, look at a published one that ran this exact workflow — on the very task you're about to try.
+::: {.callout-tip}
+Q3 and Q6 are the ones worth arguing about with your partner. Write *something* for both.
+:::
 
+# What you found
 
-| Stage | What Arase et al. did |
-|--|-----|
-| **① Define** | Sentence → CEFR level (A1–C2); reuse CEFR; fix metrics up front (macro-F1 + weighted κ) |
-| **② Operationalize** | "A1 = an A1 learner can readily understand it"; guidelines + per-level examples; piloted on 228 |
-| **③ Gold** | 2 experts (r = .75/.73), blind, ~20k sentences; **37.6% exact, 88.4% within one grade** |
-| **④ Target** | Human ceiling r ≈ .73–.75; a prediction counts if it matches *either* expert |
-| **⑤ Evaluate** | macro-F1 **84.5%**, weighted κ **.628** — Day 3 swaps in a prompted LLM |
+## Who is allowed to annotate {.smaller}
 
-## What a CEFR level looks like {.smaller}
+**Their claim:** sentence CEFR level can be judged *objectively* — **but only by someone with teaching experience.** So they tested that before trusting anyone.
 
-Their annotators judged **whole sentences** against can-do *reading* descriptors — one example per level (Arase et al., Table 1):
+- **Pilot — 228 sentences.** Against a senior expert (12 yrs teaching): a CEFR-trained grad student reached **r = 0.74**. Three grad students with no CEFR and no teaching background: **0.45 / 0.50 / 0.59**.
+- **Trial — 8 candidates, the same 100 sentences**, scored against the expert's labels. Agreement ran **0.59–0.77** — and *roughly tracked years and type of teaching experience*.
+- **Kept 2**, on **two** criteria: high agreement (**r = .75, .73**) **and** small average level difference (**0.11, 0.22**).
+
+::: {.callout-note}
+Why both? Correlation asks *do you rank sentences the same way*. Mean difference asks *are you calibrated* — a rater who is consistently one grade high correlates almost perfectly.
+:::
+
+## Which sentences are allowed in {.smaller}
+
+**The rule:** if you need anything *outside* the sentence to judge it, the sentence doesn't belong.
+
+*"The white house announced his return."* — easy words, easy grammar. But you must know **the White House** is an organisation, and resolve **his** from the sentence before. That's world knowledge and discourse, not sentence difficulty.
+
+- **First sentence of a paragraph only** → nothing to co-refer back to.
+- **No named entities, quotations or brackets** — though dates, numbers and famous places are allowed.
+- **5–30 words**, then sampled at random.
+- **A third source on purpose:** Newsela-Auto + Wiki-Auto (8.5k each) — plus **SCoRE** (3.0k), written *for* beginners, because **A-level sentences are otherwise almost absent**.
+
+::: {.callout-tip}
+These filters weren't decided up front — they ran **several rounds of manual checks over a few hundred samples** before freezing them. Sampling is something you **debug**.
+:::
+
+## And what came out of it {.smaller}
+
+Sentences the annotators **agreed on** in the pilot and trial became the **example per level in the guidelines** — so selecting people also produced the scheme's anchors (Arase et al., Table 1):
 
 | CEFR Level| Example sentence |
 |--|--------|
@@ -89,16 +124,15 @@ Their annotators judged **whole sentences** against can-do *reading* descriptors
 | **C1** | The metal-carbon bond in organometallic compounds is generally highly covalent. |
 | **C2** | In the past, non-photosynthetic plants were mistakenly thought to get food by breaking down organic matter in a manner similar to saprotrophic fungi. |
 
-
 ::: {.callout-tip}
-Not just word difficulty — *grammar, abstraction, and world knowledge* climb too. Their **own** two experts agreed exactly only **37.6%** of the time (88.4% within one grade). **This is the judgment you're about to make — expect to differ from the gold.**
+Not just word difficulty — *grammar, abstraction and world knowledge* climb too. **This is the judgment you're about to make.** Their own two experts matched exactly **37.6%** of the time — so expect to differ, from your partner and from the gold.
 :::
 
-# How today is divided — one spine, three surfaces
+# Now you do it — one spine, three surfaces
 
-## The six-step spine (A–F) {.smaller}
+## Today's goal, as six steps (A–F) {.smaller}
 
-Everything today is **phase ③** (Eguchi & Kyle Step 6), broken into six steps. The **same A–F labels** appear on every surface, so you always know where you are — *find your place by the letter, not the slide number.*
+**Your goal:** build a gold standard for your track, and know how far you can trust it. That is **phase ③** (Eguchi & Kyle Step 6) — broken into six steps. The **same A–F labels** appear on every surface, so you always know where you are — *find your place by the letter, not the slide number.*
 
 | Step | Where you work | What happens |
 |--|--|----|
@@ -125,6 +159,7 @@ A gold standard is only as trustworthy as the sample it's built on. Before anyon
 - **Right-sized** — enough to measure agreement, small enough to double-annotate by hand (~20 today).
 - **Reproducible** — a fixed random **seed** means the "same 20" every time; anyone can re-draw your exact sample.
 - **One fixed unit** — one label per **unit of analysis** (here, the sentence). Settle this before you start.
+- **Exclusions that defend the unit** — Arase's *first-sentence-only, no named entities* rule, which you just found. Anything judged from **outside** the sentence doesn't belong in the pool.
 
 ::: {.callout-note}
 Today the sample is **already drawn for you** — one sheet per track. You'll learn *how* it was sampled here, and just **copy** it in a moment. (The draw itself lives in Colab as a reference cell.)

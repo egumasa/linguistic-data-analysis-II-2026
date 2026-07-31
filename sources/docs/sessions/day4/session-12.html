@@ -362,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/day2-s6_evaluation_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 2 · S6 — Gold standards &amp; evaluation metrics</span></a>
+ <span class="menu-text">Day 2 · S6 — Evaluation metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -375,12 +375,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/day4_pipeline_and_sampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Day 4 · Pipeline assembly &amp; sampling your gold set</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/day5_project_finalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 5 · Project finalization</span></a>
   </div>
 </li>
       </ul>
@@ -396,6 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#agenda" id="toc-agenda" class="nav-link" data-scroll-target="#agenda">Agenda</a></li>
   <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
   <li><a href="#slides-colab" id="toc-slides-colab" class="nav-link" data-scroll-target="#slides-colab">Slides &amp; Colab</a></li>
   <li><a href="#mini-project" id="toc-mini-project" class="nav-link" data-scroll-target="#mini-project">Mini-project</a></li>
@@ -441,7 +436,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<!-- to be added -->
+<p>By the end of this session you will be able to:</p>
+<ul>
+<li>Draw a <strong>balanced</strong> subset from your track’s pool, and explain why balance matters for precision, recall, F1 and the confusion matrix.</li>
+<li>Annotate a sample <strong>independently and blind</strong>, and interpret your percent agreement and Cohen’s κ.</li>
+<li>Adjudicate your disagreements into a single agreed gold set, and record <em>what changed</em>.</li>
+<li>Run a baseline prompt to get a number to beat.</li>
+</ul>
+</section>
+<section id="agenda" class="level2">
+<h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
+<ol type="1">
+<li><strong>Sample + create the sheet</strong> (~20 min) — <code>sample_pool</code>, then <code>create_annotation_sheet</code>.</li>
+<li><strong>Annotate blind</strong> (~25 min) — two of you, <code>CoderA</code> and <code>CoderB</code>, no peeking at the published label.</li>
+<li><strong>Agreement → disagreements → adjudicate</strong> (~25 min) — the heart of the session. Where you disagreed with each other tells you which label boundaries are genuinely fuzzy.</li>
+<li><strong>Baseline prompt</strong> (~10 min) — at <code>N_PER_CLASS = 2</code>, so it finishes inside the slot.</li>
+</ol>
+<p>This is the same A–F round-trip you did by hand in <a href="../../sessions/day2/session-05.html">Session 5</a>, now on your own track and your own data.</p>
 </section>
 <section id="reading" class="level2">
 <h2 class="anchored" data-anchor-id="reading">Reading</h2>
@@ -449,15 +460,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="slides-colab" class="level2">
 <h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
-<!-- Notebook not yet finalized:
-- Notebook (tutorial + Corpus Lab): [`day4_pipeline_and_sampling.ipynb`](../../notebooks/day4_pipeline_and_sampling.ipynb) — sample a balanced gold subset, then QC it —
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb)
--->
+<ul>
+<li>Notebook: <a href="../../notebooks/day4_pipeline_and_sampling.html"><code>day4_pipeline_and_sampling.ipynb</code></a> — sample a balanced subset, then hand off to the project template — <a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open In Colab"></a></li>
+<li>Project notebook: <a href="https://github.com/egumasa/lda2-final-template/blob/main/notebooks/mini_project.ipynb"><code>mini_project.ipynb</code></a> — <a href="https://colab.research.google.com/github/egumasa/lda2-final-template/blob/main/notebooks/mini_project.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open In Colab"></a></li>
+</ul>
 <!-- Slides: [Session 12 slides](../../slides/slides-session-12.html){target="_blank"} -->
 </section>
 <section id="mini-project" class="level2">
 <h2 class="anchored" data-anchor-id="mini-project">Mini-project</h2>
-<p>Project work session — see the <a href="../../final-project/index.html">Final Project</a> page.</p>
+<p>Work in <code>notebooks/mini_project.ipynb</code> of the <a href="https://github.com/egumasa/lda2-final-template">project template</a> — <strong>steps 1–3</strong>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Your adjudicated gold is what the model gets scored against
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Not the published labels. That is what makes this session load-bearing rather than a warm-up: the boundaries you argue about here are the ones you will point at on Day 5 when you explain why the model missed something.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Keep the baseline small
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>One round at <code>N_PER_CLASS = 7</code> is ~40 model calls and several minutes of enforced pacing. Use <code>N_PER_CLASS = 2</code> while iterating; save the full-size run for the one you freeze.</p>
+</div>
+</div>
 
 
 <!-- -->
@@ -937,22 +974,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- to be added --&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 4 reading (Abdurahman et al., 2025, *read in full*) in <span class="co">[</span><span class="ot">Session 10</span><span class="co">](session-10.md)</span> and on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Draw a **balanced** subset from your track's pool, and explain why balance matters for precision, recall, F1 and the confusion matrix.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Annotate a sample **independently and blind**, and interpret your percent agreement and Cohen's κ.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adjudicate your disagreements into a single agreed gold set, and record *what changed*.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Run a baseline prompt to get a number to beat.</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Notebook not yet finalized:</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">- Notebook (tutorial + Corpus Lab): [`day4_pipeline_and_sampling.ipynb`](../../notebooks/day4_pipeline_and_sampling.ipynb) — sample a balanced gold subset, then QC it —</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb)</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 12 slides](../../slides/slides-session-12.html){target="_blank"} --&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mini-project</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>Project work session — see the <span class="co">[</span><span class="ot">Final Project</span><span class="co">](../../final-project/index.md)</span> page.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Sample + create the sheet** (~20 min) — <span class="in">`sample_pool`</span>, then <span class="in">`create_annotation_sheet`</span>.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Annotate blind** (~25 min) — two of you, <span class="in">`CoderA`</span> and <span class="in">`CoderB`</span>, no peeking at the published label.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Agreement → disagreements → adjudicate** (~25 min) — the heart of the session. Where you disagreed with each other tells you which label boundaries are genuinely fuzzy.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Baseline prompt** (~10 min) — at <span class="in">`N_PER_CLASS = 2`</span>, so it finishes inside the slot.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>This is the same A–F round-trip you did by hand in <span class="co">[</span><span class="ot">Session 5</span><span class="co">](../day2/session-05.md)</span>, now on your own track and your own data.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 4 reading (Abdurahman et al., 2025, *read in full*) in <span class="co">[</span><span class="ot">Session 10</span><span class="co">](session-10.md)</span> and on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Notebook: <span class="co">[</span><span class="ot">`day4_pipeline_and_sampling.ipynb`</span><span class="co">](../../notebooks/day4_pipeline_and_sampling.ipynb)</span> — sample a balanced subset, then hand off to the project template —</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb)</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Project notebook: <span class="co">[</span><span class="ot">`mini_project.ipynb`</span><span class="co">](https://github.com/egumasa/lda2-final-template/blob/main/notebooks/mini_project.ipynb)</span> —</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/lda2-final-template/blob/main/notebooks/mini_project.ipynb)</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 12 slides](../../slides/slides-session-12.html){target="_blank"} --&gt;</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mini-project</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>Work in <span class="in">`notebooks/mini_project.ipynb`</span> of the</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">project template</span><span class="co">](https://github.com/egumasa/lda2-final-template)</span> — **steps 1–3**.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Your adjudicated gold is what the model gets scored against</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>Not the published labels. That is what makes this session load-bearing rather than a warm-up:</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>the boundaries you argue about here are the ones you will point at on Day 5 when you explain</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>why the model missed something.</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Keep the baseline small</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>One round at <span class="in">`N_PER_CLASS = 7`</span> is ~40 model calls and several minutes of enforced pacing. Use</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="in">`N_PER_CLASS = 2`</span> while iterating; save the full-size run for the one you freeze.</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

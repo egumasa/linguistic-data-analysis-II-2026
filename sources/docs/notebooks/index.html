@@ -362,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../notebooks/day2-s6_evaluation_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 2 · S6 — Gold standards &amp; evaluation metrics</span></a>
+ <span class="menu-text">Day 2 · S6 — Evaluation metrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -375,12 +375,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../notebooks/day4_pipeline_and_sampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Day 4 · Pipeline assembly &amp; sampling your gold set</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/day5_project_finalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 5 · Project finalization</span></a>
   </div>
 </li>
       </ul>
@@ -479,50 +473,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="header">
 <th>Day</th>
 <th>Notebook</th>
-<th>Tutorial (Part A)</th>
-<th>Corpus Lab (Part B)</th>
+<th>Part A</th>
+<th>Part B</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1</td>
 <td><a href="../notebooks/day1_python_and_first_llm.html"><code>day1_python_and_first_llm.ipynb</code></a></td>
-<td>Python basics + your first LLM call</td>
-<td>Python practice exercises (self-checked)</td>
+<td><em>Tutorial</em> — Python basics + your first LLM call</td>
+<td><em>Corpus Lab</em> — Python practice exercises (self-checked)</td>
 </tr>
 <tr class="even">
 <td>2 · S5</td>
 <td><a href="../notebooks/day2-s5_gold_standard_construction.html"><code>day2-s5_gold_standard_construction.ipynb</code></a></td>
-<td><em>(none — steps A–F)</em></td>
-<td>Annotate a gold set by hand in a Google Sheet: agreement → κ → refine &amp; re-annotate → adjudication → canonical JSON</td>
+<td><em>(no parts — one lab, steps A–F)</em> — annotate a gold set by hand in a Google Sheet: agreement → κ → refine &amp; re-annotate → adjudication → canonical JSON</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td>2 · S6</td>
 <td><a href="../notebooks/day2-s6_evaluation_metrics.html"><code>day2-s6_evaluation_metrics.ipynb</code></a></td>
-<td>The pipeline on CEFR-SP (P/R/F1 + confusion matrix)</td>
-<td>Code the evaluation metrics from scratch and check them against scikit-learn</td>
+<td><em>Corpus Lab</em> — build the metrics yourself on one yes/no question: TP/FP/FN/TN → confusion matrix → precision, recall, F1, κ → checked against scikit-learn</td>
+<td><em>Tutorial</em> — the same job with scikit-learn on all six CEFR levels: <code>classification_report</code>, confusion matrix, plain vs.&nbsp;weighted κ, error analysis</td>
 </tr>
 <tr class="even">
 <td>3</td>
 <td><a href="../notebooks/day3_prompt_design.html"><code>day3_prompt_design.ipynb</code></a></td>
-<td>Zero-shot → few-shot → chain-of-thought on CEFR</td>
-<td>Your own prompt-iteration study <em>(coming soon)</em></td>
+<td><em>Tutorial</em> — zero-shot → few-shot → chain-of-thought on CEFR</td>
+<td><em>Corpus Lab</em> — your own prompt-iteration study <em>(coming soon)</em></td>
 </tr>
 <tr class="odd">
 <td>4</td>
 <td><a href="../notebooks/day4_pipeline_and_sampling.html"><code>day4_pipeline_and_sampling.ipynb</code></a></td>
-<td>Sample a balanced gold subset from a pool</td>
-<td>QC &amp; adjudicate your gold set <em>(coming soon)</em></td>
-</tr>
-<tr class="even">
-<td>5</td>
-<td><a href="../notebooks/day5_project_finalization.html"><code>day5_project_finalization.ipynb</code></a></td>
-<td>Assemble the pipeline end-to-end <em>(coming soon)</em></td>
-<td>Draft the one-page report <em>(coming soon)</em></td>
+<td><em>Tutorial</em> — sample a balanced gold subset from a pool</td>
+<td>hands off to the project template</td>
 </tr>
 </tbody>
 </table>
-<p>When you are ready to run your own study, move on to the <a href="../resources/datasets/mini-project-tracks.html">mini-project starter tracks</a>.</p>
+<p><strong>There is no Day-5 notebook.</strong> From the end of Day 4 the work moves to your own study, in <code>notebooks/mini_project.ipynb</code> of the <a href="https://github.com/egumasa/lda2-final-template">project template</a> — your track, your gold set, your prompt. Start at the <a href="../final-project/index.html">Final Project</a> pages.</p>
 
 
 <!-- -->
@@ -1034,17 +1022,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## The notebooks</span></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Day <span class="pp">|</span> Notebook <span class="pp">|</span> Tutorial (Part A) <span class="pp">|</span> Corpus Lab (Part B) <span class="pp">|</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Day <span class="pp">|</span> Notebook <span class="pp">|</span> Part A <span class="pp">|</span> Part B <span class="pp">|</span></span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day1_python_and_first_llm.ipynb`</span><span class="co">](./day1_python_and_first_llm.ipynb)</span> <span class="pp">|</span> Python basics + your first LLM call <span class="pp">|</span> Python practice exercises (self-checked) <span class="pp">|</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · S5 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2-s5_gold_standard_construction.ipynb`</span><span class="co">](./day2-s5_gold_standard_construction.ipynb)</span> <span class="pp">|</span> *(none — steps A–F)* <span class="pp">|</span> Annotate a gold set by hand in a Google Sheet: agreement → κ → refine &amp; re-annotate → adjudication → canonical JSON <span class="pp">|</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · S6 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2-s6_evaluation_metrics.ipynb`</span><span class="co">](./day2-s6_evaluation_metrics.ipynb)</span> <span class="pp">|</span> The pipeline on CEFR-SP (P/R/F1 + confusion matrix) <span class="pp">|</span> Code the evaluation metrics from scratch and check them against scikit-learn <span class="pp">|</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day3_prompt_design.ipynb`</span><span class="co">](./day3_prompt_design.ipynb)</span> <span class="pp">|</span> Zero-shot → few-shot → chain-of-thought on CEFR <span class="pp">|</span> Your own prompt-iteration study *(coming soon)* <span class="pp">|</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day4_pipeline_and_sampling.ipynb`</span><span class="co">](./day4_pipeline_and_sampling.ipynb)</span> <span class="pp">|</span> Sample a balanced gold subset from a pool <span class="pp">|</span> QC &amp; adjudicate your gold set *(coming soon)* <span class="pp">|</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day5_project_finalization.ipynb`</span><span class="co">](./day5_project_finalization.ipynb)</span> <span class="pp">|</span> Assemble the pipeline end-to-end *(coming soon)* | Draft the one-page report *(coming soon)* <span class="pp">|</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>When you are ready to run your own study, move on to the</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">mini-project starter tracks</span><span class="co">](../resources/datasets/mini-project-tracks.md)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day1_python_and_first_llm.ipynb`</span><span class="co">](./day1_python_and_first_llm.ipynb)</span> <span class="pp">|</span> *Tutorial* — Python basics + your first LLM call | *Corpus Lab* — Python practice exercises (self-checked) <span class="pp">|</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · S5 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2-s5_gold_standard_construction.ipynb`</span><span class="co">](./day2-s5_gold_standard_construction.ipynb)</span> <span class="pp">|</span> *(no parts — one lab, steps A–F)* — annotate a gold set by hand in a Google Sheet: agreement → κ → refine &amp; re-annotate → adjudication → canonical JSON <span class="pp">||</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · S6 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2-s6_evaluation_metrics.ipynb`</span><span class="co">](./day2-s6_evaluation_metrics.ipynb)</span> <span class="pp">|</span> *Corpus Lab* — build the metrics yourself on one yes/no question: TP/FP/FN/TN → confusion matrix → precision, recall, F1, κ → checked against scikit-learn | *Tutorial* — the same job with scikit-learn on all six CEFR levels: <span class="in">`classification_report`</span>, confusion matrix, plain vs. weighted κ, error analysis <span class="pp">|</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day3_prompt_design.ipynb`</span><span class="co">](./day3_prompt_design.ipynb)</span> <span class="pp">|</span> *Tutorial* — zero-shot → few-shot → chain-of-thought on CEFR | *Corpus Lab* — your own prompt-iteration study *(coming soon)* <span class="pp">|</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day4_pipeline_and_sampling.ipynb`</span><span class="co">](./day4_pipeline_and_sampling.ipynb)</span> <span class="pp">|</span> *Tutorial* — sample a balanced gold subset from a pool <span class="pp">|</span> hands off to the project template <span class="pp">|</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>**There is no Day-5 notebook.** From the end of Day 4 the work moves to your own study, in</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="in">`notebooks/mini_project.ipynb`</span> of the</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">project template</span><span class="co">](https://github.com/egumasa/lda2-final-template)</span> — your track, your gold</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>set, your prompt. Start at the <span class="co">[</span><span class="ot">Final Project</span><span class="co">](../final-project/index.md)</span> pages.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

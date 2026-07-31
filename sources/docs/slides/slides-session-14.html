@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Masaki EGUCHI, Ph.D.">
-  <title>Linguistic Data Analysis II (Summer 2026) – Session 14: Project Work: Finalize Report &amp; Notebook</title>
+  <title>Linguistic Data Analysis II (Summer 2026) – Session 14: Project Work — Finalize Report &amp; Notebook</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,8 +28,74 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-786aa19b3b784cc15a2029c072583b99.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bde00274b4a677e175132b983751c62b.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,64 +196,205 @@
 
 <section id="title-slide" class="center quarto-title-block">
   <p class="kicker">Linguistic Data Analysis II · Day 5</p>
-  <h1 class="title">Session 14: Project Work: Finalize Report &amp; Notebook</h1>
+  <h1 class="title">Session 14: Project Work — Finalize Report &amp; Notebook</h1>
   <p class="subtitle">Day 5 · Project Finalization &amp; Presentations (5-2)</p>
   <div class="title-meta">
     <p class="author">Masaki EGUCHI, Ph.D.</p>
     <p class="institute">Tohoku University · Summer 2026</p>
   </div>
 </section>
-<section class="slide level2">
-
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-</section>
 <section>
-<section id="session-14-project-work-finalize-report-notebook" class="title-slide slide level1 center">
-<h1>Session 14: Project Work: Finalize Report &amp; Notebook</h1>
+<section id="session-14-error-analysis-report" class="title-slide slide level1 center">
+<h1>Session 14: Error Analysis &amp; Report</h1>
 
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
 <ul>
-<li>Finalize the one-page report</li>
-<li>Prepare your presentation</li>
-<li>Submit the completed notebook</li>
+<li><strong>Error analysis</strong> — the highest-value part of the project</li>
+<li>Writing the four things the scaffold cannot compute</li>
+<li>Building the bundle, and checking it reproduces</li>
+<li>Five slides</li>
 </ul>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Attribute concrete errors to the <strong>model</strong> or to the <strong>scheme</strong>, with a reason.</li>
+<li>Write limitations specific to your run.</li>
+<li>Assemble a submission bundle and verify the notebook runs on a fresh runtime.</li>
+</ul>
 </section></section>
 <section>
-<section id="finalize-the-report" class="title-slide slide level1 center">
-<h1>Finalize the report</h1>
+<section id="error-analysis" class="title-slide slide level1 center">
+<h1>Error analysis</h1>
 
 </section>
-<section id="finalize-the-report-1" class="slide level2">
-<h2>Finalize the report</h2>
-<!-- to be added -->
+<section id="the-two-findings-hiding-in-one-table" class="slide level2">
+<h2>The two findings hiding in one table</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>errors <span class="op">=</span> show_errors(gold, pred_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>The model’s fault</strong> — the label is clear, a competent annotator would agree, the model still missed it.</p>
+<p><strong>The scheme’s fault</strong> — the item is genuinely borderline.</p>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>You already know which are which</strong></p>
+</div>
+<div class="callout-content">
+<p>They are the rows you argued about in Session 12. Cross-reference your <code>disagreements</code> list against these errors.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="overlap-is-a-finding" class="slide level2">
+<h2>Overlap is a finding</h2>
+<p>If the model’s errors cluster on the items <strong>you</strong> disagreed about, that is a result:</p>
+<blockquote>
+<p><em>“The model’s B1/B2 confusions fall almost entirely on the 12 items our annotators also disagreed on. We read this as a property of the scheme’s boundary rather than a failure of the model.”</em></p>
+</blockquote>
+<div class="fragment">
+<p>That sentence is worth more than any F1 you could report.</p>
+</div>
+</section>
+<section id="be-concrete" class="slide level2">
+<h2>Be concrete</h2>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Weak</strong></p>
+</div>
+<div class="callout-content">
+<p>“The model struggled with C1.”</p>
+</div>
+</div>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Strong</strong></p>
+</div>
+<div class="callout-content">
+<p>“id 6 — <em>‘Pseudogenes are generally thought of as the last stage…’</em> — gold C1, predicted C2. The sentence is syntactically simple but lexically dense; our scheme weights syntax, the model appears to weight vocabulary. <strong>Scheme’s fault</strong>: our own coders split on this one.”</p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="prepare-the-presentation" class="title-slide slide level1 center">
-<h1>Prepare the presentation</h1>
+<section id="the-report" class="title-slide slide level1 center">
+<h1>The report</h1>
 
 </section>
-<section id="prepare-the-presentation-1" class="slide level2">
-<h2>Prepare the presentation</h2>
-<!-- to be added -->
+<section id="the-scaffold-does-the-arithmetic" class="slide level2">
+<h2>The scaffold does the arithmetic</h2>
+<p><code>export_results</code> fills in your label set, per-label counts, and the F1-per-round table.</p>
+<p>Everything in <em>italics</em> is yours:</p>
+<ol type="1">
+<li>what your adjudication <strong>changed</strong></li>
+<li>the <strong>reason</strong> for each prompt change</li>
+<li>the error <strong>attributions</strong></li>
+<li>limitations that apply to <strong>your</strong> run</li>
+</ol>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>A section left as the scaffold’s own prose scores <strong>zero</strong>. <code>make_submission.py</code> warns you.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="limitations-that-are-actually-yours" class="slide level2">
+<h2>Limitations that are actually yours</h2>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Generic (already in the scaffold)</strong></p>
+</div>
+<div class="callout-content">
+<p>“LLM output is stochastic.” · “Contamination risk.” · “Small sample.”</p>
+</div>
+</div>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Yours</strong></p>
+</div>
+<div class="callout-content">
+<p>“Our C2 class has only 7 items because the pool contains 33 in total, so per-class C2 scores are effectively anecdotal.” · “We adjudicated 12 of 42 items, so our gold reflects two coders’ reading of an ambiguous boundary, not a settled one.”</p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="submit-the-notebook" class="title-slide slide level1 center">
-<h1>Submit the notebook</h1>
+<section id="handing-in" class="title-slide slide level1 center">
+<h1>Handing in</h1>
 
 </section>
-<section id="submit-the-notebook-1" class="slide level2">
-<h2>Submit the notebook</h2>
-<!-- to be added -->
+<section id="one-command" class="slide level2">
+<h2>One command</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="ex">python</span> scripts/make_submission.py <span class="at">--group</span> groupA</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Keeps the folder structure — <code>scripts/ · prompts/ · data/ · outputs/</code> — because that layout <strong>is</strong> the S10 checklist made physical, and because the notebook’s <code>../</code> paths need it.</p>
+<p>Leaves out: <code>.git/</code>, <code>.venv/</code>, <strong>your <code>.env</code></strong>, the big pools, anything ICNALE.</p>
+<p>Tells you what is missing.</p>
+</section>
+<section id="then-check-it-reproduces" class="slide level2">
+<h2>Then check it reproduces</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Restart the runtime and Run all</strong></p>
+</div>
+<div class="callout-content">
+<p>If your notebook only works in the session where you built it up cell by cell, <strong>it does not reproduce</strong> — and reproducing is the claim you are making.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The bundle is self-contained for the claim that matters: given your gold set and your frozen predictions, anyone can recompute your numbers with <strong>no API key and no network</strong>.</p>
+</div>
+</section>
+<section id="five-slides" class="slide level2">
+<h2>Five slides</h2>
+<p>One per report section:</p>
+<ol type="1">
+<li>Scheme &amp; gold</li>
+<li>Prompt iterations</li>
+<li>Evaluation</li>
+<li>Error analysis</li>
+<li>Limitations</li>
+</ol>
+<p><strong>Every member speaks.</strong> Have your <code>show_errors</code> table open before you start.</p>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
+<p>Next: <strong>S15 — presentations.</strong></p>
 
 
 

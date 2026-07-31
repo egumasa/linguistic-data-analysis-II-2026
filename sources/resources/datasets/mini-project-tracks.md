@@ -4,36 +4,60 @@ subtitle: "Pick a dataset, design a scheme, run an LLM, evaluate it"
 toc: true
 ---
 
-For the final mini-project you run your own small LLM-annotation study. The workflow for every
-track is the same:
+This page is about **choosing a track**. The workflow, the deliverables and the rubric are on
+the [Final Project](../../final-project/index.md) pages, and the work itself happens in the
+[project template](https://github.com/egumasa/lda2-final-template).
 
-1. **Sample** a balanced ~40-item gold subset from the track's pool using `sample_pool` (it draws up
-   to *N* items per label; rare classes simply yield fewer — that's a property of the data).
-2. **QC / adjudicate** the subset: each group member independently re-checks part of it against the
-   scheme, flag disagreements with the published label, then discuss and resolve. This is where you
-   feel inter-annotator disagreement and start asking *"is a wrong label the model's fault or the
-   scheme's?"*
-3. **Iterate** the prompt 2–3 rounds against your gold set. Run through the **Gemini API** with
-   `temperature=0` + a fixed seed ([get a free key](../tools/gemini-api-key.md)) so each round is
-   reproducible and differences reflect the *prompt*, not sampling noise.
-4. **Freeze** your final predictions to a JSON file (run the model once, save + commit its output).
-   Your evaluation runs off that frozen file, so your reported F1 is stable and auditable.
-5. **Report** precision / recall / F1 + a confusion matrix with an honest discussion of limitations.
+Whichever track you pick, the shape is the same:
 
-Each track rebuilds a ready gold file **and** a full pool to sample your own subset from.
+1. **Sample** a balanced ~40-item subset from the track's pool (`sample_pool` draws up to *N*
+   items per label; rare classes simply yield fewer — that's a property of the data).
+2. **QC / adjudicate** the subset: two of you annotate it independently and blind in a Google
+   Sheet, measure agreement and κ, then argue out the rows you disagreed on. This is where you
+   feel inter-annotator disagreement, and start asking *"is a wrong label the model's fault or
+   the scheme's?"* What comes out is **your** gold set — and it is what the model gets scored
+   against.
+3. **Iterate** the prompt 2–3 rounds against it, through the **Gemini API** with
+   `temperature=0` + a fixed seed ([get a free key](../tools/gemini-api-key.md)) so that
+   differences reflect the *prompt*, not noise.
+4. **Freeze** your final predictions to a JSON file — run the model once, save the output, and
+   evaluate off that file from then on. Your reported F1 is then stable and auditable.
+5. **Report** precision / recall / F1 + a confusion matrix, with an honest discussion of
+   limitations.
 
-Rebuild the gold files: [`README.md`](./README.md) · provenance & licenses: [`SOURCES.md`](./SOURCES.md) ·
-the pipeline: [Day 2](../../notebooks/day2-s6_evaluation_metrics.ipynb) & [Day 3](../../notebooks/day3_prompt_design.ipynb) notebooks.
+Every track ships a small **demo** file so it runs the moment you clone, plus a builder for the
+full **pool** you sample from:
+
+```bash
+python scripts/prep_datasets.py raamove     # cefr · raamove · cars50 · l2_errors · icnale
+```
+
+Provenance & licences: [`SOURCES.md`](./SOURCES.md) · the helpers you will call:
+[pipeline cheat-sheet](../../final-project/pipeline-cheatsheet.md).
 
 ::: {.callout-tip}
-## Keep your data in your own Drive
-Unlike the worked tutorials (which load a URL we ship for you), you build your own gold set here —
-so **house it in your Google Drive**, not GitHub. See
-[Housing Your Data in Google Drive](../tools/google-drive-data.md) for the mount → save → load
-round-trip, worked on the familiar CEFR data and reused unchanged for your track.
+## Your data lives in your Drive, not in git
+One member clones the template **into Google Drive** and shares the folder. Your pool, your
+gold set and your outputs then persist across sessions and everyone sees the same files —
+without anyone pushing anything. See [Housing Your Data in Google
+Drive](../tools/google-drive-data.md) for the mount → save → load round-trip.
 :::
 
 ## Tracks
+
+### ★☆☆ Sentence proficiency level (CEFR-SP)
+
+The on-ramp, and the same data as the Day 1–3 tutorials. Track: `cefr`. Pool:
+`cefr_pool.json` (3,183 sentences, A1–C2, heavily imbalanced towards B1/B2).
+
+Because you already know this task, the *mechanics* stop being the hard part and the
+**judgment** becomes the point: the published labels keep only sentences where both original
+annotators agreed, so when your own adjudication disagrees with them, that is worth
+explaining. Expect near-misses (B1↔B2) to dominate your errors — which is exactly when
+`ordered=True` and weighted κ start to earn their keep.
+
+Extensions: does the model confuse *adjacent* levels only, or does it jump? Does prompting
+with level *descriptors* beat prompting with examples?
 
 ### ★★★ Discourse moves (RAAMove / CaRS-50)
 
@@ -45,8 +69,9 @@ and few-shot examples change its accuracy. Their corpus is not public, so CaRS-5
 > analysis: The impact of prompt refinement, few-shot learning, and fine-tuning.
 > *Journal of English for Academic Purposes, 71,* 101422.
 
-Gold: `raamove_moves.json` (8 moves, abstracts) or `cars50_moves.json` (CARS Moves, introductions).
-Pools: `raamove_pool.json`, `cars50_pool.json`, `cars50_step_pool.json` (11-class stretch).
+Tracks: `raamove` (8 moves, abstracts) or `cars50` (CARS Moves, introductions).
+Pools built by `prep_datasets.py`: `raamove_pool.json` (3,069), `cars50_pool.json` (1,297), and
+`cars50_step_pool.json` for the 11-class stretch version.
 Extensions: compare abstracts vs. introductions; move-only vs. move+step; few-shot vs. definitions.
 
 RAAMove ships as tidy JSON and is the gentler start; CaRS-50 is harder because judging moves in
@@ -58,33 +83,30 @@ explanations, and telling them apart is the interesting part of your analysis.
 
 Classify the error type in a learner sentence (Grammatical / Lexical / Mechanical / No error), or do
 binary **error detection**.
-Gold: `l2_errors.json`, `l2_error_detection.json` · Pool: `l2_errors_pool.json`.
+Track: `l2_errors`. Pools: `l2_errors_pool.json` (1,038, 4 classes) and
+`l2_error_detection_pool.json` (1,485, yes/no).
 Special feature: the source also has the **published tool's predictions**, so you can benchmark your
 LLM against both the human gold *and* the original system. (Mizumoto, 2025, *SSLA*.)
 Extensions: try the finer 23-code taxonomy; analyze which error types the LLM over-/under-predicts.
 
 ### ★★☆ Automated writing evaluation (ICNALE GRA)
 
-Predict a holistic essay score band (Low / Mid / High). Requires
-[registering for the ICNALE GRA](https://language.sakura.ne.jp/icnale/download.html) and building the
-gold file per [`SOURCES.md`](./SOURCES.md).
+Predict a holistic essay score band (Low / Mid / High). Track: `icnale`. Requires
+[registering for the ICNALE GRA](https://language.sakura.ne.jp/icnale/download.html) and exporting a
+`text,score` CSV yourself — the builder tells you exactly where to put it. The data is research-use
+only, so nothing derived from it may be committed or submitted.
+
+⚠️ These labels are **ordered but not alphabetical**, so set
+`LABELS_ORDER = ["Low", "Mid", "High"]` in CONFIG — otherwise the weighted κ is computed over
+`High < Low < Mid` and means nothing. (That is what question 3 of your `PLAN.md` is for.)
+
 Extensions: compare holistic vs. a single analytic dimension; check whether the LLM rewards length.
 
-## Deliverables
+## Deliverables, submission and grading
 
-Everything is produced **in class** — there is no post-course write-up:
+All on the Final Project pages, so there is one authoritative copy of each:
 
-- **Presentation + Q&A** — the main deliverable. Be ready to explain *why* the model missed specific
-  items and what your QC pass changed; the Q&A is where you show you did the work.
-- **One-page report** (the five sections below) — your working doc and the scaffold for the talk.
-- **Completed notebook** — assembled and run end-to-end, with your sampled gold subset, prompt, and
-  evaluation outputs; submitted as evidence that the in-class work was completed.
-
-### What the one-page report covers
-
-1. **Scheme & gold** — your label set, and how you built the gold set: subset size, balance, and
-   **what your QC/adjudication pass changed** (any disagreements with the published label).
-2. **Prompt iterations** — a table of changes and the F1 at each step (see the Day 3 tutorial).
-3. **Evaluation** — per-class precision/recall/F1 + confusion matrix on a held-out gold set.
-4. **Error analysis** — concrete examples, and whether failures are the *model's* or the *scheme's*.
-5. **Limitations** — stochasticity, contamination risk, and what your numbers do **not** show.
+- [Deliverables & submission](../../final-project/deliverables.md) — the bundle, the report's
+  five sections, the presentation format.
+- [Rubric](../../final-project/rubric.md) — what is graded. Your F1 is not.
+- [The `PLAN.md` gate](../../final-project/plan.md) — write this before you call the model.

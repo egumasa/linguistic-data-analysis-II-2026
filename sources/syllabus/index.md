@@ -28,8 +28,6 @@ Large Language Models (LLMs) — generative AI technologies that produce human-l
 
 ::: {.callout-note}
 
-## Learning objectives
-
 By the end of this course, students will be able to:
 
 | Area                               | Objective                                                                                                                                    |

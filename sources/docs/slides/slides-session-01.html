@@ -457,7 +457,63 @@
 <li><strong>Attention:</strong> every word decides <em>which other words are relevant to it</em></li>
 <li>Output: <strong>context-sensitive</strong> representations of each word and a document</li>
 </ul>
-<p>[edit later]</p>
+<div class="fragment">
+<p>Take the two <em>free</em>s from the last slide:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sentence</th>
+<th><em>free</em> attends most to</th>
+<th>Resulting sense</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“your account is <strong>free</strong> of charge”</td>
+<td><em>account</em>, <em>charge</em></td>
+<td>banking, benign</td>
+</tr>
+<tr class="even">
+<td>“claim your <strong>FREE</strong> prize now”</td>
+<td><em>claim</em>, <em>prize</em>, <em>now</em></td>
+<td>promotional</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>Same string, <strong>two different vectors</strong> — because the neighbours differ. Static embeddings could not do this; there was only ever one vector for <em>free</em>.</p>
+</div>
+</section>
+<section id="why-this-matters-for-you" class="slide level2 smaller">
+<h2>Why this matters for you</h2>
+<p>This is the whole reason an LLM can annotate at all.</p>
+<div class="fragment">
+<p>The categories you care about — <em>is this stance hedged?</em>, <em>is this move a Gap or a Purpose?</em>, <em>what CEFR level is this?</em> — are <strong>not</strong> properties of the words in isolation. They are properties of words <strong>in context</strong>.</p>
+</div>
+<div class="fragment">
+<p>A bag-of-words model cannot represent that. A transformer can.</p>
+</div>
+<div class="fragment">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>“Can represent it” is not “gets it right.” That gap is what the rest of the week measures.</p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="how-llms-are-trained" class="slide level2 smaller">
 <h2>How LLMs are trained</h2>

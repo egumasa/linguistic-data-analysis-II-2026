@@ -13,38 +13,162 @@ metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-
-# Session 11: Plenary Pipeline Assembly
+# Session 11: Pipeline Assembly
 
 ## 📋 Agenda
 
-- Assemble the project notebook together, step by step
-- Pick a mini-project track
-- Sample a balanced gold subset from the provided pool
+You have already run every piece of this pipeline. Today you learn to **name the structure**.
+
+- **15 min** — the pipeline as one diagram, and where you have met each helper
+- **45 min** — your group writes `PLAN.md`
+- **25 min** — each group states its I/O contract out loud
+
+::: {.callout-note}
+Not a re-teach. Nothing here is new code — the point is being able to *describe* the flow, which is exactly what the Q&A on Day 5 will ask you to do.
+:::
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Describe the pipeline as a chain of **inputs and outputs** — what each step consumes and produces.
+- Point to where in Days 1–3 you ran each helper, and use the same call form again.
+- Write your group's `PLAN.md` and defend its six lines.
 
-# Assemble the notebook
+# The pipeline
 
-## Assemble the notebook
+## One diagram
 
-<!-- to be added -->
+```
+pool ──sample──▶ sampled ──annotate──▶ sheet ──adjudicate──▶ gold
+                                                              │
+                            prompt ─────────────┐             │
+                                                ▼             ▼
+                                          run_prompt ──▶ predictions
+                                                              │
+                                                    save_predictions
+                                                              │
+                                                              ▼
+                                                       FROZEN FILE
+                                                              │
+                                         ┌────────────────────┤
+                                         ▼                    ▼
+                                    evaluate              show_errors
+                                         │                    │
+                                         └──────▶ export ◀─────┘
+```
 
-# Pick a track
+## Read it as data shapes
 
-## Pick a track
+| Arrow | What flows | Shape |
+|---|---|---|
+| pool → sampled | ~40 items, balanced | `[{id, text, label}]` |
+| sampled → sheet | one row per item, **labels blanked** | a Google Sheet |
+| sheet → gold | your adjudicated decisions | `[{id, text, label}]` |
+| gold + prompt → predictions | one label per item | `["B1", "A2", …]` |
+| predictions → frozen file | the same list, **on disk** | `.json` |
+| gold + frozen → metrics | P/R/F1, κ, matrix | numbers you report |
 
-<!-- to be added -->
+. . .
 
-# Sample a balanced gold subset
+Everything after the frozen file reads **the file**, not the model.
 
-## Sample a balanced gold subset
+## Where you have already used these {.smaller}
 
-<!-- to be added -->
+| Step | Helper | You ran it in | Same call? |
+|---|---|---|---|
+| 1 | `load_gold(path)` | Day 2 S5 · Day 3 | ✅ |
+| 1 | `sample_pool(pool, n, seed)` | Day 4 — as four inline steps | one call now |
+| 2 | `create_annotation_sheet(...)` | Day 2 S5 step A | ✅ |
+| 2 | `load_annotation_sheet(...)` | Day 2 S5 step D | ✅ |
+| 2 | `annotator_agreement(rows)` | Day 2 S5 step D | ✅ |
+| 2 | `disagreements(rows)` | Day 2 S5 step E | ✅ |
+| 2 | `to_canonical(rows, labels)` | Day 2 S5 step F | ✅ |
+| 3–4 | `run_prompt(PROMPT, gold)` | Day 3, every round | ✅ |
+| 3–4 | `evaluate(gold, pred, ordered=True)` | Day 2 S6 · Day 3 | ✅ |
+| 5 | `show_errors(gold, pred)` | Day 3 | ✅ |
+
+**Nine of these are the identical call.** That is why 15 minutes is enough.
+
+## The three that are new
+
+```{.python}
+load_prompt(path)                  # your prompt is a FILE now, so versions survive
+save_predictions(pred, path)       # the freeze from S10, made executable
+export_results(track, gold, pred, f1_by_round, out_dir, group=GROUP)
+```
+
+. . .
+
+And one that changes shape:
+
+```{.python}
+build_fewshot(PROMPT, pool, gold)  # Day 3: you typed the examples by hand
+                                   # now: drawn from the pool, avoiding your gold
+```
+
+# `PLAN.md`
+
+## The 作戦シート, finally given a file
+
+You have been building this plan since S3 — track, scheme, gold source, prompting strategy. Today it becomes one page in your repo.
+
+**It is not graded.** It is a **gate**: no group calls the model until it is signed.
+
+. . .
+
+Two minutes of writing catches the failures that otherwise cost an hour *after* you have spent quota:
+
+- label set says `Move 1/2/3`, gold file says `1a/1b`, prompt says "move one" → no error, just a confusing F1
+- labels ordered but not alphabetical → weighted κ computed over `High < Low < Mid`
+- nobody agreed who codes which column → one annotator, no κ
+
+## The six lines
+
+```markdown
+# PLAN — <group>, track <track>
+Members: …
+
+1. Unit of analysis: (sentence / whole text) — and why
+2. Label set: … (exactly the strings in your gold file)
+3. Are the labels ORDERED? In what order?
+4. Gold: pool file · N_PER_CLASS · SEED · expected total
+5. QC: who is CoderA, who is CoderB, who adjudicates
+6. Prompt plan: baseline, then the ONE change you predict
+   will help — and why
+```
+
+::: {.callout-tip}
+Question 3 exists to catch the ordinal-κ trap. Question 6 asks you to **predict before you test** — which is the whole method in one line.
+:::
+
+## And the table
+
+| # | Step | Consumes | Produces |
+|---|------|----------|----------|
+| 1 | sample | `POOL_PATH`, `N_PER_CLASS`, `SEED` | `pool`, `sampled`, `LABELS` |
+| 2 | QC / adjudicate | `sampled`, `LABELS`, the sheet | `gold` |
+| 3 | baseline | `PROMPT`, `gold` | `pred0`, `f1_by_round` |
+| 4 | iterate + freeze | `PROMPT`, `pool`, `gold` | `pred_final` (a file) |
+| 5 | error analysis | `gold`, `pred_final` | the errors table |
+| 6 | export | all of the above | `outputs/…_report.md` |
+
+# End-state check
+
+## Say it out loud
+
+Each group, in turn:
+
+> *"Step 2 consumes `sampled` and the sheet, and produces `gold`."*
+
+. . .
+
+Every step. No notes.
+
+. . .
+
+If you can do that, you can answer the Day-5 question *"walk us through what you did"* — which is worth more marks than your F1.
 
 # Any questions?
+
+Next: **S12 — sample, annotate, adjudicate. Your own track, your own data.**

@@ -305,7 +305,36 @@ Same word, opposite signal. This is because:
 - **Attention:** every word decides *which other words are relevant to it*
 - Output: **context-sensitive** representations of each word and a document
 
-[edit later]
+. . .
+
+Take the two *free*s from the last slide:
+
+| Sentence | *free* attends most to | Resulting sense |
+|---|---|---|
+| "your account is **free** of charge" | *account*, *charge* | banking, benign |
+| "claim your **FREE** prize now" | *claim*, *prize*, *now* | promotional |
+
+. . .
+
+Same string, **two different vectors** — because the neighbours differ. Static embeddings could not do this; there was only ever one vector for *free*.
+
+## Why this matters for you {.smaller}
+
+This is the whole reason an LLM can annotate at all.
+
+. . .
+
+The categories you care about — *is this stance hedged?*, *is this move a Gap or a Purpose?*, *what CEFR level is this?* — are **not** properties of the words in isolation. They are properties of words **in context**.
+
+. . .
+
+A bag-of-words model cannot represent that. A transformer can.
+
+. . .
+
+::: {.callout-warning}
+"Can represent it" is not "gets it right." That gap is what the rest of the week measures.
+:::
 
 ## How LLMs are trained {.smaller}
 

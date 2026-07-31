@@ -13,38 +13,885 @@ metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
+<!-- Executes S4's phases ④⑤ as TWO PASSES over the same CEFR-SP data:
+       pass 1 = binary ("is it advanced?"), metrics built from scratch, steps 1–10;
+       pass 2 = the real 6-class task, scikit-learn.
+     SURFACE DIVISION (differs from S5 on purpose): this deck carries BOTH the concept
+     AND the implementation — every line of pass-1 code is on a slide with what it prints.
+     The notebook (day2-s6_evaluation_metrics.ipynb) is the follow-along: students type or
+     copy each chunk and run it. So every printed value here MUST equal what the matching
+     notebook cell prints. All numbers below are computed from the committed
+     gold/cefr_sentences.json + gold/predictions_day2.json — do not edit them by hand.
+     Cross-reference BY STEP NUMBER, never by slide number. -->
 
 # Session 6: Evaluation Metrics
 
 ## 📋 Agenda
 
-- Precision, recall, and F1
-- The confusion matrix
-- Hands-on practice in Colab
+Yesterday's question was *"do two people agree?"* Today's is **"is the model any good?"** — same tools, one column swapped.
 
-## 🎯 Learning Objectives
+- **Pass 1 — you build the metrics.** TP/FP/FN/TN → confusion matrix → precision, recall, F1 → Cohen's κ. No libraries.
+- **Pass 2 — scikit-learn does it at scale**, on all six CEFR levels at once.
+- **作戦会議** — turn today's mechanics onto your own project track.
+
+::: {.callout-note}
+**The code is on these slides.** You type it in Colab as we go — one small piece at a time, running each piece before the next. Lost? Copy the slide and rejoin.
+:::
+
+## 🎯 Learning Objectives {.smaller}
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Decide, for a single item, which of **TP · FP · FN · TN** it lands in — and write that as an `if`/`elif`.
+- **Loop** over a labelled set, **store** one verdict per item, and **tally** the four counts.
+- Build a **confusion matrix** from those counts, and read it.
+- Compute **precision, recall, F1** and **Cohen's κ** *from scratch*, and say what each one answers.
+- Reproduce all of it with **scikit-learn** — `classification_report`, `confusion_matrix`, `cohen_kappa_score` — on a real 6-class task.
+- Interpret the numbers critically: what a high or low score does and **doesn't** tell you.
 
-# Precision, recall, F1
+# Where we are
 
-## Precision, recall, F1
+## Recap: the define-first workflow {.smaller}
 
-<!-- to be added -->
+S4 laid out five phases. S5 ran ③ — you built a gold standard. Today we spend the numbers you earned.
 
-# The confusion matrix
+- ① Define the task · ② Operationalize · ③ Build the gold standard *(yesterday)*
+- **④ Target = human agreement** ← the ceiling your κ from S5 set
+- **⑤ Evaluate the model against gold** ← **you are here**
 
-## The confusion matrix
+. . .
 
-<!-- to be added -->
+::: {.callout-tip}
+## The same tool, one column swapped
+In **S5** you compared **annotator A vs. annotator B** → *inter-annotator agreement*.
+Today you compare **gold vs. model** → *model evaluation*.
+**Identical formulas. Identical code.** Only the second column changed.
+:::
 
-# Hands-on in Colab
+## What you already know from S4 {.smaller}
 
-## Hands-on in Colab
+You have already met all of today's math. Today you *implement* it.
 
-<!-- to be added -->
+:::: {.columns}
+
+::: {.column width="50%"}
+**The four cells** — rows = gold, columns = prediction
+
+|            | Pred **+** | Pred **−** |
+|------------|:----------:|:----------:|
+| Gold **+** | **TP**     | **FN**     |
+| Gold **−** | **FP**     | **TN**     |
+:::
+
+::: {.column width="50%"}
+**The formulas**
+
+$$P = \frac{TP}{TP+FP} \qquad R = \frac{TP}{TP+FN}$$
+
+$$F_1 = 2\cdot\frac{P\cdot R}{P+R} \qquad \kappa = \frac{p_o - p_e}{1 - p_e}$$
+:::
+
+::::
+
+. . .
+
+*Knowing a formula and being able to compute it are different things. After today, no number in your project is a black box.*
+
+# How today works — two passes
+
+## The same data, asked twice {.smaller}
+
+We use the **CEFR-SP** set from S5: 72 sentences, 12 per level, and a model's frozen predictions for each.
+
+|  | **Pass 1 — you build it** | **Pass 2 — scikit-learn** |
+|--|--|--|
+| **Question** | "Is this sentence **advanced**?" (yes/no) | "Which level — A1…C2?" |
+| **Cells to track** | **4** | **36** |
+| **Tools** | `for`, `if`, dictionaries | `classification_report`, `confusion_matrix`, `cohen_kappa_score` |
+| **You learn** | *where the numbers come from* | *how to get them at scale* |
+
+. . .
+
+::: {.callout-important}
+## Why binary first
+Four cells you can count on your fingers. Everything you build in pass 1 is **exactly** what scikit-learn does in pass 2 — six times over, once per level.
+:::
+
+## Today runs on *frozen* predictions {.smaller}
+
+No API key, no live model. The model was run **once**, offline, and its answers committed to a file.
+
+- On Day 1 you saw the model's answers **change from run to run**.
+- When you're learning to *measure* quality, that wobble is noise fighting the lesson.
+- So today **everyone's precision, recall, F1 and κ come out identical**. If your number differs from the slide, you have a bug — not a different model.
+
+*You run the model yourself, live, from Day 3 on.*
+
+# Pass 1 · Step 1 — collapse to one yes/no question
+
+## Six levels → one question {.smaller}
+
+CEFR has six levels. For pass 1 we ask **one** thing:
+
+> **Is this sentence *advanced* — C1 or C2?**
+
+- `"yes"` = C1 or C2 → this is our **positive class**
+- `"no"`  = A1, A2, B1, B2
+
+. . .
+
+::: {.callout-note}
+**Choosing the positive class is a decision, not a technicality.** "Precision" and "recall" are always *about the positive class*. Change what counts as positive and every number changes. In your project, say out loud which class is positive before you report a score.
+:::
+
+## Twelve sentences — count them yourself {.smaller}
+
+Here are 12 of the 72, with the gold level and the model's level, collapsed to yes/no:
+
+| # | sentence | gold | model |
+|--|-------|--|--|
+| 17 | Newspaper's revenue from classifieds… | B2 → no | B2 → no |
+| 18 | Saffron's aroma is often described… | C1 → **yes** | C1 → **yes** |
+| 19 | He died on 26 September 2017 in Paris… | A1 → no | A2 → no |
+| 20 | Bat : the bat used by the offense… | B2 → no | B2 → no |
+| 21 | Because oxygen is more electronegative… | C2 → **yes** | C1 → **yes** |
+| 22 | Racing bicycles used for Criteriums… | C1 → **yes** | B2 → no |
+| 23 | Harris died on 9 May 2019, at the age… | A1 → no | A2 → no |
+| 24 | The first derivative test is used in… | C1 → **yes** | B2 → no |
+| 25 | She died on June 9, 2014, at the age… | A1 → no | A2 → no |
+| 26 | The forest contains at least 900 plant… | A2 → no | A2 → no |
+| 27 | Cryptobranchids are large, fat salamanders… | C2 → **yes** | C1 → **yes** |
+| 28 | The seven pitches of any diatonic scale… | B2 → no | C1 → **yes** |
+
+## Your count {.smaller}
+
+Before any code: **how many TP, FP, FN, TN?** Take a minute with your partner.
+
+. . .
+
+|            | model says **yes** | model says **no** |
+|------------|:------------------:|:-----------------:|
+| gold **yes** | **TP = 3** | **FN = 2** |
+| gold **no**  | **FP = 1** | **TN = 6** |
+
+. . .
+
+- **TP = 3** — rows 18, 21, 27: advanced, and the model said so.
+- **FN = 2** — rows 22, 24: genuinely advanced (C1), and the model **missed** them.
+- **FP = 1** — row 28: the model **cried wolf** on a B2.
+- **TN = 6** — the rest: not advanced, correctly left alone.
+
+**Hold on to these four numbers.** Everything else today is arithmetic on them — and your code has to reproduce them.
+
+# Pass 1 · Step 2 — ask one item
+
+## Open Colab and look at one item {.smaller}
+
+The 12 rows are already in the notebook, as a list of dictionaries — the same `{id, text, …}` shape you have used since Day 1, with two extra keys:
+
+```python
+item = items[0]                     # the first of the 12 rows
+print(item["gold"], item["pred"])   # its gold answer, then the model's
+```
+
+. . .
+
+```
+no no
+```
+
+Row 17: the gold says not advanced, and the model agrees. **One item, two labels** — that is all a metric ever looks at.
+
+## Ask it the first question {.smaller}
+
+Is this item a **true positive**? That means *both* labels are `"yes"`:
+
+```python
+# `and` means BOTH sides have to be true:
+if item["gold"] == "yes" and item["pred"] == "yes":
+    print("TP")     # only runs when both are "yes"
+```
+
+. . .
+
+```
+
+```
+
+**Nothing printed.** Not a bug — the honest answer. Row 17 is not a TP, and one `if` can only ever answer *one* of the four questions.
+
+. . .
+
+::: {.callout-tip}
+An `if` with no `else` is silent when the condition is false. To classify **every** item we need all four questions, and exactly one of them must fire.
+:::
+
+# Pass 1 · Step 3 — the four branches
+
+## The 2×2 table, written as `if`/`elif` {.smaller}
+
+:::: {.columns}
+
+::: {.column width="42%"}
+|            | pred **yes** | pred **no** |
+|------------|:------------:|:-----------:|
+| gold **yes** | **TP** | **FN** |
+| gold **no**  | **FP** | **TN** |
+
+Four cells. Four branches. **Same order.**
+:::
+
+::: {.column width="58%"}
+```python
+# checked top to bottom; the FIRST match wins, so exactly one branch runs:
+if item["gold"] == "yes" and item["pred"] == "yes":
+    print("TP")      # advanced, and the model agreed
+elif item["gold"] == "no" and item["pred"] == "yes":
+    print("FP")      # a false alarm
+elif item["gold"] == "yes" and item["pred"] == "no":
+    print("FN")      # a real one, missed
+else:
+    print("TN")      # not advanced, left alone
+```
+:::
+
+::::
+
+. . .
+
+`elif` = *"only if none of the above matched."* The branches are checked top to bottom and **exactly one** runs — so every item lands in exactly one cell. The final `else` needs no condition: if it isn't TP, FP or FN, it can only be TN.
+
+## Try it on a different row {.smaller}
+
+Change which item you look at and re-run:
+
+```python
+item = items[11]          # row 28
+print(item["gold"], item["pred"])
+```
+
+```
+no yes
+```
+
+. . .
+
+The gold says not advanced; the model said advanced. Branch 1 fails, branch 2 matches:
+
+```
+FP
+```
+
+. . .
+
+::: {.callout-note}
+**Your turn:** find an item that prints `FN`. *(Hint: rows 22 and 24 — the two the model missed.)*
+:::
+
+# Pass 1 · Step 4 — make it a function
+
+## Twelve items, one rule {.smaller}
+
+You are about to ask that same question of all 12 rows. Copying the ladder twelve times would be absurd — so **name it once**:
+
+```python
+def outcome(gold_label, pred_label):
+    """Which of the four cells does this one item land in?"""
+    if gold_label == "yes" and pred_label == "yes":
+        return "TP"      # `return` hands the answer back, instead of printing it
+    elif gold_label == "no" and pred_label == "yes":
+        return "FP"
+    elif gold_label == "yes" and pred_label == "no":
+        return "FN"
+    else:
+        return "TN"
+```
+
+. . .
+
+Two changes from step 3, and only two: it is **wrapped in `def`**, and every `print` became a **`return`**.
+
+## `print` shows you · `return` hands it back {.smaller}
+
+```python
+print(outcome("yes", "no"))     # gold said advanced, model said no → a miss
+```
+
+. . .
+
+```
+FN
+```
+
+. . .
+
+- **`print`** puts a value on the screen and then it is *gone*.
+- **`return`** hands the value back to whoever called the function, so you can **keep it, store it, count it**. That is exactly what step 5 needs.
+
+. . .
+
+::: {.callout-tip}
+**Test it by hand before you trust it.** `outcome("yes", "no")` — gold says advanced, model said no → a **miss** → `FN` ✓. Try all four combinations against the table. A function you have not checked is a guess.
+:::
+
+# Pass 1 · Step 5 — loop, and store every decision
+
+## One verdict per sentence {.smaller}
+
+Now run that function over all 12 rows and **keep** the answers — the same "build a list in a loop" pattern you wrote on Day 1:
+
+```python
+decisions = []                     # start empty; the loop fills it
+for item in items:                 # one pass per row of the table
+    decisions.append(outcome(item["gold"], item["pred"]))   # add its verdict
+
+print(decisions)                   # 12 verdicts, in the table's order
+```
+
+. . .
+
+```
+['TN', 'TP', 'TN', 'TN', 'TP', 'FN', 'TN', 'FN', 'TN', 'TN', 'TP', 'FP']
+```
+
+. . .
+
+Twelve items in, twelve verdicts out — **in the same order as the table**. Position 6 is `'FN'`: that's row 22, the racing-bicycle sentence the model missed.
+
+## Why store them, rather than just count? {.smaller}
+
+We could have counted as we went. We keep the list because **the list is the evidence**.
+
+- A metric is a *summary*. `decisions` is the thing being summarised — you can always go back to it.
+- Every `'FN'` and `'FP'` in that list points at a **specific sentence** you can read and argue about.
+- That is **error analysis**, and it is where the real research questions live: *is this the model's fault, or my scheme's?*
+
+. . .
+
+::: {.callout-note}
+Later today `show_errors()` does exactly this for you on the 6-class task — it filters the items whose verdict was wrong and prints them. You have just built its engine.
+:::
+
+# Pass 1 · Step 6 — tally the verdicts
+
+## Count the four outcomes {.smaller}
+
+This is Day 1's `count_labels` exercise, run on a new list:
+
+```python
+tally = {}                         # a dict: verdict -> how many times
+for d in decisions:                # d is "TP", "FP", "FN" or "TN"
+    tally[d] = tally.get(d, 0) + 1   # count so far (0 if new), plus one
+
+print(tally)
+```
+
+. . .
+
+```
+{'TN': 6, 'TP': 3, 'FN': 2, 'FP': 1}
+```
+
+. . .
+
+::: {.callout-tip}
+`tally.get(d, 0)` means *"how many so far — and if you've never seen this one, start from 0."* Without the `.get`, the very first `'TN'` would crash, because `tally["TN"]` does not exist yet.
+:::
+
+. . .
+
+**Compare to the numbers you counted by hand in step 1: TP = 3, FP = 1, FN = 2, TN = 6.** They match. Your code and your eyes agree.
+
+# Pass 1 · Step 7 — the confusion matrix
+
+## The tally, arranged {.smaller}
+
+A confusion matrix is **not a new calculation**. It is those same four numbers, put in a square so you can *see* them:
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```python
+show_2x2(tally)
+```
+
+```
+          pred yes  pred no
+gold yes         3        2
+gold no          1        6
+```
+:::
+
+::: {.column width="55%"}
+- The **diagonal** (3 and 6) is everything the model got right — 9 of 12.
+- The **off-diagonal** (2 and 1) is everything it got wrong, **split by direction**.
+- Two errors are *misses*; one is a *false alarm*. A single accuracy figure would hide that difference completely.
+:::
+
+::::
+
+. . .
+
+**Look at the matrix before you compute anything.** The shape of the errors is the finding; the metrics just put a number on it.
+
+## Row totals, column totals {.smaller}
+
+The margins matter — you need them for κ in step 9:
+
+|              | pred **yes** | pred **no** | **total** |
+|--------------|:------------:|:-----------:|:---------:|
+| gold **yes** | 3 | 2 | **5** ← the gold set has 5 advanced sentences |
+| gold **no**  | 1 | 6 | **7** |
+| **total**    | **4** | **8** | **12** |
+
+. . .
+
+- **Rows** = what the gold says. **Columns** = what the model says.
+- Gold called 5 sentences advanced; the model called only **4**. It is slightly **stingy** with the positive label.
+- Watch that habit — in pass 2 it becomes the most visible thing about this model.
+
+# Pass 1 · Step 8 — precision, recall, F1
+
+## Precision — of what it flagged, how much was right? {.smaller}
+
+**Numbers first**, so you can check it on paper:
+
+```python
+print(3 / (3 + 1))            # TP / (TP + FP)
+```
+
+```
+0.75
+```
+
+. . .
+
+**Same thing, read off the tally** — so it survives a change of data:
+
+```python
+print(tally["TP"] / (tally["TP"] + tally["FP"]))    # the same, from the tally
+```
+
+```
+0.75
+```
+
+. . .
+
+Of the 4 sentences the model *called* advanced, 3 really were. **Precision = 0.75.**
+
+## Precision — now as a function {.smaller}
+
+```python
+def precision(tally):
+    """Of everything CALLED advanced, how much really was?  TP / (TP + FP)"""
+    tp = tally.get("TP", 0)      # .get(..., 0) so a missing count reads as 0
+    fp = tally.get("FP", 0)
+    if tp + fp == 0:             # the model never said "yes" at all
+        return 0.0               # no credit earned — and no division by zero
+    return tp / (tp + fp)        # everything it got right, over everything it claimed
+
+print(round(precision(tally), 3))   # round to 3 decimal places
+```
+
+. . .
+
+```
+0.75
+```
+
+. . .
+
+::: {.callout-important}
+## Always guard the denominator
+If a model never predicts the positive class, `TP + FP` is **0** and Python raises `ZeroDivisionError`. Returning `0.0` says *"it earned no credit"* — which is the honest reading. Every metric you write today gets this guard.
+:::
+
+## Recall — your turn {.smaller}
+
+Recall asks the **other** question: *of everything that truly was advanced, how much did we catch?*
+
+$$R = \frac{TP}{TP + FN}$$
+
+```python
+def recall(tally):
+    """Of everything that TRULY was advanced, how much did we find?"""
+    tp = tally.get("TP", 0)
+    fn = tally.get("FN", 0)       # ← the only real change
+    if tp + fn == 0:              # nothing was truly advanced — nothing to find
+        return 0.0
+    return tp / (tp + fn)         # what it found, over everything there was to find
+
+print(round(recall(tally), 3))
+```
+
+. . .
+
+```
+0.6
+```
+
+Three of the five genuinely advanced sentences were found. **Recall = 0.60.**
+
+## F1 — one number, no hiding {.smaller}
+
+Precision and recall pull against each other: flag everything and recall hits 1.0 while precision collapses. **F1** is the harmonic mean, so a high score cannot cover for a low one:
+
+$$F_1 = 2 \cdot \frac{P \cdot R}{P + R}$$
+
+```python
+def f1(tally):
+    """Harmonic mean of precision and recall."""
+    p = precision(tally)         # reuse the function you just wrote
+    r = recall(tally)            # ...and the other one
+    if p + r == 0:               # both zero — nothing to average
+        return 0.0
+    return 2 * p * r / (p + r)   # harmonic mean: a low score drags it down
+
+print(round(precision(tally), 3), round(recall(tally), 3), round(f1(tally), 3))
+```
+
+. . .
+
+```
+0.75 0.6 0.667
+```
+
+## What 0.75 vs. 0.60 actually says {.smaller}
+
+The gap between precision and recall **is a description of the model's personality**:
+
+- **Precision 0.75 > Recall 0.60** → the model is **conservative** about calling something advanced. When it commits, it is usually right; but it lets real C1s slip past as B2.
+- The two it missed (rows 22, 24) were both **C1 → B2** — near misses, not wild errors.
+
+. . .
+
+::: {.callout-important}
+## Which error can you live with?
+That is a **research design** question, not a statistics one.
+
+- Screening texts for a C1 reading list? A **miss** (FN) is expensive — favour recall.
+- Making a claim in a paper about which sentences are advanced? A **false alarm** (FP) is expensive — favour precision.
+
+Say which one your project cares about *before* you report a score.
+:::
+
+# Pass 1 · Step 9 — Cohen's κ
+
+## Why accuracy isn't enough {.smaller}
+
+Start with the easy number — **observed agreement**, the diagonal over the total:
+
+```python
+n = tally["TP"] + tally["FP"] + tally["FN"] + tally["TN"]   # all 12 items
+p_o = (tally["TP"] + tally["TN"]) / n   # the diagonal (both agreed), over the total
+print(round(p_o, 3))
+```
+
+. . .
+
+```
+0.75
+```
+
+. . .
+
+Gold and model agree on 9 of 12 items. Sounds decent — but **so would a lazy model that answered "no" to everything**: it would score 7/12 without knowing anything at all. Raw agreement flatters whoever plays the odds.
+
+## Agreement you'd get by luck {.smaller}
+
+$p_e$ = the agreement two raters would hit **by chance**, given how often each one uses each label. Multiply their rates, label by label — the row and column totals from step 7:
+
+```python
+# each line: how often GOLD says it × how often the MODEL says it = agreement by luck
+p_yes = ((tally["TP"] + tally["FN"]) / n) * ((tally["TP"] + tally["FP"]) / n)
+p_no  = ((tally["FP"] + tally["TN"]) / n) * ((tally["FN"] + tally["TN"]) / n)
+p_e   = p_yes + p_no          # luck on "yes" plus luck on "no"
+print(round(p_yes, 3), round(p_no, 3), round(p_e, 3))
+```
+
+. . .
+
+```
+0.139 0.389 0.528
+```
+
+. . .
+
+- `p_yes`: gold says yes **5/12** × model says yes **4/12** = 0.139
+- `p_no`: gold says no **7/12** × model says no **8/12** = 0.389
+- **More than half** the agreement we observed (0.75) was available for free.
+
+## κ — the honest number {.smaller}
+
+$$\kappa = \frac{p_o - p_e}{1 - p_e}$$
+
+*How much of the agreement that luck couldn't explain did they actually achieve?*
+
+```python
+# what they beat luck by (p_o - p_e), over how much was left to beat (1 - p_e):
+print(round((p_o - p_e) / (1 - p_e), 3))
+```
+
+. . .
+
+```
+0.471
+```
+
+. . .
+
+:::: {.columns}
+
+::: {.column width="55%"}
+| Cohen's κ | Landis & Koch | McHugh |
+|:---------:|:--------------|:-------|
+| 0.21–0.40 | Fair | Minimal |
+| **0.41–0.60** | **Moderate** | **Weak** |
+| 0.61–0.80 | Substantial | Moderate |
+:::
+
+::: {.column width="45%"}
+**75% agreement → κ = 0.47.**
+
+The same gap S4 showed you (80% → κ ≈ 0.52), now computed by your own code.
+:::
+
+::::
+
+## Wrap it up — and notice what you've built {.smaller}
+
+```python
+def kappa(tally):
+    """Agreement corrected for chance: (p_o - p_e) / (1 - p_e)."""
+    n = tally["TP"] + tally["FP"] + tally["FN"] + tally["TN"]   # every item
+    p_o = (tally["TP"] + tally["TN"]) / n     # agreement we actually observed
+    p_yes = ((tally["TP"] + tally["FN"]) / n) * ((tally["TP"] + tally["FP"]) / n)
+    p_no = ((tally["FP"] + tally["TN"]) / n) * ((tally["FN"] + tally["TN"]) / n)
+    p_e = p_yes + p_no                        # agreement luck alone would give
+    if 1 - p_e == 0:                          # luck already explains everything
+        return 0.0
+    return (p_o - p_e) / (1 - p_e)            # how much of the rest they achieved
+```
+
+. . .
+
+::: {.callout-tip}
+## This is yesterday's function
+Nothing in `kappa()` knows whether column two came from **your partner** or **a model**. That is why S5's agreement number and today's evaluation number are the same statistic: **κ measures two label columns, whoever produced them.**
+:::
+
+# Pass 1 · Step 10 — scale up, then check yourself
+
+## The same functions, all 72 items {.smaller}
+
+Nothing changes but the input — `items` becomes all 72 sentences:
+
+```python
+### Step 1: all 72 items, in the same yes/no shape as the 12 ###
+all_items = pair_up(gold, predictions, ADVANCED)
+
+### Step 2: the SAME loop as step 5 — only the input changed ###
+decisions = []
+for item in all_items:
+    decisions.append(outcome(item["gold"], item["pred"]))
+
+### Step 3: the SAME tally as step 6 ###
+tally = {}
+for d in decisions:
+    tally[d] = tally.get(d, 0) + 1
+print(tally)
+```
+
+. . .
+
+```
+{'TN': 46, 'TP': 16, 'FN': 8, 'FP': 2}
+```
+
+```
+precision 0.889   recall 0.667   F1 0.762   kappa 0.667
+```
+
+. . .
+
+**The 12-item slice was not the whole story** — precision rose, recall stayed low. The pattern held: *stingy, but usually right when it commits.* A 12-item sample is enough to learn the mechanics, never enough to judge a model.
+
+## Check yourself against scikit-learn {.smaller}
+
+The self-check cell runs the library's version of every metric you wrote and compares:
+
+```
+✅ precision      yours=0.888889  sklearn=0.888889
+✅ recall         yours=0.666667  sklearn=0.666667
+✅ f1             yours=0.761905  sklearn=0.761905
+✅ cohen_kappa    yours=0.666667  sklearn=0.666667
+-----------------------------------------------
+All 4 checks passed ✅  — your metrics match scikit-learn.
+```
+
+. . .
+
+::: {.callout-important}
+## This is the point of pass 1
+`sklearn` is not doing anything you cannot do. It is doing **exactly what you just wrote**, faster and for every class at once. From here on, when a report prints `0.36`, you know precisely which counts produced it.
+:::
+
+# Pass 2 · The real task, with scikit-learn
+
+## Six levels, thirty-six cells {.smaller}
+
+Drop the yes/no simplification. The actual task is: **A1 · A2 · B1 · B2 · C1 · C2**.
+
+- **4 cells → 36.** Counting by hand stops being reasonable.
+- Precision and recall are always *about one positive class* — so with six classes you get **six** precisions, **six** recalls, **six** F1s.
+- The trick is small: to score `C1`, treat **`C1` as "yes" and all five others as "no"** — pass 1, run six times. That is called **one-vs-rest**, and it is all `classification_report` does.
+
+. . .
+
+```python
+# ordered=True: the six levels sit on a scale, so also report weighted κ
+evaluate(gold, predictions, ordered=True)
+```
+
+`ordered=True` says these labels sit on a **scale** — which changes which κ you should read. Hold that thought.
+
+## Read the report {.smaller}
+
+```
+              precision    recall  f1-score   support
+
+          A1       0.75      0.25      0.38        12
+          A2       0.35      0.58      0.44        12
+          B1       0.36      0.33      0.35        12
+          B2       0.37      0.58      0.45        12
+          C1       0.35      0.50      0.41        12
+          C2       1.00      0.08      0.15        12
+
+    accuracy                           0.39        72
+   macro avg       0.53      0.39      0.36        72
+```
+
+. . .
+
+- Every **row** is one pass-1 run: for `C1`, TP/FP/FN/TN with C1 as the positive class.
+- **`support`** = how many gold items that class has — 12 each, by design.
+- **`macro avg`** = the plain average of the six F1s. Every class counts equally, **however rare it is** — which is why it is the honest headline for an imbalanced set.
+
+## Brace yourself: accuracy is 39% {.smaller}
+
+Before concluding the model is useless — **look at *how* it is wrong.**
+
+. . .
+
+- **97% of its answers are within one level** of the gold label.
+- Only two sentences in the whole set miss by two. **Nothing misses by more.**
+- A model that had no idea would scatter A1s against C2s. This one does not.
+
+. . .
+
+::: {.callout-important}
+**"Right idea, imprecise thresholds"** is a completely different failure from **"doesn't understand the task"** — and no single accuracy number can tell them apart. That is what the confusion matrix is for.
+:::
+
+## The confusion matrix — read *down the columns* {.smaller}
+
+|  | pred A1 | pred A2 | pred B1 | pred B2 | pred C1 | pred C2 |
+|--|:--:|:--:|:--:|:--:|:--:|:--:|
+| **gold A1** | **3** | 9 | 0 | 0 | 0 | 0 |
+| **gold A2** | 1 | **7** | 4 | 0 | 0 | 0 |
+| **gold B1** | 0 | 4 | **4** | 4 | 0 | 0 |
+| **gold B2** | 0 | 0 | 3 | **7** | 2 | 0 |
+| **gold C1** | 0 | 0 | 0 | 6 | **6** | 0 |
+| **gold C2** | 0 | 0 | 0 | 2 | 9 | **1** |
+| **column total** | **4** | **20** | **11** | **19** | **17** | **1** |
+
+. . .
+
+Rows are gold, so *rows* tell you what happened to each true level. But read **down the columns** — how often the model *says* each level. The gold set is **balanced, 12 per level**, so an unbiased rater would use each label about 12 times.
+
+## Central-tendency bias {.smaller}
+
+The model said **A2 twenty times** and **A1 four times**. It said **C2 exactly once** — in 72 chances.
+
+. . .
+
+- Everything is squeezed toward the **middle** of the scale; the extremes are avoided.
+- Why would a rater — human or machine — under pressure to judge something as fuzzy as "difficulty" **drift to the middle and refuse to commit to the ends**?
+- This is your pass-1 finding again: with "advanced" as positive, precision 0.89 but recall 0.67. **It under-uses the top of the scale.**
+
+. . .
+
+::: {.callout-tip}
+You will meet this tendency in **your own annotation** — and in your teammates'. It is one of the first things to check in a scheme that isn't reaching acceptable κ.
+:::
+
+## Two κ values, same data {.smaller}
+
+`evaluate(..., ordered=True)` printed both, right under the report:
+
+```
+Cohen's kappa            0.267
+Cohen's kappa (weighted) 0.849   <- labels are ordered
+```
+
+. . .
+
+**Plain κ = 0.27** ("fair" / "minimal") — because plain κ treats **A1 → A2 as exactly as wrong as A1 → C2**.
+
+**Quadratic-weighted κ = 0.85** — because CEFR levels are **ordinal**, and a near miss *should* hurt less:
+
+$$w_{ij} = \frac{(i-j)^2}{(N-1)^2}$$
+
+. . .
+
+::: {.callout-important}
+## Report the one that matches your labels
+Same predictions, 0.27 or 0.85 depending on a single argument. **Ordered labels → weighted κ. Unordered categories → plain κ.** State which you used and why; a κ without that sentence is unreadable. *(Arase et al. reported weighted κ = .628 on this task.)*
+:::
+
+## Error analysis — the model's fault, or the scheme's? {.smaller}
+
+```python
+errors = show_errors(gold, predictions)   # a table of every item it got wrong
+errors.head(15)     # ...or errors[errors["gold"] == "C2"] to see the hard end
+```
+
+44 misses — too many to read one by one, and you don't need to. **Skim a dozen**, then look hard at the rows where gold is **C2** or **A1**: the ends of the scale are where the arguments are.
+
+. . .
+
+For each miss you read, ask:
+
+1. Is the **gold** defensible here, or is this genuinely borderline?
+2. Would **you and your partner** have agreed on this sentence?
+3. Would a **better-written scheme** have prevented this error?
+
+. . .
+
+::: {.callout-note}
+Remember rows 19, 23 and 25 — the three obituary sentences. In pass 1's yes/no world the model got all three *right*. In six classes it called every one of them A2 instead of A1. **The question you ask determines the error you can see.**
+:::
+
+# 作戦会議 — Day-2 strategy huddle
+
+## Turn today onto your own track {.smaller}
+
+Everything this week has run on CEFR-SP. Your project doesn't. Spend the next **~12 minutes** with your team adding three things to your **作戦シート**:
+
+1. **A draft annotation scheme** — your label set, plus **one line of guideline per label**. (Steps ①②.)
+2. **Your gold source** — the provided pool, or one you build yourselves? Who annotates, and how many items? (Step ③.)
+3. **The agreement you'd accept** — a κ number, decided **now**, before you see any results. And: **which class is positive**, and whether your labels are **ordered** (→ weighted κ) or not.
+
+. . .
+
+::: {.callout-tip}
+Point 3 is the one teams skip and regret. A threshold chosen *after* seeing the number is not a threshold — it's a rationalisation.
+:::
+
+# Coming up
+
+- **S7 — Prompt Design** *(concept)*: the four prompt elements, zero-shot vs. few-shot, and the contamination trap — **why your few-shot examples must never come from the gold set you just learned to score against**.
+- **S8–S9**: you write the prompts, run the model live, and judge each version with **exactly today's metrics**. From here on, "did that prompt help?" is a number you can compute.
 
 # Any questions?

@@ -12,7 +12,22 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 
 
 ## Learning objectives
-<!-- to be added -->
+
+By the end of this session you will be able to:
+
+- Draw a **balanced** subset from your track's pool, and explain why balance matters for precision, recall, F1 and the confusion matrix.
+- Annotate a sample **independently and blind**, and interpret your percent agreement and Cohen's κ.
+- Adjudicate your disagreements into a single agreed gold set, and record *what changed*.
+- Run a baseline prompt to get a number to beat.
+
+## Agenda
+
+1. **Sample + create the sheet** (~20 min) — `sample_pool`, then `create_annotation_sheet`.
+2. **Annotate blind** (~25 min) — two of you, `CoderA` and `CoderB`, no peeking at the published label.
+3. **Agreement → disagreements → adjudicate** (~25 min) — the heart of the session. Where you disagreed with each other tells you which label boundaries are genuinely fuzzy.
+4. **Baseline prompt** (~10 min) — at `N_PER_CLASS = 2`, so it finishes inside the slot.
+
+This is the same A–F round-trip you did by hand in [Session 5](../day2/session-05.md), now on your own track and your own data.
 
 ## Reading
 
@@ -20,11 +35,27 @@ No new reading for this session — see the Day 4 reading (Abdurahman et al., 20
 
 ## Slides & Colab
 
-<!-- Notebook not yet finalized:
-- Notebook (tutorial + Corpus Lab): [`day4_pipeline_and_sampling.ipynb`](../../notebooks/day4_pipeline_and_sampling.ipynb) — sample a balanced gold subset, then QC it —
+- Notebook: [`day4_pipeline_and_sampling.ipynb`](../../notebooks/day4_pipeline_and_sampling.ipynb) — sample a balanced subset, then hand off to the project template —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb)
--->
+- Project notebook: [`mini_project.ipynb`](https://github.com/egumasa/lda2-final-template/blob/main/notebooks/mini_project.ipynb) —
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/lda2-final-template/blob/main/notebooks/mini_project.ipynb)
+
 <!-- Slides: [Session 12 slides](../../slides/slides-session-12.html){target="_blank"} -->
 
 ## Mini-project
-Project work session — see the [Final Project](../../final-project/index.md) page.
+
+Work in `notebooks/mini_project.ipynb` of the
+[project template](https://github.com/egumasa/lda2-final-template) — **steps 1–3**.
+
+::: {.callout-important}
+## Your adjudicated gold is what the model gets scored against
+Not the published labels. That is what makes this session load-bearing rather than a warm-up:
+the boundaries you argue about here are the ones you will point at on Day 5 when you explain
+why the model missed something.
+:::
+
+::: {.callout-tip}
+## Keep the baseline small
+One round at `N_PER_CLASS = 7` is ~40 model calls and several minutes of enforced pacing. Use
+`N_PER_CLASS = 2` while iterating; save the full-size run for the one you freeze.
+:::

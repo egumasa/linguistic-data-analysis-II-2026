@@ -1,5 +1,5 @@
 ---
-title: "Session 10: Methodology: Reproducibility, LLM Limits & Ethics"
+title: "Session 10: Methodology — Reproducibility, LLM Limits & Ethics"
 subtitle: "Day 4 · Methodology & Pipeline Assembly (4-1)"
 kicker: "Linguistic Data Analysis II · Day 4"
 format:
@@ -13,38 +13,194 @@ metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-
-# Session 10: Methodology: Reproducibility, LLM Limits & Ethics
+# Session 10: Reproducibility, Limits & Ethics
 
 ## 📋 Agenda
 
-- Reproducibility — pin the model, log prompts, set temperature/seed
-- LLM limitations — hallucination, data contamination, stochasticity
-- Ethics — privacy, authorship — and the reporting checklist
+Three days of *"an LLM is a judge you must check."* Today: **how to report one honestly.**
 
-## 🎯 Learning Objectives
+- **Reproducibility** — pin · log · `temperature=0` + seed · **freeze**
+- **Limits** — hallucination, data contamination, stochasticity
+- **Ethics** — privacy, authorship, and what a licence actually asks of you
+- **The reporting checklist** — the five sections you will hand in
+
+::: {.callout-note}
+This is the switch from tutorial mode to **project mode**. Everything after this session is your own study.
+:::
+
+## 🎯 Learning Objectives {.smaller}
 
 By the end of this session, you will be able to:
 
-<!-- to be added -->
+- Name the four practices that make an LLM result reproducible, and apply them to your own run.
+- Explain why `temperature=0` is **not sufficient**, and what freezing your predictions adds.
+- Say which of hallucination, contamination and stochasticity your own track is exposed to.
+- Apply the five-section reporting checklist — including saying what your numbers do **not** show.
 
 # Reproducibility
 
-## Reproducibility
+## The problem, stated plainly
 
-<!-- to be added -->
+You run your prompt. You get F1 = 0.62. You write it down.
+
+Tomorrow you run the same prompt and get **0.58**.
+
+. . .
+
+Which number goes in the report?
+
+. . .
+
+Neither — until you can say *why they differ*. A result you cannot reproduce is not yet a finding.
+
+## Four practices
+
+| | Practice | Why |
+|---|---|---|
+| 1 | **Pin the model + version** | `gemini-3.1-flash-lite` ≠ `gemini-2.5-flash`. Models are silently retired and replaced. |
+| 2 | **Log the prompt** | as a *file*, versioned — not a string you overwrote |
+| 3 | **`temperature=0` + a fixed seed** | removes the sampling randomness you control |
+| 4 | **Freeze the predictions** | removes the randomness you *don't* control |
+
+## Why `temperature=0` is not enough
+
+`temperature=0` says *"always take the most likely next token."* That should be deterministic.
+
+. . .
+
+It mostly is. But you are calling a **hosted service**:
+
+- the model behind the name can be updated underneath you
+- batching and hardware differences perturb floating-point arithmetic
+- the endpoint may silently fall back to another region
+
+. . .
+
+So a hosted LLM is only ***best-effort* reproducible**. That is not a bug you can fix — it is a property of the setup you are working in.
+
+## The fix: run once, then freeze
+
+```{.python}
+predictions = run_prompt(PROMPT, gold)          # ← the ONE run
+save_predictions(predictions, "outputs/cefr_groupA_predictions.json")
+```
+
+From then on, every number comes out of **that file**:
+
+```{.python}
+pred_final = load_predictions("outputs/cefr_groupA_predictions.json")
+evaluate(gold, pred_final, ordered=True)        # same answer, forever
+```
+
+. . .
+
+You did this on **Day 2** — you loaded a frozen predictions file we made for you, which is why the whole class got identical numbers. Now you make your own.
+
+## What freezing buys you
+
+- Your reported F1 **holds still** while you write the report.
+- Re-running the analysis costs **no quota**.
+- Anyone — including whoever grades it — can recompute your numbers *on exactly the outputs you saw*.
+
+::: {.callout-important}
+That last one is the real point. "Reproducible" does not mean *you* can get the number again. It means **someone else can.**
+:::
 
 # LLM limitations
 
-## LLM limitations
+## Three failure modes
 
-<!-- to be added -->
+**Hallucination** — the model invents something fluent and wrong.
 
-# Ethics & the reporting checklist
+**Data contamination** — the model may have seen your test data in training.
 
-## Ethics & the reporting checklist
+**Stochasticity** — the same input gives different outputs.
 
-<!-- to be added -->
+. . .
+
+For a *classification* task like yours, the first is mild (the label set is closed) and the third you have just handled. **The second is the one that should worry you.**
+
+## Contamination: why it matters here
+
+Every track you can pick uses a **published** dataset.
+
+- CEFR-SP is on GitHub. RAAMove is on GitHub. CaRS-50 is on Mendeley. AutoErrorAnalyzer is on OSF.
+- These were all published *before* the model's training cutoff.
+
+. . .
+
+So when the model labels a sentence correctly, there are two explanations:
+
+1. it understands the construct
+2. **it has seen this sentence with this label before**
+
+. . .
+
+You cannot distinguish them from your F1 alone. Say so.
+
+## What you can honestly claim
+
+::: {.callout-warning}
+## Not claimable
+"Gemini can annotate CEFR level with F1 = 0.62."
+:::
+
+::: {.callout-tip}
+## Claimable
+"On 42 items from CEFR-SP, with this prompt and this model version, macro-F1 was 0.62. The corpus is public and predates the model's training cutoff, so contamination cannot be ruled out."
+:::
+
+The second sentence is *shorter to defend* and *more useful to a reader*.
+
+# Ethics
+
+## Three things worth ten minutes
+
+**Privacy.** Learner data is people's writing. ICNALE is licensed for research use only and may not be redistributed — which is why it is excluded from git and from your submission bundle by name.
+
+**Authorship.** The model is a tool, not a co-author. But *what it did* belongs in your methods: which model, which prompt, which parameters.
+
+**Licences are not decoration.** CEFR-SP is CC BY-**SA**: anything you redistribute from it inherits share-alike. That is why the template's data folder carries its own `LICENSE` file.
+
+## The uncomfortable one
+
+You are about to measure a model against a gold standard built by **two of you**, on **40 items**, in **25 minutes**.
+
+. . .
+
+That is a small, fast, imperfect gold standard.
+
+. . .
+
+So is most of the published literature. The difference between good and bad work here is not the size of the gold set — it is **whether you say what it was.**
+
+# The reporting checklist
+
+## Five sections
+
+| | Section | The thing that makes it good |
+|---|---|---|
+| 1 | Scheme & gold | **what adjudication changed** |
+| 2 | Prompt iterations | a *reason* per round, not just an F1 |
+| 3 | Evaluation | which class did worst, and what it got confused with |
+| 4 | Error analysis | model's fault or scheme's — with evidence |
+| 5 | Limitations | ≥2 that apply to **your** run |
+
+## And the thing you may not expect
+
+::: {.callout-important}
+## Your F1 is not graded
+A careful study reporting **F1 = 0.31** with a clear account of *why* scores higher than a sloppy one reporting **0.82**.
+:::
+
+. . .
+
+This is not generosity. It is because a number you cannot explain is not a finding — and the whole course has been about the difference.
+
+. . .
+
+So pick the track that will teach you something, not the one that will score well. `cars50` is hardest *because* its own annotators only reached κ ≈ 0.43 — which makes it the best place to show you can tell "the model is wrong" from "the scheme is fuzzy."
 
 # Any questions?
+
+Next: **S11 — we assemble the pipeline and you write your `PLAN.md`.**

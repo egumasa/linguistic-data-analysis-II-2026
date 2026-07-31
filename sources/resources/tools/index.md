@@ -8,6 +8,7 @@ subtitle: "Installation and Usage Guides"
 The course's primary platform is Google Colab — set that up first.
 
 - [Google Colab Setup](google-colab-setup.md)
+- [Getting Your Gemini API Key](gemini-api-key.md) — needed from **Day 3**, when you start calling the model yourself
 - [Python Setup — Run Locally (optional)](python-setup.md)
 - [Housing Your Data in Google Drive](google-drive-data.md)
 

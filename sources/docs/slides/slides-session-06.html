@@ -28,6 +28,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-5222b0819fedac50371f8e47cce628d3.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -139,7 +205,16 @@
 </section>
 <section class="slide level2">
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
+<!-- Executes S4's phases ④⑤ as TWO PASSES over the same CEFR-SP data:
+       pass 1 = binary ("is it advanced?"), metrics built from scratch, steps 1–10;
+       pass 2 = the real 6-class task, scikit-learn.
+     SURFACE DIVISION (differs from S5 on purpose): this deck carries BOTH the concept
+     AND the implementation — every line of pass-1 code is on a slide with what it prints.
+     The notebook (day2-s6_evaluation_metrics.ipynb) is the follow-along: students type or
+     copy each chunk and run it. So every printed value here MUST equal what the matching
+     notebook cell prints. All numbers below are computed from the committed
+     gold/cefr_sentences.json + gold/predictions_day2.json — do not edit them by hand.
+     Cross-reference BY STEP NUMBER, never by slide number. -->
 </section>
 <section>
 <section id="session-6-evaluation-metrics" class="title-slide slide level1 center">
@@ -148,44 +223,1185 @@
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
+<p>Yesterday’s question was <em>“do two people agree?”</em> Today’s is <strong>“is the model any good?”</strong> — same tools, one column swapped.</p>
 <ul>
-<li>Precision, recall, and F1</li>
-<li>The confusion matrix</li>
-<li>Hands-on practice in Colab</li>
+<li><strong>Pass 1 — you build the metrics.</strong> TP/FP/FN/TN → confusion matrix → precision, recall, F1 → Cohen’s κ. No libraries.</li>
+<li><strong>Pass 2 — scikit-learn does it at scale</strong>, on all six CEFR levels at once.</li>
+<li><strong>作戦会議</strong> — turn today’s mechanics onto your own project track.</li>
 </ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>The code is on these slides.</strong> You type it in Colab as we go — one small piece at a time, running each piece before the next. Lost? Copy the slide and rejoin.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="learning-objectives" class="slide level2">
+<section id="learning-objectives" class="slide level2 smaller">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
-<!-- to be added -->
+<ul>
+<li>Decide, for a single item, which of <strong>TP · FP · FN · TN</strong> it lands in — and write that as an <code>if</code>/<code>elif</code>.</li>
+<li><strong>Loop</strong> over a labelled set, <strong>store</strong> one verdict per item, and <strong>tally</strong> the four counts.</li>
+<li>Build a <strong>confusion matrix</strong> from those counts, and read it.</li>
+<li>Compute <strong>precision, recall, F1</strong> and <strong>Cohen’s κ</strong> <em>from scratch</em>, and say what each one answers.</li>
+<li>Reproduce all of it with <strong>scikit-learn</strong> — <code>classification_report</code>, <code>confusion_matrix</code>, <code>cohen_kappa_score</code> — on a real 6-class task.</li>
+<li>Interpret the numbers critically: what a high or low score does and <strong>doesn’t</strong> tell you.</li>
+</ul>
 </section></section>
 <section>
-<section id="precision-recall-f1" class="title-slide slide level1 center">
-<h1>Precision, recall, F1</h1>
+<section id="where-we-are" class="title-slide slide level1 center">
+<h1>Where we are</h1>
 
 </section>
-<section id="precision-recall-f1-1" class="slide level2">
-<h2>Precision, recall, F1</h2>
-<!-- to be added -->
+<section id="recap-the-define-first-workflow" class="slide level2 smaller">
+<h2>Recap: the define-first workflow</h2>
+<p>S4 laid out five phases. S5 ran ③ — you built a gold standard. Today we spend the numbers you earned.</p>
+<ul>
+<li>① Define the task · ② Operationalize · ③ Build the gold standard <em>(yesterday)</em></li>
+<li><strong>④ Target = human agreement</strong> ← the ceiling your κ from S5 set</li>
+<li><strong>⑤ Evaluate the model against gold</strong> ← <strong>you are here</strong></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>The same tool, one column swapped</strong></p>
+</div>
+<div class="callout-content">
+<p>In <strong>S5</strong> you compared <strong>annotator A vs.&nbsp;annotator B</strong> → <em>inter-annotator agreement</em>. Today you compare <strong>gold vs.&nbsp;model</strong> → <em>model evaluation</em>. <strong>Identical formulas. Identical code.</strong> Only the second column changed.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="what-you-already-know-from-s4" class="slide level2 smaller">
+<h2>What you already know from S4</h2>
+<p>You have already met all of today’s math. Today you <em>implement</em> it.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>The four cells</strong> — rows = gold, columns = prediction</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">Pred <strong>+</strong></th>
+<th style="text-align: center;">Pred <strong>−</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gold <strong>+</strong></td>
+<td style="text-align: center;"><strong>TP</strong></td>
+<td style="text-align: center;"><strong>FN</strong></td>
+</tr>
+<tr class="even">
+<td>Gold <strong>−</strong></td>
+<td style="text-align: center;"><strong>FP</strong></td>
+<td style="text-align: center;"><strong>TN</strong></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<p><strong>The formulas</strong></p>
+<p><span class="math display">\[P = \frac{TP}{TP+FP} \qquad R = \frac{TP}{TP+FN}\]</span></p>
+<p><span class="math display">\[F_1 = 2\cdot\frac{P\cdot R}{P+R} \qquad \kappa = \frac{p_o - p_e}{1 - p_e}\]</span></p>
+</div></div>
+<div class="fragment">
+<p><em>Knowing a formula and being able to compute it are different things. After today, no number in your project is a black box.</em></p>
+</div>
 </section></section>
 <section>
-<section id="the-confusion-matrix" class="title-slide slide level1 center">
-<h1>The confusion matrix</h1>
+<section id="how-today-works-two-passes" class="title-slide slide level1 center">
+<h1>How today works — two passes</h1>
 
 </section>
-<section id="the-confusion-matrix-1" class="slide level2">
-<h2>The confusion matrix</h2>
-<!-- to be added -->
+<section id="the-same-data-asked-twice" class="slide level2 smaller">
+<h2>The same data, asked twice</h2>
+<p>We use the <strong>CEFR-SP</strong> set from S5: 72 sentences, 12 per level, and a model’s frozen predictions for each.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Pass 1 — you build it</strong></th>
+<th><strong>Pass 2 — scikit-learn</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Question</strong></td>
+<td>“Is this sentence <strong>advanced</strong>?” (yes/no)</td>
+<td>“Which level — A1…C2?”</td>
+</tr>
+<tr class="even">
+<td><strong>Cells to track</strong></td>
+<td><strong>4</strong></td>
+<td><strong>36</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Tools</strong></td>
+<td><code>for</code>, <code>if</code>, dictionaries</td>
+<td><code>classification_report</code>, <code>confusion_matrix</code>, <code>cohen_kappa_score</code></td>
+</tr>
+<tr class="even">
+<td><strong>You learn</strong></td>
+<td><em>where the numbers come from</em></td>
+<td><em>how to get them at scale</em></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Why binary first</strong></p>
+</div>
+<div class="callout-content">
+<p>Four cells you can count on your fingers. Everything you build in pass 1 is <strong>exactly</strong> what scikit-learn does in pass 2 — six times over, once per level.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="today-runs-on-frozen-predictions" class="slide level2 smaller">
+<h2>Today runs on <em>frozen</em> predictions</h2>
+<p>No API key, no live model. The model was run <strong>once</strong>, offline, and its answers committed to a file.</p>
+<ul>
+<li>On Day 1 you saw the model’s answers <strong>change from run to run</strong>.</li>
+<li>When you’re learning to <em>measure</em> quality, that wobble is noise fighting the lesson.</li>
+<li>So today <strong>everyone’s precision, recall, F1 and κ come out identical</strong>. If your number differs from the slide, you have a bug — not a different model.</li>
+</ul>
+<p><em>You run the model yourself, live, from Day 3 on.</em></p>
 </section></section>
 <section>
-<section id="hands-on-in-colab" class="title-slide slide level1 center">
-<h1>Hands-on in Colab</h1>
+<section id="pass-1-step-1-collapse-to-one-yesno-question" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 1 — collapse to one yes/no question</h1>
 
 </section>
-<section id="hands-on-in-colab-1" class="slide level2">
-<h2>Hands-on in Colab</h2>
-<!-- to be added -->
+<section id="six-levels-one-question" class="slide level2 smaller">
+<h2>Six levels → one question</h2>
+<p>CEFR has six levels. For pass 1 we ask <strong>one</strong> thing:</p>
+<blockquote>
+<p><strong>Is this sentence <em>advanced</em> — C1 or C2?</strong></p>
+</blockquote>
+<ul>
+<li><code>"yes"</code> = C1 or C2 → this is our <strong>positive class</strong></li>
+<li><code>"no"</code> = A1, A2, B1, B2</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Choosing the positive class is a decision, not a technicality.</strong> “Precision” and “recall” are always <em>about the positive class</em>. Change what counts as positive and every number changes. In your project, say out loud which class is positive before you report a score.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="twelve-sentences-count-them-yourself" class="slide level2 smaller">
+<h2>Twelve sentences — count them yourself</h2>
+<p>Here are 12 of the 72, with the gold level and the model’s level, collapsed to yes/no:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 53%">
+<col style="width: 15%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>sentence</th>
+<th>gold</th>
+<th>model</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>17</td>
+<td>Newspaper’s revenue from classifieds…</td>
+<td>B2 → no</td>
+<td>B2 → no</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td>Saffron’s aroma is often described…</td>
+<td>C1 → <strong>yes</strong></td>
+<td>C1 → <strong>yes</strong></td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td>He died on 26 September 2017 in Paris…</td>
+<td>A1 → no</td>
+<td>A2 → no</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>Bat : the bat used by the offense…</td>
+<td>B2 → no</td>
+<td>B2 → no</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td>Because oxygen is more electronegative…</td>
+<td>C2 → <strong>yes</strong></td>
+<td>C1 → <strong>yes</strong></td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td>Racing bicycles used for Criteriums…</td>
+<td>C1 → <strong>yes</strong></td>
+<td>B2 → no</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td>Harris died on 9 May 2019, at the age…</td>
+<td>A1 → no</td>
+<td>A2 → no</td>
+</tr>
+<tr class="even">
+<td>24</td>
+<td>The first derivative test is used in…</td>
+<td>C1 → <strong>yes</strong></td>
+<td>B2 → no</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td>She died on June 9, 2014, at the age…</td>
+<td>A1 → no</td>
+<td>A2 → no</td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td>The forest contains at least 900 plant…</td>
+<td>A2 → no</td>
+<td>A2 → no</td>
+</tr>
+<tr class="odd">
+<td>27</td>
+<td>Cryptobranchids are large, fat salamanders…</td>
+<td>C2 → <strong>yes</strong></td>
+<td>C1 → <strong>yes</strong></td>
+</tr>
+<tr class="even">
+<td>28</td>
+<td>The seven pitches of any diatonic scale…</td>
+<td>B2 → no</td>
+<td>C1 → <strong>yes</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="your-count" class="slide level2 smaller">
+<h2>Your count</h2>
+<p>Before any code: <strong>how many TP, FP, FN, TN?</strong> Take a minute with your partner.</p>
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">model says <strong>yes</strong></th>
+<th style="text-align: center;">model says <strong>no</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>gold <strong>yes</strong></td>
+<td style="text-align: center;"><strong>TP = 3</strong></td>
+<td style="text-align: center;"><strong>FN = 2</strong></td>
+</tr>
+<tr class="even">
+<td>gold <strong>no</strong></td>
+<td style="text-align: center;"><strong>FP = 1</strong></td>
+<td style="text-align: center;"><strong>TN = 6</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>TP = 3</strong> — rows 18, 21, 27: advanced, and the model said so.</li>
+<li><strong>FN = 2</strong> — rows 22, 24: genuinely advanced (C1), and the model <strong>missed</strong> them.</li>
+<li><strong>FP = 1</strong> — row 28: the model <strong>cried wolf</strong> on a B2.</li>
+<li><strong>TN = 6</strong> — the rest: not advanced, correctly left alone.</li>
+</ul>
+<p><strong>Hold on to these four numbers.</strong> Everything else today is arithmetic on them — and your code has to reproduce them.</p>
+</div>
 </section></section>
+<section>
+<section id="pass-1-step-2-ask-one-item" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 2 — ask one item</h1>
+
+</section>
+<section id="open-colab-and-look-at-one-item" class="slide level2 smaller">
+<h2>Open Colab and look at one item</h2>
+<p>The 12 rows are already in the notebook, as a list of dictionaries — the same <code>{id, text, …}</code> shape you have used since Day 1, with two extra keys:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>item <span class="op">=</span> items[<span class="dv">0</span>]                     <span class="co"># the first of the 12 rows</span></span>
+<span id="cb1-2"><a></a><span class="bu">print</span>(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>])   <span class="co"># its gold answer, then the model's</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>no no</code></pre>
+<p>Row 17: the gold says not advanced, and the model agrees. <strong>One item, two labels</strong> — that is all a metric ever looks at.</p>
+</div>
+</section>
+<section id="ask-it-the-first-question" class="slide level2 smaller">
+<h2>Ask it the first question</h2>
+<p>Is this item a <strong>true positive</strong>? That means <em>both</em> labels are <code>"yes"</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="co"># `and` means BOTH sides have to be true:</span></span>
+<span id="cb3-2"><a></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb3-3"><a></a>    <span class="bu">print</span>(<span class="st">"TP"</span>)     <span class="co"># only runs when both are "yes"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code></code></pre>
+<p><strong>Nothing printed.</strong> Not a bug — the honest answer. Row 17 is not a TP, and one <code>if</code> can only ever answer <em>one</em> of the four questions.</p>
+</div>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>An <code>if</code> with no <code>else</code> is silent when the condition is false. To classify <strong>every</strong> item we need all four questions, and exactly one of them must fire.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="pass-1-step-3-the-four-branches" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 3 — the four branches</h1>
+
+</section>
+<section id="the-22-table-written-as-ifelif" class="slide level2 smaller">
+<h2>The 2×2 table, written as <code>if</code>/<code>elif</code></h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">pred <strong>yes</strong></th>
+<th style="text-align: center;">pred <strong>no</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>gold <strong>yes</strong></td>
+<td style="text-align: center;"><strong>TP</strong></td>
+<td style="text-align: center;"><strong>FN</strong></td>
+</tr>
+<tr class="even">
+<td>gold <strong>no</strong></td>
+<td style="text-align: center;"><strong>FP</strong></td>
+<td style="text-align: center;"><strong>TN</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Four cells. Four branches. <strong>Same order.</strong></p>
+</div><div class="column" style="width:58%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="co"># checked top to bottom; the FIRST match wins, so exactly one branch runs:</span></span>
+<span id="cb5-2"><a></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb5-3"><a></a>    <span class="bu">print</span>(<span class="st">"TP"</span>)      <span class="co"># advanced, and the model agreed</span></span>
+<span id="cb5-4"><a></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"no"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb5-5"><a></a>    <span class="bu">print</span>(<span class="st">"FP"</span>)      <span class="co"># a false alarm</span></span>
+<span id="cb5-6"><a></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"no"</span>:</span>
+<span id="cb5-7"><a></a>    <span class="bu">print</span>(<span class="st">"FN"</span>)      <span class="co"># a real one, missed</span></span>
+<span id="cb5-8"><a></a><span class="cf">else</span>:</span>
+<span id="cb5-9"><a></a>    <span class="bu">print</span>(<span class="st">"TN"</span>)      <span class="co"># not advanced, left alone</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<div class="fragment">
+<p><code>elif</code> = <em>“only if none of the above matched.”</em> The branches are checked top to bottom and <strong>exactly one</strong> runs — so every item lands in exactly one cell. The final <code>else</code> needs no condition: if it isn’t TP, FP or FN, it can only be TN.</p>
+</div>
+</section>
+<section id="try-it-on-a-different-row" class="slide level2 smaller">
+<h2>Try it on a different row</h2>
+<p>Change which item you look at and re-run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>item <span class="op">=</span> items[<span class="dv">11</span>]          <span class="co"># row 28</span></span>
+<span id="cb6-2"><a></a><span class="bu">print</span>(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>no yes</code></pre>
+<div class="fragment">
+<p>The gold says not advanced; the model said advanced. Branch 1 fails, branch 2 matches:</p>
+<pre><code>FP</code></pre>
+</div>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Your turn:</strong> find an item that prints <code>FN</code>. <em>(Hint: rows 22 and 24 — the two the model missed.)</em></p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="pass-1-step-4-make-it-a-function" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 4 — make it a function</h1>
+
+</section>
+<section id="twelve-items-one-rule" class="slide level2 smaller">
+<h2>Twelve items, one rule</h2>
+<p>You are about to ask that same question of all 12 rows. Copying the ladder twelve times would be absurd — so <strong>name it once</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">def</span> outcome(gold_label, pred_label):</span>
+<span id="cb9-2"><a></a>    <span class="co">"""Which of the four cells does this one item land in?"""</span></span>
+<span id="cb9-3"><a></a>    <span class="cf">if</span> gold_label <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb9-4"><a></a>        <span class="cf">return</span> <span class="st">"TP"</span>      <span class="co"># `return` hands the answer back, instead of printing it</span></span>
+<span id="cb9-5"><a></a>    <span class="cf">elif</span> gold_label <span class="op">==</span> <span class="st">"no"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb9-6"><a></a>        <span class="cf">return</span> <span class="st">"FP"</span></span>
+<span id="cb9-7"><a></a>    <span class="cf">elif</span> gold_label <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"no"</span>:</span>
+<span id="cb9-8"><a></a>        <span class="cf">return</span> <span class="st">"FN"</span></span>
+<span id="cb9-9"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb9-10"><a></a>        <span class="cf">return</span> <span class="st">"TN"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Two changes from step 3, and only two: it is <strong>wrapped in <code>def</code></strong>, and every <code>print</code> became a <strong><code>return</code></strong>.</p>
+</div>
+</section>
+<section id="print-shows-you-return-hands-it-back" class="slide level2 smaller">
+<h2><code>print</code> shows you · <code>return</code> hands it back</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="bu">print</span>(outcome(<span class="st">"yes"</span>, <span class="st">"no"</span>))     <span class="co"># gold said advanced, model said no → a miss</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>FN</code></pre>
+</div>
+<div class="fragment">
+<ul>
+<li><strong><code>print</code></strong> puts a value on the screen and then it is <em>gone</em>.</li>
+<li><strong><code>return</code></strong> hands the value back to whoever called the function, so you can <strong>keep it, store it, count it</strong>. That is exactly what step 5 needs.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Test it by hand before you trust it.</strong> <code>outcome("yes", "no")</code> — gold says advanced, model said no → a <strong>miss</strong> → <code>FN</code> ✓. Try all four combinations against the table. A function you have not checked is a guess.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="pass-1-step-5-loop-and-store-every-decision" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 5 — loop, and store every decision</h1>
+
+</section>
+<section id="one-verdict-per-sentence" class="slide level2 smaller">
+<h2>One verdict per sentence</h2>
+<p>Now run that function over all 12 rows and <strong>keep</strong> the answers — the same “build a list in a loop” pattern you wrote on Day 1:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>decisions <span class="op">=</span> []                     <span class="co"># start empty; the loop fills it</span></span>
+<span id="cb12-2"><a></a><span class="cf">for</span> item <span class="kw">in</span> items:                 <span class="co"># one pass per row of the table</span></span>
+<span id="cb12-3"><a></a>    decisions.append(outcome(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>]))   <span class="co"># add its verdict</span></span>
+<span id="cb12-4"><a></a></span>
+<span id="cb12-5"><a></a><span class="bu">print</span>(decisions)                   <span class="co"># 12 verdicts, in the table's order</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>['TN', 'TP', 'TN', 'TN', 'TP', 'FN', 'TN', 'FN', 'TN', 'TN', 'TP', 'FP']</code></pre>
+</div>
+<div class="fragment">
+<p>Twelve items in, twelve verdicts out — <strong>in the same order as the table</strong>. Position 6 is <code>'FN'</code>: that’s row 22, the racing-bicycle sentence the model missed.</p>
+</div>
+</section>
+<section id="why-store-them-rather-than-just-count" class="slide level2 smaller">
+<h2>Why store them, rather than just count?</h2>
+<p>We could have counted as we went. We keep the list because <strong>the list is the evidence</strong>.</p>
+<ul>
+<li>A metric is a <em>summary</em>. <code>decisions</code> is the thing being summarised — you can always go back to it.</li>
+<li>Every <code>'FN'</code> and <code>'FP'</code> in that list points at a <strong>specific sentence</strong> you can read and argue about.</li>
+<li>That is <strong>error analysis</strong>, and it is where the real research questions live: <em>is this the model’s fault, or my scheme’s?</em></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Later today <code>show_errors()</code> does exactly this for you on the 6-class task — it filters the items whose verdict was wrong and prints them. You have just built its engine.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="pass-1-step-6-tally-the-verdicts" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 6 — tally the verdicts</h1>
+
+</section>
+<section id="count-the-four-outcomes" class="slide level2 smaller">
+<h2>Count the four outcomes</h2>
+<p>This is Day 1’s <code>count_labels</code> exercise, run on a new list:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>tally <span class="op">=</span> {}                         <span class="co"># a dict: verdict -&gt; how many times</span></span>
+<span id="cb14-2"><a></a><span class="cf">for</span> d <span class="kw">in</span> decisions:                <span class="co"># d is "TP", "FP", "FN" or "TN"</span></span>
+<span id="cb14-3"><a></a>    tally[d] <span class="op">=</span> tally.get(d, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>   <span class="co"># count so far (0 if new), plus one</span></span>
+<span id="cb14-4"><a></a></span>
+<span id="cb14-5"><a></a><span class="bu">print</span>(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>{'TN': 6, 'TP': 3, 'FN': 2, 'FP': 1}</code></pre>
+</div>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p><code>tally.get(d, 0)</code> means <em>“how many so far — and if you’ve never seen this one, start from 0.”</em> Without the <code>.get</code>, the very first <code>'TN'</code> would crash, because <code>tally["TN"]</code> does not exist yet.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Compare to the numbers you counted by hand in step 1: TP = 3, FP = 1, FN = 2, TN = 6.</strong> They match. Your code and your eyes agree.</p>
+</div>
+</section></section>
+<section>
+<section id="pass-1-step-7-the-confusion-matrix" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 7 — the confusion matrix</h1>
+
+</section>
+<section id="the-tally-arranged" class="slide level2 smaller">
+<h2>The tally, arranged</h2>
+<p>A confusion matrix is <strong>not a new calculation</strong>. It is those same four numbers, put in a square so you can <em>see</em> them:</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>show_2x2(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>          pred yes  pred no
+gold yes         3        2
+gold no          1        6</code></pre>
+</div><div class="column" style="width:55%;">
+<ul>
+<li>The <strong>diagonal</strong> (3 and 6) is everything the model got right — 9 of 12.</li>
+<li>The <strong>off-diagonal</strong> (2 and 1) is everything it got wrong, <strong>split by direction</strong>.</li>
+<li>Two errors are <em>misses</em>; one is a <em>false alarm</em>. A single accuracy figure would hide that difference completely.</li>
+</ul>
+</div></div>
+<div class="fragment">
+<p><strong>Look at the matrix before you compute anything.</strong> The shape of the errors is the finding; the metrics just put a number on it.</p>
+</div>
+</section>
+<section id="row-totals-column-totals" class="slide level2 smaller">
+<h2>Row totals, column totals</h2>
+<p>The margins matter — you need them for κ in step 9:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">pred <strong>yes</strong></th>
+<th style="text-align: center;">pred <strong>no</strong></th>
+<th style="text-align: center;"><strong>total</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>gold <strong>yes</strong></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><strong>5</strong> ← the gold set has 5 advanced sentences</td>
+</tr>
+<tr class="even">
+<td>gold <strong>no</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;"><strong>7</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>total</strong></td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: center;"><strong>12</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li><strong>Rows</strong> = what the gold says. <strong>Columns</strong> = what the model says.</li>
+<li>Gold called 5 sentences advanced; the model called only <strong>4</strong>. It is slightly <strong>stingy</strong> with the positive label.</li>
+<li>Watch that habit — in pass 2 it becomes the most visible thing about this model.</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="pass-1-step-8-precision-recall-f1" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 8 — precision, recall, F1</h1>
+
+</section>
+<section id="precision-of-what-it-flagged-how-much-was-right" class="slide level2 smaller">
+<h2>Precision — of what it flagged, how much was right?</h2>
+<p><strong>Numbers first</strong>, so you can check it on paper:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="bu">print</span>(<span class="dv">3</span> <span class="op">/</span> (<span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>))            <span class="co"># TP / (TP + FP)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>0.75</code></pre>
+<div class="fragment">
+<p><strong>Same thing, read off the tally</strong> — so it survives a change of data:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="bu">print</span>(tally[<span class="st">"TP"</span>] <span class="op">/</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]))    <span class="co"># the same, from the tally</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>0.75</code></pre>
+</div>
+<div class="fragment">
+<p>Of the 4 sentences the model <em>called</em> advanced, 3 really were. <strong>Precision = 0.75.</strong></p>
+</div>
+</section>
+<section id="precision-now-as-a-function" class="slide level2 smaller">
+<h2>Precision — now as a function</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="kw">def</span> precision(tally):</span>
+<span id="cb22-2"><a></a>    <span class="co">"""Of everything CALLED advanced, how much really was?  TP / (TP + FP)"""</span></span>
+<span id="cb22-3"><a></a>    tp <span class="op">=</span> tally.get(<span class="st">"TP"</span>, <span class="dv">0</span>)      <span class="co"># .get(..., 0) so a missing count reads as 0</span></span>
+<span id="cb22-4"><a></a>    fp <span class="op">=</span> tally.get(<span class="st">"FP"</span>, <span class="dv">0</span>)</span>
+<span id="cb22-5"><a></a>    <span class="cf">if</span> tp <span class="op">+</span> fp <span class="op">==</span> <span class="dv">0</span>:             <span class="co"># the model never said "yes" at all</span></span>
+<span id="cb22-6"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span>               <span class="co"># no credit earned — and no division by zero</span></span>
+<span id="cb22-7"><a></a>    <span class="cf">return</span> tp <span class="op">/</span> (tp <span class="op">+</span> fp)        <span class="co"># everything it got right, over everything it claimed</span></span>
+<span id="cb22-8"><a></a></span>
+<span id="cb22-9"><a></a><span class="bu">print</span>(<span class="bu">round</span>(precision(tally), <span class="dv">3</span>))   <span class="co"># round to 3 decimal places</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>0.75</code></pre>
+</div>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Always guard the denominator</strong></p>
+</div>
+<div class="callout-content">
+<p>If a model never predicts the positive class, <code>TP + FP</code> is <strong>0</strong> and Python raises <code>ZeroDivisionError</code>. Returning <code>0.0</code> says <em>“it earned no credit”</em> — which is the honest reading. Every metric you write today gets this guard.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="recall-your-turn" class="slide level2 smaller">
+<h2>Recall — your turn</h2>
+<p>Recall asks the <strong>other</strong> question: <em>of everything that truly was advanced, how much did we catch?</em></p>
+<p><span class="math display">\[R = \frac{TP}{TP + FN}\]</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="kw">def</span> recall(tally):</span>
+<span id="cb24-2"><a></a>    <span class="co">"""Of everything that TRULY was advanced, how much did we find?"""</span></span>
+<span id="cb24-3"><a></a>    tp <span class="op">=</span> tally.get(<span class="st">"TP"</span>, <span class="dv">0</span>)</span>
+<span id="cb24-4"><a></a>    fn <span class="op">=</span> tally.get(<span class="st">"FN"</span>, <span class="dv">0</span>)       <span class="co"># ← the only real change</span></span>
+<span id="cb24-5"><a></a>    <span class="cf">if</span> tp <span class="op">+</span> fn <span class="op">==</span> <span class="dv">0</span>:              <span class="co"># nothing was truly advanced — nothing to find</span></span>
+<span id="cb24-6"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb24-7"><a></a>    <span class="cf">return</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)         <span class="co"># what it found, over everything there was to find</span></span>
+<span id="cb24-8"><a></a></span>
+<span id="cb24-9"><a></a><span class="bu">print</span>(<span class="bu">round</span>(recall(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>0.6</code></pre>
+<p>Three of the five genuinely advanced sentences were found. <strong>Recall = 0.60.</strong></p>
+</div>
+</section>
+<section id="f1-one-number-no-hiding" class="slide level2 smaller">
+<h2>F1 — one number, no hiding</h2>
+<p>Precision and recall pull against each other: flag everything and recall hits 1.0 while precision collapses. <strong>F1</strong> is the harmonic mean, so a high score cannot cover for a low one:</p>
+<p><span class="math display">\[F_1 = 2 \cdot \frac{P \cdot R}{P + R}\]</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a><span class="kw">def</span> f1(tally):</span>
+<span id="cb26-2"><a></a>    <span class="co">"""Harmonic mean of precision and recall."""</span></span>
+<span id="cb26-3"><a></a>    p <span class="op">=</span> precision(tally)         <span class="co"># reuse the function you just wrote</span></span>
+<span id="cb26-4"><a></a>    r <span class="op">=</span> recall(tally)            <span class="co"># ...and the other one</span></span>
+<span id="cb26-5"><a></a>    <span class="cf">if</span> p <span class="op">+</span> r <span class="op">==</span> <span class="dv">0</span>:               <span class="co"># both zero — nothing to average</span></span>
+<span id="cb26-6"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb26-7"><a></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> p <span class="op">*</span> r <span class="op">/</span> (p <span class="op">+</span> r)   <span class="co"># harmonic mean: a low score drags it down</span></span>
+<span id="cb26-8"><a></a></span>
+<span id="cb26-9"><a></a><span class="bu">print</span>(<span class="bu">round</span>(precision(tally), <span class="dv">3</span>), <span class="bu">round</span>(recall(tally), <span class="dv">3</span>), <span class="bu">round</span>(f1(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>0.75 0.6 0.667</code></pre>
+</div>
+</section>
+<section id="what-0.75-vs.-0.60-actually-says" class="slide level2 smaller">
+<h2>What 0.75 vs.&nbsp;0.60 actually says</h2>
+<p>The gap between precision and recall <strong>is a description of the model’s personality</strong>:</p>
+<ul>
+<li><strong>Precision 0.75 &gt; Recall 0.60</strong> → the model is <strong>conservative</strong> about calling something advanced. When it commits, it is usually right; but it lets real C1s slip past as B2.</li>
+<li>The two it missed (rows 22, 24) were both <strong>C1 → B2</strong> — near misses, not wild errors.</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Which error can you live with?</strong></p>
+</div>
+<div class="callout-content">
+<p>That is a <strong>research design</strong> question, not a statistics one.</p>
+<ul>
+<li>Screening texts for a C1 reading list? A <strong>miss</strong> (FN) is expensive — favour recall.</li>
+<li>Making a claim in a paper about which sentences are advanced? A <strong>false alarm</strong> (FP) is expensive — favour precision.</li>
+</ul>
+<p>Say which one your project cares about <em>before</em> you report a score.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="pass-1-step-9-cohens-κ" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 9 — Cohen’s κ</h1>
+
+</section>
+<section id="why-accuracy-isnt-enough" class="slide level2 smaller">
+<h2>Why accuracy isn’t enough</h2>
+<p>Start with the easy number — <strong>observed agreement</strong>, the diagonal over the total:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a>n <span class="op">=</span> tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]   <span class="co"># all 12 items</span></span>
+<span id="cb28-2"><a></a>p_o <span class="op">=</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n   <span class="co"># the diagonal (both agreed), over the total</span></span>
+<span id="cb28-3"><a></a><span class="bu">print</span>(<span class="bu">round</span>(p_o, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>0.75</code></pre>
+</div>
+<div class="fragment">
+<p>Gold and model agree on 9 of 12 items. Sounds decent — but <strong>so would a lazy model that answered “no” to everything</strong>: it would score 7/12 without knowing anything at all. Raw agreement flatters whoever plays the odds.</p>
+</div>
+</section>
+<section id="agreement-youd-get-by-luck" class="slide level2 smaller">
+<h2>Agreement you’d get by luck</h2>
+<p><span class="math inline">\(p_e\)</span> = the agreement two raters would hit <strong>by chance</strong>, given how often each one uses each label. Multiply their rates, label by label — the row and column totals from step 7:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a><span class="co"># each line: how often GOLD says it × how often the MODEL says it = agreement by luck</span></span>
+<span id="cb30-2"><a></a>p_yes <span class="op">=</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]) <span class="op">/</span> n)</span>
+<span id="cb30-3"><a></a>p_no  <span class="op">=</span> ((tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n)</span>
+<span id="cb30-4"><a></a>p_e   <span class="op">=</span> p_yes <span class="op">+</span> p_no          <span class="co"># luck on "yes" plus luck on "no"</span></span>
+<span id="cb30-5"><a></a><span class="bu">print</span>(<span class="bu">round</span>(p_yes, <span class="dv">3</span>), <span class="bu">round</span>(p_no, <span class="dv">3</span>), <span class="bu">round</span>(p_e, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>0.139 0.389 0.528</code></pre>
+</div>
+<div class="fragment">
+<ul>
+<li><code>p_yes</code>: gold says yes <strong>5/12</strong> × model says yes <strong>4/12</strong> = 0.139</li>
+<li><code>p_no</code>: gold says no <strong>7/12</strong> × model says no <strong>8/12</strong> = 0.389</li>
+<li><strong>More than half</strong> the agreement we observed (0.75) was available for free.</li>
+</ul>
+</div>
+</section>
+<section id="κ-the-honest-number" class="slide level2 smaller">
+<h2>κ — the honest number</h2>
+<p><span class="math display">\[\kappa = \frac{p_o - p_e}{1 - p_e}\]</span></p>
+<p><em>How much of the agreement that luck couldn’t explain did they actually achieve?</em></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a><span class="co"># what they beat luck by (p_o - p_e), over how much was left to beat (1 - p_e):</span></span>
+<span id="cb32-2"><a></a><span class="bu">print</span>(<span class="bu">round</span>((p_o <span class="op">-</span> p_e) <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> p_e), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>0.471</code></pre>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:55%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Cohen’s κ</th>
+<th style="text-align: left;">Landis &amp; Koch</th>
+<th style="text-align: left;">McHugh</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0.21–0.40</td>
+<td style="text-align: left;">Fair</td>
+<td style="text-align: left;">Minimal</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>0.41–0.60</strong></td>
+<td style="text-align: left;"><strong>Moderate</strong></td>
+<td style="text-align: left;"><strong>Weak</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0.61–0.80</td>
+<td style="text-align: left;">Substantial</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:45%;">
+<p><strong>75% agreement → κ = 0.47.</strong></p>
+<p>The same gap S4 showed you (80% → κ ≈ 0.52), now computed by your own code.</p>
+</div></div>
+</div>
+</section>
+<section id="wrap-it-up-and-notice-what-youve-built" class="slide level2 smaller">
+<h2>Wrap it up — and notice what you’ve built</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a><span class="kw">def</span> kappa(tally):</span>
+<span id="cb34-2"><a></a>    <span class="co">"""Agreement corrected for chance: (p_o - p_e) / (1 - p_e)."""</span></span>
+<span id="cb34-3"><a></a>    n <span class="op">=</span> tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]   <span class="co"># every item</span></span>
+<span id="cb34-4"><a></a>    p_o <span class="op">=</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n     <span class="co"># agreement we actually observed</span></span>
+<span id="cb34-5"><a></a>    p_yes <span class="op">=</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]) <span class="op">/</span> n)</span>
+<span id="cb34-6"><a></a>    p_no <span class="op">=</span> ((tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n)</span>
+<span id="cb34-7"><a></a>    p_e <span class="op">=</span> p_yes <span class="op">+</span> p_no                        <span class="co"># agreement luck alone would give</span></span>
+<span id="cb34-8"><a></a>    <span class="cf">if</span> <span class="dv">1</span> <span class="op">-</span> p_e <span class="op">==</span> <span class="dv">0</span>:                          <span class="co"># luck already explains everything</span></span>
+<span id="cb34-9"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb34-10"><a></a>    <span class="cf">return</span> (p_o <span class="op">-</span> p_e) <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> p_e)            <span class="co"># how much of the rest they achieved</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>This is yesterday’s function</strong></p>
+</div>
+<div class="callout-content">
+<p>Nothing in <code>kappa()</code> knows whether column two came from <strong>your partner</strong> or <strong>a model</strong>. That is why S5’s agreement number and today’s evaluation number are the same statistic: <strong>κ measures two label columns, whoever produced them.</strong></p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="pass-1-step-10-scale-up-then-check-yourself" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 10 — scale up, then check yourself</h1>
+
+</section>
+<section id="the-same-functions-all-72-items" class="slide level2 smaller">
+<h2>The same functions, all 72 items</h2>
+<p>Nothing changes but the input — <code>items</code> becomes all 72 sentences:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a></a><span class="co">### Step 1: all 72 items, in the same yes/no shape as the 12 </span><span class="al">###</span></span>
+<span id="cb35-2"><a></a>all_items <span class="op">=</span> pair_up(gold, predictions, ADVANCED)</span>
+<span id="cb35-3"><a></a></span>
+<span id="cb35-4"><a></a><span class="co">### Step 2: the SAME loop as step 5 — only the input changed </span><span class="al">###</span></span>
+<span id="cb35-5"><a></a>decisions <span class="op">=</span> []</span>
+<span id="cb35-6"><a></a><span class="cf">for</span> item <span class="kw">in</span> all_items:</span>
+<span id="cb35-7"><a></a>    decisions.append(outcome(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>]))</span>
+<span id="cb35-8"><a></a></span>
+<span id="cb35-9"><a></a><span class="co">### Step 3: the SAME tally as step 6 </span><span class="al">###</span></span>
+<span id="cb35-10"><a></a>tally <span class="op">=</span> {}</span>
+<span id="cb35-11"><a></a><span class="cf">for</span> d <span class="kw">in</span> decisions:</span>
+<span id="cb35-12"><a></a>    tally[d] <span class="op">=</span> tally.get(d, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb35-13"><a></a><span class="bu">print</span>(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>{'TN': 46, 'TP': 16, 'FN': 8, 'FP': 2}</code></pre>
+<pre><code>precision 0.889   recall 0.667   F1 0.762   kappa 0.667</code></pre>
+</div>
+<div class="fragment">
+<p><strong>The 12-item slice was not the whole story</strong> — precision rose, recall stayed low. The pattern held: <em>stingy, but usually right when it commits.</em> A 12-item sample is enough to learn the mechanics, never enough to judge a model.</p>
+</div>
+</section>
+<section id="check-yourself-against-scikit-learn" class="slide level2 smaller">
+<h2>Check yourself against scikit-learn</h2>
+<p>The self-check cell runs the library’s version of every metric you wrote and compares:</p>
+<pre><code>✅ precision      yours=0.888889  sklearn=0.888889
+✅ recall         yours=0.666667  sklearn=0.666667
+✅ f1             yours=0.761905  sklearn=0.761905
+✅ cohen_kappa    yours=0.666667  sklearn=0.666667
+-----------------------------------------------
+All 4 checks passed ✅  — your metrics match scikit-learn.</code></pre>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>This is the point of pass 1</strong></p>
+</div>
+<div class="callout-content">
+<p><code>sklearn</code> is not doing anything you cannot do. It is doing <strong>exactly what you just wrote</strong>, faster and for every class at once. From here on, when a report prints <code>0.36</code>, you know precisely which counts produced it.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="pass-2-the-real-task-with-scikit-learn" class="title-slide slide level1 center">
+<h1>Pass 2 · The real task, with scikit-learn</h1>
+
+</section>
+<section id="six-levels-thirty-six-cells" class="slide level2 smaller">
+<h2>Six levels, thirty-six cells</h2>
+<p>Drop the yes/no simplification. The actual task is: <strong>A1 · A2 · B1 · B2 · C1 · C2</strong>.</p>
+<ul>
+<li><strong>4 cells → 36.</strong> Counting by hand stops being reasonable.</li>
+<li>Precision and recall are always <em>about one positive class</em> — so with six classes you get <strong>six</strong> precisions, <strong>six</strong> recalls, <strong>six</strong> F1s.</li>
+<li>The trick is small: to score <code>C1</code>, treat <strong><code>C1</code> as “yes” and all five others as “no”</strong> — pass 1, run six times. That is called <strong>one-vs-rest</strong>, and it is all <code>classification_report</code> does.</li>
+</ul>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a></a><span class="co"># ordered=True: the six levels sit on a scale, so also report weighted κ</span></span>
+<span id="cb39-2"><a></a>evaluate(gold, predictions, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>ordered=True</code> says these labels sit on a <strong>scale</strong> — which changes which κ you should read. Hold that thought.</p>
+</div>
+</section>
+<section id="read-the-report" class="slide level2 smaller">
+<h2>Read the report</h2>
+<pre><code>              precision    recall  f1-score   support
+
+          A1       0.75      0.25      0.38        12
+          A2       0.35      0.58      0.44        12
+          B1       0.36      0.33      0.35        12
+          B2       0.37      0.58      0.45        12
+          C1       0.35      0.50      0.41        12
+          C2       1.00      0.08      0.15        12
+
+    accuracy                           0.39        72
+   macro avg       0.53      0.39      0.36        72</code></pre>
+<div class="fragment">
+<ul>
+<li>Every <strong>row</strong> is one pass-1 run: for <code>C1</code>, TP/FP/FN/TN with C1 as the positive class.</li>
+<li><strong><code>support</code></strong> = how many gold items that class has — 12 each, by design.</li>
+<li><strong><code>macro avg</code></strong> = the plain average of the six F1s. Every class counts equally, <strong>however rare it is</strong> — which is why it is the honest headline for an imbalanced set.</li>
+</ul>
+</div>
+</section>
+<section id="brace-yourself-accuracy-is-39" class="slide level2 smaller">
+<h2>Brace yourself: accuracy is 39%</h2>
+<p>Before concluding the model is useless — <strong>look at <em>how</em> it is wrong.</strong></p>
+<div class="fragment">
+<ul>
+<li><strong>97% of its answers are within one level</strong> of the gold label.</li>
+<li>Only two sentences in the whole set miss by two. <strong>Nothing misses by more.</strong></li>
+<li>A model that had no idea would scatter A1s against C2s. This one does not.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>“Right idea, imprecise thresholds”</strong> is a completely different failure from <strong>“doesn’t understand the task”</strong> — and no single accuracy number can tell them apart. That is what the confusion matrix is for.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-confusion-matrix-read-down-the-columns" class="slide level2 smaller">
+<h2>The confusion matrix — read <em>down the columns</em></h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">pred A1</th>
+<th style="text-align: center;">pred A2</th>
+<th style="text-align: center;">pred B1</th>
+<th style="text-align: center;">pred B2</th>
+<th style="text-align: center;">pred C1</th>
+<th style="text-align: center;">pred C2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>gold A1</strong></td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td><strong>gold A2</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><strong>7</strong></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td><strong>gold B1</strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td><strong>gold B2</strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><strong>7</strong></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td><strong>gold C1</strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;"><strong>6</strong></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td><strong>gold C2</strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>column total</strong></td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>20</strong></td>
+<td style="text-align: center;"><strong>11</strong></td>
+<td style="text-align: center;"><strong>19</strong></td>
+<td style="text-align: center;"><strong>17</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Rows are gold, so <em>rows</em> tell you what happened to each true level. But read <strong>down the columns</strong> — how often the model <em>says</em> each level. The gold set is <strong>balanced, 12 per level</strong>, so an unbiased rater would use each label about 12 times.</p>
+</div>
+</section>
+<section id="central-tendency-bias" class="slide level2 smaller">
+<h2>Central-tendency bias</h2>
+<p>The model said <strong>A2 twenty times</strong> and <strong>A1 four times</strong>. It said <strong>C2 exactly once</strong> — in 72 chances.</p>
+<div class="fragment">
+<ul>
+<li>Everything is squeezed toward the <strong>middle</strong> of the scale; the extremes are avoided.</li>
+<li>Why would a rater — human or machine — under pressure to judge something as fuzzy as “difficulty” <strong>drift to the middle and refuse to commit to the ends</strong>?</li>
+<li>This is your pass-1 finding again: with “advanced” as positive, precision 0.89 but recall 0.67. <strong>It under-uses the top of the scale.</strong></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>You will meet this tendency in <strong>your own annotation</strong> — and in your teammates’. It is one of the first things to check in a scheme that isn’t reaching acceptable κ.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="two-κ-values-same-data" class="slide level2 smaller">
+<h2>Two κ values, same data</h2>
+<p><code>evaluate(..., ordered=True)</code> printed both, right under the report:</p>
+<pre><code>Cohen's kappa            0.267
+Cohen's kappa (weighted) 0.849   &lt;- labels are ordered</code></pre>
+<div class="fragment">
+<p><strong>Plain κ = 0.27</strong> (“fair” / “minimal”) — because plain κ treats <strong>A1 → A2 as exactly as wrong as A1 → C2</strong>.</p>
+<p><strong>Quadratic-weighted κ = 0.85</strong> — because CEFR levels are <strong>ordinal</strong>, and a near miss <em>should</em> hurt less:</p>
+<p><span class="math display">\[w_{ij} = \frac{(i-j)^2}{(N-1)^2}\]</span></p>
+</div>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Report the one that matches your labels</strong></p>
+</div>
+<div class="callout-content">
+<p>Same predictions, 0.27 or 0.85 depending on a single argument. <strong>Ordered labels → weighted κ. Unordered categories → plain κ.</strong> State which you used and why; a κ without that sentence is unreadable. <em>(Arase et al.&nbsp;reported weighted κ = .628 on this task.)</em></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="error-analysis-the-models-fault-or-the-schemes" class="slide level2 smaller">
+<h2>Error analysis — the model’s fault, or the scheme’s?</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a></a>errors <span class="op">=</span> show_errors(gold, predictions)   <span class="co"># a table of every item it got wrong</span></span>
+<span id="cb42-2"><a></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] to see the hard end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>44 misses — too many to read one by one, and you don’t need to. <strong>Skim a dozen</strong>, then look hard at the rows where gold is <strong>C2</strong> or <strong>A1</strong>: the ends of the scale are where the arguments are.</p>
+<div class="fragment">
+<p>For each miss you read, ask:</p>
+<ol type="1">
+<li>Is the <strong>gold</strong> defensible here, or is this genuinely borderline?</li>
+<li>Would <strong>you and your partner</strong> have agreed on this sentence?</li>
+<li>Would a <strong>better-written scheme</strong> have prevented this error?</li>
+</ol>
+</div>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Remember rows 19, 23 and 25 — the three obituary sentences. In pass 1’s yes/no world the model got all three <em>right</em>. In six classes it called every one of them A2 instead of A1. <strong>The question you ask determines the error you can see.</strong></p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="作戦会議-day-2-strategy-huddle" class="title-slide slide level1 center">
+<h1>作戦会議 — Day-2 strategy huddle</h1>
+
+</section>
+<section id="turn-today-onto-your-own-track" class="slide level2 smaller">
+<h2>Turn today onto your own track</h2>
+<p>Everything this week has run on CEFR-SP. Your project doesn’t. Spend the next <strong>~12 minutes</strong> with your team adding three things to your <strong>作戦シート</strong>:</p>
+<ol type="1">
+<li><strong>A draft annotation scheme</strong> — your label set, plus <strong>one line of guideline per label</strong>. (Steps ①②.)</li>
+<li><strong>Your gold source</strong> — the provided pool, or one you build yourselves? Who annotates, and how many items? (Step ③.)</li>
+<li><strong>The agreement you’d accept</strong> — a κ number, decided <strong>now</strong>, before you see any results. And: <strong>which class is positive</strong>, and whether your labels are <strong>ordered</strong> (→ weighted κ) or not.</li>
+</ol>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Point 3 is the one teams skip and regret. A threshold chosen <em>after</em> seeing the number is not a threshold — it’s a rationalisation.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section id="coming-up" class="title-slide slide level1 center">
+<h1>Coming up</h1>
+<ul>
+<li><strong>S7 — Prompt Design</strong> <em>(concept)</em>: the four prompt elements, zero-shot vs.&nbsp;few-shot, and the contamination trap — <strong>why your few-shot examples must never come from the gold set you just learned to score against</strong>.</li>
+<li><strong>S8–S9</strong>: you write the prompts, run the model live, and judge each version with <strong>exactly today’s metrics</strong>. From here on, “did that prompt help?” is a number you can compute.</li>
+</ul>
+</section>
+
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
 

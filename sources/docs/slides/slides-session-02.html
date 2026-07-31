@@ -347,8 +347,9 @@
 <section id="lets-follow-in-colab-1" class="slide level2 smaller">
 <h2>👀 Let’s follow — in Colab</h2>
 <p>Run the <strong>📦 Setup</strong> cell first, then run this together:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)</span>
-<span id="cb6-2"><a></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="co"># ✏️ change the text in the quotes, then press Shift+Enter to re-run.</span></span>
+<span id="cb6-2"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)  <span class="co"># ask</span></span>
+<span id="cb6-3"><a></a><span class="bu">print</span>(reply)                                    <span class="co"># show what came back</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The model’s answer prints out. You just called an LLM from Python.</p>
 </section>
 <section id="lets-try-in-colab-1" class="slide level2 smaller">
@@ -460,10 +461,12 @@
 <section id="lets-follow-in-colab-4" class="slide level2 smaller">
 <h2>👀 Let’s follow — in Colab</h2>
 <p>Run this together — build a prompt from a variable, then send it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>sentence <span class="op">=</span> <span class="st">"Despite the rain, the game went ahead."</span></span>
-<span id="cb12-2"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb12-3"><a></a>reply <span class="op">=</span> generate_text(prompt)</span>
-<span id="cb12-4"><a></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>sentence <span class="op">=</span> <span class="st">"Despite the rain, the game went ahead."</span>   <span class="co"># ✏️ your sentence</span></span>
+<span id="cb12-2"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span>  <span class="co"># f = fill in {}</span></span>
+<span id="cb12-3"><a></a><span class="bu">print</span>(<span class="st">"Prompt sent:"</span>, prompt)                <span class="co"># see what {sentence} became</span></span>
+<span id="cb12-4"><a></a></span>
+<span id="cb12-5"><a></a>reply <span class="op">=</span> generate_text(prompt)                <span class="co"># send the finished prompt</span></span>
+<span id="cb12-6"><a></a><span class="bu">print</span>(<span class="st">"Model says:"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="lets-try-in-colab-4" class="slide level2 smaller">
 <h2>🧪 Let’s try — in Colab</h2>

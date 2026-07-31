@@ -161,8 +161,9 @@ Classification, annotation, evaluation — everything we do is a *variation on t
 Run the **📦 Setup** cell first, then run this together:
 
 ```python
-reply = generate_text("In one sentence, what is applied linguistics?")
-print(reply)
+# ✏️ change the text in the quotes, then press Shift+Enter to re-run.
+reply = generate_text("In one sentence, what is applied linguistics?")  # ask
+print(reply)                                    # show what came back
 ```
 
 The model's answer prints out. You just called an LLM from Python.
@@ -285,10 +286,12 @@ Swap in a different sentence and you get a different prompt — automatically. T
 Run this together — build a prompt from a variable, then send it:
 
 ```python
-sentence = "Despite the rain, the game went ahead."
-prompt = f"What CEFR level (A1-C2) is this sentence? {sentence}"
-reply = generate_text(prompt)
-print(reply)
+sentence = "Despite the rain, the game went ahead."   # ✏️ your sentence
+prompt = f"What CEFR level (A1-C2) is this sentence? {sentence}"  # f = fill in {}
+print("Prompt sent:", prompt)                # see what {sentence} became
+
+reply = generate_text(prompt)                # send the finished prompt
+print("Model says:", reply)
 ```
 
 ## 🧪 Let's try — in Colab {.smaller}

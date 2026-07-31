@@ -46,15 +46,12 @@ By the end of this session, you will be able to:
 
 Your data arrives as **paragraphs**. But the unit we work with is the **sentence**. So we need to **segment** a paragraph into its sentences.
 
-. . .
 
 The obvious idea: cut on every full stop. To do that we **call a method** on the string — `some_text.split(".")` — using a dot (`.`) to run a built-in action *on* that value.
 
 ## Why this matters
 
 The naive rule looks fine — until it isn't. Abbreviations and decimals contain dots that **aren't** sentence ends.
-
-. . .
 
 Bad boundaries corrupt everything downstream. So it's worth *seeing* the naive rule fail before we reach for a better tool.
 
@@ -65,8 +62,9 @@ paragraph = ("Dr. Smith reviewed the data. The results were clear, "
              "e.g. accuracy rose. Scores went from 3.14 to 9.")
 
 naive = paragraph.split(".")     # cut the string at every "."
-for piece in naive:
-    print(repr(piece))
+print("pieces:", len(naive))     # how many pieces did that give us?
+for piece in naive:              # look at each piece in turn
+    print(repr(piece))           # repr() shows the quotes and spaces exactly
 ```
 
 . . .
@@ -80,9 +78,10 @@ Look at the mess: `"Dr"` (from *Dr.*), `"e"` and `"g"` (from *e.g.*), `"3"` and 
 Instead of our own rule, we **import** a purpose-built library, **spaCy**:
 
 ```python
-import spacy
-nlp = spacy.blank("en")          # a minimal English pipeline
-nlp.add_pipe("sentencizer")      # a rule-based sentence splitter — no download
+### Step 1: build a sentence splitter that knows more than "cut at every dot" ###
+import spacy                       # the NLP toolbox
+nlp = spacy.blank("en")            # a minimal English pipeline
+nlp.add_pipe("sentencizer")        # add the rule-based splitter — no download
 ```
 
 - `import spacy` loads the toolbox.
@@ -103,8 +102,9 @@ This is your **unit of analysis** — the thing you attach one label to. Sometim
 ## 🧪 Let's try — the sentencizer {.smaller}
 
 ```python
-doc = nlp(paragraph)
-sentences = list(doc.sents)      # spaCy's sentences, as a list
+### Step 2: run it on the paragraph and look at what came out ###
+doc = nlp(paragraph)               # spaCy reads the text
+sentences = list(doc.sents)        # spaCy's sentence objects, as a list
 for s in sentences:
     print(repr(s.text))
 ```
@@ -136,10 +136,10 @@ Annotation, classification, evaluation — all of it is "run this call over a li
 ## 🧪 Let's try — the loop {.smaller}
 
 ```python
-for sentence in examples:
+for sentence in examples:              # repeat everything below for each sentence
     prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"
-    reply = generate_text(prompt).strip()
-    if reply == "":
+    reply = generate_text(prompt).strip()   # .strip() removes stray blank space
+    if reply == "":                    # the model sometimes says nothing at all
         reply = "(no answer)"
     print(sentence, "→", reply)
 ```
@@ -149,12 +149,12 @@ for sentence in examples:
 Same three steps, packaged so you can reuse them:
 
 ```python
-def ask(sentence):
+def ask(sentence):                     # `def` names a block of steps
     """Ask the model for the CEFR level of one sentence; return its reply."""
     prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"
-    return generate_text(prompt).strip()
+    return generate_text(prompt).strip()   # `return` hands the answer back
 
-print(ask("Despite the rain, the game went ahead."))
+print(ask("Despite the rain, the game went ahead."))  # one line does all three steps
 ```
 
 Now labelling a sentence is just `ask(...)`.

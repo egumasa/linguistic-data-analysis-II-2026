@@ -13,31 +13,83 @@ metadata-files:
   - _slides.yml
 ---
 
-<!-- STUB DECK — structure only; content to be filled in before the course. -->
-
-# Session 15: Final Presentations & Wrap-up
+# Session 15: Presentations
 
 ## 📋 Agenda
 
-- Group presentations with instructor Q&A
-- Course wrap-up discussion
+- **8 min + 4 min Q&A** per group
+- Course wrap-up
 
-## 🎯 Learning Objectives
+## Format
 
-By the end of this session, you will be able to:
+- **Five slides**, one per report section
+- **Every member speaks** to at least one slide
+- Confusion matrix **on screen**
+- `show_errors` table open and ready
 
-<!-- to be added -->
+::: {.callout-note}
+Time is on the talk, not the setup. Have the notebook open before you stand up.
+:::
 
-# Group presentations & Q&A
+## The two questions every group gets
 
-## Group presentations & Q&A
+::: {.callout-important}
+## 1
+**"Show us an item the model got wrong, and tell us whose fault it was — the model's or your scheme's."**
+:::
 
-<!-- to be added -->
+::: {.callout-important}
+## 2
+**"What did your QC pass change?"**
+:::
 
-# Course wrap-up
+Neither is a trick. They are the two questions that separate *having run the cells* from *having done the work*.
 
-## Course wrap-up
+## And a reminder
 
-<!-- to be added -->
+::: {.callout-tip}
+## Your F1 is not graded
+A study reporting **0.31** with a clear account of why beats one reporting **0.82** without.
 
-# Any questions?
+A low κ is not a penalty either — it is a finding about your scheme.
+:::
+
+# Wrap-up
+
+## What was the same in every track
+
+Whatever you annotated, the pipeline did not change:
+
+```
+load gold → format prompt → call model → evaluate → inspect errors
+```
+
+. . .
+
+Only the **task** and the **prompt** changed. That is the transferable thing you take out of this week — not any particular model, which will be retired within the year.
+
+## The one idea
+
+> **An LLM is a judge you must check.**
+
+. . .
+
+Checking means: a gold standard you built and can defend · a metric you understand because you once wrote it by hand · a frozen run someone else can reproduce · and an honest account of what your numbers do not show.
+
+. . .
+
+None of that is about LLMs. It is what makes any measurement worth reporting.
+
+## Where this goes next
+
+- **Bigger gold sets** — and inter-annotator agreement as a research question in its own right
+- **Other constructs** — anything you can define, you can try to annotate
+- **The open questions** — contamination, prompt sensitivity, whether "agreement with humans" is the right target at all
+
+. . .
+
+You now have a working pipeline and the habits to use it honestly. That is a reasonable place to start.
+
+# Thank you
+
+Deliverables and rubric: the **Final Project** pages.
