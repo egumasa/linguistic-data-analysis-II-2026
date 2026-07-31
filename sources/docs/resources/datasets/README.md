@@ -81,7 +81,7 @@ Click a **Open in Colab** link, then choose **Runtime ▸ Run all**. It takes ab
 
 | Dataset | Open in Colab | Produces |
 |---------|---------------|----------|
-| CEFR-SP | [download_cefr_sp.ipynb](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_cefr_sp.ipynb) | `cefr_sentences.json` (72 items) |
+| CEFR-SP | [download_cefr_sp.ipynb](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_cefr_sp.ipynb) | `cefr_sentences.json` (72 items) + `cefr_pool.json` (~3,200) |
 | RAAMove | [download_raamove.ipynb](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_raamove.ipynb) | `raamove_moves.json` (64 items) |
 | CaRS-50 | [download_cars50.ipynb](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_cars50.ipynb) | `cars50_moves.json` (60 items) |
 | AutoErrorAnalyzer | [download_autoerroranalyzer.ipynb](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/resources/datasets/notebooks/download_autoerroranalyzer.ipynb) | `l2_errors.json` (60 items) |
@@ -101,7 +101,7 @@ Reading those three outputs *is* the point of the walkthrough. The lesson you sh
 every dataset's raw format is different, and getting it into one clean shape is half the work
 of building a gold standard.
 
-**One exception:** `download_icnale_gra.ipynb` has no download step. ICNALE is password-gated,
+**Two exceptions:** `download_cefr_sp.ipynb` adds a seventh step that also saves the **full pool** (`cefr_pool.json`) — Days 2 and 3 both use CEFR-SP, and the Day 3 prompt work needs items outside the 72-item gold set to draw few-shot examples from. And `download_icnale_gra.ipynb` has no download step. ICNALE is password-gated,
 so that notebook starts by asking you to upload your own copy, and it only runs in Colab.
 
 ### Getting your file out of Colab

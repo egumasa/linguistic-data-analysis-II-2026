@@ -178,6 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#step-4-inspect-the-labels" id="toc-step-4-inspect-the-labels" class="nav-link" data-scroll-target="#step-4-inspect-the-labels">Step 4 — Inspect the labels</a></li>
   <li><a href="#step-5-build-a-balanced-gold-set" id="toc-step-5-build-a-balanced-gold-set" class="nav-link" data-scroll-target="#step-5-build-a-balanced-gold-set">Step 5 — Build a balanced gold set</a></li>
   <li><a href="#step-6-save-it" id="toc-step-6-save-it" class="nav-link" data-scroll-target="#step-6-save-it">Step 6 — Save it</a></li>
+  <li><a href="#step-7-also-save-the-full-pool" id="toc-step-7-also-save-the-full-pool" class="nav-link" data-scroll-target="#step-7-also-save-the-full-pool">Step 7 — Also save the <em>full</em> pool</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/resources/datasets/notebooks/download_cefr_sp.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -336,8 +337,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>gold[:<span class="dv">3</span>]  <span class="co"># preview the first three items</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+</section>
+<section id="step-7-also-save-the-full-pool" class="level2">
+<h2 class="anchored" data-anchor-id="step-7-also-save-the-full-pool">Step 7 — Also save the <em>full</em> pool</h2>
+<p>Step 5 threw most of the data away on purpose: 12 items per level is the right size for a tutorial you hand-check. But the Day 3 prompt-tuning work and the final mini-project both want the whole thing — a larger set to draw fresh samples from, and items to use as few-shot examples that are <em>not</em> in your gold set.</p>
+<p>So save every agreed sentence too, in the same schema. Same rows as Step 3, just numbered from 1.</p>
+<div id="cell-16" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>POOL_FILE <span class="op">=</span> <span class="st">"cefr_pool.json"</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 7.1: give every reshaped row an id, in order </span><span class="al">###</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>pool <span class="op">=</span> [{<span class="st">"id"</span>: i <span class="op">+</span> <span class="dv">1</span>, <span class="st">"text"</span>: x[<span class="st">"text"</span>], <span class="st">"label"</span>: x[<span class="st">"label"</span>]}</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(rows)]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 7.2: write it out </span><span class="al">###</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(POOL_FILE, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    json.dump(pool, f, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Saved </span><span class="sc">{</span><span class="bu">len</span>(pool)<span class="sc">}</span><span class="ss"> items to </span><span class="sc">{</span>POOL_FILE<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"per label:"</span>, <span class="bu">dict</span>(Counter(x[<span class="st">"label"</span>] <span class="cf">for</span> x <span class="kw">in</span> pool)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Note how <strong>unbalanced</strong> the pool is compared with your gold set — B1 and B2 dominate, A1 and C2 are scarce. That is what the real data looks like, and it is why Step 5 sampled evenly instead of just taking the first 72 rows.</p>
 <hr>
-<p>Done! You built <code>cefr_sentences.json</code> from raw research data. Next: use it in the <strong>Day 2 tutorial</strong> (annotation → evaluation).</p>
+<p>Done! You built two files from raw research data:</p>
+<ul>
+<li><code>cefr_sentences.json</code> — the balanced 72-item gold set</li>
+<li><code>cefr_pool.json</code> — every agreed sentence (~3,200), to sample from later</li>
+</ul>
+<p>⚠️ Both live in the Colab session and <strong>disappear when the runtime disconnects</strong> — save them to your Google Drive before you close the tab.</p>
+<p>Next: use them in the <strong>Day 2 tutorial</strong> (annotation → evaluation) and the <strong>Day 3 tutorial</strong> (prompt design).</p>
 
 
 </section>
