@@ -568,9 +568,37 @@ LIB = {
 
 
 def libs(*names):
-    """The 🔧 pipeline cells for a day, in the given order. Keep the names here in
-    sync with the lib_names passed to setup_cell (they drive the day's imports)."""
-    return [LIB[n] for n in names]
+    """The day's 🔧 pipeline code, as ONE collapsed cell.
+
+    These are always run together and never individually, so shipping them as one
+    cell per function only added steps between the student and their first result.
+    The signatures are listed at the top of the merged cell, so the cell still says
+    what it defines without being opened.
+
+    Keep the names here in sync with the lib_names passed to setup_cell (they drive
+    the day's imports)."""
+    signatures, short_names, bodies = [], [], []
+    for name in names:
+        lines = "".join(LIB[name]["source"]).split("\n")
+        signature = lines[0].split("Library cell: ", 1)[1].split(" {", 1)[0].strip()
+        signatures.append(signature)
+        short_names.append(signature.split("(")[0].strip())
+
+        # Drop each cell's own "you don't need to read this" note — one is enough —
+        # and the blank lines that framed it.
+        body = [l for l in lines[1:] if not l.startswith("# Helper — you don't need")]
+        while body and not body[0].strip():
+            body.pop(0)
+        while body and not body[-1].strip():
+            body.pop()
+        bodies.append("\n".join(body))
+
+    return [code(
+        '#@title 🔧 Library cell: %s { display-mode: "form" }' % ", ".join(short_names),
+        _HELPER_NOTE,
+        *["#   " + s for s in signatures],
+        "",
+        "\n\n\n".join(bodies))]
 
 
 _NUMBER = {1: "one", 2: "two", 3: "three"}
@@ -934,57 +962,55 @@ def day2_s5():
     cells += [md(
         "## Build a gold standard yourself",
         "",
-        "So far the gold labels have been handed to you. Now you make some. This session's work "
-        "is split across **three surfaces that share one spine**, the six steps **A–F**:",
+        "So far the gold labels have been handed to you. Now you make some. The work is split "
+        "across **three surfaces that share one spine**, the six steps **A–F**:",
         "",
-        "- **Slides** teach the *concepts* — how to sample (A), why annotate blind (C), how to "
-        "read a confusion matrix (D–E).",
-        "- **A Google Sheet** holds the *human judgment* — you and your partner annotate there "
-        "(C), and re-annotate there (E).",
-        "- **This notebook** does the *numbers* — it reads the sheet and measures, adjudicates, "
-        "and exports (**D–F**).",
+        "- **Slides** — the *concepts*: how to sample (A), why annotate blind (C), how to read "
+        "a confusion matrix (D–E).",
+        "- **A Google Sheet** — the *human judgment*: you and your partner annotate (C) and "
+        "re-annotate (E) there.",
+        "- **This notebook** — the *numbers*: it reads the sheet, measures, adjudicates and "
+        "exports (**D–F**).",
         "",
         "So **steps A–C need no code**; this notebook first runs at **step D**. Each header "
         "below prints the same `A–F` label as the slides — find your place by the *letter*.",
         "",
         "::: {.callout-note}",
         "## Why a spreadsheet?",
-        "Annotation is a *judgement* task, not a coding task — a sheet is the fastest honest "
-        "way to do it, and it is what most annotation projects actually use. The point is not "
-        "the tool; it is that you feel how often two careful people disagree, and what it "
-        "takes to resolve that into a single defensible label.",
+        "Annotation is a *judgement* task, not a coding task, and a sheet is what most "
+        "annotation projects actually use. The point is to feel how often two careful people "
+        "disagree, and what it takes to resolve that into a single defensible label.",
         ":::")]
 
     # A–C: code-free (slides + Sheet). The notebook just tells students where to go.
     cells += [md(
         "### A · Sample → copy your track's sheet   *(E&K Step 3 · ①)*",
         "",
-        "The sample is **already drawn for you** — one template Sheet per track, whose first "
-        "tab is **`round1`** with the columns **`ID · Text · CoderA · CoderB · Final · Note`** "
-        "and only `ID` and `Text` filled in (never the labels, so your annotation is genuinely "
-        "independent). *How* it was sampled — represent the domain, fix the unit, a seed for "
+        "The sample is **already drawn for you** — one template Sheet per track. Its first tab "
+        "is **`round1`**, with the columns **`ID · Text · CoderA · CoderB · Final · Note`** and "
+        "only `ID` and `Text` filled in, never the labels, so your annotation is genuinely "
+        "independent. *How* it was sampled — represent the domain, fix the unit, a seed for "
         "reproducibility — is the slide concept; the exact draw is in the reference appendix at "
-        "the end of this notebook.",
+        "the end.",
         "",
         "**Open your track's template Sheet → `File → Make a copy`** into your own Drive. Then "
-        "grab your copy's **id** from its URL — the long string between `/d/` and `/edit` in "
-        "`docs.google.com/spreadsheets/d/`**`<id>`**`/edit`. You'll paste it into step D. (Opening "
-        "by id, not name, means two copies that share the name \"Copy of …\" are never confused.)")]
+        "take your copy's **id** from its URL — the long string between `/d/` and `/edit`. You'll "
+        "paste it into step D. (Opening by id, not name, means two copies both called \"Copy "
+        "of …\" are never confused.)")]
     cells += [md(
         "### B · Apply the operationalized scheme   *(E&K Steps 4–5; Fuoli · ②)*",
         "",
-        "Before you label, restate the **decidable rule** you're annotating against (the scheme "
-        "your team drafted in the earlier sessions) and skim the guidelines and per-level "
+        "Before you label, restate the **decidable rule** you're annotating against — the scheme "
+        "your team drafted in the earlier sessions — and skim the guidelines and per-level "
         "examples. One label per unit; know your label set cold. → interpret this on **step B** "
         "(slides).")]
     cells += [md(
         "### C · Annotate blind, in pairs   *(E&K Step 6 · ③)*",
         "",
-        "This step happens **entirely in the Sheet — no code**, in the **`round1`** tab. One of "
-        "you fills **`CoderA`** and the other fills **`CoderB`**, *without looking at each "
-        "other's column*. Leave "
-        "`Final` blank for now. Use `Note` for anything you found hard to decide; those notes "
-        "are your evidence in step E.",
+        "**Entirely in the Sheet — no code**, in the **`round1`** tab. One of you fills "
+        "**`CoderA`** and the other **`CoderB`**, *without looking at each other's column*. "
+        "Leave `Final` blank. Use `Note` for anything you found hard to decide; those notes are "
+        "your evidence in step E.",
         "",
         "::: {.callout-important}",
         "## Stop here and go annotate",
@@ -998,18 +1024,17 @@ def day2_s5():
         "### D · Measure agreement   *(E&K Step 6 · ③)*   ✏️ YOU EDIT",
         "",
         "Colab opens here — run the two helper cells below first. Then read your copied sheet "
-        "back in and measure how much the two of you "
-        "agreed: **percent agreement**, **Cohen's κ** (agreement corrected for chance), and an "
-        "**annotator-vs-annotator confusion matrix** — the diagonal is where you agreed, the "
-        "off-diagonal cells show *which label pairs* you confuse.",
+        "back in and measure how much the two of you agreed: **percent agreement**, **Cohen's "
+        "κ** (agreement corrected for chance), and an **annotator-vs-annotator confusion "
+        "matrix**, whose off-diagonal cells show *which label pairs* you confuse.",
         "",
         "::: {.callout-note collapse=\"true\"}",
         "## How to read what this prints — the interpretation (step D, slides)",
         "Percent agreement flatters two coders who both lean on the same label — they agree a "
         "lot *by luck*. **Cohen's κ** strips that luck out, so trust the κ, not the percentage "
-        "(recall S4: 80% raw agreement was only κ ≈ 0.52). Then read the matrix for the *one "
-        "off-diagonal cell* dragging κ down — that specific label pair is your to-do list for "
-        "step E. You will code κ yourself from scratch in the S6 notebook.",
+        "(recall S4: 80% raw agreement was only κ ≈ 0.52). Then find the *one off-diagonal "
+        "cell* dragging κ down — that label pair is your to-do list for step E. You will code κ "
+        "yourself from scratch in the S6 notebook.",
         ":::")]
     s5_libs = ["sheets", "load_gold"]
     cells += [setup_cell(
@@ -1034,10 +1059,10 @@ def day2_s5():
         "",
         "::: {.callout-note collapse=\"true\"}",
         "## What to do with this list — the judgment (step E, slides)",
-        "For the label pair the matrix flagged, **refine the scheme / guidelines** so that "
-        "ambiguity becomes decidable (add a rule, a boundary case, an example). Then re-annotate "
+        "For the label pair the matrix flagged, **refine the scheme / guidelines** until the "
+        "ambiguity becomes decidable: add a rule, a boundary case, an example. Then re-annotate "
         "in a **fresh round tab** (below) and re-run **step D** to see κ move. Iterate until "
-        "agreement is acceptable — that is Fuoli's principle 2 in action.",
+        "agreement is acceptable — Fuoli's principle 2 in action.",
         ":::")]
     cells += [code(
         'disagreements(rows)   # the rows you two labelled differently — your worklist')]
@@ -1046,17 +1071,16 @@ def day2_s5():
         "## Re-annotate in a fresh round tab, then re-run step D",
         "Don't overwrite `round1`. In the Sheet, **right-click the `round1` tab → Duplicate**, "
         "rename the copy **`round2`**, and re-label the confused items *there*. Then set "
-        "**`ROUND = \"round2\"`** in step D and re-run it. `round1` stays intact — so every run "
-        "is reproducible, and you can watch κ climb round over round. Repeat (round3, …) until κ "
-        "is acceptable before moving to step F.",
+        "**`ROUND = \"round2\"`** in step D and re-run it. `round1` stays intact, so every run is "
+        "reproducible and you can watch κ climb round over round. Repeat (round3, …) until κ is "
+        "acceptable, then move to step F.",
         ":::")]
     cells += [md(
         "### F · Adjudicate → gold   *(E&K Step 6 → feeds ④⑤)*   ✏️ YOU EDIT",
         "",
         "The last disagreements don't refine away — you **decide** them. In your **latest round "
-        "tab**, fill a single `Final` "
-        "label for every row (for rows you already agreed on, `Final` is just that "
-        "agreed label), then read it back and convert it to canonical form. `to_canonical` "
+        "tab**, fill a single `Final` label for every row (where you already agreed, `Final` is "
+        "that agreed label), then read it back and convert it to canonical form. `to_canonical` "
         "refuses anything that isn't one of your allowed labels, so typos surface here rather "
         "than silently corrupting your gold set.")]
     cells += [code(
@@ -1065,9 +1089,9 @@ def day2_s5():
         'my_gold[:3]                                     # peek at the first three items')]
     cells += [md(
         "**How does your gold compare with the published gold?** The CEFR-SP labels came from "
-        "language-education professionals, and we kept only sentences where two of them agreed. "
-        "Differing from them is **not** simply *wrong* — Arase's own experts agreed exactly "
-        "only 37.6% of the time — but each difference is worth a look and a defensible reason. "
+        "language-education professionals, keeping only sentences where two of them agreed. "
+        "Differing from them is not simply *wrong* — Arase's own experts agreed exactly only "
+        "37.6% of the time — but each difference needs a look and a defensible reason. "
         "→ interpret this on **step F** (slides).")]
     cells += libs("load_gold")
     cells += [code(
@@ -1092,10 +1116,9 @@ def day2_s5():
         "## Reference — how the template sheets were built (you don't run this)",
         "",
         "The template Sheet you copied in step A was generated once, ahead of the session, so "
-        "the sample is fixed and reproducible. It uses the `create_annotation_sheet` helper "
-        "(loaded above) fed by a **seeded** random draw — one sheet per track (`cefr`, "
-        "`cars50`, `raamove`, `l2_errors`). Shown here so the sampling is transparent; you do "
-        "**not** run it.",
+        "the sample is fixed and reproducible: the `create_annotation_sheet` helper (loaded "
+        "above) fed by a **seeded** random draw, one sheet per track (`cefr`, `cars50`, "
+        "`raamove`, `l2_errors`). Shown so the sampling is transparent; you do **not** run it.",
         "",
         "```python",
         "import random",
@@ -1152,12 +1175,12 @@ def day2_s6():
         "",
         "::: {.callout-note}",
         "## Today runs on *frozen* predictions — no API key, no live model",
-        "You met the live model on Day 1 and saw its answers change from run to run. When "
-        "you're learning to *measure* quality, that wobble is just noise fighting the lesson — "
-        "so today the model's predictions are **pre-computed and committed** to a file. You "
-        "load them, and everyone's precision / recall / F1 / κ come out **identical every "
-        "run**: if your number differs from the slide, you have a bug, not a different model. "
-        "You'll run the model yourself (with the key) from Day 3 on.",
+        "On Day 1 you saw the live model's answers change from run to run, which would get in "
+        "the way while you are learning to *measure* quality. So today's predictions are "
+        "**pre-computed and committed** to a file. You load them, and everyone's precision / "
+        "recall / F1 / κ come out **identical every run**: if your number differs from the "
+        "slide, you have a bug, not a different model. You run the model yourself, with a key, "
+        "from Day 3 on.",
         ":::")]
     s6_libs = ["load_gold", "predictions", "pair_up", "show_2x2", "evaluate", "show_errors"]
     cells += [setup_cell(
@@ -1170,10 +1193,9 @@ def day2_s6():
     cells += [md(
         "### What a *gold file* actually is",
         "",
-        "Before we load one, look at the shape up close. A gold standard is stored as "
-        "**JSON** text — the same `{\"id\", \"text\", \"label\"}` records you met on Day 1, "
-        "written to a file. `json.loads(...)` turns that text into a Python **list of dicts** "
-        "you can index into.")]
+        "A gold standard is stored as **JSON** text — the same `{\"id\", \"text\", \"label\"}` "
+        "records you met on Day 1, written to a file. `json.loads(...)` turns that text into a "
+        "Python **list of dicts** you can index into.")]
     cells += [code(
         'raw = \'[{"id": 1, "text": "Hello.", "label": "A1"}, {"id": 2, "text": "Nevertheless, the findings were inconclusive.", "label": "C1"}]\'',
         'items = json.loads(raw)               # JSON text → list of dicts',
@@ -1181,10 +1203,9 @@ def day2_s6():
         'print("first record:", items[0])         # the whole first dict',
         'print("its label:", items[0]["label"])   # index: list by position, dict by key')]
     cells += [md(
-        "Files are read and written with **`with open(...) as f:`** — it opens the file, "
-        "gives it to you as `f`, and closes it automatically when the block ends. You won't "
-        "write this yourself (the 🔧 Library cells handle it), but you'll see it, so here it "
-        "is once, in the open:")]
+        "Files are read and written with **`with open(...) as f:`** — it opens the file, gives "
+        "it to you as `f`, and closes it when the block ends. The 🔧 Library cells do this for "
+        "you, but you will see it around, so here it is once:")]
     cells += [code(
         'with open("example_gold.json", "w", encoding="utf-8") as f:   # write',
         '    json.dump(items, f)              # the list of dicts becomes JSON text on disk',
@@ -1195,14 +1216,14 @@ def day2_s6():
     cells += [md(
         "### Load the gold standard and the frozen predictions",
         "",
-        "`load_gold(...)` does exactly the read you just saw, but from a URL. Notice the shape: "
-        "every dataset this week is `{\"id\", \"text\", \"label\"}`. That is the *only* data "
-        "shape you have to learn.",
+        "`load_gold(...)` does the read you just saw, but from a URL. Every dataset this week "
+        "has the same shape, `{\"id\", \"text\", \"label\"}` — the *only* data shape you have "
+        "to learn.",
         "",
-        "Below the gold is the prompt we sent the model — `{text}` is where each sentence gets "
-        "slotted in. We ran it **once** over the gold set and committed the answers, so today "
-        "you load that frozen file rather than call the model. (From Day 3 you'll run prompts "
-        "like this yourself.)")]
+        "Below the gold is the prompt we sent the model, where `{text}` is the slot each "
+        "sentence drops into. We ran it **once** over the gold set and committed the answers, "
+        "so today you load that frozen file rather than call the model. (From Day 3 you run "
+        "prompts like this yourself.)")]
     cells += [code(
         'gold = load_gold(GOLD_URL)',
         '',
@@ -1220,9 +1241,9 @@ def day2_s6():
     cells += [md(
         "## Part A · Corpus Lab — build the metrics yourself",
         "",
-        "In S5 `annotator_agreement()` printed Cohen's κ *for* you. In a moment `evaluate()` "
-        "will print precision, recall and F1 *for* you too. **First you build them.** Once "
-        "you have written these formulas, no number in your final project is a black box.",
+        "In S5 `annotator_agreement()` printed Cohen's κ *for* you, and in a moment "
+        "`evaluate()` will print precision, recall and F1 for you too. **First you build "
+        "them**, so that no number in your final project is a black box.",
         "",
         "Work in **ten small steps**. Each one is on a slide with the code and what it prints; "
         "type it here, run it, and check your output matches before moving on. Nothing here "
@@ -1230,16 +1251,15 @@ def day2_s6():
         "",
         "::: {.callout-tip}",
         "## If you fall behind, copy the slide",
-        "Every cell below is short and self-contained. Copy the code from the slide, run it, "
-        "and you're back with the class — then read it and make sure you can say what each "
-        "line does.",
+        "Every cell below is short and self-contained. Copy the code from the slide and run it "
+        "to catch up, then read it and make sure you can say what each line does.",
         ":::")]
 
     cells += [md(
         "### Step 1 · Collapse to one yes/no question",
         "",
-        "CEFR has six levels. Six levels means **36** confusion-matrix cells — too many to "
-        "learn on. So for Part A we ask **one** thing:",
+        "CEFR's six levels mean **36** confusion-matrix cells — too many to learn on. So Part A "
+        "asks **one** thing:",
         "",
         "> **Is this sentence *advanced* — C1 or C2?**",
         "",
@@ -1294,8 +1314,8 @@ def day2_s6():
         "| gold **yes** | **TP = 3**    | **FN = 2**   |",
         "| gold **no**  | **FP = 1**    | **TN = 6**   |",
         "",
-        "TP: rows 18, 21, 27 · FN: rows 22, 24 (real C1s the model missed) · FP: row 28 (it "
-        "cried wolf on a B2) · TN: the other six.",
+        "TP: rows 18, 21, 27 · FN: rows 22, 24 (real C1s the model missed) · FP: row 28 (a B2 "
+        "it called advanced) · TN: the other six.",
         "",
         "**Everything else in Part A is arithmetic on these four numbers** — and your code has "
         "to reproduce them.",
@@ -1328,8 +1348,8 @@ def day2_s6():
         "",
         "Four cells in the table → four branches, **in the same order**. `elif` means *\"only "
         "if none of the above matched\"*, so the branches are checked top to bottom and "
-        "**exactly one** runs — every item lands in exactly one cell. The final `else` needs "
-        "no condition: if it isn't TP, FP or FN, it can only be TN.",
+        "**exactly one** runs — every item lands in exactly one cell. The final `else` needs no "
+        "condition: if it isn't TP, FP or FN, it can only be TN.",
         "",
         "✏️ **Change the index and re-run** to see each branch fire.")]
     cells += [code(
@@ -1349,13 +1369,13 @@ def day2_s6():
     cells += [md(
         "### Step 4 · Make it a function",
         "",
-        "You are about to ask that same question of all 12 rows. Copying the ladder twelve "
-        "times would be absurd — so **name it once**. Two changes from step 3, and only two: "
-        "it is wrapped in `def`, and every `print` became a **`return`**.",
+        "You are about to ask that same question of all 12 rows, so rather than copy the "
+        "branches twelve times, **name them once**. Two changes from step 3, and only two: it "
+        "is wrapped in `def`, and every `print` became a **`return`**.",
         "",
-        "`print` puts a value on the screen and then it is gone; `return` hands the value "
-        "back to whoever called the function, so you can **keep it, store it, count it** — "
-        "which is exactly what step 5 needs.")]
+        "`print` puts a value on the screen and then it is gone; `return` hands the value back "
+        "to whoever called the function, so you can **keep it, store it, count it** — which is "
+        "what step 5 needs.")]
     cells += [code(
         'def outcome(gold_label, pred_label):',
         '    """Which of the four cells does this one item land in?"""',
@@ -1390,12 +1410,12 @@ def day2_s6():
         'print(decisions)                   # 12 verdicts, in the table\'s order')]
     cells += [md(
         "Twelve items in, twelve verdicts out, **in the same order as the table**. Position 6 "
-        "is `'FN'` — that's row 22, the racing-bicycle sentence the model missed.",
+        "is `'FN'` — row 22, the racing-bicycle sentence the model missed.",
         "",
-        "We *could* have counted as we went. We keep the list because **the list is the "
-        "evidence**: a metric is a summary, and `decisions` is the thing being summarised. "
-        "Every `'FN'` and `'FP'` in it points at a specific sentence you can read and argue "
-        "about — that is error analysis, and it's where the research questions live.")]
+        "We could have counted as we went, but a metric is only a summary and `decisions` is "
+        "the thing being summarised. Every `'FN'` and `'FP'` in it points at a specific "
+        "sentence you can read and argue about — that is error analysis, and where the "
+        "research questions come from.")]
 
     cells += [md(
         "### Step 6 · Tally the verdicts",
@@ -1422,8 +1442,7 @@ def day2_s6():
     cells += [md(
         "- The **diagonal** (3 and 6) is everything the model got right — 9 of 12.",
         "- The **off-diagonal** (2 and 1) is everything it got wrong, **split by direction**: "
-        "two *misses* and one *false alarm*. A single accuracy figure would hide that "
-        "difference completely.",
+        "two misses and one false alarm. A single accuracy figure hides that difference.",
         "",
         "Now the margins — you need them for κ in step 9:",
         "",
@@ -1433,8 +1452,9 @@ def day2_s6():
         "| gold **no**  | 1 | 6 | **7** |",
         "| **total**    | **4** | **8** | **12** |",
         "",
-        "The gold set calls 5 sentences advanced; the model calls only **4**. It is slightly "
-        "**stingy** with the positive label — watch that habit, it comes back in Part B.")]
+        "The gold set calls 5 sentences advanced; the model calls only **4**. It uses the "
+        "positive label slightly less often than it should — that pattern comes back in Part "
+        "B.")]
 
     cells += [md(
         "### Step 8 · Precision, recall, F1",
@@ -1443,18 +1463,18 @@ def day2_s6():
         "",
         "$$P = \\frac{TP}{TP + FP}$$",
         "",
-        "Numbers first, so you can check it on paper — then the same thing read off the "
-        "tally, so it survives a change of data:")]
+        "Numbers first, so you can check it on paper, then the same thing read off the tally, "
+        "so it survives a change of data:")]
     cells += [code(
         'print(3 / (3 + 1))                                  # TP / (TP + FP), by hand',
         'print(tally["TP"] / (tally["TP"] + tally["FP"]))    # the same, from the tally')]
     cells += [md(
         "Of the 4 sentences the model called advanced, 3 really were. **Precision = 0.75.**",
         "",
-        "Now as a function — and note the guard: if a model never predicts the positive "
-        "class, `TP + FP` is 0 and Python raises `ZeroDivisionError`. Returning `0.0` says "
-        "*\"it earned no credit\"*, which is the honest reading. **Every metric you write "
-        "today gets this guard.**")]
+        "Now as a function, with a guard: if a model never predicts the positive class, "
+        "`TP + FP` is 0 and Python raises `ZeroDivisionError`. Returning `0.0` says it earned "
+        "no credit, which is the honest reading. **Every metric you write today gets this "
+        "guard.**")]
     cells += [code(
         'def precision(tally):',
         '    """Of everything CALLED advanced, how much really was?  TP / (TP + FP)"""',
@@ -1488,8 +1508,8 @@ def day2_s6():
         "Three of the five genuinely advanced sentences were found. **Recall = 0.60.**",
         "",
         "Precision and recall pull against each other: flag everything and recall hits 1.0 "
-        "while precision collapses. **F1** is the harmonic mean, so a high score can't cover "
-        "for a low one:",
+        "while precision collapses. **F1** is their harmonic mean, so a high score cannot "
+        "cover for a low one:",
         "",
         "$$F_1 = 2 \\cdot \\frac{P \\cdot R}{P + R}$$")]
     cells += [code(
@@ -1507,13 +1527,13 @@ def day2_s6():
         "::: {.callout-important}",
         "## The gap between P and R describes the model",
         "**Precision 0.75 > recall 0.60** → this model is **conservative** about calling "
-        "something advanced: when it commits it's usually right, but it lets real C1s slip "
-        "past as B2. Both sentences it missed were **C1 → B2** — near misses, not wild errors.",
+        "something advanced: when it commits it is usually right, but it labels real C1s as "
+        "B2. Both sentences it missed were **C1 → B2**, near misses rather than large errors.",
         "",
         "*Which error can you live with?* is a **research design** question, not a statistics "
-        "one. Screening texts for a C1 reading list? A miss is expensive — favour recall. "
-        "Making a claim about which sentences are advanced? A false alarm is expensive — "
-        "favour precision. Decide **before** you report a score.",
+        "one. Screening texts for a C1 reading list, a miss is expensive — favour recall. "
+        "Claiming which sentences are advanced, a false alarm is expensive — favour precision. "
+        "Decide **before** you report a score.",
         ":::")]
 
     cells += [md(
@@ -1525,11 +1545,11 @@ def day2_s6():
         'p_o = (tally["TP"] + tally["TN"]) / n   # the diagonal (both agreed), over the total',
         'print(round(p_o, 3))')]
     cells += [md(
-        "Gold and model agree on 9 of 12. Sounds decent — but **so would a lazy model that "
-        "answered \"no\" to everything**: it would score 7/12 while knowing nothing at all. "
-        "Raw agreement flatters whoever plays the odds.",
+        "Gold and model agree on 9 of 12. But **a model that answered \"no\" to everything** "
+        "would score 7/12 while knowing nothing — raw agreement flatters a rater who just uses "
+        "the commonest label.",
         "",
-        "So subtract the agreement you'd get **by luck**. $p_e$ multiplies the two raters' "
+        "So subtract the agreement you would get **by luck**. $p_e$ multiplies the two raters' "
         "own rates, label by label — the row and column totals from step 7:")]
     cells += [code(
         '# each line: how often GOLD says it × how often the MODEL says it = agreement by luck',
@@ -1541,8 +1561,8 @@ def day2_s6():
         "- `p_yes`: gold says yes **5/12** × model says yes **4/12** = 0.139",
         "- `p_no`: gold says no **7/12** × model says no **8/12** = 0.389",
         "",
-        "**More than half** the agreement we observed (0.75) was available for free. κ asks "
-        "how much of what luck *couldn't* explain the two of them actually achieved:",
+        "**More than half** the agreement we observed (0.75) was available by luck alone. κ "
+        "asks how much of what luck *couldn't* explain the two of them actually achieved:",
         "",
         "$$\\kappa = \\frac{p_o - p_e}{1 - p_e}$$")]
     cells += [code(
@@ -1578,9 +1598,9 @@ def day2_s6():
     cells += [md(
         "### Step 10 · Scale up, then check yourself",
         "",
-        "Nothing changes but the input. `pair_up` pairs each gold item with the model's "
-        "answer and collapses both to yes/no — giving all 72 items in exactly the shape your "
-        "loop already expects.")]
+        "Nothing changes but the input. `pair_up` pairs each gold item with the model's answer "
+        "and collapses both to yes/no, giving all 72 items in the shape your loop already "
+        "expects.")]
     cells += [code(
         '### Step 1: all 72 items, in the same yes/no shape as the 12 ###',
         'all_items = pair_up(gold, predictions, ADVANCED)',
@@ -1602,9 +1622,9 @@ def day2_s6():
         '      "  F1", round(f1(tally), 3),',
         '      "  kappa", round(kappa(tally), 3))')]
     cells += [md(
-        "**The 12-item slice was not the whole story** — precision rose, recall stayed low. "
-        "The pattern held: *stingy, but usually right when it commits.* Twelve items is "
-        "enough to learn the mechanics, never enough to judge a model.",
+        "**The 12-item slice was not the whole story** — precision rose, recall stayed low. The "
+        "pattern held: it under-uses the positive label, but is usually right when it commits. "
+        "Twelve items is enough to learn the mechanics, never enough to judge a model.",
         "",
         "Now let scikit-learn mark your work:")]
     cells += [code(
@@ -1674,33 +1694,30 @@ def day2_s6():
         "- **`macro avg`** is the plain average of the six F1s: every class counts equally, "
         "**however rare it is**. That's the honest headline for an imbalanced set.",
         "",
-        "**Brace yourself: overall accuracy is about 39%.** Before you conclude the model is "
-        "useless, look at *how* it is wrong. Roughly **97% of its answers are within one "
-        "level** of the gold label — only two sentences in the whole set miss by two, and "
-        "nothing misses by more. A model guessing at random would scatter A1s against C2s. "
-        "This one doesn't: it has the right idea and imprecise thresholds, which is a very "
-        "different failure from not understanding the task — and no single accuracy number "
-        "can tell the two apart.",
+        "**Overall accuracy is about 39%** — but look at *how* it is wrong. Roughly **97% of "
+        "its answers are within one level** of the gold label, only two sentences miss by two, "
+        "and none by more; random guessing would scatter A1s against C2s instead. It has the "
+        "right idea and imprecise thresholds, which is a different failure from not "
+        "understanding the task, and no single accuracy number can tell the two apart.",
         "",
         "### Read the matrix *down the columns*",
         "",
-        "Rows are gold, so *rows* tell you what happened to each true level. But read **down "
-        "the columns** — how often the model *says* each level. The gold set is balanced, 12 "
-        "per level, so an unbiased rater would use each label about 12 times.",
+        "Rows are gold, so *rows* tell you what happened to each true level. Read **down the "
+        "columns** instead — how often the model *says* each level. The gold set is balanced, "
+        "12 per level, so an unbiased rater would use each label about 12 times.",
         "",
-        "This one says **A2 twenty times** and **A1 four times**; it says **C2 exactly once** "
-        "in 72 chances. Everything is squeezed toward the **middle of the scale**. Ask "
-        "yourself why a rater — human or machine — under pressure to judge something as fuzzy "
-        "as \"difficulty\" might drift to the middle and avoid committing to the extremes. "
-        "That is your Part-A finding again: precision 0.89 but recall 0.67, because it "
-        "under-uses the top of the scale. **You will meet this tendency in your own "
-        "annotation work.**",
-        "",
+        "This one says **A2 twenty times**, **A1 four times**, and **C2 exactly once** in 72 "
+        "chances: everything is squeezed toward the **middle of the scale**. A rater — human "
+        "or machine — judging something as fuzzy as \"difficulty\" often drifts to the middle "
+        "rather than commit to the extremes, and **you will meet this in your own annotation "
+        "work**. It is your Part-A finding again: precision 0.89 but recall 0.67, because it "
+        "under-uses the top of the scale.")]
+    cells += [md(
         "### Two κ values, same predictions",
         "",
-        "Plain **κ = 0.27** (\"fair\" / \"minimal\") — because plain κ treats **A1 → A2 as "
-        "exactly as wrong as A1 → C2**. Quadratic **weighted κ = 0.85** — because CEFR levels "
-        "are **ordinal**, and a near miss *should* hurt less.",
+        "Plain **κ = 0.27** (\"fair\" / \"minimal\"), because plain κ treats **A1 → A2 as "
+        "exactly as wrong as A1 → C2**. Quadratic **weighted κ = 0.85**, because CEFR levels "
+        "are **ordinal** and a near miss should hurt less.",
         "",
         "::: {.callout-important}",
         "## Report the one that matches your labels",
@@ -1712,25 +1729,24 @@ def day2_s6():
     cells += [md(
         "### Error analysis — the model's fault, or the scheme's?",
         "",
-        "There are 44 misses — too many to read one by one, and you don't need to. Skim a "
-        "dozen, then look specifically at the rows where the gold label is **C2** or **A1**: "
-        "the ends of the scale are where this model disagrees with the gold most often, so "
-        "that is where the interesting arguments are.",
+        "There are 44 misses — too many to read one by one. Skim a dozen, then look "
+        "specifically at the rows where the gold label is **C2** or **A1**: the ends of the "
+        "scale are where this model disagrees with the gold most often.",
         "",
-        "For each miss you read, ask: is the **gold** defensible, or is this a genuinely "
-        "borderline sentence? Would **you and your partner** have agreed on it? Would a "
-        "**better-written scheme** have prevented the error? *\"Is the disagreement the "
-        "model's fault or the scheme's?\"* is the heart of annotation work — and it's the "
-        "question your mini-project has to answer honestly.")]
+        "For each miss, ask: is the **gold** defensible, or is this a genuinely borderline "
+        "sentence? Would **you and your partner** have agreed on it? Would a **better-written "
+        "scheme** have prevented the error? *\"Is the disagreement the model's fault or the "
+        "scheme's?\"* is the central question of annotation work, and the one your "
+        "mini-project has to answer honestly.")]
     cells += [code(
         'errors = show_errors(gold, predictions)   # a table of every item it got wrong',
         'errors.head(15)     # ...or errors[errors["gold"] == "C2"] to see the hard end')]
     cells += [md(
         "::: {.callout-note}",
         "## The question you ask decides the error you can see",
-        "Look back at rows 19, 23 and 25 in step 1 — the three obituary sentences. In Part "
-        "A's yes/no world the model got all three **right** (correctly \"not advanced\"). In "
-        "six classes it called every one of them A2 instead of A1. Same predictions, same "
+        "Look back at rows 19, 23 and 25 in step 1 — the three obituary sentences. Under Part "
+        "A's yes/no question the model got all three **right** (correctly \"not advanced\"). "
+        "In six classes it called every one of them A2 instead of A1. Same predictions, same "
         "gold; a different question made a different error visible.",
         ":::")]
 
@@ -1759,8 +1775,8 @@ def day3():
         "| 1 | **few-shot** | add a few labeled examples |",
         "| 2 | **chain-of-thought** | ask the model to reason before answering |",
         "",
-        "Record the macro-F1 (the `macro avg` row of `evaluate`) after each run so you can "
-        "tell a story about what helped.")]
+        "Record the macro-F1 (the `macro avg` row of `evaluate`) after each run, so you can say "
+        "which technique helped.")]
     cells += [md(
         "::: {.callout-important}",
         "## From today you run the model yourself — you need a free API key",
@@ -1770,9 +1786,8 @@ def day3():
         "Colab **Secrets** as `GEMINI_API_KEY` — one-time, ~2 minutes, no install. Full steps: "
         "[Get a free Gemini API key](../resources/tools/gemini-api-key.md). "
         "When the setup cell prints `LLM backend: Gemini API (...)` you're set; if it still says "
-        "`Colab Gemini`, your secret isn't set or its notebook-access toggle is off. Don't worry "
-        "about rate limits crashing your loop — that's already handled, and explained right after "
-        "Setup, below.",
+        "`Colab Gemini`, your secret isn't set or its notebook-access toggle is off. Rate limits "
+        "are already handled for you, and explained at the end of Part A.",
         ":::")]
     cells += [md("### Setup — run this first")]
     day3_libs = ["load_gold", "run_prompt", "evaluate", "show_errors"]
@@ -1783,43 +1798,44 @@ def day3():
         gold_comment="CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.",
         val_url=CEFR_VAL_URL)]
 
-    # ---- staged walkthrough: the rate-limit guard quietly running in Setup ----
-    cells += [md(
-        "### Why your calls don't crash the lab — two different clocks",
+    # ---- staged walkthrough of the rate-limit guard already running in Setup.
+    # Built here, but appended at the END of Part A: nothing in the tutorial depends
+    # on it, and putting it between Setup and the first prompt made it four of the
+    # nine cells a student ran before seeing any result. By the end of Part A they
+    # have made ~150 calls, which is the point at which the guard is worth reading
+    # about — and it is Part B where they start writing loops of their own.
+    rate_limit_cells = [md(
+        "## Why your calls didn't crash the lab — two different clocks",
         "",
         "The free tier limits you in **two independent ways**, on two different clocks:",
         "",
-        "- **RPM** — requests per *minute*. A speed limit: how fast you're allowed to call.",
-        "- **RPD** — requests per *day*. A fuel tank: how much you're allowed to use, total, "
-        "today.",
+        "- **RPM** — requests per *minute*: how fast you're allowed to call.",
+        "- **RPD** — requests per *day*: how many calls you're allowed in total, today.",
         "",
-        "A plain `for` loop over 72 sentences can blow through the RPM speed limit in the "
-        "first few seconds — long before it's used any meaningful share of the day's fuel "
-        "tank. This isn't hypothetical: while building this course, a loop tripped a 15-per-"
-        "minute cap after only 16 calls in one minute, while just 126 of that day's 500-call "
-        "budget had been used. The fix isn't \"use less\" — it's \"go slower, and know which "
-        "kind of limit you hit.\"",
+        "A plain `for` loop over 72 sentences can pass the RPM limit in the first few seconds, "
+        "long before it has used much of the day's RPD budget. While building this course, a "
+        "loop tripped a 15-per-minute cap after only 16 calls in one minute, with just 126 of "
+        "that day's 500 calls used. So the fix is not to use less, but to go slower and know "
+        "which kind of limit you hit.",
         "",
-        "Your Setup cell above already has a guard built in that does exactly this. The rest "
-        "of this section walks through it, piece by piece — you don't need it to keep "
-        "working, but it's worth understanding what's protecting your Corpus Lab.")]
+        "The Setup cell has a guard that does this, and it has been running under every call "
+        "you made. The rest of this section walks through it — you don't need it to keep "
+        "working, but it protects every Corpus Lab loop you write.")]
 
-    cells += [md(
+    rate_limit_cells += [md(
         "### Piece 1 — always leave a gap between calls (pacing)",
         "",
-        "The simplest fix: never call the model faster than the speed limit allows. If the "
-        "limit is 15 calls per minute, that's one call every `60 / 15 = 4` seconds — so before "
-        "each call, check how long it's been since the *last* one, and wait out the "
-        "difference.",
+        "Never call the model faster than the limit allows. At 15 calls per minute that is one "
+        "call every `60 / 15 = 4` seconds, so before each call, check how long it has been "
+        "since the last one and wait out the difference.",
         "",
-        "That means the function has to **remember** when the last call happened, across "
-        "calls. Normally a function forgets everything the moment it returns — its local "
-        "variables disappear. The `global` keyword is how you tell Python \"no, remember "
-        "this one, and share it across every call.\" That's the only new keyword in this "
-        "whole guard.",
+        "So the function has to **remember** when the last call happened. Normally a function "
+        "forgets its local variables the moment it returns; the `global` keyword tells Python "
+        "to keep this one and share it across every call. That is the only new keyword in the "
+        "guard.",
         "",
         "Try it below — no model, no internet, just pacing:")]
-    cells += [code(
+    rate_limit_cells += [code(
         'import time',
         '',
         '### Step 1: two things to remember — when we last called, and how long to wait ###',
@@ -1840,27 +1856,23 @@ def day3():
         'for i in range(3):',
         '    wait_your_turn()')]
 
-    cells += [md(
+    rate_limit_cells += [md(
         "### Piece 2 — if you still get told to slow down, wait and try again",
         "",
-        "Pacing alone isn't quite enough — the server can still say \"too fast, try again "
-        "later,\" and a network hiccup can raise an error for reasons that have nothing to "
-        "do with rate limits at all. `try`/`except` is Python's way of saying: *try this, "
-        "and if it breaks, do something else instead of crashing.*",
+        "Pacing alone isn't enough: the server can still say \"too fast, try again later\", and "
+        "a network failure can raise an error for reasons unrelated to rate limits. "
+        "`try`/`except` says *try this, and if it breaks, do something else instead of "
+        "crashing.* What to do depends on the kind of failure, which the error message tells "
+        "you:",
         "",
-        "The something-else here depends on **what kind of failure it is**, which we can "
-        "tell from the error message:",
+        "- **Not rate-limit shaped** (a typo in your prompt, a dropped connection) — a real "
+        "bug. Don't retry; let it raise so you notice.",
+        "- **Per-minute limit** — wait and try again; it refills every minute.",
+        "- **Per-day limit** — retrying is pointless, since it won't refill until tomorrow. The "
+        "guard gives up immediately with a clear message instead of hanging.",
         "",
-        "- **Not rate-limit shaped at all** (a typo in your prompt, a dropped connection) — "
-        "a real bug. Don't retry it; let it raise so you notice.",
-        "- **Per-minute limit** — wait a bit and try again; the limit refills every minute, "
-        "so this is temporary.",
-        "- **Per-day limit** — retrying is pointless. It won't refill until tomorrow no "
-        "matter how long you wait, so the guard gives up immediately with a clear message "
-        "instead of silently hanging.",
-        "",
-        "A small demo — no model, just the `try`/`except` shape, retrying until it works:")]
-    cells += [code(
+        "A demo — no model, just the `try`/`except` shape, retrying until it works:")]
+    rate_limit_cells += [code(
         '### Step 1: a stand-in for the real model — it fails twice, then works ###',
         'attempt_count = 0            # how many times we have called it so far',
         '',
@@ -1881,21 +1893,19 @@ def day3():
         '    except Exception as error:   # it broke — `error` holds the message',
         '        print(f"  attempt {attempt+1} failed ({error}) — trying again...")')]
 
-    cells += [md(
+    rate_limit_cells += [md(
         "### Putting the two pieces together",
         "",
         "\"Always wait a bit\" (piece 1) plus \"if told to slow down, wait longer and try "
-        "again, but give up right away on a *daily* limit\" (piece 2) is **exactly** what's "
-        "inside `generate_text` in the Setup cell above. You've been calling it since your "
-        "very first prompt on Day 1, and it's been quietly protecting every call — it'll "
-        "protect every Corpus Lab loop you write from here on, too.",
+        "again, but give up at once on a *daily* limit\" (piece 2) is what is inside "
+        "`generate_text` in the Setup cell above. You have been calling it since your first "
+        "prompt on Day 1, and it protects every Corpus Lab loop you write from here on.",
         "",
-        "If you're curious to see the fancier version — one that also **remembers past "
-        "answers so you never pay for the same prompt twice** — see "
+        "A fuller version — one that also **remembers past answers so you never pay for the "
+        "same prompt twice** — is in "
         "[`resources/extra/handling-rate-limits.ipynb`](../resources/extra/handling-rate-limits.ipynb). "
-        "It uses one more advanced idea we haven't covered yet (a function that builds and "
-        "returns another function), but the underlying logic is identical to what you just "
-        "read.")]
+        "It uses one idea we haven't covered (a function that builds and returns another "
+        "function), but the logic is identical to what you just read.")]
 
     cells += libs(*day3_libs)
 
@@ -1910,11 +1920,11 @@ def day3():
         "| `val` | 24 | **Tune on this.** Every prompt you try gets scored here. |",
         "| `gold` | 72 | **Report on this.** Touched once, at the very end. |",
         "",
-        "Why bother? If you try five prompts on the 72 sentences and keep the one that scored "
-        "highest, that score is no longer an estimate of how the prompt does on *new* "
-        "sentences — you picked it *because* it suited those 72. The number is inflated and "
-        "you have no way to say by how much. Tuning somewhere else and reporting once keeps "
-        "the final figure honest. This is the split S7 introduced.")]
+        "If you try five prompts on the 72 sentences and keep the highest score, that score no "
+        "longer estimates how the prompt does on *new* sentences — you picked it *because* it "
+        "suited those 72, so the number is inflated and you cannot say by how much. Tuning "
+        "somewhere else and reporting once keeps the final figure honest. This is the split S7 "
+        "introduced.")]
     cells += [code(
         'val  = load_gold(VAL_URL)    # 24 sentences — tune every prompt against these',
         'gold = load_gold(GOLD_URL)   # 72 sentences — held out; scored ONCE at the end',
@@ -1939,9 +1949,9 @@ def day3():
     cells += [md(
         "### Iteration 1 — few-shot   ✏️ YOU EDIT",
         "",
-        "Add a few **labeled examples** so the model can pattern-match. The examples below "
-        "are hand-written. If you want more, write your own — but never lift one from `val` "
-        "or `gold`, or you are showing the model the answers to its own test.")]
+        "Add a few **labeled examples** so the model can pattern-match. The ones below are "
+        "hand-written; write your own if you want more, but never take one from `val` or "
+        "`gold`, or you are showing the model the answers to its own test.")]
     cells += [code(
         '# ✏️ same prompt as before, plus labelled examples. Add, remove or reword them —',
         '# but never use a sentence from `gold`, or you are testing on your own answers.',
@@ -1979,21 +1989,11 @@ def day3():
     cells += [md(
         "::: {.callout-note}",
         "## A real limitation to notice",
-        "`run_prompt` grabs the *first* CEFR level it sees in the reply. With chain-of-thought "
+        "`run_prompt` takes the *first* CEFR level it sees in the reply. With chain-of-thought "
         "the model may mention a level mid-reasoning, so the parser can pick the wrong one — "
-        "which is exactly why the prompt says *don't mention other levels*. If CoT scores "
-        "*worse* than few-shot, check `show_errors` to see whether it's the model or the parser.",
+        "which is why the prompt says *don't mention other levels*. If CoT scores *worse* than "
+        "few-shot, check `show_errors` to see whether it's the model or the parser.",
         ":::")]
-    cells += [md(
-        "### Where is your best prompt still wrong?",
-        "",
-        "`show_errors` lists the sentences your chain-of-thought prompt got wrong — the raw "
-        "material for the Corpus Lab below. Skim them and note which level is hardest, and "
-        "whether any miss is really the *parser* grabbing the wrong level rather than the "
-        "model being wrong.")]
-    cells += [code(
-        'errors = show_errors(val, pred_cot)   # every validation sentence the CoT prompt got wrong',
-        'errors.head(15)                        # the first 15 of them')]
     cells += [md(
         "### Compare the three",
         "",
@@ -2009,14 +2009,14 @@ def day3():
     cells += [md(
         "### The held-out run — once, and only once   ✏️ YOU EDIT",
         "",
-        "Pick your best prompt from the table above, and score it on the 72 sentences you "
-        "have not touched all session. **This is the number you report.**",
+        "Pick your best prompt from the table above and score it on the 72 sentences you have "
+        "not touched all session. **This is the number you report.**",
         "",
-        "Expect it to be *lower* than your validation score. That gap is not a mistake — it "
-        "is the honest cost of having chosen a prompt by looking at results, and it is why "
-        "the held-out set was kept back. A rule you can carry into the mini-project: if you "
-        "run this cell, look at the answer, then go back and edit a prompt, the 72 items "
-        "have stopped being held out. Tune on `val`, come back, run once.")]
+        "Expect it to be *lower* than your validation score. That gap is the cost of having "
+        "chosen a prompt by looking at results, and it is why the held-out set was kept back. "
+        "Carry this rule into the mini-project: if you run this cell, look at the answer, then "
+        "go back and edit a prompt, the 72 items have stopped being held out. Tune on `val`, "
+        "come back, run once.")]
     cells += [code(
         '# ✏️ swap in whichever of PROMPT_ZERO / PROMPT_FEWSHOT / PROMPT_COT scored best.',
         'BEST_PROMPT = PROMPT_COT',
@@ -2024,33 +2024,39 @@ def day3():
         'pred_test = run_prompt(BEST_PROMPT, gold)   # the 72 held-out sentences',
         'evaluate(gold, pred_test, ordered=True)     # ← report THIS macro-F1')]
 
+    # Part A is done and reported. The rate-limit walkthrough goes here, where the
+    # student has just watched ~150 calls go through without crashing, and is about
+    # to start writing prompt loops of their own in Part B.
+    cells += rate_limit_cells
+
     # ---- Part B: Corpus Lab ----
     cells += [md(
         "## Part B · Corpus Lab — your own prompt-iteration study",
         "",
-        "Part A handed you three prompts. Now you write the fourth, and — more importantly — "
-        "you say **in advance** what you expect it to do.",
+        "Part A handed you three prompts. Now you write the fourth, and say **in advance** what "
+        "you expect it to do.",
         "",
-        "That is the whole discipline of this lab. Anyone can try ten prompts and keep the "
-        "best. What makes it a *study* is that each change comes with a reason and a "
-        "prediction, so that when the number moves you can say **why**. A change that helps "
-        "for a reason you named is a finding. One that helps for no reason you can give is a "
-        "lucky guess, and you cannot defend it in the Q&A.",
+        "Anyone can try ten prompts and keep the best. What makes it a *study* is that each "
+        "change comes with a reason and a prediction, so that when the number moves you can "
+        "say **why**. A change that helps for a reason you named is a finding; one that helps "
+        "for no reason you can give is a lucky guess you cannot defend in the Q&A.",
         "",
         "Everything here runs on `val`. The 72 held-out items stay closed.")]
 
     cells += [md(
         "### Step 1 · Find the model's worst class",
         "",
-        "You do not need new code for this — `evaluate` already printed it. Scroll back to "
-        "your best prompt's report and read **down the F1 column**: one or two levels will "
-        "be far below the rest. That is where the macro-F1 is being lost, because macro-F1 "
-        "averages the classes equally.",
+        "No new code needed — `evaluate` already printed it. Scroll back to your best prompt's "
+        "report and read **down the F1 column**: one or two levels will be far below the rest. "
+        "That is where the macro-F1 is being lost, because macro-F1 averages the classes "
+        "equally.",
         "",
-        "Then run the cell below and **read three of the actual sentences** for that level. "
-        "The counts tell you where the misses are; only the sentences tell you why. A level "
-        "missed because its sentences are genuinely borderline needs a different fix from "
-        "one missed because your prompt never described it.")]
+        "Then run the cell below and **read three of the actual sentences** for that level. The "
+        "counts tell you where the misses are; only the sentences tell you why. A level missed "
+        "because its sentences are genuinely borderline needs a different fix from one missed "
+        "because your prompt never described it. A third case: the model reasoned its way to "
+        "the right level and the parser kept an earlier one it mentioned along the way — that "
+        "is a prompt-wording problem, not a model problem.")]
     cells += [code(
         'errors = show_errors(val, pred_cot)   # swap pred_cot for whichever prompt scored best',
         'errors.head(15)')]
@@ -2073,7 +2079,7 @@ def day3():
         "## One change at a time",
         "If you add examples *and* rewrite the instruction *and* ask for reasoning, and the "
         "score moves, you have learned nothing about which of the three did it. Change one "
-        "thing, score it, keep or discard, then change the next.",
+        "thing, score it, keep or discard it, then change the next.",
         "",
         "Ideas worth trying, roughly cheapest first: describe the weak level explicitly · "
         "add two examples *of that level* · say what separates it from its neighbour · give "
@@ -2099,13 +2105,13 @@ def day3():
         "### Step 4 · Check the class you actually targeted",
         "",
         "Compare the **F1 for `WORST_CLASS`** in the report you just printed against the same "
-        "row in Step 1's report. Macro-F1 can rise while the level you aimed at gets *worse* "
-        "— another level quietly improved and carried the average. So check the row you "
+        "row in Step 1's report. Macro-F1 can rise while the level you aimed at gets *worse*, "
+        "because another level improved and carried the average — so check the row you "
         "predicted, not the headline number.",
         "",
         "The table below lists what your prompt still gets wrong. If the same sentences are "
-        "still there, your change missed them; if new ones appeared, you traded one error "
-        "for another.")]
+        "still there, your change missed them; if new ones appeared, you traded one error for "
+        "another.")]
     cells += [code(
         'errors_mine = show_errors(val, pred_mine)',
         'errors_mine.head(15)')]
@@ -2114,8 +2120,8 @@ def day3():
         "### Step 5 · Log it   ✏️ YOU EDIT",
         "",
         "Fill in the table. The last column is the one that matters: **was your prediction "
-        "right?** \"No\" is a perfectly good answer and costs you nothing — an honest wrong "
-        "prediction you can explain beats a right one you cannot.",
+        "right?** \"No\" costs you nothing — a wrong prediction you can explain beats a right "
+        "one you cannot.",
         "",
         "| # | Prompt change | Why I expected it to help | macro-F1 (val) | F1 for my target level | Prediction right? |",
         "|---|---|---|:--:|:--:|:--:|",
@@ -2123,15 +2129,15 @@ def day3():
         "| 1 | … | … | … | … | … |",
         "| 2 | … | … | … | … | … |",
         "",
-        "If you have time, go round again: Steps 2–4 with one more change. Two logged "
-        "iterations with reasons beat five undocumented ones.",
+        "If you have time, repeat Steps 2–4 with one more change. Two logged iterations with "
+        "reasons beat five undocumented ones.",
         "",
         "::: {.callout-important}",
         "## Do not re-run the held-out cell",
-        "You scored the 72 items once, at the end of Part A. Running that cell again now — "
-        "after choosing a prompt by looking at validation results — would report a number "
-        "you tuned toward. Your mini-project repeats this whole loop on your own track's "
-        "data, where the same rule applies.",
+        "You scored the 72 items once, at the end of Part A. Running that cell again now, "
+        "after choosing a prompt by looking at validation results, would report a number you "
+        "tuned toward. Your mini-project repeats this loop on your own track's data, where the "
+        "same rule applies.",
         ":::")]
 
     cells += [submission()]
