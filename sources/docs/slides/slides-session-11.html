@@ -235,8 +235,8 @@
 <p>By the end of this session, you will be able to:</p>
 <ul>
 <li>Describe the pipeline as a chain of <strong>inputs and outputs</strong> — what each step consumes and produces.</li>
-<li>Point to where in Days 1–3 you ran each helper, and use the same call form again.</li>
-<li>Write your group’s <code>PLAN.md</code> and defend its six lines.</li>
+<li>Point to where in Days 1–3 you ran each call, and use the same call form again.</li>
+<li>Write your group’s <code>PLAN.md</code>, including the decisions that have to be settled <strong>before</strong> any number exists.</li>
 </ul>
 </section></section>
 <section>
@@ -244,24 +244,28 @@
 <h1>The pipeline</h1>
 
 </section>
-<section id="one-diagram" class="slide level2">
-<h2>One diagram</h2>
-<pre><code>pool ──sample──▶ sampled ──annotate──▶ sheet ──adjudicate──▶ gold
+<section id="six-notebooks-and-each-hands-a-file-to-the-next" class="slide level2">
+<h2>Six notebooks, and each hands a file to the next</h2>
+<pre><code>01 build pool ──▶ pool.json
+                    │
+02 sample ──────────┴──▶ sample.json  +  the annotation Sheet
+                                              │
+03 annotate ──────────────────────────────────┴──▶ gold.json ──▶ dev.json
+                                                              └─▶ test.json
+                                                                    ·
+04 develop ── dev.json ──▶ prompts/*.txt  +  rounds.json           ·  untouched
+                                    │                              ·
+05 test ────────────────────────────┴── test.json ──▶ predictions.json + test_log.jsonl
                                                               │
-                            prompt ─────────────┐             │
-                                                ▼             ▼
-                                          run_prompt ──▶ predictions
-                                                              │
-                                                    save_predictions
-                                                              │
-                                                              ▼
-                                                       FROZEN FILE
-                                                              │
-                                         ┌────────────────────┤
-                                         ▼                    ▼
-                                    evaluate              show_errors
-                                         │                    │
-                                         └──────▶ export ◀─────┘</code></pre>
+06 report ────────────────────────────────────────────────────┴──▶ report.md</code></pre>
+</section>
+<section id="the-line-down-the-middle" class="slide level2">
+<h2>The line down the middle</h2>
+<p><strong>04 and 05 are two files, not two halves of one.</strong></p>
+<p><code>04_develop</code> loads <code>dev.json</code> and cannot reach your test items — the names are not even imported there.</p>
+<div class="fragment">
+<p>“Do not look at the test set while you are still changing the prompt” only holds if it is a <strong>file boundary</strong> rather than a place you promise not to scroll past.</p>
+</div>
 </section>
 <section id="read-it-as-data-shapes" class="slide level2">
 <h2>Read it as data shapes</h2>
@@ -280,132 +284,134 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td>pool → sampled</td>
+<td>pool → sample</td>
 <td>~40 items, balanced</td>
 <td><code>[{id, text, label}]</code></td>
 </tr>
 <tr class="even">
-<td>sampled → sheet</td>
+<td>sample → Sheet</td>
 <td>one row per item, <strong>labels blanked</strong></td>
 <td>a Google Sheet</td>
 </tr>
 <tr class="odd">
-<td>sheet → gold</td>
+<td>Sheet → gold</td>
 <td>your adjudicated decisions</td>
 <td><code>[{id, text, label}]</code></td>
 </tr>
 <tr class="even">
-<td>gold + prompt → predictions</td>
-<td>one label per item</td>
-<td><code>["B1", "A2", …]</code></td>
+<td>gold → dev / test</td>
+<td>the line you draw once</td>
+<td>two <code>.json</code> files</td>
 </tr>
 <tr class="odd">
-<td>predictions → frozen file</td>
-<td>the same list, <strong>on disk</strong></td>
-<td><code>.json</code></td>
+<td>dev + prompt → predictions</td>
+<td>one label per item, <strong>many rounds</strong></td>
+<td><code>["B1", "A2", …]</code></td>
 </tr>
 <tr class="even">
-<td>gold + frozen → metrics</td>
+<td>test + prompt → frozen file</td>
+<td>one label per item, <strong>once</strong></td>
+<td><code>.json</code></td>
+</tr>
+<tr class="odd">
+<td>test + frozen → metrics</td>
 <td>P/R/F1, κ, matrix</td>
-<td>numbers you report</td>
+<td>the numbers you report</td>
 </tr>
 </tbody>
 </table>
 <div class="fragment">
-<p>Everything after the frozen file reads <strong>the file</strong>, not the model.</p>
+<p>Everything from <code>05_test</code> onward reads <strong>the file</strong>, not the model.</p>
 </div>
 </section>
 <section id="where-you-have-already-used-these" class="slide level2 smaller">
 <h2>Where you have already used these</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Step</th>
-<th>Helper</th>
+<th>Notebook</th>
+<th>Call</th>
 <th>You ran it in</th>
-<th>Same call?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1</td>
-<td><code>load_gold(path)</code></td>
-<td>Day 2 S5 · Day 3</td>
-<td>✅</td>
+<td>02</td>
+<td><code>sample_pool(pool, n, seed)</code></td>
+<td>Day 4 Part A — as four inline steps</td>
 </tr>
 <tr class="even">
-<td>1</td>
-<td><code>sample_pool(pool, n, seed)</code></td>
-<td>Day 4 — as four inline steps</td>
-<td>one call now</td>
-</tr>
-<tr class="odd">
-<td>2</td>
+<td>02</td>
 <td><code>create_annotation_sheet(...)</code></td>
 <td>Day 2 S5 step A</td>
-<td>✅</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td><code>load_annotation_sheet(...)</code></td>
-<td>Day 2 S5 step D</td>
-<td>✅</td>
 </tr>
 <tr class="odd">
-<td>2</td>
-<td><code>annotator_agreement(rows)</code></td>
+<td>03</td>
+<td><code>load_coder_sheets(id, CODERS)</code></td>
 <td>Day 2 S5 step D</td>
-<td>✅</td>
 </tr>
 <tr class="even">
-<td>2</td>
-<td><code>disagreements(rows)</code></td>
-<td>Day 2 S5 step E</td>
-<td>✅</td>
+<td>03</td>
+<td><code>column</code> · <code>percent_agreement</code></td>
+<td>Day 2 S6 — you built it as <code>p_o</code></td>
 </tr>
 <tr class="odd">
-<td>2</td>
-<td><code>to_canonical(rows, labels)</code></td>
+<td>03</td>
+<td><code>cohen_kappa_score(a, b)</code></td>
+<td>Day 2 S6 — you built it, then checked it against this</td>
+</tr>
+<tr class="even">
+<td>03</td>
+<td><code>confusion_matrix(a, b, labels=…)</code></td>
+<td>Day 2 S5 step D · S6 Part B</td>
+</tr>
+<tr class="odd">
+<td>03</td>
+<td><code>to_canonical(rows, labels, source=…)</code></td>
 <td>Day 2 S5 step F</td>
-<td>✅</td>
 </tr>
 <tr class="even">
-<td>3–4</td>
-<td><code>run_prompt(PROMPT, gold)</code></td>
-<td>Day 3, every round</td>
-<td>✅</td>
+<td>03</td>
+<td><code>split_dev_test(gold, DEV, seed=…)</code></td>
+<td>Day 4 Part B — you wrote the loop</td>
 </tr>
 <tr class="odd">
-<td>3–4</td>
-<td><code>evaluate(gold, pred, ordered=True)</code></td>
-<td>Day 2 S6 · Day 3</td>
-<td>✅</td>
+<td>04</td>
+<td><code>run_prompt(PROMPT, dev)</code></td>
+<td>Day 3, every round</td>
 </tr>
 <tr class="even">
-<td>5</td>
-<td><code>show_errors(gold, pred)</code></td>
-<td>Day 3</td>
-<td>✅</td>
+<td>06</td>
+<td><code>classification_report</code> · <code>f1_score</code></td>
+<td>Day 2 S6 Part B</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Nine of these are exactly the same call you have already used.</strong> That is why 15 minutes is enough.</p>
+<p><strong>Every one of these has an ancestor in Days 1–4.</strong> The full list, with the ancestor named for each, is the <a href="../final-project/pipeline-cheatsheet.html">inventory page</a>.</p>
 </section>
-<section id="the-three-that-are-new" class="slide level2">
-<h2>The three that are new</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>load_prompt(path)                  <span class="co"># your prompt is now a FILE, so each version is kept</span></span>
-<span id="cb2-2"><a></a>save_predictions(pred, path)       <span class="co"># the freezing step from S10, as code</span></span>
-<span id="cb2-3"><a></a>export_results(track, gold, pred, f1_by_round, out_dir, group<span class="op">=</span>GROUP)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="the-one-you-write-yourself" class="slide level2">
+<h2>The one you write yourself</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>disagreements(rows, coders<span class="op">=</span>CODERS)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>03_annotate</code> does <strong>not</strong> import it. The rule inside — what counts as a disagreement — is a decision about your scheme, not a fact about your data, and there is no way to hand it over without answering it for you.</p>
+<div class="fragment">
+<p>You saw the six lines on <strong>Day 2 S5, step E</strong>.</p>
+</div>
+</section>
+<section id="the-ones-that-are-new" class="slide level2">
+<h2>The ones that are new</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>load_prompt(path)                  <span class="co"># your prompt is now a FILE, so each version is kept</span></span>
+<span id="cb3-2"><a></a>freeze_test_run(...)               <span class="co"># run · save BEFORE scoring · re-read · score · log</span></span>
+<span id="cb3-3"><a></a>read_test_log(path)                <span class="co"># every held-out scoring, with a fingerprint of each prompt</span></span>
+<span id="cb3-4"><a></a>export_results(track, test, pred, f1_by_round, out_dir, group<span class="op">=</span>GROUP)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>And one that changes shape:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>build_fewshot(PROMPT, pool, gold)  <span class="co"># Day 3: you typed the examples by hand</span></span>
-<span id="cb3-2"><a></a>                                   <span class="co"># now: drawn from the pool, avoiding your gold</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>build_fewshot(PROMPT, pool, gold)  <span class="co"># Day 3: you typed the examples by hand</span></span>
+<span id="cb4-2"><a></a>                                   <span class="co"># now: drawn from the pool, avoiding your gold</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section></section>
 <section>
@@ -415,7 +421,7 @@
 </section>
 <section id="the-作戦シート-now-as-a-file-in-your-repo" class="slide level2">
 <h2>The 作戦シート, now as a file in your repo</h2>
-<p>You have been building this plan since S3 — track, scheme, gold source, prompting strategy. Today it becomes one page in your repo.</p>
+<p>You have been building this plan since S3 — track, scheme, gold source, prompting strategy. Today it becomes a file in your repo, and it grows three questions the notebooks deliberately do not ask you.</p>
 <p><strong>It is not graded.</strong> It is a required step: no group calls the model until it is signed.</p>
 <div class="fragment">
 <p>Two minutes of writing prevents problems that otherwise take an hour to find, <em>after</em> you have used your quota:</p>
@@ -423,31 +429,45 @@
 <li>label set says <code>Move 1/2/3</code>, gold file says <code>1a/1b</code>, prompt says “move one” → no error, just a confusing F1</li>
 <li>labels ordered but not alphabetical → weighted κ computed over <code>High &lt; Low &lt; Mid</code></li>
 <li>nobody agreed who codes which column → one annotator, no κ</li>
+<li>the statistic picked after seeing which one came out higher → a number nobody can check</li>
 </ul>
 </div>
 </section>
-<section id="the-six-lines" class="slide level2">
-<h2>The six lines</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a></a><span class="fu"># PLAN — &lt;group&gt;, track &lt;track&gt;</span></span>
-<span id="cb4-2"><a></a>Members: …</span>
-<span id="cb4-3"><a></a></span>
-<span id="cb4-4"><a></a><span class="ss">1. </span>Unit of analysis: (sentence / whole text) — and why</span>
-<span id="cb4-5"><a></a><span class="ss">2. </span>Label set: … (exactly the strings in your gold file)</span>
-<span id="cb4-6"><a></a><span class="ss">3. </span>Are the labels ORDERED? In what order?</span>
-<span id="cb4-7"><a></a><span class="ss">4. </span>Gold: pool file · N_PER_CLASS · SEED · expected total</span>
-<span id="cb4-8"><a></a><span class="ss">5. </span>QC: who is CoderA, who is CoderB, who adjudicates</span>
-<span id="cb4-9"><a></a><span class="ss">6. </span>Prompt plan: baseline, then the ONE change you predict</span>
-<span id="cb4-10"><a></a>   will help — and why</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-tip callout-titled callout-style-default">
+<section id="nine-questions" class="slide level2 smaller">
+<h2>Nine questions</h2>
+<p><strong>What you are annotating:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a></a><span class="ss">1. </span>Unit of analysis: sentence or whole text — and why</span>
+<span id="cb5-2"><a></a><span class="ss">2. </span>Label set: exactly the strings in your gold file</span>
+<span id="cb5-3"><a></a><span class="ss">3. </span>Are the labels ORDERED? In what order?  → labels_order</span>
+<span id="cb5-4"><a></a><span class="ss">4. </span>The ✏️ decisions you made building the pool, and what they cost</span>
+<span id="cb5-5"><a></a><span class="ss">5. </span>Sampling: which strategy, and the one-sentence defence</span>
+<span id="cb5-6"><a></a><span class="ss">6. </span>The dev / test split — and why that ratio</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>What you will report</strong> — and this is the half that is new:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a></a><span class="ss">7. </span>QC: who codes what · WHICH agreement statistics, and why</span>
+<span id="cb6-2"><a></a>      · what counts as a disagreement</span>
+<span id="cb6-3"><a></a><span class="ss">8. </span>Prompt plan: the moves, in order · how many prompts you will</span>
+<span id="cb6-4"><a></a>      test on the held-out set · how you pick the winner</span>
+<span id="cb6-5"><a></a><span class="ss">9. </span>The ONE number you lead with: macro / micro / weighted F1, or κ</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="why-79-are-on-this-page-and-not-in-a-notebook" class="slide level2">
+<h2>Why 7–9 are on this page and not in a notebook</h2>
+<p>Every one of them decides a number you will report — and every one has an answer you could reach for <strong>after</strong> seeing which option flatters you.</p>
+<div class="fragment">
+<p>Nothing stops you running all three F1 averages and reporting the highest. No reader of your report could tell.</p>
+</div>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<p><strong>The rule</strong></p>
 </div>
 <div class="callout-content">
-<p>Question 3 checks that you use the correct κ for ordered labels. Question 6 asks you to <strong>state your prediction before you test it</strong>, which is the core of the method.</p>
+<p><strong>Looking is fine when it changes what you do next. It is not fine when it changes what you claim.</strong></p>
+<p>Reading the coder confusion matrix to decide which boundary to argue about is exactly what it is for. Choosing the statistic after seeing what each one gives you is not.</p>
+</div>
 </div>
 </div>
 </div>
@@ -456,58 +476,51 @@
 <h2>And the table</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 10%">
-<col style="width: 20%">
-<col style="width: 34%">
-<col style="width: 34%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>#</th>
-<th>Step</th>
+<th>Notebook</th>
 <th>Consumes</th>
 <th>Produces</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1</td>
-<td>sample</td>
-<td><code>POOL_PATH</code>, <code>N_PER_CLASS</code>, <code>SEED</code></td>
-<td><code>pool</code>, <code>sampled</code>, <code>LABELS</code></td>
+<td>01 build pool</td>
+<td>the raw corpus + your ✏️ decisions</td>
+<td><code>pool.json</code></td>
 </tr>
 <tr class="even">
-<td>2</td>
-<td>QC / adjudicate</td>
-<td><code>sampled</code>, <code>LABELS</code>, the sheet</td>
-<td><code>gold</code></td>
+<td>02 sample</td>
+<td>the pool + your sampling choice</td>
+<td><code>sample.json</code>, the Sheet</td>
 </tr>
 <tr class="odd">
-<td>3</td>
-<td>baseline</td>
-<td><code>PROMPT</code>, <code>gold</code></td>
-<td><code>pred0</code>, <code>f1_by_round</code></td>
+<td>03 annotate</td>
+<td>the filled-in Sheet + your adjudication</td>
+<td><code>gold.json</code> → <code>dev.json</code> / <code>test.json</code></td>
 </tr>
 <tr class="even">
-<td>4</td>
-<td>iterate + freeze</td>
-<td><code>PROMPT</code>, <code>pool</code>, <code>gold</code></td>
-<td><code>pred_final</code> (a file)</td>
+<td>04 develop</td>
+<td>the <strong>dev</strong> half, the pool, your prompt</td>
+<td><code>prompts/…</code>, <code>rounds.json</code></td>
 </tr>
 <tr class="odd">
-<td>5</td>
-<td>error analysis</td>
-<td><code>gold</code>, <code>pred_final</code></td>
-<td>the errors table</td>
+<td>05 test</td>
+<td>the <strong>test</strong> half + the prompts you committed to</td>
+<td><code>predictions.json</code>, <code>test_log.jsonl</code></td>
 </tr>
 <tr class="even">
-<td>6</td>
-<td>export</td>
-<td>all of the above</td>
-<td><code>outputs/…_report.md</code></td>
+<td>06 report</td>
+<td>the test half + the frozen run</td>
+<td><code>report.md</code></td>
 </tr>
 </tbody>
 </table>
+<p><strong>The model appears at 04.</strong> Notebooks 01–03 are the study; the LLM is the thing being measured by it.</p>
 </section></section>
 <section>
 <section id="end-state-check" class="title-slide slide level1 center">
@@ -518,7 +531,7 @@
 <h2>Say it out loud</h2>
 <p>Each group, in turn:</p>
 <blockquote>
-<p><em>“Step 2 consumes <code>sampled</code> and the sheet, and produces <code>gold</code>.”</em></p>
+<p><em>“<code>03_annotate</code> consumes the filled-in Sheet and our adjudication, and produces the gold set.”</em></p>
 </blockquote>
 <div class="fragment">
 <p>Do this for every step, without reading from your notes.</p>

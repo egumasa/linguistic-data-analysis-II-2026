@@ -233,9 +233,32 @@
 </section>
 <section id="two-different-findings-in-one-table" class="slide level2">
 <h2>Two different findings in one table</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>errors <span class="op">=</span> show_errors(gold, pred_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>A model error</strong> — the correct label is clear, a competent annotator would agree, and the model still labelled it wrongly.</p>
-<p><strong>A scheme problem</strong> — the item is genuinely borderline.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>errors <span class="op">=</span> show_errors(test, pred_final)     <span class="co"># the held-out half, from the frozen file</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Four different findings live in that one table, and sorting them is the analysis:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong><code>model</code></strong></td>
+<td>the label is clear, both coders agreed at once, and the model still missed it</td>
+</tr>
+<tr class="even">
+<td><strong><code>scheme</code></strong></td>
+<td>the item is genuinely borderline <em>under your scheme</em></td>
+</tr>
+<tr class="odd">
+<td><strong><code>wording</code></strong></td>
+<td>the label <em>name</em> misleads — this one your next prompt could fix</td>
+</tr>
+<tr class="even">
+<td><strong><code>ambiguous</code></strong></td>
+<td>the item is unclear in a way no scheme would settle</td>
+</tr>
+</tbody>
+</table>
 <div class="fragment">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -243,10 +266,10 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>You already know which are which</strong></p>
+<p><strong><code>scheme</code> and <code>wording</code> are the pair to be careful about</strong></p>
 </div>
 <div class="callout-content">
-<p>They are the rows you argued about in Session 12. Cross-reference your <code>disagreements</code> list against these errors.</p>
+<p>One is fixable by prompting and the other is not. Confusing them is how a group spends three rounds on a problem no prompt can reach.</p>
 </div>
 </div>
 </div>
@@ -254,7 +277,8 @@
 </section>
 <section id="overlap-is-a-finding" class="slide level2">
 <h2>Overlap is a finding</h2>
-<p>If the model’s errors cluster on the items <strong>you</strong> disagreed about, that is a result:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>overlap <span class="op">=</span> errors_on_disagreed(errors, disagreed)   <span class="co"># disagreed: saved by 03</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You already know which items are borderline, because you argued about them in Session 12. If the model’s errors cluster there, that is a result:</p>
 <blockquote>
 <p><em>“The model’s B1/B2 confusions fall almost entirely on the 12 items our annotators also disagreed on. We read this as a property of the scheme’s boundary rather than a failure of the model.”</em></p>
 </blockquote>
@@ -356,7 +380,7 @@
 </section>
 <section id="one-command" class="slide level2">
 <h2>One command</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="ex">python</span> scripts/make_submission.py <span class="at">--group</span> groupA</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a></a><span class="ex">python</span> scripts/make_submission.py <span class="at">--group</span> groupA</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Keeps</strong> the folder structure — <code>scripts/ · prompts/ · data/ · outputs/</code> — because that layout follows the S10 checklist, and because the notebook’s <code>../</code> paths require it.</p>
 <p><strong>Leaves out</strong>: <code>.git/</code>, <code>.venv/</code>, <strong>your <code>.env</code></strong>, the large pool files, and anything from ICNALE.</p>
 <p><strong>Reports</strong> anything that is missing.</p>

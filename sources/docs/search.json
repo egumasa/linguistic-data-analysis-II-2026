@@ -46,11 +46,23 @@
     ]
   },
   {
-    "objectID": "notebooks/day4_pipeline_and_sampling.html#part-b-corpus-lab-carry-on-in-the-project-template",
-    "href": "notebooks/day4_pipeline_and_sampling.html#part-b-corpus-lab-carry-on-in-the-project-template",
+    "objectID": "notebooks/day4_pipeline_and_sampling.html#part-b-draw-the-line-which-items-you-may-look-at",
+    "href": "notebooks/day4_pipeline_and_sampling.html#part-b-draw-the-line-which-items-you-may-look-at",
     "title": "Day 4 · Pipeline assembly & sampling your gold set",
-    "section": "Part B · Corpus Lab — carry on in the project template",
-    "text": "Part B · Corpus Lab — carry on in the project template\nYou have just sampled a balanced subset. The next step — QC and adjudication — is the mini-project itself, and it happens in the project template rather than here, because it needs your group’s own track and your own Drive:\ngithub.com/egumasa/lda2-final-template → notebooks/mini_project.ipynb\nThere, step 2 does properly what you did by hand on Day 2 (S5): it builds a blind annotation sheet from your sample, two of you label it independently, you measure agreement and κ, and you adjudicate the rows you disagreed on. What comes out is your gold set — and it is what the model gets scored against, so the disagreements you resolve are doing real work, not bookkeeping.\nsample_pool in the template does the whole cell you just wrote, in one call. That is the point of today: you have seen what it does, so you can say what it does.\nBefore you run anything there, your group needs a signed PLAN.md — see the Final Project pages.",
+    "section": "Part B · Draw the line: which items you may look at",
+    "text": "Part B · Draw the line: which items you may look at\nOn Day 3 you worked with two files: val, which every prompt was scored against, and gold, opened once at the end. They were handed to you already separated. Your own gold set arrives in one piece, so drawing that line is now a step you take — and it is the last one before the model gets involved.\n\n\n\n\n\n\n\n\nwhat it is for\n\n\n\n\ndev\nthe items you may look at. Change the prompt because of what you see here, as often as you like.\n\n\ntest\nopened once, at the end. Whatever it says is what you report.\n\n\n\nThe reason is the one Day 3 gave you: a score measured on the items you kept adjusting against stops measuring how good your prompt is and starts measuring how long you kept adjusting. It only ever goes up.\nBoth halves come out of the same annotation work, so the split costs you no extra annotation. What it costs is items you are allowed to learn from.\n\nSplit it, keeping every label on both sides ✏️ YOU EDIT\nNot a straight cut down the middle: split within each label, the same bucket-then-slice shape you wrote ten minutes ago. A straight cut on a shuffled list can leave a whole label on one side, and a label missing from test drops out of your macro average without announcing itself.\n\n\nShow code\n### Step 1: the setting you control ###\nDEV_PER_LABEL = 3       # ✏️ how many items per label you may look at\n\n### Step 2: sort the sample into one bucket per label (as in Part A) ###\nbuckets = defaultdict(list)\nfor item in gold:\n    buckets[item[\"label\"]].append(item)\n\n### Step 3: take the first few of each bucket for dev, the rest for test ###\ndev = []\ntest = []\nfor label in sorted(buckets):\n    bucket = buckets[label]\n    dev.extend(bucket[:DEV_PER_LABEL])    # the ones you may look at\n    test.extend(bucket[DEV_PER_LABEL:])   # everything after them\n\n### Step 4: read the counts BEFORE you go any further ###\nprint(\"dev :\", len(dev),  \"|\", dict(Counter(x[\"label\"] for x in dev)))\nprint(\"test:\", len(test), \"|\", dict(Counter(x[\"label\"] for x in test)))\n\n\nRead those two lines rather than glancing at them. A label showing up in dev with nothing left in test cannot appear in the score you report, and right now it costs you one number to fix. Later it costs an afternoon.\nThere is no right size for dev, only one you can defend. A bigger dev gives you steadier feedback while you iterate and leaves a smaller test, so the number you finally report bounces around more. A smaller dev means prompt decisions made on very few items — which is how you tune to noise and then watch the gain evaporate on the half you held back.\nIn the final project this is split_dev_test(gold, DEV, seed=SEED), and it handles the two fiddly cases this cell does not: a proportion instead of a fixed count, and a label with a single surviving item — which it sends to test, for the reason above. The rule it follows is the one you just wrote.",
+    "crumbs": [
+      "Sessions",
+      "Daily notebooks",
+      "Day 4 · Pipeline assembly & sampling your gold set"
+    ]
+  },
+  {
+    "objectID": "notebooks/day4_pipeline_and_sampling.html#where-this-goes-next",
+    "href": "notebooks/day4_pipeline_and_sampling.html#where-this-goes-next",
+    "title": "Day 4 · Pipeline assembly & sampling your gold set",
+    "section": "Where this goes next",
+    "text": "Where this goes next\nEverything after this — the annotation sheet, agreement, adjudication, the prompt rounds, the held-out run — happens in your group’s own copy of the project template, because it needs your track, your Drive and your group’s decisions:\ngithub.com/egumasa/lda2-final-template\n\n\n\n\n\n\n\nNotebook\nWhat it does\n\n\n\n\n01_build_pool_&lt;track&gt;\nturns your track’s raw corpus into a pool\n\n\n02_sample\nthe draw you wrote in Part A, plus the blind annotation sheet\n\n\n03_annotate\nagreement, adjudication, and the split you wrote in Part B\n\n\n04_develop\nprompt rounds, on dev only\n\n\n05_test\nthe held-out run, once\n\n\n06_report\nscoring, error analysis, export\n\n\n\n03_annotate does properly what you did by hand on Day 2 (S5): two of you label the sheet independently, you measure agreement, and you adjudicate the rows you disagreed on. What comes out is your gold set, and it is what the model gets scored against — so those disagreements are doing real work, not bookkeeping.\nToday is why you can read those notebooks: sample_pool is the Part-A cell in one call and split_dev_test is the Part-B cell in one call. You have seen what they do, so you can say what they do.\nBefore you run anything that calls the model, your group needs a signed PLAN.md — see the Final Project pages.",
     "crumbs": [
       "Sessions",
       "Daily notebooks",
@@ -632,7 +644,7 @@
     "href": "syllabus/readings.html#day-1-introduction-first-experience",
     "title": "Readings",
     "section": "Day 1 · Introduction & First Experience",
-    "text": "Day 1 · Introduction & First Experience\nWatch (7 min, played in Session 1 — watching beforehand is optional)\n\nSanderson, G. (3Blue1Brown). (2024). Large Language Models explained briefly [Video]. https://www.3blue1brown.com/lessons/mini-llm/ (YouTube)\n\nWhat the model predicts, where its numbers come from, and what attention does.\n\n\nSkim\n\nAbdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., & Dehghani, M. (2025). A primer for evaluating large language models in social-science research. Advances in Methods and Practices in Psychological Science, 8(2). https://doi.org/10.1177/25152459251325174\n\nGet a feel for the questions the course tackles; don’t worry about the details yet."
+    "text": "Day 1 · Introduction & First Experience\nSkim\n\nAbdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., & Dehghani, M. (2025). A primer for evaluating large language models in social-science research. Advances in Methods and Practices in Psychological Science, 8(2). https://doi.org/10.1177/25152459251325174\n\nGet a feel for the questions the course tackles; don’t worry about the details yet.\n\n\nWatch in class\n\nSanderson, G. (3Blue1Brown). (2024). Large Language Models explained briefly [Video]. https://www.3blue1brown.com/lessons/mini-llm/ (YouTube)\n\nWhat the model predicts, where its numbers come from, and what attention does."
   },
   {
     "objectID": "syllabus/readings.html#day-2-annotation-gold-standards-metrics",
@@ -674,28 +686,28 @@
     "href": "syllabus/readings.html#reference-used-in-class-not-assigned",
     "title": "Readings",
     "section": "Reference — used in class, not assigned",
-    "text": "Reference — used in class, not assigned\nYou do not need to read these; they are here so you can cite the source of a number you were shown.\nShown in Session 1. What LLMs have been used for in linguistics, and where they have struggled:\n\nGilardi, F., Alizadeh, M., & Kubli, M. (2023). ChatGPT outperforms crowd workers for text-annotation tasks. PNAS, 120(30), e2305016120. https://doi.org/10.1073/pnas.2305016120\nYu, D., Li, L., Su, H., & Fuoli, M. (2024). Assessing the potential of LLM-assisted annotation for corpus-based pragmatics and discourse analysis: The case of apology. International Journal of Corpus Linguistics, 29(4), 534–561. https://doi.org/10.1075/ijcl.23087.yu\nCurry, N., Baker, P., & Brookes, G. (2024). Generative AI for corpus approaches to discourse studies: A critical evaluation of ChatGPT. Applied Corpus Linguistics, 4(1), 100082. https://doi.org/10.1016/j.acorp.2023.100082\nZiems, C., Held, W., Shaikh, O., Chen, J., Zhang, Z., & Yang, D. (2024). Can large language models transform computational social science? Computational Linguistics, 50(1), 237–291. https://doi.org/10.1162/coli_a_00502\nCrosthwaite, P., & Baisa, V. (2023). Generative AI and the end of corpus-assisted data-driven learning? Not so fast! Applied Corpus Linguistics, 3(3), 100066. https://doi.org/10.1016/j.acorp.2023.100066\n\nAlso shown in Session 1. How the model works, and what it can see:\n\nOuyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C. L., Mishkin, P., … Lowe, R. (2022). Training language models to follow instructions with human feedback. Advances in Neural Information Processing Systems, 35, 27730–27744. https://doi.org/10.48550/arXiv.2203.02155\n\nThe second training stage — why an LLM carries out your request instead of continuing it.\n\nSclar, M., Choi, Y., Tsvetkov, Y., & Suhr, A. (2024). Quantifying language models’ sensitivity to spurious features in prompt design. ICLR 2024. https://openreview.net/forum?id=RIu5lyNXjT\n\nWhere the “76 points from formatting alone” number comes from.\n\nLiu, P., Yuan, W., Fu, J., Jiang, Z., Hayashi, H., & Neubig, G. (2023). Pre-train, prompt, and predict: A systematic survey of prompting methods in natural language processing. ACM Computing Surveys, 55(9), 1–35. https://doi.org/10.1145/3560815\n\nThe source for “one model, many tasks.”\n\n\nOther\n\nLandis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. Biometrics, 33(1), 159–174. https://doi.org/10.2307/2529310\nMcHugh, M. L. (2012). Interrater reliability: The kappa statistic. Biochemia Medica, 22(3), 276–282. https://doi.org/10.11613/BM.2012.031\n\nBoth are behind the κ interpretation bands in Session 4. Treat the bands as conventions, not thresholds.\n\nPrompt Engineering Guide — the technique map from Session 7, for self-study."
+    "text": "Reference — used in class, not assigned\nYou do not need to read these; they are here so you can cite the source of a number you were shown.\nOther\n\nLandis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. Biometrics, 33(1), 159–174. https://doi.org/10.2307/2529310\nMcHugh, M. L. (2012). Interrater reliability: The kappa statistic. Biochemia Medica, 22(3), 276–282. https://doi.org/10.11613/BM.2012.031\n\nBoth are behind the κ interpretation bands in Session 4. Treat the bands as conventions, not thresholds.\n\nPrompt Engineering Guide — the technique map from Session 7, for self-study."
   },
   {
     "objectID": "slides/slides-session-13.html#agenda",
     "href": "slides/slides-session-13.html#agenda",
     "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nRounds 1 and 2 — one change each, predicted in advance\nReading the confusion matrix to decide what to change next\nThe final full-size run — once — and freezing it"
+    "text": "📋 Agenda\n\n04_develop — rounds on the dev half, one change each, predicted in advance\nReading the confusion matrix to decide what to change next\n05_test — commit to your candidates, then open the held-out set once"
   },
   {
     "objectID": "slides/slides-session-13.html#learning-objectives",
     "href": "slides/slides-session-13.html#learning-objectives",
     "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nChange one thing per round, predict its effect, and test it.\nUse a confusion matrix to choose the next change rather than guessing.\nFreeze a run and explain why a seed alone is not enough.\nReport plain and weighted κ, and say which one your labels justify."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nChange one thing per round, predict its effect, and test it — on dev.\nUse a confusion matrix to choose the next change rather than guessing.\nCommit to your candidates and a winner rule before opening the held-out set.\nFreeze a run and explain why a seed alone is not enough.\nReport plain and weighted κ, and say which one your labels justify."
   },
   {
     "objectID": "slides/slides-session-13.html#one-change-per-round",
     "href": "slides/slides-session-13.html#one-change-per-round",
     "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
     "section": "One change per round",
-    "text": "One change per round\n\n\n\nRound\nChange\nMacro-F1\n\n\n\n\n0\nplain instruction + label set\n0.33\n\n\n1\n+ one example per label\n0.46\n\n\n2\n+ definitions for B1 vs B2\n?\n\n\n\n\nIf you change two things and the score moves, you cannot tell which change caused it."
+    "text": "One change per round\n\n\n\nRound\nChange\nMacro-F1 (dev)\n\n\n\n\n0\nplain instruction + label set\n0.33\n\n\n1\n+ one example per label\n0.46\n\n\n2\n+ definitions for B1 vs B2\n?\n\n\n\nEvery number in that column is measured on dev. It is your steering wheel, not your result.\n\nIf you change two things and the score moves, you cannot tell which change caused it."
   },
   {
     "objectID": "slides/slides-session-13.html#added-examples-is-not-an-explanation",
@@ -709,7 +721,7 @@
     "href": "slides/slides-session-13.html#use-the-matrix-to-choose-the-next-change",
     "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
     "section": "Use the matrix to choose the next change",
-    "text": "Use the matrix to choose the next change\nevaluate(gold, pred0, ordered=True)\nLook at the off-diagonal cells, not only the macro-F1:\n\nMost confused pair — which two labels?\nAdjacent (B1↔︎B2) — a calibration problem on an ordered scale; often fixable with clearer definitions or anchor examples.\nDistant (A1↔︎C2) — the model is reading the prompt differently from how you intended."
+    "text": "Use the matrix to choose the next change\nevaluate(dev, pred0, ordered=True)     # dev — the half you are allowed to look at\nLook at the off-diagonal cells, not only the macro-F1:\n\nMost confused pair — which two labels?\nAdjacent (B1↔︎B2) — a calibration problem on an ordered scale; often fixable with clearer definitions or anchor examples.\nDistant (A1↔︎C2) — the model is reading the prompt differently from how you intended."
   },
   {
     "objectID": "slides/slides-session-13.html#plain-vs.-weighted-κ",
@@ -723,14 +735,28 @@
     "href": "slides/slides-session-13.html#but-only-when-the-labels-are-a-scale",
     "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
     "section": "But only when the labels are a scale",
-    "text": "But only when the labels are a scale\nordered=True is right for A1 &lt; A2 &lt; … &lt; C2 and Move 1 &lt; 2 &lt; 3.\nIt is wrong for error categories — Grammatical is not “closer to” Lexical than to Mechanical.\n\n\n\n\n\n\nAnd watch the order\n\n\nLow/Mid/High is ordered but not alphabetical. Pass it yourself:\nevaluate(gold, pred, ordered=True, labels=[\"Low\", \"Mid\", \"High\"])\nOtherwise the scale is High &lt; Low &lt; Mid and the number cannot be interpreted. evaluate prints the order it used — read that line."
+    "text": "But only when the labels are a scale\nordered=True is right for A1 &lt; A2 &lt; … &lt; C2 and Move 1 &lt; 2 &lt; 3.\nIt is wrong for error categories — Grammatical is not “closer to” Lexical than to Mechanical.\n\n\n\n\n\n\nAnd watch the order\n\n\nLow/Mid/High is ordered but not alphabetical. Pass it yourself:\nevaluate(dev, pred, ordered=True, labels=[\"Low\", \"Mid\", \"High\"])\nOtherwise the scale is High &lt; Low &lt; Mid and the number cannot be interpreted. evaluate prints the order it used — read that line."
   },
   {
-    "objectID": "slides/slides-session-13.html#the-final-run",
-    "href": "slides/slides-session-13.html#the-final-run",
+    "objectID": "slides/slides-session-13.html#commit-first-then-open-it",
+    "href": "slides/slides-session-13.html#commit-first-then-open-it",
     "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
-    "section": "The final run",
-    "text": "The final run\n\nPick your best prompt.\nRaise N_PER_CLASS to full size.\nRun it once.\nSave it.\n\nsave_predictions(pred_best, OUT_DIR + \"/\" + TRACK + \"_\" + GROUP + \"_predictions.json\")\npred_final = load_predictions(OUT_DIR + \"/\" + TRACK + \"_\" + GROUP + \"_predictions.json\")\nEverything from here reads pred_final."
+    "section": "Commit first, then open it",
+    "text": "Commit first, then open it\nFill this in before the next cell runs:\nCANDIDATES = {                                  # every prompt you will test\n    \"v1 few-shot\": ROOT / \"prompts\" / (TRACK + \".txt\"),\n}\nWINNER_RULE = \"highest macro-F1; ties go to the simpler prompt\"\n\nYou may test more than one prompt. That is legitimate — but it is a different claim from testing one, and the difference is entirely whether you said so in advance."
+  },
+  {
+    "objectID": "slides/slides-session-13.html#then-run-it-once",
+    "href": "slides/slides-session-13.html#then-run-it-once",
+    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
+    "section": "Then run it, once",
+    "text": "Then run it, once\ntest = load_gold(TEST_PATH)          # the first time this file is opened all week\n\nfreeze_test_run(load_prompt(CANDIDATES[name]), test, f1_by_round, ...)\nfreeze_test_run runs the prompt, saves before scoring anything, reads that file back off disk, scores those predictions, and appends one line to a log that travels in your submission.\n\n\n\n\n\n\n\nReport every number you tested, not the best one\n\n\nThree prompts tested and the best reported is the best of three tries, optimistic by an amount nobody can work out afterwards. All three go in report §3."
+  },
+  {
+    "objectID": "slides/slides-session-13.html#nothing-stops-you-running-it-twice",
+    "href": "slides/slides-session-13.html#nothing-stops-you-running-it-twice",
+    "title": "Session 13: Project Work — Prompt Iteration & Final Evaluation",
+    "section": "Nothing stops you running it twice",
+    "text": "Nothing stops you running it twice\nStopping you would be the wrong design — a real mistake at four o’clock needs a way forward.\nSo instead nothing is overwritten: a second run lands in ..._predictions_attempt2.json beside the first, and both stay.\n\nEvery scoring appends a line to ..._test_log.jsonl, fingerprinted with the prompt that produced it. Same fingerprint twice = one prompt run twice. Different fingerprints = a prompt changed after seeing the held-out set — and report §5 has to say which happened."
   },
   {
     "objectID": "slides/slides-session-13.html#one-run-one-person",
@@ -1262,63 +1288,84 @@
     "href": "slides/slides-session-11.html#learning-objectives",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nDescribe the pipeline as a chain of inputs and outputs — what each step consumes and produces.\nPoint to where in Days 1–3 you ran each helper, and use the same call form again.\nWrite your group’s PLAN.md and defend its six lines."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nDescribe the pipeline as a chain of inputs and outputs — what each step consumes and produces.\nPoint to where in Days 1–3 you ran each call, and use the same call form again.\nWrite your group’s PLAN.md, including the decisions that have to be settled before any number exists."
   },
   {
-    "objectID": "slides/slides-session-11.html#one-diagram",
-    "href": "slides/slides-session-11.html#one-diagram",
+    "objectID": "slides/slides-session-11.html#six-notebooks-and-each-hands-a-file-to-the-next",
+    "href": "slides/slides-session-11.html#six-notebooks-and-each-hands-a-file-to-the-next",
     "title": "Session 11: Plenary Pipeline Assembly",
-    "section": "One diagram",
-    "text": "One diagram\npool ──sample──▶ sampled ──annotate──▶ sheet ──adjudicate──▶ gold\n                                                              │\n                            prompt ─────────────┐             │\n                                                ▼             ▼\n                                          run_prompt ──▶ predictions\n                                                              │\n                                                    save_predictions\n                                                              │\n                                                              ▼\n                                                       FROZEN FILE\n                                                              │\n                                         ┌────────────────────┤\n                                         ▼                    ▼\n                                    evaluate              show_errors\n                                         │                    │\n                                         └──────▶ export ◀─────┘"
+    "section": "Six notebooks, and each hands a file to the next",
+    "text": "Six notebooks, and each hands a file to the next\n01 build pool ──▶ pool.json\n                    │\n02 sample ──────────┴──▶ sample.json  +  the annotation Sheet\n                                              │\n03 annotate ──────────────────────────────────┴──▶ gold.json ──▶ dev.json\n                                                              └─▶ test.json\n                                                                    ·\n04 develop ── dev.json ──▶ prompts/*.txt  +  rounds.json           ·  untouched\n                                    │                              ·\n05 test ────────────────────────────┴── test.json ──▶ predictions.json + test_log.jsonl\n                                                              │\n06 report ────────────────────────────────────────────────────┴──▶ report.md"
+  },
+  {
+    "objectID": "slides/slides-session-11.html#the-line-down-the-middle",
+    "href": "slides/slides-session-11.html#the-line-down-the-middle",
+    "title": "Session 11: Plenary Pipeline Assembly",
+    "section": "The line down the middle",
+    "text": "The line down the middle\n04 and 05 are two files, not two halves of one.\n04_develop loads dev.json and cannot reach your test items — the names are not even imported there.\n\n“Do not look at the test set while you are still changing the prompt” only holds if it is a file boundary rather than a place you promise not to scroll past."
   },
   {
     "objectID": "slides/slides-session-11.html#read-it-as-data-shapes",
     "href": "slides/slides-session-11.html#read-it-as-data-shapes",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Read it as data shapes",
-    "text": "Read it as data shapes\n\n\n\n\n\n\n\n\nArrow\nWhat flows\nShape\n\n\n\n\npool → sampled\n~40 items, balanced\n[{id, text, label}]\n\n\nsampled → sheet\none row per item, labels blanked\na Google Sheet\n\n\nsheet → gold\nyour adjudicated decisions\n[{id, text, label}]\n\n\ngold + prompt → predictions\none label per item\n[\"B1\", \"A2\", …]\n\n\npredictions → frozen file\nthe same list, on disk\n.json\n\n\ngold + frozen → metrics\nP/R/F1, κ, matrix\nnumbers you report\n\n\n\n\nEverything after the frozen file reads the file, not the model."
+    "text": "Read it as data shapes\n\n\n\n\n\n\n\n\nArrow\nWhat flows\nShape\n\n\n\n\npool → sample\n~40 items, balanced\n[{id, text, label}]\n\n\nsample → Sheet\none row per item, labels blanked\na Google Sheet\n\n\nSheet → gold\nyour adjudicated decisions\n[{id, text, label}]\n\n\ngold → dev / test\nthe line you draw once\ntwo .json files\n\n\ndev + prompt → predictions\none label per item, many rounds\n[\"B1\", \"A2\", …]\n\n\ntest + prompt → frozen file\none label per item, once\n.json\n\n\ntest + frozen → metrics\nP/R/F1, κ, matrix\nthe numbers you report\n\n\n\n\nEverything from 05_test onward reads the file, not the model."
   },
   {
     "objectID": "slides/slides-session-11.html#where-you-have-already-used-these",
     "href": "slides/slides-session-11.html#where-you-have-already-used-these",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Where you have already used these",
-    "text": "Where you have already used these\n\n\n\n\n\n\n\n\n\nStep\nHelper\nYou ran it in\nSame call?\n\n\n\n\n1\nload_gold(path)\nDay 2 S5 · Day 3\n✅\n\n\n1\nsample_pool(pool, n, seed)\nDay 4 — as four inline steps\none call now\n\n\n2\ncreate_annotation_sheet(...)\nDay 2 S5 step A\n✅\n\n\n2\nload_annotation_sheet(...)\nDay 2 S5 step D\n✅\n\n\n2\nannotator_agreement(rows)\nDay 2 S5 step D\n✅\n\n\n2\ndisagreements(rows)\nDay 2 S5 step E\n✅\n\n\n2\nto_canonical(rows, labels)\nDay 2 S5 step F\n✅\n\n\n3–4\nrun_prompt(PROMPT, gold)\nDay 3, every round\n✅\n\n\n3–4\nevaluate(gold, pred, ordered=True)\nDay 2 S6 · Day 3\n✅\n\n\n5\nshow_errors(gold, pred)\nDay 3\n✅\n\n\n\nNine of these are exactly the same call you have already used. That is why 15 minutes is enough."
+    "text": "Where you have already used these\n\n\n\n\n\n\n\n\nNotebook\nCall\nYou ran it in\n\n\n\n\n02\nsample_pool(pool, n, seed)\nDay 4 Part A — as four inline steps\n\n\n02\ncreate_annotation_sheet(...)\nDay 2 S5 step A\n\n\n03\nload_coder_sheets(id, CODERS)\nDay 2 S5 step D\n\n\n03\ncolumn · percent_agreement\nDay 2 S6 — you built it as p_o\n\n\n03\ncohen_kappa_score(a, b)\nDay 2 S6 — you built it, then checked it against this\n\n\n03\nconfusion_matrix(a, b, labels=…)\nDay 2 S5 step D · S6 Part B\n\n\n03\nto_canonical(rows, labels, source=…)\nDay 2 S5 step F\n\n\n03\nsplit_dev_test(gold, DEV, seed=…)\nDay 4 Part B — you wrote the loop\n\n\n04\nrun_prompt(PROMPT, dev)\nDay 3, every round\n\n\n06\nclassification_report · f1_score\nDay 2 S6 Part B\n\n\n\nEvery one of these has an ancestor in Days 1–4. The full list, with the ancestor named for each, is the inventory page."
   },
   {
-    "objectID": "slides/slides-session-11.html#the-three-that-are-new",
-    "href": "slides/slides-session-11.html#the-three-that-are-new",
+    "objectID": "slides/slides-session-11.html#the-one-you-write-yourself",
+    "href": "slides/slides-session-11.html#the-one-you-write-yourself",
     "title": "Session 11: Plenary Pipeline Assembly",
-    "section": "The three that are new",
-    "text": "The three that are new\nload_prompt(path)                  # your prompt is now a FILE, so each version is kept\nsave_predictions(pred, path)       # the freezing step from S10, as code\nexport_results(track, gold, pred, f1_by_round, out_dir, group=GROUP)\n\nAnd one that changes shape:\nbuild_fewshot(PROMPT, pool, gold)  # Day 3: you typed the examples by hand\n                                   # now: drawn from the pool, avoiding your gold"
+    "section": "The one you write yourself",
+    "text": "The one you write yourself\ndisagreements(rows, coders=CODERS)\n03_annotate does not import it. The rule inside — what counts as a disagreement — is a decision about your scheme, not a fact about your data, and there is no way to hand it over without answering it for you.\n\nYou saw the six lines on Day 2 S5, step E."
+  },
+  {
+    "objectID": "slides/slides-session-11.html#the-ones-that-are-new",
+    "href": "slides/slides-session-11.html#the-ones-that-are-new",
+    "title": "Session 11: Plenary Pipeline Assembly",
+    "section": "The ones that are new",
+    "text": "The ones that are new\nload_prompt(path)                  # your prompt is now a FILE, so each version is kept\nfreeze_test_run(...)               # run · save BEFORE scoring · re-read · score · log\nread_test_log(path)                # every held-out scoring, with a fingerprint of each prompt\nexport_results(track, test, pred, f1_by_round, out_dir, group=GROUP)\n\nAnd one that changes shape:\nbuild_fewshot(PROMPT, pool, gold)  # Day 3: you typed the examples by hand\n                                   # now: drawn from the pool, avoiding your gold"
   },
   {
     "objectID": "slides/slides-session-11.html#the-作戦シート-now-as-a-file-in-your-repo",
     "href": "slides/slides-session-11.html#the-作戦シート-now-as-a-file-in-your-repo",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "The 作戦シート, now as a file in your repo",
-    "text": "The 作戦シート, now as a file in your repo\nYou have been building this plan since S3 — track, scheme, gold source, prompting strategy. Today it becomes one page in your repo.\nIt is not graded. It is a required step: no group calls the model until it is signed.\n\nTwo minutes of writing prevents problems that otherwise take an hour to find, after you have used your quota:\n\nlabel set says Move 1/2/3, gold file says 1a/1b, prompt says “move one” → no error, just a confusing F1\nlabels ordered but not alphabetical → weighted κ computed over High &lt; Low &lt; Mid\nnobody agreed who codes which column → one annotator, no κ"
+    "text": "The 作戦シート, now as a file in your repo\nYou have been building this plan since S3 — track, scheme, gold source, prompting strategy. Today it becomes a file in your repo, and it grows three questions the notebooks deliberately do not ask you.\nIt is not graded. It is a required step: no group calls the model until it is signed.\n\nTwo minutes of writing prevents problems that otherwise take an hour to find, after you have used your quota:\n\nlabel set says Move 1/2/3, gold file says 1a/1b, prompt says “move one” → no error, just a confusing F1\nlabels ordered but not alphabetical → weighted κ computed over High &lt; Low &lt; Mid\nnobody agreed who codes which column → one annotator, no κ\nthe statistic picked after seeing which one came out higher → a number nobody can check"
   },
   {
-    "objectID": "slides/slides-session-11.html#the-six-lines",
-    "href": "slides/slides-session-11.html#the-six-lines",
+    "objectID": "slides/slides-session-11.html#nine-questions",
+    "href": "slides/slides-session-11.html#nine-questions",
     "title": "Session 11: Plenary Pipeline Assembly",
-    "section": "The six lines",
-    "text": "The six lines\n# PLAN — &lt;group&gt;, track &lt;track&gt;\nMembers: …\n\n1. Unit of analysis: (sentence / whole text) — and why\n2. Label set: … (exactly the strings in your gold file)\n3. Are the labels ORDERED? In what order?\n4. Gold: pool file · N_PER_CLASS · SEED · expected total\n5. QC: who is CoderA, who is CoderB, who adjudicates\n6. Prompt plan: baseline, then the ONE change you predict\n   will help — and why\n\n\n\n\n\n\nTip\n\n\nQuestion 3 checks that you use the correct κ for ordered labels. Question 6 asks you to state your prediction before you test it, which is the core of the method."
+    "section": "Nine questions",
+    "text": "Nine questions\nWhat you are annotating:\n1. Unit of analysis: sentence or whole text — and why\n2. Label set: exactly the strings in your gold file\n3. Are the labels ORDERED? In what order?  → labels_order\n4. The ✏️ decisions you made building the pool, and what they cost\n5. Sampling: which strategy, and the one-sentence defence\n6. The dev / test split — and why that ratio\nWhat you will report — and this is the half that is new:\n7. QC: who codes what · WHICH agreement statistics, and why\n      · what counts as a disagreement\n8. Prompt plan: the moves, in order · how many prompts you will\n      test on the held-out set · how you pick the winner\n9. The ONE number you lead with: macro / micro / weighted F1, or κ"
+  },
+  {
+    "objectID": "slides/slides-session-11.html#why-79-are-on-this-page-and-not-in-a-notebook",
+    "href": "slides/slides-session-11.html#why-79-are-on-this-page-and-not-in-a-notebook",
+    "title": "Session 11: Plenary Pipeline Assembly",
+    "section": "Why 7–9 are on this page and not in a notebook",
+    "text": "Why 7–9 are on this page and not in a notebook\nEvery one of them decides a number you will report — and every one has an answer you could reach for after seeing which option flatters you.\n\nNothing stops you running all three F1 averages and reporting the highest. No reader of your report could tell.\n\n\n\n\n\n\n\n\nThe rule\n\n\nLooking is fine when it changes what you do next. It is not fine when it changes what you claim.\nReading the coder confusion matrix to decide which boundary to argue about is exactly what it is for. Choosing the statistic after seeing what each one gives you is not."
   },
   {
     "objectID": "slides/slides-session-11.html#and-the-table",
     "href": "slides/slides-session-11.html#and-the-table",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "And the table",
-    "text": "And the table\n\n\n\n\n\n\n\n\n\n#\nStep\nConsumes\nProduces\n\n\n\n\n1\nsample\nPOOL_PATH, N_PER_CLASS, SEED\npool, sampled, LABELS\n\n\n2\nQC / adjudicate\nsampled, LABELS, the sheet\ngold\n\n\n3\nbaseline\nPROMPT, gold\npred0, f1_by_round\n\n\n4\niterate + freeze\nPROMPT, pool, gold\npred_final (a file)\n\n\n5\nerror analysis\ngold, pred_final\nthe errors table\n\n\n6\nexport\nall of the above\noutputs/…_report.md"
+    "text": "And the table\n\n\n\n\n\n\n\n\nNotebook\nConsumes\nProduces\n\n\n\n\n01 build pool\nthe raw corpus + your ✏️ decisions\npool.json\n\n\n02 sample\nthe pool + your sampling choice\nsample.json, the Sheet\n\n\n03 annotate\nthe filled-in Sheet + your adjudication\ngold.json → dev.json / test.json\n\n\n04 develop\nthe dev half, the pool, your prompt\nprompts/…, rounds.json\n\n\n05 test\nthe test half + the prompts you committed to\npredictions.json, test_log.jsonl\n\n\n06 report\nthe test half + the frozen run\nreport.md\n\n\n\nThe model appears at 04. Notebooks 01–03 are the study; the LLM is the thing being measured by it."
   },
   {
     "objectID": "slides/slides-session-11.html#say-it-out-loud",
     "href": "slides/slides-session-11.html#say-it-out-loud",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Say it out loud",
-    "text": "Say it out loud\nEach group, in turn:\n\n“Step 2 consumes sampled and the sheet, and produces gold.”\n\n\nDo this for every step, without reading from your notes.\n\n\nIf you can do that, you can answer the Day-5 question “describe what you did”, which is worth more marks than your F1."
+    "text": "Say it out loud\nEach group, in turn:\n\n“03_annotate consumes the filled-in Sheet and our adjudication, and produces the gold set.”\n\n\nDo this for every step, without reading from your notes.\n\n\nIf you can do that, you can answer the Day-5 question “describe what you did”, which is worth more marks than your F1."
   },
   {
     "objectID": "slides/slides-session-01.html#agenda",
@@ -1340,13 +1387,6 @@
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Round 2",
     "text": "Round 2\nTell us:\n\nWhat is your research interest\nWhy you decided to take this course — any goals, any concerns"
-  },
-  {
-    "objectID": "slides/slides-session-01.html#round-3",
-    "href": "slides/slides-session-01.html#round-3",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Round 3",
-    "text": "Round 3\n\nWhy you decided to take this course\nAny goals\nAny concerns"
   },
   {
     "objectID": "slides/slides-session-01.html#llms-are-everywhere-now",
@@ -1398,60 +1438,95 @@
     "text": "The one idea for today\n\nAn LLM produces annotations, and you must check them against a gold standard before you report them. It can be applied to the linguistic tasks you already work on.\n\nEverything this week is a method for doing that checking. Today we explain why the checking is necessary."
   },
   {
-    "objectID": "slides/slides-session-01.html#the-plan-follow-one-example",
-    "href": "slides/slides-session-01.html#the-plan-follow-one-example",
+    "objectID": "slides/slides-session-01.html#question",
+    "href": "slides/slides-session-01.html#question",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "The plan — follow one example",
-    "text": "The plan — follow one example\nAn LLM is a kind of statistical machine-learning model.\nTo explain what that means, we cover four topics:\n\nMachine learning — what “learning from data” means\nNLP — machine learning applied to language\nHow NLP researchers try to encode meaning\nTransformers architecture and its application to LLM\n\nThe video moved quickly over 1 and 4, and did not cover 3. Topic 3 is the one that decides whether an LLM can label your data, so we spend the most time there."
+    "section": "Question",
+    "text": "Question\n\nHave you ever used LLMs?\n\nWhat was it for? / Did it work?\nWhat surprised you?"
   },
   {
-    "objectID": "slides/slides-session-01.html#statistical-machine-learning-model",
-    "href": "slides/slides-session-01.html#statistical-machine-learning-model",
+    "objectID": "slides/slides-session-01.html#what-do-you-know-about-llms",
+    "href": "slides/slides-session-01.html#what-do-you-know-about-llms",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Statistical machine-learning model",
-    "text": "Statistical machine-learning model\nStatistical Machine learning = a model learns patterns from data instead of being hand-coded with rules.\n\nRule-based ML: a human writes the rules.\nStatistical ML: the model infers the rules from examples.\n\nAn ML model learns a probabilistic representation from statistical regularity in the data — which patterns tend to go with which outcome."
+    "section": "What do you know about LLMs?",
+    "text": "What do you know about LLMs?\n\nWhat is a Large Language Model (or LLM)?\n\nShare with the neighbor anything you know about LLM!"
   },
   {
-    "objectID": "slides/slides-session-01.html#example-spam-detection",
-    "href": "slides/slides-session-01.html#example-spam-detection",
+    "objectID": "slides/slides-session-01.html#first-a-7-minute-overview",
+    "href": "slides/slides-session-01.html#first-a-7-minute-overview",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Example — spam detection",
-    "text": "Example — spam detection\nThe classic ML task: given an email, decide spam / not-spam.\n\nRule-based: block anything containing FREE, WINNER, $$$ → this fails easily: spammers write “F R E E”, and you block real mail.\nML: show the model thousands of emails already labelled spam / not-spam. It learns on its own which words (and combinations) predict spam.\n\nThe rules are inferred from examples, not written by hand."
+    "section": "First, a 7-minute overview",
+    "text": "First, a 7-minute overview\nGrant Sanderson (3Blue1Brown), Large Language Models explained briefly.\nWhile you watch, write down an answer to each of these:\n\nWhat exactly does the model predict?\nWhere do the numbers inside the model come from?\nWhat does attention do?\n\nWe come back to all three afterwards, with a language example."
   },
   {
-    "objectID": "slides/slides-session-01.html#what-is-the-predictor-in-the-ml-model",
-    "href": "slides/slides-session-01.html#what-is-the-predictor-in-the-ml-model",
+    "objectID": "slides/slides-session-01.html#section",
+    "href": "slides/slides-session-01.html#section",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "What is the predictor in the ML model?",
-    "text": "What is the predictor in the ML model?\nAn ML model works in the same way as a regression model: it maps input features to an outcome.\nSo we need predictors (input features) to make predictions.\nThree different classes of technologies.\n\nOne-hot text vector\nStatic Embeddings\nContextual Embeddings"
+    "section": "",
+    "text": "If the embed does not load, play it from https://www.3blue1brown.com/lessons/mini-llm/ or https://www.youtube.com/watch?v=WMcwoIyK4DA"
   },
   {
-    "objectID": "slides/slides-session-01.html#one-hot-text-vector",
-    "href": "slides/slides-session-01.html#one-hot-text-vector",
+    "objectID": "slides/slides-session-01.html#reflect-on-what-the-video-says",
+    "href": "slides/slides-session-01.html#reflect-on-what-the-video-says",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "One-hot text vector",
-    "text": "One-hot text vector\nEach vocabulary word has its own position in the vector — 1 if the word is present, 0 if not. Add the words up → the email’s bag-of-words vector, and that is what the classifier reads.\n\n\n\n  \n    Email\n    claim yourfree prize\n  \n  →\n  \n    One-hot / word\n    \n      claimyourfreeprizemeetnotes\n      claim100000\n      your010000\n      free001000\n      prize000100\n    \n  \n  Σ\n  \n    Bag-of-words\n    111100\n    sparse · mostly 0\n  \n  →\n  \n    Classifier\n    P(spam)=0.94\n    🚫 spam\n  \n\n\nLimitation: the vector is as long as the whole vocabulary (tens of thousands of positions), and “free” and “complimentary” are two unrelated positions — the representation does not record that they mean the same."
+    "section": "Reflect on what the video says…",
+    "text": "Reflect on what the video says…\n\nWhat exactly does the model predict?\nWhere do the numbers inside the model come from?\nWhat does attention do?"
   },
   {
-    "objectID": "slides/slides-session-01.html#static-embeddings",
-    "href": "slides/slides-session-01.html#static-embeddings",
+    "objectID": "slides/slides-session-01.html#before-llm-brief-history-of-embedding",
+    "href": "slides/slides-session-01.html#before-llm-brief-history-of-embedding",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Static embeddings",
-    "text": "Static embeddings\nAn embedding is a learned dense vector for each word — trained so that words with similar meaning sit close together (Latent Semantic Analysis, Word2Vec).\nLook up each word, average them → the email’s vector.\n\n  \n    Email\n    claim yourfree prize\n  \n  →\n  \n    Embedding lookup\n    \n      claim.8.1-.3.6\n      your.0.2.1-.1\n      free.9-.2-.4.7\n      prize.7.0-.2.5\n    \n    4 dims shown (really ~300)\n  \n  ⌀\n  \n    Avg → doc vector\n    .6.0-.2.4\n    dense · short\n  \n  →\n  \n    Classifier\n    P(spam)=0.91\n    🚫 spam\n  \n\n\nImprovement: “free” and “complimentary” now have nearby vectors, so the model generalises to words it never saw labelled. But it still ignores word order, because it is an average.\n\n\nAnd the same word can be evidence for opposite answers:\n\n“your account is free of charge” ✅ not spam · “claim your FREE prize now” 🚫 spam\n\nTwo reasons: many words are polysemous or homographic, and the meaning of the whole is not the sum of the isolated words — for example idioms such as kick the bucket. A static embedding has only ever one vector for free."
+    "section": "Before LLM — Brief history of embedding",
+    "text": "Before LLM — Brief history of embedding\nThe video said the first step is to turn each word into a long list of numbers. This technology is called embedding.\nEmbedding: “vector representations of the meaning of words that are learned directly from word distributions in texts” (Jurafsky & Martin, 2026, p. 96).\nTwo families, and we build up to both:\n\nStatic — one fixed vector per word: counting contexts, then Word2Vec.\nContextual — a different vector each time the word appears: BERT, and the models you use."
   },
   {
-    "objectID": "slides/slides-session-01.html#the-limit-of-static-embeddings",
-    "href": "slides/slides-session-01.html#the-limit-of-static-embeddings",
+    "objectID": "slides/slides-session-01.html#rgb-color-space",
+    "href": "slides/slides-session-01.html#rgb-color-space",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "The limit of Static embeddings",
-    "text": "The limit of Static embeddings\nMeaning of a word depends on order and context:\n\n“your account is free of charge” ✅ not spam\n“claim your FREE prize now” 🚫 spam\n\nThe same word gives opposite evidence in the two sentences. There are two reasons:\n\nMany words are polysemous or homographic\nIsolated word does not adds up to the meaning of the whole\n\nidioms such as kick the bucket"
+    "section": "RGB color space",
+    "text": "RGB color space\nA vector is a list of numbers that fixes the location of something in a space. A colour, for example, is fixed by how much red, green and blue it has.\nMove the sliders to change the colour. Drag the cube to rotate it.\n\n\n\n  \n  \n    \n      R214\n      G93\n      B60\n    \n    \n      \n      \n        [214, 93, 60]\n        #D65D3C\n      \n    \n  \n\n\n\n\n\nThe dashed path is the vector: R along red, then G along green, then B along blue. The number under each name is the distance from your colour to that colour — close in the space = similar colour. Word embeddings work the same way, with hundreds of numbers instead of three."
   },
   {
-    "objectID": "slides/slides-session-01.html#transformer-architecture",
-    "href": "slides/slides-session-01.html#transformer-architecture",
+    "objectID": "slides/slides-session-01.html#simple-count-based-embedding",
+    "href": "slides/slides-session-01.html#simple-count-based-embedding",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Transformer architecture",
-    "text": "Transformer architecture\n\nAttention: every word decides which other words are relevant to it\nOutput: context-sensitive representations of each word and a document\n\n\nTake the two frees from the last slide:\n\n\n\n\n\n\n\n\nSentence\nfree attends most to\nResulting sense\n\n\n\n\n“your account is free of charge”\naccount, charge\nbanking, benign\n\n\n“claim your FREE prize now”\nclaim, prize, now\npromotional\n\n\n\n\n\nThe same word form now has two different vectors, because the surrounding words differ. Static embeddings could not do this; there was only ever one vector for free."
+    "section": "Simple count-based embedding",
+    "text": "Simple count-based embedding\nWhen we cannot tell the machine meaning of each word, how can it “encode” meaning?\n\n\n\n\n\n\n\nThe distributional principle\n\n\nThe answer is by studying Co-occurrence. “You shall know a word by the company it keeps!” (Firth, 1957, p. 11).\n\n\n\n\n\n\n\n\n\n\n\n\n\nLeft context\nNode\nRight context\n\n\n\n\nis traditionally followed by\ncherry\npie, a traditional dessert\n\n\noften mixed, such as\nstrawberry\nrhubarb pie. Apple pie\n\n\ncomputer peripherals and personal\ndigital\nassistants. These devices usually\n\n\na computer. This includes\ninformation\navailable on the internet\n\n\n\n\nCount, by hand: how often does each of a, computer and pie appear in each of those four windows?\n\n\n\n\n\na\ncomputer\npie\n\n\n\n\ncherry\n1\n0\n1\n\n\nstrawberry\n0\n0\n2\n\n\ndigital\n0\n1\n0\n\n\ninformation\n1\n1\n0\n\n\n\n\nEach row is that word’s vector: cherry = [1, 0, 1]."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#the-same-counts-from-a-real-corpus",
+    "href": "slides/slides-session-01.html#the-same-counts-from-a-real-corpus",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "The same counts, from a real corpus",
+    "text": "The same counts, from a real corpus\nNow count every occurrence in Wikipedia, instead of one window each. Six of the columns (Jurafsky & Martin, 2026, p. 103):\n\n\n\n\naardvark\n…\ncomputer\ndata\nresult\npie\nsugar\n…\n\n\n\n\ncherry\n0\n…\n2\n8\n9\n442\n25\n…\n\n\nstrawberry\n0\n…\n0\n0\n1\n60\n19\n…\n\n\ndigital\n0\n…\n1670\n1683\n85\n5\n4\n…\n\n\ninformation\n0\n…\n3325\n3982\n378\n5\n13\n…\n\n\n\ncherry and strawberry have similar rows. digital and information have similar rows. Nobody wrote a dictionary and nobody labelled anything — this came out of counting.\nThe cost: one column for every word in the vocabulary, so 10,000 to 50,000 columns, and almost every cell is 0.\n\n\n\n  \n  \n  \n  \n  \n\none row of the real matrix — 60 of its ~50,000 columns\nCounting words inside a document, rather than around a word, gives the bag-of-words representation."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#how-close-are-two-words",
+    "href": "slides/slides-session-01.html#how-close-are-two-words",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "How close are two words?",
+    "text": "How close are two words?\n\n\nEach row is a vector, so we can ask how close two of them are. The usual measure is cosine similarity: the size of the angle between two rows — the angle, not the size of the counts, so a frequent word does not come out similar to everything.\n\n\n\n\npie\ndata\ncomputer\n\n\n\n\ncherry\n442\n8\n2\n\n\ndigital\n5\n1683\n1670\n\n\ninformation\n5\n3982\n3325\n\n\n\n\n\n\n  \n  \n  \n  \n  \n  cherry\n  digital\n  information\n  pie\n  computer\n\n\nRough — the angles are widened so they are visible on screen.\n\n\n\n\nangle between the two rows\ncosine\n\n\n\n\n0° · pointing the same way\n1\n\n\n90° · sharing nothing\n0\n\n\n180° · pointing opposite ways\n−1\n\n\n\n\n\nWith counts you only ever see 0 to 1, because a count is never negative. −1 becomes possible on the next slide, where the numbers themselves can be negative.\ncosine(cherry, information) = 0.018 · cosine(digital, information) = 0.996 — the number behind any claim that two words, two sentences or two texts are “similar”."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#word2vec-predict-instead-of-count",
+    "href": "slides/slides-session-01.html#word2vec-predict-instead-of-count",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "word2vec: predict instead of count",
+    "text": "word2vec: predict instead of count\nInstead of counting how often jam occurs near apricot, train a small classifier on one question: is jam likely to occur near apricot?\n\n\nRunning text already holds the answers. A word that really did occur nearby is a yes; a word drawn at random is a no. Nobody labels anything. This is called self-supervision, and it is how LLMs are trained too.\nThe classifier is not the point. We keep the numbers it adjusted along the way. Those numbers are the embedding.\nThe result is short. 50 to 1,000 numbers per word, instead of 50,000 counts. They are real numbers, they can be negative, and no single one of them has a name you can read off.\n\n\n\nword2vec is the software package; skip-gram with negative sampling is the algorithm inside it (Jurafsky & Martin, 2026, pp. 105–110; step-by-step derivation in Goldberg & Levy, 2014). Both produce static embeddings: one fixed vector per word, whatever sentence it appears in."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#what-word2vec-actually-adjusts",
+    "href": "slides/slides-session-01.html#what-word2vec-actually-adjusts",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "What word2vec actually adjusts",
+    "text": "What word2vec actually adjusts\nOne target word, and the two words on each side of it:\n...  your  [ account   is   free   of   charge ]  a  standard  fee ...\n                c1     c2    w     c3     c4\n\n\n\nreally occurred nearby → yes\ndrawn at random → no\n\n\n\n\n(free, account)\n(free, Tolstoy)\n\n\n(free, is)\n(free, aardvark)\n\n\n(free, of)\n(free, spreadsheet)\n\n\n(free, charge)\n(free, monsoon)\n\n\n\n\n\n  free→  ←chargemoved closer\n  free←  →Tolstoymoved apart\n\nEach pass moves free a little closer to the words that really occurred near it, and a little further from the random ones. Run that over billions of words, and words that occur near the same other words end up close together in the space.\n\n\nStill one vector per word form. free in “your account is free of charge” and FREE in “claim your FREE prize now” get the same 300 numbers."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#attention-resolves-the-two-frees",
+    "href": "slides/slides-session-01.html#attention-resolves-the-two-frees",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Attention resolves the two frees",
+    "text": "Attention resolves the two frees\nThe video called this step attention. Here is what it does to the pair from the last slide:\n\n\n\n\n\n\n\n\nSentence\nfree attends most to\nResulting sense\n\n\n\n\n“your account is free of charge”\naccount, charge\nbanking, benign\n\n\n“claim your FREE prize now”\nclaim, prize, now\npromotional\n\n\n\nThe same word form now has two different vectors, because the surrounding words differ. Static embeddings could not do this; there was only ever one vector for free."
   },
   {
     "objectID": "slides/slides-session-01.html#why-this-matters-for-you",
@@ -1461,32 +1536,25 @@
     "text": "Why this matters for you\nThis is the whole reason an LLM can annotate at all.\nThe categories you care about — is this stance hedged?, is this move a Gap or a Purpose?, what CEFR level is this? — are not properties of the words in isolation. They are properties of words in context.\nA bag-of-words model cannot represent that. A transformer can.\n\n\n\n\n\n\nWarning\n\n\nBeing able to represent context is not the same as producing correct labels. Measuring that difference is what the rest of the week is about."
   },
   {
-    "objectID": "slides/slides-session-01.html#how-llms-are-trained",
-    "href": "slides/slides-session-01.html#how-llms-are-trained",
+    "objectID": "slides/slides-session-01.html#the-paradigm-shift",
+    "href": "slides/slides-session-01.html#the-paradigm-shift",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "How LLMs are trained",
-    "text": "How LLMs are trained\nAn LLM is trained by self-supervised pretraining on huge amounts of text:\n\nThe task: predict the next word, over and over, on billions of sentences.\nNo hand-labelling is needed, because the next word in the text is already the correct answer.\n\nProducing natural language is just that same next-word prediction, run forward — which is why it sounds fluent."
+    "section": "The paradigm shift",
+    "text": "The paradigm shift\nClassic NLP consumed annotation to build models.\nNow the model can produce annotation, so the direction is reversed:\nbefore: humans annotate → train the model now: the model annotates → and who checks it?"
   },
   {
-    "objectID": "slides/slides-session-01.html#autoregressive-model-the-llm",
-    "href": "slides/slides-session-01.html#autoregressive-model-the-llm",
+    "objectID": "slides/slides-session-01.html#what-people-have-already-done-with-this",
+    "href": "slides/slides-session-01.html#what-people-have-already-done-with-this",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Autoregressive model = the LLM",
-    "text": "Autoregressive model = the LLM\nPredicts the token at time T given everything before it (T−1, T−2, …).\n$ P(w_T w_1, w_2, , w_{T-1}) $\nRun that forward, one token at a time → fluent, coherent text. That is exactly what a chat LLM does when it answers you."
+    "section": "What people have already done with this",
+    "text": "What people have already done with this\nHistorically each task had its own model — a POS tagger, an NER model, a parser. Now one model does many tasks, because you change the request rather than the model (Liu et al., 2023).\nThat is not a promise. It is a research literature, and you can read it:\n\n\n\n\n\n\n\n\nStudy\nWhat it annotated\nTrack you could pick\n\n\n\n\nGilardi et al. (2023), PNAS\ntext annotation vs. crowd workers — ~25 points better, ~$0.003 per annotation\n(the cost argument)\n\n\nYu et al. (2024), IJCL\napology components — a function, not a form\npragmatics\n\n\nKim & Lu (2024), JEAP\nrhetorical moves in article abstracts\nRAAMove · CaRS-50\n\n\nMizumoto (2025), SSLA\nL2 errors — r = .94 with human raters, F1 = .95\nAutoErrorAnalyzer\n\n\nYamashita (2024), RMAL\nessay scores\nICNALE GRA\n\n\n\nThree of these are on your readings page. Four of them do a task you could choose for your own project."
   },
   {
-    "objectID": "slides/slides-session-01.html#one-model-many-classic-tasks",
-    "href": "slides/slides-session-01.html#one-model-many-classic-tasks",
+    "objectID": "slides/slides-session-01.html#what-an-llm-lets-you-do",
+    "href": "slides/slides-session-01.html#what-an-llm-lets-you-do",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "One model, many classic tasks",
-    "text": "One model, many classic tasks\nHistorically, each task had its own model — POS tagger, NER model, parser, coreference model.\nWith scale + pretraining + prompting, one model can do many tasks."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#summary",
-    "href": "slides/slides-session-01.html#summary",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Summary",
-    "text": "Summary\nAn LLM is:\n\na statistical machine-learning model — it learns patterns from data,\nof the autoregressive kind — it predicts the next token given the previous sequence,\nbuilt on the transformer architecture — attention lets it read context,\ntrained by next-word prediction on huge amounts of text."
+    "section": "What an LLM lets you do",
+    "text": "What an LLM lets you do\nThree things, and they are the reason the rest of the week is worth the effort.\n\nIt can label categories that depend on context. Most of the categories linguists work with are of that kind, and a bag-of-words model could never represent them.\nOne model, many tasks. A new question needs a new prompt, not a new trained model and a new annotated training set.\nCareful annotation — expert time, training, double-coding — used to need more resources than a small project has. A five-day project can now attempt it.\n\nNone of that says the labels are correct. That is the next question, and it is the rest of the course."
   },
   {
     "objectID": "slides/slides-session-01.html#give-language-data-to-an-llm",
@@ -1496,18 +1564,18 @@
     "text": "Give language data to an LLM\nLet’s try it — no code:\n\npaste some real language data into a chat LLM,\nask it to label / analyze it,\nread the output together.\n\nWhat did it get right? What looks wrong? And the question for the whole course: how could we know this, other than by reading a few outputs?"
   },
   {
-    "objectID": "slides/slides-session-01.html#the-inversion",
-    "href": "slides/slides-session-01.html#the-inversion",
+    "objectID": "slides/slides-session-01.html#and-where-it-did-not-work",
+    "href": "slides/slides-session-01.html#and-where-it-did-not-work",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "The inversion",
-    "text": "The inversion\nClassic NLP consumed annotation to build models.\nNow the model can produce annotation, so the direction is reversed:\nbefore: humans annotate → train the model now: the model annotates → and who checks it?"
+    "section": "…and where it did not work",
+    "text": "…and where it did not work\nThe same literature reports the other half.\n\nCurry, Baker & Brookes (2024), Applied Corpus Linguistics — passable at grouping keywords, but poor at concordance analysis: it made false inferences, and it altered the data it was given.\nZiems et al. (2024), Computational Linguistics — 13 models across 25 benchmarks. It scores lower than trained supervised models on classification, and higher than crowd workers on open-ended coding. Fair, not expert.\nCrosthwaite & Baisa (2023) — with a corpus you can say which texts your evidence came from. With an LLM you cannot.\n\nSo: same tool, opposite results, depending on the task. The only way to know which case you are in is to measure it."
   },
   {
-    "objectID": "slides/slides-session-01.html#trained-to-sound-right-not-be-right",
-    "href": "slides/slides-session-01.html#trained-to-sound-right-not-be-right",
+    "objectID": "slides/slides-session-01.html#sounding-right-is-not-being-right",
+    "href": "slides/slides-session-01.html#sounding-right-is-not-being-right",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Trained to sound right, not be right",
-    "text": "Trained to sound right, not be right\nAn LLM is optimized to produce fluent, plausible text.\nPlausible is not the same as correct — which is exactly what Curry et al. found when the output read well and the analysis was wrong. So we check its labels against a human gold standard, using NLP’s own metrics:\n\ninter-annotator agreement (percent + Cohen’s κ)\nprecision / recall / F1, confusion matrix\n\nWe’ll cover these on Day 2."
+    "section": "Sounding right is not being right",
+    "text": "Sounding right is not being right\nAn LLM essentially learns to predict next plausible word.\nPlausible is not the same as correct — which is exactly what Curry et al. found when the output read well and the analysis was wrong.\nThat’s why we still need NLP evaluation."
   },
   {
     "objectID": "slides/slides-session-01.html#what-this-course-covers",
@@ -2535,11 +2603,11 @@
     ]
   },
   {
-    "objectID": "final-project/index.html#the-six-steps",
-    "href": "final-project/index.html#the-six-steps",
+    "objectID": "final-project/index.html#the-six-notebooks",
+    "href": "final-project/index.html#the-six-notebooks",
     "title": "Final Project",
-    "section": "The six steps",
-    "text": "The six steps\n\nSample a balanced subset from your track’s pool.\nQC / adjudicate it — two of you annotate blind, measure agreement and κ, then argue out the disagreements. What comes out is your gold set.\nBaseline prompt — one honest number to beat.\nIterate 2–3 rounds, then freeze: run your best prompt once and save the predictions to a file.\nError analysis — which misses are the model’s fault, and which are the scheme’s?\nExport the report scaffold, then write the parts only you can write.\n\n\n\n\n\n\n\nImportantYour adjudicated gold is the gold\n\n\n\nThe model is scored against what your group decided in step 2, not against the published labels. That is what makes the QC pass matter: the boundaries you argued over in step 2 are exactly the ones you will be pointing at in step 5 when you explain a miss.\ncompare_to_published still shows you where you differ from the source corpus — and that gap is itself a finding worth a line in your report.\n\n\n\n\n\n\n\n\nImportantRun it once, then freeze it\n\n\n\nYou run the model through the Gemini API with temperature=0 and a fixed seed (get a free key). Even then, a hosted LLM is only best-effort reproducible — so once your prompt is final, run it once and save the predictions to a JSON file. Every number you report comes out of that file.\nYour F1 is then stable, and anyone can re-run your analysis on exactly the outputs you saw.",
+    "section": "The six notebooks",
+    "text": "The six notebooks\n\n\n\n\n\n\n\n\n01_build_pool_&lt;track&gt;\nyour track’s raw corpus → a pool\nno model\n\n\n02_sample\nthe pool → your sample, and the blind annotation sheet\nno model\n\n\n03_annotate\nthe filled-in sheet → your gold set, split into dev and test\nno model\n\n\n04_develop\nprompt rounds, on dev only\nthe model, many times\n\n\n05_test\nthe held-out run, once, frozen to a file\nthe model, once\n\n\n06_report\nthe frozen run → error analysis and the report scaffold\nno model\n\n\n\n04 and 05 are separate files on purpose. “You may not look at the test set while you are still changing the prompt” is a rule that only holds if it is a file boundary rather than a scroll position, so 04_develop.ipynb has no path to your test items at all.\nNotebooks 01–03 need no model, so there is plenty to get on with while your PLAN.md is being signed off.\n\n\n\n\n\n\nImportantYour adjudicated gold is the gold\n\n\n\nThe model is scored against what your group decided in 03_annotate, not against the published labels. That is what makes the QC pass matter: the boundaries you argued over in 03_annotate are exactly the ones you will be pointing at in 06_report when you explain a miss.\ncompare_to_published still shows you where you differ from the source corpus — and that gap is itself a finding worth a line in your report.\n\n\n\n\n\n\n\n\nImportantRun it once, then freeze it\n\n\n\nYou run the model through the Gemini API with temperature=0 and a fixed seed (get a free key). Even then, a hosted LLM is only best-effort reproducible — so once your prompt is final, run it once and save the predictions to a JSON file. Every number you report comes out of that file.\nYour F1 is then stable, and anyone can re-run your analysis on exactly the outputs you saw.",
     "crumbs": [
       "Final Project",
       "Overview"
@@ -2579,47 +2647,80 @@
     ]
   },
   {
-    "objectID": "final-project/pipeline-cheatsheet.html#the-pipeline-end-to-end",
-    "href": "final-project/pipeline-cheatsheet.html#the-pipeline-end-to-end",
-    "title": "Pipeline cheat-sheet",
-    "section": "The pipeline, end to end",
-    "text": "The pipeline, end to end\npool ──sample──▶ sampled ──annotate──▶ sheet ──adjudicate──▶ gold\n                                                              │\n                            prompt ─────────────┐             │\n                                                ▼             ▼\n                                          run_prompt ──▶ predictions\n                                                              │\n                                                    save_predictions\n                                                              │\n                                                              ▼\n                                                       FROZEN FILE\n                                                              │\n                                         ┌────────────────────┤\n                                         ▼                    ▼\n                                    evaluate              show_errors\n                                         │                    │\n                                         └──────▶ export ◀─────┘\nEverything after the frozen file reads from that file, not from the model. That is what makes your reported numbers hold still.",
+    "objectID": "final-project/pipeline-cheatsheet.html#the-pipeline-as-an-io-chain",
+    "href": "final-project/pipeline-cheatsheet.html#the-pipeline-as-an-io-chain",
+    "title": "What you have to work with",
+    "section": "The pipeline, as an I/O chain",
+    "text": "The pipeline, as an I/O chain\n01 build pool ──▶ pool.json\n                    │\n02 sample ──────────┴──▶ sample.json  +  the annotation Sheet\n                                              │\n03 annotate ──────────────────────────────────┴──▶ gold.json ──▶ dev.json\n                                                              └─▶ test.json\n                                                                    ·\n04 develop ── dev.json ──▶ prompts/*.txt  +  rounds.json           ·  untouched\n                                    │                              ·\n05 test ────────────────────────────┴── test.json ──▶ predictions.json + test_log.jsonl\n                                                              │\n06 report ────────────────────────────────────────────────────┴──▶ report.md\n04 and 05 are two files rather than two halves of one so that “you may not look at the test set while you iterate” is a file boundary rather than a scroll position. 04_develop.ipynb has no path to your test items at all.\nEverything from 05_test onward reads the frozen predictions file, not the model. That is what makes the numbers in your report hold still.",
     "crumbs": [
       "Final Project",
-      "Pipeline cheat-sheet"
+      "What you have to work with"
     ]
   },
   {
-    "objectID": "final-project/pipeline-cheatsheet.html#the-mapping",
-    "href": "final-project/pipeline-cheatsheet.html#the-mapping",
-    "title": "Pipeline cheat-sheet",
-    "section": "The mapping",
-    "text": "The mapping\n\n\n\n\n\n\n\n\n\nStep\nHelper\nWhere you ran it before\nSame call?\n\n\n\n\n1\nload_gold(path)\nDay 2 S5 step F · Day 3 setup\n✅ identical\n\n\n1\nsample_pool(pool, n_per_class, seed)\nDay 4 Part A — as four inline steps\none call instead of four\n\n\n1\nlabel_set(gold)\nnew (one line)\n—\n\n\n2\ncreate_annotation_sheet(title, items, labels)\nDay 2 S5 step A\n✅ identical\n\n\n2\nload_annotation_sheet(sheet_id, worksheet)\nDay 2 S5 step D\n✅ identical\n\n\n2\nannotator_agreement(rows)\nDay 2 S5 step D\n✅ identical\n\n\n2\ndisagreements(rows)\nDay 2 S5 step E\n✅ identical\n\n\n2\nto_canonical(rows, labels)\nDay 2 S5 step F\n✅ identical\n\n\n2\ncompare_to_published(gold, sampled)\nDay 2 S5 step F\n✅ identical\n\n\n3\nload_prompt(path)\nnew — your prompt is a file now\n—\n\n\n3–4\nrun_prompt(PROMPT, gold)\nDay 3, every iteration\n✅ identical\n\n\n3–4\nevaluate(gold, pred, ordered=True)\nDay 2 S6 Part B · Day 3\n✅ identical\n\n\n4\nbuild_fewshot(PROMPT, pool, gold)\nDay 3 iteration 1 — you typed the examples by hand\none call instead of typing\n\n\n4\nsave_predictions(pred, path) · load_predictions(path)\nDay 2 S6 loaded a frozen file; now you make one\n—\n\n\n5\nshow_errors(gold, pred)\nDay 3\n✅ identical\n\n\n6\nexport_results(track, gold, pred, f1_by_round, out_dir, group=…)\nnew\n—\n\n\n\nIf a call you learned in the tutorials does not work in the template, that is a bug in the template, not in your memory of it. Say so — there is an automated test ( scripts/_check_call_forms.py) whose entire job is to stop that happening.",
+    "objectID": "final-project/pipeline-cheatsheet.html#annotate-how-far-apart-were-your-coders",
+    "href": "final-project/pipeline-cheatsheet.html#annotate-how-far-apart-were-your-coders",
+    "title": "What you have to work with",
+    "section": "03 · Annotate — how far apart were your coders",
+    "text": "03 · Annotate — how far apart were your coders\nYou assemble these. Which of them you owe follows from two facts you already have: how many coders, and whether your labels sit on a scale.\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nload_coder_sheets(id, CODERS)\none tab per coder, joined by item id\nDay 2 S5 step D\n\n\ncolumn(rows, \"CoderA\")\none coder’s labels as a plain list\nnew here — two lines\n\n\npercent_agreement(a, b)\nhow often two coders matched\nDay 2 S6 step 9, as p_o\n\n\ncohen_kappa_score(a, b)\nagreement corrected for chance\nDay 2 S6 — you wrote it, then checked it against this\n\n\ncohen_kappa_score(a, b, weights=\"quadratic\")\nthe same, a near miss counting less\nDay 2 S6 Part B\n\n\nfleiss_kappa([a, b, c])\none number for three or more coders\nnew — three-coder groups only\n\n\nconfusion_matrix(a, b, labels=LABELS)\nwhich label pairs you disagree about\nDay 2 S5 step D · S6 Part B\n\n\nplot_confusion_matrix(m, LABELS, title)\nthat matrix, drawn\nDay 2 S5 step D\n\n\nto_canonical(rows, LABELS)\nthe adjudicated sheet as gold items\nDay 2 S5 step F\n\n\ncompare_to_published(gold, sampled)\nwhere you differ from the corpus’s own labels\nDay 2 S5 step F\n\n\nsplit_dev_test(gold, DEV, seed=SEED)\nthe two halves, every label kept on both sides\nDay 4 Part B — you wrote the loop\n\n\ntriage_counts(t, disagreed, categories=CODER_CATEGORIES, what=\"disagreements\")\nyour reading of the disagreements, counted\nDay 2 S6 Part B — the same four words, one changed\n\n\n\nThe triage_counts row is optional — notebook 03 says when it is worth the ten minutes, and everything downstream works without it.\ndisagreements is not on this list, because you write it. The rule inside it — what counts as a disagreement — is a decision about your scheme, and there is no way to hand it over without answering it for you. You saw the six lines in Day 2 S5, step E.",
     "crumbs": [
       "Final Project",
-      "Pipeline cheat-sheet"
+      "What you have to work with"
     ]
   },
   {
-    "objectID": "final-project/pipeline-cheatsheet.html#three-things-that-are-easy-to-get-wrong",
-    "href": "final-project/pipeline-cheatsheet.html#three-things-that-are-easy-to-get-wrong",
-    "title": "Pipeline cheat-sheet",
-    "section": "Three things that are easy to get wrong",
-    "text": "Three things that are easy to get wrong\ncompare_to_published(gold, sampled) — not pool. Sampling renumbers the ids from 1, so comparing against the whole pool would pair your item 7 with pool item 7: two unrelated sentences. (The helper matches on text, so it copes — but pass sampled and mean it.)\nordered=True only when the labels sit on a scale. A1 &lt; A2 &lt; … &lt; C2 and Move 1 &lt; 2 &lt; 3 do; error categories do not. And if your labels are ordered but not alphabetical — Low/Mid/High — you must pass the order yourself:\nevaluate(gold, pred, ordered=True, labels=LABELS_ORDER)\nOtherwise the weighted κ is computed over High &lt; Low &lt; Mid, which means nothing. evaluate prints the order it used, so check that line.\nIterate small, then freeze once. At N_PER_CLASS = 7, one round is ~40 model calls and several minutes of enforced pacing; the free tier gives you about 500 calls a day. So keep N_PER_CLASS = 2 while you are still changing the prompt, then raise it for the single final run you freeze.",
+    "objectID": "final-project/pipeline-cheatsheet.html#develop-the-prompt-rounds-on-dev-only",
+    "href": "final-project/pipeline-cheatsheet.html#develop-the-prompt-rounds-on-dev-only",
+    "title": "What you have to work with",
+    "section": "04 · Develop — the prompt rounds, on dev only",
+    "text": "04 · Develop — the prompt rounds, on dev only\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nsetup(temperature=TEMPERATURE, seed=SEED, model=MODEL)\nthe connection, with the two settings that decide whether a run repeats\nDay 3, iteration 0\n\n\nload_prompt(path)\na prompt file, as text\nnew — your prompt is a file now\n\n\nrun_prompt(prompt, dev)\none predicted label per item\nDay 3, every iteration\n\n\nbuild_fewshot(prompt, pool, gold)\nthe prompt with worked examples in front of it\nDay 3 iteration 1 — you typed the examples by hand\n\n\nextract_label(reply, labels)\none label out of one reply\nDay 3, as the parser behind run_prompt\n\n\nevaluate(dev, pred, ordered=False)\nper-class table, κ, matrix, and macro-F1 back\nDay 2 S6 Part B · Day 3\n\n\nshow_errors(dev, pred)\njust the rows it got wrong\nDay 2 S6 Part B · Day 3\n\n\n\nAnd the prompt itself is the other half. S7’s menu — instruction · context · input data · output indicator · persona · few-shot · chain-of-thought · structured output — is the space you are choosing from. Few-shot is one row of that table, not the default.\nThe number evaluate hands back is macro-F1, and here it is only something to compare round 2 against round 1 with. The number you report comes out of 06_report, where you write the scoring call yourself.",
     "crumbs": [
       "Final Project",
-      "Pipeline cheat-sheet"
+      "What you have to work with"
     ]
   },
   {
-    "objectID": "final-project/pipeline-cheatsheet.html#reading-the-helpers",
-    "href": "final-project/pipeline-cheatsheet.html#reading-the-helpers",
-    "title": "Pipeline cheat-sheet",
-    "section": "Reading the helpers",
-    "text": "Reading the helpers\nThey are all in scripts/, written the long way on purpose. help(sample_pool) prints any signature. metrics.py is the one worth reading: it is the library version of the precision/recall/F1/κ functions you wrote by hand in Session 6.",
+    "objectID": "final-project/pipeline-cheatsheet.html#test-the-held-out-run",
+    "href": "final-project/pipeline-cheatsheet.html#test-the-held-out-run",
+    "title": "What you have to work with",
+    "section": "05 · Test — the held-out run",
+    "text": "05 · Test — the held-out run\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nfreeze_test_run(...)\nruns, saves before scoring, re-reads the file, scores it, logs it\nDay 3’s “once, and only once” cell, made explicit\n\n\nread_test_log(path)\nevery held-out scoring you have done, with a fingerprint of each prompt\nnew\n\n\n\nNothing here stops you running it twice — stopping you would be the wrong design, because a real mistake on the last afternoon needs a way forward. Instead nothing is overwritten and every scoring appends a line to a log that travels in your submission.",
     "crumbs": [
       "Final Project",
-      "Pipeline cheat-sheet"
+      "What you have to work with"
+    ]
+  },
+  {
+    "objectID": "final-project/pipeline-cheatsheet.html#report-the-scoring-call-is-the-choice",
+    "href": "final-project/pipeline-cheatsheet.html#report-the-scoring-call-is-the-choice",
+    "title": "What you have to work with",
+    "section": "06 · Report — the scoring call is the choice",
+    "text": "06 · Report — the scoring call is the choice\nThere is no course helper wrapping these. You met them in Day 2 S6: you built precision, recall, F1 and κ from scratch, then checked your numbers against these very functions.\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nlabels_of(test)\nthe gold labels as a plain list, ready to score\nDay 2 S6 Part B, written out as a loop\n\n\nclassification_report(y, p, labels=LABELS)\nprecision, recall and F1 for every class\nDay 2 S6 Part B\n\n\nf1_score(y, p, average=\"macro\")\none number: every class counts the same\nDay 2 S6 Part B\n\n\nf1_score(y, p, average=\"micro\")\none number: every item counts the same\nDay 2 S6 Part B\n\n\nf1_score(y, p, average=\"weighted\")\nbetween the two: classes weighted by how common\nDay 2 S6 Part B\n\n\ncohen_kappa_score(y, p)\nagreement with your gold, corrected for chance\nDay 2 S6\n\n\ncohen_kappa_score(y, p, weights=\"quadratic\")\nthe same, a near miss counting less\nDay 2 S6 Part B\n\n\nconfusion_matrix(y, p, labels=LABELS)\nwhich classes it mixes up with which\nDay 2 S6 Part B\n\n\nplot_confusion_matrix(m, LABELS, title)\nthat matrix, drawn\nDay 2 S5 step D\n\n\nshow_errors(test, pred)\njust the rows it got wrong\nDay 2 S6 Part B · Day 3\n\n\nerrors_on_disagreed(errors, disagreed)\nthe errors landing where your coders also disagreed\nDay 2 S6 Part B, written out as a loop\n\n\ntriage_category(line, CODER_CATEGORIES)\nreads back the triage you wrote in 03, so you can ask whether the model missed the items you called scheme\n03, if you did its optional section\n\n\ntriage_counts(TRIAGE, errors)\nyour judgments, counted by category\nDay 2 S6 Part B — the four words\n\n\nexport_results(...)\nthe report scaffold, the predictions CSV, your test set\nnew",
+    "crumbs": [
+      "Final Project",
+      "What you have to work with"
+    ]
+  },
+  {
+    "objectID": "final-project/pipeline-cheatsheet.html#things-that-are-easy-to-get-wrong",
+    "href": "final-project/pipeline-cheatsheet.html#things-that-are-easy-to-get-wrong",
+    "title": "What you have to work with",
+    "section": "Things that are easy to get wrong",
+    "text": "Things that are easy to get wrong\ncompare_to_published(gold, sampled) — not pool. Sampling renumbers the ids from 1, so comparing against the whole pool would pair your item 7 with pool item 7: two unrelated sentences.\nWeighted κ needs the order. If your labels are ordered but not alphabetical — Low/Mid/High — set labels_order in config.yaml. Otherwise the weighting is computed over High &lt; Low &lt; Mid, and the number reported to three decimal places means nothing.\ndev is the fast set. One round on a dozen dev items is about a minute of enforced pacing, so your sample stays at full size throughout — you do not shrink it to iterate.\nThe κ in 03 and the κ in 06 are different claims. One compares two annotators, the other compares your gold against a model. Same statistic, and swapping them in the report is a mistake a reader cannot catch.",
+    "crumbs": [
+      "Final Project",
+      "What you have to work with"
+    ]
+  },
+  {
+    "objectID": "final-project/pipeline-cheatsheet.html#reading-the-code",
+    "href": "final-project/pipeline-cheatsheet.html#reading-the-code",
+    "title": "What you have to work with",
+    "section": "Reading the code",
+    "text": "Reading the code\nEverything imported lives in scripts/. help(split_dev_test) prints what to pass in; split_dev_test?? prints the source of any function, imported or not; and the Files panel on the left of Colab lists every function in a file, so you can click straight to one.\nSome of what you call is not imported at all — it is written out in the notebook cell in front of you, because reading it is part of knowing what you did. Those you can edit in place, and your edited version is in the notebook you hand in, which is where a change of method should be visible.",
+    "crumbs": [
+      "Final Project",
+      "What you have to work with"
     ]
   },
   {
@@ -2705,6 +2806,28 @@
     "title": "The PLAN.md gate",
     "section": "The template",
     "text": "The template\nPLAN.md is already in the template you cloned, at the repo root, with every question laid out and a note under each explaining what turns on it. You fill it in there — it travels in your submission bundle as evidence the gate was passed.\nNine questions, in two groups.\nWhat you are annotating — settled by the end of Session 11.\n\nUnit of analysis — sentence or whole text, and why.\nLabel set — exactly the strings that appear in your gold file.\nAre the labels ordered? If yes, in what order. This decides labels_order in config.yaml, and it is the one question that exists purely to catch a silent bug: labels that are ordered but not alphabetical (Low/Mid/High) otherwise get a weighted κ computed over High &lt; Low &lt; Mid, reported to three decimal places, and wrong.\nThe decisions you made building the pool — the ✏️ cells notebook 01 left blank, what you put in them, and what it cost you.\nSampling — which strategy, the one-sentence defence, N_PER_CLASS, SEED.\nThe dev / test split — the ratio, and why that one.\n\nWhat you will report — the questions this page exists for.\n\nQC — who codes which column, who adjudicates, which agreement statistics you will report, and what counts as a disagreement.\nPrompt plan — your baseline, the moves you will try and in what order, how many prompts you will test on the held-out set, and how you pick the winner.\nThe one number you lead with — macro, micro or weighted F1, or a κ.",
+    "crumbs": [
+      "Final Project",
+      "The PLAN.md gate"
+    ]
+  },
+  {
+    "objectID": "final-project/plan.html#why-questions-79-are-on-this-page-and-not-in-a-notebook",
+    "href": "final-project/plan.html#why-questions-79-are-on-this-page-and-not-in-a-notebook",
+    "title": "The PLAN.md gate",
+    "section": "Why questions 7–9 are on this page and not in a notebook",
+    "text": "Why questions 7–9 are on this page and not in a notebook\nEvery one of them determines a number you will report, and every one of them has an answer you could reach for after seeing which option flatters you.\nNothing stops you running all three F1 averages and reporting the highest. Nobody reading your report could tell. The only thing that makes the number mean anything is that the choice was made from facts you already had — how many coders, whether the labels are a scale, what your research question is about — before any of the numbers existed.\nSo the rule is not about how much you look at. Looking is fine when it changes what you do next; it is not fine when it changes what you claim. Reading the coder confusion matrix to decide which label boundary to argue about is exactly what it is for. Choosing the statistic after seeing what each one gives you is not.\nQuestions 7–9 are the ones where that distinction bites, so they are settled here, at a point where the numbers do not exist yet.",
+    "crumbs": [
+      "Final Project",
+      "The PLAN.md gate"
+    ]
+  },
+  {
+    "objectID": "final-project/plan.html#the-pipeline-as-an-io-chain",
+    "href": "final-project/plan.html#the-pipeline-as-an-io-chain",
+    "title": "The PLAN.md gate",
+    "section": "The pipeline, as an I/O chain",
+    "text": "The pipeline, as an I/O chain\nPLAN.md ends with a table of the six notebooks — what each one consumes and what it produces — with a blank column for the file names your group actually used.\nThat table is the point of the exercise. If your group can say aloud “03 consumes the filled-in sheet and our adjudication, and produces the gold set”, you understand the pipeline — and that is what the end of Session 11 checks.\nNote where the model appears: not until 04. Notebooks 01–03 are the study; the LLM is the thing being measured by it.",
     "crumbs": [
       "Final Project",
       "The PLAN.md gate"
@@ -3421,11 +3544,11 @@
     "text": "🧪 Let’s try — the sentencizer\n### Step 2: run it on the paragraph and look at what came out ###\ndoc = nlp(paragraph)               # spaCy reads the text\nsentences = list(doc.sents)        # spaCy's sentence objects, as a list\nfor s in sentences:\n    print(repr(s.text))\n\nCompare to the naive split: Dr. Smith, e.g., and 3.14 stay intact. You now have a real list of sentences — exactly what section 4 loops over."
   },
   {
-    "objectID": "slides/slides-session-03.html#three-small-pieces-of-python",
-    "href": "slides/slides-session-03.html#three-small-pieces-of-python",
+    "objectID": "slides/slides-session-03.html#one-word-three-hundred-numbers",
+    "href": "slides/slides-session-03.html#one-word-three-hundred-numbers",
     "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Three small pieces of Python",
-    "text": "Three small pieces of Python\n\nfor — repeat the same steps for every item in a list.\nif — react to what comes back (e.g. flag an empty reply).\ndef — package the steps into a reusable function you can call by name.\n\n\nTogether: for each sentence → build a prompt → call the model → tidy the reply."
+    "section": "One word, three hundred numbers",
+    "text": "One word, three hundred numbers\nIn Session 1 you saw that a model turns each word into a long list of numbers. You can look at that list.\nword = nlp_vec(\"suggest\")[0]      # read one word; [0] takes the first token\nprint(\"how many numbers:\", word.vector.shape)\nprint(\"the first eight: \", word.vector[:8])\n\nhow many numbers: (300,)\nthe first eight:  [-0.126 -0.11  -0.61   0.105 -0.272  0.302 -0.014 -0.121]\nThree numbers placed a colour in the Session 1 colour cube. It takes three hundred to place a word."
   },
   {
     "objectID": "slides/slides-session-03.html#why-this-matters-2",
@@ -3433,6 +3556,62 @@
     "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "Why this matters",
     "text": "Why this matters\nSession 1 claimed that words with similar meanings end up with similar numbers. That claim is checkable, and you are about to check it.\n\nIt matters because the same claim has a limit, and the limit is the reason attention exists. Every category you annotate this week — a CEFR level, a rhetorical move, a hedged claim — depends on context. Finding where these vectors stop is what makes the rest of the week necessary."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-how-close-are-two-words",
+    "href": "slides/slides-session-03.html#lets-try-how-close-are-two-words",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — how close are two words?",
+    "text": "🧪 Let’s try — how close are two words?\n.similarity(...) compares two vectors: the higher the number, the closer the words sit.\nprint(\"suggest / indicate:\", nlp_vec(\"suggest\").similarity(nlp_vec(\"indicate\")))\nprint(\"suggest / banana:  \", nlp_vec(\"suggest\").similarity(nlp_vec(\"banana\")))\n\nsuggest / indicate: 0.672\nsuggest / banana:   0.168\n✏️ Your turn — swap in two words from your own research area."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-a-words-neighbours",
+    "href": "slides/slides-session-03.html#lets-try-a-words-neighbours",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — a word’s neighbours",
+    "text": "🧪 Let’s try — a word’s neighbours\nRather than guessing pairs, ask which words sit closest:\nfor neighbour in nearest(\"perhaps\"):   # ✏️ your word here\n    print(neighbour)\n\n('possibly', 0.859)    ('might', 0.82)\n('probably', 0.839)    ('rather', 0.817)\n('certainly', 0.827)   ('though', 0.816)\n('although', 0.825)    ('even', 0.812)\n('however', 0.822)     ('maybe', 0.8)\nNothing told the model these words hedge a claim. They sit together because they turn up in the same positions in text."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#now-try-nearestcorpus",
+    "href": "slides/slides-session-03.html#now-try-nearestcorpus",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Now try nearest(\"corpus\")",
+    "text": "Now try nearest(\"corpus\")\n('habeas', 0.59)     ('textual', 0.534)\n('christi', 0.572)   ('writ', 0.485)\n('corpora', 0.566)   ('habeus', 0.465)\n\nThe legal sense, the religious sense and the linguistic sense are collected into one vector, because there is only one vector available for the spelling.\nnearest(\"hedge\") does the same with garden hedges and financial hedging."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#lets-try-where-these-vectors-stop",
+    "href": "slides/slides-session-03.html#lets-try-where-these-vectors-stop",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "🧪 Let’s try — where these vectors stop",
+    "text": "🧪 Let’s try — where these vectors stop\nSession 1 used free in two sentences that mean different things:\nbanking = nlp_vec(\"your account is free of charge\")\npromo   = nlp_vec(\"claim your free prize now\")\n\nprint(\"similarity:\", banking[3].similarity(promo[2]))\n\nsimilarity: 1.0\nNot merely close — the same vector. One vector per word form, looked up the same way every time. That is what static means."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#and-word-order-is-gone-too",
+    "href": "slides/slides-session-03.html#and-word-order-is-gone-too",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "…and word order is gone too",
+    "text": "…and word order is gone too\nA sentence’s vector is the average of its words, and an average does not record their order:\nprint(nlp_vec(\"the dog chased the cat\").similarity(nlp_vec(\"the cat chased the dog\")))\n\n1.0\nTwo sentences with opposite meanings, one score.\n\n\n\n\n\n\nImportant\n\n\nThis is the gap Session 1 said attention closes. A model built on these vectors alone cannot represent context; the model behind generate_text(...) can."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#a-map-of-the-space",
+    "href": "slides/slides-session-03.html#a-map-of-the-space",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "A map of the space",
+    "text": "A map of the space\nmap_words([...]) flattens 300 numbers onto a page, keeping close vectors close.\nmap_words([\"perhaps\", \"possibly\", \"maybe\", \"likely\", \"presumably\",\n           \"suggest\", \"indicate\", \"demonstrate\", \"argue\", \"conclude\",\n           \"cat\", \"dog\", \"horse\", \"rabbit\", \"sheep\"])   # ✏️ your words\n\nThe animals land well away from the rest. The hedges and the research verbs do not split into two groups — they are all academic prose words, appearing in similar places in similar texts, and that is the only thing these vectors record.\n\n\nThe map shows what the model separates, which is not always what you want it to separate."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#three-small-pieces-of-python",
+    "href": "slides/slides-session-03.html#three-small-pieces-of-python",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Three small pieces of Python",
+    "text": "Three small pieces of Python\n\nfor — repeat the same steps for every item in a list.\nif — react to what comes back (e.g. flag an empty reply).\ndef — package the steps into a reusable function you can call by name.\n\n\nTogether: for each sentence → build a prompt → call the model → tidy the reply."
+  },
+  {
+    "objectID": "slides/slides-session-03.html#why-this-matters-3",
+    "href": "slides/slides-session-03.html#why-this-matters-3",
+    "title": "Session 3: Python Practice & Mini-Project Setup",
+    "section": "Why this matters",
+    "text": "Why this matters\nThis loop is the first version of the pipeline you assemble later in the week.\n\nAnnotation, classification and evaluation all consist of running one call over a list and collecting the results. Write it once here, and reuse the same structure all week."
   },
   {
     "objectID": "slides/slides-session-03.html#lets-try-the-loop",
@@ -3447,13 +3626,6 @@
     "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "🧪 Let’s try — wrap it in a function",
     "text": "🧪 Let’s try — wrap it in a function\nSame three steps, packaged so you can reuse them:\ndef ask(sentence):                     # `def` names a block of steps\n    \"\"\"Ask the model for the CEFR level of one sentence; return its reply.\"\"\"\n    prompt = f\"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}\"\n    return generate_text(prompt).strip()   # `return` gives the answer back\n\nprint(ask(\"Despite the rain, the game went ahead.\"))  # one line does all three steps\nNow labelling a sentence is just ask(...).\n\nAnd the result goes back into the record you already built in Session 2 — {\"id\": 1, \"text\": ..., \"label\": ...} — only now label comes from ask(...) instead of being typed in by hand. Every gold set and every model output this week is a list of those."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#one-prediction-one-record",
-    "href": "slides/slides-session-03.html#one-prediction-one-record",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "One prediction, one record",
-    "text": "One prediction, one record\nWhen you label a sentence, keep the result in a small, fixed shape:\nprediction = {\"id\": 1, \"text\": \"Despite the rain, the game went ahead.\", \"label\": ask(...)}\n\n\n\n\n\n\n\nNote\n\n\nThis {id, text, label} record — text in → label out — is the canonical schema you’ll use every day this week. Every gold set and every model output is just a list of these."
   },
   {
     "objectID": "slides/slides-session-03.html#guided-practice",
@@ -3495,14 +3667,14 @@
     "href": "slides/slides-session-14.html#two-different-findings-in-one-table",
     "title": "Session 14: Project Work — Finalize Report & Notebook",
     "section": "Two different findings in one table",
-    "text": "Two different findings in one table\nerrors = show_errors(gold, pred_final)\nA model error — the correct label is clear, a competent annotator would agree, and the model still labelled it wrongly.\nA scheme problem — the item is genuinely borderline.\n\n\n\n\n\n\n\nYou already know which are which\n\n\nThey are the rows you argued about in Session 12. Cross-reference your disagreements list against these errors."
+    "text": "Two different findings in one table\nerrors = show_errors(test, pred_final)     # the held-out half, from the frozen file\nFour different findings live in that one table, and sorting them is the analysis:\n\n\n\n\n\n\n\nmodel\nthe label is clear, both coders agreed at once, and the model still missed it\n\n\nscheme\nthe item is genuinely borderline under your scheme\n\n\nwording\nthe label name misleads — this one your next prompt could fix\n\n\nambiguous\nthe item is unclear in a way no scheme would settle\n\n\n\n\n\n\n\n\n\n\nscheme and wording are the pair to be careful about\n\n\nOne is fixable by prompting and the other is not. Confusing them is how a group spends three rounds on a problem no prompt can reach."
   },
   {
     "objectID": "slides/slides-session-14.html#overlap-is-a-finding",
     "href": "slides/slides-session-14.html#overlap-is-a-finding",
     "title": "Session 14: Project Work — Finalize Report & Notebook",
     "section": "Overlap is a finding",
-    "text": "Overlap is a finding\nIf the model’s errors cluster on the items you disagreed about, that is a result:\n\n“The model’s B1/B2 confusions fall almost entirely on the 12 items our annotators also disagreed on. We read this as a property of the scheme’s boundary rather than a failure of the model.”\n\n\nA sentence like this is worth more in your report than the F1 value itself."
+    "text": "Overlap is a finding\noverlap = errors_on_disagreed(errors, disagreed)   # disagreed: saved by 03\nYou already know which items are borderline, because you argued about them in Session 12. If the model’s errors cluster there, that is a result:\n\n“The model’s B1/B2 confusions fall almost entirely on the 12 items our annotators also disagreed on. We read this as a property of the scheme’s boundary rather than a failure of the model.”\n\n\nA sentence like this is worth more in your report than the F1 value itself."
   },
   {
     "objectID": "slides/slides-session-14.html#be-concrete",
@@ -3817,14 +3989,14 @@
     "href": "slides/slides-session-12.html#agenda",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\nYou work in Colab for this whole session, on your own track and your own data.\n\n20 min — sample a balanced subset, create the annotation sheet\n25 min — annotate blind, two of you, independently\n25 min — agreement → disagreements → adjudicate\n10 min — a baseline prompt, small\n\n\n\n\n\n\n\nImportant\n\n\nPLAN.md signed first. Steps 1–2 need no model, so nothing is blocked while you wait."
+    "text": "📋 Agenda\nYou work in Colab for this whole session, on your own track and your own data.\n\n20 min — sample a balanced subset, create the annotation sheet\n25 min — annotate blind, two of you, independently\n30 min — agreement → the disagreement rule you write → adjudicate\n5 min — draw the dev/test line\n\n\n\n\n\n\n\nImportant\n\n\nPLAN.md signed first. Steps 1–2 need no model, so nothing is blocked while you wait."
   },
   {
     "objectID": "slides/slides-session-12.html#learning-objectives",
     "href": "slides/slides-session-12.html#learning-objectives",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nDraw a balanced subset and explain why balance matters for P/R/F1 and the matrix.\nAnnotate independently and blind, and interpret your percent agreement and Cohen’s κ.\nAdjudicate disagreements into one agreed gold set, and record what changed.\nProduce a baseline score, before you change anything about the prompt."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nDraw a balanced subset and explain why balance matters for P/R/F1 and the matrix.\nAnnotate independently and blind, and say which agreement statistics your design owes.\nWrite the rule that decides what counts as a disagreement, and defend the one you chose.\nAdjudicate disagreements into one agreed gold set, and record what changed.\nSplit that gold set into dev and test, and defend the ratio."
   },
   {
     "objectID": "slides/slides-session-12.html#pool-vs.-sample",
@@ -3845,7 +4017,7 @@
     "href": "slides/slides-session-12.html#why-keep-the-pool-separate",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
     "section": "Why keep the pool separate",
-    "text": "Why keep the pool separate\nThe items you did not sample have a purpose: they become your few-shot examples in step 4.\nIf your examples came from your gold set, the model would be given the answers to the items you are about to test it on.\n\nbuild_fewshot prevents this for you, but only if items remain in the pool. Sample from the full pool, not the demo file."
+    "text": "Why keep the pool separate\nThe items you did not sample have a purpose: they become your few-shot examples in 04_develop.\nIf your examples came from your gold set, the model would be given the answers to the items you are about to test it on.\n\nbuild_fewshot prevents this for you, but only if items remain in the pool. Sample from the full pool, not the demo file."
   },
   {
     "objectID": "slides/slides-session-12.html#the-step-you-must-do-yourself",
@@ -3862,39 +4034,53 @@
     "text": "What “blind” means here\ncreate_annotation_sheet deliberately does not copy the published label across.\n| ID | Text                          | CoderA | CoderB | Final | Note |\n|----|-------------------------------|--------|--------|-------|------|\n| 1  | Bears do not have good hearing|        |        |       |      |\n\nCoderA and CoderB fill their own columns without looking at each other’s. Final stays empty until you have talked.\n\n\n\n\n\n\nTip\n\n\nThe Sheet is a real Google Sheet, so all group members can work in it at the same time."
   },
   {
-    "objectID": "slides/slides-session-12.html#then-measure",
-    "href": "slides/slides-session-12.html#then-measure",
+    "objectID": "slides/slides-session-12.html#then-measure-and-you-write-these-lines",
+    "href": "slides/slides-session-12.html#then-measure-and-you-write-these-lines",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
-    "section": "Then measure",
-    "text": "Then measure\nrows = load_annotation_sheet(SHEET_ID, ROUND)\nannotator_agreement(rows)\n# 42 doubly-annotated · agreement 71.4% · Cohen's kappa 0.657\ndisagreements(rows)\n# 12 rows to adjudicate.\n\nWrite those two numbers down. They go in report section 1, and they are the evidence that the QC pass happened."
+    "section": "Then measure — and you write these lines",
+    "text": "Then measure — and you write these lines\nrows = load_coder_sheets(SHEET_ID, CODERS)   # one tab per coder, joined by ID\n\na = column(rows, CODERS[0])\nb = column(rows, CODERS[1])\n\npercent_agreement(a, b)                      # 71.4%\nprint(cohen_kappa_score(a, b))               # 0.657\n\nWhich κ you owe is not a free choice, and it is settled before you run anything — by how many coders you have and by whether PLAN.md §3 says your labels are a scale. Two coders, unordered: cohen_kappa_score(a, b). On a scale: weights=\"quadratic\" as well. Three or more: fleiss_kappa.\nBoth numbers, not one. Percent agreement alone counts lucky agreement as if you had earned it; κ alone is hard to read without the raw figure beside it. They go in report section 1."
+  },
+  {
+    "objectID": "slides/slides-session-12.html#what-counts-as-a-disagreement-you-write-that-too",
+    "href": "slides/slides-session-12.html#what-counts-as-a-disagreement-you-write-that-too",
+    "title": "Session 12: Project Work — Sample & QC the Gold Set",
+    "section": "What counts as a disagreement? — you write that too",
+    "text": "What counts as a disagreement? — you write that too\ndisagreements is not given to you, because the rule inside it is a decision about your scheme:\ndisagreed = disagreements(rows, coders=CODERS)   # your function\n\nA row is a disagreement when your coders did not all choose the same label — that is the obvious rule. On labels that sit on a scale, you may decide only a gap of two or more is worth arguing about. Both are defensible; which you used is a sentence in your report.\n\n\n\n\n\n\nTip\n\n\nYou saw these six lines on Day 2 S5, step E. answer(\"disagreements\") is there if you stall."
   },
   {
     "objectID": "slides/slides-session-12.html#adjudicate",
     "href": "slides/slides-session-12.html#adjudicate",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
     "section": "Adjudicate",
-    "text": "Adjudicate\nThe 12 rows you disagreed on are not random error. They are the places where your scheme is unclear, and they are usually the same places where the model makes errors.\n\nFor each: agree a Final label, and note why. Then:\ngold = to_canonical(rows, LABELS)\ncompare_to_published(gold, sampled)\n# 37 / 42 match the published label (88.1%)\n\n\nThose 5 differences are a finding about the corpus, not an error on your part."
+    "text": "Adjudicate\nThe 12 rows you disagreed on are not random error. They are the places where your scheme is unclear, and they are usually the same places where the model makes errors.\n\nFor each: agree a Final label, and note why. Then:\nrows = load_coder_sheets(SHEET_ID, CODERS)          # re-read: Final is filled in now\ngold = to_canonical(rows, LABELS, source=sampled)   # puts back what the sheet drops\ncompare_to_published(gold, sampled)\n# 37 / 42 match the published label (88.1%)\n\n\nThose 5 differences are a finding about the corpus, not an error on your part."
   },
   {
     "objectID": "slides/slides-session-12.html#the-consequence",
     "href": "slides/slides-session-12.html#the-consequence",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
     "section": "The consequence",
-    "text": "The consequence\n\n\n\n\n\n\nYour adjudicated gold is what the model gets scored against\n\n\nNot the published labels.\n\n\n\nThis is why this session matters. The label boundaries you discuss here are the ones you will refer to on Day 5 when you explain the model’s errors."
+    "text": "The consequence\n\n\n\n\n\n\nYour adjudicated gold is what the model gets scored against\n\n\nNot the published labels.\n\n\n\nThis is why this session matters. The label boundaries you discuss here are the ones you will refer to on Day 5, in 06_report, when you explain the model’s errors."
   },
   {
-    "objectID": "slides/slides-session-12.html#keep-the-baseline-run-small",
-    "href": "slides/slides-session-12.html#keep-the-baseline-run-small",
+    "objectID": "slides/slides-session-12.html#which-items-you-may-look-at",
+    "href": "slides/slides-session-12.html#which-items-you-may-look-at",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
-    "section": "Keep the baseline run small",
-    "text": "Keep the baseline run small\nf1_by_round = {}\nPROMPT = load_prompt(PROMPT_FILE)\npred0 = run_prompt(PROMPT, gold)\nf1_by_round[\"0 zero-shot\"] = evaluate(gold, pred0, ordered=True)\n\n\n\n\n\n\nKeep N_PER_CLASS = 2 for now\n\n\nOne full-size round is ~40 model calls and ≥3 minutes of enforced pacing. The free tier gives you ~500 calls a day. Run small tests now, and save the full-size run for the version you freeze tomorrow."
+    "section": "Which items you may look at",
+    "text": "Which items you may look at\nTomorrow you will change your prompt because of what you saw it get wrong. That is the work. But a score measured on the items you kept adjusting against stops measuring how good your prompt is, and starts measuring how long you kept adjusting.\n\nSo the line gets drawn now, before anything has been run against these items:\n\n\n\n\n\n\n\n\nwhat it is for\n\n\n\n\ndev\nthe items you may look at. Iterate here, as many rounds as you like\n\n\ntest\nopened once, in 05_test.ipynb. Whatever it says is what you report"
   },
   {
-    "objectID": "slides/slides-session-12.html#write-the-plainest-prompt-you-can",
-    "href": "slides/slides-session-12.html#write-the-plainest-prompt-you-can",
+    "objectID": "slides/slides-session-12.html#the-split",
+    "href": "slides/slides-session-12.html#the-split",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
-    "section": "Write the plainest prompt you can",
-    "text": "Write the plainest prompt you can\nDo not try to improve it yet.\nA baseline gives later rounds something to be measured against, and shows what the model does with no additional instructions or examples.\n\nIf the baseline is already tuned, you cannot tell whether your later changes improved anything."
+    "section": "The split",
+    "text": "The split\ndev, test = split_dev_test(gold, DEV, seed=SEED)\n\nsave_json(dev,  DEV_PATH,  what=\"dev items\")\nsave_json(test, TEST_PATH, what=\"test items\")\nRead the per-label counts it prints before you save. A label that lands in dev but not in test cannot appear in the score you report, and this is the last cheap moment to change dev: in config.yaml and draw the line again.\n\n\n\n\n\n\nNote\n\n\nThis is the loop you wrote by hand this morning, in Day 4 Part B — bucket by label, take some of each. One call now."
+  },
+  {
+    "objectID": "slides/slides-session-12.html#dev-is-the-fast-set",
+    "href": "slides/slides-session-12.html#dev-is-the-fast-set",
+    "title": "Session 12: Project Work — Sample & QC the Gold Set",
+    "section": "dev is the fast set",
+    "text": "dev is the fast set\n\n\n\n\n\n\nYou do not shrink your sample to iterate\n\n\nOne round on the dev half — a dozen or so items — is about a minute of enforced pacing. Your sample stays at full size all the way through, and the number you finally report comes off the test half, which nothing has touched.\n\n\n\nThere is no right ratio at this size, only one you can defend. A bigger dev gives steadier feedback and leaves a smaller test, so the reported number bounces more. A smaller dev means prompt decisions made on very few items — which is how you tune to noise."
   },
   {
     "objectID": "slides/slides-session-07.html#agenda",
@@ -4116,7 +4302,7 @@
     "href": "sessions/day4/session-11.html#learning-objectives",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nDescribe the whole pipeline as a chain of inputs and outputs — what each step consumes and what it produces.\nPoint to where in Days 1–3 you already ran each helper, and use the same call form again.\nWrite your group’s PLAN.md: track, label set, sampling settings, who annotates what, and the one prompt change you predict will help.",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nDescribe the whole pipeline as a chain of inputs and outputs — what each step consumes and what it produces.\nPoint to where in Days 1–4 you already ran each call, and use the same call form again.\nWrite your group’s PLAN.md: track, label set, sampling settings, the dev/test ratio, who annotates what, which agreement statistics you owe and which one number you will lead with — and the one prompt change you predict will help.",
     "crumbs": [
       "Sessions",
       "Day 4 · Methodology & Pipeline Assembly",
@@ -4128,7 +4314,7 @@
     "href": "sessions/day4/session-11.html#agenda",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Agenda",
-    "text": "Agenda\n\nThe pipeline, in one diagram (~15 min) — pool → sampled → sheet → adjudicated gold → prompt → predictions → frozen file → metrics → report, with each arrow’s data shape named. Plus the helper table and the Day-by-Day mapping: eight of the fourteen helpers are a call you have already made.\nWrite PLAN.md (~45 min) — in your groups. The instructor comes round, reads it, and signs it off.\nEnd-state check (~25 min) — each group states its I/O contract out loud: “03_annotate consumes the filled-in sheet and our adjudication, and produces the gold set.”\n\nNot a re-teach. You have run every one of these helpers already; today is about being able to name the structure — which is exactly what the Q&A will ask you to do.",
+    "text": "Agenda\n\nThe pipeline, in one diagram (~15 min) — pool → sample → sheet → adjudicated gold → dev / test → prompt rounds on dev → the held-out run → report, with each arrow’s data shape named, and the 04/05 file boundary that keeps the test half closed. Plus the inventory and its ancestor column: every call has one, in Days 1–4.\nWrite PLAN.md (~45 min) — in your groups. The instructor comes round, reads it, and signs it off.\nEnd-state check (~25 min) — each group states its I/O contract out loud: “03_annotate consumes the filled-in sheet and our adjudication, and produces the gold set.”\n\nNot a re-teach. You have run every one of these helpers already; today is about being able to name the structure — which is exactly what the Q&A will ask you to do.",
     "crumbs": [
       "Sessions",
       "Day 4 · Methodology & Pipeline Assembly",
@@ -4580,6 +4766,18 @@
     ]
   },
   {
+    "objectID": "sessions/day1/session-01.html#watch",
+    "href": "sessions/day1/session-01.html#watch",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Watch",
+    "text": "Watch\n\nSanderson, G. (3Blue1Brown). Large Language Models explained briefly (7 min). Lesson page · YouTube\n\nWe play this in class. Watching it beforehand is optional and makes the session easier to follow. It covers what the model predicts, where its numbers come from, and what attention does.",
+    "crumbs": [
+      "Sessions",
+      "Day 1 · Introduction & First Experience",
+      "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis"
+    ]
+  },
+  {
     "objectID": "sessions/day1/session-01.html#reading",
     "href": "sessions/day1/session-01.html#reading",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
@@ -4632,7 +4830,7 @@
     "href": "notebooks/day3_prompt_design.html#two-sets-two-jobs",
     "title": "Day 3 · Prompt design & iteration",
     "section": "Two sets, two jobs",
-    "text": "Two sets, two jobs\nFrom here you work with two files, and mixing them up is the single easiest way to report a number that isn’t real.\n\n\n\n\n\n\n\n\nFile\nSize\nWhat it is for\n\n\n\n\nval\n24\nTune on this. Every prompt you try gets scored here.\n\n\ngold\n72\nReport on this. Touched once, at the very end.\n\n\n\nIf you try five prompts on the 72 sentences and keep the highest score, that score no longer estimates how the prompt does on new sentences — you picked it because it suited those 72, so the number is inflated and you cannot say by how much. Tuning somewhere else and reporting once keeps the final figure honest. This is the split S7 introduced.\n\n\nShow code\nval  = load_gold(VAL_URL)    # 24 sentences — tune every prompt against these\ngold = load_gold(GOLD_URL)   # 72 sentences — held out; scored ONCE at the end\nprint(len(val), \"validation items ·\", len(gold), \"held-out test items\")\n\n\n\nIteration 0 — zero-shot ✏️ YOU EDIT\nJust describe the task. This is your baseline; note its macro-F1.\n\n\nShow code\n# ✏️ everything between the triple quotes is the prompt — edit it freely.\n# `{text}` is the slot each sentence gets dropped into; keep it.\nPROMPT_ZERO = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.\nAnswer with the level only.\n\nSentence: {text}\"\"\"\n\npred_zero = run_prompt(PROMPT_ZERO, val)   # ask the model about the 24 validation items\nevaluate(val, pred_zero, ordered=True)     # score it — note the macro-F1\n\n\n\nTwo settings decide whether that number is repeatable\nThe Setup cell connected to the model with these two arguments:\ncfg = types.GenerateContentConfig(temperature=0, seed=42)\n\ntemperature is how much the model is allowed to vary. At 0 it takes its most likely answer every time. Higher values let it pick less likely words, which is useful for writing and unhelpful when you are measuring something.\nseed fixes the randomness that is left, so a repeat of the same call starts from the same place.\n\nTogether they are what make a score you can quote. Run the same prompt over the same five items twice and count how many answers came back identical:\n\n\nShow code\nfirst  = run_prompt(PROMPT_ZERO, val[:5])   # five items, to keep this cheap\nsecond = run_prompt(PROMPT_ZERO, val[:5])   # the same five, the same prompt\n\nprint(\"first run: \", first)\nprint(\"second run:\", second)\nprint(\"identical?\", first == second)   # two lists are == when every item matches\n\n\nTrue is what temperature=0 is for. If you are on the keyless Colab backend — the Setup cell said so — you may see fewer, because colab.ai exposes neither setting. That is exactly the Day-1 behaviour, and it is why this course asks for a key from today.\n\n\n\n\n\n\nNoteBest-effort, not guaranteed\n\n\n\nEven at temperature=0 a hosted model can change its answer — the provider updates the model, or batches your request differently. So “reproducible” here means best-effort, and the working habit is to save the run to a file and report from the file rather than from what is on screen. Your final project does this for you at the point where it matters.\n\n\nIn the final project both settings live in config.yaml and are passed in one visible line, setup(temperature=TEMPERATURE, seed=SEED, model=MODEL), so that every group member’s run is set up the same way and the report can state what was used.\n\n\n\nIteration 1 — few-shot ✏️ YOU EDIT\nAdd a few labeled examples so the model can pattern-match. The ones below are hand-written; write your own if you want more, but never take one from val or gold, or you are showing the model the answers to its own test.\n\n\nShow code\n# ✏️ same prompt as before, plus labelled examples. Add, remove or reword them —\n# but never use a sentence from `gold`, or you are testing on your own answers.\nPROMPT_FEWSHOT = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2. Answer with the level only.\n\nExamples:\nSentence: \"I have a cat.\" -&gt; A1\nSentence: \"She went to the shops because she needed some milk.\" -&gt; A2\nSentence: \"The results suggest a modest but consistent improvement.\" -&gt; B2\nSentence: \"Notwithstanding these caveats, the framework generalises well.\" -&gt; C2\n\nSentence: {text}\"\"\"\n\npred_few = run_prompt(PROMPT_FEWSHOT, val)   # same 24 sentences, new prompt\nevaluate(val, pred_few, ordered=True)        # did macro-F1 move?\n\n\n\nWhich examples? That is the decision, not whether to use any\n“Add examples” is not one move, it is a family of them, and the four above are one choice out of many. Two obvious strategies pull in opposite directions:\n\nThe clearest case of each label. Shows the model what the centre of each class looks like. Safe, and it may teach nothing about the boundary you actually keep losing items on.\nThe hardest cases — the ones near a boundary. Shows the model exactly where the line falls. Riskier: a borderline example the model reads the wrong way can drag neighbouring items with it.\n\nPredict first, then find out. Say which you think will help more on this task, swap two of the examples above for that kind, and re-run. Whichever way it goes, you now have a reason attached to the number — and that is the difference between a study and ten prompts kept because one of them scored well.\nTwo rules that are not negotiable either way: never take an example from val or gold (you would be showing the model its own answers), and cover every label if you can, or the labels you left out get quietly under-predicted. The final project’s build_fewshot(prompt, pool, gold) draws examples from the pool while excluding everything in your gold set, for exactly the first reason.\n\n\n\nIteration 2 — chain-of-thought (CoT) ✏️ YOU EDIT\nAsk the model to reason first, then answer. Giving it room to think often helps on borderline items.\n\n\nShow code\n# ✏️ this prompt asks for reasoning BEFORE the answer. The \"do NOT mention any\n# other level\" line matters: run_prompt keeps the FIRST level it sees in the reply.\nPROMPT_COT = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nThink step by step about the vocabulary and grammar, then decide the level.\nDo NOT mention any other CEFR level while reasoning.\nEnd your answer with the final level on its own, exactly one of: A1, A2, B1, B2, C1, C2.\n\nSentence: {text}\"\"\"\n\npred_cot = run_prompt(PROMPT_COT, val)   # slower: the model writes more each time\nevaluate(val, pred_cot, ordered=True)    # best of the three so far?\n\n\n\n\n\n\n\n\nNoteA real limitation to notice\n\n\n\nrun_prompt takes the first CEFR level it sees in the reply. With chain-of-thought the model may mention a level mid-reasoning, so the parser can pick the wrong one — which is why the prompt says don’t mention other levels. If CoT scores worse than few-shot, check show_errors to see whether it’s the model or the parser.\n\n\n\n\nCompare the three\nFill in the macro-F1 you saw at each step — all three on the validation set. This little table is your result.\n\n\n\nIteration\nmacro-F1 (val, 24 items)\n\n\n\n\n0 · zero-shot\n…\n\n\n1 · few-shot\n…\n\n\n2 · chain-of-thought\n…\n\n\n\n\n\nThe held-out run — once, and only once ✏️ YOU EDIT\nPick your best prompt from the table above and score it on the 72 sentences you have not touched all session. This is the number you report.\nExpect it to be lower than your validation score. That gap is the cost of having chosen a prompt by looking at results, and it is why the held-out set was kept back. Carry this rule into the mini-project: if you run this cell, look at the answer, then go back and edit a prompt, the 72 items have stopped being held out. Tune on val, come back, run once.\n\n\nShow code\n# ✏️ swap in whichever of PROMPT_ZERO / PROMPT_FEWSHOT / PROMPT_COT scored best.\nBEST_PROMPT = PROMPT_COT\n\npred_test = run_prompt(BEST_PROMPT, gold)   # the 72 held-out sentences\nevaluate(gold, pred_test, ordered=True)     # ← report THIS macro-F1",
+    "text": "Two sets, two jobs\nFrom here you work with two files, and mixing them up is the single easiest way to report a number that isn’t real.\n\n\n\n\n\n\n\n\nFile\nSize\nWhat it is for\n\n\n\n\nval\n24\nTune on this. Every prompt you try gets scored here.\n\n\ngold\n72\nReport on this. Touched once, at the very end.\n\n\n\nIf you try five prompts on the 72 sentences and keep the highest score, that score no longer estimates how the prompt does on new sentences — you picked it because it suited those 72, so the number is inflated and you cannot say by how much. Tuning somewhere else and reporting once keeps the final figure honest. This is the split S7 introduced.\n\n\nShow code\nval  = load_gold(VAL_URL)    # 24 sentences — tune every prompt against these\ngold = load_gold(GOLD_URL)   # 72 sentences — held out; scored ONCE at the end\nprint(len(val), \"validation items ·\", len(gold), \"held-out test items\")\n\n\n\nIteration 0 — zero-shot ✏️ YOU EDIT\nJust describe the task. This is your baseline; note its macro-F1.\n\n\nShow code\n# ✏️ everything between the triple quotes is the prompt — edit it freely.\n# `{text}` is the slot each sentence gets dropped into; keep it.\nPROMPT_ZERO = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.\nAnswer with the level only.\n\nSentence: {text}\"\"\"\n\npred_zero = run_prompt(PROMPT_ZERO, val)   # ask the model about the 24 validation items\nevaluate(val, pred_zero, ordered=True)     # score it — note the macro-F1\n\n\n\nTwo settings decide whether that number is repeatable\nThe Setup cell connected to the model with these two arguments:\ncfg = types.GenerateContentConfig(temperature=0, seed=42)\n\ntemperature is how much the model is allowed to vary. At 0 it takes its most likely answer every time. Higher values let it pick less likely words, which is useful for writing and unhelpful when you are measuring something.\nseed fixes the randomness that is left, so a repeat of the same call starts from the same place.\n\nTogether they are what make a score you can quote. Run the same prompt over the same five items twice and count how many answers came back identical:\n\n\nShow code\nfirst  = run_prompt(PROMPT_ZERO, val[:5])   # five items, to keep this cheap\nsecond = run_prompt(PROMPT_ZERO, val[:5])   # the same five, the same prompt\n\nprint(\"first run: \", first)\nprint(\"second run:\", second)\nprint(\"identical?\", first == second)   # two lists are == when every item matches\n\n\nTrue is what temperature=0 is for. If you are on the keyless Colab backend — the Setup cell said so — you may see fewer, because colab.ai exposes neither setting. That is exactly the Day-1 behaviour, and it is why this course asks for a key from today.\n\n\n\n\n\n\nNoteBest-effort, not guaranteed\n\n\n\nEven at temperature=0 a hosted model can change its answer — the provider updates the model, or batches your request differently. So “reproducible” here means best-effort, and the working habit is to save the run to a file and report from the file rather than from what is on screen. Your final project does this for you at the point where it matters.\n\n\nIn the final project both settings live in config.yaml and are passed in one visible line, setup(temperature=TEMPERATURE, seed=SEED, model=MODEL), so that every group member’s run is set up the same way and the report can state what was used.\n\n\n\nIteration 1 — few-shot ✏️ YOU EDIT\nAdd a few labeled examples so the model can pattern-match. The ones below are hand-written; write your own if you want more, but never take one from val or gold, or you are showing the model the answers to its own test.\n\n\nShow code\n# ✏️ same prompt as before, plus labelled examples. Add, remove or reword them —\n# but never use a sentence from `gold`, or you are testing on your own answers.\nPROMPT_FEWSHOT = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nClassify the sentence into exactly one of: A1, A2, B1, B2, C1, C2. Answer with the level only.\n\nExamples:\nSentence: \"I have a cat.\" -&gt; A1\nSentence: \"She went to the shops because she needed some milk.\" -&gt; A2\nSentence: \"The results suggest a modest but consistent improvement.\" -&gt; B2\nSentence: \"Notwithstanding these caveats, the framework generalises well.\" -&gt; C2\n\nSentence: {text}\"\"\"\n\npred_few = run_prompt(PROMPT_FEWSHOT, val)   # same 24 sentences, new prompt\nevaluate(val, pred_few, ordered=True)        # did macro-F1 move?\n\n\n\nWhich examples? That is the decision, not whether to use any\n“Add examples” is not one move, it is a family of them, and the four above are one choice out of many. Two obvious strategies pull in opposite directions:\n\nThe clearest case of each label. Shows the model what the centre of each class looks like. Safe, and it may teach nothing about the boundary you actually keep losing items on.\nThe hardest cases — the ones near a boundary. Shows the model exactly where the line falls. Riskier: a borderline example the model reads the wrong way can drag neighbouring items with it.\n\nPredict first, then find out. Say which you think will help more on this task, swap two of the examples above for that kind, and re-run. Whichever way it goes, you now have a reason attached to the number — and that is the difference between a study and ten prompts kept because one of them scored well.\nTwo rules that are not negotiable either way: never take an example from val or gold (you would be showing the model its own answers), and cover every label if you can, or the labels you left out get quietly under-predicted. The final project’s build_fewshot(prompt, pool, gold) draws examples from the pool while excluding everything in your gold set, for exactly the first reason.\n\n\n\nIteration 2 — chain-of-thought (CoT) ✏️ YOU EDIT\nAsk the model to reason first, then answer. Giving it room to think often helps on borderline items.\n\n\nShow code\n# ✏️ this prompt asks for reasoning BEFORE the answer. The \"do NOT mention any\n# other level\" line matters: run_prompt keeps the FIRST level it sees in the reply.\nPROMPT_COT = \"\"\"You are an expert rater of English sentence difficulty using the CEFR scale.\nThink step by step about the vocabulary and grammar, then decide the level.\nDo NOT mention any other CEFR level while reasoning.\nEnd your answer with the final level on its own, exactly one of: A1, A2, B1, B2, C1, C2.\n\nSentence: {text}\"\"\"\n\npred_cot = run_prompt(PROMPT_COT, val)   # slower: the model writes more each time\nevaluate(val, pred_cot, ordered=True)    # best of the three so far?\n\n\n\n\n\n\n\n\nNoteA real limitation to notice\n\n\n\nrun_prompt takes the first CEFR level it sees in the reply. With chain-of-thought the model may mention a level mid-reasoning, so the parser can pick the wrong one — which is why the prompt says don’t mention other levels. If CoT scores worse than few-shot, check show_errors to see whether it’s the model or the parser.\n\n\n\n\nCompare the three\nFill in the macro-F1 you saw at each step — all three on the validation set. This little table is your result.\n\n\n\nIteration\nmacro-F1 (val, 24 items)\n\n\n\n\n0 · zero-shot\n…\n\n\n1 · few-shot\n…\n\n\n2 · chain-of-thought\n…\n\n\n\n\n\nThe held-out run — once, and only once ✏️ YOU EDIT\nPick your best prompt from the table above and score it on the 72 sentences you have not touched all session. This is the number you report.\nExpect it to be lower than your validation score. That gap is the cost of having chosen a prompt by looking at results, and it is why the held-out set was kept back. Carry this rule into your final project, where it is built into the file layout: 04_develop.ipynb works on the dev half and cannot even reach the test items, and 05_test.ipynb opens them once. Here the two sets are val and gold. If you run this cell, look at the answer, then go back and edit a prompt, the 72 items have stopped being held out. Tune on val, come back, run once.\n\n\nShow code\n# ✏️ swap in whichever of PROMPT_ZERO / PROMPT_FEWSHOT / PROMPT_COT scored best.\nBEST_PROMPT = PROMPT_COT\n\npred_test = run_prompt(BEST_PROMPT, gold)   # the 72 held-out sentences\nevaluate(gold, pred_test, ordered=True)     # ← report THIS macro-F1",
     "crumbs": [
       "Sessions",
       "Daily notebooks",
@@ -4793,432 +4991,6 @@
       "Sessions",
       "Daily notebooks",
       "Day 1 · Your first LLM call & reading its data"
-    ]
-  },
-  {
-    "objectID": "slides/slides-session-01.html#first-a-7-minute-overview",
-    "href": "slides/slides-session-01.html#first-a-7-minute-overview",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "First, a 7-minute overview",
-    "text": "First, a 7-minute overview\nGrant Sanderson (3Blue1Brown), Large Language Models explained briefly.\nWhile you watch, write down an answer to each of these:\n\nWhat exactly does the model predict?\nWhere do the numbers inside the model come from?\nWhat does attention do?\n\nWe come back to all three afterwards, with a language example."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#section",
-    "href": "slides/slides-session-01.html#section",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "",
-    "text": "If the embed does not load, play it from https://www.3blue1brown.com/lessons/mini-llm/ or https://www.youtube.com/watch?v=WMcwoIyK4DA"
-  },
-  {
-    "objectID": "sessions/day1/session-01.html#watch",
-    "href": "sessions/day1/session-01.html#watch",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Watch",
-    "text": "Watch\n\nSanderson, G. (3Blue1Brown). Large Language Models explained briefly (7 min). Lesson page · YouTube\n\nWe play this in class. Watching it beforehand is optional and makes the session easier to follow. It covers what the model predicts, where its numbers come from, and what attention does.",
-    "crumbs": [
-      "Sessions",
-      "Day 1 · Introduction & First Experience",
-      "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis"
-    ]
-  },
-  {
-    "objectID": "slides/slides-session-01.html#two-claims-then-the-explanation",
-    "href": "slides/slides-session-01.html#two-claims-then-the-explanation",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Two claims, then the explanation",
-    "text": "Two claims, then the explanation\nBy the end of this section you should be able to say why both of these are true.\n\n\nAn LLM predicts what is likely to come next in a text. It does not look up a stored answer.\nWhat it predicts depends on the whole context — the words around it, and the instruction you wrote.\n\n\n\nA 7-minute video makes the first claim. The rest of this section makes the second one, which is the claim the rest of your week depends on."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#what-the-video-said-in-our-terms",
-    "href": "slides/slides-session-01.html#what-the-video-said-in-our-terms",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "What the video said, in our terms",
-    "text": "What the video said, in our terms\n\nIt predicts the next word, one at a time — as a list of candidate words with probabilities.\nThe next word is then chosen from that list, and not always the most likely one. So the same prompt can give a different answer. Day 3 sets temperature=0 to reduce this; Day 4 you run your final prompt once and save the output to a file.\nIt is trained twice: first on text, then on human-written demonstrations and human rankings of its own answers. That second stage is why it carries out your request instead of continuing it (Ouyang et al., 2022). Day 3 is about writing that request well.\n\n$ P(w_T w_1, w_2, , w_{T-1}) $ — the first bullet, written out: the next word given everything before it.\n\n\n\n\n\n\nA note on the word “token.” Here it means the unit the model predicts — usually a word, sometimes part of a word. In corpus linguistics, and again from Day 2, “token” means a word instance in a text (as in type–token ratio). The two senses are related but not the same."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#before-that-how-text-became-numbers",
-    "href": "slides/slides-session-01.html#before-that-how-text-became-numbers",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Before that — how text became numbers",
-    "text": "Before that — how text became numbers\nThe video said the first step is to turn each word into a long list of numbers. It did not say what that replaced.\nTwo earlier answers, and why each was not enough. Whether an LLM can label your data depends on this step.\nTake the classic task: given an email, decide spam / not-spam.\n\nWrite the rules by hand: block anything containing FREE, WINNER, $$$ → spammers write “F R E E”, and you block real mail.\nLearn them from data: show the model thousands of emails already labelled spam / not-spam, and it infers which words predict spam.\n\nThe second one needs the email as numbers. Here is the first way that was tried."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#attention-resolves-the-two-frees",
-    "href": "slides/slides-session-01.html#attention-resolves-the-two-frees",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Attention resolves the two frees",
-    "text": "Attention resolves the two frees\nThe video called this step attention. Here is what it does to the pair from the last slide:\n\n\n\n\n\n\n\n\nSentence\nfree attends most to\nResulting sense\n\n\n\n\n“your account is free of charge”\naccount, charge\nbanking, benign\n\n\n“claim your FREE prize now”\nclaim, prize, now\npromotional\n\n\n\nThe same word form now has two different vectors, because the surrounding words differ. Static embeddings could not do this; there was only ever one vector for free."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#the-model-sees-only-the-prompt",
-    "href": "slides/slides-session-01.html#the-model-sees-only-the-prompt",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "The model sees only the prompt",
-    "text": "The model sees only the prompt\n“Context” means the text you gave it, and nothing else.\n\nIt has no access to your coding guidelines, to the discussion your group had, or to what you meant. Whatever you did not write into the prompt, it does not have.\n\n\nHow much this matters: changing only the formatting of a prompt — the separators, the spacing, the capitalisation — moved accuracy by up to 76 points in Sclar et al. (2024), and bigger models did not fix it.\n\n\n\n\n\n\n\n\nImportant\n\n\nOn Friday you will be asked to show an item the model got wrong and say whether it was the model’s fault or your scheme’s. If your distinction lives only in your heads, it is not in the prompt — and then it is your scheme’s."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#what-people-have-already-done-with-this",
-    "href": "slides/slides-session-01.html#what-people-have-already-done-with-this",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "What people have already done with this",
-    "text": "What people have already done with this\nHistorically each task had its own model — a POS tagger, an NER model, a parser. Now one model does many tasks, because you change the request rather than the model (Liu et al., 2023).\nThat is not a promise. It is a research literature, and you can read it:\n\n\n\n\n\n\n\n\nStudy\nWhat it annotated\nTrack you could pick\n\n\n\n\nGilardi et al. (2023), PNAS\ntext annotation vs. crowd workers — ~25 points better, ~$0.003 per annotation\n(the cost argument)\n\n\nYu et al. (2024), IJCL\napology components — a function, not a form\npragmatics\n\n\nKim & Lu (2024), JEAP\nrhetorical moves in article abstracts\nRAAMove · CaRS-50\n\n\nMizumoto (2025), SSLA\nL2 errors — r = .94 with human raters, F1 = .95\nAutoErrorAnalyzer\n\n\nYamashita (2024), RMAL\nessay scores\nICNALE GRA\n\n\n\nThree of these are on your readings page. Four of them do a task you could choose for your own project."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#what-this-buys-you",
-    "href": "slides/slides-session-01.html#what-this-buys-you",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "What this buys you",
-    "text": "What this buys you\nThree things, and they are the reason the rest of the week is worth the effort.\n\n\nIt can label categories that depend on context — which is what most categories linguists care about are, and what a bag-of-words model could never represent.\n\n\n\n\nOne model, many tasks. A new question needs a new prompt, not a new trained model and a new annotated training set.\n\n\n\n\nIt brings a step that used to cost expert time you do not have — careful annotation, double-coded — within reach of a five-day project.\n\n\n\nNone of that says the labels are correct. That is the next question, and it is the rest of the course."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#and-where-it-did-not-work",
-    "href": "slides/slides-session-01.html#and-where-it-did-not-work",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "…and where it did not work",
-    "text": "…and where it did not work\nThe same literature reports the other half.\n\nCurry, Baker & Brookes (2024), Applied Corpus Linguistics — passable at grouping keywords, but poor at concordance analysis: it made false inferences, and it altered the data it was given.\nZiems et al. (2024), Computational Linguistics — 13 models across 25 benchmarks. It scores lower than trained supervised models on classification, and higher than crowd workers on open-ended coding. Fair, not expert.\nCrosthwaite & Baisa (2023) — with a corpus you can say which texts your evidence came from. With an LLM you cannot.\n\nSo: same tool, opposite results, depending on the task. The only way to know which case you are in is to measure it."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#what-do",
-    "href": "slides/slides-session-01.html#what-do",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "What do",
-    "text": "What do"
-  },
-  {
-    "objectID": "slides/slides-session-01.html#the-model-has-only-the-prompt",
-    "href": "slides/slides-session-01.html#the-model-has-only-the-prompt",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "The model has only the prompt",
-    "text": "The model has only the prompt\n“Context” means the text you gave it, and nothing else.\n\nIt has no access to your coding guidelines, to the discussion your group had, or to what you meant. Whatever you did not write into the prompt, it does not have.\n\n\nHow much this matters: changing only the formatting of a prompt — the separators, the spacing, the capitalisation — moved accuracy by up to 76 points in Sclar et al. (2024), and bigger models did not fix it.\n\n\n\n\n\n\n\n\nImportant\n\n\nOn Friday you will be asked to show an item the model got wrong and say whether it was the model’s fault or your scheme’s. If your distinction is only in your heads, it is not in the prompt — and then it is your scheme’s."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#what-an-llm-lets-you-do",
-    "href": "slides/slides-session-01.html#what-an-llm-lets-you-do",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "What an LLM lets you do",
-    "text": "What an LLM lets you do\nThree things, and they are the reason the rest of the week is worth the effort.\n\nIt can label categories that depend on context. Most of the categories linguists work with are of that kind, and a bag-of-words model could never represent them.\nOne model, many tasks. A new question needs a new prompt, not a new trained model and a new annotated training set.\nCareful annotation — expert time, training, double-coding — used to need more resources than a small project has. A five-day project can now attempt it.\n\nNone of that says the labels are correct. That is the next question, and it is the rest of the course."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#question",
-    "href": "slides/slides-session-01.html#question",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Question",
-    "text": "Question\n\nHave you ever used LLMs?\n\nWhat was it for? / Did it work?\nWhat surprised you?"
-  },
-  {
-    "objectID": "slides/slides-session-01.html#what-do-you-know-about-llms",
-    "href": "slides/slides-session-01.html#what-do-you-know-about-llms",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "What do you know about LLMs?",
-    "text": "What do you know about LLMs?\n\nWhat is a Large Language Model (or LLM)?\n\nShare with the neighbor anything you know about LLM!"
-  },
-  {
-    "objectID": "slides/slides-session-01.html#reflect-on-what-the-video-says",
-    "href": "slides/slides-session-01.html#reflect-on-what-the-video-says",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Reflect on what the video says…",
-    "text": "Reflect on what the video says…\n\nWhat exactly does the model predict?\nWhere do the numbers inside the model come from?\nWhat does attention do?"
-  },
-  {
-    "objectID": "slides/slides-session-01.html#before-llm-brief-history-of-embedding",
-    "href": "slides/slides-session-01.html#before-llm-brief-history-of-embedding",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Before LLM — Brief history of embedding",
-    "text": "Before LLM — Brief history of embedding\nThe video said the first step is to turn each word into a long list of numbers. This technology is called embedding.\nEmbedding: “vector representations of the meaning of words that are learned directly from word distributions in texts” (Jurafsky & Martin, 2026, p. 96).\nTwo families, and we build up to both:\n\nStatic — one fixed vector per word: counting contexts, then Word2Vec.\nContextual — a different vector each time the word appears: BERT, and the models you use."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#vector-representation",
-    "href": "slides/slides-session-01.html#vector-representation",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Vector representation",
-    "text": "Vector representation\n\nVector is a series of number that defines the location of something in an multidimensional space.\n\nExample:\n\nRGB Color space: A color can be determined by the combination of the red, green, and blue."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#rgb-color-space-move-the-sliders",
-    "href": "slides/slides-session-01.html#rgb-color-space-move-the-sliders",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "RGB color space — move the sliders",
-    "text": "RGB color space — move the sliders\nEach colour is one point in a 3-dimensional space. The three numbers are the colour.\n\n\n\n  \n    R214\n    G93\n    B60\n  \n  \n    \n    [214, 93, 60]\n    #D65D3C\n  \n\n\n\n\n\nThe number under each name is the distance from your colour to that colour. Close in the space = similar colour. Word embeddings work the same way, with hundreds of numbers instead of three."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#section-1",
-    "href": "slides/slides-session-01.html#section-1",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "",
-    "text": "Take the classic task: given an email, decide spam / not-spam.\n\nWrite the rules by hand: block anything containing FREE, WINNER, $$$ → spammers write “F R E E”, and you block real mail.\nLearn them from data: show the model thousands of emails already labelled spam / not-spam, and it infers which words predict spam."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#the-paradigm-shift",
-    "href": "slides/slides-session-01.html#the-paradigm-shift",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "The paradigm shift",
-    "text": "The paradigm shift\nClassic NLP consumed annotation to build models.\nNow the model can produce annotation, so the direction is reversed:\nbefore: humans annotate → train the model now: the model annotates → and who checks it?"
-  },
-  {
-    "objectID": "slides/slides-session-01.html#sounding-right-is-not-being-right",
-    "href": "slides/slides-session-01.html#sounding-right-is-not-being-right",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Sounding right is not being right",
-    "text": "Sounding right is not being right\nAn LLM essentially learns to predict next plausible word.\nPlausible is not the same as correct — which is exactly what Curry et al. found when the output read well and the analysis was wrong.\nThat’s why we still need NLP evaluation."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#rgb-color-space",
-    "href": "slides/slides-session-01.html#rgb-color-space",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "RGB color space",
-    "text": "RGB color space\nA vector is a list of numbers that fixes the location of something in a space. A colour, for example, is fixed by how much red, green and blue it has.\nMove the sliders to change the colour. Drag the cube to rotate it.\n\n\n\n  \n  \n    \n      R214\n      G93\n      B60\n    \n    \n      \n      \n        [214, 93, 60]\n        #D65D3C\n      \n    \n  \n\n\n\n\n\nThe dashed path is the vector: R along red, then G along green, then B along blue. The number under each name is the distance from your colour to that colour — close in the space = similar colour. Word embeddings work the same way, with hundreds of numbers instead of three."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#word2vec",
-    "href": "slides/slides-session-01.html#word2vec",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Word2Vec",
-    "text": "Word2Vec\nAn embedding is a learned dense vector for each word — trained so that words with similar meaning sit close together (Word2Vec).\nLook up each word, average them → the email’s vector.\n\n  \n    Email\n    claim yourfree prize\n  \n  →\n  \n    Embedding lookup\n    \n      claim.8.1-.3.6\n      your.0.2.1-.1\n      free.9-.2-.4.7\n      prize.7.0-.2.5\n    \n    4 dims shown (really ~300)\n  \n  ⌀\n  \n    Avg → doc vector\n    .6.0-.2.4\n    dense · short\n  \n  →\n  \n    Classifier\n    P(spam)=0.91\n    🚫 spam\n  \n\n\nImprovement: “free” and “complimentary” now have nearby vectors, so the model generalises to words it never saw labelled. But it still ignores word order, because it is an average.\n\n\nAnd the same word can be evidence for opposite answers:\n\n“your account is free of charge” ✅ not spam · “claim your FREE prize now” 🚫 spam\n\nTwo reasons: many words are polysemous or homographic, and the meaning of the whole is not the sum of the isolated words — for example idioms such as kick the bucket. A static embedding has only ever one vector for free."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#where-the-numbers-come-from-count-the-neighbours",
-    "href": "slides/slides-session-01.html#where-the-numbers-come-from-count-the-neighbours",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Where the numbers come from: count the neighbours",
-    "text": "Where the numbers come from: count the neighbours\nThat was question 2 from the video. The answer starts with an idea from 1950s linguistics: words that occur in similar contexts have similar meanings (Firth, Harris, Joos; see Jurafsky & Martin, 2026, p. 99).\nTake four words, and look at the four words on each side of one occurrence of each:\n   is traditionally followed by  cherry      pie, a traditional dessert\n           often mixed, such as  strawberry  rhubarb pie. Apple pie\ncomputer peripherals and personal digital    assistants. These devices usually\n       a computer. This includes information available on the internet\nCount, by hand: how often does each of a, computer and pie appear in each of those four windows?\n\n\n\n\n\na\ncomputer\npie\n\n\n\n\ncherry\n1\n0\n1\n\n\nstrawberry\n0\n0\n2\n\n\ndigital\n0\n1\n0\n\n\ninformation\n1\n1\n0\n\n\n\nEach row is that word’s vector: cherry = [1, 0, 1]. The same object as the RGB triple, with context words as the axes instead of red, green and blue."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#the-same-counts-from-a-real-corpus",
-    "href": "slides/slides-session-01.html#the-same-counts-from-a-real-corpus",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "The same counts, from a real corpus",
-    "text": "The same counts, from a real corpus\nNow count every occurrence in Wikipedia, instead of one window each. Six of the columns (Jurafsky & Martin, 2026, p. 103):\n\n\n\n\naardvark\n…\ncomputer\ndata\nresult\npie\nsugar\n…\n\n\n\n\ncherry\n0\n…\n2\n8\n9\n442\n25\n…\n\n\nstrawberry\n0\n…\n0\n0\n1\n60\n19\n…\n\n\ndigital\n0\n…\n1670\n1683\n85\n5\n4\n…\n\n\ninformation\n0\n…\n3325\n3982\n378\n5\n13\n…\n\n\n\ncherry and strawberry have similar rows. digital and information have similar rows. Nobody wrote a dictionary and nobody labelled anything — this came out of counting.\nThe cost: one column for every word in the vocabulary, so 10,000 to 50,000 columns, and almost every cell is 0.\n\n\n\n  \n  \n  \n  \n  \n\none row of the real matrix — 60 of its ~50,000 columns\nCounting words inside a document, rather than around a word, gives the bag-of-words representation."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#how-close-are-two-words",
-    "href": "slides/slides-session-01.html#how-close-are-two-words",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "How close are two words?",
-    "text": "How close are two words?\n\n\nEach row is a vector, so we can ask how close two of them are. The usual measure is cosine similarity: the size of the angle between two rows — the angle, not the size of the counts, so a frequent word does not come out similar to everything.\n\n\n\n\npie\ndata\ncomputer\n\n\n\n\ncherry\n442\n8\n2\n\n\ndigital\n5\n1683\n1670\n\n\ninformation\n5\n3982\n3325\n\n\n\n\n\n\n  \n  \n  \n  \n  \n  cherry\n  digital\n  information\n  pie\n  computer\n\n\nRough — the angles are widened so they are visible on screen.\n\n\n\n\nangle between the two rows\ncosine\n\n\n\n\n0° · pointing the same way\n1\n\n\n90° · sharing nothing\n0\n\n\n180° · pointing opposite ways\n−1\n\n\n\n\n\nWith counts you only ever see 0 to 1, because a count is never negative. −1 becomes possible on the next slide, where the numbers themselves can be negative.\ncosine(cherry, information) = 0.018 · cosine(digital, information) = 0.996 — the number behind any claim that two words, two sentences or two texts are “similar”."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#how-a-model-learns-anything",
-    "href": "slides/slides-session-01.html#how-a-model-learns-anything",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "How a model learns anything",
-    "text": "How a model learns anything\nTake the classic task: given an email, decide spam / not-spam.\n\nWrite the rules by hand: block anything containing FREE, WINNER, $$$ → spammers write “F R E E”, and you block real mail.\nLearn them from data: show the model thousands of emails already labelled spam / not-spam, and it infers which words predict spam.\n\nThe second route needs examples that somebody has already labelled, and labelling is the expensive part. The next method takes its labels from the text itself."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#word2vec-predict-instead-of-count",
-    "href": "slides/slides-session-01.html#word2vec-predict-instead-of-count",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "word2vec: predict instead of count",
-    "text": "word2vec: predict instead of count\nInstead of counting how often jam occurs near apricot, train a small classifier on one question: is jam likely to occur near apricot?\n\n\nRunning text already holds the answers. A word that really did occur nearby is a yes; a word drawn at random is a no. Nobody labels anything. This is called self-supervision, and it is how LLMs are trained too.\nThe classifier is not the point. We keep the numbers it adjusted along the way. Those numbers are the embedding.\nThe result is short. 50 to 1,000 numbers per word, instead of 50,000 counts. They are real numbers, they can be negative, and no single one of them has a name you can read off.\n\n\n\nword2vec is the software package; skip-gram with negative sampling is the algorithm inside it (Jurafsky & Martin, 2026, pp. 105–110; step-by-step derivation in Goldberg & Levy, 2014). Both produce static embeddings: one fixed vector per word, whatever sentence it appears in."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#what-word2vec-actually-adjusts",
-    "href": "slides/slides-session-01.html#what-word2vec-actually-adjusts",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "What word2vec actually adjusts",
-    "text": "What word2vec actually adjusts\nOne target word, and the two words on each side of it:\n...  your  [ account   is   free   of   charge ]  a  standard  fee ...\n                c1     c2    w     c3     c4\n\n\n\nreally occurred nearby → yes\ndrawn at random → no\n\n\n\n\n(free, account)\n(free, Tolstoy)\n\n\n(free, is)\n(free, aardvark)\n\n\n(free, of)\n(free, spreadsheet)\n\n\n(free, charge)\n(free, monsoon)\n\n\n\n\n\n  free→  ←chargemoved closer\n  free←  →Tolstoymoved apart\n\nEach pass moves free a little closer to the words that really occurred near it, and a little further from the random ones. Run that over billions of words, and words that occur near the same other words end up close together in the space.\n\n\nStill one vector per word form. free in “your account is free of charge” and FREE in “claim your FREE prize now” get the same 300 numbers."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#where-the-numbers-come-from-counting-contexts",
-    "href": "slides/slides-session-01.html#where-the-numbers-come-from-counting-contexts",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Where the numbers come from: counting contexts",
-    "text": "Where the numbers come from: counting contexts\nThat was question 2 from the video. The answer starts with an idea from 1950s linguistics: words that occur in similar contexts have similar meanings (Firth, Harris, Joos; see Jurafsky & Martin, 2026, p. 99).\nTake four words, and look at the four words on each side of one occurrence of each:\n   is traditionally followed by  cherry      pie, a traditional dessert\n           often mixed, such as  strawberry  rhubarb pie. Apple pie\ncomputer peripherals and personal digital    assistants. These devices usually\n       a computer. This includes information available on the internet\nCount, by hand: how often does each of a, computer and pie appear in each of those four windows?\n\n\n\n\n\na\ncomputer\npie\n\n\n\n\ncherry\n1\n0\n1\n\n\nstrawberry\n0\n0\n2\n\n\ndigital\n0\n1\n0\n\n\ninformation\n1\n1\n0\n\n\n\nEach row is that word’s vector: cherry = [1, 0, 1]. The same object as the RGB triple, with context words as the axes instead of red, green and blue."
-  },
-  {
-    "objectID": "slides/slides-session-01.html#simple-count-based-embedding",
-    "href": "slides/slides-session-01.html#simple-count-based-embedding",
-    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Simple count-based embedding",
-    "text": "Simple count-based embedding\nWhen we cannot tell the machine meaning of each word, how can it “encode” meaning?\n\n\n\n\n\n\n\nThe distributional principle\n\n\nThe answer is by studying Co-occurrence. “You shall know a word by the company it keeps!” (Firth, 1957, p. 11).\n\n\n\n\n\n\n\n\n\n\n\n\n\nLeft context\nNode\nRight context\n\n\n\n\nis traditionally followed by\ncherry\npie, a traditional dessert\n\n\noften mixed, such as\nstrawberry\nrhubarb pie. Apple pie\n\n\ncomputer peripherals and personal\ndigital\nassistants. These devices usually\n\n\na computer. This includes\ninformation\navailable on the internet\n\n\n\n\nCount, by hand: how often does each of a, computer and pie appear in each of those four windows?\n\n\n\n\n\na\ncomputer\npie\n\n\n\n\ncherry\n1\n0\n1\n\n\nstrawberry\n0\n0\n2\n\n\ndigital\n0\n1\n0\n\n\ninformation\n1\n1\n0\n\n\n\n\nEach row is that word’s vector: cherry = [1, 0, 1]."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#one-word-three-hundred-numbers",
-    "href": "slides/slides-session-03.html#one-word-three-hundred-numbers",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "One word, three hundred numbers",
-    "text": "One word, three hundred numbers\nIn Session 1 you saw that a model turns each word into a long list of numbers. You can look at that list.\nword = nlp_vec(\"suggest\")[0]      # read one word; [0] takes the first token\nprint(\"how many numbers:\", word.vector.shape)\nprint(\"the first eight: \", word.vector[:8])\n\nhow many numbers: (300,)\nthe first eight:  [-0.126 -0.11  -0.61   0.105 -0.272  0.302 -0.014 -0.121]\nThree numbers placed a colour in the Session 1 colour cube. It takes three hundred to place a word."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#lets-try-how-close-are-two-words",
-    "href": "slides/slides-session-03.html#lets-try-how-close-are-two-words",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "🧪 Let’s try — how close are two words?",
-    "text": "🧪 Let’s try — how close are two words?\n.similarity(...) compares two vectors: the higher the number, the closer the words sit.\nprint(\"suggest / indicate:\", nlp_vec(\"suggest\").similarity(nlp_vec(\"indicate\")))\nprint(\"suggest / banana:  \", nlp_vec(\"suggest\").similarity(nlp_vec(\"banana\")))\n\nsuggest / indicate: 0.672\nsuggest / banana:   0.168\n✏️ Your turn — swap in two words from your own research area."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#lets-try-a-words-neighbours",
-    "href": "slides/slides-session-03.html#lets-try-a-words-neighbours",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "🧪 Let’s try — a word’s neighbours",
-    "text": "🧪 Let’s try — a word’s neighbours\nRather than guessing pairs, ask which words sit closest:\nfor neighbour in nearest(\"perhaps\"):   # ✏️ your word here\n    print(neighbour)\n\n('possibly', 0.859)    ('might', 0.82)\n('probably', 0.839)    ('rather', 0.817)\n('certainly', 0.827)   ('though', 0.816)\n('although', 0.825)    ('even', 0.812)\n('however', 0.822)     ('maybe', 0.8)\nNothing told the model these words hedge a claim. They sit together because they turn up in the same positions in text."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#now-try-nearestcorpus",
-    "href": "slides/slides-session-03.html#now-try-nearestcorpus",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Now try nearest(\"corpus\")",
-    "text": "Now try nearest(\"corpus\")\n('habeas', 0.59)     ('textual', 0.534)\n('christi', 0.572)   ('writ', 0.485)\n('corpora', 0.566)   ('habeus', 0.465)\n\nThe legal sense, the religious sense and the linguistic sense are collected into one vector, because there is only one vector available for the spelling.\nnearest(\"hedge\") does the same with garden hedges and financial hedging."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#lets-try-where-these-vectors-stop",
-    "href": "slides/slides-session-03.html#lets-try-where-these-vectors-stop",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "🧪 Let’s try — where these vectors stop",
-    "text": "🧪 Let’s try — where these vectors stop\nSession 1 used free in two sentences that mean different things:\nbanking = nlp_vec(\"your account is free of charge\")\npromo   = nlp_vec(\"claim your free prize now\")\n\nprint(\"similarity:\", banking[3].similarity(promo[2]))\n\nsimilarity: 1.0\nNot merely close — the same vector. One vector per word form, looked up the same way every time. That is what static means."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#and-word-order-is-gone-too",
-    "href": "slides/slides-session-03.html#and-word-order-is-gone-too",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "…and word order is gone too",
-    "text": "…and word order is gone too\nA sentence’s vector is the average of its words, and an average does not record their order:\nprint(nlp_vec(\"the dog chased the cat\").similarity(nlp_vec(\"the cat chased the dog\")))\n\n1.0\nTwo sentences with opposite meanings, one score.\n\n\n\n\n\n\nImportant\n\n\nThis is the gap Session 1 said attention closes. A model built on these vectors alone cannot represent context; the model behind generate_text(...) can."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#a-map-of-the-space",
-    "href": "slides/slides-session-03.html#a-map-of-the-space",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "A map of the space",
-    "text": "A map of the space\nmap_words([...]) flattens 300 numbers onto a page, keeping close vectors close.\nmap_words([\"perhaps\", \"possibly\", \"maybe\", \"likely\", \"presumably\",\n           \"suggest\", \"indicate\", \"demonstrate\", \"argue\", \"conclude\",\n           \"cat\", \"dog\", \"horse\", \"rabbit\", \"sheep\"])   # ✏️ your words\n\nThe animals land well away from the rest. The hedges and the research verbs do not split into two groups — they are all academic prose words, appearing in similar places in similar texts, and that is the only thing these vectors record.\n\n\nThe map shows what the model separates, which is not always what you want it to separate."
-  },
-  {
-    "objectID": "slides/slides-session-03.html#why-this-matters-3",
-    "href": "slides/slides-session-03.html#why-this-matters-3",
-    "title": "Session 3: Python Practice & Mini-Project Setup",
-    "section": "Why this matters",
-    "text": "Why this matters\nThis loop is the first version of the pipeline you assemble later in the week.\n\nAnnotation, classification and evaluation all consist of running one call over a list and collecting the results. Write it once here, and reuse the same structure all week."
-  },
-  {
-    "objectID": "final-project/pipeline-cheatsheet.html#the-pipeline-as-an-io-chain",
-    "href": "final-project/pipeline-cheatsheet.html#the-pipeline-as-an-io-chain",
-    "title": "What you have to work with",
-    "section": "The pipeline, as an I/O chain",
-    "text": "The pipeline, as an I/O chain\n01 build pool ──▶ pool.json\n                    │\n02 sample ──────────┴──▶ sample.json  +  the annotation Sheet\n                                              │\n03 annotate ──────────────────────────────────┴──▶ gold.json ──▶ dev.json\n                                                              └─▶ test.json\n                                                                    ·\n04 develop ── dev.json ──▶ prompts/*.txt  +  rounds.json           ·  untouched\n                                    │                              ·\n05 test ────────────────────────────┴── test.json ──▶ predictions.json + test_log.jsonl\n                                                              │\n06 report ────────────────────────────────────────────────────┴──▶ report.md\n04 and 05 are two files rather than two halves of one so that “you may not look at the test set while you iterate” is a file boundary rather than a scroll position. 04_develop.ipynb has no path to your test items at all.\nEverything from 05_test onward reads the frozen predictions file, not the model. That is what makes the numbers in your report hold still.",
-    "crumbs": [
-      "Final Project",
-      "What you have to work with"
-    ]
-  },
-  {
-    "objectID": "final-project/pipeline-cheatsheet.html#annotate-how-far-apart-were-your-coders",
-    "href": "final-project/pipeline-cheatsheet.html#annotate-how-far-apart-were-your-coders",
-    "title": "What you have to work with",
-    "section": "03 · Annotate — how far apart were your coders",
-    "text": "03 · Annotate — how far apart were your coders\nYou assemble these. Which of them you owe follows from two facts you already have: how many coders, and whether your labels sit on a scale.\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nload_coder_sheets(id, CODERS)\none tab per coder, joined by item id\nDay 2 S5 step D\n\n\ncolumn(rows, \"CoderA\")\none coder’s labels as a plain list\nnew here — two lines\n\n\npercent_agreement(a, b)\nhow often two coders matched\nDay 2 S6 step 9, as p_o\n\n\ncohen_kappa_score(a, b)\nagreement corrected for chance\nDay 2 S6 — you wrote it, then checked it against this\n\n\ncohen_kappa_score(a, b, weights=\"quadratic\")\nthe same, a near miss counting less\nDay 2 S6 Part B\n\n\nfleiss_kappa([a, b, c])\none number for three or more coders\nnew — three-coder groups only\n\n\nconfusion_matrix(a, b, labels=LABELS)\nwhich label pairs you disagree about\nDay 2 S5 step D · S6 Part B\n\n\nplot_confusion_matrix(m, LABELS, title)\nthat matrix, drawn\nDay 2 S5 step D\n\n\nto_canonical(rows, LABELS)\nthe adjudicated sheet as gold items\nDay 2 S5 step F\n\n\ncompare_to_published(gold, sampled)\nwhere you differ from the corpus’s own labels\nDay 2 S5 step F\n\n\nsplit_dev_test(gold, DEV, seed=SEED)\nthe two halves, every label kept on both sides\nDay 4 Part B — you wrote the loop\n\n\n\ndisagreements is not on this list, because you write it. The rule inside it — what counts as a disagreement — is a decision about your scheme, and there is no way to hand it over without answering it for you. You saw the six lines in Day 2 S5, step E.",
-    "crumbs": [
-      "Final Project",
-      "What you have to work with"
-    ]
-  },
-  {
-    "objectID": "final-project/pipeline-cheatsheet.html#develop-the-prompt-rounds-on-dev-only",
-    "href": "final-project/pipeline-cheatsheet.html#develop-the-prompt-rounds-on-dev-only",
-    "title": "What you have to work with",
-    "section": "04 · Develop — the prompt rounds, on dev only",
-    "text": "04 · Develop — the prompt rounds, on dev only\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nsetup(temperature=TEMPERATURE, seed=SEED, model=MODEL)\nthe connection, with the two settings that decide whether a run repeats\nDay 3, iteration 0\n\n\nload_prompt(path)\na prompt file, as text\nnew — your prompt is a file now\n\n\nrun_prompt(prompt, dev)\none predicted label per item\nDay 3, every iteration\n\n\nbuild_fewshot(prompt, pool, gold)\nthe prompt with worked examples in front of it\nDay 3 iteration 1 — you typed the examples by hand\n\n\nextract_label(reply, labels)\none label out of one reply\nDay 3, as the parser behind run_prompt\n\n\nevaluate(dev, pred, ordered=False)\nper-class table, κ, matrix, and macro-F1 back\nDay 2 S6 Part B · Day 3\n\n\nshow_errors(dev, pred)\njust the rows it got wrong\nDay 2 S6 Part B · Day 3\n\n\n\nAnd the prompt itself is the other half. S7’s menu — instruction · context · input data · output indicator · persona · few-shot · chain-of-thought · structured output — is the space you are choosing from. Few-shot is one row of that table, not the default.\nThe number evaluate hands back is macro-F1, and here it is only something to compare round 2 against round 1 with. The number you report comes out of 06_report, where you write the scoring call yourself.",
-    "crumbs": [
-      "Final Project",
-      "What you have to work with"
-    ]
-  },
-  {
-    "objectID": "final-project/pipeline-cheatsheet.html#test-the-held-out-run",
-    "href": "final-project/pipeline-cheatsheet.html#test-the-held-out-run",
-    "title": "What you have to work with",
-    "section": "05 · Test — the held-out run",
-    "text": "05 · Test — the held-out run\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nfreeze_test_run(...)\nruns, saves before scoring, re-reads the file, scores it, logs it\nDay 3’s “once, and only once” cell, made explicit\n\n\nread_test_log(path)\nevery held-out scoring you have done, with a fingerprint of each prompt\nnew\n\n\n\nNothing here stops you running it twice — stopping you would be the wrong design, because a real mistake on the last afternoon needs a way forward. Instead nothing is overwritten and every scoring appends a line to a log that travels in your submission.",
-    "crumbs": [
-      "Final Project",
-      "What you have to work with"
-    ]
-  },
-  {
-    "objectID": "final-project/pipeline-cheatsheet.html#report-the-scoring-call-is-the-choice",
-    "href": "final-project/pipeline-cheatsheet.html#report-the-scoring-call-is-the-choice",
-    "title": "What you have to work with",
-    "section": "06 · Report — the scoring call is the choice",
-    "text": "06 · Report — the scoring call is the choice\nThere is no course helper wrapping these. You met them in Day 2 S6: you built precision, recall, F1 and κ from scratch, then checked your numbers against these very functions.\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nlabels_of(test)\nthe gold labels as a plain list, ready to score\nDay 2 S6 Part B, written out as a loop\n\n\nclassification_report(y, p, labels=LABELS)\nprecision, recall and F1 for every class\nDay 2 S6 Part B\n\n\nf1_score(y, p, average=\"macro\")\none number: every class counts the same\nDay 2 S6 Part B\n\n\nf1_score(y, p, average=\"micro\")\none number: every item counts the same\nDay 2 S6 Part B\n\n\nf1_score(y, p, average=\"weighted\")\nbetween the two: classes weighted by how common\nDay 2 S6 Part B\n\n\ncohen_kappa_score(y, p)\nagreement with your gold, corrected for chance\nDay 2 S6\n\n\ncohen_kappa_score(y, p, weights=\"quadratic\")\nthe same, a near miss counting less\nDay 2 S6 Part B\n\n\nconfusion_matrix(y, p, labels=LABELS)\nwhich classes it mixes up with which\nDay 2 S6 Part B\n\n\nplot_confusion_matrix(m, LABELS, title)\nthat matrix, drawn\nDay 2 S5 step D\n\n\nshow_errors(test, pred)\njust the rows it got wrong\nDay 2 S6 Part B · Day 3\n\n\nerrors_on_disagreed(errors, disagreed)\nthe errors landing where your coders also disagreed\nDay 2 S6 Part B, written out as a loop\n\n\ntriage_counts(TRIAGE, errors)\nyour judgments, counted by category\nDay 2 S6 Part B — the four words\n\n\nexport_results(...)\nthe report scaffold, the predictions CSV, your test set\nnew",
-    "crumbs": [
-      "Final Project",
-      "What you have to work with"
-    ]
-  },
-  {
-    "objectID": "final-project/pipeline-cheatsheet.html#things-that-are-easy-to-get-wrong",
-    "href": "final-project/pipeline-cheatsheet.html#things-that-are-easy-to-get-wrong",
-    "title": "What you have to work with",
-    "section": "Things that are easy to get wrong",
-    "text": "Things that are easy to get wrong\ncompare_to_published(gold, sampled) — not pool. Sampling renumbers the ids from 1, so comparing against the whole pool would pair your item 7 with pool item 7: two unrelated sentences.\nWeighted κ needs the order. If your labels are ordered but not alphabetical — Low/Mid/High — set labels_order in config.yaml. Otherwise the weighting is computed over High &lt; Low &lt; Mid, and the number reported to three decimal places means nothing.\ndev is the fast set. One round on a dozen dev items is about a minute of enforced pacing, so your sample stays at full size throughout — you do not shrink it to iterate.\nThe κ in 03 and the κ in 06 are different claims. One compares two annotators, the other compares your gold against a model. Same statistic, and swapping them in the report is a mistake a reader cannot catch.",
-    "crumbs": [
-      "Final Project",
-      "What you have to work with"
-    ]
-  },
-  {
-    "objectID": "final-project/pipeline-cheatsheet.html#reading-the-code",
-    "href": "final-project/pipeline-cheatsheet.html#reading-the-code",
-    "title": "What you have to work with",
-    "section": "Reading the code",
-    "text": "Reading the code\nEverything imported lives in scripts/. help(split_dev_test) prints what to pass in; split_dev_test?? prints the source of any function, imported or not; and the Files panel on the left of Colab lists every function in a file, so you can click straight to one.\nSome of what you call is not imported at all — it is written out in the notebook cell in front of you, because reading it is part of knowing what you did. Those you can edit in place, and your edited version is in the notebook you hand in, which is where a change of method should be visible.",
-    "crumbs": [
-      "Final Project",
-      "What you have to work with"
-    ]
-  },
-  {
-    "objectID": "final-project/plan.html#why-questions-79-are-on-this-page-and-not-in-a-notebook",
-    "href": "final-project/plan.html#why-questions-79-are-on-this-page-and-not-in-a-notebook",
-    "title": "The PLAN.md gate",
-    "section": "Why questions 7–9 are on this page and not in a notebook",
-    "text": "Why questions 7–9 are on this page and not in a notebook\nEvery one of them determines a number you will report, and every one of them has an answer you could reach for after seeing which option flatters you.\nNothing stops you running all three F1 averages and reporting the highest. Nobody reading your report could tell. The only thing that makes the number mean anything is that the choice was made from facts you already had — how many coders, whether the labels are a scale, what your research question is about — before any of the numbers existed.\nSo the rule is not about how much you look at. Looking is fine when it changes what you do next; it is not fine when it changes what you claim. Reading the coder confusion matrix to decide which label boundary to argue about is exactly what it is for. Choosing the statistic after seeing what each one gives you is not.\nQuestions 7–9 are the ones where that distinction bites, so they are settled here, at a point where the numbers do not exist yet.",
-    "crumbs": [
-      "Final Project",
-      "The PLAN.md gate"
-    ]
-  },
-  {
-    "objectID": "final-project/plan.html#the-pipeline-as-an-io-chain",
-    "href": "final-project/plan.html#the-pipeline-as-an-io-chain",
-    "title": "The PLAN.md gate",
-    "section": "The pipeline, as an I/O chain",
-    "text": "The pipeline, as an I/O chain\nPLAN.md ends with a table of the six notebooks — what each one consumes and what it produces — with a blank column for the file names your group actually used.\nThat table is the point of the exercise. If your group can say aloud “03 consumes the filled-in sheet and our adjudication, and produces the gold set”, you understand the pipeline — and that is what the end of Session 11 checks.\nNote where the model appears: not until 04. Notebooks 01–03 are the study; the LLM is the thing being measured by it.",
-    "crumbs": [
-      "Final Project",
-      "The PLAN.md gate"
-    ]
-  },
-  {
-    "objectID": "final-project/index.html#the-six-notebooks",
-    "href": "final-project/index.html#the-six-notebooks",
-    "title": "Final Project",
-    "section": "The six notebooks",
-    "text": "The six notebooks\n\n\n\n\n\n\n\n\n01_build_pool_&lt;track&gt;\nyour track’s raw corpus → a pool\nno model\n\n\n02_sample\nthe pool → your sample, and the blind annotation sheet\nno model\n\n\n03_annotate\nthe filled-in sheet → your gold set, split into dev and test\nno model\n\n\n04_develop\nprompt rounds, on dev only\nthe model, many times\n\n\n05_test\nthe held-out run, once, frozen to a file\nthe model, once\n\n\n06_report\nthe frozen run → error analysis and the report scaffold\nno model\n\n\n\n04 and 05 are separate files on purpose. “You may not look at the test set while you are still changing the prompt” is a rule that only holds if it is a file boundary rather than a scroll position, so 04_develop.ipynb has no path to your test items at all.\nNotebooks 01–03 need no model, so there is plenty to get on with while your PLAN.md is being signed off.\n\n\n\n\n\n\nImportantYour adjudicated gold is the gold\n\n\n\nThe model is scored against what your group decided in 03_annotate, not against the published labels. That is what makes the QC pass matter: the boundaries you argued over in 03_annotate are exactly the ones you will be pointing at in 06_report when you explain a miss.\ncompare_to_published still shows you where you differ from the source corpus — and that gap is itself a finding worth a line in your report.\n\n\n\n\n\n\n\n\nImportantRun it once, then freeze it\n\n\n\nYou run the model through the Gemini API with temperature=0 and a fixed seed (get a free key). Even then, a hosted LLM is only best-effort reproducible — so once your prompt is final, run it once and save the predictions to a JSON file. Every number you report comes out of that file.\nYour F1 is then stable, and anyone can re-run your analysis on exactly the outputs you saw.",
-    "crumbs": [
-      "Final Project",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "notebooks/day4_pipeline_and_sampling.html#part-b-draw-the-line-which-items-you-may-look-at",
-    "href": "notebooks/day4_pipeline_and_sampling.html#part-b-draw-the-line-which-items-you-may-look-at",
-    "title": "Day 4 · Pipeline assembly & sampling your gold set",
-    "section": "Part B · Draw the line: which items you may look at",
-    "text": "Part B · Draw the line: which items you may look at\nOn Day 3 you worked with two files: val, which every prompt was scored against, and gold, opened once at the end. They were handed to you already separated. Your own gold set arrives in one piece, so drawing that line is now a step you take — and it is the last one before the model gets involved.\n\n\n\n\n\n\n\n\nwhat it is for\n\n\n\n\ndev\nthe items you may look at. Change the prompt because of what you see here, as often as you like.\n\n\ntest\nopened once, at the end. Whatever it says is what you report.\n\n\n\nThe reason is the one Day 3 gave you: a score measured on the items you kept adjusting against stops measuring how good your prompt is and starts measuring how long you kept adjusting. It only ever goes up.\nBoth halves come out of the same annotation work, so the split costs you no extra annotation. What it costs is items you are allowed to learn from.\n\nSplit it, keeping every label on both sides ✏️ YOU EDIT\nNot a straight cut down the middle: split within each label, the same bucket-then-slice shape you wrote ten minutes ago. A straight cut on a shuffled list can leave a whole label on one side, and a label missing from test drops out of your macro average without announcing itself.\n\n\nShow code\n### Step 1: the setting you control ###\nDEV_PER_LABEL = 3       # ✏️ how many items per label you may look at\n\n### Step 2: sort the sample into one bucket per label (as in Part A) ###\nbuckets = defaultdict(list)\nfor item in gold:\n    buckets[item[\"label\"]].append(item)\n\n### Step 3: take the first few of each bucket for dev, the rest for test ###\ndev = []\ntest = []\nfor label in sorted(buckets):\n    bucket = buckets[label]\n    dev.extend(bucket[:DEV_PER_LABEL])    # the ones you may look at\n    test.extend(bucket[DEV_PER_LABEL:])   # everything after them\n\n### Step 4: read the counts BEFORE you go any further ###\nprint(\"dev :\", len(dev),  \"|\", dict(Counter(x[\"label\"] for x in dev)))\nprint(\"test:\", len(test), \"|\", dict(Counter(x[\"label\"] for x in test)))\n\n\nRead those two lines rather than glancing at them. A label showing up in dev with nothing left in test cannot appear in the score you report, and right now it costs you one number to fix. Later it costs an afternoon.\nThere is no right size for dev, only one you can defend. A bigger dev gives you steadier feedback while you iterate and leaves a smaller test, so the number you finally report bounces around more. A smaller dev means prompt decisions made on very few items — which is how you tune to noise and then watch the gain evaporate on the half you held back.\nIn the final project this is split_dev_test(gold, DEV, seed=SEED), and it handles the two fiddly cases this cell does not: a proportion instead of a fixed count, and a label with a single surviving item — which it sends to test, for the reason above. The rule it follows is the one you just wrote.",
-    "crumbs": [
-      "Sessions",
-      "Daily notebooks",
-      "Day 4 · Pipeline assembly & sampling your gold set"
-    ]
-  },
-  {
-    "objectID": "notebooks/day4_pipeline_and_sampling.html#where-this-goes-next",
-    "href": "notebooks/day4_pipeline_and_sampling.html#where-this-goes-next",
-    "title": "Day 4 · Pipeline assembly & sampling your gold set",
-    "section": "Where this goes next",
-    "text": "Where this goes next\nEverything after this — the annotation sheet, agreement, adjudication, the prompt rounds, the held-out run — happens in your group’s own copy of the project template, because it needs your track, your Drive and your group’s decisions:\ngithub.com/egumasa/lda2-final-template\n\n\n\n\n\n\n\nNotebook\nWhat it does\n\n\n\n\n01_build_pool_&lt;track&gt;\nturns your track’s raw corpus into a pool\n\n\n02_sample\nthe draw you wrote in Part A, plus the blind annotation sheet\n\n\n03_annotate\nagreement, adjudication, and the split you wrote in Part B\n\n\n04_develop\nprompt rounds, on dev only\n\n\n05_test\nthe held-out run, once\n\n\n06_report\nscoring, error analysis, export\n\n\n\n03_annotate does properly what you did by hand on Day 2 (S5): two of you label the sheet independently, you measure agreement, and you adjudicate the rows you disagreed on. What comes out is your gold set, and it is what the model gets scored against — so those disagreements are doing real work, not bookkeeping.\nToday is why you can read those notebooks: sample_pool is the Part-A cell in one call and split_dev_test is the Part-B cell in one call. You have seen what they do, so you can say what they do.\nBefore you run anything that calls the model, your group needs a signed PLAN.md — see the Final Project pages.",
-    "crumbs": [
-      "Sessions",
-      "Daily notebooks",
-      "Day 4 · Pipeline assembly & sampling your gold set"
     ]
   }
 ]

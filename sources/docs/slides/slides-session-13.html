@@ -211,17 +211,18 @@
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
 <ul>
-<li>Rounds 1 and 2 — <strong>one change each</strong>, predicted in advance</li>
+<li><code>04_develop</code> — rounds on the <strong>dev half</strong>, one change each, predicted in advance</li>
 <li>Reading the confusion matrix to decide what to change next</li>
-<li>The final full-size run — <strong>once</strong> — and freezing it</li>
+<li><code>05_test</code> — commit to your candidates, then open the held-out set <strong>once</strong></li>
 </ul>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
 <ul>
-<li>Change one thing per round, predict its effect, and test it.</li>
+<li>Change one thing per round, predict its effect, and test it — <strong>on dev</strong>.</li>
 <li>Use a confusion matrix to choose the next change rather than guessing.</li>
+<li>Commit to your candidates and a winner rule <em>before</em> opening the held-out set.</li>
 <li>Freeze a run and explain why a seed alone is not enough.</li>
 <li>Report plain and weighted κ, and say which one your labels justify.</li>
 </ul>
@@ -238,7 +239,7 @@
 <tr class="header">
 <th>Round</th>
 <th>Change</th>
-<th>Macro-F1</th>
+<th>Macro-F1 (dev)</th>
 </tr>
 </thead>
 <tbody>
@@ -259,6 +260,7 @@
 </tr>
 </tbody>
 </table>
+<p>Every number in that column is measured on <strong>dev</strong>. It is your steering wheel, not your result.</p>
 <div class="fragment">
 <p>If you change two things and the score moves, you cannot tell which change caused it.</p>
 </div>
@@ -295,7 +297,7 @@
 </section>
 <section id="use-the-matrix-to-choose-the-next-change" class="slide level2">
 <h2>Use the matrix to choose the next change</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>evaluate(gold, pred0, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>evaluate(dev, pred0, ordered<span class="op">=</span><span class="va">True</span>)     <span class="co"># dev — the half you are allowed to look at</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Look at the <strong>off-diagonal cells</strong>, not only the macro-F1:</p>
 <ul>
 <li><strong>Most confused pair</strong> — which two labels?</li>
@@ -327,28 +329,57 @@ Cohen's kappa (weighted) 0.871   &lt;- labels are ordered
 </div>
 <div class="callout-content">
 <p><code>Low</code>/<code>Mid</code>/<code>High</code> is ordered but <strong>not alphabetical</strong>. Pass it yourself:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>evaluate(gold, pred, ordered<span class="op">=</span><span class="va">True</span>, labels<span class="op">=</span>[<span class="st">"Low"</span>, <span class="st">"Mid"</span>, <span class="st">"High"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>evaluate(dev, pred, ordered<span class="op">=</span><span class="va">True</span>, labels<span class="op">=</span>[<span class="st">"Low"</span>, <span class="st">"Mid"</span>, <span class="st">"High"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Otherwise the scale is <code>High &lt; Low &lt; Mid</code> and the number cannot be interpreted. <code>evaluate</code> prints the order it used — read that line.</p>
 </div>
 </div>
 </div>
 </section></section>
 <section>
-<section id="freezing" class="title-slide slide level1 center">
-<h1>Freezing</h1>
+<section id="test-the-held-out-run" class="title-slide slide level1 center">
+<h1><code>05_test</code> — the held-out run</h1>
 
 </section>
-<section id="the-final-run" class="slide level2">
-<h2>The final run</h2>
-<ol type="1">
-<li>Pick your best prompt.</li>
-<li>Raise <code>N_PER_CLASS</code> to full size.</li>
-<li>Run it <strong>once</strong>.</li>
-<li>Save it.</li>
-</ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>save_predictions(pred_best, OUT_DIR <span class="op">+</span> <span class="st">"/"</span> <span class="op">+</span> TRACK <span class="op">+</span> <span class="st">"_"</span> <span class="op">+</span> GROUP <span class="op">+</span> <span class="st">"_predictions.json"</span>)</span>
-<span id="cb4-2"><a></a>pred_final <span class="op">=</span> load_predictions(OUT_DIR <span class="op">+</span> <span class="st">"/"</span> <span class="op">+</span> TRACK <span class="op">+</span> <span class="st">"_"</span> <span class="op">+</span> GROUP <span class="op">+</span> <span class="st">"_predictions.json"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Everything from here reads <code>pred_final</code>.</p>
+<section id="commit-first-then-open-it" class="slide level2">
+<h2>Commit first, then open it</h2>
+<p>Fill this in <strong>before</strong> the next cell runs:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>CANDIDATES <span class="op">=</span> {                                  <span class="co"># every prompt you will test</span></span>
+<span id="cb4-2"><a></a>    <span class="st">"v1 few-shot"</span>: ROOT <span class="op">/</span> <span class="st">"prompts"</span> <span class="op">/</span> (TRACK <span class="op">+</span> <span class="st">".txt"</span>),</span>
+<span id="cb4-3"><a></a>}</span>
+<span id="cb4-4"><a></a>WINNER_RULE <span class="op">=</span> <span class="st">"highest macro-F1; ties go to the simpler prompt"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>You may test more than one prompt. That is legitimate — but it is a <strong>different claim</strong> from testing one, and the difference is entirely whether you said so in advance.</p>
+</div>
+</section>
+<section id="then-run-it-once" class="slide level2">
+<h2>Then run it, once</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>test <span class="op">=</span> load_gold(TEST_PATH)          <span class="co"># the first time this file is opened all week</span></span>
+<span id="cb5-2"><a></a></span>
+<span id="cb5-3"><a></a>freeze_test_run(load_prompt(CANDIDATES[name]), test, f1_by_round, ...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>freeze_test_run</code> runs the prompt, <strong>saves before scoring anything</strong>, reads that file back off disk, scores <em>those</em> predictions, and appends one line to a log that travels in your submission.</p>
+<div class="fragment">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Report every number you tested, not the best one</strong></p>
+</div>
+<div class="callout-content">
+<p>Three prompts tested and the best reported is the best of three tries, optimistic by an amount nobody can work out afterwards. All three go in report §3.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="nothing-stops-you-running-it-twice" class="slide level2">
+<h2>Nothing stops you running it twice</h2>
+<p>Stopping you would be the wrong design — a real mistake at four o’clock needs a way forward.</p>
+<p>So instead nothing is overwritten: a second run lands in <code>..._predictions_attempt2.json</code> beside the first, and <strong>both</strong> stay.</p>
+<div class="fragment">
+<p>Every scoring appends a line to <code>..._test_log.jsonl</code>, fingerprinted with the prompt that produced it. Same fingerprint twice = one prompt run twice. Different fingerprints = a prompt changed after seeing the held-out set — and report §5 has to say which happened.</p>
+</div>
 </section>
 <section id="one-run-one-person" class="slide level2">
 <h2>One run, one person</h2>

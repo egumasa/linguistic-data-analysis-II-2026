@@ -985,7 +985,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-held-out-run-once-and-only-once-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="the-held-out-run-once-and-only-once-you-edit">The held-out run — once, and only once ✏️ YOU EDIT</h3>
 <p>Pick your best prompt from the table above and score it on the 72 sentences you have not touched all session. <strong>This is the number you report.</strong></p>
-<p>Expect it to be <em>lower</em> than your validation score. That gap is the cost of having chosen a prompt by looking at results, and it is why the held-out set was kept back. Carry this rule into the mini-project: if you run this cell, look at the answer, then go back and edit a prompt, the 72 items have stopped being held out. Tune on <code>val</code>, come back, run once.</p>
+<p>Expect it to be <em>lower</em> than your validation score. That gap is the cost of having chosen a prompt by looking at results, and it is why the held-out set was kept back. Carry this rule into your final project, where it is built into the file layout: <code>04_develop.ipynb</code> works on the <strong>dev</strong> half and cannot even reach the test items, and <code>05_test.ipynb</code> opens them once. Here the two sets are <code>val</code> and <code>gold</code>. If you run this cell, look at the answer, then go back and edit a prompt, the 72 items have stopped being held out. Tune on <code>val</code>, come back, run once.</p>
 <div id="cell-22" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>

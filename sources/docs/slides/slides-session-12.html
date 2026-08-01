@@ -214,8 +214,8 @@
 <ul>
 <li><strong>20 min</strong> — sample a balanced subset, create the annotation sheet</li>
 <li><strong>25 min</strong> — annotate <strong>blind</strong>, two of you, independently</li>
-<li><strong>25 min</strong> — agreement → disagreements → adjudicate</li>
-<li><strong>10 min</strong> — a baseline prompt, small</li>
+<li><strong>30 min</strong> — agreement → the disagreement rule you write → adjudicate</li>
+<li><strong>5 min</strong> — draw the dev/test line</li>
 </ul>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
@@ -236,9 +236,10 @@
 <p>By the end of this session, you will be able to:</p>
 <ul>
 <li>Draw a <strong>balanced</strong> subset and explain why balance matters for P/R/F1 and the matrix.</li>
-<li>Annotate independently and blind, and interpret your percent agreement and Cohen’s κ.</li>
+<li>Annotate independently and blind, and say <strong>which</strong> agreement statistics your design owes.</li>
+<li>Write the rule that decides what counts as a disagreement, and defend the one you chose.</li>
 <li>Adjudicate disagreements into one agreed gold set, and record <strong>what changed</strong>.</li>
-<li>Produce a <strong>baseline score</strong>, before you change anything about the prompt.</li>
+<li>Split that gold set into <strong>dev</strong> and <strong>test</strong>, and defend the ratio.</li>
 </ul>
 </section></section>
 <section>
@@ -278,7 +279,7 @@
 </section>
 <section id="why-keep-the-pool-separate" class="slide level2">
 <h2>Why keep the pool separate</h2>
-<p>The items you did <em>not</em> sample have a purpose: they become your <strong>few-shot examples</strong> in step 4.</p>
+<p>The items you did <em>not</em> sample have a purpose: they become your <strong>few-shot examples</strong> in <code>04_develop</code>.</p>
 <p>If your examples came from your gold set, the model would be given the answers to the items you are about to test it on.</p>
 <div class="fragment">
 <p><code>build_fewshot</code> prevents this for you, but only if items remain in the pool. Sample from the <strong>full pool</strong>, not the demo file.</p>
@@ -322,15 +323,39 @@
 </div>
 </div>
 </section>
-<section id="then-measure" class="slide level2">
-<h2>Then measure</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>rows <span class="op">=</span> load_annotation_sheet(SHEET_ID, ROUND)</span>
-<span id="cb4-2"><a></a>annotator_agreement(rows)</span>
-<span id="cb4-3"><a></a><span class="co"># 42 doubly-annotated · agreement 71.4% · Cohen's kappa 0.657</span></span>
-<span id="cb4-4"><a></a>disagreements(rows)</span>
-<span id="cb4-5"><a></a><span class="co"># 12 rows to adjudicate.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="then-measure-and-you-write-these-lines" class="slide level2">
+<h2>Then measure — and you write these lines</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>rows <span class="op">=</span> load_coder_sheets(SHEET_ID, CODERS)   <span class="co"># one tab per coder, joined by ID</span></span>
+<span id="cb4-2"><a></a></span>
+<span id="cb4-3"><a></a>a <span class="op">=</span> column(rows, CODERS[<span class="dv">0</span>])</span>
+<span id="cb4-4"><a></a>b <span class="op">=</span> column(rows, CODERS[<span class="dv">1</span>])</span>
+<span id="cb4-5"><a></a></span>
+<span id="cb4-6"><a></a>percent_agreement(a, b)                      <span class="co"># 71.4%</span></span>
+<span id="cb4-7"><a></a><span class="bu">print</span>(cohen_kappa_score(a, b))               <span class="co"># 0.657</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p><strong>Write those two numbers down.</strong> They go in report section 1, and they are the evidence that the QC pass happened.</p>
+<p><strong>Which κ you owe is not a free choice, and it is settled before you run anything</strong> — by how many coders you have and by whether <code>PLAN.md</code> §3 says your labels are a scale. Two coders, unordered: <code>cohen_kappa_score(a, b)</code>. On a scale: <code>weights="quadratic"</code> as well. Three or more: <code>fleiss_kappa</code>.</p>
+<p><strong>Both numbers, not one.</strong> Percent agreement alone counts lucky agreement as if you had earned it; κ alone is hard to read without the raw figure beside it. They go in report section 1.</p>
+</div>
+</section>
+<section id="what-counts-as-a-disagreement-you-write-that-too" class="slide level2">
+<h2>What counts as a disagreement? — you write that too</h2>
+<p><code>disagreements</code> is <strong>not</strong> given to you, because the rule inside it is a decision about your scheme:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>disagreed <span class="op">=</span> disagreements(rows, coders<span class="op">=</span>CODERS)   <span class="co"># your function</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>A row is a disagreement when your coders did not all choose the same label — that is the obvious rule. On labels that sit on a <strong>scale</strong>, you may decide only a gap of two or more is worth arguing about. Both are defensible; which you used is a sentence in your report.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>You saw these six lines on <strong>Day 2 S5, step E</strong>. <code>answer("disagreements")</code> is there if you stall.</p>
+</div>
+</div>
+</div>
 </div>
 </section>
 <section id="adjudicate" class="slide level2">
@@ -338,9 +363,10 @@
 <p>The 12 rows you disagreed on are not random error. They are the places where <strong>your scheme is unclear</strong>, and they are usually the same places where the model makes errors.</p>
 <div class="fragment">
 <p>For each: agree a <code>Final</code> label, and note <em>why</em>. Then:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>gold <span class="op">=</span> to_canonical(rows, LABELS)</span>
-<span id="cb5-2"><a></a>compare_to_published(gold, sampled)</span>
-<span id="cb5-3"><a></a><span class="co"># 37 / 42 match the published label (88.1%)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>rows <span class="op">=</span> load_coder_sheets(SHEET_ID, CODERS)          <span class="co"># re-read: Final is filled in now</span></span>
+<span id="cb6-2"><a></a>gold <span class="op">=</span> to_canonical(rows, LABELS, source<span class="op">=</span>sampled)   <span class="co"># puts back what the sheet drops</span></span>
+<span id="cb6-3"><a></a>compare_to_published(gold, sampled)</span>
+<span id="cb6-4"><a></a><span class="co"># 37 / 42 match the published label (88.1%)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <p>Those 5 differences are a finding about the corpus, not an error on your part.</p>
@@ -361,44 +387,83 @@
 </div>
 </div>
 </div>
-<p>This is why this session matters. The label boundaries you discuss here are the ones you will refer to on Day 5 when you explain the model’s errors.</p>
+<p>This is why this session matters. The label boundaries you discuss here are the ones you will refer to on Day 5, in <code>06_report</code>, when you explain the model’s errors.</p>
 </section></section>
 <section>
-<section id="step-3-baseline" class="title-slide slide level1 center">
-<h1>Step 3 — Baseline</h1>
+<section id="step-3-draw-the-line" class="title-slide slide level1 center">
+<h1>Step 3 — Draw the line</h1>
 
 </section>
-<section id="keep-the-baseline-run-small" class="slide level2">
-<h2>Keep the baseline run small</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>f1_by_round <span class="op">=</span> {}</span>
-<span id="cb6-2"><a></a>PROMPT <span class="op">=</span> load_prompt(PROMPT_FILE)</span>
-<span id="cb6-3"><a></a>pred0 <span class="op">=</span> run_prompt(PROMPT, gold)</span>
-<span id="cb6-4"><a></a>f1_by_round[<span class="st">"0 zero-shot"</span>] <span class="op">=</span> evaluate(gold, pred0, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-warning callout-titled callout-style-default">
+<section id="which-items-you-may-look-at" class="slide level2">
+<h2>Which items you may look at</h2>
+<p>Tomorrow you will change your prompt because of what you saw it get wrong. That is the work. But a score measured on the items you kept adjusting against stops measuring how good your prompt is, and starts measuring <strong>how long you kept adjusting</strong>.</p>
+<div class="fragment">
+<p>So the line gets drawn now, before anything has been run against these items:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>what it is for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>dev</strong></td>
+<td>the items you may look at. Iterate here, as many rounds as you like</td>
+</tr>
+<tr class="even">
+<td><strong>test</strong></td>
+<td>opened once, in <code>05_test.ipynb</code>. Whatever it says is what you report</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="the-split" class="slide level2">
+<h2>The split</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>dev, test <span class="op">=</span> split_dev_test(gold, DEV, seed<span class="op">=</span>SEED)</span>
+<span id="cb7-2"><a></a></span>
+<span id="cb7-3"><a></a>save_json(dev,  DEV_PATH,  what<span class="op">=</span><span class="st">"dev items"</span>)</span>
+<span id="cb7-4"><a></a>save_json(test, TEST_PATH, what<span class="op">=</span><span class="st">"test items"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Read the per-label counts it prints before you save.</strong> A label that lands in dev but not in test cannot appear in the score you report, and this is the last cheap moment to change <code>dev:</code> in <code>config.yaml</code> and draw the line again.</p>
+<div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Keep <code>N_PER_CLASS = 2</code> for now</strong></p>
+<p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>One full-size round is ~40 model calls and <strong>≥3 minutes of enforced pacing</strong>. The free tier gives you ~500 calls a day. Run small tests now, and save the full-size run for the version you freeze tomorrow.</p>
+<p>This is the loop you wrote by hand this morning, in Day 4 Part B — bucket by label, take some of each. One call now.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="write-the-plainest-prompt-you-can" class="slide level2">
-<h2>Write the plainest prompt you can</h2>
-<p>Do not try to improve it yet.</p>
-<p>A baseline gives later rounds something to be measured <strong>against</strong>, and shows what the model does with no additional instructions or examples.</p>
-<div class="fragment">
-<p>If the baseline is already tuned, you cannot tell whether your later changes improved anything.</p>
+<section id="dev-is-the-fast-set" class="slide level2">
+<h2>dev is the fast set</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
+<p><strong>You do not shrink your sample to iterate</strong></p>
+</div>
+<div class="callout-content">
+<p>One round on the <strong>dev half</strong> — a dozen or so items — is about a minute of enforced pacing. Your sample stays at full size all the way through, and the number you finally report comes off the test half, which nothing has touched.</p>
+</div>
+</div>
+</div>
+<p>There is no right ratio at this size, only one you can defend. A bigger dev gives steadier feedback and leaves a smaller test, so the reported number bounces more. A smaller dev means prompt decisions made on very few items — which is how you tune to noise.</p>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
-<p>Next: <strong>S13 — iterate the prompt, then freeze.</strong></p>
+<p>Next: <strong>S13 — <code>04_develop</code>: prompt rounds on the dev half.</strong></p>
 
 
 
