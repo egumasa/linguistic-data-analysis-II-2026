@@ -15,10 +15,16 @@ PDFs for readings not freely available online are posted on **Google Classroom**
 
 ## Day 1 · Introduction & First Experience
 
+
 **Skim**
 
 - Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., & Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). [https://doi.org/10.1177/25152459251325174](https://doi.org/10.1177/25152459251325174)
   - Get a feel for the questions the course tackles; don't worry about the details yet.
+
+**Watch** in class
+
+- Sanderson, G. (3Blue1Brown). (2024). *Large Language Models explained briefly* [Video]. [https://www.3blue1brown.com/lessons/mini-llm/](https://www.3blue1brown.com/lessons/mini-llm/) ([YouTube](https://www.youtube.com/watch?v=WMcwoIyK4DA))
+  - What the model predicts, where its numbers come from, and what attention does.
 
 ## Day 2 · Annotation, Gold Standards & Metrics
 
@@ -41,7 +47,7 @@ PDFs for readings not freely available online are posted on **Google Classroom**
 
 ## Day 3 · Prompt Design & Iteration
 
-**Read** 
+**Read**
 
 - Huang, J., & Mizumoto, A. (2025). Prompt engineering: Enhancing AI-driven language learning and feedback. In L. McCallum & D. Tafazoli (Eds.), *The Palgrave Encyclopedia of Computer-Assisted Language Learning* (pp. 1–8). Springer Nature Switzerland. [https://doi.org/10.1007/978-3-031-51447-0_103-1](https://doi.org/10.1007/978-3-031-51447-0_103-1)
 - Kim, M., & Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. *Journal of English for Academic Purposes, 71*, 101422. [https://doi.org/10.1016/j.jeap.2024.101422](https://doi.org/10.1016/j.jeap.2024.101422)
@@ -66,6 +72,9 @@ ICNALE GRA — is in [`resources/datasets/SOURCES.md`](../resources/datasets/ind
 
 You do not need to read these; they are here so you can cite the source of a number you
 were shown.
+
+
+**Other**
 
 - Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. *Biometrics, 33*(1), 159–174. [https://doi.org/10.2307/2529310](https://doi.org/10.2307/2529310)
 - McHugh, M. L. (2012). Interrater reliability: The kappa statistic. *Biochemia Medica, 22*(3), 276–282. [https://doi.org/10.11613/BM.2012.031](https://doi.org/10.11613/BM.2012.031)
