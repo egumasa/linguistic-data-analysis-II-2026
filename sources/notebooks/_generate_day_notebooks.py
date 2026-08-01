@@ -83,9 +83,21 @@ _last_call_time = 0.0    # updated after every call; 0.0 means "never called yet
 _min_interval = 13.2     # colab.ai publishes no rate limit — pace conservatively
 
 ### Step 2: the one function you call all day — it waits its turn, then asks ###
-def generate_text(prompt):
-    """Send a prompt to Colab's built-in Gemini; wait between calls so we don't go
-    too fast. Returns the reply as text. (Non-reproducible: no temperature/seed.)"""
+def generate_text(prompt: str) -> str:
+    """Send a prompt to Colab's built-in Gemini and give back its reply.
+
+    It waits between calls so we don't go too fast. Non-reproducible: colab.ai
+    exposes no temperature or seed, so the same prompt can give a different answer.
+
+    Args:
+        prompt: the text to send to the model.
+
+    Returns:
+        The model's reply, as text.
+
+    Example:
+        >>> reply = generate_text("What CEFR level is this sentence? I like cats.")
+    """
     global _last_call_time                                    # share this across calls
     wait = _min_interval - (time.monotonic() - _last_call_time)   # still too soon?
     if wait > 0:
@@ -109,8 +121,12 @@ API_BACKEND = '''# --- LLM backend: Gemini API when a key is set, else colab.ai 
 MODEL_ID = "gemini-3.1-flash-lite"   # pinned model for the reproducible (API) backend
 
 ### Step 1: find an API key — Colab's Secrets panel first, then the environment ###
-def _resolve_gemini_key():
-    """Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env."""
+def _resolve_gemini_key() -> str | None:
+    """Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.
+
+    Returns:
+        The key, or None when neither place has one.
+    """
     try:
         from google.colab import userdata      # only exists in Colab
         key = userdata.get("GEMINI_API_KEY")   # what you saved in the Secrets panel
@@ -121,8 +137,15 @@ def _resolve_gemini_key():
     return os.environ.get("GEMINI_API_KEY")     # last resort: an environment variable
 
 ### Step 2: build the reproducible backend around that key ###
-def _make_api_backend(key):
-    """Reproducible backend: Gemini API with temperature=0 + a fixed seed."""
+def _make_api_backend(key: str) -> tuple:
+    """Reproducible backend: Gemini API with temperature=0 + a fixed seed.
+
+    Args:
+        key: your Gemini API key.
+
+    Returns:
+        Two things: the function that calls the model, and a label to print.
+    """
     from google import genai
     from google.genai import types
     client = genai.Client(api_key=key)         # your own connection to the API
@@ -139,26 +162,66 @@ def _make_api_backend(key):
 #  and try again, unless the message says we are out of quota for the whole day.)
 
 ### Step 3: read the error message to work out WHICH kind of failure this is ###
-def _looks_like_rate_limit(error):
-    """Does this error mean "you are going too fast", rather than a real bug?"""
+def _looks_like_rate_limit(error: Exception) -> bool:
+    """Does this error mean "you are going too fast", rather than a real bug?
+
+    Args:
+        error: the exception the API call raised.
+
+    Returns:
+        True when the message looks like a rate limit.
+    """
     text = str(error).lower()                   # the error, as lowercase text
     return any(s in text for s in               # true if ANY of these phrases appear
                ["429", "resource_exhausted", "rate limit", "quota", "too many requests"])
 
-def _looks_like_daily_quota(error):
-    """Is this the PER-DAY cap? Those don't clear by waiting a few seconds."""
+def _looks_like_daily_quota(error: Exception) -> bool:
+    """Is this the PER-DAY cap? Those don't clear by waiting a few seconds.
+
+    Args:
+        error: the exception the API call raised.
+
+    Returns:
+        True when the message names a per-day limit.
+    """
     text = str(error).lower()
     return "per day" in text or "perday" in text.replace(" ", "")
 
-def _suggested_delay(error, fallback):
-    """The server often says "please retry in 7.2s" — obey it if it did."""
+def _suggested_delay(error: Exception, fallback: float) -> float:
+    """The server often says "please retry in 7.2s" — obey it if it did.
+
+    Args:
+        error: the exception the API call raised.
+        fallback: how long to wait when the server named no delay.
+
+    Returns:
+        Seconds to wait before trying again.
+    """
     m = re.search(r"retry in ([0-9]+(?:\\.[0-9]+)?)s", str(error).lower())
     return float(m.group(1)) + 1.0 if m else fallback   # +1s cushion, else our guess
 
 ### Step 4: the one function you call all week — pace, ask, and retry if told to ###
 _last_call_time = 0.0   # generate_text remembers & updates this with `global`
 
-def generate_text(prompt, max_retries=5):
+def generate_text(prompt: str, max_retries: int = 5) -> str:
+    """Send a prompt to the model and give back its reply.
+
+    It waits between calls so we stay under the free tier's speed limit, and tries
+    again if the server tells us to slow down.
+
+    Args:
+        prompt: the text to send to the model.
+        max_retries: how many times to try again after a rate-limit message.
+
+    Returns:
+        The model's reply, as text.
+
+    Raises:
+        RuntimeError: when the daily quota is used up, or after the last retry.
+
+    Example:
+        >>> reply = generate_text("What CEFR level is this sentence? I like cats.")
+    """
     global _last_call_time                      # share the clock across every call
     for attempt in range(max_retries + 1):      # try, then retry up to max_retries times
         wait = _min_interval - (time.monotonic() - _last_call_time)   # still too soon?
@@ -272,8 +335,18 @@ _HELPER_NOTE = "# Helper — you don't need to read this. Run it and move on."
 LIB_LOAD_GOLD = code(
     '#@title 🔧 Library cell: load_gold(url_or_path) → gold { display-mode: "form" }',
     _HELPER_NOTE,
-    'def load_gold(url_or_path):',
-    '    """Read the canonical gold JSON: [{\'id\',\'text\',\'label\'}, ...]."""',
+    'def load_gold(url_or_path: str) -> list[dict[str, str]]:',
+    '    """Read the canonical gold JSON: [{\'id\',\'text\',\'label\'}, ...].',
+    '',
+    '    Args:',
+    '        url_or_path: a web address, or the path to a file on this machine.',
+    '',
+    '    Returns:',
+    '        The gold items, each a dict with "id", "text" and "label".',
+    '',
+    '    Example:',
+    '        >>> gold = load_gold(GOLD_URL)',
+    '    """',
     '    if str(url_or_path).startswith("http"):                 # a web address?',
     '        raw = urllib.request.urlopen(url_or_path).read().decode("utf-8")  # download it',
     '        gold = json.loads(raw)                              # JSON text -> list of dicts',
@@ -285,14 +358,32 @@ LIB_LOAD_GOLD = code(
 LIB_RUN_PROMPT = code(
     '#@title 🔧 Library cell: run_prompt(prompt, gold) → predictions { display-mode: "form" }',
     _HELPER_NOTE,
-    'def _extract_level(text):',
-    '    """Pull the first A1/A2/B1/B2/C1/C2 out of the model\'s reply."""',
+    'def _extract_level(text: str) -> str:',
+    '    """Pull the first A1/A2/B1/B2/C1/C2 out of the model\'s reply.',
+    '',
+    '    Args:',
+    '        text: whatever the model replied.',
+    '',
+    '    Returns:',
+    '        The level it found, or "??" when the reply contains none.',
+    '    """',
     '    # The model may answer "B2" or "I would say B2." — search rather than assume.',
     '    m = re.search(r"\\b([ABC][12])\\b", str(text).upper())',
     '    return m.group(1) if m else "??"      # "??" = no level found in the reply',
     '',
-    'def run_prompt(prompt, gold):',
-    '    """Send each item\'s `text` to the LLM via {text}, collect predicted labels."""',
+    'def run_prompt(prompt: str, gold: list[dict[str, str]]) -> list[str]:',
+    '    """Send each item\'s `text` to the LLM via {text}, collect predicted labels.',
+    '',
+    '    Args:',
+    '        prompt: your prompt, containing {text} where the sentence should go.',
+    '        gold: the items to label, each with a "text" key.',
+    '',
+    '    Returns:',
+    '        One predicted label per gold item, in the same order.',
+    '',
+    '    Example:',
+    '        >>> predictions = run_prompt(PROMPT, gold)',
+    '    """',
     '    predictions = []                                  # answers, in gold order',
     '    for i, item in enumerate(gold, 1):                # i counts 1, 2, 3, ...',
     '        reply = generate_text(prompt.format(text=item["text"]))  # {text} <- sentence',
@@ -305,13 +396,27 @@ LIB_RUN_PROMPT = code(
 LIB_EVALUATE = code(
     '#@title 🔧 Library cell: evaluate(gold, predictions) → P/R/F1 + κ + confusion matrix { display-mode: "form" }',
     _HELPER_NOTE,
-    'def evaluate(gold, predictions, ordered=False):',
+    'def evaluate(gold: list[dict[str, str]],',
+    '             predictions: list[str],',
+    '             ordered: bool = False) -> None:',
     '    """Score predictions against gold: per-class P/R/F1 + macro, Cohen\'s κ, and a',
     '    confusion-matrix heatmap.',
     '',
     '    ordered=True adds QUADRATIC WEIGHTED κ — use it only when the labels sit on a',
     '    scale (A1 < A2 < ... < C2), so that a near miss counts as a smaller error than',
-    '    a far one. For unordered categories, plain κ is the one to report."""',
+    '    a far one. For unordered categories, plain κ is the one to report.',
+    '',
+    '    Args:',
+    '        gold: the gold items, each with a "label" key.',
+    '        predictions: one predicted label per gold item, in the same order.',
+    '        ordered: True when the labels sit on a scale.',
+    '',
+    '    Returns:',
+    '        Nothing. It prints the table and the κ values, and draws the matrix.',
+    '',
+    '    Example:',
+    '        >>> evaluate(gold, predictions, ordered=True)',
+    '    """',
     '    ### Step 1: line the two label lists up, gold first ###',
     '    y_true = []                          # the correct labels, from the gold set',
     '    for item in gold:',
@@ -339,8 +444,19 @@ LIB_EVALUATE = code(
 LIB_SHOW_ERRORS = code(
     '#@title 🔧 Library cell: show_errors(gold, predictions) → misclassified table { display-mode: "form" }',
     _HELPER_NOTE,
-    'def show_errors(gold, predictions):',
-    '    """The items the model got wrong, as a table you can read and argue about."""',
+    'def show_errors(gold: list[dict[str, str]], predictions: list[str]) -> pd.DataFrame:',
+    '    """The items the model got wrong, as a table you can read and argue about.',
+    '',
+    '    Args:',
+    '        gold: the gold items, each with "id", "text" and "label".',
+    '        predictions: one predicted label per gold item, in the same order.',
+    '',
+    '    Returns:',
+    '        A table with one row per mistake: id, gold, pred, text.',
+    '',
+    '    Example:',
+    '        >>> show_errors(gold, predictions)',
+    '    """',
     '    rows = []',
     '    for g, p in zip(gold, predictions):   # walk gold and predictions side by side',
     '        if g["label"] != p:               # keep only the disagreements',
@@ -355,8 +471,18 @@ LIB_SHOW_ERRORS = code(
 LIB_LOAD_PREDICTIONS = code(
     '#@title 🔧 Library cell: load_predictions(url_or_path) → predictions { display-mode: "form" }',
     _HELPER_NOTE,
-    'def load_predictions(url_or_path):',
-    '    """Read a frozen predictions list — a committed URL or a local path."""',
+    'def load_predictions(url_or_path: str) -> list[str]:',
+    '    """Read a frozen predictions list — a committed URL or a local path.',
+    '',
+    '    Args:',
+    '        url_or_path: a web address, or the path to a file on this machine.',
+    '',
+    '    Returns:',
+    '        One predicted label per gold item, in gold order.',
+    '',
+    '    Example:',
+    '        >>> predictions = load_predictions(PREDICTIONS_URL)',
+    '    """',
     '    if str(url_or_path).startswith("http"):                 # a web address?',
     '        raw = urllib.request.urlopen(url_or_path).read().decode("utf-8")  # download it',
     '        predictions = json.loads(raw)                       # JSON text -> list',
@@ -379,17 +505,36 @@ LIB_SHEETS = code(
     'ANNOTATION_HEADER = [COL_ID, COL_TEXT, COL_A, COL_B, COL_FINAL, COL_NOTES]',
     '',
     'def _sheets_client():',
-    '    """Authorise gspread with your Google account (a pop-up asks for permission)."""',
+    '    """Authorise gspread with your Google account (a pop-up asks for permission).',
+    '',
+    '    Returns:',
+    '        A logged-in connection to Google Sheets.',
+    '    """',
     '    from google.colab import auth',
     '    import google.auth, gspread',
     '    auth.authenticate_user()           # the pop-up: "let Colab use your Sheets"',
     '    creds, _ = google.auth.default()   # the permission slip that pop-up produced',
     '    return gspread.authorize(creds)    # a logged-in connection to Google Sheets',
     '',
-    'def create_annotation_sheet(title, items, labels):',
+    'def create_annotation_sheet(title: str,',
+    '                            items: list[dict[str, str]],',
+    '                            labels: list[str]) -> str:',
     '    """Create a Sheet in YOUR Drive: one row per item, blank columns to label.',
-    '    `items` are {"id","text",...} dicts — any existing label is deliberately NOT',
-    '    copied across, so you annotate blind. Returns the sheet URL."""',
+    '',
+    '    Any existing label on an item is deliberately NOT copied across, so you',
+    '    annotate blind.',
+    '',
+    '    Args:',
+    '        title: the name to give the new spreadsheet.',
+    '        items: the items to annotate, each with "id" and "text".',
+    '        labels: the labels your scheme allows, printed as a reminder.',
+    '',
+    '    Returns:',
+    '        The URL of the sheet it created.',
+    '',
+    '    Example:',
+    '        >>> url = create_annotation_sheet("Group 1 gold", items, LEVELS)',
+    '    """',
     '    ### Step 1: make an empty spreadsheet in your own Drive ###',
     '    sheet = _sheets_client().create(title)',
     '    worksheet = sheet.sheet1',
@@ -409,14 +554,29 @@ LIB_SHEETS = code(
     '    print("Open it:", sheet.url)',
     '    return sheet.url',
     '',
-    'def load_annotation_sheet(sheet_id, worksheet="round1"):',
+    'def load_annotation_sheet(sheet_id: str,',
+    '                          worksheet: str = "round1") -> list[dict[str, str]]:',
     '    """Read one TAB of your annotation sheet back as a list of row dicts.',
-    '    `sheet_id` is the long id in the sheet\'s URL:',
-    '        docs.google.com/spreadsheets/d/<THIS PART>/edit',
-    '    Pasting the whole URL works too — either way opens the exact sheet, so two',
-    '    copies that share a name (\\"Copy of ...\\") are never confused.',
-    '    `worksheet` is the TAB name (a \\"round\\"): each round lives in its own tab, so',
-    '    re-annotating in round2 never overwrites round1 — the analysis stays reproducible."""',
+    '',
+    '    Opening by id or URL always opens the exact sheet, so two copies that share a',
+    '    name (\\"Copy of ...\\") are never confused. Each round lives in its own tab, so',
+    '    re-annotating in round2 never overwrites round1.',
+    '',
+    '    Args:',
+    '        sheet_id: the long id in the sheet\'s URL',
+    '            (docs.google.com/spreadsheets/d/<THIS PART>/edit). The whole URL works too.',
+    '        worksheet: the TAB name — one tab per annotation round.',
+    '',
+    '    Returns:',
+    '        One dict per row, keyed by the column headings (ID, Text, CoderA, ...).',
+    '',
+    '    Raises:',
+    '        ValueError: when the sheet has no tab by that name. The message lists the',
+    '            tabs it does have.',
+    '',
+    '    Example:',
+    '        >>> rows = load_annotation_sheet(SHEET_ID, worksheet="round1")',
+    '    """',
     '    ### Step 1: open the sheet — a pasted URL and a bare id both work ###',
     '    client = _sheets_client()',
     '    if str(sheet_id).startswith("http"):',
@@ -436,9 +596,24 @@ LIB_SHEETS = code(
     '    print(f"Read {len(rows)} rows from tab \'{worksheet}\'.")',
     '    return rows',
     '',
-    'def to_canonical(rows, labels, column=COL_FINAL):',
+    'def to_canonical(rows: list[dict[str, str]],',
+    '                 labels: list[str],',
+    '                 column: str = COL_FINAL) -> list[dict[str, str]]:',
     '    """Turn annotation rows into canonical gold: [{"id","text","label"}, ...].',
-    '    Blank rows are skipped; labels outside `labels` are reported, not silently kept."""',
+    '',
+    '    Blank rows are skipped; labels outside `labels` are reported, not silently kept.',
+    '',
+    '    Args:',
+    '        rows: the rows read back by load_annotation_sheet.',
+    '        labels: the labels your scheme allows. Anything else is reported as invalid.',
+    '        column: which column holds the agreed label.',
+    '',
+    '    Returns:',
+    '        The usable rows as gold items, each {"id", "text", "label"}.',
+    '',
+    '    Example:',
+    '        >>> my_gold = to_canonical(rows, LEVELS)',
+    '    """',
     '    ### Step 1: sort every row into one of three piles ###',
     '    gold, blank, invalid = [], 0, []     # usable rows · not labelled yet · typos',
     '    for row in rows:',
@@ -456,10 +631,25 @@ LIB_SHEETS = code(
     '        print("  fix these in the sheet, then re-run:", invalid[:10])   # first 10',
     '    return gold',
     '',
-    'def annotator_agreement(rows, a=COL_A, b=COL_B):',
+    'def annotator_agreement(rows: list[dict[str, str]],',
+    '                        a: str = COL_A,',
+    '                        b: str = COL_B) -> dict[str, float] | None:',
     '    """Percent agreement + Cohen\'s κ between the two annotator columns, PLUS an',
     '    annotator-vs-annotator confusion matrix (the diagonal is where you agreed;',
-    '    off-diagonal cells show which label pairs the two of you confuse)."""',
+    '    off-diagonal cells show which label pairs the two of you confuse).',
+    '',
+    '    Args:',
+    '        rows: the rows read back by load_annotation_sheet.',
+    '        a: the column holding the first annotator\'s labels.',
+    '        b: the column holding the second annotator\'s labels.',
+    '',
+    '    Returns:',
+    '        {"n", "percent_agreement", "kappa"}, or None when no row has both',
+    '        annotators filled in.',
+    '',
+    '    Example:',
+    '        >>> annotator_agreement(rows)',
+    '    """',
     '    from sklearn.metrics import cohen_kappa_score',
     '    ### Step 1: keep only the rows where BOTH annotators actually chose a label ###',
     '    pairs = [(str(r.get(a, "")).strip(), str(r.get(b, "")).strip()) for r in rows]',
@@ -487,8 +677,22 @@ LIB_SHEETS = code(
     '    plt.tight_layout(); plt.show()',
     '    return {"n": len(pairs), "percent_agreement": percent, "kappa": kappa}',
     '',
-    'def disagreements(rows, a=COL_A, b=COL_B):',
-    '    """The rows your two annotators labelled differently — your adjudication list."""',
+    'def disagreements(rows: list[dict[str, str]],',
+    '                  a: str = COL_A,',
+    '                  b: str = COL_B) -> pd.DataFrame:',
+    '    """The rows your two annotators labelled differently — your adjudication list.',
+    '',
+    '    Args:',
+    '        rows: the rows read back by load_annotation_sheet.',
+    '        a: the column holding the first annotator\'s labels.',
+    '        b: the column holding the second annotator\'s labels.',
+    '',
+    '    Returns:',
+    '        A table of the rows where the two annotators chose different labels.',
+    '',
+    '    Example:',
+    '        >>> disagreements(rows)',
+    '    """',
     '    # keep a row only if both annotators labelled it AND they chose differently:',
     '    out = [r for r in rows',
     '           if str(r.get(a, "")).strip() and str(r.get(b, "")).strip()',
@@ -496,8 +700,21 @@ LIB_SHEETS = code(
     '    print(f"{len(out)} rows to adjudicate. Agree on a `Final` label for each in the sheet.")',
     '    return pd.DataFrame(out)',
     '',
-    'def compare_to_published(gold, published):',
-    '    """How often does YOUR final label match the published gold, item by item?"""',
+    'def compare_to_published(gold: list[dict[str, str]],',
+    '                         published: list[dict[str, str]]) -> pd.DataFrame | None:',
+    '    """How often does YOUR final label match the published gold, item by item?',
+    '',
+    '    Args:',
+    '        gold: your own gold items, from to_canonical.',
+    '        published: the published gold items, from load_gold.',
+    '',
+    '    Returns:',
+    '        A table of the items where you and the published gold differ, or None',
+    '        when no ids are shared between the two.',
+    '',
+    '    Example:',
+    '        >>> compare_to_published(my_gold, published)',
+    '    """',
     '    ### Step 1: look up the published label for every id ###',
     '    lookup = {item["id"]: item["label"] for item in published}   # id -> their label',
     '    shared = [(g["label"], lookup[g["id"]]) for g in gold if g["id"] in lookup]',
@@ -521,11 +738,23 @@ LIB_SHEETS = code(
 LIB_PAIR_UP = code(
     '#@title 🔧 Library cell: pair_up(gold, predictions, positive) → items { display-mode: "form" }',
     _HELPER_NOTE,
-    'def pair_up(gold, predictions, positive):',
+    'def pair_up(gold: list[dict[str, str]],',
+    '            predictions: list[str],',
+    '            positive: list[str]) -> list[dict[str, str]]:',
     '    """Pair each gold item with the model\'s prediction, both collapsed to yes/no.',
     '',
-    '    `positive` lists the labels that count as "yes" (e.g. ["C1", "C2"]).',
-    '    Returns [{"id", "text", "gold", "pred"}, ...] — one dict per item."""',
+    '    Args:',
+    '        gold: the gold items, each with "id", "text" and "label".',
+    '        predictions: one predicted label per gold item, in the same order.',
+    '        positive: the labels that count as "yes" (e.g. ["C1", "C2"]).',
+    '',
+    '    Returns:',
+    '        One dict per item: {"id", "text", "gold", "pred"}, where "gold" and',
+    '        "pred" are each "yes" or "no".',
+    '',
+    '    Example:',
+    '        >>> items = pair_up(gold, predictions, ["C1", "C2"])',
+    '    """',
     '    items = []',
     '    for g, p in zip(gold, predictions):   # gold item and its prediction, side by side',
     '        items.append({"id": g["id"],',
@@ -539,10 +768,21 @@ LIB_PAIR_UP = code(
 LIB_SHOW_2X2 = code(
     '#@title 🔧 Library cell: show_2x2(tally) → the four counts as a square { display-mode: "form" }',
     _HELPER_NOTE,
-    'def show_2x2(tally):',
+    'def show_2x2(tally: dict[str, int]) -> None:',
     '    """Print a tally of TP/FP/FN/TN as a confusion matrix — rows are the gold',
     '    label, columns are the prediction. No arithmetic: the same four numbers,',
-    '    arranged so you can see where the errors went."""',
+    '    arranged so you can see where the errors went.',
+    '',
+    '    Args:',
+    '        tally: how many items fell into each outcome, e.g. {"TP": 3, "FP": 1}.',
+    '            A missing outcome counts as 0.',
+    '',
+    '    Returns:',
+    '        Nothing. It prints the square.',
+    '',
+    '    Example:',
+    '        >>> show_2x2(tally)',
+    '    """',
     '    # .get(..., 0) so a missing outcome shows as 0 rather than crashing:',
     '    tp = tally.get("TP", 0)',
     '    fp = tally.get("FP", 0)',
@@ -1043,6 +1283,42 @@ def day2_s5():
         gold_url=CEFR_GOLD_URL,
         gold_comment="CEFR-SP gold set — the published labels you compare against in step F.")]
     cells += libs("sheets")
+
+    # Type hints and Google-style docstrings are on every helper from here on. They are
+    # recognise-only (see notebook-coding-principles.md §6b) — students read them and are
+    # never asked to write one, so this is the only cell in the course that teaches them.
+    # It sits before the first helper call so `help(...)` is available for the rest of
+    # the week, and `help(...)` is a plain function call: Day-1 vocabulary.
+    cells += [md(
+        "#### Looking up what a helper expects",
+        "",
+        "You are about to call helpers someone else wrote. Two things tell you what to pass "
+        "in, without opening the collapsed cell above.",
+        "",
+        "**1 — The first line of the function.** For example:",
+        "",
+        "```python",
+        "def to_canonical(rows: list[dict[str, str]],",
+        "                 labels: list[str],",
+        "                 column: str = COL_FINAL) -> list[dict[str, str]]:",
+        "```",
+        "",
+        "- `rows`, `labels`, `column` are what the arguments are **called**.",
+        "- What follows each colon is the **kind of data** it expects: `rows` is a list of "
+        "dicts whose keys and values are text, `labels` is a list of text, `column` is one "
+        "piece of text.",
+        "- `= COL_FINAL` means `column` already has a value, so you can leave it out.",
+        "- What follows the `->` is **what you get back** — here, another list of dicts. "
+        "`-> None` would mean the function only prints something and hands nothing back.",
+        "",
+        "**2 — `help(name)`.** Run it on any helper and Colab prints that first line plus the "
+        "written description of each argument. Typing `to_canonical(` and pressing "
+        "**Shift+Tab** shows the same thing in a pop-up.",
+        "",
+        "You never write these yourself. You read them so you know what to pass in.")]
+    cells += [code(
+        'help(to_canonical)   # ✏️ change the name to look up any other helper')]
+
     cells += [code(
         'SHEET_ID = "1AbCdEf...paste_yours"   # ✏️ the id in YOUR copied sheet\'s URL',
         '                                     #    (…/spreadsheets/d/THIS/edit) — the whole URL works too',
@@ -1641,7 +1917,8 @@ def day2_s6():
         '',
         '### Step 2: a small checker — is your number the same as sklearn\'s? ###',
         'TOL, results = 1e-9, []      # TOL: how close counts as "the same"',
-        'def _chk(name, got, exp):',
+        'def _chk(name: str, got: float, exp: float) -> None:',
+        '    """Print whether your number matches sklearn\'s, and remember the answer."""',
         '    ok = abs(got - exp) < TOL   # compare sizes, not exact bits: floats wobble',
         '    results.append(ok)',
         '    print(("✅" if ok else "❌"), f"{name:<14} yours={got:.6f}  sklearn={exp:.6f}")',
@@ -1843,7 +2120,8 @@ def day3():
         'DEMO_INTERVAL = 2            # seconds (the real guard uses 4.4s or 13.2s)',
         '',
         '### Step 2: before each call, wait out whatever time is still owed ###',
-        'def wait_your_turn():',
+        'def wait_your_turn() -> None:',
+        '    """Wait out whatever time is still owed, then say we are calling."""',
         '    global _demo_last_call   # "remember this one, and share it across calls"',
         '    wait = DEMO_INTERVAL - (time.monotonic() - _demo_last_call)   # time still owed',
         '    if wait > 0:                                     # too soon — sit it out',
@@ -1876,7 +2154,7 @@ def day3():
         '### Step 1: a stand-in for the real model — it fails twice, then works ###',
         'attempt_count = 0            # how many times we have called it so far',
         '',
-        'def flaky_call():',
+        'def flaky_call() -> str:',
         '    """Pretends to fail twice, then succeeds — like a real rate-limited call."""',
         '    global attempt_count     # keep the count between calls',
         '    attempt_count += 1',

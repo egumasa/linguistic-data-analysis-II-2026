@@ -16,6 +16,7 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 By the end of this session you will be able to:
 
 - Working in a pair, each annotate the same ~20 sentences by hand against a prepared scheme.
+- Read a function's first line and its `help(...)` output to work out what to pass in and what comes back.
 - Import the annotation spreadsheet into Colab and compute a simple agreement rate, Cohen's κ, and an annotator-vs-annotator confusion matrix.
 - Read the confusion matrix to see *where* you two disagree, then refine the scheme and re-annotate — iterate until agreement is acceptable.
 - Adjudicate the remaining disagreements, compare your labels against the published gold standard, and interpret the differences.

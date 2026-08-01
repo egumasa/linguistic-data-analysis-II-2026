@@ -39,6 +39,7 @@ This is the **construction** skill — *graded once, here.* Give the annotation 
 By the end of this session, you will be able to:
 
 - Working in a pair, each **annotate the same ~20 sentences** by hand against a prepared scheme.
+- **Read a function's first line and its `help(...)`** to work out what to pass in and what comes back.
 - Import the sheet into Colab and compute **percent agreement, Cohen's κ**, and an annotator-vs-annotator **confusion matrix**.
 - **Read the confusion matrix** to see *where* you disagree, then **refine the scheme and re-annotate** — iterate until agreement is acceptable.
 - **Adjudicate** the remaining disagreements, **compare to the published gold**, and interpret the differences.
@@ -201,6 +202,43 @@ The disagreements are what you need: they show where the scheme is still unclear
 :::
 
 # D · Measure agreement *(E&K Step 6 · ③)*
+
+## First: reading a helper's first line {.smaller}
+
+Colab opens here, and you start calling helpers someone else wrote. Their first line tells you what to pass in.
+
+```python
+def to_canonical(rows: list[dict[str, str]],
+                 labels: list[str],
+                 column: str = COL_FINAL) -> list[dict[str, str]]:
+```
+
+. . .
+
+- `rows`, `labels`, `column` — what the arguments are **called**.
+- After each colon, the **kind of data** it expects: `rows` is a list of dicts, `labels` is a list of text, `column` is one piece of text.
+- `= COL_FINAL` — `column` already has a value, so you can leave it out.
+- After the `->`, **what you get back**. `-> None` means it only prints something.
+
+## Asking Colab {.smaller}
+
+You do not have to open the helper cell to see this.
+
+```python
+help(to_canonical)
+```
+
+. . .
+
+Colab prints the first line, then a written description of every argument and of what comes back. Typing `to_canonical(` and pressing **Shift+Tab** shows the same thing in a pop-up.
+
+. . .
+
+::: {.callout-tip}
+You never write these yourself. You read them so you know what to pass in.
+:::
+
+*→ try this in **step D** (Colab), just above the first `load_annotation_sheet` call.*
 
 ## Percent agreement vs. Cohen's κ {.smaller}
 
