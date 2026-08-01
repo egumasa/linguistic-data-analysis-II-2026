@@ -39,3 +39,5 @@ __pycache__/
 
 # Local API keys for running the tutorials outside Colab — never commit
 .env
+
+.claude/settings.local.json
