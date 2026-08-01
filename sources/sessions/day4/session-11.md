@@ -16,12 +16,12 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 By the end of this session you will be able to:
 
 - Describe the whole pipeline as a chain of inputs and outputs — what each step **consumes** and what it **produces**.
-- Point to where in Days 1–3 you already ran each helper, and use the same call form again.
-- Write your group's `PLAN.md`: track, label set, sampling settings, who annotates what, and the one prompt change you predict will help.
+- Point to where in Days 1–4 you already ran each call, and use the same call form again.
+- Write your group's `PLAN.md`: track, label set, sampling settings, the dev/test ratio, who annotates what, **which agreement statistics you owe and which one number you will lead with** — and the one prompt change you predict will help.
 
 ## Agenda
 
-1. **The pipeline, in one diagram** (~15 min) — pool → sampled → sheet → adjudicated gold → prompt → predictions → **frozen file** → metrics → report, with each arrow's data shape named. Plus the helper table and the Day-by-Day mapping: eight of the fourteen helpers are a call you have already made.
+1. **The pipeline, in one diagram** (~15 min) — pool → sample → sheet → adjudicated gold → **dev / test** → prompt rounds on dev → the held-out run → report, with each arrow's data shape named, and the 04/05 file boundary that keeps the test half closed. Plus the inventory and its ancestor column: every call has one, in Days 1–4.
 2. **Write `PLAN.md`** (~45 min) — in your groups. The instructor comes round, reads it, and signs it off.
 3. **End-state check** (~25 min) — each group states its I/O contract out loud: *"`03_annotate` consumes the filled-in sheet and our adjudication, and produces the gold set."*
 

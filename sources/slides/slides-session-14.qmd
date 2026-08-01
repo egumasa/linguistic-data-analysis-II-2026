@@ -35,23 +35,32 @@ By the end of this session, you will be able to:
 ## Two different findings in one table
 
 ```{.python}
-errors = show_errors(gold, pred_final)
+errors = show_errors(test, pred_final)     # the held-out half, from the frozen file
 ```
 
-**A model error** — the correct label is clear, a competent annotator would agree, and the model still labelled it wrongly.
+Four different findings live in that one table, and sorting them is the analysis:
 
-**A scheme problem** — the item is genuinely borderline.
+| | |
+|---|---|
+| **`model`** | the label is clear, both coders agreed at once, and the model still missed it |
+| **`scheme`** | the item is genuinely borderline *under your scheme* |
+| **`wording`** | the label *name* misleads — this one your next prompt could fix |
+| **`ambiguous`** | the item is unclear in a way no scheme would settle |
 
 . . .
 
 ::: {.callout-tip}
-## You already know which are which
-They are the rows you argued about in Session 12. Cross-reference your `disagreements` list against these errors.
+## `scheme` and `wording` are the pair to be careful about
+One is fixable by prompting and the other is not. Confusing them is how a group spends three rounds on a problem no prompt can reach.
 :::
 
 ## Overlap is a finding
 
-If the model's errors cluster on the items **you** disagreed about, that is a result:
+```{.python}
+overlap = errors_on_disagreed(errors, disagreed)   # disagreed: saved by 03
+```
+
+You already know which items are borderline, because you argued about them in Session 12. If the model's errors cluster there, that is a result:
 
 > *"The model's B1/B2 confusions fall almost entirely on the 12 items our annotators also disagreed on. We read this as a property of the scheme's boundary rather than a failure of the model."*
 
