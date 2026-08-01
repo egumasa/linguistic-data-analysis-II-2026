@@ -63,6 +63,10 @@ coders, and whether your labels sit on a scale.
 | `to_canonical(rows, LABELS)` | the adjudicated sheet as gold items | Day 2 S5 step F |
 | `compare_to_published(gold, sampled)` | where you differ from the corpus's own labels | Day 2 S5 step F |
 | `split_dev_test(gold, DEV, seed=SEED)` | the two halves, every label kept on both sides | Day 4 Part B — you wrote the loop |
+| `triage_counts(t, disagreed, categories=CODER_CATEGORIES, what="disagreements")` | your reading of the disagreements, counted | Day 2 S6 Part B — the same four words, one changed |
+
+The `triage_counts` row is optional — notebook 03 says when it is worth the ten minutes, and
+everything downstream works without it.
 
 **`disagreements` is not on this list, because you write it.** The rule inside it — what
 counts as a disagreement — is a decision about your scheme, and there is no way to hand it
@@ -117,6 +121,7 @@ recall, F1 and κ from scratch, then checked your numbers against these very fun
 | `plot_confusion_matrix(m, LABELS, title)` | that matrix, drawn | Day 2 S5 step D |
 | `show_errors(test, pred)` | just the rows it got wrong | Day 2 S6 Part B · Day 3 |
 | `errors_on_disagreed(errors, disagreed)` | the errors landing where **your** coders also disagreed | Day 2 S6 Part B, written out as a loop |
+| `triage_category(line, CODER_CATEGORIES)` | reads back the triage you wrote in 03, so you can ask whether the model missed the items *you* called `scheme` | 03, if you did its optional section |
 | `triage_counts(TRIAGE, errors)` | your judgments, counted by category | Day 2 S6 Part B — the four words |
 | `export_results(...)` | the report scaffold, the predictions CSV, your test set | new |
 
