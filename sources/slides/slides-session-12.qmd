@@ -21,8 +21,8 @@ You work in Colab for this whole session, on your own track and your own data.
 
 - **20 min** — sample a balanced subset, create the annotation sheet
 - **25 min** — annotate **blind**, two of you, independently
-- **25 min** — agreement → disagreements → adjudicate
-- **10 min** — a baseline prompt, small
+- **30 min** — agreement → the disagreement rule you write → adjudicate
+- **5 min** — draw the dev/test line
 
 ::: {.callout-important}
 `PLAN.md` signed first. Steps 1–2 need no model, so nothing is blocked while you wait.
@@ -33,9 +33,10 @@ You work in Colab for this whole session, on your own track and your own data.
 By the end of this session, you will be able to:
 
 - Draw a **balanced** subset and explain why balance matters for P/R/F1 and the matrix.
-- Annotate independently and blind, and interpret your percent agreement and Cohen's κ.
+- Annotate independently and blind, and say **which** agreement statistics your design owes.
+- Write the rule that decides what counts as a disagreement, and defend the one you chose.
 - Adjudicate disagreements into one agreed gold set, and record **what changed**.
-- Produce a **baseline score**, before you change anything about the prompt.
+- Split that gold set into **dev** and **test**, and defend the ratio.
 
 # Step 1 — Sample
 
@@ -70,7 +71,7 @@ Rare classes give you fewer items. That is a property of the data, and it belong
 
 ## Why keep the pool separate
 
-The items you did *not* sample have a purpose: they become your **few-shot examples** in step 4.
+The items you did *not* sample have a purpose: they become your **few-shot examples** in `04_develop`.
 
 If your examples came from your gold set, the model would be given the answers to the items you are about to test it on.
 
@@ -110,19 +111,39 @@ CoderA and CoderB fill their own columns without looking at each other's. `Final
 The Sheet is a real Google Sheet, so all group members can work in it at the same time.
 :::
 
-## Then measure
+## Then measure — and you write these lines
 
 ```{.python}
-rows = load_annotation_sheet(SHEET_ID, ROUND)
-annotator_agreement(rows)
-# 42 doubly-annotated · agreement 71.4% · Cohen's kappa 0.657
-disagreements(rows)
-# 12 rows to adjudicate.
+rows = load_coder_sheets(SHEET_ID, CODERS)   # one tab per coder, joined by ID
+
+a = column(rows, CODERS[0])
+b = column(rows, CODERS[1])
+
+percent_agreement(a, b)                      # 71.4%
+print(cohen_kappa_score(a, b))               # 0.657
 ```
 
 . . .
 
-**Write those two numbers down.** They go in report section 1, and they are the evidence that the QC pass happened.
+**Which κ you owe is not a free choice, and it is settled before you run anything** — by how many coders you have and by whether `PLAN.md` §3 says your labels are a scale. Two coders, unordered: `cohen_kappa_score(a, b)`. On a scale: `weights="quadratic"` as well. Three or more: `fleiss_kappa`.
+
+**Both numbers, not one.** Percent agreement alone counts lucky agreement as if you had earned it; κ alone is hard to read without the raw figure beside it. They go in report section 1.
+
+## What counts as a disagreement? — you write that too
+
+`disagreements` is **not** given to you, because the rule inside it is a decision about your scheme:
+
+```{.python}
+disagreed = disagreements(rows, coders=CODERS)   # your function
+```
+
+. . .
+
+A row is a disagreement when your coders did not all choose the same label — that is the obvious rule. On labels that sit on a **scale**, you may decide only a gap of two or more is worth arguing about. Both are defensible; which you used is a sentence in your report.
+
+::: {.callout-tip}
+You saw these six lines on **Day 2 S5, step E**. `answer("disagreements")` is there if you stall.
+:::
 
 ## Adjudicate
 
@@ -133,7 +154,8 @@ The 12 rows you disagreed on are not random error. They are the places where **y
 For each: agree a `Final` label, and note *why*. Then:
 
 ```{.python}
-gold = to_canonical(rows, LABELS)
+rows = load_coder_sheets(SHEET_ID, CODERS)          # re-read: Final is filled in now
+gold = to_canonical(rows, LABELS, source=sampled)   # puts back what the sheet drops
 compare_to_published(gold, sampled)
 # 37 / 42 match the published label (88.1%)
 ```
@@ -149,34 +171,47 @@ Those 5 differences are a finding about the corpus, not an error on your part.
 Not the published labels.
 :::
 
-This is why this session matters. The label boundaries you discuss here are the ones you will refer to on Day 5 when you explain the model's errors.
+This is why this session matters. The label boundaries you discuss here are the ones you will refer to on Day 5, in `06_report`, when you explain the model's errors.
 
-# Step 3 — Baseline
+# Step 3 — Draw the line
 
-## Keep the baseline run small
+## Which items you may look at
 
-```{.python}
-f1_by_round = {}
-PROMPT = load_prompt(PROMPT_FILE)
-pred0 = run_prompt(PROMPT, gold)
-f1_by_round["0 zero-shot"] = evaluate(gold, pred0, ordered=True)
-```
-
-::: {.callout-warning}
-## Keep `N_PER_CLASS = 2` for now
-One full-size round is ~40 model calls and **≥3 minutes of enforced pacing**. The free tier gives you ~500 calls a day. Run small tests now, and save the full-size run for the version you freeze tomorrow.
-:::
-
-## Write the plainest prompt you can
-
-Do not try to improve it yet.
-
-A baseline gives later rounds something to be measured **against**, and shows what the model does with no additional instructions or examples.
+Tomorrow you will change your prompt because of what you saw it get wrong. That is the work. But a score measured on the items you kept adjusting against stops measuring how good your prompt is, and starts measuring **how long you kept adjusting**.
 
 . . .
 
-If the baseline is already tuned, you cannot tell whether your later changes improved anything.
+So the line gets drawn now, before anything has been run against these items:
+
+| | what it is for |
+|---|---|
+| **dev** | the items you may look at. Iterate here, as many rounds as you like |
+| **test** | opened once, in `05_test.ipynb`. Whatever it says is what you report |
+
+## The split
+
+```{.python}
+dev, test = split_dev_test(gold, DEV, seed=SEED)
+
+save_json(dev,  DEV_PATH,  what="dev items")
+save_json(test, TEST_PATH, what="test items")
+```
+
+**Read the per-label counts it prints before you save.** A label that lands in dev but not in test cannot appear in the score you report, and this is the last cheap moment to change `dev:` in `config.yaml` and draw the line again.
+
+::: {.callout-note}
+This is the loop you wrote by hand this morning, in Day 4 Part B — bucket by label, take some of each. One call now.
+:::
+
+## dev is the fast set
+
+::: {.callout-important}
+## You do not shrink your sample to iterate
+One round on the **dev half** — a dozen or so items — is about a minute of enforced pacing. Your sample stays at full size all the way through, and the number you finally report comes off the test half, which nothing has touched.
+:::
+
+There is no right ratio at this size, only one you can defend. A bigger dev gives steadier feedback and leaves a smaller test, so the reported number bounces more. A smaller dev means prompt decisions made on very few items — which is how you tune to noise.
 
 # Any questions?
 
-Next: **S13 — iterate the prompt, then freeze.**
+Next: **S13 — `04_develop`: prompt rounds on the dev half.**

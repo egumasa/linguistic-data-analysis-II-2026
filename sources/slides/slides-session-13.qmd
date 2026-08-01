@@ -17,16 +17,17 @@ metadata-files:
 
 ## 📋 Agenda
 
-- Rounds 1 and 2 — **one change each**, predicted in advance
+- `04_develop` — rounds on the **dev half**, one change each, predicted in advance
 - Reading the confusion matrix to decide what to change next
-- The final full-size run — **once** — and freezing it
+- `05_test` — commit to your candidates, then open the held-out set **once**
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
-- Change one thing per round, predict its effect, and test it.
+- Change one thing per round, predict its effect, and test it — **on dev**.
 - Use a confusion matrix to choose the next change rather than guessing.
+- Commit to your candidates and a winner rule *before* opening the held-out set.
 - Freeze a run and explain why a seed alone is not enough.
 - Report plain and weighted κ, and say which one your labels justify.
 
@@ -34,11 +35,13 @@ By the end of this session, you will be able to:
 
 ## One change per round
 
-| Round | Change | Macro-F1 |
+| Round | Change | Macro-F1 (dev) |
 |---|---|---|
 | 0 | plain instruction + label set | 0.33 |
 | 1 | + one example per label | 0.46 |
 | 2 | + definitions for B1 vs B2 | ? |
+
+Every number in that column is measured on **dev**. It is your steering wheel, not your result.
 
 . . .
 
@@ -61,7 +64,7 @@ The second one shows that you **read the confusion matrix**. That is the skill b
 ## Use the matrix to choose the next change
 
 ```{.python}
-evaluate(gold, pred0, ordered=True)
+evaluate(dev, pred0, ordered=True)     # dev — the half you are allowed to look at
 ```
 
 Look at the **off-diagonal cells**, not only the macro-F1:
@@ -95,27 +98,55 @@ It is **wrong** for error categories — Grammatical is not "closer to" Lexical 
 `Low`/`Mid`/`High` is ordered but **not alphabetical**. Pass it yourself:
 
 ```{.python}
-evaluate(gold, pred, ordered=True, labels=["Low", "Mid", "High"])
+evaluate(dev, pred, ordered=True, labels=["Low", "Mid", "High"])
 ```
 
 Otherwise the scale is `High < Low < Mid` and the number cannot be interpreted. `evaluate` prints the order it used — read that line.
 :::
 
-# Freezing
+# `05_test` — the held-out run
 
-## The final run
+## Commit first, then open it
 
-1. Pick your best prompt.
-2. Raise `N_PER_CLASS` to full size.
-3. Run it **once**.
-4. Save it.
+Fill this in **before** the next cell runs:
 
 ```{.python}
-save_predictions(pred_best, OUT_DIR + "/" + TRACK + "_" + GROUP + "_predictions.json")
-pred_final = load_predictions(OUT_DIR + "/" + TRACK + "_" + GROUP + "_predictions.json")
+CANDIDATES = {                                  # every prompt you will test
+    "v1 few-shot": ROOT / "prompts" / (TRACK + ".txt"),
+}
+WINNER_RULE = "highest macro-F1; ties go to the simpler prompt"
 ```
 
-Everything from here reads `pred_final`.
+. . .
+
+You may test more than one prompt. That is legitimate — but it is a **different claim** from testing one, and the difference is entirely whether you said so in advance.
+
+## Then run it, once
+
+```{.python}
+test = load_gold(TEST_PATH)          # the first time this file is opened all week
+
+freeze_test_run(load_prompt(CANDIDATES[name]), test, f1_by_round, ...)
+```
+
+`freeze_test_run` runs the prompt, **saves before scoring anything**, reads that file back off disk, scores *those* predictions, and appends one line to a log that travels in your submission.
+
+. . .
+
+::: {.callout-warning}
+## Report every number you tested, not the best one
+Three prompts tested and the best reported is the best of three tries, optimistic by an amount nobody can work out afterwards. All three go in report §3.
+:::
+
+## Nothing stops you running it twice
+
+Stopping you would be the wrong design — a real mistake at four o'clock needs a way forward.
+
+So instead nothing is overwritten: a second run lands in `..._predictions_attempt2.json` beside the first, and **both** stay.
+
+. . .
+
+Every scoring appends a line to `..._test_log.jsonl`, fingerprinted with the prompt that produced it. Same fingerprint twice = one prompt run twice. Different fingerprints = a prompt changed after seeing the held-out set — and report §5 has to say which happened.
 
 ## One run, one person
 
