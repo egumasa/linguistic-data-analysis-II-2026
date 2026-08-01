@@ -18,14 +18,17 @@ By the end of this session you will be able to:
 - Draw a **balanced** subset from your track's pool, and explain why balance matters for precision, recall, F1 and the confusion matrix.
 - Annotate a sample **independently and blind**, and interpret your percent agreement and Cohen's κ.
 - Adjudicate your disagreements into a single agreed gold set, and record *what changed*.
-- Run a baseline prompt to get a number to beat.
+- Draw the line between the items you may look at while you work (dev) and the items you open once, at the end (test).
 
 ## Agenda
 
-1. **Sample + create the sheet** (~20 min) — `sample_pool`, then `create_annotation_sheet`.
+1. **Sample + create the sheet** (~20 min) — `01_build_pool_<track>`, then `02_sample`.
 2. **Annotate blind** (~25 min) — two of you, `CoderA` and `CoderB`, no peeking at the published label.
-3. **Agreement → disagreements → adjudicate** (~25 min) — the heart of the session. Where you disagreed with each other tells you which label boundaries are genuinely fuzzy.
-4. **Baseline prompt** (~10 min) — at `N_PER_CLASS = 2`, so it finishes inside the slot.
+3. **Agreement → disagreements → adjudicate** (~30 min) — the heart of the session. You assemble the agreement statistics your design owes and write the `disagreements` rule yourselves; where you disagreed with each other tells you which label boundaries are genuinely fuzzy.
+4. **The dev/test split** (~5 min) — `split_dev_test`, the last step before the model gets involved.
+
+No model is called in this session. `01`, `02` and `03` need no API key, so nothing here
+waits on the `PLAN.md` gate — the first prompt round is Day 5, in `04_develop`.
 
 This is the same A–F round-trip you did by hand in [Session 5](../day2/session-05.md), now on your own track and your own data.
 

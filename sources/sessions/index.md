@@ -53,8 +53,8 @@ This intensive 5-day course covers LLM-based linguistic data analysis — annota
 | #  | Session | What we'll do |
 | -- | ------- | ------------- |
 | 10 | [Methodology: Reproducibility, LLM Limits & Ethics](day4/session-10.md) | Reproducibility, LLM limitations (hallucination, data contamination), and ethical issues in LLM-based research. |
-| 11 | [Plenary Pipeline Assembly](day4/session-11.md) | Assemble the project notebook together, step by step; then pick a mini-project track and sample a balanced gold subset from a provided pool. |
-| 12 | [Project Work: QC the Gold Set & Baseline](day4/session-12.md) | A quality-control (adjudication) pass on your sampled gold set, then run a baseline prompt. |
+| 11 | [Plenary Pipeline Assembly](day4/session-11.md) | Walk the whole pipeline as a chain of inputs and outputs, naming what each notebook consumes and produces; then write your group's `PLAN.md` and get it signed off. |
+| 12 | [Project Work: Sample & QC the Gold Set](day4/session-12.md) | Draw a balanced sample from your track's pool, annotate it blind in pairs, then measure agreement, adjudicate the disagreements, and split the result into dev and test. |
 
 📖 **Reading (before Day 4)** — *Read (in full):* Abdurahman et al. (2025). [See Readings →](../syllabus/readings.md)
 

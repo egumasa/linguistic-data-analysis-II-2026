@@ -441,17 +441,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Draw a <strong>balanced</strong> subset from your track’s pool, and explain why balance matters for precision, recall, F1 and the confusion matrix.</li>
 <li>Annotate a sample <strong>independently and blind</strong>, and interpret your percent agreement and Cohen’s κ.</li>
 <li>Adjudicate your disagreements into a single agreed gold set, and record <em>what changed</em>.</li>
-<li>Run a baseline prompt to get a number to beat.</li>
+<li>Draw the line between the items you may look at while you work (dev) and the items you open once, at the end (test).</li>
 </ul>
 </section>
 <section id="agenda" class="level2">
 <h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
 <ol type="1">
-<li><strong>Sample + create the sheet</strong> (~20 min) — <code>sample_pool</code>, then <code>create_annotation_sheet</code>.</li>
+<li><strong>Sample + create the sheet</strong> (~20 min) — <code>01_build_pool_&lt;track&gt;</code>, then <code>02_sample</code>.</li>
 <li><strong>Annotate blind</strong> (~25 min) — two of you, <code>CoderA</code> and <code>CoderB</code>, no peeking at the published label.</li>
-<li><strong>Agreement → disagreements → adjudicate</strong> (~25 min) — the heart of the session. Where you disagreed with each other tells you which label boundaries are genuinely fuzzy.</li>
-<li><strong>Baseline prompt</strong> (~10 min) — at <code>N_PER_CLASS = 2</code>, so it finishes inside the slot.</li>
+<li><strong>Agreement → disagreements → adjudicate</strong> (~30 min) — the heart of the session. You assemble the agreement statistics your design owes and write the <code>disagreements</code> rule yourselves; where you disagreed with each other tells you which label boundaries are genuinely fuzzy.</li>
+<li><strong>The dev/test split</strong> (~5 min) — <code>split_dev_test</code>, the last step before the model gets involved.</li>
 </ol>
+<p>No model is called in this session. <code>01</code>, <code>02</code> and <code>03</code> need no API key, so nothing here waits on the <code>PLAN.md</code> gate — the first prompt round is Day 5, in <code>04_develop</code>.</p>
 <p>This is the same A–F round-trip you did by hand in <a href="../../sessions/day2/session-05.html">Session 5</a>, now on your own track and your own data.</p>
 </section>
 <section id="reading" class="level2">
@@ -980,49 +981,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Draw a **balanced** subset from your track's pool, and explain why balance matters for precision, recall, F1 and the confusion matrix.</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Annotate a sample **independently and blind**, and interpret your percent agreement and Cohen's κ.</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adjudicate your disagreements into a single agreed gold set, and record *what changed*.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Run a baseline prompt to get a number to beat.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Draw the line between the items you may look at while you work (dev) and the items you open once, at the end (test).</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Sample + create the sheet** (~20 min) — <span class="in">`sample_pool`</span>, then <span class="in">`create_annotation_sheet`</span>.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Sample + create the sheet** (~20 min) — <span class="in">`01_build_pool_&lt;track&gt;`</span>, then <span class="in">`02_sample`</span>.</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Annotate blind** (~25 min) — two of you, <span class="in">`CoderA`</span> and <span class="in">`CoderB`</span>, no peeking at the published label.</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Agreement → disagreements → adjudicate** (~25 min) — the heart of the session. Where you disagreed with each other tells you which label boundaries are genuinely fuzzy.</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Baseline prompt** (~10 min) — at <span class="in">`N_PER_CLASS = 2`</span>, so it finishes inside the slot.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Agreement → disagreements → adjudicate** (~30 min) — the heart of the session. You assemble the agreement statistics your design owes and write the <span class="in">`disagreements`</span> rule yourselves; where you disagreed with each other tells you which label boundaries are genuinely fuzzy.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**The dev/test split** (~5 min) — <span class="in">`split_dev_test`</span>, the last step before the model gets involved.</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>This is the same A–F round-trip you did by hand in <span class="co">[</span><span class="ot">Session 5</span><span class="co">](../day2/session-05.md)</span>, now on your own track and your own data.</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 4 reading (Abdurahman et al., 2025, *read in full*) in <span class="co">[</span><span class="ot">Session 10</span><span class="co">](session-10.md)</span> and on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Notebook: <span class="co">[</span><span class="ot">`day4_pipeline_and_sampling.ipynb`</span><span class="co">](../../notebooks/day4_pipeline_and_sampling.ipynb)</span> — sample a balanced subset, then hand off to the project template —</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb)</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Project notebooks: <span class="co">[</span><span class="ot">`lda2-final-template/notebooks/`</span><span class="co">](https://github.com/egumasa/lda2-final-template/tree/main/notebooks)</span> —</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  open them from your group's Drive folder, not from GitHub, so you are working on your own copy.</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 12 slides](../../slides/slides-session-12.html){target="_blank"} --&gt;</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mini-project</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>Work in the <span class="co">[</span><span class="ot">project template</span><span class="co">](https://github.com/egumasa/lda2-final-template)</span> —</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>**`01_build_pool_&lt;track&gt;`, `02_sample` and `03_annotate`**. None of the three calls the model,</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>so nothing here waits on the <span class="in">`PLAN.md`</span> gate.</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Your adjudicated gold is what the model gets scored against</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>Not the published labels. That is what makes this session load-bearing rather than a warm-up:</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>the boundaries you argue about here are the ones you will point at on Day 5 when you explain</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>why the model missed something.</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## dev is the fast set</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>One round at full size is ~40 model calls and several minutes of enforced pacing. That is what</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>the dev/test split at the end of <span class="in">`03_annotate`</span> is for: you iterate against the dev half, a</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>dozen or so items, and your sample stays at full size throughout.</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>No model is called in this session. <span class="in">`01`</span>, <span class="in">`02`</span> and <span class="in">`03`</span> need no API key, so nothing here</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>waits on the <span class="in">`PLAN.md`</span> gate — the first prompt round is Day 5, in <span class="in">`04_develop`</span>.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>This is the same A–F round-trip you did by hand in <span class="co">[</span><span class="ot">Session 5</span><span class="co">](../day2/session-05.md)</span>, now on your own track and your own data.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 4 reading (Abdurahman et al., 2025, *read in full*) in <span class="co">[</span><span class="ot">Session 10</span><span class="co">](session-10.md)</span> and on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Notebook: <span class="co">[</span><span class="ot">`day4_pipeline_and_sampling.ipynb`</span><span class="co">](../../notebooks/day4_pipeline_and_sampling.ipynb)</span> — sample a balanced subset, then hand off to the project template —</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb)</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Project notebooks: <span class="co">[</span><span class="ot">`lda2-final-template/notebooks/`</span><span class="co">](https://github.com/egumasa/lda2-final-template/tree/main/notebooks)</span> —</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  open them from your group's Drive folder, not from GitHub, so you are working on your own copy.</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 12 slides](../../slides/slides-session-12.html){target="_blank"} --&gt;</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mini-project</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>Work in the <span class="co">[</span><span class="ot">project template</span><span class="co">](https://github.com/egumasa/lda2-final-template)</span> —</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>**`01_build_pool_&lt;track&gt;`, `02_sample` and `03_annotate`**. None of the three calls the model,</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>so nothing here waits on the <span class="in">`PLAN.md`</span> gate.</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## Your adjudicated gold is what the model gets scored against</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>Not the published labels. That is what makes this session load-bearing rather than a warm-up:</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>the boundaries you argue about here are the ones you will point at on Day 5 when you explain</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>why the model missed something.</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## dev is the fast set</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>One round at full size is ~40 model calls and several minutes of enforced pacing. That is what</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>the dev/test split at the end of <span class="in">`03_annotate`</span> is for: you iterate against the dev half, a</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>dozen or so items, and your sample stays at full size throughout.</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

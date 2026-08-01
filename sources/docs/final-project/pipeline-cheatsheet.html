@@ -328,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td><code>percent_agreement(a, b)</code></td>
 <td>how often two coders matched</td>
-<td>Day 2 S6 step 9, as <code>p_o</code></td>
+<td>Day 2 S6 step 9 — you computed it by hand, as <code>p_o</code></td>
 </tr>
 <tr class="even">
 <td><code>cohen_kappa_score(a, b)</code></td>
@@ -373,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td><code>triage_counts(t, disagreed, categories=CODER_CATEGORIES, what="disagreements")</code></td>
 <td>your reading of the disagreements, counted</td>
-<td>Day 2 S6 Part B — the same four words, one changed</td>
+<td>new here — the same four words as Day 2 S6 Part B, one changed</td>
 </tr>
 </tbody>
 </table>
@@ -486,7 +486,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td><code>labels_of(test)</code></td>
 <td>the gold labels as a plain list, ready to score</td>
-<td>Day 2 S6 Part B, written out as a loop</td>
+<td>new here — you wrote the same loop in Day 2 S6</td>
 </tr>
 <tr class="even">
 <td><code>classification_report(y, p, labels=LABELS)</code></td>
@@ -546,7 +546,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td><code>triage_counts(TRIAGE, errors)</code></td>
 <td>your judgments, counted by category</td>
-<td>Day 2 S6 Part B — the four words</td>
+<td>new here — the four words are Day 2 S6 Part B, where you sorted errors aloud rather than writing them down</td>
 </tr>
 <tr class="even">
 <td><code>export_results(...)</code></td>
@@ -1088,7 +1088,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
 <span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`load_coder_sheets(id, CODERS)`</span> <span class="pp">|</span> one tab per coder, joined by item id <span class="pp">|</span> Day 2 S5 step D <span class="pp">|</span></span>
 <span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`column(rows, "CoderA")`</span> <span class="pp">|</span> one coder's labels as a plain list <span class="pp">|</span> new here — two lines <span class="pp">|</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`percent_agreement(a, b)`</span> <span class="pp">|</span> how often two coders matched <span class="pp">|</span> Day 2 S6 step 9, as <span class="in">`p_o`</span> <span class="pp">|</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`percent_agreement(a, b)`</span> <span class="pp">|</span> how often two coders matched <span class="pp">|</span> Day 2 S6 step 9 — you computed it by hand, as <span class="in">`p_o`</span> <span class="pp">|</span></span>
 <span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`cohen_kappa_score(a, b)`</span> <span class="pp">|</span> agreement corrected for chance <span class="pp">|</span> Day 2 S6 — you wrote it, then checked it against this <span class="pp">|</span></span>
 <span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`cohen_kappa_score(a, b, weights="quadratic")`</span> <span class="pp">|</span> the same, a near miss counting less <span class="pp">|</span> Day 2 S6 Part B <span class="pp">|</span></span>
 <span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`fleiss_kappa([a, b, c])`</span> <span class="pp">|</span> one number for three or more coders <span class="pp">|</span> new — three-coder groups only <span class="pp">|</span></span>
@@ -1097,7 +1097,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`to_canonical(rows, LABELS)`</span> <span class="pp">|</span> the adjudicated sheet as gold items <span class="pp">|</span> Day 2 S5 step F <span class="pp">|</span></span>
 <span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`compare_to_published(gold, sampled)`</span> <span class="pp">|</span> where you differ from the corpus's own labels <span class="pp">|</span> Day 2 S5 step F <span class="pp">|</span></span>
 <span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`split_dev_test(gold, DEV, seed=SEED)`</span> <span class="pp">|</span> the two halves, every label kept on both sides <span class="pp">|</span> Day 4 Part B — you wrote the loop <span class="pp">|</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`triage_counts(t, disagreed, categories=CODER_CATEGORIES, what="disagreements")`</span> <span class="pp">|</span> your reading of the disagreements, counted <span class="pp">|</span> Day 2 S6 Part B — the same four words, one changed <span class="pp">|</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`triage_counts(t, disagreed, categories=CODER_CATEGORIES, what="disagreements")`</span> <span class="pp">|</span> your reading of the disagreements, counted <span class="pp">|</span> new here — the same four words as Day 2 S6 Part B, one changed <span class="pp">|</span></span>
 <span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>The <span class="in">`triage_counts`</span> row is optional — notebook 03 says when it is worth the ten minutes, and</span>
 <span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>everything downstream works without it.</span>
@@ -1144,7 +1144,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Call <span class="pp">|</span> What it gives you <span class="pp">|</span> Where you first ran it <span class="pp">|</span></span>
 <span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`labels_of(test)`</span> <span class="pp">|</span> the gold labels as a plain list, ready to score <span class="pp">|</span> Day 2 S6 Part B, written out as a loop <span class="pp">|</span></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`labels_of(test)`</span> <span class="pp">|</span> the gold labels as a plain list, ready to score <span class="pp">|</span> new here — you wrote the same loop in Day 2 S6 <span class="pp">|</span></span>
 <span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`classification_report(y, p, labels=LABELS)`</span> <span class="pp">|</span> precision, recall and F1 for **every** class <span class="pp">|</span> Day 2 S6 Part B <span class="pp">|</span></span>
 <span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`f1_score(y, p, average="macro")`</span> <span class="pp">|</span> one number: every **class** counts the same <span class="pp">|</span> Day 2 S6 Part B <span class="pp">|</span></span>
 <span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`f1_score(y, p, average="micro")`</span> <span class="pp">|</span> one number: every **item** counts the same <span class="pp">|</span> Day 2 S6 Part B <span class="pp">|</span></span>
@@ -1156,7 +1156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`show_errors(test, pred)`</span> <span class="pp">|</span> just the rows it got wrong <span class="pp">|</span> Day 2 S6 Part B · Day 3 <span class="pp">|</span></span>
 <span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`errors_on_disagreed(errors, disagreed)`</span> <span class="pp">|</span> the errors landing where **your** coders also disagreed <span class="pp">|</span> Day 2 S6 Part B, written out as a loop <span class="pp">|</span></span>
 <span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`triage_category(line, CODER_CATEGORIES)`</span> <span class="pp">|</span> reads back the triage you wrote in 03, so you can ask whether the model missed the items *you* called <span class="in">`scheme`</span> <span class="pp">|</span> 03, if you did its optional section <span class="pp">|</span></span>
-<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`triage_counts(TRIAGE, errors)`</span> <span class="pp">|</span> your judgments, counted by category <span class="pp">|</span> Day 2 S6 Part B — the four words <span class="pp">|</span></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`triage_counts(TRIAGE, errors)`</span> <span class="pp">|</span> your judgments, counted by category <span class="pp">|</span> new here — the four words are Day 2 S6 Part B, where you sorted errors aloud rather than writing them down <span class="pp">|</span></span>
 <span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`export_results(...)`</span> <span class="pp">|</span> the report scaffold, the predictions CSV, your test set <span class="pp">|</span> new <span class="pp">|</span></span>
 <span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a><span class="fu">## Things that are easy to get wrong</span></span>
