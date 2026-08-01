@@ -1760,9 +1760,10 @@ def day2_s5():
 def day2_s6():
     # TWO PASSES over the same CEFR-SP data, in this order (see the S6 slides):
     #   Part A = pass 1 — a BINARY question ("is this sentence advanced?"), with the
-    #            metrics built from scratch in ten numbered steps: 12 hand-countable
-    #            items first, then all 72, then checked against scikit-learn.
-    #   Part B = pass 2 — the real six-class task, with scikit-learn.
+    #            metrics built from scratch in ten numbered steps on 12 hand-countable
+    #            items SLICED FROM the loaded gold + predictions (not typed by hand),
+    #            then checked against scikit-learn on those same 12.
+    #   Part B = pass 2 — the real six-class task on all 72, with scikit-learn.
     # SURFACE DIVISION (differs from S5 on purpose): the deck carries BOTH the concept
     # and the implementation — every line of pass-1 code is on a slide next to what it
     # prints — and students type it here. So these cells must PRINT EXACTLY what the
@@ -1793,18 +1794,27 @@ def day2_s6():
         "out **identical every run**: if your number differs from the slide, you have a bug, "
         "not a different model.",
         ":::")]
-    s6_libs = ["load_gold", "predictions", "pair_up", "show_2x2", "evaluate", "show_errors"]
+    s6_libs = ["load_gold", "predictions", "show_2x2", "evaluate", "show_errors"]
     cells += [setup_cell(
         backend=None,          # frozen predictions — Day 2 never calls a model
         lib_names=s6_libs,
         gold_url=CEFR_GOLD_URL,
         gold_comment="CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.",
         predictions_url=CEFR_PREDICTIONS_DAY2_URL)]
-    # Setup loads only what the next two cells call. `pair_up` and `show_2x2` arrive in
-    # Part A where they are used, and `evaluate`/`show_errors` in Part B — which also keeps
+    # Setup loads only what the next two cells call. `show_2x2` arrives in Part A where
+    # it is used, and `evaluate`/`show_errors` in Part B — which also keeps
     # `evaluate` (and the classification_report and cohen_kappa_score inside it) from
     # sitting above the cells where students build precision, recall and κ themselves.
     cells += libs("load_gold", "predictions")
+    cells += [md(
+        "## Load the data — the pipeline's first step",
+        "",
+        "Every evaluation starts by **loading the two things it will compare**: the gold "
+        "standard and the model's predictions. This is a step in its own right, not part of "
+        "the setup — the confusion matrix you build later is made from exactly what you load "
+        "here, nothing typed in by hand.",
+        "",
+        "First, what these files are and how reading one works; then the two loads.")]
     cells += [md(
         "### What a *gold file* actually is",
         "",
@@ -1829,7 +1839,7 @@ def day2_s6():
         '    reloaded = json.loads(f.read())  # ...and JSON text becomes a list again',
         'print("read back", len(reloaded), "records — same shape:", reloaded[0])')]
     cells += [md(
-        "### Load the gold standard and the frozen predictions",
+        "### Now load the real gold and predictions",
         "",
         "`load_gold(...)` does the read you just saw, but from a URL. Every dataset this week "
         "has the same shape, `{\"id\", \"text\", \"label\"}`.",
@@ -1879,44 +1889,40 @@ def day2_s6():
         "and recall are *always about the positive class*, so choosing it is a decision you "
         "state out loud.",
         "",
-        "Here are 12 of the 72 sentences, already collapsed:")]
+        "The 12 rows below are **built from the `gold` and `predictions` you just loaded** — "
+        "positions 17 to 28 — with each six-level label collapsed to yes/no. Nothing is typed "
+        "in by hand; this is the pipeline that feeds the confusion matrix:")]
     cells += [code(
         'ADVANCED = ["C1", "C2"]      # the levels that count as "yes"',
         '',
-        '# Twelve of the 72 sentences with the gold level and the model\'s answer, both',
-        '# collapsed to yes/no. (`text` is shortened here for display — the full sentences',
-        '# are in `gold`, which you loaded above.)',
-        'items = [',
-        '    {"id": 17, "text": "Newspaper \'s revenue from classifieds advertisements…",',
-        '     "gold": "no", "pred": "no"},',
-        '    {"id": 18, "text": "Saffron \'s aroma is often described by connoisseurs…",',
-        '     "gold": "yes", "pred": "yes"},',
-        '    {"id": 19, "text": "He died on 26 September 2017 in Paris at the age of…",',
-        '     "gold": "no", "pred": "no"},',
-        '    {"id": 20, "text": "Bat : The bat used by the offense can be made out of…",',
-        '     "gold": "no", "pred": "no"},',
-        '    {"id": 21, "text": "Because oxygen is more electronegative than carbon ,…",',
-        '     "gold": "yes", "pred": "yes"},',
-        '    {"id": 22, "text": "Racing bicycles used for Criteriums often have subtl…",',
-        '     "gold": "yes", "pred": "no"},',
-        '    {"id": 23, "text": "Harris died on 9 May 2019 , at the age of 93 .",',
-        '     "gold": "no", "pred": "no"},',
-        '    {"id": 24, "text": "The first derivative test is used in calculus optimi…",',
-        '     "gold": "yes", "pred": "no"},',
-        '    {"id": 25, "text": "She died on June 9 , 2014 , at the age of 103 .",',
-        '     "gold": "no", "pred": "no"},',
-        '    {"id": 26, "text": "The forest contains at least 900 plant species .",',
-        '     "gold": "no", "pred": "no"},',
-        '    {"id": 27, "text": "Cryptobranchids are large , fat salamanders , with f…",',
-        '     "gold": "yes", "pred": "yes"},',
-        '    {"id": 28, "text": "The seven pitches of any diatonic scale can also be…",',
-        '     "gold": "no", "pred": "yes"},',
-        ']',
-        'print(len(items), "items")',
-        'print(items[0])')]
+        '# Take twelve of the 72 you loaded (ids 17–28) and their predictions. Slicing keeps',
+        '# positions 16–27; predictions[16:28] are the answers for those same sentences.',
+        'gold_12 = gold[16:28]',
+        'pred_12 = predictions[16:28]',
+        '',
+        '# Pair each gold sentence with its prediction, collapsing both to the yes/no question:',
+        'items = []',
+        'i = 0                          # position within the twelve, counted up by hand',
+        'for g in gold_12:              # g is one gold record: {"id", "text", "label"}',
+        '    p = pred_12[i]             # the model\'s answer for that same sentence',
+        '    if g["label"] in ADVANCED:   # collapse the gold level to yes/no',
+        '        gold_answer = "yes"',
+        '    else:',
+        '        gold_answer = "no"',
+        '    if p in ADVANCED:            # collapse the model\'s answer the same way',
+        '        pred_answer = "yes"',
+        '    else:',
+        '        pred_answer = "no"',
+        '    items.append({"id": g["id"], "text": g["text"],',
+        '                  "gold": gold_answer, "pred": pred_answer})',
+        '    i = i + 1                  # move to the next of the twelve',
+        '',
+        'print(len(items), "items — id, gold, pred:")',
+        'for it in items:                # the twelve, to count by hand with your partner',
+        '    print(it["id"], it["gold"], it["pred"])')]
     cells += [md(
         "**Before you write any code, count the four outcomes by hand** — with your partner, "
-        "off the list above. How many **TP** (gold yes, model yes), **FP** (gold no, model "
+        "off the twelve rows you just printed. How many **TP** (gold yes, model yes), **FP** (gold no, model "
         "yes), **FN** (gold yes, model no), **TN** (gold no, model no)?",
         "",
         "::: {.callout-note collapse=\"true\"}",
@@ -2217,47 +2223,21 @@ def day2_s6():
         ":::")]
 
     cells += [md(
-        "### Step 10 · Scale up, then check yourself",
+        "### Step 10 · Check yourself against scikit-learn",
         "",
-        "Nothing changes but the input. `pair_up` pairs each gold item with the model's answer "
-        "and collapses both to yes/no, giving all 72 items in the shape your loop already "
-        "expects.")]
-    cells += libs("pair_up")
-    cells += [code(
-        '### Step 1: all 72 items, in the same yes/no shape as the 12 ###',
-        'all_items = pair_up(gold, predictions, ADVANCED)',
-        '',
-        '### Step 2: the SAME loop as step 5 — only the input changed ###',
-        'decisions = []',
-        'for item in all_items:',
-        '    decisions.append(outcome(item["gold"], item["pred"]))',
-        '',
-        '### Step 3: the SAME tally as step 6 ###',
-        'tally = {}',
-        'for d in decisions:',
-        '    tally[d] = tally.get(d, 0) + 1',
-        'print(tally)')]
-    cells += [code(
-        'show_2x2(tally)                              # the four counts, as a square',
-        'print("precision", round(precision(tally), 3),   # your functions, unchanged',
-        '      "  recall", round(recall(tally), 3),',
-        '      "  F1", round(f1(tally), 3),',
-        '      "  kappa", round(kappa(tally), 3))')]
-    cells += [md(
-        "**The 12-item slice was not the whole story** — precision rose, recall stayed low. The "
-        "pattern held: it under-uses the positive label, but is usually right when it commits. "
-        "Twelve items is enough to learn the mechanics, never enough to judge a model.",
-        "",
-        "Now let scikit-learn mark your work:")]
+        "You wrote every metric by hand. Before trusting them, **check them against "
+        "`scikit-learn`** on the same twelve items: the library computes the same numbers, and "
+        "if yours differ, you have a bug to find. This is the only place `scikit-learn` enters "
+        "Part A — as a marker for work you already did.")]
     cells += [code(
         '#@title 🔎 Self-check against scikit-learn — run me { display-mode: "form" }',
         "# Helper — you don't need to read this. Run it and move on.",
         'from sklearn.metrics import precision_score, recall_score, f1_score',
         '',
-        '### Step 1: the same 72 items as two plain lists — the shape sklearn wants ###',
+        '### Step 1: the same 12 items as two plain lists — the shape sklearn wants ###',
         'y_gold = []',
         'y_pred = []',
-        'for item in all_items:',
+        'for item in items:               # the twelve you built and tallied by hand',
         '    y_gold.append(item["gold"])',
         '    y_pred.append(item["pred"])',
         '',
@@ -2287,7 +2267,9 @@ def day2_s6():
         "::: {.callout-important}",
         "## This is the point of Part A",
         "`sklearn` is not doing anything you cannot do. It is doing **exactly what you just "
-        "wrote** — faster, and for every class at once. From here on, when a report prints "
+        "wrote** — faster, and for every class at once. **Twelve items is enough to learn the "
+        "mechanics, never enough to judge a model** — so in Part B you load the full ordinal "
+        "CEFR labels and let `scikit-learn` score all 72. From here on, when a report prints "
         "`0.36`, you know precisely which counts produced it.",
         ":::")]
     cells += [md(
@@ -2312,8 +2294,16 @@ def day2_s6():
     cells += [md(
         "## Part B · Tutorial — the same job, six classes, with scikit-learn",
         "",
-        "Drop the yes/no simplification. The real task is **A1 · A2 · B1 · B2 · C1 · C2**.",
+        "Drop the yes/no simplification. The real task is the **full ordinal CEFR scale**: "
+        "**A1 · A2 · B1 · B2 · C1 · C2**.",
         "",
+        "You do not load anything new — the `gold` and `predictions` from the start of the "
+        "notebook already carry the full level. Part A only *collapsed* them to yes/no; here "
+        "you use them as they are:")]
+    cells += [code(
+        '# The same items, now with their full CEFR level instead of yes/no:',
+        'print("full gold label:", gold[0]["label"], " full prediction:", predictions[0])')]
+    cells += [md(
         "- **4 cells → 36.** Counting by hand stops being reasonable.",
         "- Six classes give you **six** precisions, **six** recalls, **six** F1s.",
         "- To score `C1`, treat **`C1` as \"yes\" and the other five as \"no\"** — Part A, run "
@@ -2376,8 +2366,8 @@ def day2_s6():
         "",
         "This one says **A2 twenty times**, **A1 four times**, and **C2 exactly once** in 72 "
         "chances: everything is squeezed toward the **middle of the scale**. It is your Part-A "
-        "finding again — precision 0.89 but recall 0.67, because it under-uses the top of the "
-        "scale.")]
+        "finding again — precision ran ahead of recall (0.75 vs 0.60 on your twelve), because "
+        "it under-uses the top of the scale.")]
     cells += [md(
         "### Two κ values, same predictions",
         "",

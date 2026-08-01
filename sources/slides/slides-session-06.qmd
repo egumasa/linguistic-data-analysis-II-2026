@@ -127,6 +127,19 @@ No API key, no live model. The model was run **once**, offline, and its answers 
 
 *You run the model yourself, live, from Day 3 on.*
 
+## Load the data first {.smaller}
+
+Every evaluation begins by **loading the two things it compares** — the gold standard and the model's predictions. This is a step of its own; the confusion matrix later is built from exactly what you load here.
+
+```python
+gold = load_gold(GOLD_URL)                        # 72 records: {id, text, label}
+predictions = load_predictions(PREDICTIONS_URL)   # one level per item, same order
+```
+
+. . .
+
+Both are plain lists in the **same order**: `predictions[i]` is the model's answer for `gold[i]`.
+
 # Pass 1 · Step 1 — collapse to one yes/no question
 
 ## Six levels → one question {.smaller}
@@ -144,9 +157,36 @@ CEFR has six levels. For pass 1 we ask **one** thing:
 **Choosing the positive class is a decision, not a technicality.** "Precision" and "recall" are always *about the positive class*. Change what counts as positive and every number changes. In your project, say out loud which class is positive before you report a score.
 :::
 
+## Build the twelve from what you loaded {.smaller}
+
+The twelve rows are **not typed in** — they are sliced from the `gold` and `predictions` you just loaded (ids 17–28) and collapsed to yes/no. Same `for`, `if`, dictionaries as the rest of pass 1:
+
+```python
+ADVANCED = ["C1", "C2"]          # the levels that count as "yes"
+
+gold_12 = gold[16:28]            # positions 16–27 → ids 17–28
+pred_12 = predictions[16:28]
+
+items = []
+i = 0
+for g in gold_12:
+    p = pred_12[i]               # the model's answer for that same sentence
+    if g["label"] in ADVANCED:
+        gold_answer = "yes"
+    else:
+        gold_answer = "no"
+    if p in ADVANCED:
+        pred_answer = "yes"
+    else:
+        pred_answer = "no"
+    items.append({"id": g["id"], "text": g["text"],
+                  "gold": gold_answer, "pred": pred_answer})
+    i = i + 1
+```
+
 ## Twelve sentences — count them yourself {.smaller}
 
-Here are 12 of the 72, with the gold level and the model's level, collapsed to yes/no:
+The twelve `items` you just built, with the gold level and the model's level collapsed to yes/no:
 
 | # | sentence | gold | model |
 |--|-------|--|--|
@@ -187,7 +227,7 @@ Before any code: **how many TP, FP, FN, TN?** Take a minute with your partner.
 
 ## Open Colab and look at one item {.smaller}
 
-The 12 rows are already in the notebook, as a list of dictionaries — the same `{id, text, …}` shape you have used since Day 1, with two extra keys:
+The 12 rows you just built are a list of dictionaries — the same `{id, text, …}` shape you have used since Day 1, with two extra keys:
 
 ```python
 item = items[0]                     # the first of the 12 rows
@@ -681,51 +721,17 @@ def kappa(tally):
 Nothing in `kappa()` knows whether column two came from **your partner** or **a model**. That is why S5's agreement number and today's evaluation number are the same statistic: **κ measures two label columns, whoever produced them.**
 :::
 
-# Pass 1 · Step 10 — scale up, then check yourself
+# Pass 1 · Step 10 — check yourself against scikit-learn
 
-## The same functions, all 72 items {.smaller}
+## Does your code match the library? {.smaller}
 
-Nothing changes but the input — `items` becomes all 72 sentences:
-
-```python
-### Step 1: all 72 items, in the same yes/no shape as the 12 ###
-all_items = pair_up(gold, predictions, ADVANCED)
-
-### Step 2: the SAME loop as step 5 — only the input changed ###
-decisions = []
-for item in all_items:
-    decisions.append(outcome(item["gold"], item["pred"]))
-
-### Step 3: the SAME tally as step 6 ###
-tally = {}
-for d in decisions:
-    tally[d] = tally.get(d, 0) + 1
-print(tally)
-```
-
-. . .
+You wrote every metric by hand. Before trusting them, check them against `scikit-learn` **on the same twelve items** — it computes the same numbers, and if yours differ you have a bug. This is the only place `scikit-learn` enters pass 1:
 
 ```
-{'TN': 46, 'TP': 16, 'FN': 8, 'FP': 2}
-```
-
-```
-precision 0.889   recall 0.667   F1 0.762   kappa 0.667
-```
-
-. . .
-
-**The 12-item sample did not show everything** — precision rose, recall stayed low. The pattern is the same: the model applies the positive label rarely, but is usually correct when it does. A 12-item sample is enough to learn the procedure, and never enough to evaluate a model.
-
-## Check yourself against scikit-learn {.smaller}
-
-The self-check cell runs the library's version of every metric you wrote and compares:
-
-```
-✅ precision      yours=0.888889  sklearn=0.888889
-✅ recall         yours=0.666667  sklearn=0.666667
-✅ f1             yours=0.761905  sklearn=0.761905
-✅ cohen_kappa    yours=0.666667  sklearn=0.666667
+✅ precision      yours=0.750000  sklearn=0.750000
+✅ recall         yours=0.600000  sklearn=0.600000
+✅ f1             yours=0.666667  sklearn=0.666667
+✅ cohen_kappa    yours=0.470588  sklearn=0.470588
 -----------------------------------------------
 All 4 checks passed ✅  — your metrics match scikit-learn.
 ```
@@ -734,14 +740,14 @@ All 4 checks passed ✅  — your metrics match scikit-learn.
 
 ::: {.callout-important}
 ## This is the point of pass 1
-`sklearn` is not doing anything you cannot do. It is doing **exactly what you just wrote**, faster and for every class at once. From here on, when a report prints `0.36`, you know precisely which counts produced it.
+`sklearn` is not doing anything you cannot do. It is doing **exactly what you just wrote**, faster and for every class at once. **Twelve items is enough to learn the mechanics, never enough to judge a model** — so pass 2 hands the full 72 to `scikit-learn`. From here on, when a report prints `0.36`, you know precisely which counts produced it.
 :::
 
 # Pass 2 · The real task, with scikit-learn
 
 ## Six levels, thirty-six cells {.smaller}
 
-Drop the yes/no simplification. The actual task is: **A1 · A2 · B1 · B2 · C1 · C2**.
+Drop the yes/no simplification. The actual task is the **full ordinal CEFR scale**: **A1 · A2 · B1 · B2 · C1 · C2**. Nothing new is loaded — the `gold` and `predictions` from the start already carry the full level; pass 1 only *collapsed* them to yes/no.
 
 - **4 cells → 36.** Counting by hand is no longer practical.
 - **One positive class at a time** — with six classes you get **six** precisions, **six** recalls, **six** F1s.
@@ -818,7 +824,7 @@ The model said **A2 twenty times** and **A1 four times**. It said **C2 exactly o
 
 - **Predictions concentrate in the middle** of the scale; the two ends are used rarely.
 - **Why?** When a rater — human or machine — has to judge something as unclear as "difficulty", the middle categories are the safest choice.
-- **Same finding as pass 1** — with "advanced" as positive, precision 0.89 but recall 0.67. **The model under-uses the top of the scale.**
+- **Same finding as pass 1** — with "advanced" as positive, precision ran ahead of recall (0.75 vs 0.60 on your twelve). **The model under-uses the top of the scale.**
 
 . . .
 
