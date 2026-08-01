@@ -24,16 +24,22 @@ intact:
 
 ```
 lda2_project_groupA/
-├── PLAN.md                                  ← signed before step 3
+├── PLAN.md                                  ← signed before the first model call
 ├── notebooks/
-│   └── mini_project.ipynb                   ← run end to end, outputs visible
+│   ├── 01_build_pool_raamove.ipynb          ← run in order, outputs visible
+│   ├── 02_sample.ipynb
+│   ├── 03_annotate.ipynb
+│   ├── 04_develop.ipynb
+│   ├── 05_test.ipynb
+│   └── 06_report.ipynb
 ├── prompts/
-│   ├── raamove_v0.txt  raamove_v1.txt       ← the iteration trail
-│   └── raamove.txt                          ← final
+│   ├── raamove_v0.txt  raamove_v1.txt       ← the round-by-round trail (04)
+│   └── raamove.txt                          ← the one you tested
 ├── data/gold/
-│   └── raamove_groupA_gold.json             ← your adjudicated gold (step 2)
+│   └── raamove_groupA_gold.json             ← your adjudicated gold (03)
 ├── outputs/
-│   ├── raamove_groupA_predictions.json      ← the FROZEN predictions (step 4)
+│   ├── raamove_groupA_predictions.json      ← the FROZEN held-out run (05)
+│   ├── raamove_groupA_test_log.jsonl        ← every held-out scoring, fingerprinted
 │   ├── raamove_groupA_predictions.csv
 │   └── raamove_groupA_report.md
 ├── scripts/                                 ← the plumbing, unmodified

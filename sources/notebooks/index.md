@@ -50,9 +50,9 @@ so the grader re-runs your analysis on exactly the outputs you saw.
 | 2 · S5 | [`day2-s5_gold_standard_construction.ipynb`](./day2-s5_gold_standard_construction.ipynb) | *(no parts — one lab, steps A–F)* — annotate a gold set by hand in a Google Sheet: agreement → κ → refine & re-annotate → adjudication → canonical JSON ||
 | 2 · S6 | [`day2-s6_evaluation_metrics.ipynb`](./day2-s6_evaluation_metrics.ipynb) | *Corpus Lab* — build the metrics yourself on one yes/no question: TP/FP/FN/TN → confusion matrix → precision, recall, F1, κ → checked against scikit-learn | *Tutorial* — the same job with scikit-learn on all six CEFR levels: `classification_report`, confusion matrix, plain vs. weighted κ, error analysis |
 | 3 | [`day3_prompt_design.ipynb`](./day3_prompt_design.ipynb) | *Tutorial* — zero-shot → few-shot → chain-of-thought on CEFR | *Corpus Lab* — your own prompt-iteration study *(coming soon)* |
-| 4 | [`day4_pipeline_and_sampling.ipynb`](./day4_pipeline_and_sampling.ipynb) | *Tutorial* — sample a balanced gold subset from a pool | hands off to the project template |
+| 4 | [`day4_pipeline_and_sampling.ipynb`](./day4_pipeline_and_sampling.ipynb) | *Tutorial* — sample a balanced gold subset from a pool | draw the dev/test line, then hand off to the project template |
 
 **There is no Day-5 notebook.** From the end of Day 4 the work moves to your own study, in
-`notebooks/mini_project.ipynb` of the
+the six numbered notebooks of the
 [project template](https://github.com/egumasa/lda2-final-template) — your track, your gold
 set, your prompt. Start at the [Final Project](../final-project/index.md) pages.

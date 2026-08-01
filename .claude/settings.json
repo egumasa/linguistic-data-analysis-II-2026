@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(quarto render)",
+      "Bash(quarto render *)",
+      "Bash(quarto preview)",
+      "Bash(quarto preview *)",
+      "Bash(quarto check)",
+      "Bash(quarto check *)",
+      "Bash(quarto --version)",
+      "Bash(quarto list *)",
+      "Bash(git ls-tree *)",
+      "Bash(git stash show *)",
+      "Bash(git describe *)",
+      "Bash(git shortlog *)",
+      "Bash(git cat-file *)",
+      "Bash(git worktree list)"
+    ]
+  }
+}

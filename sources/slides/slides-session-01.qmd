@@ -45,19 +45,15 @@ Tell us:
 ## Round 2
 
 Tell us:
+
 - What is your research interest
-
-## Round 3
-
-- Why you decided to take this course
-- Any goals
-- Any concerns
+- Why you decided to take this course — any goals, any concerns
 
 # 1 · Why this course
 
 ## LLMs are everywhere now
 
-Large language models are now **common tools** — for writing, translating, coding, searching.
+Large language models are now **common tools** — for searching, translating, coding, and more.
 
 So the question isn't *whether* linguists will use them. It's **how to use them responsibly** for linguistic analysis.
 
@@ -99,6 +95,7 @@ OR
 
 Each day adds one part of the method. By Friday you can run the whole procedure yourself.
 
+
 # 2 · The 5-day map
 
 ## What we'll do this week {.smaller}
@@ -106,18 +103,26 @@ Each day adds one part of the method. By Friday you can run the whole procedure 
 | Day | Focus |
 |-----|-------|
 | **1** | What is LLM, Python basics, call an LLM |
-| **2** | Gold standard + agreement — **how to measure quality** |
-| **3** | Prompt + iterate against metrics |
-| **4** | Method + assemble the pipeline |
-| **5** | Your own data + present |
+| **2** | Gold standard + agreement — **how to define and measure quality** |
+| **3** | Prompt + iterate against metrics - **how to use LLM** |
+| **4** | Mini-project |
+| **5** | Mini-project + present |
+
+
+# Syllabus
+
+
+
+
+# Session 1
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
-- Describe, at a high level, **what a Large Language Model is**.
-- Say what **machine learning** is and how ML models are built.
-- Explain, at a high level, **how LLMs are trained** and how they produce natural language.
+- Describe, at a high level, **what a Large Language Model is** and how it is trained.
+- Say what **machine learning** is, and how a model comes to represent a word's meaning **in context**.
+- Say what an LLM has **already been used for** in linguistics, and where it has been shown to **struggle**.
 
 ## The one idea for today {.smaller}
 
@@ -126,251 +131,513 @@ By the end of this session, you will be able to:
 
 Everything this week is a method for doing that checking. Today we explain **why** the checking is necessary.
 
-# 3 · What do you know about LLM?
+# 4 · What is an LLM — and why it's relevant
+
+## Question
+
+- Have you ever used LLMs?
+  - What was it for? / Did it work?
+  - What surprised you?
+
+## What do you know about LLMs?
 
 - What is a Large Language Model (or LLM)?
 
-  Explain in your own words.
+  - Share with the neighbor anything you know about LLM!
 
 
-# 4 · What is an LLM — and why it's relevant
 
-## The plan — follow one example {.smaller}
+## First, a 7-minute overview {.smaller}
 
-An LLM is a kind of **statistical machine-learning model**. 
+Grant Sanderson (3Blue1Brown), *Large Language Models explained briefly*.
 
-To explain what that means, we cover four topics:
+While you watch, write down an answer to each of these:
 
-1. **Machine learning** — what "learning from data" means
-2. **NLP** — machine learning applied to *language*
-3. How NLP researchers try to **encode** meaning 
-4. **Transformers** architecture and its application to LLM
+1. What exactly does the model **predict**?
+2. Where do the **numbers** inside the model come from?
+3. What does **attention** do?
+
+We come back to all three afterwards, with a language example.
+
+## {background-color="#000000"}
+
+{{< video https://www.youtube.com/embed/WMcwoIyK4DA width="100%" height="90%" title="Large Language Models explained briefly — 3Blue1Brown (7 min)" >}}
+
+::: {.notes}
+If the embed does not load, play it from https://www.3blue1brown.com/lessons/mini-llm/
+or https://www.youtube.com/watch?v=WMcwoIyK4DA
+:::
+
+## Reflect on what the video says... 
+
+1. What exactly does the model **predict**?
+2. Where do the **numbers** inside the model come from?
+3. What does **attention** do?
 
 
-## Statistical machine-learning model
+## Before LLM — Brief history of *embedding*
 
-**Statistical Machine learning** = a model **learns patterns from data** instead of being hand-coded with rules.
+The video said the first step is to turn each word into a long list of numbers.
+This technology is called **embedding**.
 
-- Rule-based ML: *a human writes the rules.*
-- Statistical ML: *the model infers the rules from examples.*
+**Embedding**: "vector representations of the meaning of words that are learned directly from word distributions in texts" (Jurafsky & Martin, 2026, p. 96).
 
-An ML model learns a **probabilistic representation** from statistical regularity in the data — *which patterns tend to go with which outcome.*
+Two families, and we build up to both:
 
-## Example — spam detection {.smaller}
+- ***Static*** — one fixed vector per word: counting contexts, then Word2Vec.
+- ***Contextual*** — a different vector each time the word appears: BERT, and the models you use.
 
-The classic ML task: given an email, decide **spam / not-spam**.
+## RGB color space {.smaller}
 
-- **Rule-based:** block anything containing `FREE`, `WINNER`, `$$$`
-  → this fails easily: spammers write "F R E E", and you block real mail.
+A vector is a list of numbers that fixes the *location* of something in a space. A colour, for example, is fixed by how much red, green and blue it has.
 
-- **ML:** show the model thousands of emails already **labelled** spam / not-spam.
-  It *learns on its own* which words (and combinations) predict spam.
-
-The rules are **inferred from examples**, not written by hand.
-
-## What is the predictor in the ML model? 
-
-An ML model works in the same way as a regression model: it maps input features to an outcome.
-
-So we need **predictors** (input features) to make predictions.
-
-Three different classes of technologies.
-
-- One-hot text vector
-- Static Embeddings
-- Contextual Embeddings
-
-## One-hot text vector {.smaller}
-
-Each vocabulary word has its own position in the vector — **1 if the word is present, 0 if not**. Add the words up → the email's **bag-of-words vector**, and *that* is what the classifier reads.
+Move the sliders to change the colour. Drag the cube to rotate it.
 
 ```{=html}
 <style>
-.spam-pipe{display:flex;align-items:stretch;justify-content:center;gap:.5rem;flex-wrap:wrap;font-size:.6rem;margin-top:.4rem}
-.spam-pipe .pnode{display:flex;flex-direction:column;gap:.3rem;align-items:center;justify-content:center;
-  background:var(--surface);border:1.5px solid var(--primary-70);border-radius:.5rem;padding:.5rem .6rem}
-.spam-pipe .cap{font-size:.72em;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
-.spam-pipe .subcap{font-size:.68em;color:var(--ink-soft);font-style:italic}
-.spam-pipe .email-txt{font-family:ui-monospace,Menlo,monospace;line-height:1.3;color:var(--ink)}
-.spam-pipe .parrow{display:flex;align-items:center;font-size:1.4em;font-weight:700;color:var(--primary)}
-.oh-grid{display:grid;grid-template-columns:46px repeat(6,20px);gap:3px;align-items:center}
-.oh-grid .rl{font-family:ui-monospace,Menlo,monospace;font-size:.9em;text-align:right;color:var(--ink)}
-.oh-grid .hl{writing-mode:vertical-rl;transform:rotate(180deg);font-size:.82em;color:var(--ink-soft);justify-self:center;height:44px}
-.oh-grid .c{width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:3px;
-  border:1px solid var(--primary-80);font-size:.9em;color:var(--ink-soft)}
-.oh-grid .c.on{background:var(--accent);border-color:var(--accent);color:var(--white);font-weight:700}
-.vec{display:flex;gap:3px}
-.vec .c{width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:3px;
-  border:1px solid var(--primary-80);font-size:.9em;color:var(--ink-soft)}
-.vec .c.on{background:var(--accent);border-color:var(--accent);color:var(--white);font-weight:700}
-.fcell{width:26px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:3px;
-  border:1px solid var(--primary-80);font-size:.82em;color:var(--ink)}
-.gauge{background:var(--warn);color:var(--white);border-radius:1rem;padding:.15rem .55rem;font-weight:700;white-space:nowrap}
-.verdict{font-weight:700;color:var(--warn)}
+.rgbdemo{display:flex;gap:1.2rem;align-items:center;justify-content:center;flex-wrap:wrap;margin:.3rem 0 .5rem}
+.rgbdemo svg{width:20rem;max-width:46vw;touch-action:none;cursor:grab;user-select:none}
+.rgbdemo svg:active{cursor:grabbing}
+.rgbdemo .panel{display:flex;flex-direction:column;gap:.7rem;align-items:center}
+.rgbdemo .sliders{display:grid;grid-template-columns:auto 1fr 2.6rem;gap:.4rem .6rem;align-items:center;width:17rem}
+.rgbdemo .chan{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:.8em}
+.rgbdemo .chan.r{color:#C62828}.rgbdemo .chan.g{color:#2E7D32}.rgbdemo .chan.b{color:#1565C0}
+.rgbdemo input[type=range]{width:100%;height:1rem;cursor:pointer}
+.rgbdemo input.r{accent-color:#C62828}.rgbdemo input.g{accent-color:#2E7D32}.rgbdemo input.b{accent-color:#1565C0}
+.rgbdemo .num{font-family:ui-monospace,Menlo,monospace;font-size:.85em;text-align:right;color:var(--ink)}
+.rgbdemo .readout{display:flex;align-items:center;gap:.7rem}
+.rgbdemo .swatch{width:4.2rem;height:4.2rem;border-radius:.6rem;border:2px solid var(--primary-70);
+  box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.rgbdemo .vec{font-family:ui-monospace,Menlo,monospace;font-size:1em;font-weight:700;color:var(--ink)}
+.rgbdemo .hex{font-family:ui-monospace,Menlo,monospace;font-size:.75em;color:var(--ink-soft)}
+.rgbnear{display:flex;gap:.45rem;justify-content:center;flex-wrap:wrap;font-size:.6em}
+.rgbnear .chip{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.3rem .45rem;
+  border:1.5px solid var(--primary-80);border-radius:.5rem;background:var(--surface);min-width:4.8rem}
+.rgbnear .chip.near{border-color:var(--accent);background:var(--accent-95)}
+.rgbnear .dot{width:1.3rem;height:1.3rem;border-radius:.3rem;border:1px solid var(--primary-70)}
+.rgbnear .nm{color:var(--ink)}
+.rgbnear .d{font-family:ui-monospace,Menlo,monospace;color:var(--ink-soft)}
+.rgbnear .chip.near .d{color:var(--accent-30);font-weight:700}
 </style>
 
-<div class="spam-pipe">
-  <div class="pnode">
-    <div class="cap">Email</div>
-    <div class="email-txt">claim your<br>free prize</div>
-  </div>
-  <div class="parrow">→</div>
-  <div class="pnode">
-    <div class="cap">One-hot / word</div>
-    <div class="oh-grid">
-      <div></div><div class="hl">claim</div><div class="hl">your</div><div class="hl">free</div><div class="hl">prize</div><div class="hl">meet</div><div class="hl">notes</div>
-      <div class="rl">claim</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c">0</div>
-      <div class="rl">your</div><div class="c">0</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c">0</div>
-      <div class="rl">free</div><div class="c">0</div><div class="c">0</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div><div class="c">0</div>
-      <div class="rl">prize</div><div class="c">0</div><div class="c">0</div><div class="c">0</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div>
+<div class="rgbdemo" data-prevent-swipe>
+  <svg id="rgb-cube" viewBox="0 0 350 290" aria-label="RGB colour cube"></svg>
+  <div class="panel">
+    <div class="sliders">
+      <span class="chan r">R</span><input class="r" type="range" min="0" max="255" value="214" id="rgb-r"><span class="num" id="rgb-rv">214</span>
+      <span class="chan g">G</span><input class="g" type="range" min="0" max="255" value="93"  id="rgb-g"><span class="num" id="rgb-gv">93</span>
+      <span class="chan b">B</span><input class="b" type="range" min="0" max="255" value="60"  id="rgb-b"><span class="num" id="rgb-bv">60</span>
+    </div>
+    <div class="readout">
+      <div class="swatch" id="rgb-swatch"></div>
+      <div>
+        <div class="vec" id="rgb-vec">[214, 93, 60]</div>
+        <div class="hex" id="rgb-hex">#D65D3C</div>
+      </div>
     </div>
   </div>
-  <div class="parrow">Σ</div>
-  <div class="pnode">
-    <div class="cap">Bag-of-words</div>
-    <div class="vec"><div class="c on">1</div><div class="c on">1</div><div class="c on">1</div><div class="c on">1</div><div class="c">0</div><div class="c">0</div></div>
-    <div class="subcap">sparse · mostly 0</div>
-  </div>
-  <div class="parrow">→</div>
-  <div class="pnode">
-    <div class="cap">Classifier</div>
-    <div class="gauge">P(spam)=0.94</div>
-    <div class="verdict">🚫 spam</div>
-  </div>
 </div>
+
+<div class="rgbnear" id="rgb-near"></div>
+
+<script>
+(function () {
+  var REF = [
+    {name:"tomato",   v:[255, 99, 71]},
+    {name:"gold",     v:[255,215,  0]},
+    {name:"forest",   v:[ 34,139, 34]},
+    {name:"sky",      v:[135,206,235]},
+    {name:"plum",     v:[221,160,221]},
+    {name:"charcoal", v:[ 54, 69, 79]}
+  ];
+  var AXCOL = ["#C62828", "#2E7D32", "#1565C0"];
+  var S = 145, CX = 175, CY = 146, D = 3.4;   // scale, centre, viewing distance
+  var yaw = 0.62, pitch = 0.32;
+
+  // 8 cube corners, and the 12 edges joining corners that differ on one channel.
+  var CORNERS = [], EDGES = [];
+  [0,255].forEach(function (r) { [0,255].forEach(function (g) { [0,255].forEach(function (b) {
+    CORNERS.push([r,g,b]);
+  }); }); });
+  CORNERS.forEach(function (a, i) {
+    CORNERS.forEach(function (b, j) {
+      if (j <= i) return;
+      var diff = 0;
+      for (var k = 0; k < 3; k++) if (a[k] !== b[k]) diff++;
+      if (diff === 1) EDGES.push([i, j]);
+    });
+  });
+
+  function proj(p) {                       // [r,g,b] 0-255 → screen x/y plus depth
+    var x = p[0]/255 - 0.5, y = p[1]/255 - 0.5, z = p[2]/255 - 0.5;
+    var ca = Math.cos(yaw), sa = Math.sin(yaw);
+    var x1 =  x*ca + z*sa, z1 = -x*sa + z*ca;
+    var cb = Math.cos(pitch), sb = Math.sin(pitch);
+    var y1 = y*cb - z1*sb, z2 = y*sb + z1*cb;
+    var k = D / (D - z2);
+    return { x: CX + x1*S*k, y: CY - y1*S*k, z: z2 };
+  }
+  function rgb(v){ return "rgb(" + v[0] + "," + v[1] + "," + v[2] + ")"; }
+  function hex(n){ return n.toString(16).padStart(2,"0").toUpperCase(); }
+  function dist(a,b){
+    var dr=a[0]-b[0], dg=a[1]-b[1], db=a[2]-b[2];
+    return Math.sqrt(dr*dr + dg*dg + db*db);
+  }
+  function line(a, b, col, w, extra) {
+    return '<line x1="'+a.x.toFixed(1)+'" y1="'+a.y.toFixed(1)+
+           '" x2="'+b.x.toFixed(1)+'" y2="'+b.y.toFixed(1)+
+           '" stroke="'+col+'" stroke-width="'+w+'" stroke-linecap="round" '+(extra||"")+'/>';
+  }
+  function dot(p, r, fill, stroke, sw) {
+    return '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+r+
+           '" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+sw+'"/>';
+  }
+
+  function init() {
+    var svg = document.getElementById("rgb-cube");
+    if (!svg || svg.dataset.ready) return;
+    svg.dataset.ready = "1";
+
+    var ids    = ["r","g","b"].map(function (c) { return document.getElementById("rgb-"+c); });
+    var nums   = ["r","g","b"].map(function (c) { return document.getElementById("rgb-"+c+"v"); });
+    var swatch = document.getElementById("rgb-swatch");
+    var vecEl  = document.getElementById("rgb-vec");
+    var hexEl  = document.getElementById("rgb-hex");
+    var nearEl = document.getElementById("rgb-near");
+
+    nearEl.innerHTML = REF.map(function (c) {
+      return '<div class="chip">' +
+             '<div class="dot" style="background:' + rgb(c.v) + '"></div>' +
+             '<div class="nm">' + c.name + '</div>' +
+             '<div class="d">0</div></div>';
+    }).join("");
+    var chips = Array.prototype.slice.call(nearEl.children);
+
+    function draw(v, nearest) {
+      var P = CORNERS.map(proj);
+      var items = [];                       // {z, s} — sorted back-to-front before drawing
+
+      EDGES.forEach(function (e) {
+        var a = CORNERS[e[0]], b = CORNERS[e[1]], pa = P[e[0]], pb = P[e[1]];
+        var z = (pa.z + pb.z) / 2;
+        var far = (a[0]+a[1]+a[2] === 0) ? b : (b[0]+b[1]+b[2] === 0) ? a : null;
+        var col = "#8A938C", w = 1;
+        if (far) { col = AXCOL[far.indexOf(255)]; w = 2.6; }   // the three axes from black
+        var op = (0.25 + 0.6 * (z + 0.9) / 1.8).toFixed(2);
+        items.push({ z: z, s: line(pa, pb, col, w, 'opacity="' + op + '"') });
+      });
+
+      // Where the colour sits: walk R, then G, then B out from the black corner.
+      var steps = [[0,0,0], [v[0],0,0], [v[0],v[1],0], [v[0],v[1],v[2]]].map(proj);
+      for (var i = 0; i < 3; i++) {
+        items.push({ z: (steps[i].z + steps[i+1].z) / 2 + 0.001,
+                     s: line(steps[i], steps[i+1], AXCOL[i], 2.2,
+                             'stroke-dasharray="5 3" opacity="0.95"') });
+      }
+
+      CORNERS.forEach(function (c, i) {
+        items.push({ z: P[i].z, s: dot(P[i], 3.2, rgb(c), "#7A827C", 0.8) });
+      });
+      REF.forEach(function (c, i) {
+        var p = proj(c.v);
+        items.push({ z: p.z, s: dot(p, i === nearest ? 6 : 4.5, rgb(c.v),
+                                    i === nearest ? "#A8802E" : "#FFFFFF",
+                                    i === nearest ? 2.2 : 1.5) });
+      });
+
+      var pv = steps[3], pn = proj(REF[nearest].v);
+      items.push({ z: (pv.z + pn.z) / 2,
+                   s: line(pv, pn, "#A8802E", 1.4, 'stroke-dasharray="2 3" opacity="0.85"') });
+      items.push({ z: pv.z + 0.002, s: dot(pv, 9, rgb(v), "#232A26", 2) });
+
+      items.sort(function (a, b) { return a.z - b.z; });
+      svg.innerHTML = items.map(function (it) { return it.s; }).join("");
+    }
+
+    function update() {
+      var v = ids.map(function (el) { return +el.value; });
+      nums.forEach(function (el, i) { el.textContent = v[i]; });
+      swatch.style.background = rgb(v);
+      vecEl.textContent = "[" + v.join(", ") + "]";
+      hexEl.textContent = "#" + v.map(hex).join("");
+      var ds = REF.map(function (c) { return dist(v, c.v); });
+      var best = ds.indexOf(Math.min.apply(null, ds));
+      chips.forEach(function (chip, i) {
+        chip.classList.toggle("near", i === best);
+        chip.lastElementChild.textContent = ds[i].toFixed(0);
+      });
+      draw(v, best);
+    }
+    ids.forEach(function (el) { el.addEventListener("input", update); });
+
+    var dragging = false, lastX = 0, lastY = 0;
+    svg.addEventListener("pointerdown", function (e) {
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+      if (svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    svg.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      yaw   += (e.clientX - lastX) * 0.011;
+      pitch += (e.clientY - lastY) * 0.011;
+      pitch  = Math.max(-1.35, Math.min(1.35, pitch));
+      lastX = e.clientX; lastY = e.clientY;
+      update();
+    });
+    ["pointerup","pointercancel"].forEach(function (ev) {
+      svg.addEventListener(ev, function () { dragging = false; });
+    });
+
+    update();
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
 ```
 
-::: {.fragment .smaller}
-**Limitation:** the vector is as long as the whole vocabulary (tens of thousands of positions), and *"free"* and *"complimentary"* are two unrelated positions — the representation does not record that they *mean* the same.
+The dashed path is the vector: **R along red, then G along green, then B along blue**. The number under each name is the distance from your colour to that colour — **close in the space = similar colour**. Word embeddings work the same way, with hundreds of numbers instead of three.
+
+
+## Simple count-based embedding {.smaller}
+
+When we cannot tell the machine meaning of each word, how can it "encode" meaning? 
+
+::: {.callout-important title="The distributional principle"}
+The answer is by studying **Co-occurrence**. “You shall know a word by the company it keeps!” (Firth, 1957, p. 11).
 :::
 
-## Static embeddings {.smaller}
+::: {style="font-size:0.8em"}
+| Left context | Node | Right context |
+|---:|:--:|:---|
+| is traditionally followed by | **cherry** | pie, a traditional dessert |
+| often mixed, such as | **strawberry** | rhubarb pie. Apple pie |
+| computer peripherals and personal | **digital** | assistants. These devices usually |
+| a computer. This includes | **information** | available on the internet |
+:::
 
-An **embedding** is a *learned* **dense** vector for each word — trained so that words with **similar meaning sit close together** (Latent Semantic Analysis, Word2Vec). 
 
-Look up each word, **average** them → the email's vector.
+**Count, by hand:** how often does each of `a`, `computer` and `pie` appear in each of those four windows?
+
+::: {style="font-size:0.8em"}
+|  | a | computer | pie |
+|---|:--:|:--:|:--:|
+| cherry | 1 | 0 | 1 |
+| strawberry | 0 | 0 | 2 |
+| digital | 0 | 1 | 0 |
+| information | 1 | 1 | 0 |
+::: 
+
+Each row **is** that word's vector: *cherry* = `[1, 0, 1]`. 
+
+## The same counts, from a real corpus {.smaller}
+
+Now count every occurrence in Wikipedia, instead of one window each. Six of the columns (Jurafsky & Martin, 2026, p. 103):
+
+|  | aardvark | … | computer | data | result | pie | sugar | … |
+|---|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| cherry | 0 | … | 2 | 8 | 9 | **442** | **25** | … |
+| strawberry | 0 | … | 0 | 0 | 1 | **60** | **19** | … |
+| digital | 0 | … | **1670** | **1683** | 85 | 5 | 4 | … |
+| information | 0 | … | **3325** | **3982** | 378 | 5 | 13 | … |
+
+*cherry* and *strawberry* have similar rows. *digital* and *information* have similar rows. Nobody wrote a dictionary and nobody labelled anything — this came out of counting.
+
+**The cost:** one column for every word in the vocabulary, so 10,000 to 50,000 columns, and almost every cell is 0.
 
 ```{=html}
-<div class="spam-pipe">
-  <div class="pnode">
-    <div class="cap">Email</div>
-    <div class="email-txt">claim your<br>free prize</div>
-  </div>
-  <div class="parrow">→</div>
-  <div class="pnode">
-    <div class="cap">Embedding lookup</div>
-    <div class="oh-grid" style="grid-template-columns:46px repeat(4,26px)">
-      <div class="rl">claim</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 62%,transparent)">.8</div><div class="fcell">.1</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 32%,transparent)">-.3</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 44%,transparent)">.6</div>
-      <div class="rl">your</div><div class="fcell">.0</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 18%,transparent)">.2</div><div class="fcell">.1</div><div class="fcell">-.1</div>
-      <div class="rl">free</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 68%,transparent)">.9</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 24%,transparent)">-.2</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 42%,transparent)">-.4</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 52%,transparent)">.7</div>
-      <div class="rl">prize</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 52%,transparent)">.7</div><div class="fcell">.0</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 24%,transparent)">-.2</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 40%,transparent)">.5</div>
-    </div>
-    <div class="subcap">4 dims shown (really ~300)</div>
-  </div>
-  <div class="parrow">⌀</div>
-  <div class="pnode">
-    <div class="cap">Avg → doc vector</div>
-    <div class="vec"><div class="fcell" style="background:color-mix(in srgb,var(--accent) 48%,transparent)">.6</div><div class="fcell">.0</div><div class="fcell" style="background:color-mix(in srgb,var(--primary) 28%,transparent)">-.2</div><div class="fcell" style="background:color-mix(in srgb,var(--accent) 36%,transparent)">.4</div></div>
-    <div class="subcap">dense · short</div>
-  </div>
-  <div class="parrow">→</div>
-  <div class="pnode">
-    <div class="cap">Classifier</div>
-    <div class="gauge">P(spam)=0.91</div>
-    <div class="verdict">🚫 spam</div>
-  </div>
+<style>
+.vecstrip{display:flex;gap:2px;flex-wrap:nowrap;justify-content:center;margin:.45rem 0 .15rem}
+.vecstrip .c{width:12px;height:12px;flex:0 0 auto;border-radius:2px;border:1px solid var(--primary-80)}
+.vecstrip .c.on{background:var(--accent);border-color:var(--accent)}
+.figcap{font-size:.7em;color:var(--ink-soft);font-style:italic;text-align:center}
+.cosfig{display:flex;justify-content:center;margin:.2rem 0 0}
+.cosfig svg{width:min(100%,360px);height:auto}
+.pushpull{display:flex;flex-direction:column;gap:.3rem;align-items:center;margin:.55rem 0;font-size:.9em}
+.pushpull .pp-row{display:flex;align-items:center;gap:.55rem}
+.pushpull .pp-w{font-family:ui-monospace,Menlo,monospace;background:var(--surface);
+  border:1.5px solid var(--primary-70);border-radius:.35rem;padding:.1rem .5rem;min-width:6rem;text-align:center}
+.pushpull .pp-arr{font-weight:700;letter-spacing:.12em}
+.pushpull .pp-yes{color:var(--accent)}
+.pushpull .pp-no{color:var(--warn)}
+.pushpull .pp-lab{font-size:.82em;color:var(--ink-soft);font-style:italic;min-width:7.5rem}
+</style>
+
+<div class="vecstrip">
+  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
+  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
+  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
+  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
+  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
 </div>
+<div class="figcap">one row of the real matrix — 60 of its ~50,000 columns</div>
 ```
 
-::: {.fragment .smaller}
-**Improvement:** *"free"* and *"complimentary"* now have **nearby** vectors, so the model generalises to words it never saw labelled. It **still** ignores word order, because it is an average. Next: **context**.
-:::
+Counting words inside a document, rather than around a word, gives the **bag-of-words** representation. 
 
-## The limit of Static embeddings
+## How close are two words? {.smaller}
 
-Meaning of a word depends on order and context:
+::::: {.columns}
+:::: {.column width="52%"}
 
-- "your account is **free** of charge" ✅ not spam
-- "claim your **FREE** prize now" 🚫 spam
+Each row is a vector, so we can ask how close two of them are. The usual measure is **cosine similarity**: the size of the *angle* between two rows — the angle, not the size of the counts, so a frequent word does not come out similar to everything.
 
-The same word gives opposite evidence in the two sentences. There are two reasons:
+|  | pie | data | computer |
+|---|:--:|:--:|:--:|
+| cherry | 442 | 8 | 2 |
+| digital | 5 | 1683 | 1670 |
+| information | 5 | 3982 | 3325 |
 
-- Many words are polysemous or homographic
-- Isolated word does not adds up to the meaning of the whole
-  - idioms such as *kick the bucket*
+::::
+:::: {.column width="48%"}
 
+```{=html}
+<div class="cosfig">
+<svg viewBox="0 0 470 200" role="img" aria-label="Vectors for cherry, digital and information plotted on pie against computer">
+  <line x1="40" y1="150" x2="440" y2="150" style="stroke:var(--ink-soft);stroke-width:1"/>
+  <line x1="40" y1="150" x2="40" y2="18" style="stroke:var(--ink-soft);stroke-width:1"/>
+  <line x1="40" y1="150" x2="58" y2="30" style="stroke:var(--accent);stroke-width:2.5"/>
+  <line x1="40" y1="150" x2="390" y2="88" style="stroke:var(--primary);stroke-width:2.5"/>
+  <line x1="40" y1="150" x2="390" y2="112" style="stroke:var(--primary);stroke-width:2.5"/>
+  <text x="62" y="27" style="font-size:12px;fill:var(--ink)">cherry</text>
+  <text x="396" y="86" style="font-size:12px;fill:var(--ink)">digital</text>
+  <text x="396" y="118" style="font-size:12px;fill:var(--ink)">information</text>
+  <text x="6" y="14" style="font-size:10px;fill:var(--ink-soft)">pie</text>
+  <text x="386" y="168" style="font-size:10px;fill:var(--ink-soft)">computer</text>
+</svg>
+</div>
+<div class="figcap">Rough — the angles are widened so they are visible on screen.</div>
+```
+<br>
 
-## Transformer architecture
+| angle between the two rows | cosine |
+|---|:--:|
+| 0° · pointing the same way | **1** |
+| 90° · sharing nothing | **0** |
+| 180° · pointing opposite ways | **−1** |
 
-- **Attention:** every word decides *which other words are relevant to it*
-- Output: **context-sensitive** representations of each word and a document
+::::
+:::::
 
 . . .
 
-Take the two *free*s from the last slide:
+With counts you only ever see 0 to 1, because a count is never negative. −1 becomes possible on the next slide, where the numbers themselves can be negative.
+
+
+cosine(*cherry*, *information*) = **0.018** · cosine(*digital*, *information*) = **0.996** — the number behind any claim that two words, two sentences or two texts are "similar".
+
+## word2vec: predict instead of count {.smaller}
+
+Instead of counting how often *jam* occurs near *apricot*, train a small classifier on one question: **is *jam* likely to occur near *apricot*?**
+
+. . .
+
+- **Running text already holds the answers.** A word that really did occur nearby is a yes; a word drawn at random is a no. Nobody labels anything. This is called **self-supervision**, and it is how LLMs are trained too.
+- **The classifier is not the point.** We keep the numbers it adjusted along the way. Those numbers are the embedding.
+- **The result is short.** 50 to 1,000 numbers per word, instead of 50,000 counts. They are real numbers, they can be negative, and no single one of them has a name you can read off.
+
+. . .
+ 
+*word2vec* is the software package; *skip-gram with negative sampling* is the algorithm inside it (Jurafsky & Martin, 2026, pp. 105–110; step-by-step derivation in Goldberg & Levy, 2014). Both produce **static** embeddings: one fixed vector per word, whatever sentence it appears in.
+
+## What word2vec actually adjusts {.smaller}
+
+One target word, and the two words on each side of it:
+
+```
+...  your  [ account   is   free   of   charge ]  a  standard  fee ...
+                c1     c2    w     c3     c4
+```
+
+| really occurred nearby → **yes** | drawn at random → **no** |
+|---|---|
+| (free, account) | (free, Tolstoy) |
+| (free, is) | (free, aardvark) |
+| (free, of) | (free, spreadsheet) |
+| (free, charge) | (free, monsoon) |
+
+. . .
+
+```{=html}
+<div class="pushpull">
+  <div class="pp-row"><span class="pp-w">free</span><span class="pp-arr pp-yes">→&nbsp;&nbsp;←</span><span class="pp-w">charge</span><span class="pp-lab">moved closer</span></div>
+  <div class="pp-row"><span class="pp-w">free</span><span class="pp-arr pp-no">←&nbsp;&nbsp;→</span><span class="pp-w">Tolstoy</span><span class="pp-lab">moved apart</span></div>
+</div>
+```
+
+Each pass moves *free* a little closer to the words that really occurred near it, and a little further from the random ones. Run that over billions of words, and words that occur near the same other words end up close together in the space.
+
+. . .
+
+Still **one vector per word form**. *free* in "your account is free of charge" and *FREE* in "claim your FREE prize now" get the same 300 numbers.
+
+
+## Attention resolves the two *free*s {.smaller}
+
+The video called this step attention. Here is what it does to the pair from the last slide:
 
 | Sentence | *free* attends most to | Resulting sense |
 |---|---|---|
 | "your account is **free** of charge" | *account*, *charge* | banking, benign |
 | "claim your **FREE** prize now" | *claim*, *prize*, *now* | promotional |
 
-. . .
 
 The same word form now has **two different vectors**, because the surrounding words differ. Static embeddings could not do this; there was only ever one vector for *free*.
+
 
 ## Why this matters for you {.smaller}
 
 This is the whole reason an LLM can annotate at all.
 
-. . .
-
 The categories you care about — *is this stance hedged?*, *is this move a Gap or a Purpose?*, *what CEFR level is this?* — are **not** properties of the words in isolation. They are properties of words **in context**.
 
-. . .
-
 A bag-of-words model cannot represent that. A transformer can.
-
-. . .
 
 ::: {.callout-warning}
 Being able to represent context is not the same as producing correct labels. Measuring that difference is what the rest of the week is about.
 :::
 
-## How LLMs are trained {.smaller}
+## The paradigm shift {.smaller}
 
-An LLM is trained by **self-supervised pretraining** on huge amounts of text:
+Classic NLP **consumed** annotation to *build* models.
 
-- The task: **predict the next word**, over and over, on billions of sentences.
-- No hand-labelling is needed, because the next word in the text is already the correct answer.
+Now the model can **produce** annotation, so the direction is reversed:
 
-Producing natural language is just **that same next-word prediction, run forward** — which is why it *sounds* fluent.
-
-## Autoregressive model = the LLM {.smaller}
-
-Predicts the token at time *T* given everything before it (*T−1, T−2, …*).
-
-$ P(w_T \mid w_1, w_2, \dots, w_{T-1}) $
+**before:** humans annotate → train the model
+**now:** the model annotates → *and who checks it?*
 
 
-Run that forward, one token at a time → fluent, coherent text.
-That is exactly what a chat LLM does when it answers you.
+## What people have already done with this {.smaller}
+
+Historically each task had its own model — a POS tagger, an NER model, a parser. Now one model does many tasks, because you change the **request** rather than the model [(Liu et al., 2023)](https://doi.org/10.1145/3560815).
+
+That is not a promise. It is a research literature, and you can read it:
+
+| Study | What it annotated | Track you could pick |
+|---|---|---|
+| Gilardi et al. (2023), *PNAS* | text annotation vs. crowd workers — ~25 points better, ~$0.003 per annotation | (the cost argument) |
+| Yu et al. (2024), *IJCL* | apology **components** — a function, not a form | pragmatics |
+| Kim & Lu (2024), *JEAP* | rhetorical **moves** in article abstracts | RAAMove · CaRS-50 |
+| Mizumoto (2025), *SSLA* | L2 **errors** — *r* = .94 with human raters, F1 = .95 | AutoErrorAnalyzer |
+| Yamashita (2024), *RMAL* | essay **scores** | ICNALE GRA |
+
+Three of these are on your readings page. Four of them do a task you could choose for your own project.
+
+## What an LLM lets you do {.smaller}
+
+Three things, and they are the reason the rest of the week is worth the effort.
 
 
-## One model, many classic tasks {.smaller}
+1. It can label categories that **depend on context**. Most of the categories linguists work with are of that kind, and a bag-of-words model could never represent them.
 
-Historically, **each task had its own model** — POS tagger, NER model, parser, coreference model.
+2. **One model, many tasks.** A new question needs a new prompt, not a new trained model and a new annotated training set.
 
-With scale + pretraining + **prompting**, **one model can do many tasks**.
+3. Careful annotation — expert time, training, double-coding — used to need more resources than a small project has. A five-day project can now attempt it.
 
-
-## Summary {.smaller}
-
-An **LLM** is:
-
-- a **statistical machine-learning model** — it learns patterns from data,
-- of the **autoregressive** kind — it predicts the next token given the previous sequence,
-- built on the **transformer** architecture — attention lets it read context,
-- trained by **next-word prediction** on huge amounts of text.
+None of that says the labels are **correct**. That is the next question, and it is the rest of the course.
 
 
 # 5 · LLM follows language instructions
@@ -389,26 +656,29 @@ Let's **try it** — no code:
 
 # 6 · But — we need evaluation
 
-## The inversion {.smaller}
+## …and where it did not work {.smaller}
 
-Classic NLP **consumed** annotation to *build* models.
+The same literature reports the other half.
 
-Now the model can **produce** annotation, so the direction is reversed:
-
-**before:** humans annotate → train the model
-**now:** the model annotates → *and who checks it?*
-
-## Trained to *sound* right, not *be* right {.smaller}
-
-An LLM is optimized to produce **fluent, plausible** text.
+- **Curry, Baker & Brookes (2024)**, *Applied Corpus Linguistics* — passable at grouping keywords, but **poor at concordance analysis**: it made false inferences, and it altered the data it was given.
 
 
-Plausible is **not** the same as **correct**. So we check its labels against a **human gold standard**, using NLP's own metrics:
+- **Ziems et al. (2024)**, *Computational Linguistics* — 13 models across 25 benchmarks. It scores lower than trained supervised models on classification, and higher than crowd workers on open-ended coding. **Fair, not expert.**
 
-- **inter-annotator agreement** (percent + Cohen's κ)
-- **precision / recall / F1**, **confusion matrix**
 
-We'll cover these on Day 2.
+- **Crosthwaite & Baisa (2023)** — with a corpus you can say which texts your evidence came from. With an LLM you cannot.
+
+
+So: same tool, opposite results, depending on the task. The only way to know which case you are in is to **measure it**.
+
+## *Sounding* right is not *being* right {.smaller}
+
+An LLM essentially learns to predict next **plausible** word.
+
+Plausible is **not** the same as **correct** — which is exactly what Curry et al. found when the output read well and the analysis was wrong. 
+
+That's why we still need NLP evaluation.
+
 
 ## What this course covers {.smaller}
 
@@ -417,6 +687,9 @@ This course is the **evaluation half of NLP, applied to LLMs.**
 :::
 
 We do not cover the *training* part of NLP. The **evaluation** part provides exactly the rigour an LLM's outputs need, and that is what you will learn to run this week.
+
+- **inter-annotator agreement** (percent + Cohen's κ)
+- **precision / recall / F1**, **confusion matrix**
 
 
 # 7 · Discussion 

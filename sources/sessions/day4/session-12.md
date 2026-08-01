@@ -37,15 +37,16 @@ No new reading for this session — see the Day 4 reading (Abdurahman et al., 20
 
 - Notebook: [`day4_pipeline_and_sampling.ipynb`](../../notebooks/day4_pipeline_and_sampling.ipynb) — sample a balanced subset, then hand off to the project template —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb)
-- Project notebook: [`mini_project.ipynb`](https://github.com/egumasa/lda2-final-template/blob/main/notebooks/mini_project.ipynb) —
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/lda2-final-template/blob/main/notebooks/mini_project.ipynb)
+- Project notebooks: [`lda2-final-template/notebooks/`](https://github.com/egumasa/lda2-final-template/tree/main/notebooks) —
+  open them from your group's Drive folder, not from GitHub, so you are working on your own copy.
 
 <!-- Slides: [Session 12 slides](../../slides/slides-session-12.html){target="_blank"} -->
 
 ## Mini-project
 
-Work in `notebooks/mini_project.ipynb` of the
-[project template](https://github.com/egumasa/lda2-final-template) — **steps 1–3**.
+Work in the [project template](https://github.com/egumasa/lda2-final-template) —
+**`01_build_pool_<track>`, `02_sample` and `03_annotate`**. None of the three calls the model,
+so nothing here waits on the `PLAN.md` gate.
 
 ::: {.callout-important}
 ## Your adjudicated gold is what the model gets scored against
@@ -55,7 +56,8 @@ why the model missed something.
 :::
 
 ::: {.callout-tip}
-## Keep the baseline small
-One round at `N_PER_CLASS = 7` is ~40 model calls and several minutes of enforced pacing. Use
-`N_PER_CLASS = 2` while iterating; save the full-size run for the one you freeze.
+## dev is the fast set
+One round at full size is ~40 model calls and several minutes of enforced pacing. That is what
+the dev/test split at the end of `03_annotate` is for: you iterate against the dev half, a
+dozen or so items, and your sample stays at full size throughout.
 :::

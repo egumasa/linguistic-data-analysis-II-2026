@@ -213,6 +213,7 @@
 <p>Picks up <strong>Part B</strong> of the Day 1 notebook, then forms project groups.</p>
 <ol type="1">
 <li>From a document to sentences — segmentation <em>without</em> and <em>with</em> a model</li>
+<li>What else the model knows about words — Session 1’s vectors, as code</li>
 <li>Run the model over every sentence — <code>for</code>, <code>if</code>, and a function</li>
 <li>Your turn — guided Python practice + self-check</li>
 <li>Mini-project setup — form groups and pick a track</li>
@@ -223,6 +224,7 @@
 <p>By the end of this session, you will be able to:</p>
 <ul>
 <li>Split a paragraph into sentences two ways — naive <code>.split(".")</code> and a spaCy sentencizer — and explain why the naive rule fails.</li>
+<li>Look up a word’s vector, compare two words, and show that one word form gets only one vector.</li>
 <li>Use a <code>for</code> loop, an <code>if</code>, and a function (<code>def</code>) to run the model over a list of sentences.</li>
 <li>Complete short Python exercises and confirm them with the self-check.</li>
 <li>Form a project group and pick a mini-project track.</li>
@@ -309,12 +311,118 @@
 <span id="cb3-4"><a></a><span class="cf">for</span> s <span class="kw">in</span> sentences:</span>
 <span id="cb3-5"><a></a>    <span class="bu">print</span>(<span class="bu">repr</span>(s.text))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Compare to the naive split: <em>Dr.&nbsp;Smith</em>, <em>e.g.</em>, and <em>3.14</em> stay intact. <strong>You now have a real list of sentences</strong> — exactly what step 3 loops over.</p>
+<p>Compare to the naive split: <em>Dr.&nbsp;Smith</em>, <em>e.g.</em>, and <em>3.14</em> stay intact. <strong>You now have a real list of sentences</strong> — exactly what section 4 loops over.</p>
+</div>
+</section></section>
+<section>
+<section id="what-else-the-model-knows-about-words" class="title-slide slide level1 center">
+<h1>3 · What else the model knows about words</h1>
+
+</section>
+<section id="one-word-three-hundred-numbers" class="slide level2 smaller">
+<h2>One word, three hundred numbers</h2>
+<p>In Session 1 you saw that a model turns each word into a long list of numbers. You can look at that list.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>word <span class="op">=</span> nlp_vec(<span class="st">"suggest"</span>)[<span class="dv">0</span>]      <span class="co"># read one word; [0] takes the first token</span></span>
+<span id="cb4-2"><a></a><span class="bu">print</span>(<span class="st">"how many numbers:"</span>, word.vector.shape)</span>
+<span id="cb4-3"><a></a><span class="bu">print</span>(<span class="st">"the first eight: "</span>, word.vector[:<span class="dv">8</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>how many numbers: (300,)
+the first eight:  [-0.126 -0.11  -0.61   0.105 -0.272  0.302 -0.014 -0.121]</code></pre>
+<p>Three numbers placed a colour in the Session 1 colour cube. It takes <strong>three hundred</strong> to place a word.</p>
+</div>
+</section>
+<section id="why-this-matters-2" class="slide level2 smaller">
+<h2>Why this matters</h2>
+<p>Session 1 claimed that words with similar meanings end up with similar numbers. That claim is <strong>checkable</strong>, and you are about to check it.</p>
+<div class="fragment">
+<p>It matters because the same claim has a limit, and the limit is the reason attention exists. Every category you annotate this week — a CEFR level, a rhetorical move, a hedged claim — depends on <strong>context</strong>. Finding where these vectors stop is what makes the rest of the week necessary.</p>
+</div>
+</section>
+<section id="lets-try-how-close-are-two-words" class="slide level2 smaller">
+<h2>🧪 Let’s try — how close are two words?</h2>
+<p><code>.similarity(...)</code> compares two vectors: the higher the number, the closer the words sit.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="bu">print</span>(<span class="st">"suggest / indicate:"</span>, nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"indicate"</span>)))</span>
+<span id="cb6-2"><a></a><span class="bu">print</span>(<span class="st">"suggest / banana:  "</span>, nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"banana"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>suggest / indicate: 0.672
+suggest / banana:   0.168</code></pre>
+<p><strong>✏️ Your turn</strong> — swap in two words from your own research area.</p>
+</div>
+</section>
+<section id="lets-try-a-words-neighbours" class="slide level2 smaller">
+<h2>🧪 Let’s try — a word’s neighbours</h2>
+<p>Rather than guessing pairs, ask which words sit closest:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="cf">for</span> neighbour <span class="kw">in</span> nearest(<span class="st">"perhaps"</span>):   <span class="co"># ✏️ your word here</span></span>
+<span id="cb8-2"><a></a>    <span class="bu">print</span>(neighbour)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>('possibly', 0.859)    ('might', 0.82)
+('probably', 0.839)    ('rather', 0.817)
+('certainly', 0.827)   ('though', 0.816)
+('although', 0.825)    ('even', 0.812)
+('however', 0.822)     ('maybe', 0.8)</code></pre>
+<p>Nothing told the model these words hedge a claim. They sit together because they <strong>turn up in the same positions in text</strong>.</p>
+</div>
+</section>
+<section id="now-try-nearestcorpus" class="slide level2 smaller">
+<h2>Now try <code>nearest("corpus")</code></h2>
+<pre><code>('habeas', 0.59)     ('textual', 0.534)
+('christi', 0.572)   ('writ', 0.485)
+('corpora', 0.566)   ('habeus', 0.465)</code></pre>
+<div class="fragment">
+<p>The legal sense, the religious sense and the linguistic sense are <strong>collected into one vector</strong>, because there is only one vector available for the spelling.</p>
+<p><code>nearest("hedge")</code> does the same with garden hedges and financial hedging.</p>
+</div>
+</section>
+<section id="lets-try-where-these-vectors-stop" class="slide level2 smaller">
+<h2>🧪 Let’s try — where these vectors stop</h2>
+<p>Session 1 used <em>free</em> in two sentences that mean different things:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>banking <span class="op">=</span> nlp_vec(<span class="st">"your account is free of charge"</span>)</span>
+<span id="cb11-2"><a></a>promo   <span class="op">=</span> nlp_vec(<span class="st">"claim your free prize now"</span>)</span>
+<span id="cb11-3"><a></a></span>
+<span id="cb11-4"><a></a><span class="bu">print</span>(<span class="st">"similarity:"</span>, banking[<span class="dv">3</span>].similarity(promo[<span class="dv">2</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>similarity: 1.0</code></pre>
+<p>Not merely close — <strong>the same vector</strong>. One vector per word form, looked up the same way every time. That is what <em>static</em> means.</p>
+</div>
+</section>
+<section id="and-word-order-is-gone-too" class="slide level2 smaller">
+<h2>…and word order is gone too</h2>
+<p>A sentence’s vector is the <strong>average</strong> of its words, and an average does not record their order:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="bu">print</span>(nlp_vec(<span class="st">"the dog chased the cat"</span>).similarity(nlp_vec(<span class="st">"the cat chased the dog"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>1.0</code></pre>
+<p>Two sentences with opposite meanings, one score.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>This is the gap Session 1 said attention closes. A model built on these vectors alone cannot represent context; the model behind <code>generate_text(...)</code> can.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-map-of-the-space" class="slide level2 smaller">
+<h2>A map of the space</h2>
+<p><code>map_words([...])</code> flattens 300 numbers onto a page, keeping close vectors close.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>map_words([<span class="st">"perhaps"</span>, <span class="st">"possibly"</span>, <span class="st">"maybe"</span>, <span class="st">"likely"</span>, <span class="st">"presumably"</span>,</span>
+<span id="cb15-2"><a></a>           <span class="st">"suggest"</span>, <span class="st">"indicate"</span>, <span class="st">"demonstrate"</span>, <span class="st">"argue"</span>, <span class="st">"conclude"</span>,</span>
+<span id="cb15-3"><a></a>           <span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"horse"</span>, <span class="st">"rabbit"</span>, <span class="st">"sheep"</span>])   <span class="co"># ✏️ your words</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>The animals land well away from the rest. The hedges and the research verbs <strong>do not split into two groups</strong> — they are all academic prose words, appearing in similar places in similar texts, and that is the only thing these vectors record.</p>
+</div>
+<div class="fragment">
+<p>The map shows what the model separates, which is not always what you want it to separate.</p>
 </div>
 </section></section>
 <section>
 <section id="run-the-model-over-every-sentence" class="title-slide slide level1 center">
-<h1>3 · Run the model over every sentence</h1>
+<h1>4 · Run the model over every sentence</h1>
 
 </section>
 <section id="three-small-pieces-of-python" class="slide level2 smaller">
@@ -328,7 +436,7 @@
 <p>Together: <em>for each sentence → build a prompt → call the model → tidy the reply.</em></p>
 </div>
 </section>
-<section id="why-this-matters-2" class="slide level2">
+<section id="why-this-matters-3" class="slide level2">
 <h2>Why this matters</h2>
 <p>This loop is the first version of the pipeline you assemble later in the week.</p>
 <div class="fragment">
@@ -337,47 +445,30 @@
 </section>
 <section id="lets-try-the-loop" class="slide level2 smaller">
 <h2>🧪 Let’s try — the loop</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:              <span class="co"># repeat everything below for each sentence</span></span>
-<span id="cb4-2"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb4-3"><a></a>    reply <span class="op">=</span> generate_text(prompt).strip()   <span class="co"># .strip() removes stray blank space</span></span>
-<span id="cb4-4"><a></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:                    <span class="co"># the model sometimes says nothing at all</span></span>
-<span id="cb4-5"><a></a>        reply <span class="op">=</span> <span class="st">"(no answer)"</span></span>
-<span id="cb4-6"><a></a>    <span class="bu">print</span>(sentence, <span class="st">"→"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:              <span class="co"># repeat everything below for each sentence</span></span>
+<span id="cb16-2"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb16-3"><a></a>    reply <span class="op">=</span> generate_text(prompt).strip()   <span class="co"># .strip() removes stray blank space</span></span>
+<span id="cb16-4"><a></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:                    <span class="co"># the model sometimes says nothing at all</span></span>
+<span id="cb16-5"><a></a>        reply <span class="op">=</span> <span class="st">"(no answer)"</span></span>
+<span id="cb16-6"><a></a>    <span class="bu">print</span>(sentence, <span class="st">"→"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="lets-try-wrap-it-in-a-function" class="slide level2 smaller">
 <h2>🧪 Let’s try — wrap it in a function</h2>
 <p>Same three steps, packaged so you can reuse them:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> ask(sentence):                     <span class="co"># `def` names a block of steps</span></span>
-<span id="cb5-2"><a></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
-<span id="cb5-3"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb5-4"><a></a>    <span class="cf">return</span> generate_text(prompt).strip()   <span class="co"># `return` gives the answer back</span></span>
-<span id="cb5-5"><a></a></span>
-<span id="cb5-6"><a></a><span class="bu">print</span>(ask(<span class="st">"Despite the rain, the game went ahead."</span>))  <span class="co"># one line does all three steps</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="kw">def</span> ask(sentence):                     <span class="co"># `def` names a block of steps</span></span>
+<span id="cb17-2"><a></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
+<span id="cb17-3"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb17-4"><a></a>    <span class="cf">return</span> generate_text(prompt).strip()   <span class="co"># `return` gives the answer back</span></span>
+<span id="cb17-5"><a></a></span>
+<span id="cb17-6"><a></a><span class="bu">print</span>(ask(<span class="st">"Despite the rain, the game went ahead."</span>))  <span class="co"># one line does all three steps</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now labelling a sentence is just <code>ask(...)</code>.</p>
-</section>
-<section id="one-prediction-one-record" class="slide level2 smaller">
-<h2>One prediction, one record</h2>
-<p>When you label a sentence, keep the result in a small, fixed shape:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>prediction <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"Despite the rain, the game went ahead."</span>, <span class="st">"label"</span>: ask(...)}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>This <code>{id, text, label}</code> <strong>record</strong> — <em>text in → label out</em> — is the <strong>canonical schema</strong> you’ll use every day this week. Every gold set and every model output is just a <strong>list of these</strong>.</p>
-</div>
-</div>
-</div>
+<p>And the result goes back into the <strong>record you already built in Session 2</strong> — <code>{"id": 1, "text": ..., "label": ...}</code> — only now <code>label</code> comes from <code>ask(...)</code> instead of being typed in by hand. Every gold set and every model output this week is a list of those.</p>
 </div>
 </section></section>
 <section>
 <section id="your-turn" class="title-slide slide level1 center">
-<h1>4 · Your turn</h1>
+<h1>5 · Your turn</h1>
 
 </section>
 <section id="guided-practice" class="slide level2 smaller">

@@ -38,7 +38,7 @@ No new reading — Day 5 is project work only (see the [Readings](../../syllabus
 
 ## Mini-project
 
-`notebooks/mini_project.ipynb` — **steps 5–6**, then submission.
+`06_report.ipynb` — error analysis and export — then submission.
 
 - What goes in the bundle, and how to turn it in: [Deliverables](../../final-project/deliverables.md).
 - What earns marks: [Rubric](../../final-project/rubric.md).

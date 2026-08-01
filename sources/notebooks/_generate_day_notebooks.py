@@ -1004,14 +1004,43 @@ def day1():
         'reply = generate_text(prompt)                # send the finished prompt',
         'print("Model says:", reply)')]
 
-    # ---- Part B: segmentation → control flow → practice → project ----
+    # ---- Part B: segmentation → word vectors → control flow → practice → project ----
     cells += [md(
         "## Part B · Corpus Lab — from text to sentences, then practice",
         "",
         "In Part A you called the model once. Here you'll turn a paragraph into individual "
-        "**sentences** (the unit you'll annotate on Day 2), run the model over all of them, "
-        "and then practice the basics on your own. Cells marked **✏️ YOU EDIT** are yours to "
-        "change; run the **self-check** at the end until every line prints ✅.")]
+        "**sentences** (the unit you'll annotate on Day 2), look at how a model stores the "
+        "meaning of a word, run the model over a whole list, and then practice the basics on "
+        "your own. Cells marked **✏️ YOU EDIT** are yours to change; run the **self-check** at "
+        "the end until every line prints ✅.")]
+
+    # The word-vector block in B3 needs a spaCy model that ships with vectors, and the
+    # download is large. Put it FIRST, so it runs while the session opens rather than
+    # inside the 10-minute block it belongs to.
+    #
+    # It MUST be en_core_web_lg, not _md. The md model prunes 684,830 vector keys down to
+    # 20,000 rows, so unrelated words end up sharing one vector — cat and dog are literally
+    # identical in md, as are perhaps/maybe and banana/apple. That would make every
+    # similarity number in this block meaningless, and would wreck the punchline in
+    # particular: "the same word form always gets the same vector" is only interesting if
+    # DIFFERENT words don't also score 1.0. lg keeps 514,157 distinct vectors.
+    cells += [md(
+        "### Run this one now",
+        "",
+        "Section 3 uses an English model that carries a **vector for every word**. It is a "
+        "large file and takes a minute or two to arrive, so start it now and carry on "
+        "reading — it will be ready by the time you need it.")]
+    cells += [code(
+        '#@title 📥 Download the word-vector model — run me now { display-mode: "form" }',
+        _HELPER_NOTE,
+        '!python -m spacy download en_core_web_lg',
+        '',
+        'import importlib, spacy',
+        '# The model was installed after Python started, so refresh the module list',
+        '# before loading it — otherwise the load below may not find it yet.',
+        'importlib.invalidate_caches()',
+        'nlp_vec = spacy.load("en_core_web_lg")',
+        'print("✅ word vectors ready —", f"{nlp_vec.vocab.vectors.shape[0]:,}", "words have one")')]
 
     # B1. Segmentation without a model
     cells += [md(
@@ -1059,9 +1088,199 @@ def day1():
         "matters:** on Day 2 the unit you annotate and feed the LLM is the *sentence* — bad "
         "boundaries mean bad data downstream.")]
 
-    # B3. Control flow: for / if / function
+    # B3. Word vectors — the S1 embedding concept, made runnable. Session 1 asserts three
+    # things on slides (similar words sit close · one word form has only one vector ·
+    # averaging throws word order away); every cell here is a student checking one of them.
     cells += [md(
-        "### 3. Run the model over every sentence — `for`, `if`, and a function",
+        "### 3. What else the model knows about words",
+        "",
+        "In Session 1 you saw that a model turns each word into a long list of numbers, and "
+        "that words with similar meanings end up with similar numbers. Those numbers are not "
+        "hidden — you can look at them.",
+        "",
+        "The pipeline you just used, `nlp`, only knows where sentences end. The one you "
+        "downloaded at the top of Part B, `nlp_vec`, also carries a **vector** for every word "
+        "it knows.")]
+    cells += [code(
+        'word = nlp_vec("suggest")[0]      # read one word; [0] takes the first token',
+        'print("how many numbers:", word.vector.shape)',
+        'print("the first eight: ", word.vector[:8].round(3))   # rounded, to fit on one line')]
+    cells += [md(
+        "Three numbers were enough to place a colour in the Session 1 colour cube. It takes "
+        "three hundred to place a word.")]
+
+    # Claim 1: similar words sit close.
+    cells += [md(
+        "#### Are similar words really close?",
+        "",
+        "`.similarity(...)` compares two vectors and gives a number between 0 and 1: the "
+        "higher it is, the closer the two words sit. Compare a pair that share a meaning "
+        "with a pair that do not.")]
+    cells += [md("**✏️ YOU EDIT** — swap in two words from your own research area and re-run.")]
+    cells += [code(
+        'print("suggest / indicate:", round(nlp_vec("suggest").similarity(nlp_vec("indicate")), 3))',
+        'print("suggest / banana:  ", round(nlp_vec("suggest").similarity(nlp_vec("banana")), 3))')]
+
+    cells += [md(
+        "Instead of guessing pairs, you can ask which words sit closest to a given one. "
+        "Run the helper, then try your own word.")]
+    cells += [code(
+        '#@title 🔧 Helper: nearest(word) → the closest words { display-mode: "form" }',
+        _HELPER_NOTE,
+        'import numpy',
+        '',
+        '',
+        'def nearest(word: str, n: int = 10) -> list[tuple[str, float]]:',
+        '    """The n words whose vectors sit closest to `word`.',
+        '',
+        '    Args:',
+        '        word: the word to look up.',
+        '        n: how many neighbours to return.',
+        '',
+        '    Returns:',
+        '        A list of (word, closeness) pairs, closest first. Empty if the model',
+        '        has never seen the word.',
+        '',
+        '    Example:',
+        '        >>> nearest("hedge", n=3)',
+        '    """',
+        '    entry = nlp_vec.vocab[word]',
+        '    if not entry.has_vector:                 # nothing to compare against',
+        '        print(f"{word!r} is not in this model\'s vocabulary.")',
+        '        return []',
+        '    # most_similar wants a table of rows, so hand it a table with one row in it.',
+        '    one_row = entry.vector.reshape(1, -1)',
+        '    # Ask for far more candidates than we need: the table stores several spellings',
+        '    # of the same word (suggest, Suggest, SUGGEST), and we keep only one of each.',
+        '    keys, _, scores = nlp_vec.vocab.vectors.most_similar(one_row, n=n * 8)',
+        '    seen = {word.lower()}                    # never report the word itself',
+        '    neighbours = []',
+        '    for key, score in zip(keys[0], scores[0]):',
+        '        found = nlp_vec.vocab.strings[key].lower()',
+        '        if found.isalpha() and found not in seen:',
+        '            seen.add(found)',
+        '            neighbours.append((found, round(float(score), 3)))',
+        '    return neighbours[:n]',
+        '',
+        '',
+        'print("Helper ready. Try nearest(\'perhaps\').")')]
+    cells += [md("**✏️ YOU EDIT** — put in a word you care about.")]
+    cells += [code(
+        'for neighbour in nearest("perhaps"):   # ✏️ your word here',
+        '    print(neighbour)')]
+    cells += [md(
+        "Two things are worth noticing before you move on.",
+        "",
+        "The neighbours of *perhaps* are mostly other hedges — *possibly*, *probably*, "
+        "*certainly*, *might*. Nothing told the model that these words hedge a claim; it "
+        "placed them together because they turn up in the same positions in text.",
+        "",
+        "Now try `nearest(\"corpus\")`. The closest words include *habeas*, *christi* and "
+        "*corpora*. One spelling has collected the legal sense, the religious sense and the "
+        "linguistic sense into a single vector, because there is only one vector available "
+        "for the form. `nearest(\"hedge\")` does the same thing with garden hedges and "
+        "financial hedging. Keep that in mind for the next part.")]
+
+    # Claim 2: one word form, one vector — the limit that motivates attention.
+    cells += [md(
+        "#### Where these vectors stop working",
+        "",
+        "Session 1 used *free* in two sentences that mean different things — *your account is "
+        "free of charge* and *claim your free prize now*. Take the word out of each sentence "
+        "and compare the two vectors.")]
+    cells += [code(
+        'banking = nlp_vec("your account is free of charge")',
+        'promo   = nlp_vec("claim your free prize now")',
+        '',
+        'free_1 = banking[3]      # the 4th word of the first sentence',
+        'free_2 = promo[2]        # the 3rd word of the second sentence',
+        'print("comparing:", free_1.text, "and", free_2.text)',
+        'print("similarity:", round(free_1.similarity(free_2), 3))')]
+    cells += [md(
+        "The score is exactly **1.0**, because the two vectors are not merely close — they "
+        "are the same vector. This model stores one vector per word form and looks it up the "
+        "same way every time, so the surrounding words change nothing. That is what *static* "
+        "means, and it is the limitation Session 1 said attention was built to remove.",
+        "",
+        "*(Both sentences use lower-case `free` on purpose: these vectors are looked up by "
+        "exact form, so `FREE` and `free` are separate entries.)*",
+        "",
+        "The same lookup has a second consequence. A sentence's vector is the average of its "
+        "words, and an average does not record the order they came in:")]
+    cells += [code(
+        'print(round(nlp_vec("the dog chased the cat")',
+        '            .similarity(nlp_vec("the cat chased the dog")), 3))')]
+    cells += [md(
+        "Two sentences with opposite meanings, one score of 1.0. Word order is gone. "
+        "**Why this matters for the rest of the week:** the categories you will annotate — a "
+        "CEFR level, a rhetorical move, whether a claim is hedged — depend on word order and "
+        "context. A model built on these vectors alone cannot represent that; the model you "
+        "call with `generate_text(...)` can.")]
+
+    # A picture of the space.
+    cells += [md(
+        "#### A map of the space",
+        "",
+        "Three hundred numbers per word is too many to look at, but the words can be flattened "
+        "onto a page so that words with close vectors land near each other.")]
+    cells += [code(
+        '#@title 🔧 Helper: map_words(words) → a 2-D picture { display-mode: "form" }',
+        _HELPER_NOTE,
+        'import matplotlib.pyplot as plt',
+        '',
+        '',
+        'def map_words(words: list[str]) -> None:',
+        '    """Plot words on a flat map, keeping words with close vectors close.',
+        '',
+        '    Args:',
+        '        words: the words to place.',
+        '',
+        '    Returns:',
+        '        Nothing. It draws the picture.',
+        '',
+        '    Example:',
+        '        >>> map_words(["cat", "dog", "syntax"])',
+        '    """',
+        '    known = []',
+        '    for w in words:',
+        '        if nlp_vec.vocab[w].has_vector:',
+        '            known.append(w)',
+        '        else:',
+        '            print(f"skipping {w!r} — not in the model\'s vocabulary")',
+        '    rows = numpy.array([nlp_vec.vocab[w].vector for w in known])',
+        '    rows = rows - rows.mean(axis=0)          # centre the cloud on zero',
+        '    # 300 directions is too many to draw, so keep the two along which these',
+        '    # particular words are most spread out, and plot along those.',
+        '    _, _, directions = numpy.linalg.svd(rows, full_matrices=False)',
+        '    flat = rows @ directions[:2].T',
+        '    plt.figure(figsize=(8, 6))',
+        '    plt.scatter(flat[:, 0], flat[:, 1], s=18)',
+        '    for w, (x, y) in zip(known, flat):',
+        '        plt.annotate(w, (x, y), fontsize=11, xytext=(4, 3),',
+        '                     textcoords="offset points")',
+        '    plt.title("Words placed by their vectors")',
+        '    plt.xticks([])',
+        '    plt.yticks([])',
+        '    plt.show()',
+        '',
+        '',
+        'print("Helper ready. Try map_words([...]).")')]
+    cells += [md("**✏️ YOU EDIT** — change the words and re-run.")]
+    cells += [code(
+        '# Three groups of words: hedges, research verbs, and animals.',
+        'map_words(["perhaps", "possibly", "maybe", "likely", "presumably",',
+        '           "suggest", "indicate", "demonstrate", "argue", "conclude",',
+        '           "cat", "dog", "horse", "rabbit", "sheep"])   # ✏️ your words')]
+    cells += [md(
+        "The animals land well away from the other ten words. The hedges and the research "
+        "verbs, though, sit mixed together rather than in two groups — they are all words of "
+        "academic prose, and they appear in similar places in similar texts, which is the "
+        "only thing these vectors record. The map shows you what the model separates, which "
+        "is not always what you want it to separate.")]
+
+    # B4. Control flow: for / if / function
+    cells += [md(
+        "### 4. Run the model over every sentence — `for`, `if`, and a function",
         "",
         "Now that you have a list of sentences, do something to *each* one. A **`for` loop** "
         "repeats the same steps for every item; an **`if`** lets you react to what comes "
@@ -1097,7 +1316,7 @@ def day1():
 
     # B4. Guided practice (existing exercises)
     cells += [md(
-        "### 4. Your turn — Python practice",
+        "### 5. Your turn — Python practice",
         "",
         "Fill in each function so it does what its docstring says (replace the "
         "`raise NotImplementedError(...)` line). Then run the **self-check** cell below until "
@@ -1342,6 +1561,37 @@ def day2_s5():
         ":::")]
     cells += [code(
         'disagreements(rows)   # the rows you two labelled differently — your worklist')]
+    cells += [md(
+        "#### What that helper actually did — and the decision inside it",
+        "",
+        "It is six lines, and they are worth reading, because **the rule inside is a "
+        "decision about your scheme** rather than a fact about your data. In the final "
+        "project you write this function yourself; here is the version the helper runs:")]
+    cells += [code(
+        '### The rule: a row is a disagreement when the two of you chose DIFFERENT labels ###',
+        'to_argue_about = []',
+        'for row in rows:',
+        '    a = str(row.get("CoderA", "")).strip()   # .strip() drops the spaces a sheet adds',
+        '    b = str(row.get("CoderB", "")).strip()',
+        '    if a != "" and b != "":      # skip rows one of you has not reached yet',
+        '        if a != b:',
+        '            to_argue_about.append(row)',
+        '',
+        'print(len(to_argue_about), "rows to adjudicate")',
+        'pd.DataFrame(to_argue_about)     # the same table the helper printed')]
+    cells += [md(
+        "Two things in there are choices, not facts.",
+        "",
+        "**A blank cell is skipped rather than counted as a disagreement.** A row one of you "
+        "has not reached yet is not two people disagreeing, and counting it would put an item "
+        "on your worklist that has nothing to argue about.",
+        "",
+        "**`a != b` is the obvious rule and not the only defensible one.** If your labels sit "
+        "on a **scale** — A1 < A2 < … < C2, Low < Mid < High — you might decide that "
+        "neighbouring labels are two people reading the same sentence much the same way, and "
+        "that only a gap of two or more is worth an argument. That version gives you a shorter "
+        "worklist and a different adjudication session. Whichever you use, your report has to "
+        "say which — not knowing is the only wrong answer.")]
     cells += [md(
         "::: {.callout-important}",
         "## Re-annotate in a fresh round tab, then re-run step D",
@@ -1870,6 +2120,24 @@ def day2_s6():
         "from **a model**. That is why S5's agreement number and today's evaluation number "
         "are the same statistic: **κ measures two label columns, whoever produced them.**",
         ":::")]
+    cells += [md(
+        "::: {.callout-important}",
+        "## Report both numbers, and this is why",
+        "You have just computed two numbers on **the same twelve items**: raw agreement "
+        "**0.75** and κ **0.47**. They are that far apart because more than half of the "
+        "agreement was available by luck.",
+        "",
+        "Neither one on its own is readable. Percent agreement alone credits luck as though "
+        "it were skill. κ alone is hard to interpret without the raw figure beside it — a κ "
+        "of 0.47 sitting under 75% agreement says something different from a κ of 0.47 "
+        "sitting under 95%.",
+        "",
+        "So in your final project's annotation notebook you report **both**, and this cell "
+        "is the reason. Which κ joins the percentage is decided by your design, not by which "
+        "number comes out higher: two coders and unordered labels → `cohen_kappa_score(a, b)`; "
+        "two coders and labels on a scale → the weighted one as well; three or more coders → "
+        "Fleiss' κ.",
+        ":::")]
 
     cells += [md(
         "### Step 10 · Scale up, then check yourself",
@@ -1944,6 +2212,27 @@ def day2_s6():
         "wrote** — faster, and for every class at once. From here on, when a report prints "
         "`0.36`, you know precisely which counts produced it.",
         ":::")]
+    cells += [md(
+        "### The names you just checked yourself against",
+        "",
+        "These are not throwaway names for today. In the final project **you write these "
+        "calls yourself** — there is no course helper wrapping them, because there is no "
+        "point learning a private name for something the whole field already calls "
+        "`f1_score`.",
+        "",
+        "| The call | What it gives you | Where it comes back |",
+        "|---|---|---|",
+        "| `precision_score(y, p, pos_label=…)` | precision for one positive class | anywhere you have a yes/no question |",
+        "| `recall_score(y, p, pos_label=…)` | recall for that class | as above |",
+        "| `f1_score(y, p, average=…)` | one F1 number over all classes | your headline number |",
+        "| `classification_report(y, p, labels=…)` | precision, recall and F1 for **every** class | your per-class table |",
+        "| `confusion_matrix(y, p, labels=…)` | which classes get mixed up with which | coder vs coder, and gold vs model |",
+        "| `cohen_kappa_score(y, p)` | agreement corrected for chance | coder vs coder, and gold vs model |",
+        "| `cohen_kappa_score(y, p, weights=\"quadratic\")` | the same, with a near miss counting as a smaller error | only when your labels are a scale |",
+        "",
+        "`y` is the gold labels as a plain list and `p` is the other column — your partner's "
+        "labels, or the model's answers. Nothing in any of them knows which is which, which "
+        "is why the same seven calls cover both jobs.")]
 
     # ---- Part B · pass 2: the real six-class task, with scikit-learn ----
     cells += [md(
@@ -1977,6 +2266,41 @@ def day2_s6():
         "right idea and imprecise thresholds, which is a different failure from not "
         "understanding the task, and no single accuracy number can tell the two apart.",
         "",
+        "### One number, three different questions",
+        "",
+        "`macro avg` is one way to boil six F1s down to one number, and the report prints "
+        "two others beside it. They are three different questions, and on an uneven label "
+        "set they disagree:")]
+    cells += [code(
+        'from sklearn.metrics import f1_score',
+        '',
+        '# The same predictions, scored three ways.',
+        'y_gold = []                        # the gold column, as a plain list',
+        'for item in gold:',
+        '    y_gold.append(item["label"])',
+        '',
+        'for how in ["macro", "micro", "weighted"]:',
+        '    score = f1_score(y_gold, predictions, average=how, zero_division=0)',
+        '    print(how, round(score, 3))')]
+    cells += [md(
+        "- **macro** — the plain average of the six per-class F1s. Every *class* counts the "
+        "same, however rare. Ask it when a rare label matters to your question as much as a "
+        "common one.",
+        "- **micro** — every *item* counts the same, so the common classes dominate. Ask it "
+        "when the question is how often the model is right about a sentence.",
+        "- **weighted** — per-class F1 averaged by how common each class is: between the two.",
+        "",
+        "On this gold set the three land close together, because it is balanced by design — "
+        "12 items per level. **On an unbalanced set they can differ by a lot**, and that is "
+        "the case you will be in if you sample your project's gold set at random.",
+        "",
+        "::: {.callout-important}",
+        "## Pick the question before you see the answers",
+        "Which of the three you report follows from what you are claiming, and you can settle "
+        "it before any number exists. Running all three and reporting the highest is picking "
+        "the flattering one, and it is not something a reader can detect from the report.",
+        ":::")]
+    cells += [md(
         "### Read the matrix *down the columns*",
         "",
         "Rows are gold, so *rows* tell you what happened to each true level. Read **down the "
@@ -2018,6 +2342,47 @@ def day2_s6():
     cells += [code(
         'errors = show_errors(gold, predictions)   # a table of every item it got wrong',
         'errors.head(15)     # ...or errors[errors["gold"] == "C2"] to see the hard end')]
+    cells += [md(
+        "#### Four words for four different findings",
+        "",
+        "*\"The model got it wrong\"* covers four situations that call for four different "
+        "responses, and sorting them is the analysis. Use these words — they are the ones "
+        "your final project asks for, and they turn a pile of misses into a finding:",
+        "",
+        "| Word | What it means | What you would do about it |",
+        "|---|---|---|",
+        "| **`model`** | the label is clear, two coders would agree at once, and the model still missed it | nothing — this is the model's limit |",
+        "| **`scheme`** | the item is genuinely borderline *under your scheme*, and you know which ones those are because you argued about them | rewrite the boundary rule |",
+        "| **`wording`** | the label *name* misleads. `Gap` may read to a model as \"missing data\" | one more prompt round could fix this |",
+        "| **`ambiguous`** | the item itself is unclear in a way no scheme would settle | say so, and move on |",
+        "",
+        "`scheme` and `wording` are the pair worth being careful about: **one of them a "
+        "prompt can reach and the other it cannot**, and confusing them is how a group "
+        "spends three rounds on a problem no prompt was ever going to fix.")]
+    cells += [md(
+        "#### The cross-reference: where did *you two* disagree?",
+        "",
+        "Here is the join that makes `scheme` an evidenced claim rather than an impression. "
+        "You already have a list of items your S5 partner and you labelled differently. If "
+        "the model's errors land on those same items, what you have measured is a fuzzy "
+        "boundary in your scheme — not a stupid model.",
+        "",
+        "Type in a few ids from your own `disagreements(rows)` table in S5 and see:")]
+    cells += [code(
+        '# ✏️ ids from YOUR S5 disagreement table — the rows you two argued about.',
+        'DISAGREED_IDS = [17, 23, 41]',
+        '',
+        'both = []',
+        'for row_id in errors["id"]:          # every item the model got wrong',
+        '    if row_id in DISAGREED_IDS:      # ...that you two also disagreed about',
+        '        both.append(row_id)',
+        '',
+        'print(len(both), "of", len(errors), "model errors are items you argued about too:", both)')]
+    cells += [md(
+        "A **high** overlap says the scheme is the problem. A **low** one says the model is "
+        "missing things two humans found easy — a different finding, and just as reportable. "
+        "In the final project this is one call, `errors_on_disagreed(errors, disagreed)`, and "
+        "the loop above is what it does.")]
     cells += [md(
         "::: {.callout-note}",
         "## The question you ask decides the error you can see",
@@ -2225,6 +2590,50 @@ def day3():
         'evaluate(val, pred_zero, ordered=True)     # score it — note the macro-F1')]
 
     cells += [md(
+        "#### Two settings decide whether that number is repeatable",
+        "",
+        "The Setup cell connected to the model with these two arguments:",
+        "",
+        "```python",
+        "cfg = types.GenerateContentConfig(temperature=0, seed=42)",
+        "```",
+        "",
+        "- **`temperature`** is how much the model is allowed to vary. At `0` it takes its "
+        "most likely answer every time. Higher values let it pick less likely words, which "
+        "is useful for writing and unhelpful when you are measuring something.",
+        "- **`seed`** fixes the randomness that is left, so a repeat of the same call starts "
+        "from the same place.",
+        "",
+        "Together they are what make a score you can quote. Run the same prompt over the same "
+        "five items twice and count how many answers came back identical:")]
+    cells += [code(
+        'first  = run_prompt(PROMPT_ZERO, val[:5])   # five items, to keep this cheap',
+        'second = run_prompt(PROMPT_ZERO, val[:5])   # the same five, the same prompt',
+        '',
+        'print("first run: ", first)',
+        'print("second run:", second)',
+        'print("identical?", first == second)   # two lists are == when every item matches')]
+    cells += [md(
+        "`True` is what `temperature=0` is for. If you are on the keyless Colab "
+        "backend — the Setup cell said so — you may see fewer, because `colab.ai` exposes "
+        "neither setting. That is exactly the Day-1 behaviour, and it is why this course "
+        "asks for a key from today.",
+        "",
+        "::: {.callout-note}",
+        "## Best-effort, not guaranteed",
+        "Even at `temperature=0` a hosted model can change its answer — the provider updates "
+        "the model, or batches your request differently. So \"reproducible\" here means "
+        "*best-effort*, and the working habit is to **save the run to a file** and report "
+        "from the file rather than from what is on screen. Your final project does this for "
+        "you at the point where it matters.",
+        ":::",
+        "",
+        "In the final project both settings live in `config.yaml` and are passed in one "
+        "visible line, `setup(temperature=TEMPERATURE, seed=SEED, model=MODEL)`, so that "
+        "every group member's run is set up the same way and the report can state what was "
+        "used.")]
+
+    cells += [md(
         "### Iteration 1 — few-shot   ✏️ YOU EDIT",
         "",
         "Add a few **labeled examples** so the model can pattern-match. The ones below are "
@@ -2246,6 +2655,29 @@ def day3():
         '',
         'pred_few = run_prompt(PROMPT_FEWSHOT, val)   # same 24 sentences, new prompt',
         'evaluate(val, pred_few, ordered=True)        # did macro-F1 move?')]
+    cells += [md(
+        "#### *Which* examples? That is the decision, not whether to use any",
+        "",
+        "\"Add examples\" is not one move, it is a family of them, and the four above are one "
+        "choice out of many. Two obvious strategies pull in opposite directions:",
+        "",
+        "- **The clearest case of each label.** Shows the model what the centre of each class "
+        "looks like. Safe, and it may teach nothing about the boundary you actually keep "
+        "losing items on.",
+        "- **The hardest cases — the ones near a boundary.** Shows the model exactly where "
+        "the line falls. Riskier: a borderline example the model reads the wrong way can "
+        "drag neighbouring items with it.",
+        "",
+        "**Predict first, then find out.** Say which you think will help more on this task, "
+        "swap two of the examples above for that kind, and re-run. Whichever way it goes, "
+        "you now have a reason attached to the number — and that is the difference between "
+        "a study and ten prompts kept because one of them scored well.",
+        "",
+        "Two rules that are not negotiable either way: **never take an example from `val` or "
+        "`gold`** (you would be showing the model its own answers), and **cover every label** "
+        "if you can, or the labels you left out get quietly under-predicted. The final "
+        "project's `build_fewshot(prompt, pool, gold)` draws examples from the pool while "
+        "excluding everything in your gold set, for exactly the first reason.")]
 
     cells += [md(
         "### Iteration 2 — chain-of-thought (CoT)   ✏️ YOU EDIT",
@@ -2496,27 +2928,95 @@ def day4():
         '# print("saved", len(gold), "items")')]
 
     cells += [md(
-        "## Part B · Corpus Lab — carry on in the project template",
+        "## Part B · Draw the line: which items you may look at",
         "",
-        "You have just sampled a balanced subset. The next step — **QC and adjudication** — "
-        "is the mini-project itself, and it happens in the project template rather than "
-        "here, because it needs your group's own track and your own Drive:",
+        "On Day 3 you worked with two files: `val`, which every prompt was scored against, "
+        "and `gold`, opened once at the end. They were handed to you already separated. "
+        "**Your own gold set arrives in one piece**, so drawing that line is now a step you "
+        "take — and it is the last one before the model gets involved.",
         "",
-        "**[github.com/egumasa/lda2-final-template](https://github.com/egumasa/lda2-final-template)**"
-        " → `notebooks/mini_project.ipynb`",
+        "| | what it is for |",
+        "|---|---|",
+        "| **dev** | the items you may look at. Change the prompt because of what you see here, as often as you like. |",
+        "| **test** | opened once, at the end. Whatever it says is what you report. |",
         "",
-        "There, **step 2** does properly what you did by hand on Day 2 (S5): it builds a "
-        "blind annotation sheet from your sample, two of you label it independently, you "
-        "measure agreement and κ, and you adjudicate the rows you disagreed on. What comes "
-        "out is *your* gold set — and it is what the model gets scored against, so the "
-        "disagreements you resolve are doing real work, not bookkeeping.",
+        "The reason is the one Day 3 gave you: a score measured on the items you kept "
+        "adjusting against stops measuring how good your prompt is and starts measuring how "
+        "long you kept adjusting. It only ever goes up.",
         "",
-        "`sample_pool` in the template does the whole cell you just wrote, in one call. "
-        "That is the point of today: you have seen what it does, so you can say what it "
-        "does.",
+        "Both halves come out of the same annotation work, so the split costs you **no extra "
+        "annotation**. What it costs is items you are allowed to learn from.")]
+    cells += [md(
+        "### Split it, keeping every label on both sides   ✏️ YOU EDIT",
         "",
-        "Before you run anything there, your group needs a signed **`PLAN.md`** — see the "
-        "[Final Project](../final-project/index.md) pages.")]
+        "Not a straight cut down the middle: split **within each label**, the same "
+        "bucket-then-slice shape you wrote ten minutes ago. A straight cut on a shuffled "
+        "list can leave a whole label on one side, and a label missing from `test` drops out "
+        "of your macro average without announcing itself.")]
+    cells += [code(
+        '### Step 1: the setting you control ###',
+        'DEV_PER_LABEL = 3       # ✏️ how many items per label you may look at',
+        '',
+        '### Step 2: sort the sample into one bucket per label (as in Part A) ###',
+        'buckets = defaultdict(list)',
+        'for item in gold:',
+        '    buckets[item["label"]].append(item)',
+        '',
+        '### Step 3: take the first few of each bucket for dev, the rest for test ###',
+        'dev = []',
+        'test = []',
+        'for label in sorted(buckets):',
+        '    bucket = buckets[label]',
+        '    dev.extend(bucket[:DEV_PER_LABEL])    # the ones you may look at',
+        '    test.extend(bucket[DEV_PER_LABEL:])   # everything after them',
+        '',
+        '### Step 4: read the counts BEFORE you go any further ###',
+        'print("dev :", len(dev),  "|", dict(Counter(x["label"] for x in dev)))',
+        'print("test:", len(test), "|", dict(Counter(x["label"] for x in test)))')]
+    cells += [md(
+        "**Read those two lines rather than glancing at them.** A label showing up in `dev` "
+        "with nothing left in `test` cannot appear in the score you report, and right now it "
+        "costs you one number to fix. Later it costs an afternoon.",
+        "",
+        "There is no right size for `dev`, only one you can defend. A bigger `dev` gives you "
+        "steadier feedback while you iterate and leaves a smaller `test`, so the number you "
+        "finally report bounces around more. A smaller `dev` means prompt decisions made on "
+        "very few items — which is how you tune to noise and then watch the gain evaporate on "
+        "the half you held back.",
+        "",
+        "In the final project this is `split_dev_test(gold, DEV, seed=SEED)`, and it handles "
+        "the two fiddly cases this cell does not: a proportion instead of a fixed count, and "
+        "a label with a single surviving item — which it sends to `test`, for the reason "
+        "above. The rule it follows is the one you just wrote.")]
+    cells += [md(
+        "## Where this goes next",
+        "",
+        "Everything after this — the annotation sheet, agreement, adjudication, the prompt "
+        "rounds, the held-out run — happens in your group's own copy of the project "
+        "template, because it needs your track, your Drive and your group's decisions:",
+        "",
+        "**[github.com/egumasa/lda2-final-template](https://github.com/egumasa/lda2-final-template)**",
+        "",
+        "| Notebook | What it does |",
+        "|---|---|",
+        "| `01_build_pool_<track>` | turns your track's raw corpus into a pool |",
+        "| `02_sample` | the draw you wrote in Part A, plus the blind annotation sheet |",
+        "| `03_annotate` | agreement, adjudication, and the split you wrote in Part B |",
+        "| `04_develop` | prompt rounds, on **dev** only |",
+        "| `05_test` | the held-out run, once |",
+        "| `06_report` | scoring, error analysis, export |",
+        "",
+        "`03_annotate` does properly what you did by hand on Day 2 (S5): two of you label the "
+        "sheet independently, you measure agreement, and you adjudicate the rows you "
+        "disagreed on. What comes out is *your* gold set, and it is what the model gets "
+        "scored against — so those disagreements are doing real work, not bookkeeping.",
+        "",
+        "Today is why you can read those notebooks: `sample_pool` is the Part-A cell in one "
+        "call and `split_dev_test` is the Part-B cell in one call. You have seen what they "
+        "do, so you can say what they do.",
+        "",
+        "Before you run anything that calls the model, your group needs a signed "
+        "**`PLAN.md`** — see the [Final Project](../final-project/index.md) pages.")]
 
     cells += [submission()]
     save("day4_pipeline_and_sampling.ipynb", cells)

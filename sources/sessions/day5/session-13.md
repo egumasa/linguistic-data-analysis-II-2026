@@ -39,7 +39,8 @@ No new reading — Day 5 is project work only (see the [Readings](../../syllabus
 
 ## Mini-project
 
-`notebooks/mini_project.ipynb` — **step 4**.
+`04_develop.ipynb` — the prompt rounds, on the dev half — then `05_test.ipynb` for the
+held-out run, once.
 
 ::: {.callout-important}
 ## The final run is one run, by one person

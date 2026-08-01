@@ -23,7 +23,7 @@ By the end of this session you will be able to:
 
 1. **The pipeline, in one diagram** (~15 min) — pool → sampled → sheet → adjudicated gold → prompt → predictions → **frozen file** → metrics → report, with each arrow's data shape named. Plus the helper table and the Day-by-Day mapping: eight of the fourteen helpers are a call you have already made.
 2. **Write `PLAN.md`** (~45 min) — in your groups. The instructor comes round, reads it, and signs it off.
-3. **End-state check** (~25 min) — each group states its I/O contract out loud: *"step 2 consumes `sampled` and the sheet, and produces `gold`."*
+3. **End-state check** (~25 min) — each group states its I/O contract out loud: *"`03_annotate` consumes the filled-in sheet and our adjudication, and produces the gold set."*
 
 Not a re-teach. You have run every one of these helpers already; today is about being able to **name the structure** — which is exactly what the Q&A will ask you to do.
 
@@ -37,7 +37,7 @@ No new reading for this session — see the Day 4 reading (Abdurahman et al., 20
 
 ## Mini-project
 
-- The pipeline reference: [pipeline cheat-sheet](../../final-project/pipeline-cheatsheet.md).
+- The inventory: [what you have to work with](../../final-project/pipeline-cheatsheet.md).
 - What you write today: [the `PLAN.md` gate](../../final-project/plan.md).
 - Where the work happens: [`lda2-final-template`](https://github.com/egumasa/lda2-final-template).
 

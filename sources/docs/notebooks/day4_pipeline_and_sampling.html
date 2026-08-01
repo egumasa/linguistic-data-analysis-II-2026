@@ -396,7 +396,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#draw-a-balanced-sample-you-edit" id="toc-draw-a-balanced-sample-you-edit" class="nav-link" data-scroll-target="#draw-a-balanced-sample-you-edit">Draw a balanced sample ✏️ YOU EDIT</a></li>
   <li><a href="#save-your-gold-set-to-google-drive" id="toc-save-your-gold-set-to-google-drive" class="nav-link" data-scroll-target="#save-your-gold-set-to-google-drive">Save your gold set to Google Drive</a></li>
   </ul></li>
-  <li><a href="#part-b-corpus-lab-carry-on-in-the-project-template" id="toc-part-b-corpus-lab-carry-on-in-the-project-template" class="nav-link" data-scroll-target="#part-b-corpus-lab-carry-on-in-the-project-template">Part B · Corpus Lab — carry on in the project template</a></li>
+  <li><a href="#part-b-draw-the-line-which-items-you-may-look-at" id="toc-part-b-draw-the-line-which-items-you-may-look-at" class="nav-link" data-scroll-target="#part-b-draw-the-line-which-items-you-may-look-at">Part B · Draw the line: which items you may look at</a>
+  <ul class="collapse">
+  <li><a href="#split-it-keeping-every-label-on-both-sides-you-edit" id="toc-split-it-keeping-every-label-on-both-sides-you-edit" class="nav-link" data-scroll-target="#split-it-keeping-every-label-on-both-sides-you-edit">Split it, keeping every label on both sides ✏️ YOU EDIT</a></li>
+  </ul></li>
+  <li><a href="#where-this-goes-next" id="toc-where-this-goes-next" class="nav-link" data-scroll-target="#where-this-goes-next">Where this goes next</a></li>
   <li><a href="#before-you-submit" id="toc-before-you-submit" class="nav-link" data-scroll-target="#before-you-submit">✅ Before you submit</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/notebooks/day4_pipeline_and_sampling.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -536,13 +540,110 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="part-b-corpus-lab-carry-on-in-the-project-template" class="level2">
-<h2 class="anchored" data-anchor-id="part-b-corpus-lab-carry-on-in-the-project-template">Part B · Corpus Lab — carry on in the project template</h2>
-<p>You have just sampled a balanced subset. The next step — <strong>QC and adjudication</strong> — is the mini-project itself, and it happens in the project template rather than here, because it needs your group’s own track and your own Drive:</p>
-<p><strong><a href="https://github.com/egumasa/lda2-final-template">github.com/egumasa/lda2-final-template</a></strong> → <code>notebooks/mini_project.ipynb</code></p>
-<p>There, <strong>step 2</strong> does properly what you did by hand on Day 2 (S5): it builds a blind annotation sheet from your sample, two of you label it independently, you measure agreement and κ, and you adjudicate the rows you disagreed on. What comes out is <em>your</em> gold set — and it is what the model gets scored against, so the disagreements you resolve are doing real work, not bookkeeping.</p>
-<p><code>sample_pool</code> in the template does the whole cell you just wrote, in one call. That is the point of today: you have seen what it does, so you can say what it does.</p>
-<p>Before you run anything there, your group needs a signed <strong><code>PLAN.md</code></strong> — see the <a href="../final-project/index.html">Final Project</a> pages.</p>
+<section id="part-b-draw-the-line-which-items-you-may-look-at" class="level2">
+<h2 class="anchored" data-anchor-id="part-b-draw-the-line-which-items-you-may-look-at">Part B · Draw the line: which items you may look at</h2>
+<p>On Day 3 you worked with two files: <code>val</code>, which every prompt was scored against, and <code>gold</code>, opened once at the end. They were handed to you already separated. <strong>Your own gold set arrives in one piece</strong>, so drawing that line is now a step you take — and it is the last one before the model gets involved.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>what it is for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>dev</strong></td>
+<td>the items you may look at. Change the prompt because of what you see here, as often as you like.</td>
+</tr>
+<tr class="even">
+<td><strong>test</strong></td>
+<td>opened once, at the end. Whatever it says is what you report.</td>
+</tr>
+</tbody>
+</table>
+<p>The reason is the one Day 3 gave you: a score measured on the items you kept adjusting against stops measuring how good your prompt is and starts measuring how long you kept adjusting. It only ever goes up.</p>
+<p>Both halves come out of the same annotation work, so the split costs you <strong>no extra annotation</strong>. What it costs is items you are allowed to learn from.</p>
+<section id="split-it-keeping-every-label-on-both-sides-you-edit" class="level3">
+<h3 class="anchored" data-anchor-id="split-it-keeping-every-label-on-both-sides-you-edit">Split it, keeping every label on both sides ✏️ YOU EDIT</h3>
+<p>Not a straight cut down the middle: split <strong>within each label</strong>, the same bucket-then-slice shape you wrote ten minutes ago. A straight cut on a shuffled list can leave a whole label on one side, and a label missing from <code>test</code> drops out of your macro average without announcing itself.</p>
+<div id="cell-13" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: the setting you control </span><span class="al">###</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>DEV_PER_LABEL <span class="op">=</span> <span class="dv">3</span>       <span class="co"># ✏️ how many items per label you may look at</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: sort the sample into one bucket per label (as in Part A) </span><span class="al">###</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>buckets <span class="op">=</span> defaultdict(<span class="bu">list</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> gold:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    buckets[item[<span class="st">"label"</span>]].append(item)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: take the first few of each bucket for dev, the rest for test </span><span class="al">###</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>dev <span class="op">=</span> []</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> []</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> <span class="bu">sorted</span>(buckets):</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    bucket <span class="op">=</span> buckets[label]</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    dev.extend(bucket[:DEV_PER_LABEL])    <span class="co"># the ones you may look at</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    test.extend(bucket[DEV_PER_LABEL:])   <span class="co"># everything after them</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 4: read the counts BEFORE you go any further </span><span class="al">###</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dev :"</span>, <span class="bu">len</span>(dev),  <span class="st">"|"</span>, <span class="bu">dict</span>(Counter(x[<span class="st">"label"</span>] <span class="cf">for</span> x <span class="kw">in</span> dev)))</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"test:"</span>, <span class="bu">len</span>(test), <span class="st">"|"</span>, <span class="bu">dict</span>(Counter(x[<span class="st">"label"</span>] <span class="cf">for</span> x <span class="kw">in</span> test)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>Read those two lines rather than glancing at them.</strong> A label showing up in <code>dev</code> with nothing left in <code>test</code> cannot appear in the score you report, and right now it costs you one number to fix. Later it costs an afternoon.</p>
+<p>There is no right size for <code>dev</code>, only one you can defend. A bigger <code>dev</code> gives you steadier feedback while you iterate and leaves a smaller <code>test</code>, so the number you finally report bounces around more. A smaller <code>dev</code> means prompt decisions made on very few items — which is how you tune to noise and then watch the gain evaporate on the half you held back.</p>
+<p>In the final project this is <code>split_dev_test(gold, DEV, seed=SEED)</code>, and it handles the two fiddly cases this cell does not: a proportion instead of a fixed count, and a label with a single surviving item — which it sends to <code>test</code>, for the reason above. The rule it follows is the one you just wrote.</p>
+</section>
+</section>
+<section id="where-this-goes-next" class="level2">
+<h2 class="anchored" data-anchor-id="where-this-goes-next">Where this goes next</h2>
+<p>Everything after this — the annotation sheet, agreement, adjudication, the prompt rounds, the held-out run — happens in your group’s own copy of the project template, because it needs your track, your Drive and your group’s decisions:</p>
+<p><strong><a href="https://github.com/egumasa/lda2-final-template">github.com/egumasa/lda2-final-template</a></strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Notebook</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>01_build_pool_&lt;track&gt;</code></td>
+<td>turns your track’s raw corpus into a pool</td>
+</tr>
+<tr class="even">
+<td><code>02_sample</code></td>
+<td>the draw you wrote in Part A, plus the blind annotation sheet</td>
+</tr>
+<tr class="odd">
+<td><code>03_annotate</code></td>
+<td>agreement, adjudication, and the split you wrote in Part B</td>
+</tr>
+<tr class="even">
+<td><code>04_develop</code></td>
+<td>prompt rounds, on <strong>dev</strong> only</td>
+</tr>
+<tr class="odd">
+<td><code>05_test</code></td>
+<td>the held-out run, once</td>
+</tr>
+<tr class="even">
+<td><code>06_report</code></td>
+<td>scoring, error analysis, export</td>
+</tr>
+</tbody>
+</table>
+<p><code>03_annotate</code> does properly what you did by hand on Day 2 (S5): two of you label the sheet independently, you measure agreement, and you adjudicate the rows you disagreed on. What comes out is <em>your</em> gold set, and it is what the model gets scored against — so those disagreements are doing real work, not bookkeeping.</p>
+<p>Today is why you can read those notebooks: <code>sample_pool</code> is the Part-A cell in one call and <code>split_dev_test</code> is the Part-B cell in one call. You have seen what they do, so you can say what they do.</p>
+<p>Before you run anything that calls the model, your group needs a signed <strong><code>PLAN.md</code></strong> — see the <a href="../final-project/index.html">Final Project</a> pages.</p>
 <hr>
 </section>
 <section id="before-you-submit" class="level2">

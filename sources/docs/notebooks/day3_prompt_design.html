@@ -852,48 +852,94 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_zero, ordered<span class="op">=</span><span class="va">True</span>)     <span class="co"># score it — note the macro-F1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<section id="two-settings-decide-whether-that-number-is-repeatable" class="level4">
+<h4 class="anchored" data-anchor-id="two-settings-decide-whether-that-number-is-repeatable">Two settings decide whether that number is repeatable</h4>
+<p>The Setup cell connected to the model with these two arguments:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cfg <span class="op">=</span> types.GenerateContentConfig(temperature<span class="op">=</span><span class="dv">0</span>, seed<span class="op">=</span><span class="dv">42</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong><code>temperature</code></strong> is how much the model is allowed to vary. At <code>0</code> it takes its most likely answer every time. Higher values let it pick less likely words, which is useful for writing and unhelpful when you are measuring something.</li>
+<li><strong><code>seed</code></strong> fixes the randomness that is left, so a repeat of the same call starts from the same place.</li>
+</ul>
+<p>Together they are what make a score you can quote. Run the same prompt over the same five items twice and count how many answers came back identical:</p>
+<div id="cell-12" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>first  <span class="op">=</span> run_prompt(PROMPT_ZERO, val[:<span class="dv">5</span>])   <span class="co"># five items, to keep this cheap</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>second <span class="op">=</span> run_prompt(PROMPT_ZERO, val[:<span class="dv">5</span>])   <span class="co"># the same five, the same prompt</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first run: "</span>, first)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"second run:"</span>, second)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"identical?"</span>, first <span class="op">==</span> second)   <span class="co"># two lists are == when every item matches</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><code>True</code> is what <code>temperature=0</code> is for. If you are on the keyless Colab backend — the Setup cell said so — you may see fewer, because <code>colab.ai</code> exposes neither setting. That is exactly the Day-1 behaviour, and it is why this course asks for a key from today.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Best-effort, not guaranteed
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Even at <code>temperature=0</code> a hosted model can change its answer — the provider updates the model, or batches your request differently. So “reproducible” here means <em>best-effort</em>, and the working habit is to <strong>save the run to a file</strong> and report from the file rather than from what is on screen. Your final project does this for you at the point where it matters.</p>
+</div>
+</div>
+<p>In the final project both settings live in <code>config.yaml</code> and are passed in one visible line, <code>setup(temperature=TEMPERATURE, seed=SEED, model=MODEL)</code>, so that every group member’s run is set up the same way and the report can state what was used.</p>
+</section>
 </section>
 <section id="iteration-1-few-shot-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="iteration-1-few-shot-you-edit">Iteration 1 — few-shot ✏️ YOU EDIT</h3>
 <p>Add a few <strong>labeled examples</strong> so the model can pattern-match. The ones below are hand-written; write your own if you want more, but never take one from <code>val</code> or <code>gold</code>, or you are showing the model the answers to its own test.</p>
-<div id="cell-12" class="cell">
+<div id="cell-15" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ same prompt as before, plus labelled examples. Add, remove or reword them —</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but never use a sentence from `gold`, or you are testing on your own answers.</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>PROMPT_FEWSHOT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2. Answer with the level only.</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">Examples:</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "I have a cat." -&gt; A1</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "She went to the shops because she needed some milk." -&gt; A2</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "The results suggest a modest but consistent improvement." -&gt; B2</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "Notwithstanding these caveats, the framework generalises well." -&gt; C2</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>pred_few <span class="op">=</span> run_prompt(PROMPT_FEWSHOT, val)   <span class="co"># same 24 sentences, new prompt</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_few, ordered<span class="op">=</span><span class="va">True</span>)        <span class="co"># did macro-F1 move?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ same prompt as before, plus labelled examples. Add, remove or reword them —</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but never use a sentence from `gold`, or you are testing on your own answers.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>PROMPT_FEWSHOT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2. Answer with the level only.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">Examples:</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "I have a cat." -&gt; A1</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "She went to the shops because she needed some milk." -&gt; A2</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "The results suggest a modest but consistent improvement." -&gt; B2</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: "Notwithstanding these caveats, the framework generalises well." -&gt; C2</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>pred_few <span class="op">=</span> run_prompt(PROMPT_FEWSHOT, val)   <span class="co"># same 24 sentences, new prompt</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_few, ordered<span class="op">=</span><span class="va">True</span>)        <span class="co"># did macro-F1 move?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<section id="which-examples-that-is-the-decision-not-whether-to-use-any" class="level4">
+<h4 class="anchored" data-anchor-id="which-examples-that-is-the-decision-not-whether-to-use-any"><em>Which</em> examples? That is the decision, not whether to use any</h4>
+<p>“Add examples” is not one move, it is a family of them, and the four above are one choice out of many. Two obvious strategies pull in opposite directions:</p>
+<ul>
+<li><strong>The clearest case of each label.</strong> Shows the model what the centre of each class looks like. Safe, and it may teach nothing about the boundary you actually keep losing items on.</li>
+<li><strong>The hardest cases — the ones near a boundary.</strong> Shows the model exactly where the line falls. Riskier: a borderline example the model reads the wrong way can drag neighbouring items with it.</li>
+</ul>
+<p><strong>Predict first, then find out.</strong> Say which you think will help more on this task, swap two of the examples above for that kind, and re-run. Whichever way it goes, you now have a reason attached to the number — and that is the difference between a study and ten prompts kept because one of them scored well.</p>
+<p>Two rules that are not negotiable either way: <strong>never take an example from <code>val</code> or <code>gold</code></strong> (you would be showing the model its own answers), and <strong>cover every label</strong> if you can, or the labels you left out get quietly under-predicted. The final project’s <code>build_fewshot(prompt, pool, gold)</code> draws examples from the pool while excluding everything in your gold set, for exactly the first reason.</p>
+</section>
 </section>
 <section id="iteration-2-chain-of-thought-cot-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="iteration-2-chain-of-thought-cot-you-edit">Iteration 2 — chain-of-thought (CoT) ✏️ YOU EDIT</h3>
 <p>Ask the model to <strong>reason first, then answer</strong>. Giving it room to think often helps on borderline items.</p>
-<div id="cell-14" class="cell">
+<div id="cell-18" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ this prompt asks for reasoning BEFORE the answer. The "do NOT mention any</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># other level" line matters: run_prompt keeps the FIRST level it sees in the reply.</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>PROMPT_COT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">Think step by step about the vocabulary and grammar, then decide the level.</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">Do NOT mention any other CEFR level while reasoning.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">End your answer with the final level on its own, exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>pred_cot <span class="op">=</span> run_prompt(PROMPT_COT, val)   <span class="co"># slower: the model writes more each time</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_cot, ordered<span class="op">=</span><span class="va">True</span>)    <span class="co"># best of the three so far?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ this prompt asks for reasoning BEFORE the answer. The "do NOT mention any</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># other level" line matters: run_prompt keeps the FIRST level it sees in the reply.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>PROMPT_COT <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">Think step by step about the vocabulary and grammar, then decide the level.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">Do NOT mention any other CEFR level while reasoning.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">End your answer with the final level on its own, exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>pred_cot <span class="op">=</span> run_prompt(PROMPT_COT, val)   <span class="co"># slower: the model writes more each time</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_cot, ordered<span class="op">=</span><span class="va">True</span>)    <span class="co"># best of the three so far?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -940,14 +986,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="the-held-out-run-once-and-only-once-you-edit">The held-out run — once, and only once ✏️ YOU EDIT</h3>
 <p>Pick your best prompt from the table above and score it on the 72 sentences you have not touched all session. <strong>This is the number you report.</strong></p>
 <p>Expect it to be <em>lower</em> than your validation score. That gap is the cost of having chosen a prompt by looking at results, and it is why the held-out set was kept back. Carry this rule into the mini-project: if you run this cell, look at the answer, then go back and edit a prompt, the 72 items have stopped being held out. Tune on <code>val</code>, come back, run once.</p>
-<div id="cell-18" class="cell">
+<div id="cell-22" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ swap in whichever of PROMPT_ZERO / PROMPT_FEWSHOT / PROMPT_COT scored best.</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>BEST_PROMPT <span class="op">=</span> PROMPT_COT</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>pred_test <span class="op">=</span> run_prompt(BEST_PROMPT, gold)   <span class="co"># the 72 held-out sentences</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>evaluate(gold, pred_test, ordered<span class="op">=</span><span class="va">True</span>)     <span class="co"># ← report THIS macro-F1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ swap in whichever of PROMPT_ZERO / PROMPT_FEWSHOT / PROMPT_COT scored best.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>BEST_PROMPT <span class="op">=</span> PROMPT_COT</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>pred_test <span class="op">=</span> run_prompt(BEST_PROMPT, gold)   <span class="co"># the 72 held-out sentences</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>evaluate(gold, pred_test, ordered<span class="op">=</span><span class="va">True</span>)     <span class="co"># ← report THIS macro-F1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -966,29 +1012,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Never call the model faster than the limit allows. At 15 calls per minute that is one call every <code>60 / 15 = 4</code> seconds, so before each call, check how long it has been since the last one and wait out the difference.</p>
 <p>So the function has to <strong>remember</strong> when the last call happened. Normally a function forgets its local variables the moment it returns; the <code>global</code> keyword tells Python to keep this one and share it across every call. That is the only new keyword in the guard.</p>
 <p>Try it below — no model, no internet, just pacing:</p>
-<div id="cell-21" class="cell">
+<div id="cell-25" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: two things to remember — when we last called, and how long to wait </span><span class="al">###</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>_demo_last_call <span class="op">=</span> <span class="fl">0.0</span>        <span class="co"># remembered BETWEEN calls, thanks to `global`</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>DEMO_INTERVAL <span class="op">=</span> <span class="dv">2</span>            <span class="co"># seconds (the real guard uses 4.4s or 13.2s)</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: before each call, wait out whatever time is still owed </span><span class="al">###</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> wait_your_turn() <span class="op">-&gt;</span> <span class="va">None</span>:</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Wait out whatever time is still owed, then say we are calling."""</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> _demo_last_call   <span class="co"># "remember this one, and share it across calls"</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    wait <span class="op">=</span> DEMO_INTERVAL <span class="op">-</span> (time.monotonic() <span class="op">-</span> _demo_last_call)   <span class="co"># time still owed</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:                                     <span class="co"># too soon — sit it out</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  waiting </span><span class="sc">{</span>wait<span class="sc">:.1f}</span><span class="ss">s so we don't call too often..."</span>)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        time.sleep(wait)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    _demo_last_call <span class="op">=</span> time.monotonic()               <span class="co"># note when this call happened</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  → calling now!"</span>)</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: three calls in a row — watch the gap appear between them </span><span class="al">###</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    wait_your_turn()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: two things to remember — when we last called, and how long to wait </span><span class="al">###</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>_demo_last_call <span class="op">=</span> <span class="fl">0.0</span>        <span class="co"># remembered BETWEEN calls, thanks to `global`</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>DEMO_INTERVAL <span class="op">=</span> <span class="dv">2</span>            <span class="co"># seconds (the real guard uses 4.4s or 13.2s)</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: before each call, wait out whatever time is still owed </span><span class="al">###</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> wait_your_turn() <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Wait out whatever time is still owed, then say we are calling."""</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> _demo_last_call   <span class="co"># "remember this one, and share it across calls"</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    wait <span class="op">=</span> DEMO_INTERVAL <span class="op">-</span> (time.monotonic() <span class="op">-</span> _demo_last_call)   <span class="co"># time still owed</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:                                     <span class="co"># too soon — sit it out</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  waiting </span><span class="sc">{</span>wait<span class="sc">:.1f}</span><span class="ss">s so we don't call too often..."</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        time.sleep(wait)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    _demo_last_call <span class="op">=</span> time.monotonic()               <span class="co"># note when this call happened</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  → calling now!"</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: three calls in a row — watch the gap appear between them </span><span class="al">###</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    wait_your_turn()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -1001,28 +1047,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Per-day limit</strong> — retrying is pointless, since it won’t refill until tomorrow. The guard gives up immediately with a clear message instead of hanging.</li>
 </ul>
 <p>A demo — no model, just the <code>try</code>/<code>except</code> shape, retrying until it works:</p>
-<div id="cell-23" class="cell">
+<div id="cell-27" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: a stand-in for the real model — it fails twice, then works </span><span class="al">###</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>attempt_count <span class="op">=</span> <span class="dv">0</span>            <span class="co"># how many times we have called it so far</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> flaky_call() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Pretends to fail twice, then succeeds — like a real rate-limited call."""</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> attempt_count     <span class="co"># keep the count between calls</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    attempt_count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> attempt_count <span class="op">&lt;=</span> <span class="dv">2</span>:                                   <span class="co"># the first two tries</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">"429 rate limit — please slow down"</span>)  <span class="co"># ...blow up</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"success!"</span>                                        <span class="co"># the third works</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: try it, and if it breaks, go round again instead of crashing </span><span class="al">###</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):     <span class="co"># up to three goes</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> flaky_call()</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Got:"</span>, result)</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span>                <span class="co"># it worked — stop looping</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> error:   <span class="co"># it broke — `error` holds the message</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  attempt </span><span class="sc">{</span>attempt<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> failed (</span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">) — trying again..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: a stand-in for the real model — it fails twice, then works </span><span class="al">###</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>attempt_count <span class="op">=</span> <span class="dv">0</span>            <span class="co"># how many times we have called it so far</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> flaky_call() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Pretends to fail twice, then succeeds — like a real rate-limited call."""</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> attempt_count     <span class="co"># keep the count between calls</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    attempt_count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> attempt_count <span class="op">&lt;=</span> <span class="dv">2</span>:                                   <span class="co"># the first two tries</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">"429 rate limit — please slow down"</span>)  <span class="co"># ...blow up</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"success!"</span>                                        <span class="co"># the third works</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: try it, and if it breaks, go round again instead of crashing </span><span class="al">###</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):     <span class="co"># up to three goes</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> flaky_call()</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Got:"</span>, result)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span>                <span class="co"># it worked — stop looping</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> error:   <span class="co"># it broke — `error` holds the message</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  attempt </span><span class="sc">{</span>attempt<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> failed (</span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">) — trying again..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -1041,27 +1087,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="step-1-find-the-models-worst-class">Step 1 · Find the model’s worst class</h3>
 <p>No new code needed — <code>evaluate</code> already printed it. Scroll back to your best prompt’s report and read <strong>down the F1 column</strong>: one or two levels will be far below the rest. That is where the macro-F1 is being lost, because macro-F1 averages the classes equally.</p>
 <p>Then run the cell below and <strong>read three of the actual sentences</strong> for that level. The counts tell you where the misses are; only the sentences tell you why. A level missed because its sentences are genuinely borderline needs a different fix from one missed because your prompt never described it. A third case: the model reasoned its way to the right level and the parser kept an earlier one it mentioned along the way — that is a prompt-wording problem, not a model problem.</p>
-<div id="cell-27" class="cell">
+<div id="cell-31" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(val, pred_cot)   <span class="co"># swap pred_cot for whichever prompt scored best</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(val, pred_cot)   <span class="co"># swap pred_cot for whichever prompt scored best</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-2-write-your-prediction-down-first-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-write-your-prediction-down-first-you-edit">Step 2 · Write your prediction down first ✏️ YOU EDIT</h3>
 <p>Fill in all three strings <strong>before</strong> you touch the prompt. This is the cell that turns the next step from tinkering into an experiment.</p>
-<div id="cell-29" class="cell">
+<div id="cell-33" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ fill in the three strings. Nothing else in this cell changes.</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>WORST_CLASS <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># the level with the lowest F1 in Step 1</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>MY_CHANGE   <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># the ONE thing you will change, in a short phrase</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>I_PREDICT   <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># what you expect to happen, and why you expect it</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Targeting </span><span class="sc">{</span>WORST_CLASS<span class="sc">}</span><span class="ss">. Change: </span><span class="sc">{</span>MY_CHANGE<span class="sc">}</span><span class="ss">."</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Prediction: </span><span class="sc">{</span>I_PREDICT<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ fill in the three strings. Nothing else in this cell changes.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>WORST_CLASS <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># the level with the lowest F1 in Step 1</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>MY_CHANGE   <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># the ONE thing you will change, in a short phrase</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>I_PREDICT   <span class="op">=</span> <span class="st">"…"</span>        <span class="co"># what you expect to happen, and why you expect it</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Targeting </span><span class="sc">{</span>WORST_CLASS<span class="sc">}</span><span class="ss">. Change: </span><span class="sc">{</span>MY_CHANGE<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Prediction: </span><span class="sc">{</span>I_PREDICT<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1082,18 +1128,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-3-make-the-change-and-score-it-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-make-the-change-and-score-it-you-edit">Step 3 · Make the change and score it ✏️ YOU EDIT</h3>
 <p>Start from your best Part-A prompt and make the one change you just described.</p>
-<div id="cell-32" class="cell">
+<div id="cell-36" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ everything between the triple quotes is yours. Keep the {text} slot.</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>PROMPT_MINE <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>pred_mine <span class="op">=</span> run_prompt(PROMPT_MINE, val)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_mine, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ everything between the triple quotes is yours. Keep the {text} slot.</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>PROMPT_MINE <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with the level only.</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>pred_mine <span class="op">=</span> run_prompt(PROMPT_MINE, val)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>evaluate(val, pred_mine, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -1101,11 +1147,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="step-4-check-the-class-you-actually-targeted">Step 4 · Check the class you actually targeted</h3>
 <p>Compare the <strong>F1 for <code>WORST_CLASS</code></strong> in the report you just printed against the same row in Step 1’s report. Macro-F1 can rise while the level you aimed at gets <em>worse</em>, because another level improved and carried the average — so check the row you predicted, not the headline number.</p>
 <p>The table below lists what your prompt still gets wrong. If the same sentences are still there, your change missed them; if new ones appeared, you traded one error for another.</p>
-<div id="cell-34" class="cell">
+<div id="cell-38" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>errors_mine <span class="op">=</span> show_errors(val, pred_mine)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>errors_mine.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>errors_mine <span class="op">=</span> show_errors(val, pred_mine)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>errors_mine.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>

@@ -21,15 +21,17 @@ metadata-files:
 Picks up **Part B** of the Day 1 notebook, then forms project groups.
 
 1. From a document to sentences — segmentation *without* and *with* a model
-2. Run the model over every sentence — `for`, `if`, and a function
-3. Your turn — guided Python practice + self-check
-4. Mini-project setup — form groups and pick a track
+2. What else the model knows about words — Session 1's vectors, as code
+3. Run the model over every sentence — `for`, `if`, and a function
+4. Your turn — guided Python practice + self-check
+5. Mini-project setup — form groups and pick a track
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
 - Split a paragraph into sentences two ways — naive `.split(".")` and a spaCy sentencizer — and explain why the naive rule fails.
+- Look up a word's vector, compare two words, and show that one word form gets only one vector.
 - Use a `for` loop, an `if`, and a function (`def`) to run the model over a list of sentences.
 - Complete short Python exercises and confirm them with the self-check.
 - Form a project group and pick a mini-project track.
@@ -111,9 +113,148 @@ for s in sentences:
 
 . . .
 
-Compare to the naive split: *Dr. Smith*, *e.g.*, and *3.14* stay intact. **You now have a real list of sentences** — exactly what step 3 loops over.
+Compare to the naive split: *Dr. Smith*, *e.g.*, and *3.14* stay intact. **You now have a real list of sentences** — exactly what section 4 loops over.
 
-# 3 · Run the model over every sentence
+# 3 · What else the model knows about words
+
+## One word, three hundred numbers {.smaller}
+
+In Session 1 you saw that a model turns each word into a long list of numbers. You can look at that list.
+
+```python
+word = nlp_vec("suggest")[0]      # read one word; [0] takes the first token
+print("how many numbers:", word.vector.shape)
+print("the first eight: ", word.vector[:8])
+```
+
+. . .
+
+```
+how many numbers: (300,)
+the first eight:  [-0.126 -0.11  -0.61   0.105 -0.272  0.302 -0.014 -0.121]
+```
+
+Three numbers placed a colour in the Session 1 colour cube. It takes **three hundred** to place a word.
+
+## Why this matters {.smaller}
+
+Session 1 claimed that words with similar meanings end up with similar numbers. That claim is **checkable**, and you are about to check it.
+
+. . .
+
+It matters because the same claim has a limit, and the limit is the reason attention exists. Every category you annotate this week — a CEFR level, a rhetorical move, a hedged claim — depends on **context**. Finding where these vectors stop is what makes the rest of the week necessary.
+
+## 🧪 Let's try — how close are two words? {.smaller}
+
+`.similarity(...)` compares two vectors: the higher the number, the closer the words sit.
+
+```python
+print("suggest / indicate:", nlp_vec("suggest").similarity(nlp_vec("indicate")))
+print("suggest / banana:  ", nlp_vec("suggest").similarity(nlp_vec("banana")))
+```
+
+. . .
+
+```
+suggest / indicate: 0.672
+suggest / banana:   0.168
+```
+
+**✏️ Your turn** — swap in two words from your own research area.
+
+## 🧪 Let's try — a word's neighbours {.smaller}
+
+Rather than guessing pairs, ask which words sit closest:
+
+```python
+for neighbour in nearest("perhaps"):   # ✏️ your word here
+    print(neighbour)
+```
+
+. . .
+
+```
+('possibly', 0.859)    ('might', 0.82)
+('probably', 0.839)    ('rather', 0.817)
+('certainly', 0.827)   ('though', 0.816)
+('although', 0.825)    ('even', 0.812)
+('however', 0.822)     ('maybe', 0.8)
+```
+
+Nothing told the model these words hedge a claim. They sit together because they **turn up in the same positions in text**.
+
+## Now try `nearest("corpus")` {.smaller}
+
+```
+('habeas', 0.59)     ('textual', 0.534)
+('christi', 0.572)   ('writ', 0.485)
+('corpora', 0.566)   ('habeus', 0.465)
+```
+
+. . .
+
+The legal sense, the religious sense and the linguistic sense are **collected into one vector**, because there is only one vector available for the spelling.
+
+`nearest("hedge")` does the same with garden hedges and financial hedging.
+
+## 🧪 Let's try — where these vectors stop {.smaller}
+
+Session 1 used *free* in two sentences that mean different things:
+
+```python
+banking = nlp_vec("your account is free of charge")
+promo   = nlp_vec("claim your free prize now")
+
+print("similarity:", banking[3].similarity(promo[2]))
+```
+
+. . .
+
+```
+similarity: 1.0
+```
+
+Not merely close — **the same vector**. One vector per word form, looked up the same way every time. That is what *static* means.
+
+## …and word order is gone too {.smaller}
+
+A sentence's vector is the **average** of its words, and an average does not record their order:
+
+```python
+print(nlp_vec("the dog chased the cat").similarity(nlp_vec("the cat chased the dog")))
+```
+
+. . .
+
+```
+1.0
+```
+
+Two sentences with opposite meanings, one score.
+
+::: {.callout-important}
+This is the gap Session 1 said attention closes. A model built on these vectors alone cannot represent context; the model behind `generate_text(...)` can.
+:::
+
+## A map of the space {.smaller}
+
+`map_words([...])` flattens 300 numbers onto a page, keeping close vectors close.
+
+```python
+map_words(["perhaps", "possibly", "maybe", "likely", "presumably",
+           "suggest", "indicate", "demonstrate", "argue", "conclude",
+           "cat", "dog", "horse", "rabbit", "sheep"])   # ✏️ your words
+```
+
+. . .
+
+The animals land well away from the rest. The hedges and the research verbs **do not split into two groups** — they are all academic prose words, appearing in similar places in similar texts, and that is the only thing these vectors record.
+
+. . .
+
+The map shows what the model separates, which is not always what you want it to separate.
+
+# 4 · Run the model over every sentence
 
 ## Three small pieces of Python {.smaller}
 
@@ -159,21 +300,11 @@ print(ask("Despite the rain, the game went ahead."))  # one line does all three 
 
 Now labelling a sentence is just `ask(...)`.
 
-## One prediction, one record {.smaller}
-
-When you label a sentence, keep the result in a small, fixed shape:
-
-```python
-prediction = {"id": 1, "text": "Despite the rain, the game went ahead.", "label": ask(...)}
-```
-
 . . .
 
-::: {.callout-note}
-This `{id, text, label}` **record** — *text in → label out* — is the **canonical schema** you'll use every day this week. Every gold set and every model output is just a **list of these**.
-:::
+And the result goes back into the **record you already built in Session 2** — `{"id": 1, "text": ..., "label": ...}` — only now `label` comes from `ask(...)` instead of being typed in by hand. Every gold set and every model output this week is a list of those.
 
-# 4 · Your turn
+# 5 · Your turn
 
 ## Guided practice {.smaller}
 

@@ -17,16 +17,17 @@ All of it in one repository, which you clone into your group's Google Drive:
 
 **[github.com/egumasa/lda2-final-template](https://github.com/egumasa/lda2-final-template)**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/lda2-final-template/blob/main/notebooks/mini_project.ipynb)
+`notebooks/` holds six numbered notebooks, run in order. They carry the **mechanics** — the
+paths, the file names, the Google Sheets round-trip, the pacing between API calls, and what
+each one hands to the next — so that a real study fits in two days.
 
-`notebooks/mini_project.ipynb` is **your** notebook: one skeleton, any track. Each of its six
-steps ships with its header, its goal, the helpers available to it, and the variable names the
-next step expects — **but not the calls.** You write those.
+What they do not carry is the **method**. Which agreement statistic your design owes, what
+counts as a disagreement, which prompt move to try next, which number your report leads with:
+those you choose, and they are what the Q&A and the rubric ask about.
 
-That is deliberate, and it should not be hard: every call has the same form it had in
-Days 1–3, and each step says where you used it before. `run_prompt(PROMPT, gold)` and
-`evaluate(gold, pred, ordered=True)` are the same two lines you ran on Day 3. The
-[pipeline cheat-sheet](pipeline-cheatsheet.md) has the full mapping.
+Each decision point gives you an inventory of what is available, what each call gives you, and
+where you first ran it — every one of them has an ancestor in Days 1–4. The
+[inventory page](pipeline-cheatsheet.md) has the full list.
 
 ::: {.callout-tip}
 ## One clone, shared by the group
@@ -38,26 +39,33 @@ Colab syncs notebook edits live, like a Google Doc, so you can all work in it at
 person be the **driver** for any cell that runs the model or writes a file. Your final run has
 to be one run by one person anyway.
 
-The annotation Sheet in step 2 is the exception: that is a real Google Sheet, so annotate it
+The annotation Sheet `02_sample` makes is the exception: that is a real Google Sheet, so annotate it
 together.
 :::
 
-## The six steps
+## The six notebooks
 
-1. **Sample** a balanced subset from your track's pool.
-2. **QC / adjudicate** it — two of you annotate blind, measure agreement and κ, then argue out
-   the disagreements. What comes out is **your** gold set.
-3. **Baseline** prompt — one honest number to beat.
-4. **Iterate** 2–3 rounds, then **freeze**: run your best prompt once and save the predictions
-   to a file.
-5. **Error analysis** — which misses are the *model's* fault, and which are the *scheme's*?
-6. **Export** the report scaffold, then write the parts only you can write.
+| | | |
+|---|---|---|
+| `01_build_pool_<track>` | your track's raw corpus → a pool | no model |
+| `02_sample` | the pool → your sample, and the blind annotation sheet | no model |
+| `03_annotate` | the filled-in sheet → **your** gold set, split into dev and test | no model |
+| `04_develop` | prompt rounds, on **dev** only | the model, many times |
+| `05_test` | the held-out run, once, frozen to a file | the model, once |
+| `06_report` | the frozen run → error analysis and the report scaffold | no model |
+
+**04 and 05 are separate files on purpose.** "You may not look at the test set while you are
+still changing the prompt" is a rule that only holds if it is a file boundary rather than a
+scroll position, so `04_develop.ipynb` has no path to your test items at all.
+
+Notebooks 01–03 need no model, so there is plenty to get on with while your `PLAN.md` is being
+signed off.
 
 ::: {.callout-important}
 ## Your adjudicated gold is the gold
-The model is scored against **what your group decided in step 2**, not against the published
-labels. That is what makes the QC pass matter: the boundaries you argued over in step 2 are
-exactly the ones you will be pointing at in step 5 when you explain a miss.
+The model is scored against **what your group decided in `03_annotate`**, not against the published
+labels. That is what makes the QC pass matter: the boundaries you argued over in `03_annotate` are
+exactly the ones you will be pointing at in `06_report` when you explain a miss.
 
 `compare_to_published` still shows you where you differ from the source corpus — and that gap
 is itself a finding worth a line in your report.
@@ -91,4 +99,4 @@ Tracks](../resources/datasets/mini-project-tracks.md).
 - **[The `PLAN.md` gate](plan.md)** — the one page you write *before* you call the model.
 - **[Deliverables & submission](deliverables.md)** — exactly what to hand in, and how.
 - **[Rubric](rubric.md)** — what is graded. (Not your F1.)
-- **[Pipeline cheat-sheet](pipeline-cheatsheet.md)** — every helper, and where you already used it.
+- **[What you have to work with](pipeline-cheatsheet.md)** — every call the notebooks offer, and where you first ran it.
