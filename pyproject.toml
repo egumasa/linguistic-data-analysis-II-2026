@@ -17,6 +17,10 @@ dev = [
     "seaborn",
     "matplotlib",
     "google-genai",
+    # The Day 2-S5 annotation sheet round-trip. Colab pre-installs both; a local run
+    # needs them declared here.
+    "gspread",
+    "google-auth",
     "anthropic",
     "openai",
     "python-dotenv",

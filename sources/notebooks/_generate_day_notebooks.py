@@ -111,9 +111,19 @@ try:
     _raw_generate_text = lambda p: ai.generate_text(p)   # the raw, unpaced call
     _backend = "Colab Gemini (demo, non-reproducible)"   # shown by the Setup printout
 except ImportError:                        # `google.colab` only exists inside Colab
-    raise RuntimeError(
-        "No LLM backend found. Run this notebook in Google Colab (free built-in "
-        "Gemini, no key needed). See resources/tools/gemini-api-key.md.")'''
+    # Running on your own computer instead: use a Gemini API key if one is set.
+    _key = os.environ.get("GEMINI_API_KEY")
+    if not _key:
+        raise RuntimeError(
+            "No LLM backend found. Run this notebook in Google Colab (free built-in "
+            "Gemini, no key needed), or set GEMINI_API_KEY as an environment variable "
+            "to run it on your own computer. See resources/tools/gemini-api-key.md.")
+    from google import genai
+    _client = genai.Client(api_key=_key)
+    _raw_generate_text = lambda p: _client.models.generate_content(
+        model="gemini-3.1-flash-lite", contents=p).text
+    _backend = "Gemini API (gemini-3.1-flash-lite)"
+    _min_interval = 4.4   # keeps us under gemini-3.1-flash-lite's 15-requests/minute cap'''
 
 # The reproducible API backend (Day 3+): key preferred, colab.ai fallback, plus a
 # rate-limit guard (pacing + retry) — walked through piece by piece in Day 3.
@@ -278,7 +288,8 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
     if backend == "api":
         simple += ["os", "re", "time"]
     elif backend == "demo":
-        simple += ["time"]
+        # `os` for the local fallback: off Colab the backend reads GEMINI_API_KEY.
+        simple += ["os", "time"]
     if lib_names & {"load_gold", "predictions"} or gold_url or predictions_url:
         simple += ["json", "urllib.request"]
     if "run_prompt" in lib_names:
@@ -504,9 +515,50 @@ put 235 lines between the student and their first number, and shipped
 `create_annotation_sheet`, which S5 never runs. So each piece is its own registry entry and
 `libs(...)` requests it where it is called.
 
-`sheets_base` carries the column constants and `_sheets_client`, which the others need — it
-must be loaded first, and it is, because step D loads it.
+`sheets_auth` carries `_sheets_client` and `sheets_base` the column constants, which the
+others need — they must be loaded first, and they are, because step D loads both.
 """
+
+# The Google sign-in, on its own so it is not the first thing in the cell that also holds
+# load_annotation_sheet. A student who opens that cell wants to see how a sheet is read;
+# OAuth at the top of it is a detour past the thing they came for.
+LIB_SHEETS_AUTH = code(
+    '#@title 🔧 Library cell: connect to Google Sheets { display-mode: "form" }',
+    "# Helper — you don't need to read this. Run it and move on.",
+    '',
+    'def _sheets_client():',
+    '    """Authorise gspread with your Google account (a pop-up asks for permission).',
+    '',
+    '    Returns:',
+    '        A logged-in connection to Google Sheets.',
+    '',
+    '    Raises:',
+    '        RuntimeError: when signing in from your own computer fails.',
+    '    """',
+    '    ### Step 1: in Colab, use the Google account you are already signed in with ###',
+    '    try:',
+    '        from google.colab import auth',
+    '        import google.auth, gspread',
+    '        auth.authenticate_user()           # the pop-up: "let Colab use your Sheets"',
+    '        creds, _ = google.auth.default()   # the permission slip that pop-up produced',
+    '        return gspread.authorize(creds)    # a logged-in connection to Google Sheets',
+    '    except ImportError:                    # `google.colab` only exists inside Colab',
+    '        pass',
+    '',
+    '    ### Step 2: on your own computer, let gspread do its own sign-in ###',
+    '    import gspread',
+    '    try:',
+    '        return gspread.oauth()',
+    '    except Exception as error:',
+    '        raise RuntimeError(',
+    '            "Could not sign in to Google Sheets from this computer.\\n"',
+    '            "This step is written for Google Colab, where your Google account is "',
+    '            "already available — open the notebook there and it will work with no "',
+    '            "setup.\\n"',
+    '            "To run it here instead, gspread needs a credentials file first: "',
+    '            "https://docs.gspread.org/en/latest/oauth2.html\\n"',
+    '            f"The error was: {error}") from error')
+
 
 LIB_SHEETS_BASE = code(
     '#@title 🔧 Library cell: read one tab of your annotation sheet { display-mode: "form" }',
@@ -516,18 +568,6 @@ LIB_SHEETS_BASE = code(
     'COL_A, COL_B = "CoderA", "CoderB"',
     'COL_FINAL, COL_NOTES = "Final", "Note"',
     'ANNOTATION_HEADER = [COL_ID, COL_TEXT, COL_A, COL_B, COL_FINAL, COL_NOTES]',
-    '',
-    'def _sheets_client():',
-    '    """Authorise gspread with your Google account (a pop-up asks for permission).',
-    '',
-    '    Returns:',
-    '        A logged-in connection to Google Sheets.',
-    '    """',
-    '    from google.colab import auth',
-    '    import google.auth, gspread',
-    '    auth.authenticate_user()           # the pop-up: "let Colab use your Sheets"',
-    '    creds, _ = google.auth.default()   # the permission slip that pop-up produced',
-    '    return gspread.authorize(creds)    # a logged-in connection to Google Sheets',
     '',
     'def load_annotation_sheet(sheet_id: str,',
     '                          worksheet: str = "round1") -> list[dict[str, str]]:',
@@ -662,9 +702,91 @@ LIB_SHEETS_CANONICAL = code(
 
 # Step D: the measuring. Loaded together with the reader above, because "read the sheet"
 # and "see how far apart you were" are one action from the student's side.
+#
+# One call for the student, three small functions underneath. The single function this
+# replaced did the filtering, both metrics and the heatmap in one 25-line body, which is
+# more than a beginner can hold at once if they open the cell. The public call form is
+# unchanged, because the slides, the cheat-sheet and the template's _check_call_forms.py
+# all name annotator_agreement(rows) — the split is inside, exactly as the project's copy
+# in annotate.py does it. The loops are written out rather than comprehended for the same
+# reason: `for` / `if` / `.append` is the Day-2 taught set.
 LIB_SHEETS_AGREEMENT = code(
     '#@title 🔧 Library cell: annotator_agreement(rows) → % agreement, κ, matrix { display-mode: "form" }',
     "# Helper — you don't need to read this. Run it and move on.",
+    '',
+    'def _labelled_pairs(rows: list[dict[str, str]],',
+    '                    a: str,',
+    '                    b: str) -> tuple[list[str], list[str]]:',
+    '    """The two annotators\' labels, keeping only rows where BOTH of them chose one.',
+    '',
+    '    A row one annotator has not reached yet is not two people disagreeing, so it is',
+    '    dropped rather than counted.',
+    '',
+    '    Args:',
+    '        rows: the rows read back by load_annotation_sheet.',
+    '        a: the column holding the first annotator\'s labels.',
+    '        b: the column holding the second annotator\'s labels.',
+    '',
+    '    Returns:',
+    '        Two lists of the same length: annotator A\'s labels, annotator B\'s labels.',
+    '    """',
+    '    a_labels = []',
+    '    b_labels = []',
+    '    for row in rows:',
+    '        label_a = str(row.get(a, "")).strip()   # .strip() drops the spaces a sheet adds',
+    '        label_b = str(row.get(b, "")).strip()',
+    '        if label_a != "" and label_b != "":     # drop half-finished rows',
+    '            a_labels.append(label_a)',
+    '            b_labels.append(label_b)',
+    '    return a_labels, b_labels',
+    '',
+    '',
+    'def _agreement_scores(a_labels: list[str],',
+    '                      b_labels: list[str]) -> dict[str, float]:',
+    '    """How often the two annotators matched, raw and corrected for chance.',
+    '',
+    '    Percent agreement counts every match, including the ones two annotators would hit',
+    '    by luck alone. Cohen\'s κ subtracts that luck, which is why the two numbers differ.',
+    '',
+    '    Args:',
+    '        a_labels: annotator A\'s labels.',
+    '        b_labels: annotator B\'s labels, item for item.',
+    '',
+    '    Returns:',
+    '        {"n", "percent_agreement", "kappa"}.',
+    '    """',
+    '    from sklearn.metrics import cohen_kappa_score',
+    '    matches = 0',
+    '    for i in range(len(a_labels)):',
+    '        if a_labels[i] == b_labels[i]:',
+    '            matches = matches + 1',
+    '    percent = matches / len(a_labels)                # how often you matched',
+    '    kappa = cohen_kappa_score(a_labels, b_labels)    # ...minus the luck',
+    '    print(f"{len(a_labels)} doubly-annotated · agreement {percent:.1%} · Cohen\'s κ {kappa:.3f}")',
+    '    return {"n": len(a_labels), "percent_agreement": percent, "kappa": kappa}',
+    '',
+    '',
+    'def _draw_coder_matrix(a_labels: list[str],',
+    '                       b_labels: list[str]) -> None:',
+    '    """Draw WHICH labels the two annotators confuse, not just how often.',
+    '',
+    '    The diagonal is where they agreed; an off-diagonal cell is a label pair whose',
+    '    boundary the scheme has not made decidable yet. Mirrors the gold-vs-model',
+    '    confusion matrix that evaluate() draws.',
+    '',
+    '    Args:',
+    '        a_labels: annotator A\'s labels.',
+    '        b_labels: annotator B\'s labels, item for item.',
+    '    """',
+    '    labels = sorted(set(a_labels) | set(b_labels))   # every label either of you used',
+    '    cm = confusion_matrix(a_labels, b_labels, labels=labels)',
+    '    plt.figure(figsize=(5.5, 4.5))',
+    '    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",',
+    '                xticklabels=labels, yticklabels=labels)',
+    '    plt.xlabel("Annotator B"); plt.ylabel("Annotator A")   # diagonal = you agreed',
+    '    plt.title("Annotator-vs-annotator confusion matrix")',
+    '    plt.tight_layout(); plt.show()',
+    '',
     '',
     'def annotator_agreement(rows: list[dict[str, str]],',
     '                        a: str = COL_A,',
@@ -685,32 +807,13 @@ LIB_SHEETS_AGREEMENT = code(
     '    Example:',
     '        >>> annotator_agreement(rows)',
     '    """',
-    '    from sklearn.metrics import cohen_kappa_score',
-    '    ### Step 1: keep only the rows where BOTH annotators actually chose a label ###',
-    '    pairs = [(str(r.get(a, "")).strip(), str(r.get(b, "")).strip()) for r in rows]',
-    '    pairs = [(x, y) for x, y in pairs if x and y]    # drop half-finished rows',
-    '    if not pairs:',
+    '    a_labels, b_labels = _labelled_pairs(rows, a, b)   # rows you BOTH labelled',
+    '    if len(a_labels) == 0:',
     '        print("No rows where BOTH annotators have labelled. Nothing to compare yet.")',
     '        return None',
-    '',
-    '    ### Step 2: two metrics — raw agreement, and agreement corrected for chance ###',
-    '    a_labels = [x for x, _ in pairs]                 # annotator A\'s choices',
-    '    b_labels = [y for _, y in pairs]                 # annotator B\'s choices',
-    '    percent = sum(x == y for x, y in pairs) / len(pairs)   # how often you matched',
-    '    kappa = cohen_kappa_score(a_labels, b_labels)    # ...minus the luck',
-    '    print(f"{len(pairs)} doubly-annotated · agreement {percent:.1%} · Cohen\'s κ {kappa:.3f}")',
-    '',
-    '    ### Step 3: draw WHICH labels you two confuse, not just how often ###',
-    '    # annotator-vs-annotator confusion matrix (mirrors the gold-vs-model evaluate()):',
-    '    labels = sorted(set(a_labels) | set(b_labels))   # every label either of you used',
-    '    cm = confusion_matrix(a_labels, b_labels, labels=labels)',
-    '    plt.figure(figsize=(5.5, 4.5))',
-    '    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",',
-    '                xticklabels=labels, yticklabels=labels)',
-    '    plt.xlabel("Annotator B"); plt.ylabel("Annotator A")   # diagonal = you agreed',
-    '    plt.title("Annotator-vs-annotator confusion matrix")',
-    '    plt.tight_layout(); plt.show()',
-    '    return {"n": len(pairs), "percent_agreement": percent, "kappa": kappa}')
+    '    scores = _agreement_scores(a_labels, b_labels)     # prints % agreement and κ',
+    '    _draw_coder_matrix(a_labels, b_labels)             # draws the matrix',
+    '    return scores')
 
 
 # Step E: the worklist. Its own cell, loaded at E, because the six lines inside it are the
@@ -879,9 +982,10 @@ LIB = {
     "evaluate": LIB_EVALUATE,
     "show_errors": LIB_SHOW_ERRORS,
     "predictions": LIB_LOAD_PREDICTIONS,
-    # The Sheets round-trip, one entry per S5 step. See the note above LIB_SHEETS_BASE:
-    # "sheets_base" carries the column constants and _sheets_client, so whichever step
-    # loads first must request it — in S5 that is step D.
+    # The Sheets round-trip, one entry per S5 step. See the note above LIB_SHEETS_AUTH:
+    # "sheets_auth" carries _sheets_client and "sheets_base" the column constants, so
+    # whichever step loads first must request both — in S5 that is step D.
+    "sheets_auth": LIB_SHEETS_AUTH,
     "sheets_base": LIB_SHEETS_BASE,
     "sheets_agreement": LIB_SHEETS_AGREEMENT,
     "sheets_disagree": LIB_SHEETS_DISAGREE,
@@ -1082,8 +1186,14 @@ def day1():
         "### 4. f-strings — put your data *into* a prompt",
         "",
         "An **f-string** (`f\"...\"`) drops a variable straight into a piece of text with "
-        "`{curly braces}`. That's how you build a prompt *about* a specific sentence — the "
-        "trick we'll use to run one prompt over a whole dataset later.")]
+        "`{curly braces}`. That's how you build a prompt *about* a specific sentence, and "
+        "it is how you will run one prompt over a whole dataset later.",
+        "",
+        "> **The `f` is what fills the braces, and it fills them on that line.** Without "
+        "it, `\"... {sentence}\"` is just text with the characters `{sentence}` in it. "
+        "That turns out to be useful — a prompt **template** keeps its braces empty until "
+        "something else fills them in, one item at a time — so it is worth knowing which "
+        "of the two you have written.")]
     cells += [md("**✏️ YOU EDIT** — change the sentence and re-run.")]
     cells += [code(
         'sentence = "Nevertheless, the findings were inconclusive."   # ✏️ your sentence',
@@ -1374,7 +1484,14 @@ def day1():
         "Now that you have a list of sentences, do something to *each* one. A **`for` loop** "
         "repeats the same steps for every item; an **`if`** lets you react to what comes "
         "back. Below, we build a prompt for each sentence (with an f-string) and ask the "
-        "model for its CEFR level.")]
+        "model for its CEFR level.",
+        "",
+        "> Notice **where** the f-string sits: *inside* the loop, so the braces are filled "
+        "in again for every sentence. Written once above the loop it would be filled in "
+        "once, and all three calls would ask about the same sentence. The other way to do "
+        "this is to write the prompt once **without** the `f`, keeping `{text}` as a "
+        "placeholder, and have the loop fill it in — that is the form the final project "
+        "uses, and `.format()` is what fills it.")]
     cells += [md("**✏️ YOU EDIT** — try your own sentences.")]
     cells += [code(
         '### Step 1: the sentences to ask about ###',
@@ -1554,7 +1671,7 @@ def day2_s5():
     cells += [md(
         "### D · Measure agreement   *(E&K Step 6 · ③)*   ✏️ YOU EDIT",
         "",
-        "Colab opens here. Run the two setup cells below, then read your sheet back in and "
+        "Colab opens here. Run the three setup cells below, then read your sheet back in and "
         "measure how far apart you were.",
         "",
         "::: {.callout-note collapse=\"true\"}",
@@ -1566,7 +1683,7 @@ def day2_s5():
         ":::")]
     # Every helper this notebook uses, so setup imports the right things — but they are
     # LOADED one step at a time below, next to the call each one serves.
-    s5_libs = ["sheets_base", "sheets_agreement", "sheets_disagree",
+    s5_libs = ["sheets_auth", "sheets_base", "sheets_agreement", "sheets_disagree",
                "sheets_canonical", "sheets_compare", "load_gold"]
     cells += [setup_cell(
         backend=None,          # S5 never calls a model — the judgment is yours
@@ -1574,6 +1691,10 @@ def day2_s5():
         gold_url=CEFR_GOLD_URL,
         gold_comment="CEFR-SP gold set — the published labels you compare against in step F.")]
     # Step D needs exactly two things: read the tab, and measure how far apart you were.
+    # The Google sign-in is its OWN cell above them, not merged in — libs() concatenates
+    # whatever it is given into one cell, and merging would put the OAuth code back at the
+    # top of the cell a student opens to see how their sheet is read.
+    cells += libs("sheets_auth")
     cells += libs("sheets_base", "sheets_agreement")
 
     cells += [code(

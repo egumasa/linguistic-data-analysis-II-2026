@@ -11,11 +11,21 @@ a step up in involvement, but worth it if you want to keep working after the cou
 paid LLM API instead of Colab's built-in Gemini. It assumes you're comfortable with a terminal.
 :::
 
-The LLM notebooks are written to work **both** in Colab and locally. In Colab, Day 1 uses the free
+The notebooks are written to work **both** in Colab and locally. In Colab, Day 1 uses the free
 built-in Gemini and Day 2 reads frozen predictions (no key); from Day 3 the notebooks call the
-**Gemini API**. Run locally, they use the Gemini API whenever `GEMINI_API_KEY` is set (with
-`temperature=0` + a fixed seed, so results are reproducible). Here is how to go from nothing to a
-running notebook.
+**Gemini API**. Run locally, every notebook that calls a model uses the Gemini API whenever
+`GEMINI_API_KEY` is set — Day 3 onward with `temperature=0` + a fixed seed, so results are
+reproducible. Here is how to go from nothing to a running notebook.
+
+What each day needs when you run it on your own computer:
+
+| Day | Needs |
+|---|---|
+| Day 1 — first LLM call | `GEMINI_API_KEY` (in Colab it needs nothing) |
+| Day 2 · S5 — gold standard | a Google sign-in for the annotation sheet — see step 6 |
+| Day 2 · S6 — evaluation metrics | nothing; it reads frozen predictions |
+| Day 3 — prompt design | `GEMINI_API_KEY` |
+| Day 4 — pipeline & sampling | nothing; it calls no model |
 
 ## 1. Install `uv`
 
@@ -89,6 +99,17 @@ first cell prints which backend it chose, e.g.
 gold set, the confusion matrix, the error table — works exactly as in Colab. (The Day-2 notebook
 needs no key; it reads frozen predictions.)
 
+## 6. Reading the annotation sheet (Day 2 · S5 only)
+
+Day 2 · S5 reads your group's annotation sheet out of Google Sheets. In Colab this needs no setup:
+you are already signed in, and the notebook asks your permission with a pop-up.
+
+On your own computer there is no signed-in account to borrow, so `gspread` does its own sign-in —
+and that needs a credentials file, created once, by following
+[gspread's OAuth instructions](https://docs.gspread.org/en/latest/oauth2.html). It is the one step
+in the course that is genuinely easier in Colab; if you only want to get through S5, open that
+notebook in Colab and run the rest locally.
+
 ## Troubleshooting
 
 - **`No LLM backend found ...`** — you're running locally but no key is set. Set `GEMINI_API_KEY`
@@ -98,3 +119,5 @@ needs no key; it reads frozen predictions.)
   edit it there if you need a different Gemini model.
 - **`ModuleNotFoundError`** — you launched Jupyter outside the project env. Always start it with
   `uv run jupyter lab` from the project folder so it uses the `.venv` from step 3.
+- **`Could not sign in to Google Sheets from this computer ...`** — Day 2 · S5 only. You have no
+  `gspread` credentials file yet; see step 6, or open that notebook in Colab instead.
