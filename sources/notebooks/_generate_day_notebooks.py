@@ -2724,9 +2724,12 @@ def day3():
         "",
         "Expect it to be *lower* than your validation score. That gap is the cost of having "
         "chosen a prompt by looking at results, and it is why the held-out set was kept back. "
-        "Carry this rule into the mini-project: if you run this cell, look at the answer, then "
-        "go back and edit a prompt, the 72 items have stopped being held out. Tune on `val`, "
-        "come back, run once.")]
+        "Carry this rule into your final project, where it is built into the file "
+        "layout: `04_develop.ipynb` works on the **dev** half and cannot even reach the "
+        "test items, and `05_test.ipynb` opens them once. Here the two sets are `val` "
+        "and `gold`. If you run this cell, look at the answer, then go back and edit a "
+        "prompt, the 72 items have stopped being held out. Tune on `val`, come back, "
+        "run once.")]
     cells += [code(
         '# ✏️ swap in whichever of PROMPT_ZERO / PROMPT_FEWSHOT / PROMPT_COT scored best.',
         'BEST_PROMPT = PROMPT_COT',
@@ -3023,9 +3026,9 @@ def day4():
 
 
 # ============================================================ DAY 5
-# There is no Day-5 notebook. Day 5 is project work: groups run their own study in
-# notebooks/mini_project.ipynb of the lda2-final-template repo, on their own track and
-# their own gold set. The old day5_project_finalization.ipynb was a shell of todo()
+# There is no Day-5 notebook. Day 5 is project work: groups run their own study in the
+# six numbered notebooks of the lda2-final-template repo, on their own track and their
+# own gold set. The old day5_project_finalization.ipynb was a shell of todo()
 # scaffolds pointing at that repo, and principles §3 forbids shipping dead scaffolding.
 # What it needed to say now lives on the Final Project pages of the site.
 
