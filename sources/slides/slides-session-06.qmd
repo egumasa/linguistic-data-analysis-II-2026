@@ -725,15 +725,16 @@ Nothing in `kappa()` knows whether column two came from **your partner** or **a 
 
 ## Does your code match the library? {.smaller}
 
-You wrote every metric by hand. Before trusting them, check them against `scikit-learn` **on the same twelve items** — it computes the same numbers, and if yours differ you have a bug. This is the only place `scikit-learn` enters pass 1:
+You built a confusion matrix and four metrics by hand. Before trusting them, check them against `scikit-learn` **on the same twelve items** — it builds the same 2×2 and computes the same numbers, and if yours differ you have a bug. This is the only place `scikit-learn` enters pass 1:
 
 ```
+✅ TP/FP/FN/TN     yours=3/1/2/6  sklearn=3/1/2/6
 ✅ precision      yours=0.750000  sklearn=0.750000
 ✅ recall         yours=0.600000  sklearn=0.600000
 ✅ f1             yours=0.666667  sklearn=0.666667
 ✅ cohen_kappa    yours=0.470588  sklearn=0.470588
 -----------------------------------------------
-All 4 checks passed ✅  — your metrics match scikit-learn.
+All 5 checks passed ✅  — your confusion matrix and metrics match scikit-learn.
 ```
 
 . . .

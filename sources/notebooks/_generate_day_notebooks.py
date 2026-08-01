@@ -2225,14 +2225,15 @@ def day2_s6():
     cells += [md(
         "### Step 10 · Check yourself against scikit-learn",
         "",
-        "You wrote every metric by hand. Before trusting them, **check them against "
-        "`scikit-learn`** on the same twelve items: the library computes the same numbers, and "
-        "if yours differ, you have a bug to find. This is the only place `scikit-learn` enters "
-        "Part A — as a marker for work you already did.")]
+        "You built a confusion matrix and four metrics by hand. Before trusting them, **check "
+        "them against `scikit-learn`** on the same twelve items: the library builds the same "
+        "2×2 and computes the same numbers, and if yours differ, you have a bug to find. This "
+        "is the only place `scikit-learn` enters Part A — as a marker for work you already "
+        "did.")]
     cells += [code(
         '#@title 🔎 Self-check against scikit-learn — run me { display-mode: "form" }',
         "# Helper — you don't need to read this. Run it and move on.",
-        'from sklearn.metrics import precision_score, recall_score, f1_score',
+        'from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix',
         '',
         '### Step 1: the same 12 items as two plain lists — the shape sklearn wants ###',
         'y_gold = []',
@@ -2249,7 +2250,17 @@ def day2_s6():
         '    results.append(ok)',
         '    print(("✅" if ok else "❌"), f"{name:<14} yours={got:.6f}  sklearn={exp:.6f}")',
         '',
-        '### Step 3: run it on all four metrics you wrote ###',
+        '### Step 3: first the confusion matrix — do your four counts match? ###',
+        'cm = confusion_matrix(y_gold, y_pred, labels=["yes", "no"])   # rows = gold, cols = pred',
+        'sk = {"TP": cm[0][0], "FN": cm[0][1],    # name sklearn\'s four cells the way you did',
+        '      "FP": cm[1][0], "TN": cm[1][1]}',
+        'counts_ok = all(tally.get(k, 0) == sk[k] for k in ["TP", "FP", "FN", "TN"])',
+        'results.append(counts_ok)',
+        'yours = f"{tally.get(\'TP\',0)}/{tally.get(\'FP\',0)}/{tally.get(\'FN\',0)}/{tally.get(\'TN\',0)}"',
+        'theirs = f"{sk[\'TP\']}/{sk[\'FP\']}/{sk[\'FN\']}/{sk[\'TN\']}"',
+        'print(("✅" if counts_ok else "❌"), f"TP/FP/FN/TN     yours={yours}  sklearn={theirs}")',
+        '',
+        '### Step 4: then the four metrics you wrote ###',
         '_chk("precision", precision(tally),',
         '     precision_score(y_gold, y_pred, pos_label="yes", zero_division=0))',
         '_chk("recall", recall(tally),',
@@ -2258,9 +2269,9 @@ def day2_s6():
         '     f1_score(y_gold, y_pred, pos_label="yes", zero_division=0))',
         '_chk("cohen_kappa", kappa(tally), cohen_kappa_score(y_gold, y_pred))',
         '',
-        '### Step 4: one overall verdict ###',
+        '### Step 5: one overall verdict ###',
         'print("-" * 47)              # a divider line, 47 dashes long',
-        'print(f"All {len(results)} checks passed ✅  — your metrics match scikit-learn."',
+        'print(f"All {len(results)} checks passed ✅  — your confusion matrix and metrics match scikit-learn."',
         '      if all(results) else',
         '      f"{results.count(False)} of {len(results)} checks FAILED — fix and re-run.")')]
     cells += [md(
