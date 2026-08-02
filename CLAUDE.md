@@ -40,11 +40,27 @@ Important: the example notebooks under [sources/resources/code-examples/python/]
 
 Any work on the day notebooks MUST follow
 [planning/course_planning/notebook-coding-principles.md](planning/course_planning/notebook-coding-principles.md).
-In short: the `.ipynb` files are generated — edit
-[sources/notebooks/_generate_day_notebooks.py](sources/notebooks/_generate_day_notebooks.py)
-and re-run it, never hand-edit a notebook. Each day ships only the backend and 🔧 helper
-cells it actually calls (`setup_cell(backend=..., lib_names=[...])` + `libs(...)`); editable
-✏️ cells stay within the vocabulary the progression table has introduced by that day.
+In short: **the `.ipynb` files are the source — edit them directly.** 297 of the 316 cells
+are ordinary and stay exactly as you leave them.
+
+The 19 exceptions are the 📦 Setup cell and each 🔧 Library cell. They say so in their own
+second line, and `_sync_notebooks.py` rewrites them, so an edit typed into one is
+replaced. They exist because `load_gold` appears in four notebooks and `evaluate` /
+`show_errors` in two, and because the Setup cell's import line is computed from the
+helper list — a day imports exactly what it ships. To change one:
+
+- **the helper's code** → edit [sources/notebooks/_notebook_lib.py](sources/notebooks/_notebook_lib.py), then sync. Every day using it updates together. The helpers sit at the end of that file as ordinary Python, one `# === name :: caption ===` section each — edit them as you would any function.
+- **which helpers a cell ships, or a day's backend** → edit that cell's `lda2` metadata, then sync.
+
+Editable ✏️ cells stay within the vocabulary the progression table has introduced by that
+day.
+
+After editing a notebook:
+
+```bash
+python sources/notebooks/_sync_notebooks.py    # rebuild generated cells, clear outputs
+python sources/notebooks/_check_notebooks.py   # the invariants
+```
 
 ## Layout & content authoring
 

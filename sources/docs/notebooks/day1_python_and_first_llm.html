@@ -392,19 +392,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link active" data-scroll-target="#how-to-use-this-notebook">How to use this notebook</a></li>
   <li><a href="#part-a-tutorial-your-first-llm-call-and-reading-its-answer" id="toc-part-a-tutorial-your-first-llm-call-and-reading-its-answer" class="nav-link" data-scroll-target="#part-a-tutorial-your-first-llm-call-and-reading-its-answer">Part A · Tutorial — your first LLM call, and reading its answer</a>
   <ul class="collapse">
-  <li><a href="#getting-your-bearings-in-colab" id="toc-getting-your-bearings-in-colab" class="nav-link" data-scroll-target="#getting-your-bearings-in-colab">1. Getting your bearings in Colab</a></li>
-  <li><a href="#your-first-llm-call" id="toc-your-first-llm-call" class="nav-link" data-scroll-target="#your-first-llm-call">2. Your first LLM call</a></li>
-  <li><a href="#what-did-the-model-hand-back-python-data-types" id="toc-what-did-the-model-hand-back-python-data-types" class="nav-link" data-scroll-target="#what-did-the-model-hand-back-python-data-types">3. What did the model hand back? — Python data types</a></li>
-  <li><a href="#f-strings-put-your-data-into-a-prompt" id="toc-f-strings-put-your-data-into-a-prompt" class="nav-link" data-scroll-target="#f-strings-put-your-data-into-a-prompt">4. f-strings — put your data <em>into</em> a prompt</a></li>
+  <li><a href="#step-1-run-a-cell" id="toc-step-1-run-a-cell" class="nav-link" data-scroll-target="#step-1-run-a-cell">Step 1 · Run a cell</a></li>
+  <li><a href="#step-2-read-an-error" id="toc-step-2-read-an-error" class="nav-link" data-scroll-target="#step-2-read-an-error">Step 2 · Read an error</a></li>
+  <li><a href="#step-3-variables-store-a-value-under-a-name" id="toc-step-3-variables-store-a-value-under-a-name" class="nav-link" data-scroll-target="#step-3-variables-store-a-value-under-a-name">Step 3 · Variables — store a value under a name</a></li>
+  <li><a href="#step-4-your-first-llm-call" id="toc-step-4-your-first-llm-call" class="nav-link" data-scroll-target="#step-4-your-first-llm-call">Step 4 · Your first LLM call</a></li>
+  <li><a href="#step-5-f-strings-put-your-data-into-a-prompt" id="toc-step-5-f-strings-put-your-data-into-a-prompt" class="nav-link" data-scroll-target="#step-5-f-strings-put-your-data-into-a-prompt">Step 5 · f-strings — put your data <em>into</em> a prompt</a></li>
+  <li><a href="#step-6-what-kind-of-value-is-the-models-answer" id="toc-step-6-what-kind-of-value-is-the-models-answer" class="nav-link" data-scroll-target="#step-6-what-kind-of-value-is-the-models-answer">Step 6 · What kind of value is the model’s answer?</a></li>
+  <li><a href="#step-7-put-the-answer-in-a-record" id="toc-step-7-put-the-answer-in-a-record" class="nav-link" data-scroll-target="#step-7-put-the-answer-in-a-record">Step 7 · Put the answer in a record</a></li>
+  <li><a href="#step-8-getting-the-answers-back-out-indexing" id="toc-step-8-getting-the-answers-back-out-indexing" class="nav-link" data-scroll-target="#step-8-getting-the-answers-back-out-indexing">Step 8 · Getting the answers back out — indexing</a></li>
   </ul></li>
-  <li><a href="#part-b-corpus-lab-from-text-to-sentences-then-practice" id="toc-part-b-corpus-lab-from-text-to-sentences-then-practice" class="nav-link" data-scroll-target="#part-b-corpus-lab-from-text-to-sentences-then-practice">Part B · Corpus Lab — from text to sentences, then practice</a>
+  <li><a href="#part-b-corpus-lab-from-text-to-sentences-then-the-python-youll-reuse" id="toc-part-b-corpus-lab-from-text-to-sentences-then-the-python-youll-reuse" class="nav-link" data-scroll-target="#part-b-corpus-lab-from-text-to-sentences-then-the-python-youll-reuse">Part B · Corpus Lab — from text to sentences, then the Python you’ll reuse</a>
   <ul class="collapse">
-  <li><a href="#run-this-one-now" id="toc-run-this-one-now" class="nav-link" data-scroll-target="#run-this-one-now">Run this one now</a></li>
-  <li><a href="#splitting-text-into-sentences-without-a-model" id="toc-splitting-text-into-sentences-without-a-model" class="nav-link" data-scroll-target="#splitting-text-into-sentences-without-a-model">1. Splitting text into sentences — <em>without</em> a model</a></li>
-  <li><a href="#splitting-text-into-sentences-with-a-model" id="toc-splitting-text-into-sentences-with-a-model" class="nav-link" data-scroll-target="#splitting-text-into-sentences-with-a-model">2. Splitting text into sentences — <em>with</em> a model</a></li>
-  <li><a href="#what-else-the-model-knows-about-words" id="toc-what-else-the-model-knows-about-words" class="nav-link" data-scroll-target="#what-else-the-model-knows-about-words">3. What else the model knows about words</a></li>
-  <li><a href="#run-the-model-over-every-sentence-for-if-and-a-function" id="toc-run-the-model-over-every-sentence-for-if-and-a-function" class="nav-link" data-scroll-target="#run-the-model-over-every-sentence-for-if-and-a-function">4. Run the model over every sentence — <code>for</code>, <code>if</code>, and a function</a></li>
-  <li><a href="#your-turn-python-practice" id="toc-your-turn-python-practice" class="nav-link" data-scroll-target="#your-turn-python-practice">5. Your turn — Python practice</a></li>
+  <li><a href="#step-1-splitting-text-into-sentences-without-a-model" id="toc-step-1-splitting-text-into-sentences-without-a-model" class="nav-link" data-scroll-target="#step-1-splitting-text-into-sentences-without-a-model">Step 1 · Splitting text into sentences — <em>without</em> a model</a></li>
+  <li><a href="#step-2-splitting-text-into-sentences-with-a-model" id="toc-step-2-splitting-text-into-sentences-with-a-model" class="nav-link" data-scroll-target="#step-2-splitting-text-into-sentences-with-a-model">Step 2 · Splitting text into sentences — <em>with</em> a model</a></li>
+  </ul></li>
+  <li><a href="#steps-39-the-python-youll-reuse-all-week" id="toc-steps-39-the-python-youll-reuse-all-week" class="nav-link" data-scroll-target="#steps-39-the-python-youll-reuse-all-week">Steps 3–9 · The Python you’ll reuse all week</a>
+  <ul class="collapse">
+  <li><a href="#step-3-run-the-model-over-every-sentence-for-and-if" id="toc-step-3-run-the-model-over-every-sentence-for-and-if" class="nav-link" data-scroll-target="#step-3-run-the-model-over-every-sentence-for-and-if">Step 3 · Run the model over every sentence — <code>for</code> and <code>if</code></a></li>
+  <li><a href="#step-4-loop-over-records-not-just-strings" id="toc-step-4-loop-over-records-not-just-strings" class="nav-link" data-scroll-target="#step-4-loop-over-records-not-just-strings">Step 4 · Loop over <strong>records</strong>, not just strings</a></li>
+  <li><a href="#step-5-build-a-new-list-with-.append" id="toc-step-5-build-a-new-list-with-.append" class="nav-link" data-scroll-target="#step-5-build-a-new-list-with-.append">Step 5 · Build a new list with <code>.append</code></a></li>
+  <li><a href="#step-6-count-things-with-a-dict" id="toc-step-6-count-things-with-a-dict" class="nav-link" data-scroll-target="#step-6-count-things-with-a-dict">Step 6 · Count things with a dict</a></li>
+  <li><a href="#step-7-more-than-two-branches-elif-and-and" id="toc-step-7-more-than-two-branches-elif-and-and" class="nav-link" data-scroll-target="#step-7-more-than-two-branches-elif-and-and">Step 7 · More than two branches — <code>elif</code> and <code>and</code></a></li>
+  <li><a href="#step-8-divide-and-guard-against-zero" id="toc-step-8-divide-and-guard-against-zero" class="nav-link" data-scroll-target="#step-8-divide-and-guard-against-zero">Step 8 · Divide — and guard against zero</a></li>
+  <li><a href="#step-9-wrap-it-in-a-function" id="toc-step-9-wrap-it-in-a-function" class="nav-link" data-scroll-target="#step-9-wrap-it-in-a-function">Step 9 · Wrap it in a function</a></li>
+  </ul></li>
+  <li><a href="#steps-1013-your-turn-python-practice" id="toc-steps-1013-your-turn-python-practice" class="nav-link" data-scroll-target="#steps-1013-your-turn-python-practice">Steps 10–13 · Your turn — Python practice</a>
+  <ul class="collapse">
+  <li><a href="#step-10-read-one-value-out-of-a-record" id="toc-step-10-read-one-value-out-of-a-record" class="nav-link" data-scroll-target="#step-10-read-one-value-out-of-a-record">Step 10 · Read one value out of a record</a></li>
+  <li><a href="#step-11-build-a-list-in-a-loop" id="toc-step-11-build-a-list-in-a-loop" class="nav-link" data-scroll-target="#step-11-build-a-list-in-a-loop">Step 11 · Build a list in a loop</a></li>
+  <li><a href="#step-12-count-with-a-dict" id="toc-step-12-count-with-a-dict" class="nav-link" data-scroll-target="#step-12-count-with-a-dict">Step 12 · Count with a dict</a></li>
+  <li><a href="#step-13-count-then-divide-with-a-guard" id="toc-step-13-count-then-divide-with-a-guard" class="nav-link" data-scroll-target="#step-13-count-then-divide-with-a-guard">Step 13 · Count, then divide — with a guard</a></li>
+  <li><a href="#all-four-together" id="toc-all-four-together" class="nav-link" data-scroll-target="#all-four-together">All four together</a></li>
+  </ul></li>
+  <li><a href="#optional-what-a-model-stores-about-a-word" id="toc-optional-what-a-model-stores-about-a-word" class="nav-link" data-scroll-target="#optional-what-a-model-stores-about-a-word">Optional · What a model stores about a word</a>
+  <ul class="collapse">
+  <li><a href="#a-what-a-model-stores-about-a-word" id="toc-a-what-a-model-stores-about-a-word" class="nav-link" data-scroll-target="#a-what-a-model-stores-about-a-word">A · What a model stores about a word</a></li>
+  <li><a href="#b-are-similar-words-really-close" id="toc-b-are-similar-words-really-close" class="nav-link" data-scroll-target="#b-are-similar-words-really-close">B · Are similar words really close?</a></li>
+  <li><a href="#c-where-these-vectors-stop-working" id="toc-c-where-these-vectors-stop-working" class="nav-link" data-scroll-target="#c-where-these-vectors-stop-working">C · Where these vectors stop working</a></li>
+  <li><a href="#d-a-map-of-the-space" id="toc-d-a-map-of-the-space" class="nav-link" data-scroll-target="#d-a-map-of-the-space">D · A map of the space</a></li>
   <li><a href="#python-youll-see-but-wont-have-to-write" id="toc-python-youll-see-but-wont-have-to-write" class="nav-link" data-scroll-target="#python-youll-see-but-wont-have-to-write">Python you’ll <em>see</em> but won’t have to write</a></li>
   </ul></li>
   <li><a href="#mini-project-form-your-group-pick-a-track" id="toc-mini-project-form-your-group-pick-a-track" class="nav-link" data-scroll-target="#mini-project-form-your-group-pick-a-track">Mini-project — form your group &amp; pick a track</a></li>
@@ -440,454 +465,958 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This is your <strong>single submission for the day</strong>. It has two parts:</p>
 <ul>
 <li><strong>Part A · Tutorial</strong> — call a language model, then learn to read the data it hands back.</li>
-<li><strong>Part B · Corpus Lab</strong> — segment text into sentences, run the model over a list, then practice the basics.</li>
+<li><strong>Part B · Corpus Lab</strong> — segment text into sentences, then write the Python you will reuse every day this week.</li>
 </ul>
 <p>You only edit the cells marked <strong>✏️ YOU EDIT</strong>. Run the <strong>🔧 Library cell</strong>s and leave them alone.</p>
 <p>➡️ Work top to bottom. When you’re done, <strong>Runtime → Run all</strong>, then <strong>File → Download → Download <code>.ipynb</code></strong> and submit that file.</p>
 </section>
 <section id="part-a-tutorial-your-first-llm-call-and-reading-its-answer" class="level2">
 <h2 class="anchored" data-anchor-id="part-a-tutorial-your-first-llm-call-and-reading-its-answer">Part A · Tutorial — your first LLM call, and reading its answer</h2>
-<p>No prior Python needed. The star of Part A is a single call to a language model; everything else — variables, data types, f-strings — is just enough Python to read and reshape what the model gives you back. Run each cell, read the output, then change a value and re-run to see what happens.</p>
-<section id="getting-your-bearings-in-colab" class="level3">
-<h3 class="anchored" data-anchor-id="getting-your-bearings-in-colab">1. Getting your bearings in Colab</h3>
-<p>This page is a <strong>Colab notebook</strong>: a stack of <strong>cells</strong> you run top to bottom. A code cell runs when you press <strong>Shift+Enter</strong> (or click ▶). The first run wakes up a <strong>runtime</strong> — a temporary computer in the cloud that remembers your variables until you close the tab. Run the cell below to prove it works.</p>
+<p>No prior Python needed. Part A starts at the language model and stays there: you call it, see what it is good and bad at, then build a prompt out of a variable. Only then do we look at the Python — types, lists, dicts, indexing — you need to read and reshape what it gives back.</p>
+<p>Work through <strong>eight short steps</strong>. Each one shows a worked example you run, then a <strong>🧪 your turn</strong> cell where you change something and re-run.</p>
+<section id="step-1-run-a-cell" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-run-a-cell">Step 1 · Run a cell</h3>
+<p>This page is a <strong>Colab notebook</strong>: a stack of <strong>cells</strong> you run top to bottom. A code cell runs when you press <strong>Shift+Enter</strong> (or click ▶). The first run wakes up a <strong>runtime</strong> — a temporary computer in the cloud that remembers your variables until you close the tab.</p>
 <div id="cell-4" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hello, Colab! You just ran your first cell."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p><strong>When a cell breaks — read the error.</strong> Sooner or later a cell turns red. Don’t panic: Python tells you what went wrong on the <strong>last line</strong>. For example, running <code>print(mesage)</code> (a typo for <code>message</code>) prints:</p>
-<pre><code>NameError: name 'mesage' is not defined</code></pre>
-<p>Read it back to front: the <strong>error type</strong> (<code>NameError</code>), the <strong>message</strong> (<code>'mesage' is not defined</code>), and the <strong>line</strong> it happened on. Nearly every early error is a typo or a cell you haven’t run yet. Fix the typo, re-run, move on.</p>
+<p><strong>🧪 Your turn</strong> — change the text inside the quotes to a message of your own, then press Shift+Enter again.</p>
 </section>
-<section id="your-first-llm-call" class="level3">
-<h3 class="anchored" data-anchor-id="your-first-llm-call">2. Your first LLM call</h3>
-<p>Run the setup cell (it loads the LLM backend — in Colab that’s the free built-in Gemini, no key needed), then send the model a prompt with <code>generate_text(...)</code>. The answer comes back as text, which we store in a <strong>variable</strong> called <code>reply</code>.</p>
+<section id="step-2-read-an-error" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-read-an-error">Step 2 · Read an error</h3>
+<p>Sooner or later a cell turns red. Python tells you what went wrong on the <strong>last line</strong>. Run this cell — it is <em>meant</em> to fail:</p>
 <div id="cell-7" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># --- LLM backend: Colab's free built-in Gemini (no API key) -------------------</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: remember when we last called the model, so we can pace ourselves </span><span class="al">###</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>_last_call_time <span class="op">=</span> <span class="fl">0.0</span>    <span class="co"># updated after every call; 0.0 means "never called yet"</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>_min_interval <span class="op">=</span> <span class="fl">13.2</span>     <span class="co"># colab.ai publishes no rate limit — pace conservatively</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: the one function you call all day — it waits its turn, then asks </span><span class="al">###</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text(prompt: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Send a prompt to Colab's built-in Gemini and give back its reply.</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">    It waits between calls so we don't go too fast. Non-reproducible: colab.ai</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">    exposes no temperature or seed, so the same prompt can give a different answer.</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">        prompt: the text to send to the model.</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">        The model's reply, as text.</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; reply = generate_text("What CEFR level is this sentence? I like cats.")</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> _last_call_time                                    <span class="co"># share this across calls</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    wait <span class="op">=</span> _min_interval <span class="op">-</span> (time.monotonic() <span class="op">-</span> _last_call_time)   <span class="co"># still too soon?</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        time.sleep(wait)                                      <span class="co"># pause for the difference</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    _last_call_time <span class="op">=</span> time.monotonic()                        <span class="co"># note the time of this call</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _raw_generate_text(prompt)                         <span class="co"># now actually ask the model</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: connect to Colab's built-in model (or explain why we can't) </span><span class="al">###</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google.colab <span class="im">import</span> ai            <span class="co"># Colab's built-in Gemini — no key</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    _raw_generate_text <span class="op">=</span> <span class="kw">lambda</span> p: ai.generate_text(p)   <span class="co"># the raw, unpaced call</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    _backend <span class="op">=</span> <span class="st">"Colab Gemini (demo, non-reproducible)"</span>   <span class="co"># shown by the Setup printout</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:                        <span class="co"># `google.colab` only exists inside Colab</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        <span class="st">"No LLM backend found. Run this notebook in Google Colab (free built-in "</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Gemini, no key needed). See resources/tools/gemini-api-key.md."</span>)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done. LLM backend: </span><span class="sc">{</span>_backend<span class="sc">}</span><span class="ss">."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mesage)      <span class="co"># a typo for `message` — this cell is supposed to fail</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p><strong>✏️ YOU EDIT</strong> — change the prompt text and re-run. The prompt is just text you send; the reply is just text you get back.</p>
-<div id="cell-9" class="cell">
+<p>The last line reads:</p>
+<pre><code>NameError: name 'mesage' is not defined</code></pre>
+<p>Three parts: the <strong>error type</strong> (<code>NameError</code>), the <strong>message</strong> (<code>'mesage' is not defined</code>), and the <strong>line</strong> it happened on. Nearly every early error is a typo or a cell you haven’t run yet.</p>
+<p><strong>🧪 Your turn</strong> — fix the spelling so the cell runs. You will need to give <code>message</code> a value first.</p>
+</section>
+<section id="step-3-variables-store-a-value-under-a-name" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-variables-store-a-value-under-a-name">Step 3 · Variables — store a value under a name</h3>
+<p>A <strong>variable</strong> is a name that holds a value. The <code>=</code> means <em>“store this”</em>, not <em>“equals”</em>. Once stored, you get the value back by writing its name.</p>
+<div id="cell-10" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ change the text in the quotes, then press Shift+Enter to re-run.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)  <span class="co"># ask</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)                                    <span class="co"># show what came back</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> <span class="st">"A1"</span>        <span class="co"># store the text "A1" under the name `level`</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(level)        <span class="co"># get it back by name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>🧪 Your turn</strong> — store your own name under a variable called <code>who</code>, then print it.</p>
+<div id="cell-12" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>who <span class="op">=</span> <span class="st">"..."</span>         <span class="co"># ✏️ your name here</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(who)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="what-did-the-model-hand-back-python-data-types" class="level3">
-<h3 class="anchored" data-anchor-id="what-did-the-model-hand-back-python-data-types">3. What did the model hand back? — Python data types</h3>
-<p>Every value in Python has a <strong>type</strong>. Ask what type <code>reply</code> is:</p>
-<div id="cell-11" class="cell">
+<section id="step-4-your-first-llm-call" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-your-first-llm-call">Step 4 · Your first LLM call</h3>
+<p>Run the setup cell first. It does one thing: <code>from google.colab import ai</code> brings in Colab’s built-in Gemini — free, and nothing to set up.</p>
+<p>Then call it. <strong><code>ai.generate_text(...)</code></strong> sends your text to the model and hands back its reply. You send text; you get text back. We store the answer in a variable called <code>reply</code>.</p>
+<div id="cell-14" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;generated&quot;:&quot;setup&quot;,&quot;backend&quot;:&quot;demo&quot;,&quot;lib_names&quot;:[],&quot;gold_url&quot;:null,&quot;gold_comment&quot;:null,&quot;predictions_url&quot;:null,&quot;val_url&quot;:null,&quot;sampling&quot;:false}}">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(reply))     <span class="co"># &lt;class 'str'&gt; — a string, i.e. text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># --- LLM backend: Colab's free built-in Gemini (no API key) -------------------</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> ai      <span class="co"># Colab's built-in Gemini — nothing to set up</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Setup done. Colab's built-in Gemini is ready."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>✏️ YOU EDIT</strong> — change the prompt text and re-run. The prompt is just text you send; the reply is just text you get back.</p>
+<div id="cell-16" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ change the text in the quotes, then press Shift+Enter to re-run.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> ai.generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)                                    <span class="co"># show what came back</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>One call, one answer. That reply is <strong>not correct by definition</strong> — it is data you have to check. On Day 2 you will score answers like this against labels people agreed on by hand.</p>
+<p>Before moving on, try the model on four more prompts. Each one asks it to do something you might actually want from it, and each shows something different about what you get back.</p>
+<p><strong>1. Ask it to do the actual task.</strong> This is the job you will spend the week on: give it a sentence, ask for a CEFR level.</p>
+<div id="cell-19" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> ai.generate_text(<span class="st">"What CEFR level (A1-C2) is this sentence? The cat sat on the mat."</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>You probably got a paragraph of explanation rather than a single level. The model answered the question; it just answered at a length nobody asked for.</p>
+<p><strong>2. Ask for the format you want.</strong> Adding one sentence to the prompt changes the shape of the reply.</p>
+<div id="cell-21" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> ai.generate_text(<span class="st">"What CEFR level (A1-C2) is this sentence? Answer with just the level, nothing else. The cat sat on the mat."</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Shorter, and much easier to put in a table. <strong>The output format is something you ask for, not something you hope for</strong> — that is most of what Day 3 is about.</p>
+<p><strong>3. Run the same prompt twice.</strong> Nothing in the cell changes; run it, then run it again.</p>
+<div id="cell-23" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ai.generate_text(<span class="st">"Name one common hedge in academic writing."</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>The two answers are probably not identical. This backend gives no way to hold the output still, so the same prompt can produce different text each time. On Day 3 you switch to a backend that can be pinned down, because a result you cannot reproduce is a result you cannot report.</p>
+<p><strong>4. Ask it something it will get wrong.</strong> The model answers questions about language, so ask it to count.</p>
+<div id="cell-25" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ai.generate_text(<span class="st">"How many letter r's are in the word strawberry? Answer with just the number."</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>The word has three. Whatever it told you, it told you in the same confident tone as every other answer above. <strong>Fluency is not accuracy</strong>, and nothing in the reply marks which is which.</p>
+<p>That is the reason the rest of this course exists: you will build a set of human-labelled answers (Day 2), then measure the model against it (Day 2 and Day 3) instead of trusting how the reply sounds.</p>
+<p><strong>🧪 Your turn</strong> — try a prompt from your own research area, and one you expect the model to get wrong. Can you tell the two replies apart without already knowing the answer?</p>
+</section>
+<section id="step-5-f-strings-put-your-data-into-a-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="step-5-f-strings-put-your-data-into-a-prompt">Step 5 · f-strings — put your data <em>into</em> a prompt</h3>
+<p>An <strong>f-string</strong> (<code>f"..."</code>) drops a variable straight into a piece of text with <code>{curly braces}</code>. That’s how you build a prompt <em>about</em> a specific sentence, and it is how you will run one prompt over a whole dataset later.</p>
+<p><strong>✏️ YOU EDIT</strong> — change the sentence and re-run.</p>
+<div id="cell-29" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sentence <span class="op">=</span> <span class="st">"Nevertheless, the findings were inconclusive."</span>   <span class="co"># ✏️ your sentence</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span>  <span class="co"># f = fill in {}</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Prompt sent:"</span>, prompt)                <span class="co"># see what {sentence} became</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> ai.generate_text(prompt)             <span class="co"># send the finished prompt</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model says:"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>The <code>f</code> is what fills the braces, and it fills them on that line.</strong> Without the <code>f</code>, <code>"... {sentence}"</code> is just text with the characters <code>{sentence}</code> in it.</p>
+<p>That second form is useful, so it is worth seeing once now. A prompt written over several lines uses <strong>three quotes</strong> (<code>"""..."""</code>), and keeps its braces empty until <code>.format()</code> fills them in — one item at a time. This is the form Day 3 and the final project use, and you only ever edit the text between the quotes:</p>
+<div id="cell-31" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: a template — no `f`, so {text} stays an empty slot </span><span class="al">###</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>TEMPLATE <span class="op">=</span> <span class="st">"""What CEFR level (A1-C2) is this sentence?</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">Answer with just the level.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: fill the slot, once per sentence </span><span class="al">###</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(TEMPLATE.<span class="bu">format</span>(text<span class="op">=</span><span class="st">"The cat sat on the mat."</span>))   <span class="co"># .format() fills {text}</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"---"</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(TEMPLATE.<span class="bu">format</span>(text<span class="op">=</span>sentence))        <span class="co"># same template, different sentence</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>One template, two finished prompts. You never have to write <code>.format()</code> yourself this week — but from Day 3 you will edit templates that use it, so recognise the shape.</p>
+<p><strong>✏️ YOU EDIT</strong> — now write one of your own. Three lines:</p>
+<ol type="1">
+<li><strong><code>YOUR_TEMPLATE</code></strong> — a prompt with <code>{text}</code> where the sentence should go. Use three quotes, and <strong>no <code>f</code></strong> in front, so the braces stay empty.</li>
+<li><strong><code>prompt</code></strong> — fill the slot with <code>.format(text=...)</code>.</li>
+<li><strong><code>ai.generate_text(prompt)</code></strong> — send it, and print what comes back.</li>
+</ol>
+<p>Ask the model for anything you like about the sentence: its CEFR level, whether it hedges a claim, how formal it is. Print <code>prompt</code> before you send it — checking what the braces became is how you catch a template that did not fill in.</p>
+<div id="cell-34" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: your template — {text} is the empty slot, and there is no `f` </span><span class="al">###</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>YOUR_TEMPLATE <span class="op">=</span> <span class="st">"""..."""</span>            <span class="co"># ✏️ your prompt, with {text} in it somewhere</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: fill the slot </span><span class="al">###</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>my_sentence <span class="op">=</span> <span class="st">"Nevertheless, the findings were inconclusive."</span>   <span class="co"># ✏️ your sentence</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> YOUR_TEMPLATE.<span class="bu">format</span>(text<span class="op">=</span>my_sentence)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Prompt sent:"</span>, prompt)        <span class="co"># check what {text} became before sending</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: send it to the model </span><span class="al">###</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> ai.generate_text(prompt)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model says:"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>If the reply looks like it ignored your sentence, read the printed <code>prompt</code> first — a template with no <code>{text}</code> in it sends the same prompt every time, and <code>.format()</code> will not warn you.</p>
+</section>
+<section id="step-6-what-kind-of-value-is-the-models-answer" class="level3">
+<h3 class="anchored" data-anchor-id="step-6-what-kind-of-value-is-the-models-answer">Step 6 · What kind of value is the model’s answer?</h3>
+<p>In step 4 you asked for a CEFR level and got a paragraph; then you asked for just the level and got something short. The last reply is still in <code>reply</code>.</p>
+<p>Before you can do anything with an answer — compare it with a person’s answer, count how often the two agree, put it in a table — you have to know what kind of value you are holding. Every value in Python has a <strong>type</strong>.</p>
+<div id="cell-37" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)              <span class="co"># the model's answer, still in the variable from step 5</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(reply))        <span class="co"># &lt;class 'str'&gt; — a string, i.e. text</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(reply))         <span class="co"># how many characters of text that is</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>The three types you’ll use all week:</p>
 <ul>
 <li><strong><code>str</code></strong> — text, in quotes (like <code>reply</code>).</li>
 <li><strong><code>list</code></strong> — an ordered sequence, in square brackets. Several sentences, say.</li>
-<li><strong><code>dict</code></strong> — a labelled record, in curly braces: <code>key → value</code> pairs. This is the <code>{id, text, label}</code> shape every dataset this week uses.</li>
+<li><strong><code>dict</code></strong> — a labelled record, in curly braces: <code>key → value</code> pairs. This is the <code>{id, text, label}</code> shape every dataset this week uses, and you build one in step 7.</li>
 </ul>
-<p>Build one of each, then reach inside them with <strong><code>[...]</code></strong> — lists by position (counting from 0), dicts by key.</p>
-<div id="cell-13" class="cell">
+<p>A string is <strong>one</strong> thing. A sentence, a level, and a person’s label are each a string on their own, and nothing tells Python that the three belong together. Putting them together is what step 7 is for.</p>
+<p><strong>🧪 Your turn</strong> — before you run the cell below, write down what you expect each line to print. Two of the four are not what most people guess.</p>
+<div id="cell-40" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sentences <span class="op">=</span> [<span class="st">"The cat sat on the mat."</span>,          <span class="co"># a list of strings</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Nevertheless, the findings were inconclusive."</span>]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>record <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: sentences[<span class="dv">0</span>], <span class="st">"label"</span>: <span class="st">"A1"</span>}   <span class="co"># a dict</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"how many sentences:"</span>, <span class="bu">len</span>(sentences))   <span class="co"># len() = how many items</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first sentence:"</span>, sentences[<span class="dv">0</span>])       <span class="co"># list — index by position (from 0)</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"its gold label:"</span>, record[<span class="st">"label"</span>])   <span class="co"># dict — index by key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(<span class="st">"A1"</span>))                   <span class="co"># how long is the text "A1"?</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="st">"A1"</span>) <span class="op">==</span> <span class="bu">type</span>(reply))   <span class="co"># is a level the same type as a whole reply?</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="dv">7</span>))                     <span class="co"># a number</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="st">"7"</span>))                   <span class="co"># the same digit, in quotes</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p><code>"A1"</code> and a three-paragraph reply are <strong>the same type</strong>: <code>str</code> tells you the kind of value, not how much of it there is. And <code>7</code> and <code>"7"</code> are different — one is a number you can divide, the other is text.</p>
+<p><strong>Where this goes:</strong> on Day 2 you compare a model’s label with a person’s label. Both are <code>str</code>, so the comparison is <code>==</code> — which is why it matters that <code>"A1"</code> and <code>"A1 "</code>, with a trailing space, are not equal.</p>
 </section>
-<section id="f-strings-put-your-data-into-a-prompt" class="level3">
-<h3 class="anchored" data-anchor-id="f-strings-put-your-data-into-a-prompt">4. f-strings — put your data <em>into</em> a prompt</h3>
-<p>An <strong>f-string</strong> (<code>f"..."</code>) drops a variable straight into a piece of text with <code>{curly braces}</code>. That’s how you build a prompt <em>about</em> a specific sentence — the trick we’ll use to run one prompt over a whole dataset later.</p>
-<p><strong>✏️ YOU EDIT</strong> — change the sentence and re-run.</p>
-<div id="cell-16" class="cell">
+<section id="step-7-put-the-answer-in-a-record" class="level3">
+<h3 class="anchored" data-anchor-id="step-7-put-the-answer-in-a-record">Step 7 · Put the answer in a record</h3>
+<p>One reply is a string. A dataset is <strong>many</strong> replies, each attached to the sentence it was about and to what a person thought the right answer was. Python’s structure for that is a <strong>dict</strong>: a record with named slots.</p>
+<p>Build one for a single sentence. Its <code>label</code> is <strong>your own judgment</strong> — the sentence below is short and concrete, so read it and decide. This is exactly what you and your group do on Day 2, by hand, for a hundred sentences: <strong>the label in a gold standard is a decision a person made</strong>, not something a program produced.</p>
+<p><strong>✏️ YOU EDIT</strong> — decide the level yourself before you look at what the model says.</p>
+<div id="cell-44" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sentence <span class="op">=</span> <span class="st">"Nevertheless, the findings were inconclusive."</span>   <span class="co"># ✏️ your sentence</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span>  <span class="co"># f = fill in {}</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Prompt sent:"</span>, prompt)                <span class="co"># see what {sentence} became</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(prompt)                <span class="co"># send the finished prompt</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model says:"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ A1 is the simplest level, C2 the most advanced. Change it if you disagree.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"The cat sat on the mat."</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>my_level <span class="op">=</span> <span class="st">"A1"</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>record <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: text, <span class="st">"label"</span>: my_level}   <span class="co"># a dict: named slots</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(record)                    <span class="co"># the whole record — note the { key: value ... }</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-</section>
-</section>
-<section id="part-b-corpus-lab-from-text-to-sentences-then-practice" class="level2">
-<h2 class="anchored" data-anchor-id="part-b-corpus-lab-from-text-to-sentences-then-practice">Part B · Corpus Lab — from text to sentences, then practice</h2>
-<p>In Part A you called the model once. Here you’ll turn a paragraph into individual <strong>sentences</strong> (the unit you’ll annotate on Day 2), look at how a model stores the meaning of a word, run the model over a whole list, and then practice the basics on your own. Cells marked <strong>✏️ YOU EDIT</strong> are yours to change; run the <strong>self-check</strong> at the end until every line prints ✅.</p>
-<section id="run-this-one-now" class="level3">
-<h3 class="anchored" data-anchor-id="run-this-one-now">Run this one now</h3>
-<p>Section 3 uses an English model that carries a <strong>vector for every word</strong>. It is a large file and takes a minute or two to arrive, so start it now and carry on reading — it will be ready by the time you need it.</p>
-<div id="cell-19" class="cell">
+<p>That record holds what a <strong>person</strong> said. To score the model you need what the <strong>model</strong> said about the same sentence, sitting in the same record. Ask it, and store the answer under a new key.</p>
+<div id="cell-46" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📥 Download the word-vector model — run me now { display-mode: "form" }</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>python <span class="op">-</span>m spacy download en_core_web_lg</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> importlib, spacy</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># The model was installed after Python started, so refresh the module list</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># before loading it — otherwise the load below may not find it yet.</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>importlib.invalidate_caches()</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>nlp_vec <span class="op">=</span> spacy.load(<span class="st">"en_core_web_lg"</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ word vectors ready —"</span>, <span class="ss">f"</span><span class="sc">{</span>nlp_vec<span class="sc">.</span>vocab<span class="sc">.</span>vectors<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">:,}</span><span class="ss">"</span>, <span class="st">"words have one"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>answer <span class="op">=</span> ai.generate_text(<span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>record[<span class="st">"model"</span>] <span class="op">=</span> answer.strip()   <span class="co"># .strip() drops the newline the reply arrives with</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(record)                      <span class="co"># the same record, now with two answers in it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p>One record is one sentence. A dataset is a <strong>list</strong> of them — square brackets, records separated by commas. Here are two more, already answered, so you have something to compare:</p>
+<div id="cell-48" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> [record,                                              <span class="co"># the one you just built</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>         {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"text"</span>: <span class="st">"More research is needed."</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>          <span class="st">"label"</span>: <span class="st">"B1"</span>, <span class="st">"model"</span>: <span class="st">"B1"</span>},</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>         {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"text"</span>: <span class="st">"Nevertheless, the findings were inconclusive."</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>          <span class="st">"label"</span>: <span class="st">"C1"</span>, <span class="st">"model"</span>: <span class="st">"B2"</span>}]      <span class="co"># here the two answers disagree</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"how many items:"</span>, <span class="bu">len</span>(items))   <span class="co"># len() on a list = how many records</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">2</span>])                        <span class="co"># the third record — counting starts at 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>🧪 Your turn</strong> — write a sentence of your own, decide its level, then let the model answer the same question. <strong>Write your level down before you run the cell.</strong> Do the two of you agree?</p>
+<div id="cell-50" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>my_text <span class="op">=</span> <span class="st">"..."</span>                       <span class="co"># ✏️ a sentence of your own</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>my_record <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">4</span>, <span class="st">"text"</span>: my_text, <span class="st">"label"</span>: <span class="st">"..."</span>}   <span class="co"># ✏️ your judgment</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>my_text<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>my_record[<span class="st">"model"</span>] <span class="op">=</span> ai.generate_text(prompt).strip()</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(my_record)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"we agree:"</span>, my_record[<span class="st">"label"</span>] <span class="op">==</span> my_record[<span class="st">"model"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>Where this goes:</strong> <code>{id, text, label}</code> is the shape of the gold standard you build on Day 2, of the file you score in S6, and of the sample you draw on Day 4. The extra <code>model</code> key is what a prediction looks like once you have run one. Every dataset in this course is a list of records like these.</p>
 </section>
-<section id="splitting-text-into-sentences-without-a-model" class="level3">
-<h3 class="anchored" data-anchor-id="splitting-text-into-sentences-without-a-model">1. Splitting text into sentences — <em>without</em> a model</h3>
+<section id="step-8-getting-the-answers-back-out-indexing" class="level3">
+<h3 class="anchored" data-anchor-id="step-8-getting-the-answers-back-out-indexing">Step 8 · Getting the answers back out — indexing</h3>
+<p>A record with two answers in it is only useful if you can get them out again. Use <strong><code>[...]</code></strong>: a <strong>list</strong> by <em>position</em> (counting from <strong>0</strong>), a <strong>dict</strong> by <em>key</em>.</p>
+<div id="cell-53" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"sentence 3:"</span>, items[<span class="dv">2</span>][<span class="st">"text"</span>])    <span class="co"># list by position, then dict by key</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"person said:"</span>, items[<span class="dv">2</span>][<span class="st">"label"</span>])</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"model said: "</span>, items[<span class="dv">2</span>][<span class="st">"model"</span>])</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"they agree: "</span>, items[<span class="dv">2</span>][<span class="st">"label"</span>] <span class="op">==</span> items[<span class="dv">2</span>][<span class="st">"model"</span>])   <span class="co"># == asks "same value?"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><code>False</code> — one record, one disagreement. On Day 2 you do this for every record in the file and count how often it comes out <code>True</code>. That count, divided by the number of records, is the first score you will report.</p>
+<p>You can also take <strong>several records at once</strong> with a colon. <code>items[:2]</code> means <em>“from the start, up to but not including position 2”</em> — the first two. From Day 3 on you use this to try a prompt on the first few items of a dataset before running it on all of them.</p>
+<div id="cell-56" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"the first two:"</span>, items[:<span class="dv">2</span>])          <span class="co"># a slice — records 0 and 1</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"all but the first:"</span>, items[<span class="dv">1</span>:])      <span class="co"># from position 1 to the end</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"how many in the slice:"</span>, <span class="bu">len</span>(items[:<span class="dv">2</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>🧪 Your turn</strong> — three questions. Answer each one <strong>before</strong> you run the cell.</p>
+<ol type="1">
+<li>How many records does <code>items[:2]</code> hold? How many does <code>items[1:3]</code> hold?</li>
+<li>Do <code>items[0]["label"]</code> and <code>items[0]["model"]</code> agree — and why do you already know?</li>
+<li>What happens when you ask for <code>items[3]</code>?</li>
+</ol>
+<div id="cell-58" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(items[:<span class="dv">2</span>]), <span class="bu">len</span>(items[<span class="dv">1</span>:<span class="dv">3</span>]))   <span class="co"># count them before you run this</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">0</span>][<span class="st">"label"</span>] <span class="op">==</span> items[<span class="dv">0</span>][<span class="st">"model"</span>])</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">3</span>])                          <span class="co"># this one is supposed to fail — read the error</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><code>items[:2]</code> and <code>items[1:3]</code> both hold <strong>two</strong> records — a slice never includes its right-hand number. And <code>items[3]</code> fails with <code>IndexError: list index out of range</code>, because three records sit at positions 0, 1 and 2. That off-by-one is the commonest mistake with slices, and it is worth meeting here rather than on Day 4.</p>
+<p><strong>Where this goes:</strong> <code>items[2]["label"]</code> is how Day 2 reads a gold label out of a file, and <code>val[:5]</code> on Day 3 is this same slice on a real dataset.</p>
+</section>
+</section>
+<section id="part-b-corpus-lab-from-text-to-sentences-then-the-python-youll-reuse" class="level2">
+<h2 class="anchored" data-anchor-id="part-b-corpus-lab-from-text-to-sentences-then-the-python-youll-reuse">Part B · Corpus Lab — from text to sentences, then the Python you’ll reuse</h2>
+<p>In Part A you called the model once. Here you’ll turn a paragraph into individual <strong>sentences</strong> (the unit you’ll annotate on Day 2), and then write the handful of Python patterns that the rest of the week is built from.</p>
+<p>Thirteen short steps, in three blocks:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Steps</th>
+<th>What you do</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1–2</td>
+<td>Split a paragraph into sentences, badly and then properly</td>
+</tr>
+<tr class="even">
+<td>3–9</td>
+<td>Write the loops, counts and conditions you will reuse on Days 2–5</td>
+</tr>
+<tr class="odd">
+<td>10–13</td>
+<td>Practice on your own, with a self-check after each one</td>
+</tr>
+</tbody>
+</table>
+<p>An <strong>optional extra section</strong> follows at the end, on how a model stores the meaning of a word. Nothing later in the week depends on it.</p>
+<p>Cells marked <strong>✏️ YOU EDIT</strong> are yours to change; run each <strong>self-check</strong> until every line prints ✅.</p>
+<section id="step-1-splitting-text-into-sentences-without-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-splitting-text-into-sentences-without-a-model">Step 1 · Splitting text into sentences — <em>without</em> a model</h3>
 <p>Text arrives as one long string. To analyse it sentence by sentence you first have to <strong>segment</strong> it. The obvious idea: split on the full stop. To do that we call a <strong>method</strong> on the string — <code>some_text.split(".")</code> — using a dot (<code>.</code>) to run a built-in action on a value.</p>
-<div id="cell-21" class="cell">
+<div id="cell-62" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>paragraph <span class="op">=</span> (<span class="st">"Dr. Smith reviewed the data. The results were clear, e.g. accuracy rose. Scores went from 3.14 to 9."</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>naive <span class="op">=</span> paragraph.split(<span class="st">"."</span>)     <span class="co"># cut the string at every "."</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"pieces:"</span>, <span class="bu">len</span>(naive))     <span class="co"># how many pieces did that give us?</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> piece <span class="kw">in</span> naive:              <span class="co"># look at each piece in turn</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">repr</span>(piece))           <span class="co"># repr() shows the quotes and spaces exactly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>paragraph <span class="op">=</span> (<span class="st">"Dr. Smith reviewed the data. The results were clear, e.g. accuracy rose. Scores went from 3.14 to 9."</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>naive <span class="op">=</span> paragraph.split(<span class="st">"."</span>)     <span class="co"># cut the string at every "."</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"pieces:"</span>, <span class="bu">len</span>(naive))     <span class="co"># how many pieces did that give us?</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> piece <span class="kw">in</span> naive:              <span class="co"># look at each piece in turn</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">repr</span>(piece))           <span class="co"># repr() shows the quotes and spaces exactly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Look at the output: <code>"Dr"</code> (from <em>Dr.</em>), <code>"e"</code> and <code>"g"</code> (from <em>e.g.</em>), and <code>"3"</code>/<code>"14"</code> (from <em>3.14</em>) all got split in the wrong places. <strong>Sentence boundaries are not just full stops</strong> — abbreviations and decimals break the naive rule.</p>
 </section>
-<section id="splitting-text-into-sentences-with-a-model" class="level3">
-<h3 class="anchored" data-anchor-id="splitting-text-into-sentences-with-a-model">2. Splitting text into sentences — <em>with</em> a model</h3>
+<section id="step-2-splitting-text-into-sentences-with-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-splitting-text-into-sentences-with-a-model">Step 2 · Splitting text into sentences — <em>with</em> a model</h3>
 <p>A proper tool knows more than “cut at every dot”. We’ll use <strong>spaCy</strong>, an NLP library. <code>import spacy</code> loads that toolbox; <code>spacy.blank("en")</code> makes a minimal English pipeline and we add a rule-based <strong>sentencizer</strong> to it (no model download needed).</p>
-<div id="cell-24" class="cell">
+<div id="cell-65" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: build a sentence splitter that knows more than "cut at every dot" </span><span class="al">###</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> spacy                       <span class="co"># the NLP toolbox</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)            <span class="co"># a minimal English pipeline</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>nlp.add_pipe(<span class="st">"sentencizer"</span>)        <span class="co"># add the rule-based splitter — no download</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: run it on the paragraph and look at what came out </span><span class="al">###</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>doc <span class="op">=</span> nlp(paragraph)               <span class="co"># spaCy reads the text</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>sentences <span class="op">=</span> <span class="bu">list</span>(doc.sents)        <span class="co"># spaCy's sentence objects, as a list</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"sentences found:"</span>, <span class="bu">len</span>(sentences))</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first sentence:"</span>, sentences[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: build a sentence splitter that knows more than "cut at every dot" </span><span class="al">###</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> spacy                       <span class="co"># the NLP toolbox</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)            <span class="co"># a minimal English pipeline</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>nlp.add_pipe(<span class="st">"sentencizer"</span>)        <span class="co"># add the rule-based splitter — no download</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: run it on the paragraph and look at what came out </span><span class="al">###</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>doc <span class="op">=</span> nlp(paragraph)               <span class="co"># spaCy reads the text</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>sentences <span class="op">=</span> <span class="bu">list</span>(doc.sents)        <span class="co"># spaCy's sentence objects, as a list</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"sentences found:"</span>, <span class="bu">len</span>(sentences))</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first sentence:"</span>, sentences[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>spaCy keeps <code>Dr.</code> and <code>e.g.</code> intact and finds the real boundaries. <strong>Why this matters:</strong> on Day 2 the unit you annotate and feed the LLM is the <em>sentence</em> — bad boundaries mean bad data downstream.</p>
+<hr>
 </section>
-<section id="what-else-the-model-knows-about-words" class="level3">
-<h3 class="anchored" data-anchor-id="what-else-the-model-knows-about-words">3. What else the model knows about words</h3>
-<p>In Session 1 you saw that a model turns each word into a long list of numbers, and that words with similar meanings end up with similar numbers. Those numbers are not hidden — you can look at them.</p>
-<p>The pipeline you just used, <code>nlp</code>, only knows where sentences end. The one you downloaded at the top of Part B, <code>nlp_vec</code>, also carries a <strong>vector</strong> for every word it knows.</p>
-<div id="cell-27" class="cell">
+</section>
+<section id="steps-39-the-python-youll-reuse-all-week" class="level2">
+<h2 class="anchored" data-anchor-id="steps-39-the-python-youll-reuse-all-week">Steps 3–9 · The Python you’ll reuse all week</h2>
+<p>Everything from here to step 9 is a pattern you will be asked to <strong>write</strong> later this week. Each step shows it working on a small example first.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Pattern</th>
+<th>Where you’ll write it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3</td>
+<td><code>for</code> over a list, with <code>if</code> / <code>else</code></td>
+<td>every day</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><code>for</code> over a list of <strong>records</strong></td>
+<td>Day 2, Day 4</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Build a list with <code>.append</code></td>
+<td>Day 2 S6, the final project</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Count with a dict</td>
+<td>Day 2 S6</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><code>if</code> / <code>elif</code> / <code>else</code>, and <code>and</code></td>
+<td>Day 2 S5 and S6</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Divide, and guard against zero</td>
+<td>Day 2 S6 — every metric</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Wrap it in a function</td>
+<td>Day 2 S6 onwards</td>
+</tr>
+</tbody>
+</table>
+<section id="step-3-run-the-model-over-every-sentence-for-and-if" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-run-the-model-over-every-sentence-for-and-if">Step 3 · Run the model over every sentence — <code>for</code> and <code>if</code></h3>
+<p>Now that you have a list of sentences, do something to <em>each</em> one. A <strong><code>for</code> loop</strong> repeats the same steps for every item; an <strong><code>if</code></strong> lets you react to what comes back. Below, we build a prompt for each sentence (with an f-string) and ask the model for its CEFR level.</p>
+<p>Notice <strong>where</strong> the f-string sits: <em>inside</em> the loop, so the braces are filled in again for every sentence. Written once above the loop it would be filled in once, and all three calls would ask about the same sentence.</p>
+<p><strong>✏️ YOU EDIT</strong> — try your own sentences.</p>
+<div id="cell-70" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> nlp_vec(<span class="st">"suggest"</span>)[<span class="dv">0</span>]      <span class="co"># read one word; [0] takes the first token</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"how many numbers:"</span>, word.vector.shape)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"the first eight: "</span>, word.vector[:<span class="dv">8</span>].<span class="bu">round</span>(<span class="dv">3</span>))   <span class="co"># rounded, to fit on one line</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: the sentences to ask about </span><span class="al">###</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [<span class="st">"The findings were inconclusive."</span>,      <span class="co"># ✏️ try your own sentences</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Nevertheless, we draw some tentative conclusions."</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"More research is needed."</span>]</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: for each one — build a prompt, ask, and react to the reply </span><span class="al">###</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:              <span class="co"># repeat everything below for each sentence</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    reply <span class="op">=</span> ai.generate_text(prompt).strip()   <span class="co"># .strip() removes stray blank space</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:                    <span class="co"># the model sometimes says nothing at all</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(sentence, <span class="st">"→ (no answer)"</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                              <span class="co"># normal case: it answered</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(sentence, <span class="st">"→"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="step-4-loop-over-records-not-just-strings" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-loop-over-records-not-just-strings">Step 4 · Loop over <strong>records</strong>, not just strings</h3>
+<p>Every dataset this week is a <strong>list of dicts</strong> — the <code>{id, text, label}</code> shape you built in Part A step 7. Below is that same shape without the <code>model</code> key, so the records hold only what a person said. Looping over the list works exactly as it did over sentences, except each item is a record, so you reach into it by key.</p>
+<div id="cell-72" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> [{<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"The cat sat on the mat."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>         {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"text"</span>: <span class="st">"More research is needed."</span>, <span class="st">"label"</span>: <span class="st">"B1"</span>},</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>         {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"text"</span>: <span class="st">"Nevertheless, the findings were inconclusive."</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>          <span class="st">"label"</span>: <span class="st">"C1"</span>}]</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:                 <span class="co"># item is one record — a dict</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item[<span class="st">"id"</span>], <span class="st">"|"</span>, item[<span class="st">"label"</span>], <span class="st">"|"</span>, item[<span class="st">"text"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>🧪 Your turn</strong> — print only the <code>text</code> of each item, without the id and the label.</p>
+</section>
+<section id="step-5-build-a-new-list-with-.append" class="level3">
+<h3 class="anchored" data-anchor-id="step-5-build-a-new-list-with-.append">Step 5 · Build a new list with <code>.append</code></h3>
+<p>Often you don’t want to print each item — you want to <strong>keep</strong> something from it. Start with an empty list, then add to it one item at a time with <strong><code>.append(...)</code></strong>.</p>
+<p>This is the most-used pattern of the whole week: on Day 2 you build a list of verdicts this way, and in the final project you build the list of rows your coders disagreed about.</p>
+<div id="cell-75" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> []                        <span class="co"># start empty; the loop fills it</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    labels.append(item[<span class="st">"label"</span>])   <span class="co"># add this item's label to the end</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(labels)                      <span class="co"># three labels, in the items' order</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"how many:"</span>, <span class="bu">len</span>(labels))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Three records in, three labels out, <strong>in the same order</strong>.</p>
+<p>The same shape with an <code>if</code> in it keeps only <em>some</em> items:</p>
+<div id="cell-77" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>advanced <span class="op">=</span> []                      <span class="co"># the ones we want to keep</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> item[<span class="st">"label"</span>] <span class="op">==</span> <span class="st">"C1"</span>:      <span class="co"># only C1 records get added</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        advanced.append(item[<span class="st">"text"</span>])</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(advanced)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>🧪 Your turn</strong> — build a list of the <code>id</code>s instead of the labels.</p>
+</section>
+<section id="step-6-count-things-with-a-dict" class="level3">
+<h3 class="anchored" data-anchor-id="step-6-count-things-with-a-dict">Step 6 · Count things with a dict</h3>
+<p>To count how many items carry each label, use a dict as a tally: the <strong>key</strong> is the label, the <strong>value</strong> is how many you have seen so far.</p>
+<p><strong><code>counts[label] = ...</code></strong> stores a value under a key — the same square brackets you used in Part A step 7 to put the model’s answer into <code>record["model"]</code>, and the same ones you read a dict with.</p>
+<p>The new piece is <strong><code>counts.get(label, 0)</code></strong>, which reads the count so far and answers <code>0</code> when the label is new. Without it the very first item would fail, because <code>counts["A1"]</code> does not exist yet.</p>
+<div id="cell-80" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> {}                        <span class="co"># an empty dict: label -&gt; how many</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> item[<span class="st">"label"</span>]</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    counts[label] <span class="op">=</span> counts.get(label, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>   <span class="co"># count so far (0 if new), plus one</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Each label appears once here, so every count is 1. Add another <code>B1</code> record to <code>items</code> in step 4, re-run both cells, and watch that count become 2.</p>
+<p><strong>🧪 Your turn</strong> — count the items by the <strong>first letter</strong> of their label (<code>item["label"][0]</code> gives you <code>"A"</code>, <code>"B"</code> or <code>"C"</code>).</p>
+</section>
+<section id="step-7-more-than-two-branches-elif-and-and" class="level3">
+<h3 class="anchored" data-anchor-id="step-7-more-than-two-branches-elif-and-and">Step 7 · More than two branches — <code>elif</code> and <code>and</code></h3>
+<p>An <code>if</code>/<code>else</code> splits two ways. <strong><code>elif</code></strong> (<em>“else, if”</em>) adds more branches: they are checked top to bottom, the <strong>first</strong> match wins, and <strong>exactly one</strong> runs.</p>
+<p><strong><code>and</code></strong> joins two conditions — both sides have to be true.</p>
+<div id="cell-83" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> item[<span class="st">"label"</span>]</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> label <span class="op">==</span> <span class="st">"A1"</span> <span class="kw">or</span> label <span class="op">==</span> <span class="st">"A2"</span>:     <span class="co"># `or` = either side is enough</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        band <span class="op">=</span> <span class="st">"basic"</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> label <span class="op">==</span> <span class="st">"B1"</span> <span class="kw">or</span> label <span class="op">==</span> <span class="st">"B2"</span>:   <span class="co"># only checked if the first did not match</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        band <span class="op">=</span> <span class="st">"independent"</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                  <span class="co"># anything left over</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        band <span class="op">=</span> <span class="st">"proficient"</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(label, <span class="st">"→"</span>, band)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Now <code>and</code>. On Day 2 you compare two people’s labels for the same sentence, and a row only counts as a disagreement when <strong>both</strong> of them have actually labelled it <em>and</em> the two labels differ:</p>
+<div id="cell-85" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> [{<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"CoderA"</span>: <span class="st">"A1"</span>, <span class="st">"CoderB"</span>: <span class="st">"A1"</span>},   <span class="co"># they agree</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"CoderA"</span>: <span class="st">"B1"</span>, <span class="st">"CoderB"</span>: <span class="st">"C1"</span>},   <span class="co"># they disagree</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"CoderA"</span>: <span class="st">"B2"</span>, <span class="st">"CoderB"</span>: <span class="st">""</span>}]     <span class="co"># B has not reached this row</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> rows:</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> row[<span class="st">"CoderA"</span>]</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> row[<span class="st">"CoderB"</span>]</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> a <span class="op">!=</span> <span class="st">""</span> <span class="kw">and</span> b <span class="op">!=</span> <span class="st">""</span> <span class="kw">and</span> a <span class="op">!=</span> b:   <span class="co"># both labelled it, AND they differ</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(row[<span class="st">"id"</span>], <span class="st">"disagreement:"</span>, a, <span class="st">"vs"</span>, b)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(row[<span class="st">"id"</span>], <span class="st">"no disagreement"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Row 3 is <strong>not</strong> a disagreement: one coder simply hasn’t got there yet. That is a decision about your data, not a fact about it, and on Day 2 you will make it yourself.</p>
+</section>
+<section id="step-8-divide-and-guard-against-zero" class="level3">
+<h3 class="anchored" data-anchor-id="step-8-divide-and-guard-against-zero">Step 8 · Divide — and guard against zero</h3>
+<p>Counting leads to dividing: <em>how many did we get right, out of how many there were?</em> Python uses <code>/</code> for division, and brackets to say what to add up first.</p>
+<p>On Day 2 every score you write has this shape, so it is worth doing once here.</p>
+<div id="cell-88" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>right <span class="op">=</span> <span class="dv">9</span>        <span class="co"># how many the model got right</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>wrong <span class="op">=</span> <span class="dv">3</span>        <span class="co"># how many it got wrong</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(right <span class="op">/</span> (right <span class="op">+</span> wrong))            <span class="co"># 9 out of 12</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(right <span class="op">/</span> (right <span class="op">+</span> wrong), <span class="dv">3</span>))  <span class="co"># round() to 3 decimal places</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>One thing can go wrong. If both counts are <code>0</code> there is nothing to divide by, and Python stops with <code>ZeroDivisionError</code>. So <strong>check before you divide</strong> — and when there is nothing to score, <code>0.0</code> is the honest answer:</p>
+<div id="cell-90" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>right <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>wrong <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> right <span class="op">+</span> wrong <span class="op">==</span> <span class="dv">0</span>:      <span class="co"># nothing was scored at all</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> <span class="fl">0.0</span>             <span class="co"># so no credit — and no division by zero</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> right <span class="op">/</span> (right <span class="op">+</span> wrong)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(score)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>🧪 Your turn</strong> — set <code>right = 7</code> and <code>wrong = 1</code> and re-run. You should get 0.875.</p>
+</section>
+<section id="step-9-wrap-it-in-a-function" class="level3">
+<h3 class="anchored" data-anchor-id="step-9-wrap-it-in-a-function">Step 9 · Wrap it in a function</h3>
+<p>You have now written the same three steps twice — build a prompt, call the model, tidy the reply. <strong>Name it once</strong> with <code>def</code>, and the rest of the week you just call <code>ask(sentence)</code>.</p>
+<p>One change from step 3: <code>print</code> became <strong><code>return</code></strong>. <code>print</code> puts a value on the screen and it is gone; <code>return</code> hands the value back to whoever called the function, so you can store it, count it, or score it.</p>
+<div id="cell-93" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask(sentence):                     <span class="co"># `def` names a block of steps</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ai.generate_text(prompt).strip()   <span class="co"># `return` hands the answer back</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ask(<span class="st">"The cat sat on the mat."</span>))  <span class="co"># one line now does all three steps</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Because <code>ask</code> hands its answer back, you can put it straight into the loop from step 9 and <strong>keep</strong> every reply:</p>
+<div id="cell-95" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>replies <span class="op">=</span> []</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:          <span class="co"># the three sentences from step 3</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    replies.append(ask(sentence))  <span class="co"># call the function, keep what it returns</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(replies)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>A list of sentences in, a list of the model’s labels out. That is the whole shape of what you will do on Days 3 and 4 — and on Day 2 you will learn how to tell whether those labels are any good.</p>
+<hr>
+</section>
+</section>
+<section id="steps-1013-your-turn-python-practice" class="level2">
+<h2 class="anchored" data-anchor-id="steps-1013-your-turn-python-practice">Steps 10–13 · Your turn — Python practice</h2>
+<p>Four exercises, each rehearsing one pattern from steps 3–9. Fill in the function (replace the <code>raise NotImplementedError(...)</code> line), then run the <strong>self-check</strong> directly below it until it prints ✅. No grader needed — the checks <em>are</em> your grader.</p>
+<p>The shared dataset for all four:</p>
+<div id="cell-98" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> [{<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"Hi."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"text"</span>: <span class="st">"Hello there."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"text"</span>: <span class="st">"Nevertheless, the findings were inconclusive."</span>,</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>           <span class="st">"label"</span>: <span class="st">"C1"</span>}]</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(sample), <span class="st">"items"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="step-10-read-one-value-out-of-a-record" class="level3">
+<h3 class="anchored" data-anchor-id="step-10-read-one-value-out-of-a-record">Step 10 · Read one value out of a record</h3>
+<p>The pattern from Part A step 7: reach into a dict by key.</p>
+<div id="cell-100" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — replace the NotImplementedError with your code.</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> label_of(item):</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the value stored under the key "label" in the dict `item`.</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: label_of({"id": 1, "text": "Hi", "label": "A1"}) -&gt; "A1".</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return item['label']."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-101" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check — step 10 { display-mode: "form" }</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> label_of(sample[<span class="dv">0</span>]) <span class="op">==</span> <span class="st">"A1"</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), <span class="st">"label_of →"</span>, label_of(sample[<span class="dv">0</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="step-11-build-a-list-in-a-loop" class="level3">
+<h3 class="anchored" data-anchor-id="step-11-build-a-list-in-a-loop">Step 11 · Build a list in a loop</h3>
+<p>The pattern from step 5: an empty list, a <code>for</code>, an <code>if</code>, and <code>.append</code>.</p>
+<div id="cell-103" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — replace the NotImplementedError with your code.</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> long_words(words, n):</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return a LIST of the words whose length is greater than n.</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: long_words(["a", "cat", "elephant"], 3) -&gt; ["elephant"].</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: start with an empty list; loop with `for w in words:`;</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       keep w when len(w) &gt; n; return the list at the end.</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the words longer than n characters."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-104" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check — step 11 { display-mode: "form" }</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>got <span class="op">=</span> long_words([<span class="st">"a"</span>, <span class="st">"cat"</span>, <span class="st">"elephant"</span>], <span class="dv">3</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> got <span class="op">==</span> [<span class="st">"elephant"</span>]</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), <span class="st">"long_words →"</span>, got)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="step-12-count-with-a-dict" class="level3">
+<h3 class="anchored" data-anchor-id="step-12-count-with-a-dict">Step 12 · Count with a dict</h3>
+<p>The pattern from step 6: <code>counts[label] = counts.get(label, 0) + 1</code>.</p>
+<div id="cell-106" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — replace the NotImplementedError with your code.</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_labels(items):</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Given a list of {id, text, label} dicts, return a dict mapping each</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co">    label to how many times it appears.</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: count_labels([{"label":"A1"}, {"label":"A1"}, {"label":"B1"}])</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co">             -&gt; {"A1": 2, "B1": 1}.</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: start with counts = {}; for each item, add 1 to counts[label]</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       (use counts.get(label, 0) + 1 so the first time starts at 0).</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Count how many items carry each label."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-107" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check — step 12 { display-mode: "form" }</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>got <span class="op">=</span> count_labels(sample)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> got <span class="op">==</span> {<span class="st">"A1"</span>: <span class="dv">2</span>, <span class="st">"C1"</span>: <span class="dv">1</span>}</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), <span class="st">"count_labels →"</span>, got)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="step-13-count-then-divide-with-a-guard" class="level3">
+<h3 class="anchored" data-anchor-id="step-13-count-then-divide-with-a-guard">Step 13 · Count, then divide — with a guard</h3>
+<p>Steps 6 and 8 together, and the shape of every score you write on Day 2: count what matched, divide by the total, and return <code>0.0</code> rather than dividing by zero.</p>
+<div id="cell-109" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — replace the NotImplementedError with your code.</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> accuracy(items, guesses):</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""What fraction of the guesses match the items' labels?</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co">    `items` and `guesses` are the same length, in the same order.</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Return 0.0 when there is nothing to score.</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: accuracy(sample, ["A1", "A1", "B1"]) -&gt; 0.667.</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: count the matches in a loop, using a position counter like S6 does:</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       i = 0 before the loop, guesses[i] inside it, i = i + 1 at the end.</span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       Then guard: if len(items) == 0, return 0.0 — otherwise divide.</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Count the matches, then divide by how many there are."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-110" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check — step 13 { display-mode: "form" }</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: two guesses right out of three, and an empty case for the guard </span><span class="al">###</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>got <span class="op">=</span> accuracy(sample, [<span class="st">"A1"</span>, <span class="st">"A1"</span>, <span class="st">"B1"</span>])</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>empty <span class="op">=</span> accuracy([], [])</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: compare both against the answers we already know </span><span class="al">###</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> <span class="bu">round</span>(got, <span class="dv">3</span>) <span class="op">==</span> <span class="fl">0.667</span> <span class="kw">and</span> empty <span class="op">==</span> <span class="fl">0.0</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), <span class="st">"accuracy →"</span>, <span class="bu">round</span>(got, <span class="dv">3</span>), <span class="st">"| empty case:"</span>, empty)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="all-four-together" class="level3">
+<h3 class="anchored" data-anchor-id="all-four-together">All four together</h3>
+<p>Run this once all four print ✅ on their own.</p>
+<div id="cell-112" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check — all four { display-mode: "form" }</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: run every function against an answer we already know </span><span class="al">###</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>checks <span class="op">=</span> [                             <span class="co"># each entry: (name, did it match?)</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"label_of"</span>, label_of(sample[<span class="dv">0</span>]) <span class="op">==</span> <span class="st">"A1"</span>),</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"long_words"</span>, long_words([<span class="st">"a"</span>, <span class="st">"cat"</span>, <span class="st">"elephant"</span>], <span class="dv">3</span>) <span class="op">==</span> [<span class="st">"elephant"</span>]),</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"count_labels"</span>, count_labels(sample) <span class="op">==</span> {<span class="st">"A1"</span>: <span class="dv">2</span>, <span class="st">"C1"</span>: <span class="dv">1</span>}),</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"accuracy"</span>, <span class="bu">round</span>(accuracy(sample, [<span class="st">"A1"</span>, <span class="st">"A1"</span>, <span class="st">"B1"</span>]), <span class="dv">3</span>) <span class="op">==</span> <span class="fl">0.667</span>),</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: report one line per check, then an overall verdict </span><span class="al">###</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, ok <span class="kw">in</span> checks:</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), name)</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All passed ✅"</span> <span class="cf">if</span> <span class="bu">all</span>(ok <span class="cf">for</span> _, ok <span class="kw">in</span> checks)   <span class="co"># all() = every one of them</span></span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> <span class="st">"Some checks failed — fix them and re-run."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<hr>
+</section>
+</section>
+<section id="optional-what-a-model-stores-about-a-word" class="level2">
+<h2 class="anchored" data-anchor-id="optional-what-a-model-stores-about-a-word">Optional · What a model stores about a word</h2>
+<p><strong>This section is optional, and nothing later in the week depends on it.</strong> It is here because it makes the Session 1 slides runnable: you can look at the numbers a model keeps for each word, and see for yourself where they stop working.</p>
+<p>If the session is running short, stop at step 13 and come back to this on your own.</p>
+<p>This section uses an English model that carries a <strong>vector for every word</strong>. It is a large file and takes a minute or two to arrive. Start it now, and read on while it downloads.</p>
+<div id="cell-115" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📥 Download the word-vector model { display-mode: "form" }</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>python <span class="op">-</span>m spacy download en_core_web_lg</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> importlib, spacy</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="co"># The model was installed after Python started, so refresh the module list</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co"># before loading it — otherwise the load below may not find it yet.</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>importlib.invalidate_caches()</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>nlp_vec <span class="op">=</span> spacy.load(<span class="st">"en_core_web_lg"</span>)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ word vectors ready —"</span>, <span class="ss">f"</span><span class="sc">{</span>nlp_vec<span class="sc">.</span>vocab<span class="sc">.</span>vectors<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">:,}</span><span class="ss">"</span>, <span class="st">"words have one"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="a-what-a-model-stores-about-a-word" class="level3">
+<h3 class="anchored" data-anchor-id="a-what-a-model-stores-about-a-word">A · What a model stores about a word</h3>
+<p>In Session 1 you saw that a model turns each word into a long list of numbers, and that words with similar meanings end up with similar numbers. Those numbers are not hidden — you can look at them.</p>
+<p>The pipeline you just used, <code>nlp</code>, only knows where sentences end. The one you downloaded just above, <code>nlp_vec</code>, also carries a <strong>vector</strong> for every word it knows.</p>
+<div id="cell-117" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> nlp_vec(<span class="st">"suggest"</span>)[<span class="dv">0</span>]      <span class="co"># read one word; [0] takes the first token</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"how many numbers:"</span>, word.vector.shape)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"the first eight: "</span>, word.vector[:<span class="dv">8</span>].<span class="bu">round</span>(<span class="dv">3</span>))   <span class="co"># rounded, to fit on one line</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Three numbers were enough to place a colour in the Session 1 colour cube. It takes three hundred to place a word.</p>
-<section id="are-similar-words-really-close" class="level4">
-<h4 class="anchored" data-anchor-id="are-similar-words-really-close">Are similar words really close?</h4>
+</section>
+<section id="b-are-similar-words-really-close" class="level3">
+<h3 class="anchored" data-anchor-id="b-are-similar-words-really-close">B · Are similar words really close?</h3>
 <p><code>.similarity(...)</code> compares two vectors and gives a number between 0 and 1: the higher it is, the closer the two words sit. Compare a pair that share a meaning with a pair that do not.</p>
 <p><strong>✏️ YOU EDIT</strong> — swap in two words from your own research area and re-run.</p>
-<div id="cell-31" class="cell">
+<div id="cell-121" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"suggest / indicate:"</span>, <span class="bu">round</span>(nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"indicate"</span>)), <span class="dv">3</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"suggest / banana:  "</span>, <span class="bu">round</span>(nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"banana"</span>)), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"suggest / indicate:"</span>, <span class="bu">round</span>(nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"indicate"</span>)), <span class="dv">3</span>))</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"suggest / banana:  "</span>, <span class="bu">round</span>(nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"banana"</span>)), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Instead of guessing pairs, you can ask which words sit closest to a given one. Run the helper, then try your own word.</p>
-<div id="cell-33" class="cell">
+<div id="cell-123" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Helper: nearest(word) → the closest words { display-mode: "form" }</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nearest(word: <span class="bu">str</span>, n: <span class="bu">int</span> <span class="op">=</span> <span class="dv">10</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">tuple</span>[<span class="bu">str</span>, <span class="bu">float</span>]]:</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The n words whose vectors sit closest to `word`.</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">        word: the word to look up.</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">        n: how many neighbours to return.</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">        A list of (word, closeness) pairs, closest first. Empty if the model</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">        has never seen the word.</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; nearest("hedge", n=3)</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    entry <span class="op">=</span> nlp_vec.vocab[word]</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> entry.has_vector:                 <span class="co"># nothing to compare against</span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">!r}</span><span class="ss"> is not in this model's vocabulary."</span>)</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># most_similar wants a table of rows, so hand it a table with one row in it.</span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    one_row <span class="op">=</span> entry.vector.reshape(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ask for far more candidates than we need: the table stores several spellings</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># of the same word (suggest, Suggest, SUGGEST), and we keep only one of each.</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    keys, _, scores <span class="op">=</span> nlp_vec.vocab.vectors.most_similar(one_row, n<span class="op">=</span>n <span class="op">*</span> <span class="dv">8</span>)</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    seen <span class="op">=</span> {word.lower()}                    <span class="co"># never report the word itself</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    neighbours <span class="op">=</span> []</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> key, score <span class="kw">in</span> <span class="bu">zip</span>(keys[<span class="dv">0</span>], scores[<span class="dv">0</span>]):</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>        found <span class="op">=</span> nlp_vec.vocab.strings[key].lower()</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> found.isalpha() <span class="kw">and</span> found <span class="kw">not</span> <span class="kw">in</span> seen:</span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>            seen.add(found)</span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>            neighbours.append((found, <span class="bu">round</span>(<span class="bu">float</span>(score), <span class="dv">3</span>)))</span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> neighbours[:n]</span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Helper ready. Try nearest('perhaps')."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Helper: nearest(word) → the closest words { display-mode: "form" }</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nearest(word: <span class="bu">str</span>, n: <span class="bu">int</span> <span class="op">=</span> <span class="dv">10</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">tuple</span>[<span class="bu">str</span>, <span class="bu">float</span>]]:</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The n words whose vectors sit closest to `word`.</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="co">        word: the word to look up.</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="co">        n: how many neighbours to return.</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a><span class="co">        A list of (word, closeness) pairs, closest first. Empty if the model</span></span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a><span class="co">        has never seen the word.</span></span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; nearest("hedge", n=3)</span></span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>    entry <span class="op">=</span> nlp_vec.vocab[word]</span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> entry.has_vector:                 <span class="co"># nothing to compare against</span></span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">!r}</span><span class="ss"> is not in this model's vocabulary."</span>)</span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># most_similar wants a table of rows, so hand it a table with one row in it.</span></span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>    one_row <span class="op">=</span> entry.vector.reshape(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ask for far more candidates than we need: the table stores several spellings</span></span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># of the same word (suggest, Suggest, SUGGEST), and we keep only one of each.</span></span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>    keys, _, scores <span class="op">=</span> nlp_vec.vocab.vectors.most_similar(one_row, n<span class="op">=</span>n <span class="op">*</span> <span class="dv">8</span>)</span>
+<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a>    seen <span class="op">=</span> {word.lower()}                    <span class="co"># never report the word itself</span></span>
+<span id="cb50-30"><a href="#cb50-30" aria-hidden="true" tabindex="-1"></a>    neighbours <span class="op">=</span> []</span>
+<span id="cb50-31"><a href="#cb50-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> key, score <span class="kw">in</span> <span class="bu">zip</span>(keys[<span class="dv">0</span>], scores[<span class="dv">0</span>]):</span>
+<span id="cb50-32"><a href="#cb50-32" aria-hidden="true" tabindex="-1"></a>        found <span class="op">=</span> nlp_vec.vocab.strings[key].lower()</span>
+<span id="cb50-33"><a href="#cb50-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> found.isalpha() <span class="kw">and</span> found <span class="kw">not</span> <span class="kw">in</span> seen:</span>
+<span id="cb50-34"><a href="#cb50-34" aria-hidden="true" tabindex="-1"></a>            seen.add(found)</span>
+<span id="cb50-35"><a href="#cb50-35" aria-hidden="true" tabindex="-1"></a>            neighbours.append((found, <span class="bu">round</span>(<span class="bu">float</span>(score), <span class="dv">3</span>)))</span>
+<span id="cb50-36"><a href="#cb50-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> neighbours[:n]</span>
+<span id="cb50-37"><a href="#cb50-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-38"><a href="#cb50-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-39"><a href="#cb50-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Helper ready. Try nearest('perhaps')."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p><strong>✏️ YOU EDIT</strong> — put in a word you care about.</p>
-<div id="cell-35" class="cell">
+<div id="cell-125" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> neighbour <span class="kw">in</span> nearest(<span class="st">"perhaps"</span>):   <span class="co"># ✏️ your word here</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(neighbour)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> neighbour <span class="kw">in</span> nearest(<span class="st">"perhaps"</span>):   <span class="co"># ✏️ your word here</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(neighbour)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Two things are worth noticing before you move on.</p>
 <p>The neighbours of <em>perhaps</em> are mostly other hedges — <em>possibly</em>, <em>probably</em>, <em>certainly</em>, <em>might</em>. Nothing told the model that these words hedge a claim; it placed them together because they turn up in the same positions in text.</p>
 <p>Now try <code>nearest("corpus")</code>. The closest words include <em>habeas</em>, <em>christi</em> and <em>corpora</em>. One spelling has collected the legal sense, the religious sense and the linguistic sense into a single vector, because there is only one vector available for the form. <code>nearest("hedge")</code> does the same thing with garden hedges and financial hedging. Keep that in mind for the next part.</p>
 </section>
-<section id="where-these-vectors-stop-working" class="level4">
-<h4 class="anchored" data-anchor-id="where-these-vectors-stop-working">Where these vectors stop working</h4>
+<section id="c-where-these-vectors-stop-working" class="level3">
+<h3 class="anchored" data-anchor-id="c-where-these-vectors-stop-working">C · Where these vectors stop working</h3>
 <p>Session 1 used <em>free</em> in two sentences that mean different things — <em>your account is free of charge</em> and <em>claim your free prize now</em>. Take the word out of each sentence and compare the two vectors.</p>
-<div id="cell-38" class="cell">
+<div id="cell-128" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>banking <span class="op">=</span> nlp_vec(<span class="st">"your account is free of charge"</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>promo   <span class="op">=</span> nlp_vec(<span class="st">"claim your free prize now"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>free_1 <span class="op">=</span> banking[<span class="dv">3</span>]      <span class="co"># the 4th word of the first sentence</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>free_2 <span class="op">=</span> promo[<span class="dv">2</span>]        <span class="co"># the 3rd word of the second sentence</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"comparing:"</span>, free_1.text, <span class="st">"and"</span>, free_2.text)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"similarity:"</span>, <span class="bu">round</span>(free_1.similarity(free_2), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>banking <span class="op">=</span> nlp_vec(<span class="st">"your account is free of charge"</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>promo   <span class="op">=</span> nlp_vec(<span class="st">"claim your free prize now"</span>)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>free_1 <span class="op">=</span> banking[<span class="dv">3</span>]      <span class="co"># the 4th word of the first sentence</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>free_2 <span class="op">=</span> promo[<span class="dv">2</span>]        <span class="co"># the 3rd word of the second sentence</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"comparing:"</span>, free_1.text, <span class="st">"and"</span>, free_2.text)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"similarity:"</span>, <span class="bu">round</span>(free_1.similarity(free_2), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>The score is exactly <strong>1.0</strong>, because the two vectors are not merely close — they are the same vector. This model stores one vector per word form and looks it up the same way every time, so the surrounding words change nothing. That is what <em>static</em> means, and it is the limitation Session 1 said attention was built to remove.</p>
 <p><em>(Both sentences use lower-case <code>free</code> on purpose: these vectors are looked up by exact form, so <code>FREE</code> and <code>free</code> are separate entries.)</em></p>
 <p>The same lookup has a second consequence. A sentence’s vector is the average of its words, and an average does not record the order they came in:</p>
-<div id="cell-40" class="cell">
+<div id="cell-130" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(nlp_vec(<span class="st">"the dog chased the cat"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>            .similarity(nlp_vec(<span class="st">"the cat chased the dog"</span>)), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(nlp_vec(<span class="st">"the dog chased the cat"</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>            .similarity(nlp_vec(<span class="st">"the cat chased the dog"</span>)), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>Two sentences with opposite meanings, one score of 1.0. Word order is gone. <strong>Why this matters for the rest of the week:</strong> the categories you will annotate — a CEFR level, a rhetorical move, whether a claim is hedged — depend on word order and context. A model built on these vectors alone cannot represent that; the model you call with <code>generate_text(...)</code> can.</p>
+<p>Two sentences with opposite meanings, one score of 1.0. Word order is gone. <strong>Why this matters for the rest of the week:</strong> the categories you will annotate — a CEFR level, a rhetorical move, whether a claim is hedged — depend on word order and context. A model built on these vectors alone cannot represent that; the model you call with <code>ai.generate_text(...)</code> can.</p>
 </section>
-<section id="a-map-of-the-space" class="level4">
-<h4 class="anchored" data-anchor-id="a-map-of-the-space">A map of the space</h4>
+<section id="d-a-map-of-the-space" class="level3">
+<h3 class="anchored" data-anchor-id="d-a-map-of-the-space">D · A map of the space</h3>
 <p>Three hundred numbers per word is too many to look at, but the words can be flattened onto a page so that words with close vectors land near each other.</p>
-<div id="cell-43" class="cell">
+<div id="cell-133" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Helper: map_words(words) → a 2-D picture { display-mode: "form" }</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> map_words(words: <span class="bu">list</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Plot words on a flat map, keeping words with close vectors close.</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">        words: the words to place.</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co">        Nothing. It draws the picture.</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; map_words(["cat", "dog", "syntax"])</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    known <span class="op">=</span> []</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> words:</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> nlp_vec.vocab[w].has_vector:</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>            known.append(w)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"skipping </span><span class="sc">{</span>w<span class="sc">!r}</span><span class="ss"> — not in the model's vocabulary"</span>)</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> numpy.array([nlp_vec.vocab[w].vector <span class="cf">for</span> w <span class="kw">in</span> known])</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> rows <span class="op">-</span> rows.mean(axis<span class="op">=</span><span class="dv">0</span>)          <span class="co"># centre the cloud on zero</span></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 300 directions is too many to draw, so keep the two along which these</span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># particular words are most spread out, and plot along those.</span></span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    _, _, directions <span class="op">=</span> numpy.linalg.svd(rows, full_matrices<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    flat <span class="op">=</span> rows <span class="op">@</span> directions[:<span class="dv">2</span>].T</span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    plt.scatter(flat[:, <span class="dv">0</span>], flat[:, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">18</span>)</span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w, (x, y) <span class="kw">in</span> <span class="bu">zip</span>(known, flat):</span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        plt.annotate(w, (x, y), fontsize<span class="op">=</span><span class="dv">11</span>, xytext<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>),</span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>                     textcoords<span class="op">=</span><span class="st">"offset points"</span>)</span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Words placed by their vectors"</span>)</span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>    plt.xticks([])</span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>    plt.yticks([])</span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Helper ready. Try map_words([...])."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Helper: map_words(words) → a 2-D picture { display-mode: "form" }</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> map_words(words: <span class="bu">list</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Plot words on a flat map, keeping words with close vectors close.</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="co">        words: the words to place.</span></span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a><span class="co">        Nothing. It draws the picture.</span></span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; map_words(["cat", "dog", "syntax"])</span></span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>    known <span class="op">=</span> []</span>
+<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> words:</span>
+<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> nlp_vec.vocab[w].has_vector:</span>
+<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a>            known.append(w)</span>
+<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"skipping </span><span class="sc">{</span>w<span class="sc">!r}</span><span class="ss"> — not in the model's vocabulary"</span>)</span>
+<span id="cb54-24"><a href="#cb54-24" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> numpy.array([nlp_vec.vocab[w].vector <span class="cf">for</span> w <span class="kw">in</span> known])</span>
+<span id="cb54-25"><a href="#cb54-25" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> rows <span class="op">-</span> rows.mean(axis<span class="op">=</span><span class="dv">0</span>)          <span class="co"># centre the cloud on zero</span></span>
+<span id="cb54-26"><a href="#cb54-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 300 directions is too many to draw, so keep the two along which these</span></span>
+<span id="cb54-27"><a href="#cb54-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># particular words are most spread out, and plot along those.</span></span>
+<span id="cb54-28"><a href="#cb54-28" aria-hidden="true" tabindex="-1"></a>    _, _, directions <span class="op">=</span> numpy.linalg.svd(rows, full_matrices<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb54-29"><a href="#cb54-29" aria-hidden="true" tabindex="-1"></a>    flat <span class="op">=</span> rows <span class="op">@</span> directions[:<span class="dv">2</span>].T</span>
+<span id="cb54-30"><a href="#cb54-30" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb54-31"><a href="#cb54-31" aria-hidden="true" tabindex="-1"></a>    plt.scatter(flat[:, <span class="dv">0</span>], flat[:, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb54-32"><a href="#cb54-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w, (x, y) <span class="kw">in</span> <span class="bu">zip</span>(known, flat):</span>
+<span id="cb54-33"><a href="#cb54-33" aria-hidden="true" tabindex="-1"></a>        plt.annotate(w, (x, y), fontsize<span class="op">=</span><span class="dv">11</span>, xytext<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>),</span>
+<span id="cb54-34"><a href="#cb54-34" aria-hidden="true" tabindex="-1"></a>                     textcoords<span class="op">=</span><span class="st">"offset points"</span>)</span>
+<span id="cb54-35"><a href="#cb54-35" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Words placed by their vectors"</span>)</span>
+<span id="cb54-36"><a href="#cb54-36" aria-hidden="true" tabindex="-1"></a>    plt.xticks([])</span>
+<span id="cb54-37"><a href="#cb54-37" aria-hidden="true" tabindex="-1"></a>    plt.yticks([])</span>
+<span id="cb54-38"><a href="#cb54-38" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb54-39"><a href="#cb54-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-40"><a href="#cb54-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-41"><a href="#cb54-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Helper ready. Try map_words([...])."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p><strong>✏️ YOU EDIT</strong> — change the words and re-run.</p>
-<div id="cell-45" class="cell">
+<div id="cell-135" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Three groups of words: hedges, research verbs, and animals.</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>map_words([<span class="st">"perhaps"</span>, <span class="st">"possibly"</span>, <span class="st">"maybe"</span>, <span class="st">"likely"</span>, <span class="st">"presumably"</span>,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">"suggest"</span>, <span class="st">"indicate"</span>, <span class="st">"demonstrate"</span>, <span class="st">"argue"</span>, <span class="st">"conclude"</span>,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>           <span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"horse"</span>, <span class="st">"rabbit"</span>, <span class="st">"sheep"</span>])   <span class="co"># ✏️ your words</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Three groups of words: hedges, research verbs, and animals.</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>map_words([<span class="st">"perhaps"</span>, <span class="st">"possibly"</span>, <span class="st">"maybe"</span>, <span class="st">"likely"</span>, <span class="st">"presumably"</span>,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">"suggest"</span>, <span class="st">"indicate"</span>, <span class="st">"demonstrate"</span>, <span class="st">"argue"</span>, <span class="st">"conclude"</span>,</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>           <span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"horse"</span>, <span class="st">"rabbit"</span>, <span class="st">"sheep"</span>])   <span class="co"># ✏️ your words</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>The animals land well away from the other ten words. The hedges and the research verbs, though, sit mixed together rather than in two groups — they are all words of academic prose, and they appear in similar places in similar texts, which is the only thing these vectors record. The map shows you what the model separates, which is not always what you want it to separate.</p>
-</section>
-</section>
-<section id="run-the-model-over-every-sentence-for-if-and-a-function" class="level3">
-<h3 class="anchored" data-anchor-id="run-the-model-over-every-sentence-for-if-and-a-function">4. Run the model over every sentence — <code>for</code>, <code>if</code>, and a function</h3>
-<p>Now that you have a list of sentences, do something to <em>each</em> one. A <strong><code>for</code> loop</strong> repeats the same steps for every item; an <strong><code>if</code></strong> lets you react to what comes back. Below, we build a prompt for each sentence (with an f-string) and ask the model for its CEFR level.</p>
-<p><strong>✏️ YOU EDIT</strong> — try your own sentences.</p>
-<div id="cell-49" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: the sentences to ask about </span><span class="al">###</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>examples <span class="op">=</span> [<span class="st">"The findings were inconclusive."</span>,      <span class="co"># ✏️ try your own sentences</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Nevertheless, we draw some tentative conclusions."</span>,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"More research is needed."</span>]</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: for each one — build a prompt, ask, and react to the reply </span><span class="al">###</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:              <span class="co"># repeat everything below for each sentence</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    reply <span class="op">=</span> generate_text(prompt).strip()   <span class="co"># .strip() removes stray blank space</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:                    <span class="co"># the model sometimes says nothing at all</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(sentence, <span class="st">"→ (no answer)"</span>)</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                              <span class="co"># normal case: it answered</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(sentence, <span class="st">"→"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<p>Finally, wrap those three steps — build prompt, call model, tidy the reply — into a <strong>function</strong> you can reuse. Defining <code>ask(...)</code> once means the rest of the week you just call <code>ask(sentence)</code>. This little function is the seed of the pipeline you’ll assemble later.</p>
-<div id="cell-51" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask(sentence):                     <span class="co"># `def` names a block of steps</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> generate_text(prompt).strip()   <span class="co"># `return` hands the answer back</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ask(<span class="st">"The cat sat on the mat."</span>))  <span class="co"># one line now does all three steps</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
-<section id="your-turn-python-practice" class="level3">
-<h3 class="anchored" data-anchor-id="your-turn-python-practice">5. Your turn — Python practice</h3>
-<p>Fill in each function so it does what its docstring says (replace the <code>raise NotImplementedError(...)</code> line). Then run the <strong>self-check</strong> cell below until every line prints ✅. No grader needed — the checks <em>are</em> your grader.</p>
-<div id="cell-53" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ YOU EDIT — replace each NotImplementedError with your code.</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> label_of(item):</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the value stored under the key "label" in the dict `item`.</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: label_of({"id": 1, "text": "Hi", "label": "A1"}) -&gt; "A1".</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return item['label']."</span>)</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> long_words(words, n):</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return a LIST of the words whose length is greater than n.</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: long_words(["a", "cat", "elephant"], 3) -&gt; ["elephant"].</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: build a result list; loop with `for w in words:`; keep w if len(w) &gt; n.</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Return the words longer than n characters."</span>)</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_labels(items):</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Given a list of {id, text, label} dicts, return a dict mapping each</span></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">    label to how many times it appears.</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co">    Example: count_labels([{"label":"A1"}, {"label":"A1"}, {"label":"B1"}])</span></span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co">             -&gt; {"A1": 2, "B1": 1}.</span></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HINT: start with counts = {}; for each item, add 1 to counts[label]</span></span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       (use counts.get(label, 0) + 1 so the first time starts at 0).</span></span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Count how many items carry each label."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div id="cell-54" class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔎 Self-check — run me { display-mode: "form" }</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: a tiny dataset with answers we already know </span><span class="al">###</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> [{<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"Hi."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"text"</span>: <span class="st">"Hello there."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>          {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"text"</span>: <span class="st">"Nevertheless..."</span>, <span class="st">"label"</span>: <span class="st">"C1"</span>}]</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: run each of your functions and compare with the right answer </span><span class="al">###</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>checks <span class="op">=</span> [                             <span class="co"># each entry: (name, did it match?)</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"label_of"</span>, label_of(sample[<span class="dv">0</span>]) <span class="op">==</span> <span class="st">"A1"</span>),</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"long_words"</span>, long_words([<span class="st">"a"</span>, <span class="st">"cat"</span>, <span class="st">"elephant"</span>], <span class="dv">3</span>) <span class="op">==</span> [<span class="st">"elephant"</span>]),</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"count_labels"</span>, count_labels(sample) <span class="op">==</span> {<span class="st">"A1"</span>: <span class="dv">2</span>, <span class="st">"C1"</span>: <span class="dv">1</span>}),</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: report one line per check, then an overall verdict </span><span class="al">###</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, ok <span class="kw">in</span> checks:</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>((<span class="st">"✅"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"❌"</span>), name)</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All passed ✅"</span> <span class="cf">if</span> <span class="bu">all</span>(ok <span class="cf">for</span> _, ok <span class="kw">in</span> checks)   <span class="co"># all() = every one of them</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> <span class="st">"Some checks failed — fix them and re-run."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
 </section>
 <section id="python-youll-see-but-wont-have-to-write" class="level3">
 <h3 class="anchored" data-anchor-id="python-youll-see-but-wont-have-to-write">Python you’ll <em>see</em> but won’t have to write</h3>

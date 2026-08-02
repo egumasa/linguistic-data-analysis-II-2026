@@ -56,3 +56,40 @@ so the grader re-runs your analysis on exactly the outputs you saw.
 the six numbered notebooks of the
 [project template](https://github.com/egumasa/lda2-final-template) — your track, your gold
 set, your prompt. Start at the [Final Project](../final-project/index.md) pages.
+
+## Editing these notebooks
+
+The `.ipynb` files are edited directly — open one, change a cell, run it, save. Two kinds
+of cell are the exception: the 📦 **Setup** cell and each 🔧 **Library** cell are built from
+`_notebook_lib.py`, so that a helper used on several days has one definition and a day
+imports only what it uses. Those cells say so in their own second line, and editing them
+by hand does not last. To change a helper's code, edit `_notebook_lib.py`; to change which
+helpers a cell ships, edit that cell's `lda2` metadata. Then run the sync below.
+
+The helpers sit at the end of `_notebook_lib.py` as ordinary Python, one
+`# === name :: caption ===` section each. Edit one the way you would edit any function —
+nothing there is quoted text, and nothing runs it locally.
+
+Two scripts sit next to the notebooks:
+
+```bash
+python sources/notebooks/_sync_notebooks.py    # rebuild those cells, clear outputs
+python sources/notebooks/_check_notebooks.py   # every cell compiles, fits a screen, is introduced
+```
+
+Run both before committing. `_sync_notebooks.py --check` reports what would change without
+writing anything, and `--notebook day3` limits it to one file.
+
+Notebooks are committed **without outputs**, so their diffs stay readable. A git filter
+takes the outputs out on the way into a commit and leaves your working copy untouched.
+Filters are per-clone configuration, so turn it on once in a fresh clone:
+
+```bash
+git config filter.nbstrip.clean "uv run python sources/notebooks/_sync_notebooks.py --stdin-strip"
+```
+
+To search the prose across all five notebooks, read the cell sources rather than the JSON:
+
+```bash
+jq -r '.cells[].source | add' sources/notebooks/*.ipynb | grep -i "confusion matrix"
+```

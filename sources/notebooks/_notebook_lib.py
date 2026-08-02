@@ -1,0 +1,955 @@
+#!/usr/bin/env python3
+"""The generated cells of the day notebooks, and the code that builds them.
+
+The notebooks themselves are the source of truth — you edit them directly. Two
+kinds of cell are the exception, because they carry rules a notebook cannot keep
+for itself:
+
+  * the 📦 Setup cell, which imports only what its day uses, and
+  * each 🔧 Library cell, which ships only the helpers the next step calls.
+
+Those cells carry an `lda2` block in their cell metadata recording which builder
+made them and with which arguments. `_sync_notebooks.py` reads that metadata and
+rewrites the cell's source from it, so the two rules above hold whatever was typed
+into the cell.
+
+See planning/course_planning/notebook-coding-principles.md for the rules, and
+sources/notebooks/index.md for the authoring loop.
+"""
+# The helpers at the end of this file are ordinary Python, and their annotations name
+# pandas and other things not installed here. This keeps annotations unevaluated, so the
+# file still loads. Nothing in it is ever called locally — `libs()` reads it as text.
+from __future__ import annotations
+
+from pathlib import Path
+
+# ------------------------------------------------------------------ cell helpers
+def md(*lines):
+    return {"cell_type": "markdown", "metadata": {}, "source": _src(lines)}
+
+
+def code(*lines):
+    return {"cell_type": "code", "metadata": {}, "execution_count": None,
+            "outputs": [], "source": _src(lines)}
+
+
+def _src(lines):
+    text = "\n".join(lines)
+    return [l + "\n" for l in text.split("\n")][:-1] + [text.split("\n")[-1]]
+
+
+# The metadata key that marks a cell as built rather than written. `_sync_notebooks.py`
+# looks for exactly this, and rebuilds the cell from the arguments stored alongside it —
+# so the arguments live in the notebook, not in a call site in some other file.
+LDA2 = "lda2"
+
+# Printed as the second line of every cell this module builds. The code in those cells is
+# real and readable, which is exactly what makes them look editable — and `load_gold`
+# alone appears in four notebooks, so an edit typed into one of them would be replaced by
+# the next sync. The line says so where the mistake would be made.
+GENERATED_NOTE = ("# Generated from _notebook_lib.py — edit there, not here; "
+                  "changes to this cell are replaced.")
+
+
+def generated(cell, builder, **arguments):
+    """Mark a cell as built by `builder` from `arguments`, and record both."""
+    cell["metadata"] = dict(cell["metadata"])
+    cell["metadata"][LDA2] = {"generated": builder, **arguments}
+    return cell
+
+
+def build(spec):
+    """Rebuild one generated cell from its own `lda2` metadata.
+
+    Args:
+        spec: the contents of a cell's `lda2` metadata block.
+
+    Returns:
+        The rebuilt cell, metadata included.
+    """
+    arguments = {k: v for k, v in spec.items() if k != "generated"}
+    builder = spec["generated"]
+    if builder == "setup":
+        return generated(setup_cell(**arguments), builder, **arguments)
+    if builder == "libs":
+        return generated(libs(*arguments["names"])[0], builder, **arguments)
+    raise KeyError(f"unknown generated-cell builder: {builder!r}")
+
+
+REPO_RAW = ("https://raw.githubusercontent.com/egumasa/"
+            "linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold")
+CEFR_GOLD_URL = f"{REPO_RAW}/cefr_sentences.json"
+# The pool Day 4 samples from. NOT cefr_pool.json — that one is 3,183 items and
+# git-ignored, so fetching it by URL 404s (this is what broke the Day-4 dry run).
+# cefr_pool_demo.json is a committed 335-item draw that keeps the natural imbalance
+# (A1 12 … B1 123), because "rare levels yield fewer items" is the lesson.
+CEFR_POOL_URL = f"{REPO_RAW}/cefr_pool_demo.json"
+# The 24-item validation set Day 3 tunes prompts on (4 per level, disjoint from the 72).
+# Iterating on the gold set would mean tuning on the items the final score is reported
+# over — the contamination S7 teaches against. Built by `prep_datasets.py cefr_val`.
+CEFR_VAL_URL = f"{REPO_RAW}/cefr_val.json"
+# Frozen CEFR predictions for the Day-2 metrics lesson (generated once from the
+# fixed Day-2 prompt; committed so Day 2 is keyless & deterministic).
+CEFR_PREDICTIONS_DAY2_URL = f"{REPO_RAW}/predictions_day2.json"
+
+
+# ------------------------------------------------- shared cells (library)
+# Two LLM backends live here; each day's Setup cell pulls in ONLY the one it needs
+# (and Days 2 & 4 pull in neither — they touch no model):
+#   * DEMO_BACKEND (Day 1)   → Colab's built-in Gemini (colab.ai). Keyless, zero
+#     setup, but NON-reproducible: colab.ai exposes no temperature/seed, so output
+#     varies run to run. Day 1 only needs to *see* a model answer, so that's fine.
+#     Colab-only by design — it is a 6-line cell, and a student who opens Day 1
+#     outside Colab gets a plain ImportError naming google.colab rather than a
+#     branch about API keys they have not been given yet (that arrives on Day 3).
+#   * API_BACKEND (Day 3+)   → the Gemini API with temperature=0 + seed, for
+#     reproducible, autograded work. Prefers a key (Colab Secrets or env), and
+#     falls back to colab.ai if none is set.
+# Pinned model: gemini-3.1-flash-lite (15 RPM / 500 RPD). NOT gemini-2.5-flash: its
+# free tier is 5 RPM / 20 RPD, so one 72-item lab run needs 3.5 days of quota.
+# See planning/course_planning/api-preflight-testing.md Task 1.
+
+# The keyless demo backend (Day 1) is two lines: an import, and the call students
+# make themselves. There is no course-written wrapper on Day 1 at all — `ai.generate_text`
+# IS the call, so the first thing a student runs is a real library function rather than
+# something we defined for them off-screen. `generate_text(...)` as a bare name arrives
+# on Day 3, where the API backend defines it and reproducibility earns the indirection.
+DEMO_BACKEND = '''# --- LLM backend: Colab's free built-in Gemini (no API key) -------------------
+from google.colab import ai      # Colab's built-in Gemini — nothing to set up'''
+
+# The reproducible API backend (Day 3+): key preferred, colab.ai fallback, plus a
+# rate-limit guard (pacing + retry) — walked through piece by piece in Day 3.
+API_BACKEND = '''# --- LLM backend: Gemini API when a key is set, else colab.ai demo ------------
+MODEL_ID = "gemini-3.1-flash-lite"   # pinned model for the reproducible (API) backend
+
+### Step 1: find an API key — Colab's Secrets panel first, then the environment ###
+def _resolve_gemini_key() -> str | None:
+    """Find a Gemini API key: Colab Secrets first (not auto-exported to env), then env.
+
+    Returns:
+        The key, or None when neither place has one.
+    """
+    try:
+        from google.colab import userdata      # only exists in Colab
+        key = userdata.get("GEMINI_API_KEY")   # what you saved in the Secrets panel
+        if key:
+            return key                         # found one — use it
+    except Exception:
+        pass                                    # not in Colab, or secret not set
+    return os.environ.get("GEMINI_API_KEY")     # last resort: an environment variable
+
+### Step 2: build the reproducible backend around that key ###
+def _make_api_backend(key: str) -> tuple:
+    """Reproducible backend: Gemini API with temperature=0 + a fixed seed.
+
+    Args:
+        key: your Gemini API key.
+
+    Returns:
+        Two things: the function that calls the model, and a label to print.
+    """
+    from google import genai
+    from google.genai import types
+    client = genai.Client(api_key=key)         # your own connection to the API
+    # temperature=0 + a fixed seed = the same prompt gives the same answer every run,
+    # which is what makes the autograded Corpus Labs reproducible.
+    cfg = types.GenerateContentConfig(temperature=0, seed=42)
+    return (lambda p: client.models.generate_content(
+                model=MODEL_ID, contents=p, config=cfg).text,   # prompt in, text out
+            f"Gemini API ({MODEL_ID}, temperature=0, seed=42)")  # a label to print
+
+# ---- keeps us from calling the model faster than the free tier allows ----------
+# (explained step by step in Day 3, right after this cell — the short version:
+#  wait a bit between calls, and if we still get told to slow down, wait longer
+#  and try again, unless the message says we are out of quota for the whole day.)
+
+### Step 3: read the error message to work out WHICH kind of failure this is ###
+def _looks_like_rate_limit(error: Exception) -> bool:
+    """Does this error mean "you are going too fast", rather than a real bug?
+
+    Args:
+        error: the exception the API call raised.
+
+    Returns:
+        True when the message looks like a rate limit.
+    """
+    text = str(error).lower()                   # the error, as lowercase text
+    return any(s in text for s in               # true if ANY of these phrases appear
+               ["429", "resource_exhausted", "rate limit", "quota", "too many requests"])
+
+def _looks_like_daily_quota(error: Exception) -> bool:
+    """Is this the PER-DAY cap? Those don't clear by waiting a few seconds.
+
+    Args:
+        error: the exception the API call raised.
+
+    Returns:
+        True when the message names a per-day limit.
+    """
+    text = str(error).lower()
+    return "per day" in text or "perday" in text.replace(" ", "")
+
+def _suggested_delay(error: Exception, fallback: float) -> float:
+    """The server often says "please retry in 7.2s" — obey it if it did.
+
+    Args:
+        error: the exception the API call raised.
+        fallback: how long to wait when the server named no delay.
+
+    Returns:
+        Seconds to wait before trying again.
+    """
+    m = re.search(r"retry in ([0-9]+(?:\\.[0-9]+)?)s", str(error).lower())
+    return float(m.group(1)) + 1.0 if m else fallback   # +1s cushion, else our guess
+
+### Step 4: the one function you call all week — pace, ask, and retry if told to ###
+_last_call_time = 0.0   # generate_text remembers & updates this with `global`
+
+def generate_text(prompt: str, max_retries: int = 5) -> str:
+    """Send a prompt to the model and give back its reply.
+
+    It waits between calls so we stay under the free tier's speed limit, and tries
+    again if the server tells us to slow down.
+
+    Args:
+        prompt: the text to send to the model.
+        max_retries: how many times to try again after a rate-limit message.
+
+    Returns:
+        The model's reply, as text.
+
+    Raises:
+        RuntimeError: when the daily quota is used up, or after the last retry.
+
+    Example:
+        >>> reply = generate_text("What CEFR level is this sentence? I like cats.")
+    """
+    global _last_call_time                      # share the clock across every call
+    for attempt in range(max_retries + 1):      # try, then retry up to max_retries times
+        wait = _min_interval - (time.monotonic() - _last_call_time)   # still too soon?
+        if wait > 0:
+            time.sleep(wait)                    # pause so we stay under the speed limit
+        try:
+            _last_call_time = time.monotonic()  # note the time of this attempt
+            return _raw_generate_text(prompt)   # success — hand the reply straight back
+        except Exception as error:
+            if not _looks_like_rate_limit(error):
+                raise                                   # a real bug — don't hide it
+            if _looks_like_daily_quota(error):          # out of fuel for today
+                raise RuntimeError(
+                    "Daily quota used up for today — waiting won't help until it "
+                    "resets. Come back tomorrow, or ask your instructor.") from error
+            if attempt == max_retries:
+                raise                                   # we've been patient enough
+            print(f"  (rate limited — waiting before trying again, attempt {attempt+1})")
+            # wait longer each time round (attempt+2), unless the server named a delay
+            time.sleep(_suggested_delay(error, _min_interval * (attempt + 2)))
+    raise RuntimeError("Still rate-limited after several tries.")
+
+### Step 5: pick a backend — your API key if you have one, else Colab's demo model ###
+# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).
+_key = _resolve_gemini_key()
+if _key:
+    _raw_generate_text, _backend = _make_api_backend(_key)   # reproducible: key + seed
+    _min_interval = 4.4     # keeps us under gemini-3.1-flash-lite's 15-requests/minute cap
+else:
+    try:
+        from google.colab import ai            # Colab's built-in Gemini — no key
+        _raw_generate_text, _backend = (lambda p: ai.generate_text(p)), "Colab Gemini (demo, non-reproducible)"
+        _min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively
+    except ImportError:        # no key AND not in Colab — nothing to call
+        raise RuntimeError(
+            "No LLM backend found. Run this notebook in Google Colab (free built-in "
+            "Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets "
+            "panel, or as an environment variable when running locally. "
+            "See resources/tools/gemini-api-key.md.")'''
+
+
+def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
+               predictions_url=None, val_url=None, sampling=False):
+    """Build a day's 📦 Setup cell, importing ONLY what that day uses.
+
+    backend    : "demo" (Day 1), "api" (Day 3+), or None (Days 2 & 4 — no model).
+    lib_names  : which 🔧 pipeline cells the day ships (drives which imports load).
+    gold_url / predictions_url : optionally append GOLD_URL+LEVELS / PREDICTIONS_URL.
+    val_url    : Day 3 only — the validation set prompts are tuned on, so the gold
+                 set stays a held-out test set.
+    sampling   : the day draws its own sample, so it needs `random`. S5 uses this to
+                 draw a seeded sample in step A; no 🔧 helper pulls `random` in, since
+                 the draw is student-written code rather than something we hand them.
+    """
+    lib_names = set(lib_names)
+    simple = []                                   # single-line `import x` modules
+    if backend == "api":
+        simple += ["os", "re", "time"]
+    if sampling:
+        simple += ["random"]
+    # backend == "demo" needs no imports at all — the colab.ai import is in DEMO_BACKEND.
+    if lib_names & {"load_gold", "predictions"} or gold_url or predictions_url:
+        simple += ["json", "urllib.request"]
+    if "run_prompt" in lib_names:
+        simple += ["re"]
+    # The sheets helpers draw a confusion matrix too (annotator-vs-annotator), so they
+    # need the same plotting stack as `evaluate` — but not classification_report.
+    sheets_names = {n for n in lib_names if n.startswith("sheets")}
+    want_report = "evaluate" in lib_names
+    want_matrix = bool(lib_names & {"evaluate"} or sheets_names)
+    want_viz = bool(lib_names & {"evaluate", "show_errors"} or sheets_names)
+
+    lines = ['#@title 📦 Setup — run me first { display-mode: "form" }',
+             "# Helper — you don't need to read this. Run it and move on.",
+             GENERATED_NOTE]
+    if simple:
+        lines.append("import " + ", ".join(sorted(set(simple))))
+    if want_report:
+        lines.append("from sklearn.metrics import (classification_report, confusion_matrix,")
+        lines.append("                             cohen_kappa_score)")
+    elif want_matrix:
+        lines.append("from sklearn.metrics import confusion_matrix")
+    if want_viz:
+        lines.append("import pandas as pd, seaborn as sns, matplotlib.pyplot as plt")
+    src = "\n".join(lines)
+
+    if backend == "demo":
+        src += "\n\n" + DEMO_BACKEND
+    elif backend == "api":
+        src += "\n\n" + API_BACKEND
+
+    if gold_url:
+        src += (f'\n\n# {gold_comment}\n'
+                f'GOLD_URL = "{gold_url}"\n'
+                'LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]')
+    if val_url:
+        src += (f'\nVAL_URL  = "{val_url}"   '
+                '# 24 items to tune on, so GOLD_URL stays held out')
+    if predictions_url:
+        src += f'\nPREDICTIONS_URL = "{predictions_url}"   # frozen model predictions'
+
+    status = "Setup done."
+    if backend == "demo":
+        status += " Colab's built-in Gemini is ready."   # no _backend variable on Day 1
+    elif backend:
+        status += " LLM backend: {_backend}."
+    if want_matrix:
+        status += " scikit-learn ready."
+    # Day 1's status line has nothing to interpolate, and an `f` on a brace-less string
+    # is exactly the confusion step 8 teaches students to spot. Only use it when needed.
+    prefix = "f" if "{" in status else ""
+    src += f'\n\nprint({prefix}"{status}")'
+    return code(src)
+
+
+# The 🔧 pipeline "library" cells. Each day ships only the ones it calls, selected
+# by name through libs(...) — see the LIB registry below. All are collapsed form
+# cells flagged "helper — you don't need to read this"; their internals are kept
+# readable (explicit loops, minimal regex) for the curious.
+_HELPER_NOTE = "# Helper — you don't need to read this. Run it and move on."
+
+
+# Each 🔧 helper below is ordinary Python, so an editor checks it and you can read it
+# without counting quotes. `libs()` slices a named section back out of this file's own
+# text and wraps it as a notebook cell. The marker line carries two things: the name a
+# day requests, and the caption listed at the top of the built cell.
+_MARKER = "# === "
+
+
+def _sections():
+    """name → (caption, code) for every `# === name :: caption ===` block below.
+
+    Read as text rather than by importing, so a helper can refer to pandas, seaborn or
+    google.colab — none of which are installed here — without this file failing to load.
+    The helpers are only ever printed into a notebook; nothing calls them here.
+    """
+    found, name, caption, body = {}, None, None, []
+    for line in Path(__file__).read_text(encoding="utf-8").split("\n"):
+        if not (line.startswith(_MARKER) and line.endswith(" ===")):
+            if name:
+                body.append(line)
+            continue
+        if name:
+            found[name] = (caption, "\n".join(body).strip("\n"))
+        header = line[len(_MARKER):-4].strip()
+        name = None if header == "end" else header.partition(" :: ")[0]
+        caption = header.partition(" :: ")[2]
+        body = []
+    return found
+
+
+def libs(*names):
+    """The helpers ONE step needs, as one collapsed cell.
+
+    Call this once per step, naming only what that step calls — not once per notebook
+    with everything in it. Merging a whole day put hundreds of lines between the student
+    and their first result, and shipped functions the day never ran; merging a *step*
+    keeps the cell short and next to the call it serves.
+
+    The signatures are listed at the top of the merged cell, so it still says what it
+    defines without being opened.
+
+    Keep the names here in sync with the lib_names passed to setup_cell (they drive
+    the day's imports)."""
+    sections = _sections()
+    signatures = [sections[name][0] for name in names]
+    return [code(
+        '#@title 🔧 Library cell: %s { display-mode: "form" }'
+        % ", ".join(s.split("(")[0].strip() for s in signatures),
+        _HELPER_NOTE,
+        GENERATED_NOTE,
+        *["#   " + s for s in signatures],
+        "",
+        "\n\n\n".join(sections[name][1] for name in names))]
+
+
+# --------------------------------------------------------- the 🔧 helpers themselves
+# Ordinary module-level Python from here down. Nothing imports or runs it; `libs()`
+# reads it as text. Edit a helper here and every day that ships it updates on the next
+# `_sync_notebooks.py` run.
+#
+# One dependency between sections: `sheets_auth` carries _sheets_client and
+# `sheets_base` the column constants, so whichever S5 step loads first must request
+# both — in S5 that is step D.
+
+# === load_gold :: load_gold(url_or_path) → gold ===
+def load_gold(url_or_path: str) -> list[dict[str, str]]:
+    """Read the canonical gold JSON: [{'id','text','label'}, ...].
+
+    Args:
+        url_or_path: a web address, or the path to a file on this machine.
+
+    Returns:
+        The gold items, each a dict with "id", "text" and "label".
+
+    Example:
+        >>> gold = load_gold(GOLD_URL)
+    """
+    if str(url_or_path).startswith("http"):                 # a web address?
+        raw = urllib.request.urlopen(url_or_path).read().decode("utf-8")  # download it
+        gold = json.loads(raw)                              # JSON text -> list of dicts
+    else:                                                   # otherwise a file on disk
+        gold = json.loads(open(url_or_path, encoding="utf-8").read())
+    print(f"Loaded {len(gold)} items. First one:", gold[0])  # proof it worked
+    return gold
+
+# === run_prompt :: run_prompt(prompt, gold) → predictions ===
+def _extract_level(text: str) -> str:
+    """Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply.
+
+    Args:
+        text: whatever the model replied.
+
+    Returns:
+        The level it found, or "??" when the reply contains none.
+    """
+    # The model may answer "B2" or "I would say B2." — search rather than assume.
+    m = re.search(r"\b([ABC][12])\b", str(text).upper())
+    return m.group(1) if m else "??"      # "??" = no level found in the reply
+
+def run_prompt(prompt: str, gold: list[dict[str, str]]) -> list[str]:
+    """Send each item's `text` to the LLM via {text}, collect predicted labels.
+
+    Args:
+        prompt: your prompt, containing {text} where the sentence should go.
+        gold: the items to label, each with a "text" key.
+
+    Returns:
+        One predicted label per gold item, in the same order.
+
+    Example:
+        >>> predictions = run_prompt(PROMPT, gold)
+    """
+    predictions = []                                  # answers, in gold order
+    for i, item in enumerate(gold, 1):                # i counts 1, 2, 3, ...
+        reply = generate_text(prompt.format(text=item["text"]))  # {text} <- sentence
+        predictions.append(_extract_level(reply))     # keep just the level
+        if i % 12 == 0:                               # every 12th item...
+            print(f"  ...{i}/{len(gold)} done")       # ...show progress
+    print(f"Got {len(predictions)} predictions.")
+    return predictions
+
+# === evaluate :: evaluate(gold, predictions) → P/R/F1 + κ + confusion matrix ===
+def evaluate(gold: list[dict[str, str]],
+             predictions: list[str],
+             ordered: bool = False) -> None:
+    """Score predictions against gold: per-class P/R/F1 + macro, Cohen's κ, and a
+    confusion-matrix heatmap.
+
+    ordered=True adds QUADRATIC WEIGHTED κ — use it only when the labels sit on a
+    scale (A1 < A2 < ... < C2), so that a near miss counts as a smaller error than
+    a far one. For unordered categories, plain κ is the one to report.
+
+    Args:
+        gold: the gold items, each with a "label" key.
+        predictions: one predicted label per gold item, in the same order.
+        ordered: True when the labels sit on a scale.
+
+    Returns:
+        Nothing. It prints the table and the κ values, and draws the matrix.
+
+    Example:
+        >>> evaluate(gold, predictions, ordered=True)
+    """
+    ### Step 1: line the two label lists up, gold first ###
+    y_true = []                          # the correct labels, from the gold set
+    for item in gold:
+        y_true.append(item["label"])
+    y_pred = predictions                 # the model's labels, in the same order
+
+    ### Step 2: per-class precision / recall / F1, as a text table ###
+    print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))
+
+    ### Step 3: one overall number — agreement corrected for chance ###
+    print(f"Cohen's kappa            {cohen_kappa_score(y_true, y_pred):.3f}")
+    if ordered:                          # only when the labels sit on a scale
+        weighted = cohen_kappa_score(y_true, y_pred, labels=LEVELS,
+                                     weights="quadratic")   # near misses hurt less
+        print(f"Cohen's kappa (weighted) {weighted:.3f}   <- labels are ordered")
+
+    ### Step 4: draw the same information as a picture ###
+    cm = confusion_matrix(y_true, y_pred, labels=LEVELS)   # counts per gold/pred pair
+    plt.figure(figsize=(5.5, 4.5))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",     # annot=True writes the counts
+                xticklabels=LEVELS, yticklabels=LEVELS)
+    plt.xlabel("Predicted"); plt.ylabel("Gold"); plt.title("Confusion matrix")
+    plt.tight_layout(); plt.show()
+
+# === show_errors :: show_errors(gold, predictions) → misclassified table ===
+def show_errors(gold: list[dict[str, str]], predictions: list[str]) -> pd.DataFrame:
+    """The items the model got wrong, as a table you can read and argue about.
+
+    Args:
+        gold: the gold items, each with "id", "text" and "label".
+        predictions: one predicted label per gold item, in the same order.
+
+    Returns:
+        A table with one row per mistake: id, gold, pred, text.
+
+    Example:
+        >>> show_errors(gold, predictions)
+    """
+    rows = []
+    for g, p in zip(gold, predictions):   # walk gold and predictions side by side
+        if g["label"] != p:               # keep only the disagreements
+            rows.append({"id": g["id"], "gold": g["label"], "pred": p, "text": g["text"]})
+    print(f"{len(rows)} of {len(gold)} wrong.")
+    # Name the columns even when there are no rows. A table built from an empty list has
+    # no columns at all, and then errors["gold"] fails for a student whose prompt got
+    # everything right.
+    return pd.DataFrame(rows, columns=["id", "gold", "pred", "text"])   # Colab shows a table
+
+# === predictions :: load_predictions(url_or_path) → predictions ===
+def load_predictions(url_or_path: str) -> list[str]:
+    """Read a frozen predictions list — a committed URL or a local path.
+
+    Args:
+        url_or_path: a web address, or the path to a file on this machine.
+
+    Returns:
+        One predicted label per gold item, in gold order.
+
+    Example:
+        >>> predictions = load_predictions(PREDICTIONS_URL)
+    """
+    if str(url_or_path).startswith("http"):                 # a web address?
+        raw = urllib.request.urlopen(url_or_path).read().decode("utf-8")  # download it
+        predictions = json.loads(raw)                       # JSON text -> list
+    else:                                                   # otherwise a file on disk
+        predictions = json.loads(open(url_or_path, encoding="utf-8").read())
+    print(f"Loaded {len(predictions)} frozen predictions.")
+    return predictions
+
+# === sheets_auth :: connect to Google Sheets ===
+def _sheets_client():
+    """Authorise gspread with your Google account (a pop-up asks for permission).
+
+    Returns:
+        A logged-in connection to Google Sheets.
+
+    Raises:
+        RuntimeError: when signing in from your own computer fails.
+    """
+    ### Step 1: in Colab, use the Google account you are already signed in with ###
+    try:
+        from google.colab import auth
+        import google.auth, gspread
+        auth.authenticate_user()           # the pop-up: "let Colab use your Sheets"
+        creds, _ = google.auth.default()   # the permission slip that pop-up produced
+        return gspread.authorize(creds)    # a logged-in connection to Google Sheets
+    except ImportError:                    # `google.colab` only exists inside Colab
+        pass
+
+    ### Step 2: on your own computer, let gspread do its own sign-in ###
+    import gspread
+    try:
+        return gspread.oauth()
+    except Exception as error:
+        raise RuntimeError(
+            "Could not sign in to Google Sheets from this computer.\n"
+            "This step is written for Google Colab, where your Google account is "
+            "already available — open the notebook there and it will work with no "
+            "setup.\n"
+            "To run it here instead, gspread needs a credentials file first: "
+            "https://docs.gspread.org/en/latest/oauth2.html\n"
+            f"The error was: {error}") from error
+
+# === sheets_base :: read one tab of your annotation sheet ===
+# Sheet column headers (the annotation template uses these exact names):
+COL_ID, COL_TEXT = "ID", "Text"
+COL_A, COL_B = "CoderA", "CoderB"
+COL_FINAL, COL_NOTES = "Final", "Note"
+ANNOTATION_HEADER = [COL_ID, COL_TEXT, COL_A, COL_B, COL_FINAL, COL_NOTES]
+
+def load_annotation_sheet(sheet_id: str,
+                          worksheet: str = "round1") -> list[dict[str, str]]:
+    """Read one TAB of your annotation sheet back as a list of row dicts.
+
+    Opening by id or URL always opens the exact sheet, so two copies that share a
+    name (\"Copy of ...\") are never confused. Each round lives in its own tab, so
+    re-annotating in round2 never overwrites round1.
+
+    Args:
+        sheet_id: the long id in the sheet's URL
+            (docs.google.com/spreadsheets/d/<THIS PART>/edit). The whole URL works too.
+        worksheet: the TAB name — one tab per annotation round.
+
+    Returns:
+        One dict per row, keyed by the column headings (ID, Text, CoderA, ...).
+
+    Raises:
+        ValueError: when the sheet has no tab by that name. The message lists the
+            tabs it does have.
+
+    Example:
+        >>> rows = load_annotation_sheet(SHEET_ID, worksheet="round1")
+    """
+    ### Step 1: open the sheet — a pasted URL and a bare id both work ###
+    client = _sheets_client()
+    if str(sheet_id).startswith("http"):
+        sheet = client.open_by_url(sheet_id)
+    else:
+        sheet = client.open_by_key(sheet_id)
+
+    ### Step 2: find the tab (the "round") — and say which tabs exist if it is missing ###
+    try:
+        ws = sheet.worksheet(worksheet)
+    except Exception:
+        tabs = [w.title for w in sheet.worksheets()]   # what IS in this sheet
+        raise ValueError(f"No tab named {worksheet!r}. Tabs in this sheet: {tabs}")
+
+    ### Step 3: read every row as a dict keyed by the header names ###
+    rows = ws.get_all_records()        # [{"ID": 1, "Text": "...", "CoderA": "B1", ...}, ...]
+    print(f"Read {len(rows)} rows from tab '{worksheet}'.")
+    return rows
+
+# === sheets_agreement :: annotator_agreement(rows) → % agreement, κ, matrix ===
+def _labelled_pairs(rows: list[dict[str, str]],
+                    a: str,
+                    b: str) -> tuple[list[str], list[str]]:
+    """The two annotators' labels, keeping only rows where BOTH of them chose one.
+
+    A row one annotator has not reached yet is not two people disagreeing, so it is
+    dropped rather than counted.
+
+    Args:
+        rows: the rows read back by load_annotation_sheet.
+        a: the column holding the first annotator's labels.
+        b: the column holding the second annotator's labels.
+
+    Returns:
+        Two lists of the same length: annotator A's labels, annotator B's labels.
+    """
+    a_labels = []
+    b_labels = []
+    for row in rows:
+        label_a = str(row.get(a, "")).strip()   # .strip() drops the spaces a sheet adds
+        label_b = str(row.get(b, "")).strip()
+        if label_a != "" and label_b != "":     # drop half-finished rows
+            a_labels.append(label_a)
+            b_labels.append(label_b)
+    return a_labels, b_labels
+
+
+def _agreement_scores(a_labels: list[str],
+                      b_labels: list[str]) -> dict[str, float]:
+    """How often the two annotators matched, raw and corrected for chance.
+
+    Percent agreement counts every match, including the ones two annotators would hit
+    by luck alone. Cohen's κ subtracts that luck, which is why the two numbers differ.
+
+    Args:
+        a_labels: annotator A's labels.
+        b_labels: annotator B's labels, item for item.
+
+    Returns:
+        {"n", "percent_agreement", "kappa"}.
+    """
+    from sklearn.metrics import cohen_kappa_score
+    matches = 0
+    for i in range(len(a_labels)):
+        if a_labels[i] == b_labels[i]:
+            matches = matches + 1
+    percent = matches / len(a_labels)                # how often you matched
+    kappa = cohen_kappa_score(a_labels, b_labels)    # ...minus the luck
+    print(f"{len(a_labels)} doubly-annotated · agreement {percent:.1%} · Cohen's κ {kappa:.3f}")
+    return {"n": len(a_labels), "percent_agreement": percent, "kappa": kappa}
+
+
+def _draw_coder_matrix(a_labels: list[str],
+                       b_labels: list[str]) -> None:
+    """Draw WHICH labels the two annotators confuse, not just how often.
+
+    The diagonal is where they agreed; an off-diagonal cell is a label pair whose
+    boundary the scheme has not made decidable yet. Mirrors the gold-vs-model
+    confusion matrix that evaluate() draws.
+
+    Args:
+        a_labels: annotator A's labels.
+        b_labels: annotator B's labels, item for item.
+    """
+    labels = sorted(set(a_labels) | set(b_labels))   # every label either of you used
+    cm = confusion_matrix(a_labels, b_labels, labels=labels)
+    plt.figure(figsize=(5.5, 4.5))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
+                xticklabels=labels, yticklabels=labels)
+    plt.xlabel("Annotator B"); plt.ylabel("Annotator A")   # diagonal = you agreed
+    plt.title("Annotator-vs-annotator confusion matrix")
+    plt.tight_layout(); plt.show()
+
+
+def annotator_agreement(rows: list[dict[str, str]],
+                        a: str = COL_A,
+                        b: str = COL_B) -> dict[str, float] | None:
+    """Percent agreement + Cohen's κ between the two annotator columns, PLUS an
+    annotator-vs-annotator confusion matrix (the diagonal is where you agreed;
+    off-diagonal cells show which label pairs the two of you confuse).
+
+    Args:
+        rows: the rows read back by load_annotation_sheet.
+        a: the column holding the first annotator's labels.
+        b: the column holding the second annotator's labels.
+
+    Returns:
+        {"n", "percent_agreement", "kappa"}, or None when no row has both
+        annotators filled in.
+
+    Example:
+        >>> annotator_agreement(rows)
+    """
+    a_labels, b_labels = _labelled_pairs(rows, a, b)   # rows you BOTH labelled
+    if len(a_labels) == 0:
+        print("No rows where BOTH annotators have labelled. Nothing to compare yet.")
+        return None
+    scores = _agreement_scores(a_labels, b_labels)     # prints % agreement and κ
+    _draw_coder_matrix(a_labels, b_labels)             # draws the matrix
+    return scores
+
+# === sheets_disagree :: disagreements(rows) → the rows to argue about ===
+def disagreements(rows: list[dict[str, str]],
+                  a: str = COL_A,
+                  b: str = COL_B) -> pd.DataFrame:
+    """The rows your two annotators labelled differently — your adjudication list.
+
+    Args:
+        rows: the rows read back by load_annotation_sheet.
+        a: the column holding the first annotator's labels.
+        b: the column holding the second annotator's labels.
+
+    Returns:
+        A table of the rows where the two annotators chose different labels.
+
+    Example:
+        >>> disagreements(rows)
+    """
+    # keep a row only if both annotators labelled it AND they chose differently:
+    out = [r for r in rows
+           if str(r.get(a, "")).strip() and str(r.get(b, "")).strip()
+           and str(r[a]).strip() != str(r[b]).strip()]
+    print(f"{len(out)} rows to adjudicate. Agree on a `Final` label for each in the sheet.")
+    return pd.DataFrame(out)
+
+# === sheets_canonical :: to_canonical(rows, labels) → gold ===
+def to_canonical(rows: list[dict[str, str]],
+                 labels: list[str],
+                 column: str = COL_FINAL) -> list[dict[str, str]]:
+    """Turn annotation rows into canonical gold: [{"id","text","label"}, ...].
+
+    Blank rows are skipped; labels outside `labels` are reported, not silently kept.
+
+    Args:
+        rows: the rows read back by load_annotation_sheet.
+        labels: the labels your scheme allows. Anything else is reported as invalid.
+        column: which column holds the agreed label.
+
+    Returns:
+        The usable rows as gold items, each {"id", "text", "label"}.
+
+    Example:
+        >>> my_gold = to_canonical(rows, LEVELS)
+    """
+    ### Step 1: sort every row into one of three piles ###
+    gold, blank, invalid = [], 0, []     # usable rows · not labelled yet · typos
+    for row in rows:
+        label = str(row.get(column, "")).strip()   # .strip() drops stray spaces
+        if not label:
+            blank += 1                    # nobody has filled this row in yet
+        elif label not in labels:
+            invalid.append((row.get(COL_ID), label))   # e.g. "b1" or "B11"
+        else:
+            gold.append({"id": int(row[COL_ID]), "text": str(row[COL_TEXT]), "label": label})
+
+    ### Step 2: report all three counts, so nothing is dropped silently ###
+    print(f"{len(gold)} usable · {blank} still blank · {len(invalid)} invalid")
+    if invalid:
+        print("  fix these in the sheet, then re-run:", invalid[:10])   # first 10
+    return gold
+
+# === sheets_compare :: compare_to_published(gold, published) → how often you two agree ===
+def compare_to_published(gold: list[dict[str, str]],
+                         published: list[dict[str, str]]) -> pd.DataFrame | None:
+    """How often does YOUR final label match the published gold, item by item?
+
+    Items are matched by their TEXT, not their id, because a sampled set is often
+    renumbered from 1 — and matching those ids against the original set would pair
+    your item 7 with their item 7: two unrelated sentences, and a percentage that
+    means nothing. (Ids are still used as a fallback, in case a text was edited.)
+
+    Args:
+        gold: your own gold items, from to_canonical.
+        published: the published gold items, from load_gold.
+
+    Returns:
+        A table of the items where you and the published gold differ, or None
+        when nothing could be matched.
+
+    Example:
+        >>> compare_to_published(my_gold, published)
+    """
+    ### Step 1: index the published labels by text, and by id as a fallback ###
+    label_by_text = {}
+    label_by_id = {}
+    for item in published:
+        label_by_text[str(item["text"])] = item["label"]
+        label_by_id[item["id"]] = item["label"]
+
+    ### Step 2: pair each of your items with its published label ###
+    matched = []
+    for item in gold:
+        text = str(item["text"])
+        if text in label_by_text:
+            theirs = label_by_text[text]
+        elif item["id"] in label_by_id:
+            theirs = label_by_id[item["id"]]
+        else:
+            continue                       # not in the published set at all
+        matched.append({"id": item["id"], "yours": item["label"],
+                        "published": theirs, "text": item["text"]})
+    if len(matched) == 0:
+        print("None of your items could be matched to the published set.")
+        return None
+
+    ### Step 3: count the matches, then show only the rows where you differ ###
+    agree = 0
+    differences = []
+    for row in matched:
+        if row["yours"] == row["published"]:
+            agree = agree + 1
+        else:
+            differences.append(row)
+    print(f"{agree}/{len(matched)} match the published label "
+          f"({agree / len(matched):.1%})")
+    return pd.DataFrame(differences)
+
+# === sheets_create :: create_annotation_sheet(title, items, labels) → url ===
+def create_annotation_sheet(title: str,
+                            items: list[dict[str, str]],
+                            labels: list[str]) -> str:
+    """Create a Sheet in YOUR Drive: one row per item, blank columns to label.
+
+    Any existing label on an item is deliberately NOT copied across, so you
+    annotate blind.
+
+    Args:
+        title: the name to give the new spreadsheet.
+        items: the items to annotate, each with "id" and "text".
+        labels: the labels your scheme allows, printed as a reminder.
+
+    Returns:
+        The URL of the sheet it created.
+
+    Example:
+        >>> url = create_annotation_sheet("Group 1 gold", items, LEVELS)
+    """
+    ### Step 1: make an empty spreadsheet in your own Drive ###
+    sheet = _sheets_client().create(title)
+    worksheet = sheet.sheet1
+    worksheet.update_title("round1")   # first round lives in the 'round1' tab
+
+    ### Step 2: one row per item — id and text filled in, label columns left blank ###
+    rows = []
+    for item in items:
+        #                id            text          CoderA CoderB Final Note
+        rows.append([item["id"], item["text"], "", "", "", ""])
+
+    ### Step 3: write it all in one go, then pin the header row ###
+    worksheet.update([ANNOTATION_HEADER] + rows)   # header first, then the data
+    worksheet.freeze(rows=1)                       # header stays put as you scroll
+    print(f"Created '{title}' with {len(rows)} rows in tab 'round1'.")
+    print("Allowed labels:", ", ".join(labels))
+    print("Open it:", sheet.url)
+    return sheet.url
+
+# === pair_up :: pair_up(gold, predictions, positive) → items ===
+def pair_up(gold: list[dict[str, str]],
+            predictions: list[str],
+            positive: list[str]) -> list[dict[str, str]]:
+    """Pair each gold item with the model's prediction, both collapsed to yes/no.
+
+    Args:
+        gold: the gold items, each with "id", "text" and "label".
+        predictions: one predicted label per gold item, in the same order.
+        positive: the labels that count as "yes" (e.g. ["C1", "C2"]).
+
+    Returns:
+        One dict per item: {"id", "text", "gold", "pred"}, where "gold" and
+        "pred" are each "yes" or "no".
+
+    Example:
+        >>> items = pair_up(gold, predictions, ["C1", "C2"])
+    """
+    items = []
+    for g, p in zip(gold, predictions):   # gold item and its prediction, side by side
+        items.append({"id": g["id"],
+                      "text": g["text"],
+                      # six CEFR levels collapse to two answers: "yes" or "no"
+                      "gold": "yes" if g["label"] in positive else "no",
+                      "pred": "yes" if p in positive else "no"})
+    print(f"Paired {len(items)} items. Positive class = {positive}.")
+    return items
+
+# === show_2x2 :: show_2x2(tally) → the four counts as a square ===
+def show_2x2(tally: dict[str, int]) -> None:
+    """Print a tally of TP/FP/FN/TN as a confusion matrix — rows are the gold
+    label, columns are the prediction. No arithmetic: the same four numbers,
+    arranged so you can see where the errors went.
+
+    Args:
+        tally: how many items fell into each outcome, e.g. {"TP": 3, "FP": 1}.
+            A missing outcome counts as 0.
+
+    Returns:
+        Nothing. It prints the square.
+
+    Example:
+        >>> show_2x2(tally)
+    """
+    # .get(..., 0) so a missing outcome shows as 0 rather than crashing:
+    tp = tally.get("TP", 0)
+    fp = tally.get("FP", 0)
+    fn = tally.get("FN", 0)
+    tn = tally.get("TN", 0)
+    # :<9 pads a label to 9 characters, :>9 right-aligns a number in 9 — that is all
+    # the f-strings below are doing: lining the four counts up into a square.
+    print(f"{'':<9}{'pred yes':>9}{'pred no':>9}")     # column headings
+    print(f"{'gold yes':<9}{tp:>9}{fn:>9}")              # top row:    TP  FN
+    print(f"{'gold no':<9}{fp:>9}{tn:>9}")               # bottom row: FP  TN
+
+# === end ===

@@ -24,7 +24,6 @@ every one of them.
 | `gold/*_pool.json` | The **full datasets**, for building a larger or differently-balanced gold set | Mini-project work |
 | [`prep_datasets.py`](./prep_datasets.py) | Builds every `gold/*.json` in one pass (Python standard library only) | You want all datasets at once instead of one notebook at a time |
 | [`prep_datasets.ipynb`](./prep_datasets.ipynb) | Notebook wrapper around the builder: build + schema validator | Checking that every gold file matches the schema |
-| `_generate_student_notebooks.py` | Regenerates the 5 download notebooks from shared templates | Changing what the notebooks say — never edit a notebook by hand |
 | `raw/` | The original downloads, exactly as published — git-ignored | Comparing a gold file against its source |
 | `.gitignore` | Ignores `raw/` and `gold/*`, except `gold/cefr_sentences.json` | Rarely |
 
@@ -42,7 +41,6 @@ datasets/
 │   └── download_icnale_gra.ipynb
 ├── prep_datasets.py              ← batch builder: rebuild ALL gold files at once
 ├── prep_datasets.ipynb           ← notebook wrapper (build + validate)
-├── _generate_student_notebooks.py← regenerates the download notebooks above
 ├── .gitignore
 ├── raw/                          ← original downloads (git-ignored)
 └── gold/                         ← derived gold files (git-ignored; rebuild locally)
@@ -203,9 +201,9 @@ uv run --no-project python prep_datasets.py raamove    # build just one
 public API, CEFR via `git clone`). `l2_errors` and `icnale_gra` need their raw files placed under
 `raw/` first — see [`SOURCES.md`](./SOURCES.md) for exact steps.
 
-`_generate_student_notebooks.py` regenerates all five download notebooks from templates —
-**any hand-edit to a notebook is overwritten when it runs**, so change the generator, not the
-notebook.
+The five `notebooks/download_*.ipynb` are edited directly — open one, change a cell, run it, save.
+Each is a walkthrough of one dataset, so they share very little: of their 78 cells only about 40
+lines repeat across files, mostly a five-line save cell and a five-line label count.
 
 Note that each download notebook carries its *own* copy of the reshaping logic (e.g. `COARSE` in
 the AutoErrorAnalyzer notebook mirrors `L2_COARSE` in `prep_datasets.py`). Editing one does not

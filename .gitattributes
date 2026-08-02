@@ -1,0 +1,12 @@
+# Notebooks are committed without their outputs, so their diffs stay readable and two
+# people editing the same notebook do not conflict over stored results. Running cells
+# while you write is expected; this filter takes the outputs back out on the way into a
+# commit, leaving your working copy alone.
+#
+# Filters are per-clone git config, not carried by this file. Turn it on once with:
+#
+#   git config filter.nbstrip.clean "uv run python sources/notebooks/_sync_notebooks.py --stdin-strip"
+#
+# Without that line the filter is simply not applied — nothing breaks, but you have to
+# run `python sources/notebooks/_sync_notebooks.py` yourself before committing.
+sources/notebooks/*.ipynb filter=nbstrip
