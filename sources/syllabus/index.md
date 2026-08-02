@@ -93,7 +93,7 @@ We have two possible choices for the grade distribution for this course. I will 
 | Attendance / Participation                          |         | 20%     |
 | Hands-on activities (Day 1–3) + completed notebook |         | 40%     |
 | Mini-project group presentation + Q&A               | (Day 5) | 20%     |
-| Mini write-up (individual)                         | (Day 5) | 20%     |
+| In-class one-page report (individual)               | (Day 5) | 20%     |
 
 The **completed project notebook** — assembled from the cell library and run end-to-end, with your group's sampled gold subset, prompt, and evaluation outputs — is submitted as evidence that the in-class hands-on work was done, and is graded under the hands-on component. All project deliverables are produced and submitted **during** the course; there is no post-course write-up.
 

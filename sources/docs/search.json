@@ -1390,7 +1390,7 @@
     "href": "slides/slides-session-01.html#agenda",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nWhy this course\nSelf-introductions\nSyllabus — the 5-day map & objectives\nWhat an LLM is\nDetour — History of embeddings\nDiscussion"
+    "text": "📋 Agenda\n\nWhy this course\nSelf-introductions\nSyllabus — the 5-day map & objectives\nWhat an LLM is\nDetour — History of embeddings\nWhat this buys you, and where it fails\nDiscussion"
   },
   {
     "objectID": "slides/slides-session-01.html#llms-are-everywhere-now",
@@ -1460,7 +1460,7 @@
     "href": "slides/slides-session-01.html#what-well-do-this-week",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "What we’ll do this week",
-    "text": "What we’ll do this week\n\n\n\n\n\n\n\nDay\nFocus\n\n\n\n\n1\nWhat is LLM, Python basics, call an LLM\n\n\n2\nGold standard + agreement — how to define and measure quality\n\n\n3\nPrompt + iterate against metrics - how to use LLM\n\n\n4\nMini-project\n\n\n5\nMini-project + present"
+    "text": "What we’ll do this week\n\n\n\n\n\n\n\nDay\nFocus\n\n\n\n\n1\nWhat is LLM, Python basics, call an LLM\n\n\n2\nGold standard + agreement — how to define and measure quality\n\n\n3\nPrompt + iterate against metrics - how to use LLM\n\n\n4\nMethod + assemble the pipeline\n\n\n5\nYour own data + present"
   },
   {
     "objectID": "slides/slides-session-01.html#assignments-grading",
@@ -1474,7 +1474,7 @@
     "href": "slides/slides-session-01.html#learning-objectives",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nDescribe, at a high level, what a Large Language Model is and how it is trained.\nSay what machine learning is, and how a model comes to represent a word’s meaning in context.\nSay what an LLM has already been used for in linguistics, and where it has been shown to struggle."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nDescribe, at a high level, what a Large Language Model is and how it is trained.\nExplain what an embedding is, and how a model comes to represent a word’s meaning in context.\nSay what an LLM has already been used for in linguistics, and where it has been shown to struggle."
   },
   {
     "objectID": "slides/slides-session-01.html#the-one-idea-for-today",
@@ -4432,7 +4432,7 @@
     "href": "syllabus/index.html#assignments-and-grading",
     "title": "Course Syllabus",
     "section": "Assignments and Grading",
-    "text": "Assignments and Grading\n\n\nGrade Distribution (subject to final review by the start of the course on 3rd, Aug)\n\n\n\n\n\n\n\n\nComponent\n\nPercent\n\n\n\n\nAttendance / Participation\n\n20%\n\n\nHands-on activities (Day 1–3) + completed notebook\n\n40%\n\n\nMini-project group presentation + Q&A\n(Day 5)\n20%\n\n\nMini write-up (individual)\n(Day 5)\n20%\n\n\n\nThe completed project notebook — assembled from the cell library and run end-to-end, with your group’s sampled gold subset, prompt, and evaluation outputs — is submitted as evidence that the in-class hands-on work was done, and is graded under the hands-on component. All project deliverables are produced and submitted during the course; there is no post-course write-up.\n\n\nGrading Scale\nWe follow the grading system at Tohoku University.\n\n\n\nGrade\nRange\nGrade Point\n\n\n\n\nAA\n100-90%\n4.0\n\n\nA\n89-80%\n3.0\n\n\nB\n79-70%\n2.0\n\n\nC\n69-60%\n1.0\n\n\nD\n59-0%\n0.0"
+    "text": "Assignments and Grading\n\n\nGrade Distribution (subject to final review by the start of the course on 3rd, Aug)\n\n\n\n\n\n\n\n\nComponent\n\nPercent\n\n\n\n\nAttendance / Participation\n\n20%\n\n\nHands-on activities (Day 1–3) + completed notebook\n\n40%\n\n\nMini-project group presentation + Q&A\n(Day 5)\n20%\n\n\nIn-class one-page report (individual)\n(Day 5)\n20%\n\n\n\nThe completed project notebook — assembled from the cell library and run end-to-end, with your group’s sampled gold subset, prompt, and evaluation outputs — is submitted as evidence that the in-class hands-on work was done, and is graded under the hands-on component. All project deliverables are produced and submitted during the course; there is no post-course write-up.\n\n\nGrading Scale\nWe follow the grading system at Tohoku University.\n\n\n\nGrade\nRange\nGrade Point\n\n\n\n\nAA\n100-90%\n4.0\n\n\nA\n89-80%\n3.0\n\n\nB\n79-70%\n2.0\n\n\nC\n69-60%\n1.0\n\n\nD\n59-0%\n0.0"
   },
   {
     "objectID": "syllabus/index.html#daily-structure",
@@ -4925,7 +4925,7 @@
     "href": "sessions/day1/session-01.html",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
+    "text": "By the end of this session you will be able to:\n\nDescribe, at a high level, what a Large Language Model is and how it is trained.\nExplain what an embedding is, and how a model comes to represent a word’s meaning in context.\nSay what an LLM has already been used for in linguistics, and where it has been shown to struggle.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -4936,8 +4936,8 @@
     "objectID": "sessions/day1/session-01.html#learning-objectives",
     "href": "sessions/day1/session-01.html#learning-objectives",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
-    "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nDescribe, at a high level, what a Large Language Model is, how they are trained, and how they produce natural language.\nSay what machine learning is, and how a model comes to represent a word’s meaning in context.\nSay what an LLM has already been used for in linguistics, and where it has been shown to struggle.",
+    "section": "",
+    "text": "By the end of this session you will be able to:\n\nDescribe, at a high level, what a Large Language Model is and how it is trained.\nExplain what an embedding is, and how a model comes to represent a word’s meaning in context.\nSay what an LLM has already been used for in linguistics, and where it has been shown to struggle.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -4949,7 +4949,7 @@
     "href": "sessions/day1/session-01.html#agenda",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Agenda",
-    "text": "Agenda\n\nSelf-introductions — your name, your research interest, and why you took this course.\nWhy this course — LLMs are now common tools, so the question is how to use them responsibly. Annotation is the promising and expensive application.\nThe 5-day map & objectives — what each day adds, and how it ends in your own mini-project.\nWhat do you already know about LLMs? — in your own words, before any technical framing.\nWhat an LLM is, and why it’s relevant — a 7-minute overview video, then how text becomes numbers, what attention adds, what the model does and does not have access to, and what people have already done with it.\nNo-code chat demo — throw real language data at an LLM in the chat interface and read the output critically: what did it get right, and how would we ever know?\nBut — we need evaluation — where LLMs have failed in corpus work, and why that turns into a measurement problem.\nDiscussion — what was new, and what you still want to know.\n\nNo laptop setup is needed today — the hands-on tooling starts in Session 2.",
+    "text": "Agenda\n\nWhy this course — LLMs are now common tools, and they are already changing how science is written. Annotation is the promising and expensive application, so the question is how to judge whether an LLM is doing it well.\nSelf-introductions — your name, your research interest, and why you took this course.\nSyllabus — the course objectives, the 5-day map, and how you are assessed.\nWhat an LLM is — what you already know about them, a 7-minute overview video, and the three questions we come back to: what the model predicts, where its numbers come from, and what attention does.\nA brief history of embeddings — vectors and the RGB colour space, the distributional hypothesis, co-occurrence counts, Latent Semantic Analysis, word2vec, and finally the Transformer and self-attention. This is how text becomes numbers, and how one word gets a different representation in each context.\nWhat LLM can be used, and where it fails — what an LLM lets you annotate that earlier methods could not, why sounding right is not being right, what people have already published using LLMs as annotators, and which part of NLP this course covers (evaluation, not training).\nDiscussion — what was new, and whether you come out of it optimistic or skeptical.\n\nBring a laptop today. This session is lecture and discussion, but Sessions 2 and 3 this afternoon are hands-on in Google Colab. If you have not set Colab up yet, work through the Google Colab setup guide before Session 2.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",

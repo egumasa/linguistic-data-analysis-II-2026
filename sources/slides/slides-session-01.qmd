@@ -26,7 +26,8 @@ metadata-files:
 3. Syllabus — the 5-day map & objectives
 4. What an LLM is
 5. Detour — History of embeddings
-6. Discussion
+6. What this buys you, and where it fails
+7. Discussion
 
 # 1 · Why this course
 
@@ -197,8 +198,8 @@ By the end of this course, you will be able to:
 | **1** | What is LLM, Python basics, call an LLM |
 | **2** | Gold standard + agreement — **how to define and measure quality** |
 | **3** | Prompt + iterate against metrics - **how to use LLM** |
-| **4** | Mini-project |
-| **5** | Mini-project + present |
+| **4** | Method + assemble the pipeline |
+| **5** | Your own data + present |
 
 
 ## Assignments & grading {.smaller}
@@ -223,7 +224,7 @@ Full details on the course website: [Syllabus](../syllabus/index.md) · [Reading
 By the end of this session, you will be able to:
 
 - Describe, at a high level, **what a Large Language Model is** and how it is trained.
-- Say what **machine learning** is, and how a model comes to represent a word's meaning **in context**.
+- Explain what an **embedding** is, and how a model comes to represent a word's meaning **in context**.
 - Say what an LLM has **already been used for** in linguistics, and where it has been shown to **struggle**.
 
 ## The one idea for today {.smaller}
@@ -1037,6 +1038,8 @@ Clark, K., Khandelwal, U., Levy, O., & Manning, C. D. (2019). *What Does BERT Lo
 
 
 
+# 6 · What this buys you, and where it fails
+
 ## What an LLM lets you do
 
 
@@ -1083,7 +1086,7 @@ We do not cover the *training* part of NLP. The **evaluation** part provides exa
 - **precision / recall / F1**, **confusion matrix**
 
 
-# 6 · Discussion
+# 7 · Discussion
 
 ## Your turn
 

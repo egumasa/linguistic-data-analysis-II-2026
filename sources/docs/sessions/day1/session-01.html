@@ -421,41 +421,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <!-- BEING-PREPARED-BANNER -->
-<div class="callout callout-style-simple callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>🚧 Being prepared
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This page is being finalized ahead of the course (<strong>Aug 3–7, 2026</strong>) and may be incomplete or change before your session. The <a href="../../syllabus/index.html">syllabus</a> and <a href="../../syllabus/readings.html">readings</a> are ready now.</p>
-</div>
-</div>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this session you will be able to:</p>
 <ul>
-<li>Describe, at a high level, what a Large Language Model is, how they are trained, and how they produce natural language.</li>
-<li>Say what machine learning is, and how a model comes to represent a word’s meaning in context.</li>
+<li>Describe, at a high level, what a Large Language Model is and how it is trained.</li>
+<li>Explain what an embedding is, and how a model comes to represent a word’s meaning in context.</li>
 <li>Say what an LLM has already been used for in linguistics, and where it has been shown to struggle.</li>
 </ul>
 </section>
 <section id="agenda" class="level2">
 <h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
-<ol start="0" type="1">
+<ol type="1">
+<li><strong>Why this course</strong> — LLMs are now common tools, and they are already changing how science is written. Annotation is the promising and expensive application, so the question is how to judge whether an LLM is doing it well.</li>
 <li><strong>Self-introductions</strong> — your name, your research interest, and why you took this course.</li>
-<li><strong>Why this course</strong> — LLMs are now common tools, so the question is how to use them responsibly. Annotation is the promising and expensive application.</li>
-<li><strong>The 5-day map &amp; objectives</strong> — what each day adds, and how it ends in your own mini-project.</li>
-<li><strong>What do you already know about LLMs?</strong> — in your own words, before any technical framing.</li>
-<li><strong>What an LLM is, and why it’s relevant</strong> — a 7-minute overview video, then how text becomes numbers, what attention adds, what the model does and does not have access to, and what people have already done with it.</li>
-<li><strong>No-code chat demo</strong> — throw real language data at an LLM in the chat interface and read the output <em>critically</em>: what did it get right, and how would we ever know?</li>
-<li><strong>But — we need evaluation</strong> — where LLMs have failed in corpus work, and why that turns into a measurement problem.</li>
-<li><strong>Discussion</strong> — what was new, and what you still want to know.</li>
+<li><strong>Syllabus</strong> — the course objectives, the 5-day map, and how you are assessed.</li>
+<li><strong>What an LLM is</strong> — what you already know about them, a 7-minute overview video, and the three questions we come back to: what the model predicts, where its numbers come from, and what attention does.</li>
+<li><strong>A brief history of embeddings</strong> — vectors and the RGB colour space, the distributional hypothesis, co-occurrence counts, Latent Semantic Analysis, word2vec, and finally the Transformer and self-attention. This is how text becomes numbers, and how one word gets a different representation in each context.</li>
+<li><strong>What LLM can be used, and where it fails</strong> — what an LLM lets you annotate that earlier methods could not, why <em>sounding</em> right is not <em>being</em> right, what people have already published using LLMs as annotators, and which part of NLP this course covers (evaluation, not training).</li>
+<li><strong>Discussion</strong> — what was new, and whether you come out of it optimistic or skeptical.</li>
 </ol>
-<p>No laptop setup is needed today — the hands-on tooling starts in Session 2.</p>
+<p>Bring a laptop today. This session is lecture and discussion, but Sessions 2 and 3 this afternoon are hands-on in Google Colab. If you have not set Colab up yet, work through the <a href="../../resources/tools/google-colab-setup.html">Google Colab setup guide</a> before Session 2.</p>
 </section>
 <section id="watch" class="level2">
 <h2 class="anchored" data-anchor-id="watch">Watch</h2>
@@ -951,50 +937,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning appearance="simple"}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🚧 Being prepared</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The <span class="co">[</span><span class="ot">syllabus</span><span class="co">](/syllabus/index.md)</span> and <span class="co">[</span><span class="ot">readings</span><span class="co">](/syllabus/readings.md)</span> are ready now.</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Describe, at a high level, what a Large Language Model is and how it is trained.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Explain what an embedding is, and how a model comes to represent a word's meaning in context.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Say what an LLM has already been used for in linguistics, and where it has been shown to struggle.</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Describe, at a high level, what a Large Language Model is, how they are trained, and how they produce natural language.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Say what machine learning is, and how a model comes to represent a word's meaning in context.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Say what an LLM has already been used for in linguistics, and where it has been shown to struggle.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">0. </span>**Self-introductions** — your name, your research interest, and why you took this course.</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Why this course** — LLMs are now common tools, so the question is how to use them responsibly. Annotation is the promising and expensive application.</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**The 5-day map &amp; objectives** — what each day adds, and how it ends in your own mini-project.</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**What do you already know about LLMs?** — in your own words, before any technical framing.</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**What an LLM is, and why it's relevant** — a 7-minute overview video, then how text becomes numbers, what attention adds, what the model does and does not have access to, and what people have already done with it.</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**No-code chat demo** — throw real language data at an LLM in the chat interface and read the output *critically*: what did it get right, and how would we ever know?</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**But — we need evaluation** — where LLMs have failed in corpus work, and why that turns into a measurement problem.</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Discussion** — what was new, and what you still want to know.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Why this course** — LLMs are now common tools, and they are already changing how science is written. Annotation is the promising and expensive application, so the question is how to judge whether an LLM is doing it well.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Self-introductions** — your name, your research interest, and why you took this course.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Syllabus** — the course objectives, the 5-day map, and how you are assessed.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**What an LLM is** — what you already know about them, a 7-minute overview video, and the three questions we come back to: what the model predicts, where its numbers come from, and what attention does.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**A brief history of embeddings** — vectors and the RGB colour space, the distributional hypothesis, co-occurrence counts, Latent Semantic Analysis, word2vec, and finally the Transformer and self-attention. This is how text becomes numbers, and how one word gets a different representation in each context.</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**What LLM can be used, and where it fails** — what an LLM lets you annotate that earlier methods could not, why *sounding* right is not *being* right, what people have already published using LLMs as annotators, and which part of NLP this course covers (evaluation, not training).</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Discussion** — what was new, and whether you come out of it optimistic or skeptical.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>Bring a laptop today. This session is lecture and discussion, but Sessions 2 and 3 this afternoon are hands-on in Google Colab. If you have not set Colab up yet, work through the <span class="co">[</span><span class="ot">Google Colab setup guide</span><span class="co">](../../resources/tools/google-colab-setup.md)</span> before Session 2.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Watch</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Sanderson, G. (3Blue1Brown). *Large Language Models explained briefly* (7 min). <span class="co">[</span><span class="ot">Lesson page</span><span class="co">](https://www.3blue1brown.com/lessons/mini-llm/)</span> · <span class="co">[</span><span class="ot">YouTube</span><span class="co">](https://www.youtube.com/watch?v=WMcwoIyK4DA)</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>We play this in class. Watching it beforehand is optional and makes the session easier to follow. It covers what the model predicts, where its numbers come from, and what attention does.</span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>No laptop setup is needed today — the hands-on tooling starts in Session 2.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Watch</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>**Skim** (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>):</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Sanderson, G. (3Blue1Brown). *Large Language Models explained briefly* (7 min). <span class="co">[</span><span class="ot">Lesson page</span><span class="co">](https://www.3blue1brown.com/lessons/mini-llm/)</span> · <span class="co">[</span><span class="ot">YouTube</span><span class="co">](https://www.youtube.com/watch?v=WMcwoIyK4DA)</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>We play this in class. Watching it beforehand is optional and makes the session easier to follow. It covers what the model predicts, where its numbers come from, and what attention does.</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>**Skim** (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>):</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <span class="co">[</span><span class="ot">https://doi.org/10.1177/25152459251325174</span><span class="co">](https://doi.org/10.1177/25152459251325174)</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Slides: <span class="co">[</span><span class="ot">Session 1 slides</span><span class="co">](../../slides/slides-session-01.html)</span>{target="_blank"}</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Abdurahman, S., Ziabari, A. S., Moore, A. K., Bartels, D. M., &amp; Dehghani, M. (2025). A primer for evaluating large language models in social-science research. *Advances in Methods and Practices in Psychological Science, 8*(2). <span class="co">[</span><span class="ot">https://doi.org/10.1177/25152459251325174</span><span class="co">](https://doi.org/10.1177/25152459251325174)</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Slides: <span class="co">[</span><span class="ot">Session 1 slides</span><span class="co">](../../slides/slides-session-01.html)</span>{target="_blank"}</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

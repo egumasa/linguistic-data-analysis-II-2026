@@ -5,33 +5,26 @@ toc: true
 ---
 <!-- BEING-PREPARED-BANNER -->
 
-::: {.callout-warning appearance="simple"}
-
-## 🚧 Being prepared
-
-This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The [syllabus](/syllabus/index.md) and [readings](/syllabus/readings.md) are ready now.
-:::
 
 ## Learning objectives
 
 By the end of this session you will be able to:
 
-- Describe, at a high level, what a Large Language Model is, how they are trained, and how they produce natural language.
-- Say what machine learning is, and how a model comes to represent a word's meaning in context.
+- Describe, at a high level, what a Large Language Model is and how it is trained.
+- Explain what an embedding is, and how a model comes to represent a word's meaning in context.
 - Say what an LLM has already been used for in linguistics, and where it has been shown to struggle.
 
 ## Agenda
 
-0. **Self-introductions** — your name, your research interest, and why you took this course.
-1. **Why this course** — LLMs are now common tools, so the question is how to use them responsibly. Annotation is the promising and expensive application.
-2. **The 5-day map & objectives** — what each day adds, and how it ends in your own mini-project.
-3. **What do you already know about LLMs?** — in your own words, before any technical framing.
-4. **What an LLM is, and why it's relevant** — a 7-minute overview video, then how text becomes numbers, what attention adds, what the model does and does not have access to, and what people have already done with it.
-5. **No-code chat demo** — throw real language data at an LLM in the chat interface and read the output *critically*: what did it get right, and how would we ever know?
-6. **But — we need evaluation** — where LLMs have failed in corpus work, and why that turns into a measurement problem.
-7. **Discussion** — what was new, and what you still want to know.
+1. **Why this course** — LLMs are now common tools, and they are already changing how science is written. Annotation is the promising and expensive application, so the question is how to judge whether an LLM is doing it well.
+2. **Self-introductions** — your name, your research interest, and why you took this course.
+3. **Syllabus** — the course objectives, the 5-day map, and how you are assessed.
+4. **What an LLM is** — what you already know about them, a 7-minute overview video, and the three questions we come back to: what the model predicts, where its numbers come from, and what attention does.
+5. **A brief history of embeddings** — vectors and the RGB colour space, the distributional hypothesis, co-occurrence counts, Latent Semantic Analysis, word2vec, and finally the Transformer and self-attention. This is how text becomes numbers, and how one word gets a different representation in each context.
+6. **What LLM can be used, and where it fails** — what an LLM lets you annotate that earlier methods could not, why *sounding* right is not *being* right, what people have already published using LLMs as annotators, and which part of NLP this course covers (evaluation, not training).
+7. **Discussion** — what was new, and whether you come out of it optimistic or skeptical.
 
-No laptop setup is needed today — the hands-on tooling starts in Session 2.
+Bring a laptop today. This session is lecture and discussion, but Sessions 2 and 3 this afternoon are hands-on in Google Colab. If you have not set Colab up yet, work through the [Google Colab setup guide](../../resources/tools/google-colab-setup.md) before Session 2.
 
 ## Watch
 
