@@ -205,14 +205,6 @@
 </ul>
 <p>So the question arises: <em>can an LLM do this annotation for us?</em></p>
 </section>
-<section id="adequacy-must-be-evaluated-not-assumed" class="slide level2">
-<h2>Adequacy must be evaluated, not assumed</h2>
-<p>This is the central claim of the course:</p>
-<blockquote>
-<p>An LLM’s output is only useful if it’s <strong>adequate</strong> — and adequacy has to be <strong>evaluated, not assumed.</strong></p>
-</blockquote>
-<p><strong>By Friday you will have <em>critically evaluated</em> an LLM on your own annotation task</strong></p>
-</section>
 <section id="one-simple-goal-of-the-course" class="slide level2">
 <h2>One simple Goal of the course</h2>
 <p>Can we trust an LLM on annotating this?</p>
@@ -234,6 +226,48 @@
 <section id="syllabus" class="title-slide slide level1 center">
 <h1>2 Syllabus</h1>
 
+</section>
+<section id="course-objectives" class="slide level2 smaller">
+<h2>Course objectives</h2>
+<p>By the end of this course, you will be able to:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 64%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Area</th>
+<th>Objective</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Critical appraisal</strong></td>
+<td>Explain what LLMs can and cannot do for linguistic analysis, and judge when an LLM-based approach is appropriate.</td>
+</tr>
+<tr class="even">
+<td><strong>Annotation scheme</strong></td>
+<td>Adapt and operationalize an existing annotation scheme and its coding guidelines.</td>
+</tr>
+<tr class="odd">
+<td><strong>Gold-standard datasets</strong></td>
+<td>Build a gold-standard dataset, including assessing inter-annotator agreement.</td>
+</tr>
+<tr class="even">
+<td><strong>Prompt design</strong></td>
+<td>Design, tune, and document prompts that elicit reliable annotations from an LLM.</td>
+</tr>
+<tr class="odd">
+<td><strong>Evaluation</strong></td>
+<td>Evaluate model performance with precision, recall, F1, and confusion matrices, and interpret the results critically.</td>
+</tr>
+<tr class="even">
+<td><strong>Reproducibility</strong></td>
+<td>Report methods and findings transparently and reproducibly.</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="what-well-do-this-week" class="slide level2 smaller">
 <h2>What we’ll do this week</h2>
@@ -271,6 +305,54 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="assignments-grading" class="slide level2 smaller">
+<h2>Assignments &amp; grading</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th></th>
+<th>Percent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Attendance / participation</td>
+<td></td>
+<td>20%</td>
+</tr>
+<tr class="even">
+<td>Hands-on activities (Day 1–3) + completed notebook</td>
+<td></td>
+<td>40%</td>
+</tr>
+<tr class="odd">
+<td>Mini-project group presentation + Q&amp;A</td>
+<td>(Day 5)</td>
+<td>20%</td>
+</tr>
+<tr class="even">
+<td>In-class one-page report</td>
+<td>(Day 5)</td>
+<td>20%</td>
+</tr>
+</tbody>
+</table>
+<p>All project work is produced and submitted <strong>during</strong> the course — there is no post-course write-up. The completed notebook, run end-to-end with your group’s gold subset, prompt, and evaluation output, is the evidence that the hands-on work was done.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Full details on the course website: <a href="../syllabus/index.html">Syllabus</a> · <a href="../syllabus/readings.html">Readings</a></p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
 <section id="session-1" class="title-slide slide level1 center">
@@ -352,6 +434,11 @@
 <li>Where do the <strong>numbers</strong> inside the model come from?</li>
 <li>What does <strong>attention</strong> do?</li>
 </ol>
+</section></section>
+<section>
+<section id="detour-brief-history-of-embedding" class="title-slide slide level1 center">
+<h1>Detour — Brief history of <em>embedding</em></h1>
+
 </section>
 <section id="before-llm-brief-history-of-embedding" class="slide level2">
 <h2>Before LLM — Brief history of <em>embedding</em></h2>
@@ -370,24 +457,10 @@
 <iframe src="../assets/widgets/rgb-cube.html" title="RGB colour space — interactive" style="width:100%;height:22rem;border:0;display:block" loading="lazy" data-prevent-swipe=""></iframe>
 <p>The dashed path is the vector: <strong>R along red, then G along green, then B along blue</strong>. The number under each name is the distance from your colour to that colour — <strong>close in the space = similar colour</strong>. Word embeddings work the same way, with hundreds of numbers instead of three.</p>
 </section>
-<section id="simple-count-based-embedding" class="slide level2 smaller">
-<h2>Simple count-based embedding</h2>
-<p>When we cannot tell the machine meaning of each word, how can it “encode” meaning?</p>
-<div title="The distributional principle">
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>The distributional principle</strong></p>
-</div>
-<div class="callout-content">
-<p>The answer is by studying <strong>Co-occurrence</strong>. Famous quote: “You shall know a word by the company it keeps!” (Firth, 1957, p.&nbsp;11).</p>
-</div>
-</div>
-</div>
-</div>
+<section id="you-shall-know-a-word-by-the-company-it-keeps-firth-1957-p.-11" class="slide level2">
+<h2>“You shall know a word by the company it keeps!” (Firth, 1957, p.&nbsp;11)</h2>
+<p>Q: How can a machine learn meaning?</p>
+<p>A: The answer is by studying <strong>Co-occurrence</strong>.</p>
 <div style="font-size:0.8em">
 <table class="caption-top">
 <colgroup>
@@ -427,6 +500,51 @@
 </table>
 </div>
 <p><strong>Count, by hand:</strong> how often does each of <code>a</code>, <code>computer</code> and <code>pie</code> appear in each of those four windows?</p>
+</section>
+<section id="study-the-company-to-understand-meaning" class="slide level2">
+<h2>Study the company to understand meaning!</h2>
+<p>The table on the right counts co-occurence frequency.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div style="font-size:0.8em">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Left context</th>
+<th style="text-align: center;">Node</th>
+<th style="text-align: left;">Right context</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">is traditionally followed by</td>
+<td style="text-align: center;">cherry</td>
+<td style="text-align: left;"><strong>pie</strong>, <strong>a</strong> traditional dessert</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">often mixed, such as</td>
+<td style="text-align: center;">strawberry</td>
+<td style="text-align: left;">rhubarb <strong>pie</strong>. Apple <strong>pie</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>computer</strong> peripherals and personal</td>
+<td style="text-align: center;">digital</td>
+<td style="text-align: left;">assistants. These devices usually</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">a <strong>computer</strong>. This includes</td>
+<td style="text-align: center;">information</td>
+<td style="text-align: left;">available on the internet</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div><div class="column" style="width:40%;">
 <div style="font-size:0.8em">
 <table class="caption-top">
 <thead>
@@ -465,11 +583,13 @@
 </tbody>
 </table>
 </div>
-<p>Each row <strong>is</strong> that word’s vector: <em>cherry</em> = <code>[1, 0, 1]</code>.</p>
+</div></div>
+<p>Already suggests some <strong><em>topical</em></strong> clustering. Each row <strong>is</strong> that word’s vector: <em>cherry</em> = <code>[1, 0, 1]</code>.</p>
 </section>
-<section id="the-same-counts-from-a-real-corpus" class="slide level2 smaller">
-<h2>The same counts, from a real corpus</h2>
-<p>Now count every occurrence in Wikipedia, instead of one window each. Six of the columns (Jurafsky &amp; Martin, 2026, p.&nbsp;103):</p>
+<section id="the-co-occurence-frequency-in-a-real-corpus" class="slide level2 smaller">
+<h2>The co-occurence frequency in a real corpus</h2>
+<p>Now count every occurrence in Wikipedia.</p>
+<p>Six of the columns becomes (Jurafsky &amp; Martin, 2026, p.&nbsp;103):</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -531,173 +651,399 @@
 </tr>
 </tbody>
 </table>
-<p><em>cherry</em> and <em>strawberry</em> have similar rows. <em>digital</em> and <em>information</em> have similar rows. Nobody wrote a dictionary and nobody labelled anything — this came out of counting.</p>
-<p><strong>The cost:</strong> one column for every word in the vocabulary, so 10,000 to 50,000 columns, and almost every cell is 0.</p>
-<style>
-.vecstrip{display:flex;gap:2px;flex-wrap:nowrap;justify-content:center;margin:.45rem 0 .15rem}
-.vecstrip .c{width:12px;height:12px;flex:0 0 auto;border-radius:2px;border:1px solid var(--primary-80)}
-.vecstrip .c.on{background:var(--accent);border-color:var(--accent)}
-.figcap{font-size:.7em;color:var(--ink-soft);font-style:italic;text-align:center}
-.cosfig{display:flex;justify-content:center;margin:.2rem 0 0}
-.cosfig svg{width:min(100%,360px);height:auto}
-.pushpull{display:flex;flex-direction:column;gap:.3rem;align-items:center;margin:.55rem 0;font-size:.9em}
-.pushpull .pp-row{display:flex;align-items:center;gap:.55rem}
-.pushpull .pp-w{font-family:ui-monospace,Menlo,monospace;background:var(--surface);
-  border:1.5px solid var(--primary-70);border-radius:.35rem;padding:.1rem .5rem;min-width:6rem;text-align:center}
-.pushpull .pp-arr{font-weight:700;letter-spacing:.12em}
-.pushpull .pp-yes{color:var(--accent)}
-.pushpull .pp-no{color:var(--warn)}
-.pushpull .pp-lab{font-size:.82em;color:var(--ink-soft);font-style:italic;min-width:7.5rem}
-</style>
-
-<div class="vecstrip">
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
+<p><em>cherry</em> and <em>strawberry</em> have similar rows. <em>digital</em> and <em>information</em> have similar rows.</p>
+<div title="The distributional principle">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<div class="figcap">one row of the real matrix — 60 of its ~50,000 columns</div>
+<p><strong>The distributional principle</strong></p>
+</div>
+<div class="callout-content">
+<p>This clustering emerges <strong>without anyone writing a dictionary</strong>. Again “You shall know a word by the company it keeps!” (Firth, 1957, p.&nbsp;11).</p>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="how-close-are-two-words" class="slide level2 smaller">
-<h2>How close are two words?</h2>
-<div class="columns">
-<div class="column" style="width:52%;">
-<p>Each row is a vector, so we can ask how close two of them are. The usual measure is <strong>cosine similarity</strong>: the size of the <em>angle</em> between two rows — the angle, not the size of the counts, so a frequent word does not come out similar to everything.</p>
+<section id="the-table-is-too-big-and-a-lot-zeros" class="slide level2 smaller">
+<h2>The table is too big and a lot zeros</h2>
+<p>Look at the <em>aardvark</em> column on the previous slide. All four words score <strong>0</strong>. None of them ever occurs near <em>aardvark</em>.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
-<th style="text-align: center;">pie</th>
-<th style="text-align: center;">data</th>
+<th style="text-align: center;">aardvark</th>
+<th style="text-align: center;">…</th>
 <th style="text-align: center;">computer</th>
+<th style="text-align: center;">data</th>
+<th style="text-align: center;">result</th>
+<th style="text-align: center;">pie</th>
+<th style="text-align: center;">sugar</th>
+<th style="text-align: center;">…</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>cherry</td>
-<td style="text-align: center;">442</td>
-<td style="text-align: center;">8</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">…</td>
 <td style="text-align: center;">2</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;"><strong>442</strong></td>
+<td style="text-align: center;"><strong>25</strong></td>
+<td style="text-align: center;">…</td>
 </tr>
 <tr class="even">
+<td>strawberry</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><strong>60</strong></td>
+<td style="text-align: center;"><strong>19</strong></td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="odd">
 <td>digital</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;"><strong>1670</strong></td>
+<td style="text-align: center;"><strong>1683</strong></td>
+<td style="text-align: center;">85</td>
 <td style="text-align: center;">5</td>
-<td style="text-align: center;">1683</td>
-<td style="text-align: center;">1670</td>
-</tr>
-<tr class="odd">
-<td>information</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">3982</td>
-<td style="text-align: center;">3325</td>
-</tr>
-</tbody>
-</table>
-</div><div class="column" style="width:48%;">
-<div class="cosfig">
-<svg viewbox="0 0 470 200" role="img" aria-label="Vectors for cherry, digital and information plotted on pie against computer">
-  <line x1="40" y1="150" x2="440" y2="150" style="stroke:var(--ink-soft);stroke-width:1"></line>
-  <line x1="40" y1="150" x2="40" y2="18" style="stroke:var(--ink-soft);stroke-width:1"></line>
-  <line x1="40" y1="150" x2="58" y2="30" style="stroke:var(--accent);stroke-width:2.5"></line>
-  <line x1="40" y1="150" x2="390" y2="88" style="stroke:var(--primary);stroke-width:2.5"></line>
-  <line x1="40" y1="150" x2="390" y2="112" style="stroke:var(--primary);stroke-width:2.5"></line>
-  <text x="62" y="27" style="font-size:12px;fill:var(--ink)">cherry</text>
-  <text x="396" y="86" style="font-size:12px;fill:var(--ink)">digital</text>
-  <text x="396" y="118" style="font-size:12px;fill:var(--ink)">information</text>
-  <text x="6" y="14" style="font-size:10px;fill:var(--ink-soft)">pie</text>
-  <text x="386" y="168" style="font-size:10px;fill:var(--ink-soft)">computer</text>
-</svg>
-</div>
-<div class="figcap">Rough — the angles are widened so they are visible on screen.</div>
-<p><br></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>angle between the two rows</th>
-<th style="text-align: center;">cosine</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>0° · pointing the same way</td>
-<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">…</td>
 </tr>
 <tr class="even">
-<td>90° · sharing nothing</td>
-<td style="text-align: center;"><strong>0</strong></td>
-</tr>
-<tr class="odd">
-<td>180° · pointing opposite ways</td>
-<td style="text-align: center;"><strong>−1</strong></td>
+<td>information</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;"><strong>3325</strong></td>
+<td style="text-align: center;"><strong>3982</strong></td>
+<td style="text-align: center;">378</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">…</td>
 </tr>
 </tbody>
 </table>
-</div></div>
 <div class="fragment">
-<p>With counts you only ever see 0 to 1, because a count is never negative. −1 becomes possible on the next slide, where the numbers themselves can be negative.</p>
-<p>cosine(<em>cherry</em>, <em>information</em>) = <strong>0.018</strong> · cosine(<em>digital</em>, <em>information</em>) = <strong>0.996</strong> — the number behind any claim that two words, two sentences or two texts are “similar”.</p>
+<p>Co-occurrence table is sparse, <strong>about 99 in every 100 columns are 0</strong>.</p>
 </div>
 </section>
-<section id="word2vec-predict-instead-of-count" class="slide level2 smaller">
-<h2>word2vec: predict instead of count</h2>
-<p>Instead of counting how often <em>jam</em> occurs near <em>apricot</em>, train a small classifier on one question: <strong>is <em>jam</em> likely to occur near <em>apricot</em>?</strong></p>
+<section id="finding-the-latent-dimensions" class="slide level2 smaller">
+<h2>Finding the latent dimensions</h2>
+<p>We can apply <strong>factor analysis</strong> to a co-occurrence table to reduce meaning.</p>
 <div class="fragment">
+<div title="Factor analysis">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Factor analysis</strong></p>
+</div>
+<div class="callout-content">
+<p>A statistical method for uncovering the latent structure of data:</p>
 <ul>
-<li><strong>Running text already holds the answers.</strong> A word that really did occur nearby is a yes; a word drawn at random is a no. Nobody labels anything. This is called <strong>self-supervision</strong>, and it is how LLMs are trained too.</li>
-<li><strong>The classifier is not the point.</strong> We keep the numbers it adjusted along the way. Those numbers are the embedding.</li>
-<li><strong>The result is short.</strong> 50 to 1,000 numbers per word, instead of 50,000 counts. They are real numbers, they can be negative, and no single one of them has a name you can read off.</li>
+<li>We give a 6-item questionnaire on <code>enjoyment</code> and <code>boredom</code>.</li>
+<li>The questionnaire items are the <code>observed variables</code>.</li>
+<li>We find <code>latent variables</code> that predict the values of the observed variables.</li>
 </ul>
 </div>
-<div class="fragment">
-<p><em>word2vec</em> is the software package; <em>skip-gram with negative sampling</em> is the algorithm inside it (Jurafsky &amp; Martin, 2026, pp.&nbsp;105–110; step-by-step derivation in Goldberg &amp; Levy, 2014). Both produce <strong>static</strong> embeddings: one fixed vector per word, whatever sentence it appears in.</p>
 </div>
-</section>
-<section id="what-word2vec-actually-adjusts" class="slide level2 smaller">
-<h2>What word2vec actually adjusts</h2>
-<p>One target word, and the two words on each side of it:</p>
-<pre><code>...  your  [ account   is   free   of   charge ]  a  standard  fee ...
-                c1     c2    w     c3     c4</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:57%;">
+<div class="cosfig">
+<svg viewbox="0 0 520 330" role="img" aria-label="Path diagram: six questionnaire items loading on two latent factors, enjoyment and boredom">
+  <defs>
+    <marker id="ahp1" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--primary)"></path>
+    </marker>
+    <marker id="aha1" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--accent)"></path>
+    </marker>
+    <marker id="ahs1" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--ink-soft)"></path>
+    </marker>
+  </defs>
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="20" y="20" width="190" height="34" rx="4"></rect>
+    <rect x="20" y="71" width="190" height="34" rx="4"></rect>
+    <rect x="20" y="122" width="190" height="34" rx="4"></rect>
+    <rect x="20" y="174" width="190" height="34" rx="4"></rect>
+    <rect x="20" y="225" width="190" height="34" rx="4"></rect>
+    <rect x="20" y="276" width="190" height="34" rx="4"></rect>
+  </g>
+  <g style="font-size:13px">
+    <text x="34" y="42">ENJ1 · look forward</text>
+    <text x="34" y="93">ENJ2 · enjoy it</text>
+    <text x="34" y="144">ENJ3 · time passes fast</text>
+    <text x="34" y="196">BOR1 · mind wanders</text>
+    <text x="34" y="247">BOR2 · lose interest</text>
+    <text x="34" y="298">BOR3 · feels slow</text>
+  </g>
+  <g style="fill:none;stroke:var(--ink-soft);stroke-width:1;stroke-dasharray:3 4;marker-end:url(#ahs1)">
+    <line x1="328" y1="242" x2="216" y2="37"></line>
+    <line x1="328" y1="242" x2="216" y2="88"></line>
+    <line x1="328" y1="242" x2="216" y2="139"></line>
+    <line x1="328" y1="88" x2="216" y2="191"></line>
+    <line x1="328" y1="88" x2="216" y2="242"></line>
+    <line x1="328" y1="88" x2="216" y2="293"></line>
+  </g>
+  <g style="fill:none;stroke:var(--primary);stroke-width:2.5;marker-end:url(#ahp1)">
+    <line x1="328" y1="88" x2="216" y2="37"></line>
+    <line x1="328" y1="88" x2="216" y2="88"></line>
+    <line x1="328" y1="88" x2="216" y2="139"></line>
+  </g>
+  <g style="fill:none;stroke:var(--accent);stroke-width:2.5;marker-end:url(#aha1)">
+    <line x1="328" y1="242" x2="216" y2="191"></line>
+    <line x1="328" y1="242" x2="216" y2="242"></line>
+    <line x1="328" y1="242" x2="216" y2="293"></line>
+  </g>
+  <ellipse cx="400" cy="88" rx="72" ry="44" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"></ellipse>
+  <ellipse cx="400" cy="242" rx="72" ry="44" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"></ellipse>
+  <text x="400" y="94" style="font-size:15px;text-anchor:middle;font-weight:700">Enjoyment</text>
+  <text x="400" y="248" style="font-size:15px;text-anchor:middle;font-weight:700">Boredom</text>
+</svg>
+</div>
+<div class="figcap">Each arrow is a loading. Solid = strong, dashed = near zero. Values are illustrative.</div>
+<p>. . .</p>
+</div><div class="column" style="width:43%;">
+<div style="font-size:0.80em">
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>really occurred nearby → <strong>yes</strong></th>
-<th>drawn at random → <strong>no</strong></th>
+<th>item</th>
+<th style="text-align: right;">Enjoy</th>
+<th style="text-align: right;">Bored</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>(free, account)</td>
-<td>(free, Tolstoy)</td>
+<td>ENJ1 · I look forward to class</td>
+<td style="text-align: right;"><strong>0.82</strong></td>
+<td style="text-align: right;">−0.11</td>
 </tr>
 <tr class="even">
-<td>(free, is)</td>
-<td>(free, aardvark)</td>
+<td>ENJ2 · I enjoy the activities</td>
+<td style="text-align: right;"><strong>0.79</strong></td>
+<td style="text-align: right;">−0.08</td>
 </tr>
 <tr class="odd">
-<td>(free, of)</td>
-<td>(free, spreadsheet)</td>
+<td>ENJ3 · Class time passes quickly</td>
+<td style="text-align: right;"><strong>0.74</strong></td>
+<td style="text-align: right;">−0.15</td>
 </tr>
 <tr class="even">
-<td>(free, charge)</td>
-<td>(free, monsoon)</td>
+<td>BOR1 · My mind wanders in class</td>
+<td style="text-align: right;">−0.09</td>
+<td style="text-align: right;"><strong>0.80</strong></td>
+</tr>
+<tr class="odd">
+<td>BOR2 · I lose interest quickly</td>
+<td style="text-align: right;">−0.13</td>
+<td style="text-align: right;"><strong>0.85</strong></td>
+</tr>
+<tr class="even">
+<td>BOR3 · Class feels slow</td>
+<td style="text-align: right;">−0.10</td>
+<td style="text-align: right;"><strong>0.77</strong></td>
 </tr>
 </tbody>
 </table>
-<div class="fragment">
-<div class="pushpull">
-  <div class="pp-row"><span class="pp-w">free</span><span class="pp-arr pp-yes">→&nbsp;&nbsp;←</span><span class="pp-w">charge</span><span class="pp-lab">moved closer</span></div>
-  <div class="pp-row"><span class="pp-w">free</span><span class="pp-arr pp-no">←&nbsp;&nbsp;→</span><span class="pp-w">Tolstoy</span><span class="pp-lab">moved apart</span></div>
 </div>
-<p>Each pass moves <em>free</em> a little closer to the words that really occurred near it, and a little further from the random ones. Run that over billions of words, and words that occur near the same other words end up close together in the space.</p>
+<p>Six items, two latent variables. Each item loads high on one and near zero on the other.</p>
+</div></div>
+</div>
+</section>
+<section id="finding-latent-dimension-of-word-meaning" class="slide level2 smaller">
+<h2>Finding latent dimension of word meaning</h2>
+<p>The words in corpus are the observed variables, and we explore underlying dimensions of that.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:57%;">
+<div class="cosfig">
+<svg viewbox="0 0 520 330" role="img" aria-label="Path diagram: five context words loading on two latent dimensions">
+  <defs>
+    <marker id="ahp2" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--primary)"></path>
+    </marker>
+    <marker id="aha2" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--accent)"></path>
+    </marker>
+    <marker id="ahs2" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--ink-soft)"></path>
+    </marker>
+  </defs>
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="20" y="20" width="190" height="34" rx="4"></rect>
+    <rect x="20" y="84" width="190" height="34" rx="4"></rect>
+    <rect x="20" y="148" width="190" height="34" rx="4"></rect>
+    <rect x="20" y="212" width="190" height="34" rx="4"></rect>
+    <rect x="20" y="276" width="190" height="34" rx="4"></rect>
+  </g>
+  <g style="font-size:14px">
+    <text x="34" y="42">computer</text>
+    <text x="34" y="106">data</text>
+    <text x="34" y="170">result</text>
+    <text x="34" y="234">pie</text>
+    <text x="34" y="298">sugar</text>
+  </g>
+  <g style="fill:none;stroke:var(--ink-soft);stroke-width:1;stroke-dasharray:3 4;marker-end:url(#ahs2)">
+    <line x1="328" y1="261" x2="216" y2="37"></line>
+    <line x1="328" y1="261" x2="216" y2="101"></line>
+    <line x1="328" y1="101" x2="216" y2="165"></line>
+    <line x1="328" y1="261" x2="216" y2="165"></line>
+    <line x1="328" y1="101" x2="216" y2="229"></line>
+    <line x1="328" y1="101" x2="216" y2="293"></line>
+    <line x1="328" y1="261" x2="216" y2="293"></line>
+  </g>
+  <g style="fill:none;stroke:var(--primary);stroke-width:2.5;marker-end:url(#ahp2)">
+    <line x1="328" y1="101" x2="216" y2="37"></line>
+    <line x1="328" y1="101" x2="216" y2="101"></line>
+  </g>
+  <g style="fill:none;stroke:var(--accent);stroke-width:2.5;marker-end:url(#aha2)">
+    <line x1="328" y1="261" x2="216" y2="229"></line>
+  </g>
+  <ellipse cx="400" cy="101" rx="72" ry="44" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"></ellipse>
+  <ellipse cx="400" cy="261" rx="72" ry="44" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"></ellipse>
+  <text x="400" y="99" style="font-size:14px;text-anchor:middle;font-weight:700">dimension 1</text>
+  <text x="400" y="259" style="font-size:14px;text-anchor:middle;font-weight:700">dimension 2</text>
+</svg>
+</div>
+<div class="figcap">The same diagram as the questionnaire. Context words are the observed variables; the dimensions are what factor analysis extracts.</div>
+<p>. . .</p>
+</div><div class="column" style="width:43%;">
+<p>Each dimension gives every context word a <strong>loading</strong> — how much that word counts towards it:</p>
+<div style="font-size:0.8em">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">dimension 1</th>
+<th style="text-align: right;">dimension 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>computer</td>
+<td style="text-align: right;"><strong>0.651</strong></td>
+<td style="text-align: right;">−0.009</td>
+</tr>
+<tr class="even">
+<td>data</td>
+<td style="text-align: right;"><strong>0.756</strong></td>
+<td style="text-align: right;">0.004</td>
+</tr>
+<tr class="odd">
+<td>result</td>
+<td style="text-align: right;">0.066</td>
+<td style="text-align: right;">0.019</td>
+</tr>
+<tr class="even">
+<td>pie</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;"><strong>0.998</strong></td>
+</tr>
+<tr class="odd">
+<td>sugar</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.061</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em>result</em> loads on neither. Not every word belongs to a dimension.</p>
+</div></div>
+</div>
+<div class="fragment">
+<p><strong>Nobody assigned these weights</strong> — they were derived from the corpus counts. This technique is called <strong>Latent Semantic Analysis (LSA)</strong>.</p>
+</div>
+</section>
+<section id="word2vec-we-actually-do-not-need-table" class="slide level2 smaller">
+<h2>word2vec: We actually do not need table</h2>
+<p>LSA provided the support for <em>distributional semantics</em>.</p>
+<p>But it is usually applied to document-level co-occurrence, and very coarse meaning dimensions. The table is huge and difficult to use large corpus.</p>
+<p>Also, co-occurrence pattern is local phenomena.</p>
+</section>
+<section id="word2vec-learns-a-words-vector-by-predicting-it-from-its-neighbours" class="slide level2 smaller">
+<h2>word2vec learns a word’s vector by predicting it from its neighbours</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cosfig">
+<svg viewbox="0 0 520 380" role="img" aria-label="Diagram running top to bottom: four context words, arrows converging into a layer of 300 numbers, then one arrow down to the predicted word free">
+  <defs>
+    <marker id="ahp3" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--primary)"></path>
+    </marker>
+    <marker id="aha3" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--accent)"></path>
+    </marker>
+  </defs>
+
+  <text x="260" y="18" style="font-size:13px;text-anchor:middle;fill:var(--ink-soft)">your account is ____ of charge</text>
+
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="25" y="36" width="110" height="34" rx="4"></rect>
+    <rect x="150" y="36" width="110" height="34" rx="4"></rect>
+    <rect x="275" y="36" width="110" height="34" rx="4"></rect>
+    <rect x="400" y="36" width="110" height="34" rx="4"></rect>
+  </g>
+  <g style="font-size:14px;text-anchor:middle">
+    <text x="80" y="58">account</text>
+    <text x="205" y="58">is</text>
+    <text x="330" y="58">of</text>
+    <text x="455" y="58">charge</text>
+  </g>
+  <text x="260" y="92" style="font-size:12px;text-anchor:middle;fill:var(--ink-soft)">the four words around the gap</text>
+
+  <g style="fill:none;stroke:var(--primary);stroke-width:2;marker-end:url(#ahp3)">
+    <line x1="80" y1="102" x2="125" y2="168"></line>
+    <line x1="205" y1="102" x2="215" y2="168"></line>
+    <line x1="330" y1="102" x2="305" y2="168"></line>
+    <line x1="455" y1="102" x2="395" y2="168"></line>
+  </g>
+
+  <rect x="70" y="180" width="380" height="46" rx="6" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"></rect>
+  <text x="260" y="208" style="font-size:16px;text-anchor:middle;font-weight:700">300 numbers</text>
+  <text x="260" y="245" style="font-size:13px;text-anchor:middle;fill:var(--accent);font-weight:700">this layer is the vector for “free”</text>
+
+  <line x1="260" y1="258" x2="260" y2="298" style="fill:none;stroke:var(--accent);stroke-width:2;marker-end:url(#aha3)"></line>
+
+  <rect x="195" y="308" width="130" height="38" rx="6" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"></rect>
+  <text x="260" y="333" style="font-size:16px;text-anchor:middle;font-weight:700">free</text>
+  <text x="260" y="368" style="font-size:12px;text-anchor:middle;fill:var(--ink-soft)">the guess. Discarded once training ends.</text>
+</svg>
+</div>
+<div class="figcap">The contexts go in at the top, the guess comes out at the bottom, and the layer in between holds the 300 numbers we keep.</div>
+</div><div class="column" style="width:45%;">
+<p>The model is given the words around a gap and has to guess the word that was removed.</p>
+<div class="fragment">
+<p>It works through billions of gaps like this one. Each time the guess is wrong, the 300 numbers in the middle are adjusted a little.</p>
+</div>
+<div class="fragment">
+<p>After training, <strong>the guess is not what we want</strong> — the output layer is discarded. What we keep is the middle layer: the 300 numbers a word arrives with. Words that fill the same kinds of gaps end up with similar numbers.</p>
 </div>
 <div class="fragment">
 <p>Still <strong>one vector per word form</strong>. <em>free</em> in “your account is free of charge” and <em>FREE</em> in “claim your FREE prize now” get the same 300 numbers.</p>
 </div>
+</div></div>
 </section>
-<section id="attention-resolves-the-two-frees" class="slide level2 smaller">
-<h2>Attention resolves the two <em>free</em>s</h2>
-<p>The video called this step attention. Here is what it does to the pair from the last slide:</p>
+<section id="bert-word2vec-with-a-transformer" class="slide level2 smaller">
+<h2>BERT: word2vec with a transformer</h2>
+<p>Same training idea — fill in the blank — but the vector for a word is now computed from the sentence around it, using the attention step the video described. One word form no longer gets one fixed vector.</p>
+<p>Here is what that does to the pair from the last slide:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -770,26 +1116,21 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td>Gilardi et al.&nbsp;(2023), <em>PNAS</em></td>
-<td>text annotation vs.&nbsp;crowd workers — ~25 points better, ~$0.003 per annotation</td>
-<td>(the cost argument)</td>
-</tr>
-<tr class="even">
 <td>Yu et al.&nbsp;(2024), <em>IJCL</em></td>
 <td>apology <strong>components</strong> — a function, not a form</td>
 <td>pragmatics</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Kim &amp; Lu (2024), <em>JEAP</em></td>
 <td>rhetorical <strong>moves</strong> in article abstracts</td>
 <td>RAAMove · CaRS-50</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Mizumoto (2025), <em>SSLA</em></td>
 <td>L2 <strong>errors</strong> — <em>r</em> = .94 with human raters, F1 = .95</td>
 <td>AutoErrorAnalyzer</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Yamashita (2024), <em>RMAL</em></td>
 <td>essay <strong>scores</strong></td>
 <td>ICNALE GRA</td>

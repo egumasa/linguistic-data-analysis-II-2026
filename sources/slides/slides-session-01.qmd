@@ -68,16 +68,6 @@ One especially promising use is **annotation** — labelling language data for a
 
 So the question arises: *can an LLM do this annotation for us?*
 
-## Adequacy must be evaluated, not assumed
-
-This is the central claim of the course:
-
-> An LLM's output is only useful if it's **adequate** — and adequacy has to be **evaluated, not assumed.**
-
-
-**By Friday you will have *critically evaluated* an LLM on your own annotation task**
-
-
 ## One simple Goal of the course
 
 Can we trust an LLM on annotating this?
@@ -100,6 +90,20 @@ Each day adds one part of the method. By Friday you can run the whole procedure 
 
 # 2 Syllabus
 
+
+## Course objectives {.smaller}
+
+By the end of this course, you will be able to:
+
+| Area | Objective |
+|------|-----------|
+| **Critical appraisal** | Explain what LLMs can and cannot do for linguistic analysis, and judge when an LLM-based approach is appropriate. |
+| **Annotation scheme** | Adapt and operationalize an existing annotation scheme and its coding guidelines. |
+| **Gold-standard datasets** | Build a gold-standard dataset, including assessing inter-annotator agreement. |
+| **Prompt design** | Design, tune, and document prompts that elicit reliable annotations from an LLM. |
+| **Evaluation** | Evaluate model performance with precision, recall, F1, and confusion matrices, and interpret the results critically. |
+| **Reproducibility** | Report methods and findings transparently and reproducibly. |
+
 ## What we'll do this week {.smaller}
 
 | Day | Focus |
@@ -111,7 +115,20 @@ Each day adds one part of the method. By Friday you can run the whole procedure 
 | **5** | Mini-project + present |
 
 
+## Assignments & grading {.smaller}
 
+| Component | | Percent |
+|-----------|---|---------|
+| Attendance / participation | | 20% |
+| Hands-on activities (Day 1–3) + completed notebook | | 40% |
+| Mini-project group presentation + Q&A | (Day 5) | 20% |
+| In-class one-page report | (Day 5) | 20% |
+
+All project work is produced and submitted **during** the course — there is no post-course write-up. The completed notebook, run end-to-end with your group's gold subset, prompt, and evaluation output, is the evidence that the hands-on work was done.
+
+::: {.callout-note}
+Full details on the course website: [Syllabus](../syllabus/index.md) · [Readings](../syllabus/readings.md)
+:::
 
 # Session 1
 
@@ -172,6 +189,7 @@ or https://www.youtube.com/watch?v=WMcwoIyK4DA
 2. Where do the **numbers** inside the model come from?
 3. What does **attention** do?
 
+# Detour — Brief history of *embedding*
 
 ## Before LLM — Brief history of *embedding*
 
@@ -200,14 +218,11 @@ Move the sliders to change the colour. Drag the cube to rotate it.
 The dashed path is the vector: **R along red, then G along green, then B along blue**. The number under each name is the distance from your colour to that colour — **close in the space = similar colour**. Word embeddings work the same way, with hundreds of numbers instead of three.
 
 
-## Simple count-based embedding {.smaller}
+## “You shall know a word by the company it keeps!” (Firth, 1957, p. 11)
 
-When we cannot tell the machine meaning of each word, how can it "encode" meaning? 
+Q: How can a machine learn meaning?
 
-::: {.callout-important title="The distributional principle"}
-The answer is by studying **Co-occurrence**. 
-Famous quote: “You shall know a word by the company it keeps!” (Firth, 1957, p. 11).
-:::
+A: The answer is by studying **Co-occurrence**. 
 
 ::: {style="font-size:0.8em"}
 | Left context | Node | Right context |
@@ -220,6 +235,27 @@ Famous quote: “You shall know a word by the company it keeps!” (Firth, 1957,
 
 **Count, by hand:** how often does each of `a`, `computer` and `pie` appear in each of those four windows?
 
+
+## Study the company to understand meaning!
+
+The table on the right counts co-occurence frequency.
+
+::: {.columns}
+
+::: {.column width="60%"}
+
+::: {style="font-size:0.8em"}
+| Left context | Node | Right context |
+|---:|:--:|:---|
+| is traditionally followed by | cherry | **pie**, **a** traditional dessert |
+| often mixed, such as | strawberry | rhubarb **pie**. Apple **pie** |
+| **computer** peripherals and personal | digital | assistants. These devices usually |
+| a **computer**. This includes | information | available on the internet |
+:::
+:::
+
+::: {.column width="40%"}
+
 ::: {style="font-size:0.8em"}
 |  | a | computer | pie |
 |---|:--:|:--:|:--:|
@@ -229,11 +265,18 @@ Famous quote: “You shall know a word by the company it keeps!” (Firth, 1957,
 | information | 1 | 1 | 0 |
 ::: 
 
+:::
+
+:::
+
+Already suggests some ***topical*** clustering. 
 Each row **is** that word's vector: *cherry* = `[1, 0, 1]`. 
 
-## The same counts, from a real corpus {.smaller}
+## The co-occurence frequency in a real corpus {.smaller}
 
-Now count every occurrence in Wikipedia, instead of one window each. Six of the columns (Jurafsky & Martin, 2026, p. 103):
+Now count every occurrence in Wikipedia.
+
+Six of the columns becomes (Jurafsky & Martin, 2026, p. 103):
 
 |  | aardvark | … | computer | data | result | pie | sugar | … |
 |---|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
@@ -242,139 +285,307 @@ Now count every occurrence in Wikipedia, instead of one window each. Six of the 
 | digital | 0 | … | **1670** | **1683** | 85 | 5 | 4 | … |
 | information | 0 | … | **3325** | **3982** | 378 | 5 | 13 | … |
 
-*cherry* and *strawberry* have similar rows. *digital* and *information* have similar rows. Nobody wrote a dictionary and nobody labelled anything — this came out of counting.
+*cherry* and *strawberry* have similar rows. *digital* and *information* have similar rows. 
 
-**The cost:** one column for every word in the vocabulary, so 10,000 to 50,000 columns, and almost every cell is 0.
+::: {.callout-important title="The distributional principle"}
+This clustering emerges **without anyone writing a dictionary**.
+Again “You shall know a word by the company it keeps!” (Firth, 1957, p. 11).
+:::
 
-```{=html}
-<style>
-.vecstrip{display:flex;gap:2px;flex-wrap:nowrap;justify-content:center;margin:.45rem 0 .15rem}
-.vecstrip .c{width:12px;height:12px;flex:0 0 auto;border-radius:2px;border:1px solid var(--primary-80)}
-.vecstrip .c.on{background:var(--accent);border-color:var(--accent)}
-.figcap{font-size:.7em;color:var(--ink-soft);font-style:italic;text-align:center}
-.cosfig{display:flex;justify-content:center;margin:.2rem 0 0}
-.cosfig svg{width:min(100%,360px);height:auto}
-.pushpull{display:flex;flex-direction:column;gap:.3rem;align-items:center;margin:.55rem 0;font-size:.9em}
-.pushpull .pp-row{display:flex;align-items:center;gap:.55rem}
-.pushpull .pp-w{font-family:ui-monospace,Menlo,monospace;background:var(--surface);
-  border:1.5px solid var(--primary-70);border-radius:.35rem;padding:.1rem .5rem;min-width:6rem;text-align:center}
-.pushpull .pp-arr{font-weight:700;letter-spacing:.12em}
-.pushpull .pp-yes{color:var(--accent)}
-.pushpull .pp-no{color:var(--warn)}
-.pushpull .pp-lab{font-size:.82em;color:var(--ink-soft);font-style:italic;min-width:7.5rem}
-</style>
+## The table is too big and a lot zeros {.smaller}
 
-<div class="vecstrip">
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
-  <div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c on"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
-</div>
-<div class="figcap">one row of the real matrix — 60 of its ~50,000 columns</div>
-```
+Look at the *aardvark* column on the previous slide. All four words score **0**. None of them ever occurs near *aardvark*.
+
+|  | aardvark | … | computer | data | result | pie | sugar | … |
+|---|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| cherry | 0 | … | 2 | 8 | 9 | **442** | **25** | … |
+| strawberry | 0 | … | 0 | 0 | 1 | **60** | **19** | … |
+| digital | 0 | … | **1670** | **1683** | 85 | 5 | 4 | … |
+| information | 0 | … | **3325** | **3982** | 378 | 5 | 13 | … |
+
+. . .
+
+Co-occurrence table is sparse, **about 99 in every 100 columns are 0**.
 
 
-## How close are two words? {.smaller}
+
+## Finding the latent dimensions {.smaller}
+
+We can apply **factor analysis** to a co-occurrence table to reduce meaning.
+
+. . .
+
+::: {.callout-note title="Factor analysis"}
+A statistical method for uncovering the latent structure of data:
+
+- We give a 6-item questionnaire on `enjoyment` and `boredom`.
+- The questionnaire items are the `observed variables`.
+- We find `latent variables` that predict the values of the observed variables.
+:::
+
+. . .
 
 ::::: {.columns}
-:::: {.column width="52%"}
-
-Each row is a vector, so we can ask how close two of them are. The usual measure is **cosine similarity**: the size of the *angle* between two rows — the angle, not the size of the counts, so a frequent word does not come out similar to everything.
-
-|  | pie | data | computer |
-|---|:--:|:--:|:--:|
-| cherry | 442 | 8 | 2 |
-| digital | 5 | 1683 | 1670 |
-| information | 5 | 3982 | 3325 |
-
-::::
-:::: {.column width="48%"}
+:::: {.column width="57%"}
 
 ```{=html}
 <div class="cosfig">
-<svg viewBox="0 0 470 200" role="img" aria-label="Vectors for cherry, digital and information plotted on pie against computer">
-  <line x1="40" y1="150" x2="440" y2="150" style="stroke:var(--ink-soft);stroke-width:1"/>
-  <line x1="40" y1="150" x2="40" y2="18" style="stroke:var(--ink-soft);stroke-width:1"/>
-  <line x1="40" y1="150" x2="58" y2="30" style="stroke:var(--accent);stroke-width:2.5"/>
-  <line x1="40" y1="150" x2="390" y2="88" style="stroke:var(--primary);stroke-width:2.5"/>
-  <line x1="40" y1="150" x2="390" y2="112" style="stroke:var(--primary);stroke-width:2.5"/>
-  <text x="62" y="27" style="font-size:12px;fill:var(--ink)">cherry</text>
-  <text x="396" y="86" style="font-size:12px;fill:var(--ink)">digital</text>
-  <text x="396" y="118" style="font-size:12px;fill:var(--ink)">information</text>
-  <text x="6" y="14" style="font-size:10px;fill:var(--ink-soft)">pie</text>
-  <text x="386" y="168" style="font-size:10px;fill:var(--ink-soft)">computer</text>
+<svg viewBox="0 0 520 330" role="img" aria-label="Path diagram: six questionnaire items loading on two latent factors, enjoyment and boredom">
+  <defs>
+    <marker id="ahp1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--primary)"/>
+    </marker>
+    <marker id="aha1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--accent)"/>
+    </marker>
+    <marker id="ahs1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--ink-soft)"/>
+    </marker>
+  </defs>
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="20" y="20"  width="190" height="34" rx="4"/>
+    <rect x="20" y="71"  width="190" height="34" rx="4"/>
+    <rect x="20" y="122" width="190" height="34" rx="4"/>
+    <rect x="20" y="174" width="190" height="34" rx="4"/>
+    <rect x="20" y="225" width="190" height="34" rx="4"/>
+    <rect x="20" y="276" width="190" height="34" rx="4"/>
+  </g>
+  <g style="font-size:13px">
+    <text x="34" y="42">ENJ1 · look forward</text>
+    <text x="34" y="93">ENJ2 · enjoy it</text>
+    <text x="34" y="144">ENJ3 · time passes fast</text>
+    <text x="34" y="196">BOR1 · mind wanders</text>
+    <text x="34" y="247">BOR2 · lose interest</text>
+    <text x="34" y="298">BOR3 · feels slow</text>
+  </g>
+  <g style="fill:none;stroke:var(--ink-soft);stroke-width:1;stroke-dasharray:3 4;marker-end:url(#ahs1)">
+    <line x1="328" y1="242" x2="216" y2="37"/>
+    <line x1="328" y1="242" x2="216" y2="88"/>
+    <line x1="328" y1="242" x2="216" y2="139"/>
+    <line x1="328" y1="88" x2="216" y2="191"/>
+    <line x1="328" y1="88" x2="216" y2="242"/>
+    <line x1="328" y1="88" x2="216" y2="293"/>
+  </g>
+  <g style="fill:none;stroke:var(--primary);stroke-width:2.5;marker-end:url(#ahp1)">
+    <line x1="328" y1="88" x2="216" y2="37"/>
+    <line x1="328" y1="88" x2="216" y2="88"/>
+    <line x1="328" y1="88" x2="216" y2="139"/>
+  </g>
+  <g style="fill:none;stroke:var(--accent);stroke-width:2.5;marker-end:url(#aha1)">
+    <line x1="328" y1="242" x2="216" y2="191"/>
+    <line x1="328" y1="242" x2="216" y2="242"/>
+    <line x1="328" y1="242" x2="216" y2="293"/>
+  </g>
+  <ellipse cx="400" cy="88"  rx="72" ry="44" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"/>
+  <ellipse cx="400" cy="242" rx="72" ry="44" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"/>
+  <text x="400" y="94"  style="font-size:15px;text-anchor:middle;font-weight:700">Enjoyment</text>
+  <text x="400" y="248" style="font-size:15px;text-anchor:middle;font-weight:700">Boredom</text>
 </svg>
 </div>
-<div class="figcap">Rough — the angles are widened so they are visible on screen.</div>
+<div class="figcap">Each arrow is a loading. Solid = strong, dashed = near zero. Values are illustrative.</div>
 ```
-<br>
 
-| angle between the two rows | cosine |
-|---|:--:|
-| 0° · pointing the same way | **1** |
-| 90° · sharing nothing | **0** |
-| 180° · pointing opposite ways | **−1** |
+. . .
+
+::::
+:::: {.column width="43%"}
+
+::: {style="font-size:0.80em"}
+| item | Enjoy | Bored |
+|---|---:|---:|
+| ENJ1 · I look forward to class | **0.82** | −0.11 |
+| ENJ2 · I enjoy the activities | **0.79** | −0.08 |
+| ENJ3 · Class time passes quickly | **0.74** | −0.15 |
+| BOR1 · My mind wanders in class | −0.09 | **0.80** |
+| BOR2 · I lose interest quickly | −0.13 | **0.85** |
+| BOR3 · Class feels slow | −0.10 | **0.77** |
+:::
+
+Six items, two latent variables. Each item loads high on one and near zero on the other.
+
+::::
+:::::
+
+## Finding latent dimension of word meaning {.smaller}
+
+The words in corpus are the observed variables, and we explore underlying dimensions of that.
+
+. . .
+
+::::: {.columns}
+:::: {.column width="57%"}
+
+```{=html}
+<div class="cosfig">
+<svg viewBox="0 0 520 330" role="img" aria-label="Path diagram: five context words loading on two latent dimensions">
+  <defs>
+    <marker id="ahp2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--primary)"/>
+    </marker>
+    <marker id="aha2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--accent)"/>
+    </marker>
+    <marker id="ahs2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--ink-soft)"/>
+    </marker>
+  </defs>
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="20" y="20"  width="190" height="34" rx="4"/>
+    <rect x="20" y="84"  width="190" height="34" rx="4"/>
+    <rect x="20" y="148" width="190" height="34" rx="4"/>
+    <rect x="20" y="212" width="190" height="34" rx="4"/>
+    <rect x="20" y="276" width="190" height="34" rx="4"/>
+  </g>
+  <g style="font-size:14px">
+    <text x="34" y="42">computer</text>
+    <text x="34" y="106">data</text>
+    <text x="34" y="170">result</text>
+    <text x="34" y="234">pie</text>
+    <text x="34" y="298">sugar</text>
+  </g>
+  <g style="fill:none;stroke:var(--ink-soft);stroke-width:1;stroke-dasharray:3 4;marker-end:url(#ahs2)">
+    <line x1="328" y1="261" x2="216" y2="37"/>
+    <line x1="328" y1="261" x2="216" y2="101"/>
+    <line x1="328" y1="101" x2="216" y2="165"/>
+    <line x1="328" y1="261" x2="216" y2="165"/>
+    <line x1="328" y1="101" x2="216" y2="229"/>
+    <line x1="328" y1="101" x2="216" y2="293"/>
+    <line x1="328" y1="261" x2="216" y2="293"/>
+  </g>
+  <g style="fill:none;stroke:var(--primary);stroke-width:2.5;marker-end:url(#ahp2)">
+    <line x1="328" y1="101" x2="216" y2="37"/>
+    <line x1="328" y1="101" x2="216" y2="101"/>
+  </g>
+  <g style="fill:none;stroke:var(--accent);stroke-width:2.5;marker-end:url(#aha2)">
+    <line x1="328" y1="261" x2="216" y2="229"/>
+  </g>
+  <ellipse cx="400" cy="101" rx="72" ry="44" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"/>
+  <ellipse cx="400" cy="261" rx="72" ry="44" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"/>
+  <text x="400" y="99"  style="font-size:14px;text-anchor:middle;font-weight:700">dimension 1</text>
+  <text x="400" y="259" style="font-size:14px;text-anchor:middle;font-weight:700">dimension 2</text>
+</svg>
+</div>
+<div class="figcap">The same diagram as the questionnaire. Context words are the observed variables; the dimensions are what factor analysis extracts.</div>
+```
+
+. . .
+
+::::
+:::: {.column width="43%"}
+
+Each dimension gives every context word a **loading** — how much that word counts towards it:
+
+::: {style="font-size:0.8em"}
+|  | dimension 1 | dimension 2 |
+|---|---:|---:|
+| computer | **0.651** | −0.009 |
+| data | **0.756** | 0.004 |
+| result | 0.066 | 0.019 |
+| pie | 0.001 | **0.998** |
+| sugar | 0.002 | 0.061 |
+:::
+
+*result* loads on neither. Not every word belongs to a dimension.
 
 ::::
 :::::
 
 . . .
 
-With counts you only ever see 0 to 1, because a count is never negative. −1 becomes possible on the next slide, where the numbers themselves can be negative.
+**Nobody assigned these weights** — they were derived from the corpus counts. 
+This technique is called **Latent Semantic Analysis (LSA)**.
 
 
-cosine(*cherry*, *information*) = **0.018** · cosine(*digital*, *information*) = **0.996** — the number behind any claim that two words, two sentences or two texts are "similar".
+## word2vec: We actually do not need table {.smaller}
 
-## word2vec: predict instead of count {.smaller}
+LSA provided the support for *distributional semantics*. 
 
-Instead of counting how often *jam* occurs near *apricot*, train a small classifier on one question: **is *jam* likely to occur near *apricot*?**
+But it is usually applied to document-level co-occurrence, and very coarse meaning dimensions. The table is huge and difficult to use large corpus.
 
-. . .
+Also, co-occurrence pattern is local phenomena.
 
-- **Running text already holds the answers.** A word that really did occur nearby is a yes; a word drawn at random is a no. Nobody labels anything. This is called **self-supervision**, and it is how LLMs are trained too.
-- **The classifier is not the point.** We keep the numbers it adjusted along the way. Those numbers are the embedding.
-- **The result is short.** 50 to 1,000 numbers per word, instead of 50,000 counts. They are real numbers, they can be negative, and no single one of them has a name you can read off.
+## word2vec learns a word's vector by predicting it from its neighbours {.smaller}
 
-. . .
- 
-*word2vec* is the software package; *skip-gram with negative sampling* is the algorithm inside it (Jurafsky & Martin, 2026, pp. 105–110; step-by-step derivation in Goldberg & Levy, 2014). Both produce **static** embeddings: one fixed vector per word, whatever sentence it appears in.
-
-## What word2vec actually adjusts {.smaller}
-
-One target word, and the two words on each side of it:
-
-```
-...  your  [ account   is   free   of   charge ]  a  standard  fee ...
-                c1     c2    w     c3     c4
-```
-
-| really occurred nearby → **yes** | drawn at random → **no** |
-|---|---|
-| (free, account) | (free, Tolstoy) |
-| (free, is) | (free, aardvark) |
-| (free, of) | (free, spreadsheet) |
-| (free, charge) | (free, monsoon) |
-
-. . .
+::::: {.columns}
+:::: {.column width="55%"}
 
 ```{=html}
-<div class="pushpull">
-  <div class="pp-row"><span class="pp-w">free</span><span class="pp-arr pp-yes">→&nbsp;&nbsp;←</span><span class="pp-w">charge</span><span class="pp-lab">moved closer</span></div>
-  <div class="pp-row"><span class="pp-w">free</span><span class="pp-arr pp-no">←&nbsp;&nbsp;→</span><span class="pp-w">Tolstoy</span><span class="pp-lab">moved apart</span></div>
+<div class="cosfig">
+<svg viewBox="0 0 520 380" role="img" aria-label="Diagram running top to bottom: four context words, arrows converging into a layer of 300 numbers, then one arrow down to the predicted word free">
+  <defs>
+    <marker id="ahp3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--primary)"/>
+    </marker>
+    <marker id="aha3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--accent)"/>
+    </marker>
+  </defs>
+
+  <text x="260" y="18" style="font-size:13px;text-anchor:middle;fill:var(--ink-soft)">your account is ____ of charge</text>
+
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="25"  y="36" width="110" height="34" rx="4"/>
+    <rect x="150" y="36" width="110" height="34" rx="4"/>
+    <rect x="275" y="36" width="110" height="34" rx="4"/>
+    <rect x="400" y="36" width="110" height="34" rx="4"/>
+  </g>
+  <g style="font-size:14px;text-anchor:middle">
+    <text x="80"  y="58">account</text>
+    <text x="205" y="58">is</text>
+    <text x="330" y="58">of</text>
+    <text x="455" y="58">charge</text>
+  </g>
+  <text x="260" y="92" style="font-size:12px;text-anchor:middle;fill:var(--ink-soft)">the four words around the gap</text>
+
+  <g style="fill:none;stroke:var(--primary);stroke-width:2;marker-end:url(#ahp3)">
+    <line x1="80"  y1="102" x2="125" y2="168"/>
+    <line x1="205" y1="102" x2="215" y2="168"/>
+    <line x1="330" y1="102" x2="305" y2="168"/>
+    <line x1="455" y1="102" x2="395" y2="168"/>
+  </g>
+
+  <rect x="70" y="180" width="380" height="46" rx="6" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"/>
+  <text x="260" y="208" style="font-size:16px;text-anchor:middle;font-weight:700">300 numbers</text>
+  <text x="260" y="245" style="font-size:13px;text-anchor:middle;fill:var(--accent);font-weight:700">this layer is the vector for &#8220;free&#8221;</text>
+
+  <line x1="260" y1="258" x2="260" y2="298" style="fill:none;stroke:var(--accent);stroke-width:2;marker-end:url(#aha3)"/>
+
+  <rect x="195" y="308" width="130" height="38" rx="6" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"/>
+  <text x="260" y="333" style="font-size:16px;text-anchor:middle;font-weight:700">free</text>
+  <text x="260" y="368" style="font-size:12px;text-anchor:middle;fill:var(--ink-soft)">the guess. Discarded once training ends.</text>
+</svg>
 </div>
+<div class="figcap">The contexts go in at the top, the guess comes out at the bottom, and the layer in between holds the 300 numbers we keep.</div>
 ```
 
-Each pass moves *free* a little closer to the words that really occurred near it, and a little further from the random ones. Run that over billions of words, and words that occur near the same other words end up close together in the space.
+::::
+:::: {.column width="45%"}
 
-. . .
+The model is given the words around a gap and has to guess the word that was removed.
 
+::: {.fragment}
+It works through billions of gaps like this one. Each time the guess is wrong, the 300 numbers in the middle are adjusted a little.
+:::
+
+::: {.fragment}
+After training, **the guess is not what we want** — the output layer is discarded. What we keep is the middle layer: the 300 numbers a word arrives with. Words that fill the same kinds of gaps end up with similar numbers.
+:::
+
+::: {.fragment}
 Still **one vector per word form**. *free* in "your account is free of charge" and *FREE* in "claim your FREE prize now" get the same 300 numbers.
+:::
+
+::::
+:::::
 
 
-## Attention resolves the two *free*s {.smaller}
+## BERT: word2vec with a transformer {.smaller}
 
-The video called this step attention. Here is what it does to the pair from the last slide:
+Same training idea — fill in the blank — but the vector for a word is now computed from the
+sentence around it, using the attention step the video described. One word form no longer
+gets one fixed vector.
+
+Here is what that does to the pair from the last slide:
 
 | Sentence | *free* attends most to | Resulting sense |
 |---|---|---|
@@ -415,7 +626,6 @@ That is not a promise. It is a research literature, and you can read it:
 
 | Study | What it annotated | Track you could pick |
 |---|---|---|
-| Gilardi et al. (2023), *PNAS* | text annotation vs. crowd workers — ~25 points better, ~$0.003 per annotation | (the cost argument) |
 | Yu et al. (2024), *IJCL* | apology **components** — a function, not a form | pragmatics |
 | Kim & Lu (2024), *JEAP* | rhetorical **moves** in article abstracts | RAAMove · CaRS-50 |
 | Mizumoto (2025), *SSLA* | L2 **errors** — *r* = .94 with human raters, F1 = .95 | AutoErrorAnalyzer |

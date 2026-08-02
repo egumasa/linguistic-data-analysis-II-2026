@@ -1547,7 +1547,7 @@
     "href": "slides/slides-session-01.html#what-people-have-already-done-with-this",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "What people have already done with this",
-    "text": "What people have already done with this\nHistorically each task had its own model — a POS tagger, an NER model, a parser. Now one model does many tasks, because you change the request rather than the model (Liu et al., 2023).\nThat is not a promise. It is a research literature, and you can read it:\n\n\n\n\n\n\n\n\nStudy\nWhat it annotated\nTrack you could pick\n\n\n\n\nGilardi et al. (2023), PNAS\ntext annotation vs. crowd workers — ~25 points better, ~$0.003 per annotation\n(the cost argument)\n\n\nYu et al. (2024), IJCL\napology components — a function, not a form\npragmatics\n\n\nKim & Lu (2024), JEAP\nrhetorical moves in article abstracts\nRAAMove · CaRS-50\n\n\nMizumoto (2025), SSLA\nL2 errors — r = .94 with human raters, F1 = .95\nAutoErrorAnalyzer\n\n\nYamashita (2024), RMAL\nessay scores\nICNALE GRA\n\n\n\nThree of these are on your readings page. Four of them do a task you could choose for your own project."
+    "text": "What people have already done with this\nHistorically each task had its own model — a POS tagger, an NER model, a parser. Now one model does many tasks, because you change the request rather than the model (Liu et al., 2023).\nThat is not a promise. It is a research literature, and you can read it:\n\n\n\n\n\n\n\n\nStudy\nWhat it annotated\nTrack you could pick\n\n\n\n\nYu et al. (2024), IJCL\napology components — a function, not a form\npragmatics\n\n\nKim & Lu (2024), JEAP\nrhetorical moves in article abstracts\nRAAMove · CaRS-50\n\n\nMizumoto (2025), SSLA\nL2 errors — r = .94 with human raters, F1 = .95\nAutoErrorAnalyzer\n\n\nYamashita (2024), RMAL\nessay scores\nICNALE GRA\n\n\n\nThree of these are on your readings page. Four of them do a task you could choose for your own project."
   },
   {
     "objectID": "slides/slides-session-01.html#what-an-llm-lets-you-do",
@@ -5257,5 +5257,82 @@
     "title": "Session 6: Evaluation Metrics",
     "section": "Does your code match the library?",
     "text": "Does your code match the library?\nYou built a confusion matrix and four metrics by hand. Before trusting them, check them against scikit-learn on the same twelve items — it builds the same 2×2 and computes the same numbers, and if yours differ you have a bug. This is the only place scikit-learn enters pass 1:\n✅ TP/FP/FN/TN     yours=3/1/2/6  sklearn=3/1/2/6\n✅ precision      yours=0.750000  sklearn=0.750000\n✅ recall         yours=0.600000  sklearn=0.600000\n✅ f1             yours=0.666667  sklearn=0.666667\n✅ cohen_kappa    yours=0.470588  sklearn=0.470588\n-----------------------------------------------\nAll 5 checks passed ✅  — your confusion matrix and metrics match scikit-learn.\n\n\n\n\n\n\n\nThis is the point of pass 1\n\n\nsklearn is not doing anything you cannot do. It is doing exactly what you just wrote, faster and for every class at once. Twelve items is enough to learn the mechanics, never enough to judge a model — so pass 2 hands the full 72 to scikit-learn. From here on, when a report prints 0.36, you know precisely which counts produced it."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#course-objectives",
+    "href": "slides/slides-session-01.html#course-objectives",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Course objectives",
+    "text": "Course objectives\nBy the end of this course, you will be able to:\n\n\n\n\n\n\n\nArea\nObjective\n\n\n\n\nCritical appraisal\nExplain what LLMs can and cannot do for linguistic analysis, and judge when an LLM-based approach is appropriate.\n\n\nAnnotation scheme\nAdapt and operationalize an existing annotation scheme and its coding guidelines.\n\n\nGold-standard datasets\nBuild a gold-standard dataset, including assessing inter-annotator agreement.\n\n\nPrompt design\nDesign, tune, and document prompts that elicit reliable annotations from an LLM.\n\n\nEvaluation\nEvaluate model performance with precision, recall, F1, and confusion matrices, and interpret the results critically.\n\n\nReproducibility\nReport methods and findings transparently and reproducibly."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#assignments-grading",
+    "href": "slides/slides-session-01.html#assignments-grading",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Assignments & grading",
+    "text": "Assignments & grading\n\n\n\nComponent\n\nPercent\n\n\n\n\nAttendance / participation\n\n20%\n\n\nHands-on activities (Day 1–3) + completed notebook\n\n40%\n\n\nMini-project group presentation + Q&A\n(Day 5)\n20%\n\n\nIn-class one-page report\n(Day 5)\n20%\n\n\n\nAll project work is produced and submitted during the course — there is no post-course write-up. The completed notebook, run end-to-end with your group’s gold subset, prompt, and evaluation output, is the evidence that the hands-on work was done.\n\n\n\n\n\n\nNote\n\n\nFull details on the course website: Syllabus · Readings"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#you-shall-know-a-word-by-the-company-it-keeps-firth-1957-p.-11",
+    "href": "slides/slides-session-01.html#you-shall-know-a-word-by-the-company-it-keeps-firth-1957-p.-11",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "“You shall know a word by the company it keeps!” (Firth, 1957, p. 11)",
+    "text": "“You shall know a word by the company it keeps!” (Firth, 1957, p. 11)\nQ: How can a machine learn meaning?\nA: The answer is by studying Co-occurrence.\n\n\n\n\n\n\n\n\n\nLeft context\nNode\nRight context\n\n\n\n\nis traditionally followed by\ncherry\npie, a traditional dessert\n\n\noften mixed, such as\nstrawberry\nrhubarb pie. Apple pie\n\n\ncomputer peripherals and personal\ndigital\nassistants. These devices usually\n\n\na computer. This includes\ninformation\navailable on the internet\n\n\n\n\nCount, by hand: how often does each of a, computer and pie appear in each of those four windows?"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#study-the-company-to-understand-meaning",
+    "href": "slides/slides-session-01.html#study-the-company-to-understand-meaning",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Study the company to understand meaning!",
+    "text": "Study the company to understand meaning!\nThe table on the right counts co-occurence frequency.\n\n\n\n\n\n\n\n\n\n\n\nLeft context\nNode\nRight context\n\n\n\n\nis traditionally followed by\ncherry\npie, a traditional dessert\n\n\noften mixed, such as\nstrawberry\nrhubarb pie. Apple pie\n\n\ncomputer peripherals and personal\ndigital\nassistants. These devices usually\n\n\na computer. This includes\ninformation\navailable on the internet\n\n\n\n\n\n\n\n\n\n\na\ncomputer\npie\n\n\n\n\ncherry\n1\n0\n1\n\n\nstrawberry\n0\n0\n2\n\n\ndigital\n0\n1\n0\n\n\ninformation\n1\n1\n0\n\n\n\n\n\nAlready suggests some topical clustering. Each row is that word’s vector: cherry = [1, 0, 1]."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#the-co-occurence-frequency-in-a-real-corpus",
+    "href": "slides/slides-session-01.html#the-co-occurence-frequency-in-a-real-corpus",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "The co-occurence frequency in a real corpus",
+    "text": "The co-occurence frequency in a real corpus\nNow count every occurrence in Wikipedia.\nSix of the columns becomes (Jurafsky & Martin, 2026, p. 103):\n\n\n\n\naardvark\n…\ncomputer\ndata\nresult\npie\nsugar\n…\n\n\n\n\ncherry\n0\n…\n2\n8\n9\n442\n25\n…\n\n\nstrawberry\n0\n…\n0\n0\n1\n60\n19\n…\n\n\ndigital\n0\n…\n1670\n1683\n85\n5\n4\n…\n\n\ninformation\n0\n…\n3325\n3982\n378\n5\n13\n…\n\n\n\ncherry and strawberry have similar rows. digital and information have similar rows.\n\n\n\n\n\n\n\nThe distributional principle\n\n\nThis clustering emerges without anyone writing a dictionary. Again “You shall know a word by the company it keeps!” (Firth, 1957, p. 11)."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#the-table-is-too-big-and-a-lot-zeros",
+    "href": "slides/slides-session-01.html#the-table-is-too-big-and-a-lot-zeros",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "The table is too big and a lot zeros",
+    "text": "The table is too big and a lot zeros\nLook at the aardvark column on the previous slide. All four words score 0. None of them ever occurs near aardvark.\n\n\n\n\naardvark\n…\ncomputer\ndata\nresult\npie\nsugar\n…\n\n\n\n\ncherry\n0\n…\n2\n8\n9\n442\n25\n…\n\n\nstrawberry\n0\n…\n0\n0\n1\n60\n19\n…\n\n\ndigital\n0\n…\n1670\n1683\n85\n5\n4\n…\n\n\ninformation\n0\n…\n3325\n3982\n378\n5\n13\n…\n\n\n\n\nCo-occurrence table is sparse, about 99 in every 100 columns are 0."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#finding-the-latent-dimensions",
+    "href": "slides/slides-session-01.html#finding-the-latent-dimensions",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Finding the latent dimensions",
+    "text": "Finding the latent dimensions\nWe can apply factor analysis to a co-occurrence table to reduce meaning.\n\n\n\n\n\n\n\n\nFactor analysis\n\n\nA statistical method for uncovering the latent structure of data:\n\nWe give a 6-item questionnaire on enjoyment and boredom.\nThe questionnaire items are the observed variables.\nWe find latent variables that predict the values of the observed variables.\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n      \n    \n    \n      \n    \n    \n      \n    \n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    ENJ1 · look forward\n    ENJ2 · enjoy it\n    ENJ3 · time passes fast\n    BOR1 · mind wanders\n    BOR2 · lose interest\n    BOR3 · feels slow\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    \n    \n    \n  \n  \n    \n    \n    \n  \n  \n  \n  Enjoyment\n  Boredom\n\n\nEach arrow is a loading. Solid = strong, dashed = near zero. Values are illustrative.\n. . .\n\n\n\n\n\nitem\nEnjoy\nBored\n\n\n\n\nENJ1 · I look forward to class\n0.82\n−0.11\n\n\nENJ2 · I enjoy the activities\n0.79\n−0.08\n\n\nENJ3 · Class time passes quickly\n0.74\n−0.15\n\n\nBOR1 · My mind wanders in class\n−0.09\n0.80\n\n\nBOR2 · I lose interest quickly\n−0.13\n0.85\n\n\nBOR3 · Class feels slow\n−0.10\n0.77\n\n\n\n\nSix items, two latent variables. Each item loads high on one and near zero on the other."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#finding-latent-dimension-of-word-meaning",
+    "href": "slides/slides-session-01.html#finding-latent-dimension-of-word-meaning",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "Finding latent dimension of word meaning",
+    "text": "Finding latent dimension of word meaning\nThe words in corpus are the observed variables, and we explore underlying dimensions of that.\n\n\n\n\n\n  \n    \n      \n    \n    \n      \n    \n    \n      \n    \n  \n  \n    \n    \n    \n    \n    \n  \n  \n    computer\n    data\n    result\n    pie\n    sugar\n  \n  \n    \n    \n    \n    \n    \n    \n    \n  \n  \n    \n    \n  \n  \n    \n  \n  \n  \n  dimension 1\n  dimension 2\n\n\nThe same diagram as the questionnaire. Context words are the observed variables; the dimensions are what factor analysis extracts.\n. . .\n\nEach dimension gives every context word a loading — how much that word counts towards it:\n\n\n\n\n\ndimension 1\ndimension 2\n\n\n\n\ncomputer\n0.651\n−0.009\n\n\ndata\n0.756\n0.004\n\n\nresult\n0.066\n0.019\n\n\npie\n0.001\n0.998\n\n\nsugar\n0.002\n0.061\n\n\n\n\nresult loads on neither. Not every word belongs to a dimension.\n\n\n\nNobody assigned these weights — they were derived from the corpus counts. This technique is called Latent Semantic Analysis (LSA)."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#word2vec-we-actually-do-not-need-table",
+    "href": "slides/slides-session-01.html#word2vec-we-actually-do-not-need-table",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "word2vec: We actually do not need table",
+    "text": "word2vec: We actually do not need table\nLSA provided the support for distributional semantics.\nBut it is usually applied to document-level co-occurrence, and very coarse meaning dimensions. The table is huge and difficult to use large corpus.\nAlso, co-occurrence pattern is local phenomena."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#word2vec-learns-a-words-vector-by-predicting-it-from-its-neighbours",
+    "href": "slides/slides-session-01.html#word2vec-learns-a-words-vector-by-predicting-it-from-its-neighbours",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "word2vec learns a word’s vector by predicting it from its neighbours",
+    "text": "word2vec learns a word’s vector by predicting it from its neighbours\n\n\n\n\n  \n    \n      \n    \n    \n      \n    \n  \n\n  your account is ____ of charge\n\n  \n    \n    \n    \n    \n  \n  \n    account\n    is\n    of\n    charge\n  \n  the four words around the gap\n\n  \n    \n    \n    \n    \n  \n\n  \n  300 numbers\n  this layer is the vector for “free”\n\n  \n\n  \n  free\n  the guess. Discarded once training ends.\n\n\nThe contexts go in at the top, the guess comes out at the bottom, and the layer in between holds the 300 numbers we keep.\n\nThe model is given the words around a gap and has to guess the word that was removed.\n\nIt works through billions of gaps like this one. Each time the guess is wrong, the 300 numbers in the middle are adjusted a little.\n\n\nAfter training, the guess is not what we want — the output layer is discarded. What we keep is the middle layer: the 300 numbers a word arrives with. Words that fill the same kinds of gaps end up with similar numbers.\n\n\nStill one vector per word form. free in “your account is free of charge” and FREE in “claim your FREE prize now” get the same 300 numbers."
+  },
+  {
+    "objectID": "slides/slides-session-01.html#bert-word2vec-with-a-transformer",
+    "href": "slides/slides-session-01.html#bert-word2vec-with-a-transformer",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "BERT: word2vec with a transformer",
+    "text": "BERT: word2vec with a transformer\nSame training idea — fill in the blank — but the vector for a word is now computed from the sentence around it, using the attention step the video described. One word form no longer gets one fixed vector.\nHere is what that does to the pair from the last slide:\n\n\n\n\n\n\n\n\nSentence\nfree attends most to\nResulting sense\n\n\n\n\n“your account is free of charge”\naccount, charge\nbanking, benign\n\n\n“claim your FREE prize now”\nclaim, prize, now\npromotional\n\n\n\nThe same word form now has two different vectors, because the surrounding words differ. Static embeddings could not do this; there was only ever one vector for free."
   }
 ]
