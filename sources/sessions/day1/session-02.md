@@ -16,21 +16,27 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 
 By the end of this session you will be able to:
 
-- Sign in to Google Colab, run a cell (Shift+Enter), and read a Python error message.
-- Send a prompt to a language model with, then edit the prompt and re-run.
-- Recognise Python's core data types — `str`, `list`, `dict` — in what the model hands back, and index into a list or dict.
-- Undetstand basic Python syntax (variable assignments, if-statements, for-loop) to explain what is happening in the tutorial notebook.
+- Sign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.
+- Store a value in a variable, and send a prompt to a language model with `ai.generate_text(...)`.
+- Build a prompt from a variable with an f-string, and recognise the `.format()` template form you will edit from Session 7 on.
+- Recognise Python's core data types — `str`, `list`, `dict` — in what the model hands back.
+- Build the `{id, text, label}` record the rest of the course uses, **with a label you decided yourself**, and add the model's answer beside it.
+- Index and slice into a list of records to compare the two answers.
 
 ## Agenda
 
-This is a **guided, run-along session** using Part A of the Day 1 notebook. The LLM call is the spine — everything else is just enough Python to read and reshape what the model gives back.
+This is a **guided, run-along session** using Part A of the Day 1 notebook, in **eight short steps**. The model comes first and stays first: you call it, then learn just enough Python to read and score what it gives back.
 
-1. **Colab basics — run a cell, read an error** — sign in, cells and the runtime, Shift+Enter, and how to read a red error.
-2. **Your first LLM call** — run the setup cell, then `generate_text(...)`; change the prompt and re-run.
-3. **What did the model hand back?** — data types (`str` / `list` / `dict`) and `[...]` indexing, motivated by the reply.
-4. **f-strings** — drop a sentence into a prompt with `f"...{sentence}"`.
+1. **Run a cell** — sign in, cells and the runtime, Shift+Enter.
+2. **Read an error** — run a cell that fails on purpose, and read the last line.
+3. **Variables** — store a value under a name with `=`.
+4. **Your first LLM call** — the setup cell (one import), then five prompts: the task itself, asking for a format, the same prompt twice, and one the model gets wrong.
+5. **f-strings** — drop a sentence into a prompt with `f"...{sentence}"`, then write a `.format()` template of your own.
+6. **What kind of value is the answer?** — `type()`, and the three types you use all week.
+7. **Put the answer in a record** — decide a sentence's level yourself, then ask the model the same question and store both in one `{id, text, label}` record.
+8. **Indexing and slicing** — `items[2]["label"]`, `items[:2]`, and comparing the two answers with `==`.
 
-Control flow (`for`, `if`, functions) and text segmentation come next, in [Session 3](session-03.md).
+Control flow (`for`, `if`, `elif`, functions), counting, and text segmentation come next, in [Session 3](session-03.md).
 
 ## Reading
 

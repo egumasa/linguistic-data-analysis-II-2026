@@ -19,19 +19,22 @@ metadata-files:
 ## 📋 Agenda
 
 1. Colab basics — run a cell, read an error
-2. Your first LLM call
-3. What the model returns — data types
-4. Getting values out of your data — indexing
-5. f-strings — put your data *into* the prompt
+2. Your first LLM call — five prompts, and what they show
+3. f-strings — put your data *into* the prompt
+4. What the model returns — data types
+5. Turn the answer into a **record you can score**
+6. Getting the answers back out — indexing and slicing
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
 - Sign in to Colab, run a cell (Shift+Enter), and **read a Python error** well enough to fix a typo.
-- Send a prompt with `generate_text(...)`, then edit it and re-run.
-- Recognise `str` / `list` / `dict` in what the model returns, and **index** into a list or dict.
-- Build a prompt from a variable with an **f-string**.
+- Store a value in a **variable**, and send a prompt with `ai.generate_text(...)`.
+- Build a prompt from a variable with an **f-string**, and recognise the `.format()` template form.
+- Recognise `str` / `list` / `dict` in what the model returns.
+- Build the `{id, text, label}` record the rest of the course uses — **with a label you decided yourself** — and add the model's answer beside it.
+- **Index** and **slice** into a list of records to compare the two answers.
 
 ## How today works {.smaller}
 
@@ -120,8 +123,8 @@ Reading that last line is the skill to practise here. You will use it all week.
 A **variable** is a **name** that stores a value.
 
 ```python
-level = "A1"        # store the value "A1" under the name `level`
-print(level)        # A1  — get the value back by its name
+level = "A1"        # store the text "A1" under the name `level`
+print(level)        # get it back by name
 ```
 
 - `name = value` — the `=` means **"store this"**, not "equals".
@@ -136,12 +139,12 @@ Next we store the model's reply under the name `reply`.
 You send the model **text** (a *prompt*); it sends **text** back (a *reply*).
 
 ```python
-reply = generate_text("...your prompt...")
+reply = ai.generate_text("...your prompt...")
 ```
 
 . . .
 
-- `generate_text(...)` does the call (we set it up for you — no API key today).
+- `ai.generate_text(...)` does the call — `ai` is Colab's built-in Gemini, no API key today.
 - `reply = ...` **stores** the answer in a variable named `reply`, so you can use it later.
 
 . . .
@@ -162,7 +165,7 @@ Run the **📦 Setup** cell first, then run this together:
 
 ```python
 # ✏️ change the text in the quotes, then press Shift+Enter to re-run.
-reply = generate_text("In one sentence, what is applied linguistics?")  # ask
+reply = ai.generate_text("In one sentence, what is applied linguistics?")
 print(reply)                                    # show what came back
 ```
 
@@ -173,99 +176,20 @@ The model's answer prints out. You just called an LLM from Python.
 Your turn — **change the prompt** and re-run (a different topic, or another language):
 
 ```python
-reply = generate_text("In one sentence, what is a corpus?")
+reply = ai.generate_text("In one sentence, what is a corpus?")
 print(reply)
 ```
 
 The code is the same and the answer is different. The prompt is text that you control.
 
-# 3 · What the model returns
-
-## Python labels every value with a **type** {.smaller}
-
-```python
-print(type(reply))     # <class 'str'> — a string, i.e. text
-```
-
-The three types you need all week:
-
-- **`str`** — text, in quotes: `"A1"`.
-- **`list`** — many items in order, in brackets: `["a", "b", "c"]`.
-- **`dict`** — a labelled record, in braces: `{"label": "A1"}` (key → value).
-
-## A few more types {.smaller}
-
-Here are some more frequent variable types.
-
-- **`int`** — whole numbers: `42`
-- **`float`** — decimals: `3.14`
-- **`bool`** — `True` / `False`
-- **`tuple`** — like a list, but its contents cannot be changed: `(1, 2)`
-- **`None`** — "nothing here yet"
-
-You do not need to memorise these. When you see one, you will recognise it as another kind of value.
-
-## 👀 Let's follow — in Colab {.smaller}
-
-Run this together — build a **list** of sentences and a **dict** record, then print each whole:
-
-```python
-sentences = ["The cat sat on the mat.",          # a list of strings
-             "Despite the rain, the game went ahead."]
-record = {"id": 1, "text": "The cat sat on the mat.", "label": "A1"}   # a dict
-
-print(sentences)     # the whole list  — note the [ ... ]
-print(record)        # the whole dict  — note the { key: value ... }
-```
-
-## 🧪 Let's try — in Colab {.smaller}
-
-Your turn — build your own:
-
-- a **list** of three words, and
-- a **dict** with keys `id`, `text`, and `label`.
-
-Print each and check the `[ ]` / `{ }` match what you intended.
-
-# 4 · Getting values out of your data — indexing
-
-## Getting one item out — indexing
-
-Use **`[...]`** to get one item:
-
-- a **list** by *position* (starts at **0**): `sentences[0]`
-- a **dict** by *key*: `record["label"]`
-
-## Why this matters
-
-Every dataset this week is a **`list` of `dict`s** — sentences shaped like `{"id": ..., "text": ..., "label": ...}`. Reading them is just list + dict indexing.
-
-## 👀 Let's follow — in Colab {.smaller}
-
-Reuse the `sentences` and `record` you just built, and get single items out of them:
-
-```python
-print("first sentence:", sentences[0])       # list — index by position
-print("its gold label:", record["label"])    # dict — index by key
-```
-
-## 🧪 Let's try — in Colab {.smaller}
-
-Your turn:
-
-- Change the `0` in `sentences[0]` to `1` — what prints?
-- Ask for `record["text"]`, then `record["id"]`.
-
-Watch what comes out each time.
-
-# 5 · f-strings
+# 3 · f-strings — put your data into the prompt
 
 ## Putting your data *into* the prompt {.smaller}
 
 An **f-string** is a normal string with an `f` in front — anything in `{ }` gets swapped for its value:
 
 ```python
-sentence = "Despite the rain, the game went ahead."
+sentence = "Nevertheless, the findings were inconclusive."
 prompt = f"What CEFR level (A1-C2) is this sentence? {sentence}"
 ```
 
@@ -286,11 +210,11 @@ Change the value of `sentence` and the prompt changes automatically. This is how
 Run this together — build a prompt from a variable, then send it:
 
 ```python
-sentence = "Despite the rain, the game went ahead."   # ✏️ your sentence
+sentence = "Nevertheless, the findings were inconclusive."   # ✏️ your sentence
 prompt = f"What CEFR level (A1-C2) is this sentence? {sentence}"  # f = fill in {}
 print("Prompt sent:", prompt)                # see what {sentence} became
 
-reply = generate_text(prompt)                # send the finished prompt
+reply = ai.generate_text(prompt)             # send the finished prompt
 print("Model says:", reply)
 ```
 
@@ -302,14 +226,220 @@ Change `sentence` to one of your own and re-run.
 
 You built a prompt from data and sent it. Every later session uses this same operation.
 
+## The other form — a template {.smaller}
+
+Without the `f`, the braces stay **empty** until something fills them:
+
+```python
+TEMPLATE = """What CEFR level (A1-C2) is this sentence?
+Answer with just the level.
+
+Sentence: {text}"""
+
+print(TEMPLATE.format(text="The cat sat on the mat."))   # .format() fills {text}
+```
+
+. . .
+
+- Three quotes (`"""..."""`) hold a prompt written over **several lines**.
+- `.format()` fills the slot — one sentence at a time.
+
+From Session 7 you **edit** templates like this, so recognise the shape. In the notebook you write one yourself.
+
+# 4 · What the model returns
+
+## Python labels every value with a **type** {.smaller}
+
+The reply is still in `reply`. Before you can do anything with it, you have to know what kind of value it is.
+
+```python
+print(reply)              # the model's answer, still in the variable from step 5
+print(type(reply))        # <class 'str'> — a string, i.e. text
+print(len(reply))         # how many characters of text that is
+```
+
+The three types you need all week:
+
+- **`str`** — text, in quotes: `"A1"`.
+- **`list`** — many items in order, in brackets: `["a", "b", "c"]`.
+- **`dict`** — a labelled record, in braces: `{"label": "A1"}` (key → value).
+
+## A few more types {.smaller}
+
+Here are some more frequent variable types.
+
+- **`int`** — whole numbers: `42`
+- **`float`** — decimals: `3.14`
+- **`bool`** — `True` / `False`
+- **`tuple`** — like a list, but its contents cannot be changed: `(1, 2)`
+- **`None`** — "nothing here yet"
+
+You do not need to memorise these. When you see one, you will recognise it as another kind of value.
+
+## 🧪 Let's try — predict first {.smaller}
+
+**Write down what you expect** each line to print, then run it. Two of the four surprise most people.
+
+```python
+print(len("A1"))                   # how long is the text "A1"?
+print(type("A1") == type(reply))   # is a level the same type as a whole reply?
+print(type(7))                     # a number
+print(type("7"))                   # the same digit, in quotes
+```
+
+. . .
+
+`"A1"` and a three-paragraph reply are the **same type** — `str` says what kind of value, not how much. And `7` and `"7"` differ: one you can divide, one is text.
+
+# 5 · Turn the answer into a record you can score
+
+## A label is a decision, not a computation {.smaller}
+
+A string is **one** thing. To ask whether the model is any good, you need two answers side by side:
+
+- what a **person** said the level is, and
+- what the **model** said.
+
+. . .
+
+::: {.callout-important}
+The `label` in a gold standard is **a decision a person made**. That is what you and your group spend Day 2 doing, by hand. A program does not produce it.
+:::
+
+## 👀 Let's follow — your judgment first {.smaller}
+
+Read the sentence, decide its level **yourself**, then build the record:
+
+```python
+# ✏️ A1 is the simplest level, C2 the most advanced. Change it if you disagree.
+text = "The cat sat on the mat."
+my_level = "A1"
+
+record = {"id": 1, "text": text, "label": my_level}   # a dict: named slots
+print(record)                    # the whole record — note the { key: value ... }
+```
+
+## 👀 Let's follow — now ask the model {.smaller}
+
+Same sentence, same question, stored under a **new key**:
+
+```python
+answer = ai.generate_text(f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {text}")
+record["model"] = answer.strip()   # .strip() drops the newline the reply arrives with
+print(record)                      # the same record, now with two answers in it
+```
+
+. . .
+
+`record["model"] = ...` — the same square brackets, now on the **left** of the `=`: that stores a value instead of reading one.
+
+## One record, then many {.smaller}
+
+A dataset is a **list** of records. Here are two more, already answered:
+
+```python
+items = [record,                                              # the one you just built
+         {"id": 2, "text": "More research is needed.",
+          "label": "B1", "model": "B1"},
+         {"id": 3, "text": "Nevertheless, the findings were inconclusive.",
+          "label": "C1", "model": "B2"}]      # here the two answers disagree
+
+print("how many items:", len(items))   # len() on a list = how many records
+print(items[2])                        # the third record — counting starts at 0
+```
+
+## 🧪 Let's try — do you agree with it? {.smaller}
+
+Your own sentence, your own judgment. **Write your level down before you run it.**
+
+```python
+my_text = "..."                       # ✏️ a sentence of your own
+my_record = {"id": 4, "text": my_text, "label": "..."}   # ✏️ your judgment
+
+prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {my_text}"
+my_record["model"] = ai.generate_text(prompt).strip()
+
+print(my_record)
+print("we agree:", my_record["label"] == my_record["model"])
+```
+
+## Why this matters
+
+`{id, text, label}` is the shape of **every dataset in this course** — the gold standard you build on Day 2, the file you score in Session 6, the sample you draw on Day 4.
+
+. . .
+
+The extra `model` key is what a prediction looks like once you have run one. Scoring is comparing those two columns.
+
+# 6 · Getting the answers back out — indexing
+
+## Getting one item out {.smaller}
+
+Use **`[...]`** to get one item:
+
+- a **list** by *position* (starts at **0**): `items[0]`
+- a **dict** by *key*: `record["label"]`
+
+Chain them to reach inside a record in a list: `items[2]["label"]`.
+
+## 👀 Let's follow — in Colab {.smaller}
+
+```python
+print("sentence 3:", items[2]["text"])    # list by position, then dict by key
+print("person said:", items[2]["label"])
+print("model said: ", items[2]["model"])
+print("they agree: ", items[2]["label"] == items[2]["model"])   # == asks "same value?"
+```
+
+. . .
+
+`False` — one record, one disagreement. On Day 2 you do this for every record and count the `True`s. That count over the total is the first score you report.
+
+## Several items at once — slicing {.smaller}
+
+A colon takes a **range** instead of one item:
+
+```python
+print("the first two:", items[:2])          # a slice — records 0 and 1
+print("all but the first:", items[1:])      # from position 1 to the end
+print("how many in the slice:", len(items[:2]))
+```
+
+. . .
+
+`items[:2]` reads *"from the start, up to but not including position 2"*.
+
+From Session 7 on you use this to try a prompt on the **first few** items before running it on all of them.
+
+## 🧪 Let's try — answer before you run {.smaller}
+
+1. How many records does `items[:2]` hold? How many does `items[1:3]`?
+2. Do `items[0]["label"]` and `items[0]["model"]` agree — and why do you already know?
+3. What happens when you ask for `items[3]`?
+
+```python
+print(len(items[:2]), len(items[1:3]))   # count them before you run this
+print(items[0]["label"] == items[0]["model"])
+print(items[3])                          # this one is supposed to fail — read the error
+```
+
+. . .
+
+```
+IndexError: list index out of range
+```
+
+Both slices hold **two** records — a slice never includes its right-hand number. And three records sit at positions 0, 1 and 2, so there is no `items[3]`.
+
 # Any questions?
 
-## Coming up in Session 3 
+## Coming up in Session 3
 
 You can call the model **once**. Next: run it over a **whole list of sentences** —
 
 - turn a paragraph into sentences (segmentation),
 - loop the call over each with `for`,
+- count and score what comes back,
 - and wrap it in a reusable function.
 
 Then form your project groups.

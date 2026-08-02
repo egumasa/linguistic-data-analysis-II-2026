@@ -21,26 +21,28 @@ metadata-files:
 Picks up **Part B** of the Day 1 notebook, then forms project groups.
 
 1. From a document to sentences — segmentation *without* and *with* a model
-2. What else the model knows about words — Session 1's vectors, as code
-3. Run the model over every sentence — `for`, `if`, and a function
-4. Your turn — guided Python practice + self-check
-5. Mini-project setup — form groups and pick a track
+2. The Python you'll reuse all week — seven patterns
+3. Your turn — guided practice + self-check
+4. Mini-project setup — form groups and pick a track
+
+*Optional, if there is time:* what a model stores about a word — Session 1's vectors, as code.
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
 - Split a paragraph into sentences two ways — naive `.split(".")` and a spaCy sentencizer — and explain why the naive rule fails.
-- Look up a word's vector, compare two words, and show that one word form gets only one vector.
-- Use a `for` loop, an `if`, and a function (`def`) to run the model over a list of sentences.
-- Complete short Python exercises and confirm them with the self-check.
+- Loop over a list of records, **build a list** with `.append`, and **count** with a dict.
+- Use `if` / `elif` / `else` and `and` to sort items into categories.
+- Divide two counts, and guard against dividing by zero.
+- Wrap the steps in a function with `def` / `return`, and confirm four exercises with the self-check.
 - Form a project group and pick a mini-project track.
 
 ## Same rhythm as Session 2
 
 - Slide for the **idea**, then **do it in Colab**.
 - **Type it, don't copy it.**
-- In Part A you called the model **once**. Today you run it over **many** sentences, which is the first step toward a full pipeline.
+- In Part A you called the model **once**. Today you run it over **many** sentences, and write the Python that Days 2–5 are built from.
 
 # 1 · From a document to sentences
 
@@ -81,7 +83,7 @@ Instead of our own rule, we **import** a library built for this task, **spaCy**:
 
 ```python
 ### Step 1: build a sentence splitter that knows more than "cut at every dot" ###
-import spacy                       # an NLP library
+import spacy                       # the NLP toolbox
 nlp = spacy.blank("en")            # a minimal English pipeline
 nlp.add_pipe("sentencizer")        # add the rule-based splitter — no download
 ```
@@ -113,9 +115,229 @@ for s in sentences:
 
 . . .
 
-Compare to the naive split: *Dr. Smith*, *e.g.*, and *3.14* stay intact. **You now have a real list of sentences** — exactly what section 4 loops over.
+Compare to the naive split: *Dr. Smith*, *e.g.*, and *3.14* stay intact. **You now have a real list of sentences** — exactly what the next section loops over.
 
-# 3 · What else the model knows about words
+# 3 · The Python you'll reuse all week
+
+## Seven patterns, then you write them {.smaller}
+
+Everything in this section is something you will be asked to **write** later this week.
+
+| Step | Pattern | Where you'll write it |
+|--|--|--|
+| 3 | `for` over a list, with `if` / `else` | every day |
+| 4 | `for` over a list of **records** | Day 2, Day 4 |
+| 5 | Build a list with `.append` | Day 2, final project |
+| 6 | Count with a dict | Day 2 |
+| 7 | `if` / `elif` / `else`, and `and` | Day 2 |
+| 8 | Divide, and guard against zero | Day 2 — every score |
+| 9 | Wrap it in a function | Day 2 onwards |
+
+## Why this matters
+
+On **Day 2** you build precision, recall, F1 and Cohen's κ **yourself**, out of these seven pieces and nothing else.
+
+. . .
+
+Today is the only day of the course that teaches Python. Every pattern here is on the slide *before* you are asked to write it.
+
+## 🧪 Step 3 — the loop {.smaller}
+
+```python
+for sentence in examples:              # repeat everything below for each sentence
+    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"
+    reply = ai.generate_text(prompt).strip()   # .strip() removes stray blank space
+    if reply == "":                    # the model sometimes says nothing at all
+        print(sentence, "→ (no answer)")
+    else:                              # normal case: it answered
+        print(sentence, "→", reply)
+```
+
+. . .
+
+The f-string sits **inside** the loop, so the braces are filled in again for every sentence.
+
+## 🧪 Step 4 — loop over records {.smaller}
+
+Every dataset this week is a **list of dicts**. Each item is a record, so you reach in by key:
+
+```python
+items = [{"id": 1, "text": "The cat sat on the mat.", "label": "A1"},
+         {"id": 2, "text": "More research is needed.", "label": "B1"},
+         {"id": 3, "text": "Nevertheless, the findings were inconclusive.",
+          "label": "C1"}]
+
+for item in items:                 # item is one record — a dict
+    print(item["id"], "|", item["label"], "|", item["text"])
+```
+
+## 🧪 Step 5 — build a list with `.append` {.smaller}
+
+Often you don't want to *print* each item — you want to **keep** something from it:
+
+```python
+labels = []                        # start empty; the loop fills it
+for item in items:
+    labels.append(item["label"])   # add this item's label to the end
+
+print(labels)                      # ['A1', 'B1', 'C1']
+```
+
+. . .
+
+The most-used pattern of the week: Day 2 builds a list of verdicts this way, and the final project builds the list of rows your coders disagreed about.
+
+## 🧪 Step 6 — count with a dict {.smaller}
+
+The **key** is the label, the **value** is how many you have seen:
+
+```python
+counts = {}                        # an empty dict: label -> how many
+for item in items:
+    label = item["label"]
+    counts[label] = counts.get(label, 0) + 1   # count so far (0 if new), plus one
+
+print(counts)                      # {'A1': 1, 'B1': 1, 'C1': 1}
+```
+
+. . .
+
+- `counts[label] = ...` — the same brackets you used to *read* a dict, now on the **left** of the `=`.
+- `.get(label, 0)` — reads the count so far, answering `0` when the label is new.
+
+## 🧪 Step 7 — `elif` and `and` {.smaller}
+
+`elif` adds branches: checked top to bottom, **first match wins**, exactly one runs.
+
+```python
+for item in items:
+    label = item["label"]
+    if label == "A1" or label == "A2":     # `or` = either side is enough
+        band = "basic"
+    elif label == "B1" or label == "B2":   # only checked if the first did not match
+        band = "independent"
+    else:                                  # anything left over
+        band = "proficient"
+    print(label, "→", band)
+```
+
+## 🧪 Step 7 — `and`, on two coders {.smaller}
+
+A row counts as a disagreement only when **both** coders labelled it *and* the labels differ:
+
+```python
+for row in rows:
+    a = row["CoderA"]
+    b = row["CoderB"]
+    if a != "" and b != "" and a != b:   # both labelled it, AND they differ
+        print(row["id"], "disagreement:", a, "vs", b)
+    else:
+        print(row["id"], "no disagreement")
+```
+
+. . .
+
+A blank cell is **not** a disagreement — one coder simply hasn't got there yet. That is a decision about your data, and on Day 2 you make it yourself.
+
+## 🧪 Step 8 — divide, and guard {.smaller}
+
+Counting leads to dividing: *how many right, out of how many there were?*
+
+```python
+right = 9
+wrong = 3
+print(round(right / (right + wrong), 3))   # 0.75
+```
+
+. . .
+
+If both counts are `0` there is nothing to divide by, and Python stops with `ZeroDivisionError`:
+
+```python
+if right + wrong == 0:      # nothing was scored at all
+    score = 0.0             # no credit — and no division by zero
+else:
+    score = right / (right + wrong)
+```
+
+**Every score you write on Day 2 has this shape.**
+
+## 🧪 Step 9 — wrap it in a function {.smaller}
+
+You have written the same three steps twice. **Name it once:**
+
+```python
+def ask(sentence):                     # `def` names a block of steps
+    """Ask the model for the CEFR level of one sentence; return its reply."""
+    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"
+    return ai.generate_text(prompt).strip()   # `return` hands the answer back
+
+print(ask("The cat sat on the mat."))  # one line now does all three steps
+```
+
+. . .
+
+`print` puts a value on the screen and it is gone; **`return`** hands it back, so you can store it, count it, or score it.
+
+## Steps 5 and 9 together {.smaller}
+
+Because `ask` hands its answer back, it goes straight into the loop from step 5:
+
+```python
+replies = []
+for sentence in examples:          # the three sentences from step 3
+    replies.append(ask(sentence))  # call the function, keep what it returns
+
+print(replies)
+```
+
+. . .
+
+A list of sentences in, a list of the model's labels out. That is the shape of Days 3 and 4 — and the result goes back into the **record from Session 2**, `{"id", "text", "label"}`, only now `label` comes from `ask(...)` instead of being typed by hand.
+
+# 4 · Your turn
+
+## Guided practice {.smaller}
+
+Four exercises, each rehearsing **one** pattern you just saw. Replace the `NotImplementedError`, then run the self-check directly below it.
+
+| Step | Function | Pattern |
+|--|--|--|
+| 10 | `label_of` | read one value out of a record |
+| 11 | `long_words` | loop + `if` + `.append` |
+| 12 | `count_labels` | count with a dict |
+| 13 | `accuracy` | count, divide, guard |
+
+. . .
+
+`accuracy` is the shape of every metric you write on Day 2. If it passes, you are ready.
+
+## Python you'll *read* but not write {.smaller}
+
+::: {.callout-note}
+Some library cells use a **list comprehension** like `[row["label"] for row in rows]` — read it as *"the label of every row."* You never have to write these; just recognise them.
+:::
+
+# Let's form groups
+
+## Mini-project setup {.smaller}
+
+- Form a **group** — each needs **at least one *Linguistic Data Analysis I* alumnus**.
+- Pick **one of the three mini-project tracks** (datasets) for your Day 4–5 project.
+- **Record** your group and track where the instructor asks.
+
+. . .
+
+Choosing now means your group is ready to start the project on **Day 4**. See the [Final Project](../final-project/index.md) page for the tracks.
+
+# Optional · What a model stores about a word
+
+## If there is time {.smaller}
+
+Nothing later in the week depends on this section. It is here because it makes the **Session 1** slides runnable — you can look at the numbers a model keeps for each word, and see where they stop working.
+
+The notebook has it at the very end, with its own download cell.
+
 
 ## One word, three hundred numbers {.smaller}
 
@@ -233,7 +455,7 @@ print(nlp_vec("the dog chased the cat").similarity(nlp_vec("the cat chased the d
 Two sentences with opposite meanings, one score.
 
 ::: {.callout-important}
-This is the gap Session 1 said attention closes. A model built on these vectors alone cannot represent context; the model behind `generate_text(...)` can.
+This is the gap Session 1 said attention closes. A model built on these vectors alone cannot represent context; the model behind `ai.generate_text(...)` can.
 :::
 
 ## A map of the space {.smaller}
@@ -254,80 +476,6 @@ The animals land well away from the rest. The hedges and the research verbs **do
 
 The map shows what the model separates, which is not always what you want it to separate.
 
-# 4 · Run the model over every sentence
-
-## Three small pieces of Python {.smaller}
-
-- **`for`** — repeat the same steps for every item in a list.
-- **`if`** — react to what comes back (e.g. flag an empty reply).
-- **`def`** — package the steps into a reusable **function** you can call by name.
-
-. . .
-
-Together: *for each sentence → build a prompt → call the model → tidy the reply.*
-
-## Why this matters
-
-This loop is the first version of the pipeline you assemble later in the week.
-
-. . .
-
-Annotation, classification and evaluation all consist of running one call over a list and collecting the results. Write it once here, and reuse the same structure all week.
-
-## 🧪 Let's try — the loop {.smaller}
-
-```python
-for sentence in examples:              # repeat everything below for each sentence
-    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"
-    reply = generate_text(prompt).strip()   # .strip() removes stray blank space
-    if reply == "":                    # the model sometimes says nothing at all
-        reply = "(no answer)"
-    print(sentence, "→", reply)
-```
-
-## 🧪 Let's try — wrap it in a function {.smaller}
-
-Same three steps, packaged so you can reuse them:
-
-```python
-def ask(sentence):                     # `def` names a block of steps
-    """Ask the model for the CEFR level of one sentence; return its reply."""
-    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"
-    return generate_text(prompt).strip()   # `return` gives the answer back
-
-print(ask("Despite the rain, the game went ahead."))  # one line does all three steps
-```
-
-Now labelling a sentence is just `ask(...)`.
-
-. . .
-
-And the result goes back into the **record you already built in Session 2** — `{"id": 1, "text": ..., "label": ...}` — only now `label` comes from `ask(...)` instead of being typed in by hand. Every gold set and every model output this week is a list of those.
-
-# 5 · Your turn
-
-## Guided practice {.smaller}
-
-In the notebook, a few cells ask you to **replace `NotImplementedError`** with a line or two — e.g. `long_words`, `count_labels`. Then a **self-check** cell tells you if they pass.
-
-. . .
-
-::: {.callout-note}
-## Python you'll *read* but not write
-Some library cells use a **list comprehension** like `[row["label"] for row in rows]` — read it as *"the label of every row."* You never have to write these; just recognise them.
-:::
-
-# Let's form groups
-
-## Mini-project setup {.smaller}
-
-- Form a **group** — each needs **at least one *Linguistic Data Analysis I* alumnus**.
-- Pick **one of the three mini-project tracks** (datasets) for your Day 4–5 project.
-- **Record** your group and track where the instructor asks.
-
-. . .
-
-Choosing now means your group is ready to start the project on **Day 4**. See the [Final Project](../final-project/index.md) page for the tracks.
 
 # 作戦会議 — team planning
 

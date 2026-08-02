@@ -68,6 +68,9 @@ CEFR_PREDICTIONS_DAY2_URL = f"{REPO_RAW}/predictions_day2.json"
 #   * DEMO_BACKEND (Day 1)   → Colab's built-in Gemini (colab.ai). Keyless, zero
 #     setup, but NON-reproducible: colab.ai exposes no temperature/seed, so output
 #     varies run to run. Day 1 only needs to *see* a model answer, so that's fine.
+#     Colab-only by design — it is a 6-line cell, and a student who opens Day 1
+#     outside Colab gets a plain ImportError naming google.colab rather than a
+#     branch about API keys they have not been given yet (that arrives on Day 3).
 #   * API_BACKEND (Day 3+)   → the Gemini API with temperature=0 + seed, for
 #     reproducible, autograded work. Prefers a key (Colab Secrets or env), and
 #     falls back to colab.ai if none is set.
@@ -75,55 +78,13 @@ CEFR_PREDICTIONS_DAY2_URL = f"{REPO_RAW}/predictions_day2.json"
 # free tier is 5 RPM / 20 RPD, so one 72-item lab run needs 3.5 days of quota.
 # See planning/course_planning/api-preflight-testing.md Task 1.
 
-# The keyless demo backend (Day 1): pace the calls, then hand off to colab.ai.
+# The keyless demo backend (Day 1) is two lines: an import, and the call students
+# make themselves. There is no course-written wrapper on Day 1 at all — `ai.generate_text`
+# IS the call, so the first thing a student runs is a real library function rather than
+# something we defined for them off-screen. `generate_text(...)` as a bare name arrives
+# on Day 3, where the API backend defines it and reproducibility earns the indirection.
 DEMO_BACKEND = '''# --- LLM backend: Colab's free built-in Gemini (no API key) -------------------
-
-### Step 1: remember when we last called the model, so we can pace ourselves ###
-_last_call_time = 0.0    # updated after every call; 0.0 means "never called yet"
-_min_interval = 13.2     # colab.ai publishes no rate limit — pace conservatively
-
-### Step 2: the one function you call all day — it waits its turn, then asks ###
-def generate_text(prompt: str) -> str:
-    """Send a prompt to Colab's built-in Gemini and give back its reply.
-
-    It waits between calls so we don't go too fast. Non-reproducible: colab.ai
-    exposes no temperature or seed, so the same prompt can give a different answer.
-
-    Args:
-        prompt: the text to send to the model.
-
-    Returns:
-        The model's reply, as text.
-
-    Example:
-        >>> reply = generate_text("What CEFR level is this sentence? I like cats.")
-    """
-    global _last_call_time                                    # share this across calls
-    wait = _min_interval - (time.monotonic() - _last_call_time)   # still too soon?
-    if wait > 0:
-        time.sleep(wait)                                      # pause for the difference
-    _last_call_time = time.monotonic()                        # note the time of this call
-    return _raw_generate_text(prompt)                         # now actually ask the model
-
-### Step 3: connect to Colab's built-in model (or explain why we can't) ###
-try:
-    from google.colab import ai            # Colab's built-in Gemini — no key
-    _raw_generate_text = lambda p: ai.generate_text(p)   # the raw, unpaced call
-    _backend = "Colab Gemini (demo, non-reproducible)"   # shown by the Setup printout
-except ImportError:                        # `google.colab` only exists inside Colab
-    # Running on your own computer instead: use a Gemini API key if one is set.
-    _key = os.environ.get("GEMINI_API_KEY")
-    if not _key:
-        raise RuntimeError(
-            "No LLM backend found. Run this notebook in Google Colab (free built-in "
-            "Gemini, no key needed), or set GEMINI_API_KEY as an environment variable "
-            "to run it on your own computer. See resources/tools/gemini-api-key.md.")
-    from google import genai
-    _client = genai.Client(api_key=_key)
-    _raw_generate_text = lambda p: _client.models.generate_content(
-        model="gemini-3.1-flash-lite", contents=p).text
-    _backend = "Gemini API (gemini-3.1-flash-lite)"
-    _min_interval = 4.4   # keeps us under gemini-3.1-flash-lite's 15-requests/minute cap'''
+from google.colab import ai      # Colab's built-in Gemini — nothing to set up'''
 
 # The reproducible API backend (Day 3+): key preferred, colab.ai fallback, plus a
 # rate-limit guard (pacing + retry) — walked through piece by piece in Day 3.
@@ -287,9 +248,7 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
     simple = []                                   # single-line `import x` modules
     if backend == "api":
         simple += ["os", "re", "time"]
-    elif backend == "demo":
-        # `os` for the local fallback: off Colab the backend reads GEMINI_API_KEY.
-        simple += ["os", "time"]
+    # backend == "demo" needs no imports at all — the colab.ai import is in DEMO_BACKEND.
     if lib_names & {"load_gold", "predictions"} or gold_url or predictions_url:
         simple += ["json", "urllib.request"]
     if "run_prompt" in lib_names:
@@ -330,11 +289,16 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
         src += f'\nPREDICTIONS_URL = "{predictions_url}"   # frozen model predictions'
 
     status = "Setup done."
-    if backend:
+    if backend == "demo":
+        status += " Colab's built-in Gemini is ready."   # no _backend variable on Day 1
+    elif backend:
         status += " LLM backend: {_backend}."
     if want_matrix:
         status += " scikit-learn ready."
-    src += f'\nprint(f"{status}")'
+    # Day 1's status line has nothing to interpolate, and an `f` on a brace-less string
+    # is exactly the confusion step 8 teaches students to spot. Only use it when needed.
+    prefix = "f" if "{" in status else ""
+    src += f'\n\nprint({prefix}"{status}")'
     return code(src)
 
 
@@ -1105,145 +1069,410 @@ def day1():
     cells = [how_to_use(
         1, "Day 1 · Your first LLM call & reading its data",
         ("Tutorial", "call a language model, then learn to read the data it hands back."),
-        ("Corpus Lab", "segment text into sentences, run the model over a list, then "
-                       "practice the basics."))]
+        ("Corpus Lab", "segment text into sentences, then write the Python you will reuse "
+                       "every day this week."))]
 
-    # ---- Part A: Colab survival → first LLM call → data types → f-strings ----
+    # ---- Part A: Colab survival → first LLM call → data types → indexing → f-strings ----
+    #
+    # Eight short steps rather than four sections: one idea per cell, every cell prints
+    # something (notebook-coding-principles.md §1, build-along rules).
+    #
+    # Order: the model comes first and stays first. Steps 4-5 are all prompting — five calls
+    # and then the f-string that builds a prompt from a variable — before any talk of types.
+    # Types, lists/dicts and indexing (6-8) then arrive as the way to READ what came back,
+    # which is the order the week itself uses.
     cells += [md(
         "## Part A · Tutorial — your first LLM call, and reading its answer",
         "",
-        "No prior Python needed. The star of Part A is a single call to a language model; "
-        "everything else — variables, data types, f-strings — is just enough Python to read "
-        "and reshape what the model gives you back. Run each cell, read the output, then "
-        "change a value and re-run to see what happens.")]
+        "No prior Python needed. Part A starts at the language model and stays there: you "
+        "call it, see what it is good and bad at, then build a prompt out of a variable. "
+        "Only then do we look at the Python — types, lists, dicts, indexing — you need to "
+        "read and reshape what it gives back.",
+        "",
+        "Work through **eight short steps**. Each one shows a worked example you run, then a "
+        "**🧪 your turn** cell where you change something and re-run.")]
 
-    # 1. Colab survival kit
+    # A1. Run a cell
     cells += [md(
-        "### 1. Getting your bearings in Colab",
+        "### Step 1 · Run a cell",
         "",
         "This page is a **Colab notebook**: a stack of **cells** you run top to bottom. A "
         "code cell runs when you press **Shift+Enter** (or click ▶). The first run wakes up "
         "a **runtime** — a temporary computer in the cloud that remembers your variables "
-        "until you close the tab. Run the cell below to prove it works.")]
+        "until you close the tab.")]
     cells += [code(
         'print("Hello, Colab! You just ran your first cell.")')]
     cells += [md(
-        "**When a cell breaks — read the error.** Sooner or later a cell turns red. Don't "
-        "panic: Python tells you what went wrong on the **last line**. For example, running "
-        "`print(mesage)` (a typo for `message`) prints:",
+        "**🧪 Your turn** — change the text inside the quotes to a message of your own, then "
+        "press Shift+Enter again.")]
+
+    # A2. Read an error
+    cells += [md(
+        "### Step 2 · Read an error",
+        "",
+        "Sooner or later a cell turns red. Python tells you what went wrong on the **last "
+        "line**. Run this cell — it is *meant* to fail:")]
+    cells += [code(
+        'print(mesage)      # a typo for `message` — this cell is supposed to fail')]
+    cells += [md(
+        "The last line reads:",
         "",
         "```",
         "NameError: name 'mesage' is not defined",
         "```",
         "",
-        "Read it back to front: the **error type** (`NameError`), the **message** "
-        "(`'mesage' is not defined`), and the **line** it happened on. Nearly every early "
-        "error is a typo or a cell you haven't run yet. Fix the typo, re-run, move on.")]
-
-    # 2. First LLM call (the spine)
-    cells += [md(
-        "### 2. Your first LLM call",
+        "Three parts: the **error type** (`NameError`), the **message** (`'mesage' is not "
+        "defined`), and the **line** it happened on. Nearly every early error is a typo or a "
+        "cell you haven't run yet.",
         "",
-        "Run the setup cell (it loads the LLM backend — in Colab that's the free built-in "
-        "Gemini, no key needed), then send the model a prompt with `generate_text(...)`. The "
-        "answer comes back as text, which we store in a **variable** called `reply`.")]
+        "**🧪 Your turn** — fix the spelling so the cell runs. You will need to give `message` "
+        "a value first.")]
+
+    # A3. Variables
+    cells += [md(
+        "### Step 3 · Variables — store a value under a name",
+        "",
+        "A **variable** is a name that holds a value. The `=` means *\"store this\"*, not "
+        "*\"equals\"*. Once stored, you get the value back by writing its name.")]
+    cells += [code(
+        'level = "A1"        # store the text "A1" under the name `level`',
+        'print(level)        # get it back by name')]
+    cells += [md(
+        "**🧪 Your turn** — store your own name under a variable called `who`, then print it.")]
+    cells += [code(
+        'who = "..."         # ✏️ your name here',
+        'print(who)')]
+
+    # A4. First LLM call (the spine)
+    cells += [md(
+        "### Step 4 · Your first LLM call",
+        "",
+        "Run the setup cell first. It does one thing: `from google.colab import ai` brings in "
+        "Colab's built-in Gemini — free, and nothing to set up.",
+        "",
+        "Then call it. **`ai.generate_text(...)`** sends your text to the model and hands back "
+        "its reply. You send text; you get text back. We store the answer in a variable "
+        "called `reply`.")]
     cells += [setup_cell(backend="demo")]
     cells += [md("**✏️ YOU EDIT** — change the prompt text and re-run. The prompt is just "
                  "text you send; the reply is just text you get back.")]
     cells += [code(
         '# ✏️ change the text in the quotes, then press Shift+Enter to re-run.',
-        'reply = generate_text("In one sentence, what is applied linguistics?")  # ask',
+        'reply = ai.generate_text("In one sentence, what is applied linguistics?")',
         'print(reply)                                    # show what came back')]
+    cells += [md(
+        "One call, one answer. That reply is **not correct by definition** — it is data you "
+        "have to check. On Day 2 you will score answers like this against labels people "
+        "agreed on by hand.",
+        "",
+        "Before moving on, try the model on four more prompts. Each one asks it to do "
+        "something you might actually want from it, and each shows something different about "
+        "what you get back.")]
 
-    # 3. Data types — motivated by the reply
+    # Four more calls, each making one point students meet again later in the week:
+    # (1) the task itself, (2) output format is something you ask for, (3) the same prompt
+    # twice gives different text, (4) a wrong answer stated just as fluently as a right one.
     cells += [md(
-        "### 3. What did the model hand back? — Python data types",
-        "",
-        "Every value in Python has a **type**. Ask what type `reply` is:")]
+        "**1. Ask it to do the actual task.** This is the job you will spend the week on: "
+        "give it a sentence, ask for a CEFR level.")]
     cells += [code(
-        'print(type(reply))     # <class \'str\'> — a string, i.e. text')]
+        'reply = ai.generate_text("What CEFR level (A1-C2) is this sentence? '
+        'The cat sat on the mat.")',
+        'print(reply)')]
     cells += [md(
-        "The three types you'll use all week:",
+        "You probably got a paragraph of explanation rather than a single level. The model "
+        "answered the question; it just answered at a length nobody asked for.",
         "",
-        "- **`str`** — text, in quotes (like `reply`).",
-        "- **`list`** — an ordered sequence, in square brackets. Several sentences, say.",
-        "- **`dict`** — a labelled record, in curly braces: `key → value` pairs. This is the "
-        "`{id, text, label}` shape every dataset this week uses.",
-        "",
-        "Build one of each, then reach inside them with **`[...]`** — lists by position "
-        "(counting from 0), dicts by key.")]
+        "**2. Ask for the format you want.** Adding one sentence to the prompt changes the "
+        "shape of the reply.")]
     cells += [code(
-        'sentences = ["The cat sat on the mat.",          # a list of strings',
-        '             "Nevertheless, the findings were inconclusive."]',
-        'record = {"id": 1, "text": sentences[0], "label": "A1"}   # a dict',
-        '',
-        'print("how many sentences:", len(sentences))   # len() = how many items',
-        'print("first sentence:", sentences[0])       # list — index by position (from 0)',
-        'print("its gold label:", record["label"])   # dict — index by key')]
+        'reply = ai.generate_text("What CEFR level (A1-C2) is this sentence? '
+        'Answer with just the level, nothing else. The cat sat on the mat.")',
+        'print(reply)')]
+    cells += [md(
+        "Shorter, and much easier to put in a table. **The output format is something you "
+        "ask for, not something you hope for** — that is most of what Day 3 is about.",
+        "",
+        "**3. Run the same prompt twice.** Nothing in the cell changes; run it, then run it "
+        "again.")]
+    cells += [code(
+        'print(ai.generate_text("Name one common hedge in academic writing."))')]
+    cells += [md(
+        "The two answers are probably not identical. This backend gives no way to hold the "
+        "output still, so the same prompt can produce different text each time. On Day 3 you "
+        "switch to a backend that can be pinned down, because a result you cannot reproduce "
+        "is a result you cannot report.",
+        "",
+        "**4. Ask it something it will get wrong.** The model answers questions about "
+        "language, so ask it to count.")]
+    cells += [code(
+        'print(ai.generate_text("How many letter r\'s are in the word strawberry? '
+        'Answer with just the number."))')]
+    cells += [md(
+        "The word has three. Whatever it told you, it told you in the same confident tone as "
+        "every other answer above. **Fluency is not accuracy**, and nothing in the reply "
+        "marks which is which.",
+        "",
+        "That is the reason the rest of this course exists: you will build a set of "
+        "human-labelled answers (Day 2), then measure the model against it (Day 2 and Day 3) "
+        "instead of trusting how the reply sounds.",
+        "",
+        "**🧪 Your turn** — try a prompt from your own research area, and one you expect the "
+        "model to get wrong. Can you tell the two replies apart without already knowing the "
+        "answer?")]
 
-    # 4. f-strings
+    # A5. f-strings (+ the template form Day 3 and the project use)
     cells += [md(
-        "### 4. f-strings — put your data *into* a prompt",
+        "### Step 5 · f-strings — put your data *into* a prompt",
         "",
         "An **f-string** (`f\"...\"`) drops a variable straight into a piece of text with "
-        "`{curly braces}`. That's how you build a prompt *about* a specific sentence, and "
-        "it is how you will run one prompt over a whole dataset later.",
-        "",
-        "> **The `f` is what fills the braces, and it fills them on that line.** Without "
-        "it, `\"... {sentence}\"` is just text with the characters `{sentence}` in it. "
-        "That turns out to be useful — a prompt **template** keeps its braces empty until "
-        "something else fills them in, one item at a time — so it is worth knowing which "
-        "of the two you have written.")]
+        "`{curly braces}`. That's how you build a prompt *about* a specific sentence, and it "
+        "is how you will run one prompt over a whole dataset later.")]
     cells += [md("**✏️ YOU EDIT** — change the sentence and re-run.")]
     cells += [code(
         'sentence = "Nevertheless, the findings were inconclusive."   # ✏️ your sentence',
         'prompt = f"What CEFR level (A1-C2) is this sentence? {sentence}"  # f = fill in {}',
         'print("Prompt sent:", prompt)                # see what {sentence} became',
         '',
-        'reply = generate_text(prompt)                # send the finished prompt',
+        'reply = ai.generate_text(prompt)             # send the finished prompt',
         'print("Model says:", reply)')]
-
-    # ---- Part B: segmentation → word vectors → control flow → practice → project ----
     cells += [md(
-        "## Part B · Corpus Lab — from text to sentences, then practice",
+        "**The `f` is what fills the braces, and it fills them on that line.** Without the "
+        "`f`, `\"... {sentence}\"` is just text with the characters `{sentence}` in it.",
+        "",
+        "That second form is useful, so it is worth seeing once now. A prompt written over "
+        "several lines uses **three quotes** (`\"\"\"...\"\"\"`), and keeps its braces empty "
+        "until `.format()` fills them in — one item at a time. This is the form Day 3 and the "
+        "final project use, and you only ever edit the text between the quotes:")]
+    cells += [code(
+        '### Step 1: a template — no `f`, so {text} stays an empty slot ###',
+        'TEMPLATE = """What CEFR level (A1-C2) is this sentence?',
+        'Answer with just the level.',
+        '',
+        'Sentence: {text}"""',
+        '',
+        '### Step 2: fill the slot, once per sentence ###',
+        'print(TEMPLATE.format(text="The cat sat on the mat."))   # .format() fills {text}',
+        'print("---")',
+        'print(TEMPLATE.format(text=sentence))        # same template, different sentence')]
+    cells += [md(
+        "One template, two finished prompts. You never have to write `.format()` yourself this "
+        "week — but from Day 3 you will edit templates that use it, so recognise the shape.")]
+    cells += [md(
+        "**✏️ YOU EDIT** — now write one of your own. Three lines:",
+        "",
+        "1. **`YOUR_TEMPLATE`** — a prompt with `{text}` where the sentence should go. Use "
+        "three quotes, and **no `f`** in front, so the braces stay empty.",
+        "2. **`prompt`** — fill the slot with `.format(text=...)`.",
+        "3. **`ai.generate_text(prompt)`** — send it, and print what comes back.",
+        "",
+        "Ask the model for anything you like about the sentence: its CEFR level, whether it "
+        "hedges a claim, how formal it is. Print `prompt` before you send it — checking what "
+        "the braces became is how you catch a template that did not fill in.")]
+    cells += [code(
+        '### Step 1: your template — {text} is the empty slot, and there is no `f` ###',
+        'YOUR_TEMPLATE = """..."""            # ✏️ your prompt, with {text} in it somewhere',
+        '',
+        '### Step 2: fill the slot ###',
+        'my_sentence = "Nevertheless, the findings were inconclusive."   # ✏️ your sentence',
+        'prompt = YOUR_TEMPLATE.format(text=my_sentence)',
+        'print("Prompt sent:", prompt)        # check what {text} became before sending',
+        '',
+        '### Step 3: send it to the model ###',
+        'reply = ai.generate_text(prompt)',
+        'print("Model says:", reply)')]
+    cells += [md(
+        "If the reply looks like it ignored your sentence, read the printed `prompt` first — "
+        "a template with no `{text}` in it sends the same prompt every time, and "
+        "`.format()` will not warn you.")]
+
+    # A6-A8 run on the student's OWN replies and their OWN judgment, not invented data.
+    # The through-line: you have a model answer; to find out whether it is any good you have
+    # to put it next to a person's answer, and for that both must sit in one structure.
+    # That structure is the {id, text, label} record Days 2-5 are built on. `for` is not
+    # taught until Part B step 3, so every "many items" move here is a literal list plus
+    # indexing — never a loop.
+
+    # A6. Types — motivated by "what am I holding, and can I compare it?"
+    cells += [md(
+        "### Step 6 · What kind of value is the model's answer?",
+        "",
+        "In step 4 you asked for a CEFR level and got a paragraph; then you asked for just the "
+        "level and got something short. The last reply is still in `reply`.",
+        "",
+        "Before you can do anything with an answer — compare it with a person's answer, count "
+        "how often the two agree, put it in a table — you have to know what kind of value you "
+        "are holding. Every value in Python has a **type**.")]
+    cells += [code(
+        'print(reply)              # the model\'s answer, still in the variable from step 5',
+        'print(type(reply))        # <class \'str\'> — a string, i.e. text',
+        'print(len(reply))         # how many characters of text that is')]
+    cells += [md(
+        "The three types you'll use all week:",
+        "",
+        "- **`str`** — text, in quotes (like `reply`).",
+        "- **`list`** — an ordered sequence, in square brackets. Several sentences, say.",
+        "- **`dict`** — a labelled record, in curly braces: `key → value` pairs. This is the "
+        "`{id, text, label}` shape every dataset this week uses, and you build one in step 7.",
+        "",
+        "A string is **one** thing. A sentence, a level, and a person's label are each a "
+        "string on their own, and nothing tells Python that the three belong together. "
+        "Putting them together is what step 7 is for.")]
+    cells += [md(
+        "**🧪 Your turn** — before you run the cell below, write down what you expect each "
+        "line to print. Two of the four are not what most people guess.")]
+    cells += [code(
+        'print(len("A1"))                   # how long is the text "A1"?',
+        'print(type("A1") == type(reply))   # is a level the same type as a whole reply?',
+        'print(type(7))                     # a number',
+        'print(type("7"))                   # the same digit, in quotes')]
+    cells += [md(
+        "`\"A1\"` and a three-paragraph reply are **the same type**: `str` tells you the kind "
+        "of value, not how much of it there is. And `7` and `\"7\"` are different — one is a "
+        "number you can divide, the other is text.",
+        "",
+        "**Where this goes:** on Day 2 you compare a model's label with a person's label. Both "
+        "are `str`, so the comparison is `==` — which is why it matters that `\"A1\"` and "
+        "`\"A1 \"`, with a trailing space, are not equal.")]
+
+    # A7. The record — label comes from the STUDENT, model answer from the model.
+    cells += [md(
+        "### Step 7 · Put the answer in a record",
+        "",
+        "One reply is a string. A dataset is **many** replies, each attached to the sentence it "
+        "was about and to what a person thought the right answer was. Python's structure for "
+        "that is a **dict**: a record with named slots.",
+        "",
+        "Build one for a single sentence. Its `label` is **your own judgment** — the sentence "
+        "below is short and concrete, so read it and decide. This is exactly what you and your "
+        "group do on Day 2, by hand, for a hundred sentences: **the label in a gold standard "
+        "is a decision a person made**, not something a program produced.")]
+    cells += [md("**✏️ YOU EDIT** — decide the level yourself before you look at what the "
+                 "model says.")]
+    cells += [code(
+        '# ✏️ A1 is the simplest level, C2 the most advanced. Change it if you disagree.',
+        'text = "The cat sat on the mat."',
+        'my_level = "A1"',
+        '',
+        'record = {"id": 1, "text": text, "label": my_level}   # a dict: named slots',
+        'print(record)                    # the whole record — note the { key: value ... }')]
+    cells += [md(
+        "That record holds what a **person** said. To score the model you need what the "
+        "**model** said about the same sentence, sitting in the same record. Ask it, and store "
+        "the answer under a new key.")]
+    cells += [code(
+        'answer = ai.generate_text(f"What CEFR level (A1-C2) is this sentence? '
+        'Answer with just the level. {text}")',
+        'record["model"] = answer.strip()   # .strip() drops the newline the reply arrives with',
+        'print(record)                      # the same record, now with two answers in it')]
+    cells += [md(
+        "One record is one sentence. A dataset is a **list** of them — square brackets, "
+        "records separated by commas. Here are two more, already answered, so you have "
+        "something to compare:")]
+    cells += [code(
+        'items = [record,                                              # the one you just built',
+        '         {"id": 2, "text": "More research is needed.",',
+        '          "label": "B1", "model": "B1"},',
+        '         {"id": 3, "text": "Nevertheless, the findings were inconclusive.",',
+        '          "label": "C1", "model": "B2"}]      # here the two answers disagree',
+        '',
+        'print("how many items:", len(items))   # len() on a list = how many records',
+        'print(items[2])                        # the third record — counting starts at 0')]
+    cells += [md(
+        "**🧪 Your turn** — write a sentence of your own, decide its level, then let the model "
+        "answer the same question. **Write your level down before you run the cell.** Do the "
+        "two of you agree?")]
+    cells += [code(
+        'my_text = "..."                       # ✏️ a sentence of your own',
+        'my_record = {"id": 4, "text": my_text, "label": "..."}   # ✏️ your judgment',
+        '',
+        'prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {my_text}"',
+        'my_record["model"] = ai.generate_text(prompt).strip()',
+        '',
+        'print(my_record)',
+        'print("we agree:", my_record["label"] == my_record["model"])')]
+    cells += [md(
+        "**Where this goes:** `{id, text, label}` is the shape of the gold standard you build "
+        "on Day 2, of the file you score in S6, and of the sample you draw on Day 4. The extra "
+        "`model` key is what a prediction looks like once you have run one. Every dataset in "
+        "this course is a list of records like these.")]
+
+    # A8. Indexing + slicing, on the records built above.
+    cells += [md(
+        "### Step 8 · Getting the answers back out — indexing",
+        "",
+        "A record with two answers in it is only useful if you can get them out again. Use "
+        "**`[...]`**: a **list** by *position* (counting from **0**), a **dict** by *key*.")]
+    cells += [code(
+        'print("sentence 3:", items[2]["text"])    # list by position, then dict by key',
+        'print("person said:", items[2]["label"])',
+        'print("model said: ", items[2]["model"])',
+        'print("they agree: ", items[2]["label"] == items[2]["model"])   # == asks "same value?"')]
+    cells += [md(
+        "`False` — one record, one disagreement. On Day 2 you do this for every record in the "
+        "file and count how often it comes out `True`. That count, divided by the number of "
+        "records, is the first score you will report.")]
+    cells += [md(
+        "You can also take **several records at once** with a colon. `items[:2]` means *\"from "
+        "the start, up to but not including position 2\"* — the first two. From Day 3 on you "
+        "use this to try a prompt on the first few items of a dataset before running it on "
+        "all of them.")]
+    cells += [code(
+        'print("the first two:", items[:2])          # a slice — records 0 and 1',
+        'print("all but the first:", items[1:])      # from position 1 to the end',
+        'print("how many in the slice:", len(items[:2]))')]
+    cells += [md(
+        "**🧪 Your turn** — three questions. Answer each one **before** you run the cell.",
+        "",
+        "1. How many records does `items[:2]` hold? How many does `items[1:3]` hold?",
+        "2. Do `items[0][\"label\"]` and `items[0][\"model\"]` agree — and why do you already "
+        "know?",
+        "3. What happens when you ask for `items[3]`?")]
+    cells += [code(
+        'print(len(items[:2]), len(items[1:3]))   # count them before you run this',
+        'print(items[0]["label"] == items[0]["model"])',
+        'print(items[3])                          # this one is supposed to fail — read the error')]
+    cells += [md(
+        "`items[:2]` and `items[1:3]` both hold **two** records — a slice never includes its "
+        "right-hand number. And `items[3]` fails with `IndexError: list index out of range`, "
+        "because three records sit at positions 0, 1 and 2. That off-by-one is the commonest "
+        "mistake with slices, and it is worth meeting here rather than on Day 4.",
+        "",
+        "**Where this goes:** `items[2][\"label\"]` is how Day 2 reads a gold label out of a "
+        "file, and `val[:5]` on Day 3 is this same slice on a real dataset.")]
+
+    # ---- Part B: segmentation → word vectors → writing Python over data → practice ----
+    #
+    # Seventeen numbered steps in four blocks. Steps 8-13 are the ones that carry Day 1's
+    # real job: every pattern Days 2-5 ask students to WRITE is introduced here as a worked
+    # read-example first (notebook-coding-principles.md §2, "read before write") —
+    # .append, d[k] = v, elif, `and`, division with a zero guard, and `for` over a list of
+    # dicts. Without these, Day 2 S6 asks students to fill in metric formulas built out of
+    # patterns they have never seen.
+    cells += [md(
+        "## Part B · Corpus Lab — from text to sentences, then the Python you'll reuse",
         "",
         "In Part A you called the model once. Here you'll turn a paragraph into individual "
-        "**sentences** (the unit you'll annotate on Day 2), look at how a model stores the "
-        "meaning of a word, run the model over a whole list, and then practice the basics on "
-        "your own. Cells marked **✏️ YOU EDIT** are yours to change; run the **self-check** at "
-        "the end until every line prints ✅.")]
-
-    # The word-vector block in B3 needs a spaCy model that ships with vectors, and the
-    # download is large. Put it FIRST, so it runs while the session opens rather than
-    # inside the 10-minute block it belongs to.
-    #
-    # It MUST be en_core_web_lg, not _md. The md model prunes 684,830 vector keys down to
-    # 20,000 rows, so unrelated words end up sharing one vector — cat and dog are literally
-    # identical in md, as are perhaps/maybe and banana/apple. That would make every
-    # similarity number in this block meaningless, and would wreck the punchline in
-    # particular: "the same word form always gets the same vector" is only interesting if
-    # DIFFERENT words don't also score 1.0. lg keeps 514,157 distinct vectors.
-    cells += [md(
-        "### Run this one now",
+        "**sentences** (the unit you'll annotate on Day 2), and then write the handful of "
+        "Python patterns that the rest of the week is built from.",
         "",
-        "Section 3 uses an English model that carries a **vector for every word**. It is a "
-        "large file and takes a minute or two to arrive, so start it now and carry on "
-        "reading — it will be ready by the time you need it.")]
-    cells += [code(
-        '#@title 📥 Download the word-vector model — run me now { display-mode: "form" }',
-        _HELPER_NOTE,
-        '!python -m spacy download en_core_web_lg',
-        '',
-        'import importlib, spacy',
-        '# The model was installed after Python started, so refresh the module list',
-        '# before loading it — otherwise the load below may not find it yet.',
-        'importlib.invalidate_caches()',
-        'nlp_vec = spacy.load("en_core_web_lg")',
-        'print("✅ word vectors ready —", f"{nlp_vec.vocab.vectors.shape[0]:,}", "words have one")')]
+        "Thirteen short steps, in three blocks:",
+        "",
+        "| Steps | What you do |",
+        "|--|--|",
+        "| 1–2 | Split a paragraph into sentences, badly and then properly |",
+        "| 3–9 | Write the loops, counts and conditions you will reuse on Days 2–5 |",
+        "| 10–13 | Practice on your own, with a self-check after each one |",
+        "",
+        "An **optional extra section** follows at the end, on how a model stores the meaning "
+        "of a word. Nothing later in the week depends on it.",
+        "",
+        "Cells marked **✏️ YOU EDIT** are yours to change; run each **self-check** until every "
+        "line prints ✅.")]
 
     # B1. Segmentation without a model
     cells += [md(
-        "### 1. Splitting text into sentences — *without* a model",
+        "### Step 1 · Splitting text into sentences — *without* a model",
         "",
         "Text arrives as one long string. To analyse it sentence by sentence you first have "
         "to **segment** it. The obvious idea: split on the full stop. To do that we call a "
@@ -1265,7 +1494,7 @@ def day1():
 
     # B2. Segmentation with a model
     cells += [md(
-        "### 2. Splitting text into sentences — *with* a model",
+        "### Step 2 · Splitting text into sentences — *with* a model",
         "",
         "A proper tool knows more than \"cut at every dot\". We'll use **spaCy**, an NLP "
         "library. `import spacy` loads that toolbox; `spacy.blank(\"en\")` makes a minimal "
@@ -1287,18 +1516,419 @@ def day1():
         "matters:** on Day 2 the unit you annotate and feed the LLM is the *sentence* — bad "
         "boundaries mean bad data downstream.")]
 
-    # B3. Word vectors — the S1 embedding concept, made runnable. Session 1 asserts three
+    # B3. The patterns Days 2-5 require students to WRITE. Each one is a worked read
+    # example here, so the later ✏️ cells never ask for syntax that was never shown.
+    cells += [md(
+        "***",
+        "## Steps 3–9 · The Python you'll reuse all week",
+        "",
+        "Everything from here to step 9 is a pattern you will be asked to **write** later "
+        "this week. Each step shows it working on a small example first.",
+        "",
+        "| Step | Pattern | Where you'll write it |",
+        "|--|--|--|",
+        "| 3 | `for` over a list, with `if` / `else` | every day |",
+        "| 4 | `for` over a list of **records** | Day 2, Day 4 |",
+        "| 5 | Build a list with `.append` | Day 2 S6, the final project |",
+        "| 6 | Count with a dict | Day 2 S6 |",
+        "| 7 | `if` / `elif` / `else`, and `and` | Day 2 S5 and S6 |",
+        "| 8 | Divide, and guard against zero | Day 2 S6 — every metric |",
+        "| 9 | Wrap it in a function | Day 2 S6 onwards |")]
+
+    # B3.7 for + if/else, over the model's replies
+    cells += [md(
+        "### Step 3 · Run the model over every sentence — `for` and `if`",
+        "",
+        "Now that you have a list of sentences, do something to *each* one. A **`for` loop** "
+        "repeats the same steps for every item; an **`if`** lets you react to what comes "
+        "back. Below, we build a prompt for each sentence (with an f-string) and ask the "
+        "model for its CEFR level.",
+        "",
+        "Notice **where** the f-string sits: *inside* the loop, so the braces are filled in "
+        "again for every sentence. Written once above the loop it would be filled in once, "
+        "and all three calls would ask about the same sentence.")]
+    cells += [md("**✏️ YOU EDIT** — try your own sentences.")]
+    cells += [code(
+        '### Step 1: the sentences to ask about ###',
+        'examples = ["The findings were inconclusive.",      # ✏️ try your own sentences',
+        '            "Nevertheless, we draw some tentative conclusions.",',
+        '            "More research is needed."]',
+        '',
+        '### Step 2: for each one — build a prompt, ask, and react to the reply ###',
+        'for sentence in examples:              # repeat everything below for each sentence',
+        '    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"',
+        '    reply = ai.generate_text(prompt).strip()   # .strip() removes stray blank space',
+        '    if reply == "":                    # the model sometimes says nothing at all',
+        '        print(sentence, "→ (no answer)")',
+        '    else:                              # normal case: it answered',
+        '        print(sentence, "→", reply)')]
+
+    # B3.4 for over a list of dicts — the shape of every dataset this week
+    cells += [md(
+        "### Step 4 · Loop over **records**, not just strings",
+        "",
+        "Every dataset this week is a **list of dicts** — the `{id, text, label}` shape you "
+        "built in Part A step 7. Below is that same shape without the `model` key, so the "
+        "records hold only what a person said. Looping over the list works exactly as it did "
+        "over sentences, except each item is a record, so you reach into it by key.")]
+    cells += [code(
+        'items = [{"id": 1, "text": "The cat sat on the mat.", "label": "A1"},',
+        '         {"id": 2, "text": "More research is needed.", "label": "B1"},',
+        '         {"id": 3, "text": "Nevertheless, the findings were inconclusive.",',
+        '          "label": "C1"}]',
+        '',
+        'for item in items:                 # item is one record — a dict',
+        '    print(item["id"], "|", item["label"], "|", item["text"])')]
+    cells += [md(
+        "**🧪 Your turn** — print only the `text` of each item, without the id and the label.")]
+
+    # B3.5 .append — the accumulator
+    cells += [md(
+        "### Step 5 · Build a new list with `.append`",
+        "",
+        "Often you don't want to print each item — you want to **keep** something from it. "
+        "Start with an empty list, then add to it one item at a time with **`.append(...)`**.",
+        "",
+        "This is the most-used pattern of the whole week: on Day 2 you build a list of "
+        "verdicts this way, and in the final project you build the list of rows your coders "
+        "disagreed about.")]
+    cells += [code(
+        'labels = []                        # start empty; the loop fills it',
+        'for item in items:',
+        '    labels.append(item["label"])   # add this item\'s label to the end',
+        '',
+        'print(labels)                      # three labels, in the items\' order',
+        'print("how many:", len(labels))')]
+    cells += [md(
+        "Three records in, three labels out, **in the same order**.",
+        "",
+        "The same shape with an `if` in it keeps only *some* items:")]
+    cells += [code(
+        'advanced = []                      # the ones we want to keep',
+        'for item in items:',
+        '    if item["label"] == "C1":      # only C1 records get added',
+        '        advanced.append(item["text"])',
+        '',
+        'print(advanced)')]
+    cells += [md(
+        "**🧪 Your turn** — build a list of the `id`s instead of the labels.")]
+
+    # B3.6 dict item assignment + .get accumulation
+    cells += [md(
+        "### Step 6 · Count things with a dict",
+        "",
+        "To count how many items carry each label, use a dict as a tally: the **key** is the "
+        "label, the **value** is how many you have seen so far.",
+        "",
+        "**`counts[label] = ...`** stores a value under a key — the same square brackets you "
+        "used in Part A step 7 to put the model's answer into `record[\"model\"]`, and the "
+        "same ones you read a dict with.",
+        "",
+        "The new piece is **`counts.get(label, 0)`**, which reads the count so far and answers "
+        "`0` when the label is new. Without it the very first item would fail, because "
+        "`counts[\"A1\"]` does not exist yet.")]
+    cells += [code(
+        'counts = {}                        # an empty dict: label -> how many',
+        'for item in items:',
+        '    label = item["label"]',
+        '    counts[label] = counts.get(label, 0) + 1   # count so far (0 if new), plus one',
+        '',
+        'print(counts)')]
+    cells += [md(
+        "Each label appears once here, so every count is 1. Add another `B1` record to `items` "
+        "in step 4, re-run both cells, and watch that count become 2.",
+        "",
+        "**🧪 Your turn** — count the items by the **first letter** of their label "
+        "(`item[\"label\"][0]` gives you `\"A\"`, `\"B\"` or `\"C\"`).")]
+
+    # B3.7 elif + and
+    cells += [md(
+        "### Step 7 · More than two branches — `elif` and `and`",
+        "",
+        "An `if`/`else` splits two ways. **`elif`** (*\"else, if\"*) adds more branches: they "
+        "are checked top to bottom, the **first** match wins, and **exactly one** runs.",
+        "",
+        "**`and`** joins two conditions — both sides have to be true.")]
+    cells += [code(
+        'for item in items:',
+        '    label = item["label"]',
+        '    if label == "A1" or label == "A2":     # `or` = either side is enough',
+        '        band = "basic"',
+        '    elif label == "B1" or label == "B2":   # only checked if the first did not match',
+        '        band = "independent"',
+        '    else:                                  # anything left over',
+        '        band = "proficient"',
+        '    print(label, "→", band)')]
+    cells += [md(
+        "Now `and`. On Day 2 you compare two people's labels for the same sentence, and a row "
+        "only counts as a disagreement when **both** of them have actually labelled it *and* "
+        "the two labels differ:")]
+    cells += [code(
+        'rows = [{"id": 1, "CoderA": "A1", "CoderB": "A1"},   # they agree',
+        '        {"id": 2, "CoderA": "B1", "CoderB": "C1"},   # they disagree',
+        '        {"id": 3, "CoderA": "B2", "CoderB": ""}]     # B has not reached this row',
+        '',
+        'for row in rows:',
+        '    a = row["CoderA"]',
+        '    b = row["CoderB"]',
+        '    if a != "" and b != "" and a != b:   # both labelled it, AND they differ',
+        '        print(row["id"], "disagreement:", a, "vs", b)',
+        '    else:',
+        '        print(row["id"], "no disagreement")')]
+    cells += [md(
+        "Row 3 is **not** a disagreement: one coder simply hasn't got there yet. That is a "
+        "decision about your data, not a fact about it, and on Day 2 you will make it "
+        "yourself.")]
+
+    # B3.8 arithmetic + zero guard — the shape of every S6 metric
+    cells += [md(
+        "### Step 8 · Divide — and guard against zero",
+        "",
+        "Counting leads to dividing: *how many did we get right, out of how many there were?* "
+        "Python uses `/` for division, and brackets to say what to add up first.",
+        "",
+        "On Day 2 every score you write has this shape, so it is worth doing once here.")]
+    cells += [code(
+        'right = 9        # how many the model got right',
+        'wrong = 3        # how many it got wrong',
+        '',
+        'print(right / (right + wrong))            # 9 out of 12',
+        'print(round(right / (right + wrong), 3))  # round() to 3 decimal places')]
+    cells += [md(
+        "One thing can go wrong. If both counts are `0` there is nothing to divide by, and "
+        "Python stops with `ZeroDivisionError`. So **check before you divide** — and when "
+        "there is nothing to score, `0.0` is the honest answer:")]
+    cells += [code(
+        'right = 0',
+        'wrong = 0',
+        '',
+        'if right + wrong == 0:      # nothing was scored at all',
+        '    score = 0.0             # so no credit — and no division by zero',
+        'else:',
+        '    score = right / (right + wrong)',
+        'print(score)')]
+    cells += [md(
+        "**🧪 Your turn** — set `right = 7` and `wrong = 1` and re-run. You should get 0.875.")]
+
+    # B3.9 def / return — motivated by re-use, per §1 build-along rule 1
+    cells += [md(
+        "### Step 9 · Wrap it in a function",
+        "",
+        "You have now written the same three steps twice — build a prompt, call the model, "
+        "tidy the reply. **Name it once** with `def`, and the rest of the week you just call "
+        "`ask(sentence)`.",
+        "",
+        "One change from step 3: `print` became **`return`**. `print` puts a value on the "
+        "screen and it is gone; `return` hands the value back to whoever called the function, "
+        "so you can store it, count it, or score it.")]
+    cells += [code(
+        'def ask(sentence):                     # `def` names a block of steps',
+        '    """Ask the model for the CEFR level of one sentence; return its reply."""',
+        '    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"',
+        '    return ai.generate_text(prompt).strip()   # `return` hands the answer back',
+        '',
+        'print(ask("The cat sat on the mat."))  # one line now does all three steps')]
+    cells += [md(
+        "Because `ask` hands its answer back, you can put it straight into the loop from step "
+        "9 and **keep** every reply:")]
+    cells += [code(
+        'replies = []',
+        'for sentence in examples:          # the three sentences from step 3',
+        '    replies.append(ask(sentence))  # call the function, keep what it returns',
+        '',
+        'print(replies)')]
+    cells += [md(
+        "A list of sentences in, a list of the model's labels out. That is the whole shape of "
+        "what you will do on Days 3 and 4 — and on Day 2 you will learn how to tell whether "
+        "those labels are any good.")]
+
+    # B4. Guided practice — one stub per cell, each with its own check immediately below
+    # (notebook-coding-principles.md §1: "Never a wall of stubs"). Each exercise rehearses
+    # exactly one pattern from steps 3-9, in the order they were introduced.
+    cells += [md(
+        "***",
+        "## Steps 10–13 · Your turn — Python practice",
+        "",
+        "Four exercises, each rehearsing one pattern from steps 3–9. Fill in the function "
+        "(replace the `raise NotImplementedError(...)` line), then run the **self-check** "
+        "directly below it until it prints ✅. No grader needed — the checks *are* your "
+        "grader.",
+        "",
+        "The shared dataset for all four:")]
+    cells += [code(
+        'sample = [{"id": 1, "text": "Hi.", "label": "A1"},',
+        '          {"id": 2, "text": "Hello there.", "label": "A1"},',
+        '          {"id": 3, "text": "Nevertheless, the findings were inconclusive.",',
+        '           "label": "C1"}]',
+        '',
+        'print(len(sample), "items")')]
+
+    # 10 — dict indexing (Part A step 7)
+    cells += [md(
+        "### Step 10 · Read one value out of a record",
+        "",
+        "The pattern from Part A step 7: reach into a dict by key.")]
+    cells += [code(
+        '# ✏️ YOU EDIT — replace the NotImplementedError with your code.',
+        '',
+        'def label_of(item):',
+        '    """Return the value stored under the key "label" in the dict `item`.',
+        '    Example: label_of({"id": 1, "text": "Hi", "label": "A1"}) -> "A1".',
+        '    """',
+        '    raise NotImplementedError("Return item[\'label\'].")')]
+    cells += [code(
+        '#@title 🔎 Self-check — step 10 { display-mode: "form" }',
+        'ok = label_of(sample[0]) == "A1"',
+        'print(("✅" if ok else "❌"), "label_of →", label_of(sample[0]))')]
+
+    # 11 — loop + if + .append (steps 5, 7)
+    cells += [md(
+        "### Step 11 · Build a list in a loop",
+        "",
+        "The pattern from step 5: an empty list, a `for`, an `if`, and `.append`.")]
+    cells += [code(
+        '# ✏️ YOU EDIT — replace the NotImplementedError with your code.',
+        '',
+        'def long_words(words, n):',
+        '    """Return a LIST of the words whose length is greater than n.',
+        '    Example: long_words(["a", "cat", "elephant"], 3) -> ["elephant"].',
+        '    """',
+        '    # HINT: start with an empty list; loop with `for w in words:`;',
+        '    #       keep w when len(w) > n; return the list at the end.',
+        '    raise NotImplementedError("Return the words longer than n characters.")')]
+    cells += [code(
+        '#@title 🔎 Self-check — step 11 { display-mode: "form" }',
+        'got = long_words(["a", "cat", "elephant"], 3)',
+        'ok = got == ["elephant"]',
+        'print(("✅" if ok else "❌"), "long_words →", got)')]
+
+    # 12 — dict tally (step 6)
+    cells += [md(
+        "### Step 12 · Count with a dict",
+        "",
+        "The pattern from step 6: `counts[label] = counts.get(label, 0) + 1`.")]
+    cells += [code(
+        '# ✏️ YOU EDIT — replace the NotImplementedError with your code.',
+        '',
+        'def count_labels(items):',
+        '    """Given a list of {id, text, label} dicts, return a dict mapping each',
+        '    label to how many times it appears.',
+        '    Example: count_labels([{"label":"A1"}, {"label":"A1"}, {"label":"B1"}])',
+        '             -> {"A1": 2, "B1": 1}.',
+        '    """',
+        '    # HINT: start with counts = {}; for each item, add 1 to counts[label]',
+        '    #       (use counts.get(label, 0) + 1 so the first time starts at 0).',
+        '    raise NotImplementedError("Count how many items carry each label.")')]
+    cells += [code(
+        '#@title 🔎 Self-check — step 12 { display-mode: "form" }',
+        'got = count_labels(sample)',
+        'ok = got == {"A1": 2, "C1": 1}',
+        'print(("✅" if ok else "❌"), "count_labels →", got)')]
+
+    # 13 — count, divide, guard (steps 6 + 8). This is the shape of every Day 2 S6 metric.
+    cells += [md(
+        "### Step 13 · Count, then divide — with a guard",
+        "",
+        "Steps 6 and 8 together, and the shape of every score you write on Day 2: count "
+        "what matched, divide by the total, and return `0.0` rather than dividing by zero.")]
+    cells += [code(
+        '# ✏️ YOU EDIT — replace the NotImplementedError with your code.',
+        '',
+        'def accuracy(items, guesses):',
+        '    """What fraction of the guesses match the items\' labels?',
+        '',
+        '    `items` and `guesses` are the same length, in the same order.',
+        '    Return 0.0 when there is nothing to score.',
+        '    Example: accuracy(sample, ["A1", "A1", "B1"]) -> 0.667.',
+        '    """',
+        '    # HINT: count the matches in a loop, using a position counter like S6 does:',
+        '    #       i = 0 before the loop, guesses[i] inside it, i = i + 1 at the end.',
+        '    #       Then guard: if len(items) == 0, return 0.0 — otherwise divide.',
+        '    raise NotImplementedError("Count the matches, then divide by how many there are.")')]
+    cells += [code(
+        '#@title 🔎 Self-check — step 13 { display-mode: "form" }',
+        '### Step 1: two guesses right out of three, and an empty case for the guard ###',
+        'got = accuracy(sample, ["A1", "A1", "B1"])',
+        'empty = accuracy([], [])',
+        '',
+        '### Step 2: compare both against the answers we already know ###',
+        'ok = round(got, 3) == 0.667 and empty == 0.0',
+        'print(("✅" if ok else "❌"), "accuracy →", round(got, 3), "| empty case:", empty)')]
+
+    # A single run-them-all check, so a student can confirm the whole set at once.
+    cells += [md(
+        "### All four together",
+        "",
+        "Run this once all four print ✅ on their own.")]
+    cells += [code(
+        '#@title 🔎 Self-check — all four { display-mode: "form" }',
+        '### Step 1: run every function against an answer we already know ###',
+        'checks = [                             # each entry: (name, did it match?)',
+        '    ("label_of", label_of(sample[0]) == "A1"),',
+        '    ("long_words", long_words(["a", "cat", "elephant"], 3) == ["elephant"]),',
+        '    ("count_labels", count_labels(sample) == {"A1": 2, "C1": 1}),',
+        '    ("accuracy", round(accuracy(sample, ["A1", "A1", "B1"]), 3) == 0.667),',
+        ']',
+        '',
+        '### Step 2: report one line per check, then an overall verdict ###',
+        'for name, ok in checks:',
+        '    print(("✅" if ok else "❌"), name)',
+        'print("All passed ✅" if all(ok for _, ok in checks)   # all() = every one of them',
+        '      else "Some checks failed — fix them and re-run.")')]
+
+    # ---- Optional extra: what a model stores about a word ----
+    #
+    # Moved out of the main Part B spine and made optional: nothing on Days 2-5 depends on
+    # word vectors, and Day 1's job is the Python that later days require students to write.
+    # It stays in the notebook because it is the runnable version of the Session 1 slides.
+    cells += [md(
+        "***",
+        "## Optional · What a model stores about a word",
+        "",
+        "**This section is optional, and nothing later in the week depends on it.** It is here "
+        "because it makes the Session 1 slides runnable: you can look at the numbers a model "
+        "keeps for each word, and see for yourself where they stop working.",
+        "",
+        "If the session is running short, stop at step 13 and come back to this on your own.")]
+
+    # This section is optional and sits at the end, so the download sits with it rather
+    # than at the top of Part B. Students who skip the section never pay for the download.
+    #
+    # It MUST be en_core_web_lg, not _md. The md model prunes 684,830 vector keys down to
+    # 20,000 rows, so unrelated words end up sharing one vector — cat and dog are literally
+    # identical in md, as are perhaps/maybe and banana/apple. That would make every
+    # similarity number in this block meaningless, and would wreck the punchline in
+    # particular: "the same word form always gets the same vector" is only interesting if
+    # DIFFERENT words don't also score 1.0. lg keeps 514,157 distinct vectors.
+    cells += [md(
+        "This section uses an English model that carries a **vector for every word**. It is "
+        "a large file and takes a minute or two to arrive. Start it now, and read on while "
+        "it downloads.")]
+    cells += [code(
+        '#@title 📥 Download the word-vector model { display-mode: "form" }',
+        _HELPER_NOTE,
+        '!python -m spacy download en_core_web_lg',
+        '',
+        'import importlib, spacy',
+        '# The model was installed after Python started, so refresh the module list',
+        '# before loading it — otherwise the load below may not find it yet.',
+        'importlib.invalidate_caches()',
+        'nlp_vec = spacy.load("en_core_web_lg")',
+        'print("✅ word vectors ready —", f"{nlp_vec.vocab.vectors.shape[0]:,}", "words have one")')]
+
+    # Optional appendix: word vectors — the S1 embedding concept, made runnable.
+    # Session 1 asserts three
     # things on slides (similar words sit close · one word form has only one vector ·
     # averaging throws word order away); every cell here is a student checking one of them.
     cells += [md(
-        "### 3. What else the model knows about words",
+        "### A · What a model stores about a word",
         "",
         "In Session 1 you saw that a model turns each word into a long list of numbers, and "
         "that words with similar meanings end up with similar numbers. Those numbers are not "
         "hidden — you can look at them.",
         "",
         "The pipeline you just used, `nlp`, only knows where sentences end. The one you "
-        "downloaded at the top of Part B, `nlp_vec`, also carries a **vector** for every word "
+        "downloaded just above, `nlp_vec`, also carries a **vector** for every word "
         "it knows.")]
     cells += [code(
         'word = nlp_vec("suggest")[0]      # read one word; [0] takes the first token',
@@ -1310,7 +1940,7 @@ def day1():
 
     # Claim 1: similar words sit close.
     cells += [md(
-        "#### Are similar words really close?",
+        "### B · Are similar words really close?",
         "",
         "`.similarity(...)` compares two vectors and gives a number between 0 and 1: the "
         "higher it is, the closer the two words sit. Compare a pair that share a meaning "
@@ -1382,7 +2012,7 @@ def day1():
 
     # Claim 2: one word form, one vector — the limit that motivates attention.
     cells += [md(
-        "#### Where these vectors stop working",
+        "### C · Where these vectors stop working",
         "",
         "Session 1 used *free* in two sentences that mean different things — *your account is "
         "free of charge* and *claim your free prize now*. Take the word out of each sentence "
@@ -1414,11 +2044,11 @@ def day1():
         "**Why this matters for the rest of the week:** the categories you will annotate — a "
         "CEFR level, a rhetorical move, whether a claim is hedged — depend on word order and "
         "context. A model built on these vectors alone cannot represent that; the model you "
-        "call with `generate_text(...)` can.")]
+        "call with `ai.generate_text(...)` can.")]
 
     # A picture of the space.
     cells += [md(
-        "#### A map of the space",
+        "### D · A map of the space",
         "",
         "Three hundred numbers per word is too many to look at, but the words can be flattened "
         "onto a page so that words with close vectors land near each other.")]
@@ -1477,102 +2107,6 @@ def day1():
         "only thing these vectors record. The map shows you what the model separates, which "
         "is not always what you want it to separate.")]
 
-    # B4. Control flow: for / if / function
-    cells += [md(
-        "### 4. Run the model over every sentence — `for`, `if`, and a function",
-        "",
-        "Now that you have a list of sentences, do something to *each* one. A **`for` loop** "
-        "repeats the same steps for every item; an **`if`** lets you react to what comes "
-        "back. Below, we build a prompt for each sentence (with an f-string) and ask the "
-        "model for its CEFR level.",
-        "",
-        "> Notice **where** the f-string sits: *inside* the loop, so the braces are filled "
-        "in again for every sentence. Written once above the loop it would be filled in "
-        "once, and all three calls would ask about the same sentence. The other way to do "
-        "this is to write the prompt once **without** the `f`, keeping `{text}` as a "
-        "placeholder, and have the loop fill it in — that is the form the final project "
-        "uses, and `.format()` is what fills it.")]
-    cells += [md("**✏️ YOU EDIT** — try your own sentences.")]
-    cells += [code(
-        '### Step 1: the sentences to ask about ###',
-        'examples = ["The findings were inconclusive.",      # ✏️ try your own sentences',
-        '            "Nevertheless, we draw some tentative conclusions.",',
-        '            "More research is needed."]',
-        '',
-        '### Step 2: for each one — build a prompt, ask, and react to the reply ###',
-        'for sentence in examples:              # repeat everything below for each sentence',
-        '    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"',
-        '    reply = generate_text(prompt).strip()   # .strip() removes stray blank space',
-        '    if reply == "":                    # the model sometimes says nothing at all',
-        '        print(sentence, "→ (no answer)")',
-        '    else:                              # normal case: it answered',
-        '        print(sentence, "→", reply)')]
-    cells += [md(
-        "Finally, wrap those three steps — build prompt, call model, tidy the reply — into a "
-        "**function** you can reuse. Defining `ask(...)` once means the rest of the week you "
-        "just call `ask(sentence)`. This little function is the seed of the pipeline you'll "
-        "assemble later.")]
-    cells += [code(
-        'def ask(sentence):                     # `def` names a block of steps',
-        '    """Ask the model for the CEFR level of one sentence; return its reply."""',
-        '    prompt = f"What CEFR level (A1-C2) is this sentence? Answer with just the level. {sentence}"',
-        '    return generate_text(prompt).strip()   # `return` hands the answer back',
-        '',
-        'print(ask("The cat sat on the mat."))  # one line now does all three steps')]
-
-    # B4. Guided practice (existing exercises)
-    cells += [md(
-        "### 5. Your turn — Python practice",
-        "",
-        "Fill in each function so it does what its docstring says (replace the "
-        "`raise NotImplementedError(...)` line). Then run the **self-check** cell below until "
-        "every line prints ✅. No grader needed — the checks *are* your grader.")]
-    cells += [code(
-        '# ✏️ YOU EDIT — replace each NotImplementedError with your code.',
-        '',
-        'def label_of(item):',
-        '    """Return the value stored under the key "label" in the dict `item`.',
-        '    Example: label_of({"id": 1, "text": "Hi", "label": "A1"}) -> "A1".',
-        '    """',
-        '    raise NotImplementedError("Return item[\'label\'].")',
-        '',
-        '',
-        'def long_words(words, n):',
-        '    """Return a LIST of the words whose length is greater than n.',
-        '    Example: long_words(["a", "cat", "elephant"], 3) -> ["elephant"].',
-        '    """',
-        '    # HINT: build a result list; loop with `for w in words:`; keep w if len(w) > n.',
-        '    raise NotImplementedError("Return the words longer than n characters.")',
-        '',
-        '',
-        'def count_labels(items):',
-        '    """Given a list of {id, text, label} dicts, return a dict mapping each',
-        '    label to how many times it appears.',
-        '    Example: count_labels([{"label":"A1"}, {"label":"A1"}, {"label":"B1"}])',
-        '             -> {"A1": 2, "B1": 1}.',
-        '    """',
-        '    # HINT: start with counts = {}; for each item, add 1 to counts[label]',
-        '    #       (use counts.get(label, 0) + 1 so the first time starts at 0).',
-        '    raise NotImplementedError("Count how many items carry each label.")')]
-    cells += [code(
-        '#@title 🔎 Self-check — run me { display-mode: "form" }',
-        '### Step 1: a tiny dataset with answers we already know ###',
-        'sample = [{"id": 1, "text": "Hi.", "label": "A1"},',
-        '          {"id": 2, "text": "Hello there.", "label": "A1"},',
-        '          {"id": 3, "text": "Nevertheless...", "label": "C1"}]',
-        '',
-        '### Step 2: run each of your functions and compare with the right answer ###',
-        'checks = [                             # each entry: (name, did it match?)',
-        '    ("label_of", label_of(sample[0]) == "A1"),',
-        '    ("long_words", long_words(["a", "cat", "elephant"], 3) == ["elephant"]),',
-        '    ("count_labels", count_labels(sample) == {"A1": 2, "C1": 1}),',
-        ']',
-        '',
-        '### Step 3: report one line per check, then an overall verdict ###',
-        'for name, ok in checks:',
-        '    print(("✅" if ok else "❌"), name)',
-        'print("All passed ✅" if all(ok for _, ok in checks)   # all() = every one of them',
-        '      else "Some checks failed — fix them and re-run.")')]
 
     # Read-only syntax cheat-sheet
     cells += [md(
@@ -1988,14 +2522,16 @@ def day2_s6():
         "In S5 `annotator_agreement()` printed Cohen's κ for you. **Here you build precision, "
         "recall, F1 and κ yourself**, before Part B's `evaluate()` prints them for you again.",
         "",
-        "Work in **ten small steps**. Each is on a slide with the code and what it prints; "
-        "type it here, run it, and check your output matches before moving on. No imports — "
-        "just `for`, `if`, and dictionaries.",
+        "Work in **ten small steps**. Steps 1–7 build the confusion matrix, and you can run "
+        "them as they are. **In steps 8 and 9 you write the formulas**: each metric arrives "
+        "with its lookups and its zero-guard already there, and a `None` where the arithmetic "
+        "goes. Replace every `None` marked ✏️. Step 10 checks all four against "
+        "`scikit-learn`. No imports — just `for`, `if`, and dictionaries.",
         "",
         "::: {.callout-tip}",
-        "## If you fall behind, copy the slide",
-        "Every cell below is short and self-contained. Copy the code from the slide, run it, "
-        "then read it.",
+        "## If you get stuck on a formula",
+        "The maths is on the slide above each step, and the expected number is written in the "
+        "prose next to every cell. Compare what you get against it before moving on.",
         ":::")]
 
     cells += [md(
@@ -2202,18 +2738,22 @@ def day2_s6():
         "",
         "$$P = \\frac{TP}{TP + FP}$$",
         "",
-        "Numbers first, so you can check it on paper, then the same thing read off the tally, "
-        "so it survives a change of data:")]
+        "Numbers first, so you can check it on paper — that one is filled in for you. Then "
+        "✏️ **write the same thing read off the tally**, so it survives a change of data. "
+        "Both lines should print the same number.")]
     cells += [code(
-        'print(3 / (3 + 1))                                  # TP / (TP + FP), by hand',
-        'print(tally["TP"] / (tally["TP"] + tally["FP"]))    # the same, from the tally')]
+        'print(3 / (3 + 1))    # TP / (TP + FP), by hand — done for you',
+        'print(None)           # ✏️ the same, read off `tally` instead of typed in')]
     cells += [md(
         "Of the 4 sentences the model called advanced, 3 really were. **Precision = 0.75.**",
         "",
         "Now as a function, with a guard: if a model never predicts the positive class, "
         "`TP + FP` is 0 and Python raises `ZeroDivisionError`. Returning `0.0` says it earned "
         "no credit, which is the honest reading. **Every metric you write today gets this "
-        "guard.**")]
+        "guard.**",
+        "",
+        "✏️ The lookups and the guard are given. **The formula is yours** — replace `None`. "
+        "You are aiming for 0.75, the number you just computed by hand.")]
     cells += [code(
         'def precision(tally):',
         '    """Of everything CALLED advanced, how much really was?  TP / (TP + FP)"""',
@@ -2221,7 +2761,7 @@ def day2_s6():
         '    fp = tally.get("FP", 0)',
         '    if tp + fp == 0:             # the model never said "yes" at all',
         '        return 0.0               # no credit earned — and no division by zero',
-        '    return tp / (tp + fp)        # everything it got right, over everything it claimed',
+        '    return None                  # ✏️ everything it got right, over everything it claimed',
         '',
         '',
         'print(round(precision(tally), 3))   # round to 3 decimal places')]
@@ -2239,7 +2779,7 @@ def day2_s6():
         '    fn = tally.get("FN", 0)       # ← the only real change',
         '    if tp + fn == 0:              # nothing was truly advanced — nothing to find',
         '        return 0.0',
-        '    return tp / (tp + fn)         # what it found, over everything there was to find',
+        '    return None                   # ✏️ what it found, over everything there was to find',
         '',
         '',
         'print(round(recall(tally), 3))')]
@@ -2250,7 +2790,10 @@ def day2_s6():
         "while precision collapses. **F1** is their harmonic mean, so a high score cannot "
         "cover for a low one:",
         "",
-        "$$F_1 = 2 \\cdot \\frac{P \\cdot R}{P + R}$$")]
+        "$$F_1 = 2 \\cdot \\frac{P \\cdot R}{P + R}$$",
+        "",
+        "✏️ `p` and `r` come from the two functions you just wrote. Write the harmonic mean "
+        "of them.")]
     cells += [code(
         'def f1(tally):',
         '    """Harmonic mean of precision and recall."""',
@@ -2258,7 +2801,7 @@ def day2_s6():
         '    r = recall(tally)            # ...and the other one',
         '    if p + r == 0:               # both zero — nothing to average',
         '        return 0.0',
-        '    return 2 * p * r / (p + r)   # harmonic mean: a low score drags it down',
+        '    return None                  # ✏️ harmonic mean: a low score drags it down',
         '',
         '',
         'print(round(precision(tally), 3), round(recall(tally), 3), round(f1(tally), 3))')]
@@ -2276,10 +2819,11 @@ def day2_s6():
     cells += [md(
         "### Step 9 · Cohen's κ",
         "",
-        "Start with the easy number — **observed agreement**, the diagonal over the total:")]
+        "Start with the easy number — **observed agreement**, the diagonal over the total. "
+        "✏️ `n` is given; write `p_o`. You should get 0.75, which is 9 of 12.")]
     cells += [code(
         'n = tally["TP"] + tally["FP"] + tally["FN"] + tally["TN"]   # all 12 items',
-        'p_o = (tally["TP"] + tally["TN"]) / n   # the diagonal (both agreed), over the total',
+        'p_o = None    # ✏️ the diagonal (both agreed: TP + TN), over the total',
         'print(round(p_o, 3))')]
     cells += [md(
         "Gold and model agree on 9 of 12. But **a model that answered \"no\" to everything** "
@@ -2287,14 +2831,18 @@ def day2_s6():
         "the commonest label.",
         "",
         "So subtract the agreement you would get **by luck**. $p_e$ multiplies the two raters' "
-        "own rates, label by label — the row and column totals from step 7:")]
+        "own rates, label by label — the row and column totals from step 7:",
+        "",
+        "✏️ Three lines to write. Each rate is a row or column total over `n`.")]
     cells += [code(
         '# each line: how often GOLD says it × how often the MODEL says it = agreement by luck',
-        'p_yes = ((tally["TP"] + tally["FN"]) / n) * ((tally["TP"] + tally["FP"]) / n)',
-        'p_no  = ((tally["FP"] + tally["TN"]) / n) * ((tally["FN"] + tally["TN"]) / n)',
-        'p_e   = p_yes + p_no          # luck on "yes" plus luck on "no"',
+        'p_yes = None    # ✏️ (gold says yes) × (model says yes)',
+        'p_no  = None    # ✏️ (gold says no)  × (model says no)',
+        'p_e   = None    # ✏️ luck on "yes" plus luck on "no"',
         'print(round(p_yes, 3), round(p_no, 3), round(p_e, 3))')]
     cells += [md(
+        "Check what you got against the margins:",
+        "",
         "- `p_yes`: gold says yes **5/12** × model says yes **4/12** = 0.139",
         "- `p_no`: gold says no **7/12** × model says no **8/12** = 0.389",
         "",
@@ -2303,24 +2851,27 @@ def day2_s6():
         "",
         "$$\\kappa = \\frac{p_o - p_e}{1 - p_e}$$")]
     cells += [code(
-        '# what they beat luck by (p_o - p_e), over how much was left to beat (1 - p_e):',
-        'print(round((p_o - p_e) / (1 - p_e), 3))')]
+        '# ✏️ what they beat luck by (p_o - p_e), over how much was left to beat (1 - p_e).',
+        '#    Round it to 3 decimal places, the way you did for the other metrics.',
+        'print(None)')]
     cells += [md(
         "**75% agreement → κ = 0.47** — \"moderate\" (Landis & Koch) or \"weak\" (McHugh). "
         "The same gap S4 showed you (80% → κ ≈ 0.52), now computed by your own code.",
         "",
-        "Wrap it up so you can reuse it:")]
+        "Wrap it up so you can reuse it. ✏️ This is the four lines you just wrote, moved "
+        "inside a function, plus the same guard shape as the other three metrics — so you "
+        "can copy your own work down into it.")]
     cells += [code(
         'def kappa(tally):',
         '    """Agreement corrected for chance: (p_o - p_e) / (1 - p_e)."""',
         '    n = tally["TP"] + tally["FP"] + tally["FN"] + tally["TN"]   # every item',
-        '    p_o = (tally["TP"] + tally["TN"]) / n     # agreement we actually observed',
-        '    p_yes = ((tally["TP"] + tally["FN"]) / n) * ((tally["TP"] + tally["FP"]) / n)',
-        '    p_no = ((tally["FP"] + tally["TN"]) / n) * ((tally["FN"] + tally["TN"]) / n)',
-        '    p_e = p_yes + p_no                        # agreement luck alone would give',
+        '    p_o = None      # ✏️ agreement we actually observed',
+        '    p_yes = None    # ✏️ (gold says yes) × (model says yes)',
+        '    p_no = None     # ✏️ (gold says no)  × (model says no)',
+        '    p_e = None      # ✏️ agreement luck alone would give',
         '    if 1 - p_e == 0:                          # luck already explains everything',
         '        return 0.0',
-        '    return (p_o - p_e) / (1 - p_e)            # how much of the rest they achieved',
+        '    return None                               # ✏️ how much of the rest they achieved',
         '',
         '',
         'print(round(kappa(tally), 3))')]
@@ -2346,11 +2897,12 @@ def day2_s6():
     cells += [md(
         "### Step 10 · Check yourself against scikit-learn",
         "",
-        "You built a confusion matrix and four metrics by hand. Before trusting them, **check "
-        "them against `scikit-learn`** on the same twelve items: the library builds the same "
-        "2×2 and computes the same numbers, and if yours differ, you have a bug to find. This "
-        "is the only place `scikit-learn` enters Part A — as a marker for work you already "
-        "did.")]
+        "You built a confusion matrix and four metrics by hand. **This cell checks them "
+        "against `scikit-learn`** on the same twelve items: the library builds the same 2×2 "
+        "and computes the same numbers. Run it and read one line per metric — a **❌ means "
+        "that formula is wrong**, so go back to the cell it names and fix it, then run this "
+        "again. This is the only place `scikit-learn` enters Part A — it grades work you "
+        "already did.")]
     cells += [code(
         '#@title 🔎 Self-check against scikit-learn — run me { display-mode: "form" }',
         "# Helper — you don't need to read this. Run it and move on.",

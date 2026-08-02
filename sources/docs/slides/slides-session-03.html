@@ -213,20 +213,21 @@
 <p>Picks up <strong>Part B</strong> of the Day 1 notebook, then forms project groups.</p>
 <ol type="1">
 <li>From a document to sentences — segmentation <em>without</em> and <em>with</em> a model</li>
-<li>What else the model knows about words — Session 1’s vectors, as code</li>
-<li>Run the model over every sentence — <code>for</code>, <code>if</code>, and a function</li>
-<li>Your turn — guided Python practice + self-check</li>
+<li>The Python you’ll reuse all week — seven patterns</li>
+<li>Your turn — guided practice + self-check</li>
 <li>Mini-project setup — form groups and pick a track</li>
 </ol>
+<p><em>Optional, if there is time:</em> what a model stores about a word — Session 1’s vectors, as code.</p>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
 <ul>
 <li>Split a paragraph into sentences two ways — naive <code>.split(".")</code> and a spaCy sentencizer — and explain why the naive rule fails.</li>
-<li>Look up a word’s vector, compare two words, and show that one word form gets only one vector.</li>
-<li>Use a <code>for</code> loop, an <code>if</code>, and a function (<code>def</code>) to run the model over a list of sentences.</li>
-<li>Complete short Python exercises and confirm them with the self-check.</li>
+<li>Loop over a list of records, <strong>build a list</strong> with <code>.append</code>, and <strong>count</strong> with a dict.</li>
+<li>Use <code>if</code> / <code>elif</code> / <code>else</code> and <code>and</code> to sort items into categories.</li>
+<li>Divide two counts, and guard against dividing by zero.</li>
+<li>Wrap the steps in a function with <code>def</code> / <code>return</code>, and confirm four exercises with the self-check.</li>
 <li>Form a project group and pick a mini-project track.</li>
 </ul>
 </section>
@@ -235,7 +236,7 @@
 <ul>
 <li>Slide for the <strong>idea</strong>, then <strong>do it in Colab</strong>.</li>
 <li><strong>Type it, don’t copy it.</strong></li>
-<li>In Part A you called the model <strong>once</strong>. Today you run it over <strong>many</strong> sentences, which is the first step toward a full pipeline.</li>
+<li>In Part A you called the model <strong>once</strong>. Today you run it over <strong>many</strong> sentences, and write the Python that Days 2–5 are built from.</li>
 </ul>
 </section></section>
 <section>
@@ -275,7 +276,7 @@
 <h2>Use an existing library</h2>
 <p>Instead of our own rule, we <strong>import</strong> a library built for this task, <strong>spaCy</strong>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="co">### Step 1: build a sentence splitter that knows more than "cut at every dot" </span><span class="al">###</span></span>
-<span id="cb2-2"><a></a><span class="im">import</span> spacy                       <span class="co"># an NLP library</span></span>
+<span id="cb2-2"><a></a><span class="im">import</span> spacy                       <span class="co"># the NLP toolbox</span></span>
 <span id="cb2-3"><a></a>nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)            <span class="co"># a minimal English pipeline</span></span>
 <span id="cb2-4"><a></a>nlp.add_pipe(<span class="st">"sentencizer"</span>)        <span class="co"># add the rule-based splitter — no download</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
@@ -311,27 +312,288 @@
 <span id="cb3-4"><a></a><span class="cf">for</span> s <span class="kw">in</span> sentences:</span>
 <span id="cb3-5"><a></a>    <span class="bu">print</span>(<span class="bu">repr</span>(s.text))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Compare to the naive split: <em>Dr.&nbsp;Smith</em>, <em>e.g.</em>, and <em>3.14</em> stay intact. <strong>You now have a real list of sentences</strong> — exactly what section 4 loops over.</p>
+<p>Compare to the naive split: <em>Dr.&nbsp;Smith</em>, <em>e.g.</em>, and <em>3.14</em> stay intact. <strong>You now have a real list of sentences</strong> — exactly what the next section loops over.</p>
 </div>
 </section></section>
 <section>
-<section id="what-else-the-model-knows-about-words" class="title-slide slide level1 center">
-<h1>3 · What else the model knows about words</h1>
+<section id="the-python-youll-reuse-all-week" class="title-slide slide level1 center">
+<h1>3 · The Python you’ll reuse all week</h1>
 
+</section>
+<section id="seven-patterns-then-you-write-them" class="slide level2 smaller">
+<h2>Seven patterns, then you write them</h2>
+<p>Everything in this section is something you will be asked to <strong>write</strong> later this week.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Pattern</th>
+<th>Where you’ll write it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3</td>
+<td><code>for</code> over a list, with <code>if</code> / <code>else</code></td>
+<td>every day</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><code>for</code> over a list of <strong>records</strong></td>
+<td>Day 2, Day 4</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Build a list with <code>.append</code></td>
+<td>Day 2, final project</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Count with a dict</td>
+<td>Day 2</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><code>if</code> / <code>elif</code> / <code>else</code>, and <code>and</code></td>
+<td>Day 2</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Divide, and guard against zero</td>
+<td>Day 2 — every score</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Wrap it in a function</td>
+<td>Day 2 onwards</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="why-this-matters-2" class="slide level2">
+<h2>Why this matters</h2>
+<p>On <strong>Day 2</strong> you build precision, recall, F1 and Cohen’s κ <strong>yourself</strong>, out of these seven pieces and nothing else.</p>
+<div class="fragment">
+<p>Today is the only day of the course that teaches Python. Every pattern here is on the slide <em>before</em> you are asked to write it.</p>
+</div>
+</section>
+<section id="step-3-the-loop" class="slide level2 smaller">
+<h2>🧪 Step 3 — the loop</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:              <span class="co"># repeat everything below for each sentence</span></span>
+<span id="cb4-2"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-3"><a></a>    reply <span class="op">=</span> ai.generate_text(prompt).strip()   <span class="co"># .strip() removes stray blank space</span></span>
+<span id="cb4-4"><a></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:                    <span class="co"># the model sometimes says nothing at all</span></span>
+<span id="cb4-5"><a></a>        <span class="bu">print</span>(sentence, <span class="st">"→ (no answer)"</span>)</span>
+<span id="cb4-6"><a></a>    <span class="cf">else</span>:                              <span class="co"># normal case: it answered</span></span>
+<span id="cb4-7"><a></a>        <span class="bu">print</span>(sentence, <span class="st">"→"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>The f-string sits <strong>inside</strong> the loop, so the braces are filled in again for every sentence.</p>
+</div>
+</section>
+<section id="step-4-loop-over-records" class="slide level2 smaller">
+<h2>🧪 Step 4 — loop over records</h2>
+<p>Every dataset this week is a <strong>list of dicts</strong>. Each item is a record, so you reach in by key:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>items <span class="op">=</span> [{<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"The cat sat on the mat."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>},</span>
+<span id="cb5-2"><a></a>         {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"text"</span>: <span class="st">"More research is needed."</span>, <span class="st">"label"</span>: <span class="st">"B1"</span>},</span>
+<span id="cb5-3"><a></a>         {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"text"</span>: <span class="st">"Nevertheless, the findings were inconclusive."</span>,</span>
+<span id="cb5-4"><a></a>          <span class="st">"label"</span>: <span class="st">"C1"</span>}]</span>
+<span id="cb5-5"><a></a></span>
+<span id="cb5-6"><a></a><span class="cf">for</span> item <span class="kw">in</span> items:                 <span class="co"># item is one record — a dict</span></span>
+<span id="cb5-7"><a></a>    <span class="bu">print</span>(item[<span class="st">"id"</span>], <span class="st">"|"</span>, item[<span class="st">"label"</span>], <span class="st">"|"</span>, item[<span class="st">"text"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="step-5-build-a-list-with-.append" class="slide level2 smaller">
+<h2>🧪 Step 5 — build a list with <code>.append</code></h2>
+<p>Often you don’t want to <em>print</em> each item — you want to <strong>keep</strong> something from it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>labels <span class="op">=</span> []                        <span class="co"># start empty; the loop fills it</span></span>
+<span id="cb6-2"><a></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb6-3"><a></a>    labels.append(item[<span class="st">"label"</span>])   <span class="co"># add this item's label to the end</span></span>
+<span id="cb6-4"><a></a></span>
+<span id="cb6-5"><a></a><span class="bu">print</span>(labels)                      <span class="co"># ['A1', 'B1', 'C1']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>The most-used pattern of the week: Day 2 builds a list of verdicts this way, and the final project builds the list of rows your coders disagreed about.</p>
+</div>
+</section>
+<section id="step-6-count-with-a-dict" class="slide level2 smaller">
+<h2>🧪 Step 6 — count with a dict</h2>
+<p>The <strong>key</strong> is the label, the <strong>value</strong> is how many you have seen:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>counts <span class="op">=</span> {}                        <span class="co"># an empty dict: label -&gt; how many</span></span>
+<span id="cb7-2"><a></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb7-3"><a></a>    label <span class="op">=</span> item[<span class="st">"label"</span>]</span>
+<span id="cb7-4"><a></a>    counts[label] <span class="op">=</span> counts.get(label, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>   <span class="co"># count so far (0 if new), plus one</span></span>
+<span id="cb7-5"><a></a></span>
+<span id="cb7-6"><a></a><span class="bu">print</span>(counts)                      <span class="co"># {'A1': 1, 'B1': 1, 'C1': 1}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li><code>counts[label] = ...</code> — the same brackets you used to <em>read</em> a dict, now on the <strong>left</strong> of the <code>=</code>.</li>
+<li><code>.get(label, 0)</code> — reads the count so far, answering <code>0</code> when the label is new.</li>
+</ul>
+</div>
+</section>
+<section id="step-7-elif-and-and" class="slide level2 smaller">
+<h2>🧪 Step 7 — <code>elif</code> and <code>and</code></h2>
+<p><code>elif</code> adds branches: checked top to bottom, <strong>first match wins</strong>, exactly one runs.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb8-2"><a></a>    label <span class="op">=</span> item[<span class="st">"label"</span>]</span>
+<span id="cb8-3"><a></a>    <span class="cf">if</span> label <span class="op">==</span> <span class="st">"A1"</span> <span class="kw">or</span> label <span class="op">==</span> <span class="st">"A2"</span>:     <span class="co"># `or` = either side is enough</span></span>
+<span id="cb8-4"><a></a>        band <span class="op">=</span> <span class="st">"basic"</span></span>
+<span id="cb8-5"><a></a>    <span class="cf">elif</span> label <span class="op">==</span> <span class="st">"B1"</span> <span class="kw">or</span> label <span class="op">==</span> <span class="st">"B2"</span>:   <span class="co"># only checked if the first did not match</span></span>
+<span id="cb8-6"><a></a>        band <span class="op">=</span> <span class="st">"independent"</span></span>
+<span id="cb8-7"><a></a>    <span class="cf">else</span>:                                  <span class="co"># anything left over</span></span>
+<span id="cb8-8"><a></a>        band <span class="op">=</span> <span class="st">"proficient"</span></span>
+<span id="cb8-9"><a></a>    <span class="bu">print</span>(label, <span class="st">"→"</span>, band)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="step-7-and-on-two-coders" class="slide level2 smaller">
+<h2>🧪 Step 7 — <code>and</code>, on two coders</h2>
+<p>A row counts as a disagreement only when <strong>both</strong> coders labelled it <em>and</em> the labels differ:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="cf">for</span> row <span class="kw">in</span> rows:</span>
+<span id="cb9-2"><a></a>    a <span class="op">=</span> row[<span class="st">"CoderA"</span>]</span>
+<span id="cb9-3"><a></a>    b <span class="op">=</span> row[<span class="st">"CoderB"</span>]</span>
+<span id="cb9-4"><a></a>    <span class="cf">if</span> a <span class="op">!=</span> <span class="st">""</span> <span class="kw">and</span> b <span class="op">!=</span> <span class="st">""</span> <span class="kw">and</span> a <span class="op">!=</span> b:   <span class="co"># both labelled it, AND they differ</span></span>
+<span id="cb9-5"><a></a>        <span class="bu">print</span>(row[<span class="st">"id"</span>], <span class="st">"disagreement:"</span>, a, <span class="st">"vs"</span>, b)</span>
+<span id="cb9-6"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb9-7"><a></a>        <span class="bu">print</span>(row[<span class="st">"id"</span>], <span class="st">"no disagreement"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>A blank cell is <strong>not</strong> a disagreement — one coder simply hasn’t got there yet. That is a decision about your data, and on Day 2 you make it yourself.</p>
+</div>
+</section>
+<section id="step-8-divide-and-guard" class="slide level2 smaller">
+<h2>🧪 Step 8 — divide, and guard</h2>
+<p>Counting leads to dividing: <em>how many right, out of how many there were?</em></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>right <span class="op">=</span> <span class="dv">9</span></span>
+<span id="cb10-2"><a></a>wrong <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb10-3"><a></a><span class="bu">print</span>(<span class="bu">round</span>(right <span class="op">/</span> (right <span class="op">+</span> wrong), <span class="dv">3</span>))   <span class="co"># 0.75</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>If both counts are <code>0</code> there is nothing to divide by, and Python stops with <code>ZeroDivisionError</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="cf">if</span> right <span class="op">+</span> wrong <span class="op">==</span> <span class="dv">0</span>:      <span class="co"># nothing was scored at all</span></span>
+<span id="cb11-2"><a></a>    score <span class="op">=</span> <span class="fl">0.0</span>             <span class="co"># no credit — and no division by zero</span></span>
+<span id="cb11-3"><a></a><span class="cf">else</span>:</span>
+<span id="cb11-4"><a></a>    score <span class="op">=</span> right <span class="op">/</span> (right <span class="op">+</span> wrong)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Every score you write on Day 2 has this shape.</strong></p>
+</div>
+</section>
+<section id="step-9-wrap-it-in-a-function" class="slide level2 smaller">
+<h2>🧪 Step 9 — wrap it in a function</h2>
+<p>You have written the same three steps twice. <strong>Name it once:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="kw">def</span> ask(sentence):                     <span class="co"># `def` names a block of steps</span></span>
+<span id="cb12-2"><a></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
+<span id="cb12-3"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb12-4"><a></a>    <span class="cf">return</span> ai.generate_text(prompt).strip()   <span class="co"># `return` hands the answer back</span></span>
+<span id="cb12-5"><a></a></span>
+<span id="cb12-6"><a></a><span class="bu">print</span>(ask(<span class="st">"The cat sat on the mat."</span>))  <span class="co"># one line now does all three steps</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><code>print</code> puts a value on the screen and it is gone; <strong><code>return</code></strong> hands it back, so you can store it, count it, or score it.</p>
+</div>
+</section>
+<section id="steps-5-and-9-together" class="slide level2 smaller">
+<h2>Steps 5 and 9 together</h2>
+<p>Because <code>ask</code> hands its answer back, it goes straight into the loop from step 5:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>replies <span class="op">=</span> []</span>
+<span id="cb13-2"><a></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:          <span class="co"># the three sentences from step 3</span></span>
+<span id="cb13-3"><a></a>    replies.append(ask(sentence))  <span class="co"># call the function, keep what it returns</span></span>
+<span id="cb13-4"><a></a></span>
+<span id="cb13-5"><a></a><span class="bu">print</span>(replies)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>A list of sentences in, a list of the model’s labels out. That is the shape of Days 3 and 4 — and the result goes back into the <strong>record from Session 2</strong>, <code>{"id", "text", "label"}</code>, only now <code>label</code> comes from <code>ask(...)</code> instead of being typed by hand.</p>
+</div>
+</section></section>
+<section>
+<section id="your-turn" class="title-slide slide level1 center">
+<h1>4 · Your turn</h1>
+
+</section>
+<section id="guided-practice" class="slide level2 smaller">
+<h2>Guided practice</h2>
+<p>Four exercises, each rehearsing <strong>one</strong> pattern you just saw. Replace the <code>NotImplementedError</code>, then run the self-check directly below it.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Function</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td><code>label_of</code></td>
+<td>read one value out of a record</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td><code>long_words</code></td>
+<td>loop + <code>if</code> + <code>.append</code></td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td><code>count_labels</code></td>
+<td>count with a dict</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td><code>accuracy</code></td>
+<td>count, divide, guard</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><code>accuracy</code> is the shape of every metric you write on Day 2. If it passes, you are ready.</p>
+</div>
+</section>
+<section id="python-youll-read-but-not-write" class="slide level2 smaller">
+<h2>Python you’ll <em>read</em> but not write</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Some library cells use a <strong>list comprehension</strong> like <code>[row["label"] for row in rows]</code> — read it as <em>“the label of every row.”</em> You never have to write these; just recognise them.</p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="lets-form-groups" class="title-slide slide level1 center">
+<h1>Let’s form groups</h1>
+
+</section>
+<section id="mini-project-setup" class="slide level2 smaller">
+<h2>Mini-project setup</h2>
+<ul>
+<li>Form a <strong>group</strong> — each needs <strong>at least one <em>Linguistic Data Analysis I</em> alumnus</strong>.</li>
+<li>Pick <strong>one of the three mini-project tracks</strong> (datasets) for your Day 4–5 project.</li>
+<li><strong>Record</strong> your group and track where the instructor asks.</li>
+</ul>
+<div class="fragment">
+<p>Choosing now means your group is ready to start the project on <strong>Day 4</strong>. See the <a href="../final-project/index.html">Final Project</a> page for the tracks.</p>
+</div>
+</section></section>
+<section>
+<section id="optional-what-a-model-stores-about-a-word" class="title-slide slide level1 center">
+<h1>Optional · What a model stores about a word</h1>
+
+</section>
+<section id="if-there-is-time" class="slide level2 smaller">
+<h2>If there is time</h2>
+<p>Nothing later in the week depends on this section. It is here because it makes the <strong>Session 1</strong> slides runnable — you can look at the numbers a model keeps for each word, and see where they stop working.</p>
+<p>The notebook has it at the very end, with its own download cell.</p>
 </section>
 <section id="one-word-three-hundred-numbers" class="slide level2 smaller">
 <h2>One word, three hundred numbers</h2>
 <p>In Session 1 you saw that a model turns each word into a long list of numbers. You can look at that list.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>word <span class="op">=</span> nlp_vec(<span class="st">"suggest"</span>)[<span class="dv">0</span>]      <span class="co"># read one word; [0] takes the first token</span></span>
-<span id="cb4-2"><a></a><span class="bu">print</span>(<span class="st">"how many numbers:"</span>, word.vector.shape)</span>
-<span id="cb4-3"><a></a><span class="bu">print</span>(<span class="st">"the first eight: "</span>, word.vector[:<span class="dv">8</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>word <span class="op">=</span> nlp_vec(<span class="st">"suggest"</span>)[<span class="dv">0</span>]      <span class="co"># read one word; [0] takes the first token</span></span>
+<span id="cb14-2"><a></a><span class="bu">print</span>(<span class="st">"how many numbers:"</span>, word.vector.shape)</span>
+<span id="cb14-3"><a></a><span class="bu">print</span>(<span class="st">"the first eight: "</span>, word.vector[:<span class="dv">8</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>how many numbers: (300,)
 the first eight:  [-0.126 -0.11  -0.61   0.105 -0.272  0.302 -0.014 -0.121]</code></pre>
 <p>Three numbers placed a colour in the Session 1 colour cube. It takes <strong>three hundred</strong> to place a word.</p>
 </div>
 </section>
-<section id="why-this-matters-2" class="slide level2 smaller">
+<section id="why-this-matters-3" class="slide level2 smaller">
 <h2>Why this matters</h2>
 <p>Session 1 claimed that words with similar meanings end up with similar numbers. That claim is <strong>checkable</strong>, and you are about to check it.</p>
 <div class="fragment">
@@ -341,8 +603,8 @@ the first eight:  [-0.126 -0.11  -0.61   0.105 -0.272  0.302 -0.014 -0.121]</cod
 <section id="lets-try-how-close-are-two-words" class="slide level2 smaller">
 <h2>🧪 Let’s try — how close are two words?</h2>
 <p><code>.similarity(...)</code> compares two vectors: the higher the number, the closer the words sit.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="bu">print</span>(<span class="st">"suggest / indicate:"</span>, nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"indicate"</span>)))</span>
-<span id="cb6-2"><a></a><span class="bu">print</span>(<span class="st">"suggest / banana:  "</span>, nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"banana"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="bu">print</span>(<span class="st">"suggest / indicate:"</span>, nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"indicate"</span>)))</span>
+<span id="cb16-2"><a></a><span class="bu">print</span>(<span class="st">"suggest / banana:  "</span>, nlp_vec(<span class="st">"suggest"</span>).similarity(nlp_vec(<span class="st">"banana"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>suggest / indicate: 0.672
 suggest / banana:   0.168</code></pre>
@@ -352,8 +614,8 @@ suggest / banana:   0.168</code></pre>
 <section id="lets-try-a-words-neighbours" class="slide level2 smaller">
 <h2>🧪 Let’s try — a word’s neighbours</h2>
 <p>Rather than guessing pairs, ask which words sit closest:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="cf">for</span> neighbour <span class="kw">in</span> nearest(<span class="st">"perhaps"</span>):   <span class="co"># ✏️ your word here</span></span>
-<span id="cb8-2"><a></a>    <span class="bu">print</span>(neighbour)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="cf">for</span> neighbour <span class="kw">in</span> nearest(<span class="st">"perhaps"</span>):   <span class="co"># ✏️ your word here</span></span>
+<span id="cb18-2"><a></a>    <span class="bu">print</span>(neighbour)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>('possibly', 0.859)    ('might', 0.82)
 ('probably', 0.839)    ('rather', 0.817)
@@ -376,10 +638,10 @@ suggest / banana:   0.168</code></pre>
 <section id="lets-try-where-these-vectors-stop" class="slide level2 smaller">
 <h2>🧪 Let’s try — where these vectors stop</h2>
 <p>Session 1 used <em>free</em> in two sentences that mean different things:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>banking <span class="op">=</span> nlp_vec(<span class="st">"your account is free of charge"</span>)</span>
-<span id="cb11-2"><a></a>promo   <span class="op">=</span> nlp_vec(<span class="st">"claim your free prize now"</span>)</span>
-<span id="cb11-3"><a></a></span>
-<span id="cb11-4"><a></a><span class="bu">print</span>(<span class="st">"similarity:"</span>, banking[<span class="dv">3</span>].similarity(promo[<span class="dv">2</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>banking <span class="op">=</span> nlp_vec(<span class="st">"your account is free of charge"</span>)</span>
+<span id="cb21-2"><a></a>promo   <span class="op">=</span> nlp_vec(<span class="st">"claim your free prize now"</span>)</span>
+<span id="cb21-3"><a></a></span>
+<span id="cb21-4"><a></a><span class="bu">print</span>(<span class="st">"similarity:"</span>, banking[<span class="dv">3</span>].similarity(promo[<span class="dv">2</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>similarity: 1.0</code></pre>
 <p>Not merely close — <strong>the same vector</strong>. One vector per word form, looked up the same way every time. That is what <em>static</em> means.</p>
@@ -388,7 +650,7 @@ suggest / banana:   0.168</code></pre>
 <section id="and-word-order-is-gone-too" class="slide level2 smaller">
 <h2>…and word order is gone too</h2>
 <p>A sentence’s vector is the <strong>average</strong> of its words, and an average does not record their order:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="bu">print</span>(nlp_vec(<span class="st">"the dog chased the cat"</span>).similarity(nlp_vec(<span class="st">"the cat chased the dog"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="bu">print</span>(nlp_vec(<span class="st">"the dog chased the cat"</span>).similarity(nlp_vec(<span class="st">"the cat chased the dog"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>1.0</code></pre>
 <p>Two sentences with opposite meanings, one score.</p>
@@ -401,7 +663,7 @@ suggest / banana:   0.168</code></pre>
 <p><strong>Important</strong></p>
 </div>
 <div class="callout-content">
-<p>This is the gap Session 1 said attention closes. A model built on these vectors alone cannot represent context; the model behind <code>generate_text(...)</code> can.</p>
+<p>This is the gap Session 1 said attention closes. A model built on these vectors alone cannot represent context; the model behind <code>ai.generate_text(...)</code> can.</p>
 </div>
 </div>
 </div>
@@ -410,100 +672,14 @@ suggest / banana:   0.168</code></pre>
 <section id="a-map-of-the-space" class="slide level2 smaller">
 <h2>A map of the space</h2>
 <p><code>map_words([...])</code> flattens 300 numbers onto a page, keeping close vectors close.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>map_words([<span class="st">"perhaps"</span>, <span class="st">"possibly"</span>, <span class="st">"maybe"</span>, <span class="st">"likely"</span>, <span class="st">"presumably"</span>,</span>
-<span id="cb15-2"><a></a>           <span class="st">"suggest"</span>, <span class="st">"indicate"</span>, <span class="st">"demonstrate"</span>, <span class="st">"argue"</span>, <span class="st">"conclude"</span>,</span>
-<span id="cb15-3"><a></a>           <span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"horse"</span>, <span class="st">"rabbit"</span>, <span class="st">"sheep"</span>])   <span class="co"># ✏️ your words</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a>map_words([<span class="st">"perhaps"</span>, <span class="st">"possibly"</span>, <span class="st">"maybe"</span>, <span class="st">"likely"</span>, <span class="st">"presumably"</span>,</span>
+<span id="cb25-2"><a></a>           <span class="st">"suggest"</span>, <span class="st">"indicate"</span>, <span class="st">"demonstrate"</span>, <span class="st">"argue"</span>, <span class="st">"conclude"</span>,</span>
+<span id="cb25-3"><a></a>           <span class="st">"cat"</span>, <span class="st">"dog"</span>, <span class="st">"horse"</span>, <span class="st">"rabbit"</span>, <span class="st">"sheep"</span>])   <span class="co"># ✏️ your words</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>The animals land well away from the rest. The hedges and the research verbs <strong>do not split into two groups</strong> — they are all academic prose words, appearing in similar places in similar texts, and that is the only thing these vectors record.</p>
 </div>
 <div class="fragment">
 <p>The map shows what the model separates, which is not always what you want it to separate.</p>
-</div>
-</section></section>
-<section>
-<section id="run-the-model-over-every-sentence" class="title-slide slide level1 center">
-<h1>4 · Run the model over every sentence</h1>
-
-</section>
-<section id="three-small-pieces-of-python" class="slide level2 smaller">
-<h2>Three small pieces of Python</h2>
-<ul>
-<li><strong><code>for</code></strong> — repeat the same steps for every item in a list.</li>
-<li><strong><code>if</code></strong> — react to what comes back (e.g.&nbsp;flag an empty reply).</li>
-<li><strong><code>def</code></strong> — package the steps into a reusable <strong>function</strong> you can call by name.</li>
-</ul>
-<div class="fragment">
-<p>Together: <em>for each sentence → build a prompt → call the model → tidy the reply.</em></p>
-</div>
-</section>
-<section id="why-this-matters-3" class="slide level2">
-<h2>Why this matters</h2>
-<p>This loop is the first version of the pipeline you assemble later in the week.</p>
-<div class="fragment">
-<p>Annotation, classification and evaluation all consist of running one call over a list and collecting the results. Write it once here, and reuse the same structure all week.</p>
-</div>
-</section>
-<section id="lets-try-the-loop" class="slide level2 smaller">
-<h2>🧪 Let’s try — the loop</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="cf">for</span> sentence <span class="kw">in</span> examples:              <span class="co"># repeat everything below for each sentence</span></span>
-<span id="cb16-2"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb16-3"><a></a>    reply <span class="op">=</span> generate_text(prompt).strip()   <span class="co"># .strip() removes stray blank space</span></span>
-<span id="cb16-4"><a></a>    <span class="cf">if</span> reply <span class="op">==</span> <span class="st">""</span>:                    <span class="co"># the model sometimes says nothing at all</span></span>
-<span id="cb16-5"><a></a>        reply <span class="op">=</span> <span class="st">"(no answer)"</span></span>
-<span id="cb16-6"><a></a>    <span class="bu">print</span>(sentence, <span class="st">"→"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="lets-try-wrap-it-in-a-function" class="slide level2 smaller">
-<h2>🧪 Let’s try — wrap it in a function</h2>
-<p>Same three steps, packaged so you can reuse them:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="kw">def</span> ask(sentence):                     <span class="co"># `def` names a block of steps</span></span>
-<span id="cb17-2"><a></a>    <span class="co">"""Ask the model for the CEFR level of one sentence; return its reply."""</span></span>
-<span id="cb17-3"><a></a>    prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb17-4"><a></a>    <span class="cf">return</span> generate_text(prompt).strip()   <span class="co"># `return` gives the answer back</span></span>
-<span id="cb17-5"><a></a></span>
-<span id="cb17-6"><a></a><span class="bu">print</span>(ask(<span class="st">"Despite the rain, the game went ahead."</span>))  <span class="co"># one line does all three steps</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Now labelling a sentence is just <code>ask(...)</code>.</p>
-<div class="fragment">
-<p>And the result goes back into the <strong>record you already built in Session 2</strong> — <code>{"id": 1, "text": ..., "label": ...}</code> — only now <code>label</code> comes from <code>ask(...)</code> instead of being typed in by hand. Every gold set and every model output this week is a list of those.</p>
-</div>
-</section></section>
-<section>
-<section id="your-turn" class="title-slide slide level1 center">
-<h1>5 · Your turn</h1>
-
-</section>
-<section id="guided-practice" class="slide level2 smaller">
-<h2>Guided practice</h2>
-<p>In the notebook, a few cells ask you to <strong>replace <code>NotImplementedError</code></strong> with a line or two — e.g.&nbsp;<code>long_words</code>, <code>count_labels</code>. Then a <strong>self-check</strong> cell tells you if they pass.</p>
-<div class="fragment">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Python you’ll <em>read</em> but not write</strong></p>
-</div>
-<div class="callout-content">
-<p>Some library cells use a <strong>list comprehension</strong> like <code>[row["label"] for row in rows]</code> — read it as <em>“the label of every row.”</em> You never have to write these; just recognise them.</p>
-</div>
-</div>
-</div>
-</div>
-</section></section>
-<section>
-<section id="lets-form-groups" class="title-slide slide level1 center">
-<h1>Let’s form groups</h1>
-
-</section>
-<section id="mini-project-setup" class="slide level2 smaller">
-<h2>Mini-project setup</h2>
-<ul>
-<li>Form a <strong>group</strong> — each needs <strong>at least one <em>Linguistic Data Analysis I</em> alumnus</strong>.</li>
-<li>Pick <strong>one of the three mini-project tracks</strong> (datasets) for your Day 4–5 project.</li>
-<li><strong>Record</strong> your group and track where the instructor asks.</li>
-</ul>
-<div class="fragment">
-<p>Choosing now means your group is ready to start the project on <strong>Day 4</strong>. See the <a href="../final-project/index.html">Final Project</a> page for the tracks.</p>
 </div>
 </section></section>
 <section>

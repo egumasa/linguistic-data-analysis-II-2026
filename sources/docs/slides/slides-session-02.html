@@ -212,10 +212,11 @@
 <h2>📋 Agenda</h2>
 <ol type="1">
 <li>Colab basics — run a cell, read an error</li>
-<li>Your first LLM call</li>
-<li>What the model returns — data types</li>
-<li>Getting values out of your data — indexing</li>
+<li>Your first LLM call — five prompts, and what they show</li>
 <li>f-strings — put your data <em>into</em> the prompt</li>
+<li>What the model returns — data types</li>
+<li>Turn the answer into a <strong>record you can score</strong></li>
+<li>Getting the answers back out — indexing and slicing</li>
 </ol>
 </section>
 <section id="learning-objectives" class="slide level2">
@@ -223,9 +224,11 @@
 <p>By the end of this session, you will be able to:</p>
 <ul>
 <li>Sign in to Colab, run a cell (Shift+Enter), and <strong>read a Python error</strong> well enough to fix a typo.</li>
-<li>Send a prompt with <code>generate_text(...)</code>, then edit it and re-run.</li>
-<li>Recognise <code>str</code> / <code>list</code> / <code>dict</code> in what the model returns, and <strong>index</strong> into a list or dict.</li>
-<li>Build a prompt from a variable with an <strong>f-string</strong>.</li>
+<li>Store a value in a <strong>variable</strong>, and send a prompt with <code>ai.generate_text(...)</code>.</li>
+<li>Build a prompt from a variable with an <strong>f-string</strong>, and recognise the <code>.format()</code> template form.</li>
+<li>Recognise <code>str</code> / <code>list</code> / <code>dict</code> in what the model returns.</li>
+<li>Build the <code>{id, text, label}</code> record the rest of the course uses — <strong>with a label you decided yourself</strong> — and add the model’s answer beside it.</li>
+<li><strong>Index</strong> and <strong>slice</strong> into a list of records to compare the two answers.</li>
 </ul>
 </section>
 <section id="how-today-works" class="slide level2 smaller">
@@ -313,8 +316,8 @@
 <section id="first-whats-a-variable" class="slide level2 smaller">
 <h2>First — what’s a variable?</h2>
 <p>A <strong>variable</strong> is a <strong>name</strong> that stores a value.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>level <span class="op">=</span> <span class="st">"A1"</span>        <span class="co"># store the value "A1" under the name `level`</span></span>
-<span id="cb4-2"><a></a><span class="bu">print</span>(level)        <span class="co"># A1  — get the value back by its name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>level <span class="op">=</span> <span class="st">"A1"</span>        <span class="co"># store the text "A1" under the name `level`</span></span>
+<span id="cb4-2"><a></a><span class="bu">print</span>(level)        <span class="co"># get it back by name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>name = value</code> — the <code>=</code> means <strong>“store this”</strong>, not “equals”.</li>
 <li>Once stored, reuse the value anywhere just by writing its name.</li>
@@ -326,10 +329,10 @@
 <section id="the-basic-operation-in-one-line" class="slide level2 smaller">
 <h2>The basic operation, in one line</h2>
 <p>You send the model <strong>text</strong> (a <em>prompt</em>); it sends <strong>text</strong> back (a <em>reply</em>).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"...your prompt..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>reply <span class="op">=</span> ai.generate_text(<span class="st">"...your prompt..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <ul>
-<li><code>generate_text(...)</code> does the call (we set it up for you — no API key today).</li>
+<li><code>ai.generate_text(...)</code> does the call — <code>ai</code> is Colab’s built-in Gemini, no API key today.</li>
 <li><code>reply = ...</code> <strong>stores</strong> the answer in a variable named <code>reply</code>, so you can use it later.</li>
 </ul>
 </div>
@@ -348,25 +351,83 @@
 <h2>👀 Let’s follow — in Colab</h2>
 <p>Run the <strong>📦 Setup</strong> cell first, then run this together:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="co"># ✏️ change the text in the quotes, then press Shift+Enter to re-run.</span></span>
-<span id="cb6-2"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)  <span class="co"># ask</span></span>
+<span id="cb6-2"><a></a>reply <span class="op">=</span> ai.generate_text(<span class="st">"In one sentence, what is applied linguistics?"</span>)</span>
 <span id="cb6-3"><a></a><span class="bu">print</span>(reply)                                    <span class="co"># show what came back</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The model’s answer prints out. You just called an LLM from Python.</p>
 </section>
 <section id="lets-try-in-colab-1" class="slide level2 smaller">
 <h2>🧪 Let’s try — in Colab</h2>
 <p>Your turn — <strong>change the prompt</strong> and re-run (a different topic, or another language):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>reply <span class="op">=</span> generate_text(<span class="st">"In one sentence, what is a corpus?"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>reply <span class="op">=</span> ai.generate_text(<span class="st">"In one sentence, what is a corpus?"</span>)</span>
 <span id="cb7-2"><a></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The code is the same and the answer is different. The prompt is text that you control.</p>
 </section></section>
 <section>
+<section id="f-strings-put-your-data-into-the-prompt" class="title-slide slide level1 center">
+<h1>3 · f-strings — put your data into the prompt</h1>
+
+</section>
+<section id="putting-your-data-into-the-prompt" class="slide level2 smaller">
+<h2>Putting your data <em>into</em> the prompt</h2>
+<p>An <strong>f-string</strong> is a normal string with an <code>f</code> in front — anything in <code>{ }</code> gets swapped for its value:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>sentence <span class="op">=</span> <span class="st">"Nevertheless, the findings were inconclusive."</span></span>
+<span id="cb8-2"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><code>{sentence}</code> is replaced by the actual sentence text inside the prompt. You do not copy and paste, and you do not join strings manually.</p>
+</div>
+</section>
+<section id="why-this-matters-2" class="slide level2">
+<h2>Why this matters</h2>
+<p>The prompt is now <strong>built from a variable</strong>.</p>
+<div class="fragment">
+<p>Change the value of <code>sentence</code> and the prompt changes automatically. This is how you run <strong>one prompt over many sentences</strong>, which Session 3 turns into a loop.</p>
+</div>
+</section>
+<section id="lets-follow-in-colab-2" class="slide level2 smaller">
+<h2>👀 Let’s follow — in Colab</h2>
+<p>Run this together — build a prompt from a variable, then send it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>sentence <span class="op">=</span> <span class="st">"Nevertheless, the findings were inconclusive."</span>   <span class="co"># ✏️ your sentence</span></span>
+<span id="cb9-2"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span>  <span class="co"># f = fill in {}</span></span>
+<span id="cb9-3"><a></a><span class="bu">print</span>(<span class="st">"Prompt sent:"</span>, prompt)                <span class="co"># see what {sentence} became</span></span>
+<span id="cb9-4"><a></a></span>
+<span id="cb9-5"><a></a>reply <span class="op">=</span> ai.generate_text(prompt)             <span class="co"># send the finished prompt</span></span>
+<span id="cb9-6"><a></a><span class="bu">print</span>(<span class="st">"Model says:"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lets-try-in-colab-2" class="slide level2 smaller">
+<h2>🧪 Let’s try — in Colab</h2>
+<p>Change <code>sentence</code> to one of your own and re-run.</p>
+<div class="fragment">
+<p>You built a prompt from data and sent it. Every later session uses this same operation.</p>
+</div>
+</section>
+<section id="the-other-form-a-template" class="slide level2 smaller">
+<h2>The other form — a template</h2>
+<p>Without the <code>f</code>, the braces stay <strong>empty</strong> until something fills them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>TEMPLATE <span class="op">=</span> <span class="st">"""What CEFR level (A1-C2) is this sentence?</span></span>
+<span id="cb10-2"><a></a><span class="st">Answer with just the level.</span></span>
+<span id="cb10-3"><a></a></span>
+<span id="cb10-4"><a></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb10-5"><a></a></span>
+<span id="cb10-6"><a></a><span class="bu">print</span>(TEMPLATE.<span class="bu">format</span>(text<span class="op">=</span><span class="st">"The cat sat on the mat."</span>))   <span class="co"># .format() fills {text}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li>Three quotes (<code>"""..."""</code>) hold a prompt written over <strong>several lines</strong>.</li>
+<li><code>.format()</code> fills the slot — one sentence at a time.</li>
+</ul>
+<p>From Session 7 you <strong>edit</strong> templates like this, so recognise the shape. In the notebook you write one yourself.</p>
+</div>
+</section></section>
+<section>
 <section id="what-the-model-returns" class="title-slide slide level1 center">
-<h1>3 · What the model returns</h1>
+<h1>4 · What the model returns</h1>
 
 </section>
 <section id="python-labels-every-value-with-a-type" class="slide level2 smaller">
 <h2>Python labels every value with a <strong>type</strong></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="bu">print</span>(<span class="bu">type</span>(reply))     <span class="co"># &lt;class 'str'&gt; — a string, i.e. text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The reply is still in <code>reply</code>. Before you can do anything with it, you have to know what kind of value it is.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="bu">print</span>(reply)              <span class="co"># the model's answer, still in the variable from step 5</span></span>
+<span id="cb11-2"><a></a><span class="bu">print</span>(<span class="bu">type</span>(reply))        <span class="co"># &lt;class 'str'&gt; — a string, i.e. text</span></span>
+<span id="cb11-3"><a></a><span class="bu">print</span>(<span class="bu">len</span>(reply))         <span class="co"># how many characters of text that is</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The three types you need all week:</p>
 <ul>
 <li><strong><code>str</code></strong> — text, in quotes: <code>"A1"</code>.</li>
@@ -386,93 +447,144 @@
 </ul>
 <p>You do not need to memorise these. When you see one, you will recognise it as another kind of value.</p>
 </section>
-<section id="lets-follow-in-colab-2" class="slide level2 smaller">
-<h2>👀 Let’s follow — in Colab</h2>
-<p>Run this together — build a <strong>list</strong> of sentences and a <strong>dict</strong> record, then print each whole:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>sentences <span class="op">=</span> [<span class="st">"The cat sat on the mat."</span>,          <span class="co"># a list of strings</span></span>
-<span id="cb9-2"><a></a>             <span class="st">"Despite the rain, the game went ahead."</span>]</span>
-<span id="cb9-3"><a></a>record <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: <span class="st">"The cat sat on the mat."</span>, <span class="st">"label"</span>: <span class="st">"A1"</span>}   <span class="co"># a dict</span></span>
-<span id="cb9-4"><a></a></span>
-<span id="cb9-5"><a></a><span class="bu">print</span>(sentences)     <span class="co"># the whole list  — note the [ ... ]</span></span>
-<span id="cb9-6"><a></a><span class="bu">print</span>(record)        <span class="co"># the whole dict  — note the { key: value ... }</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="lets-try-in-colab-2" class="slide level2 smaller">
-<h2>🧪 Let’s try — in Colab</h2>
-<p>Your turn — build your own:</p>
-<ul>
-<li>a <strong>list</strong> of three words, and</li>
-<li>a <strong>dict</strong> with keys <code>id</code>, <code>text</code>, and <code>label</code>.</li>
-</ul>
-<p>Print each and check the <code>[ ]</code> / <code>{ }</code> match what you intended.</p>
-</section></section>
-<section>
-<section id="getting-values-out-of-your-data-indexing" class="title-slide slide level1 center">
-<h1>4 · Getting values out of your data — indexing</h1>
-
-</section>
-<section id="getting-one-item-out-indexing" class="slide level2">
-<h2>Getting one item out — indexing</h2>
-<p>Use <strong><code>[...]</code></strong> to get one item:</p>
-<ul>
-<li>a <strong>list</strong> by <em>position</em> (starts at <strong>0</strong>): <code>sentences[0]</code></li>
-<li>a <strong>dict</strong> by <em>key</em>: <code>record["label"]</code></li>
-</ul>
-</section>
-<section id="why-this-matters-2" class="slide level2">
-<h2>Why this matters</h2>
-<p>Every dataset this week is a <strong><code>list</code> of <code>dict</code>s</strong> — sentences shaped like <code>{"id": ..., "text": ..., "label": ...}</code>. Reading them is just list + dict indexing.</p>
-</section>
-<section id="lets-follow-in-colab-3" class="slide level2 smaller">
-<h2>👀 Let’s follow — in Colab</h2>
-<p>Reuse the <code>sentences</code> and <code>record</code> you just built, and get single items out of them:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="bu">print</span>(<span class="st">"first sentence:"</span>, sentences[<span class="dv">0</span>])       <span class="co"># list — index by position</span></span>
-<span id="cb10-2"><a></a><span class="bu">print</span>(<span class="st">"its gold label:"</span>, record[<span class="st">"label"</span>])    <span class="co"># dict — index by key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="lets-try-in-colab-3" class="slide level2 smaller">
-<h2>🧪 Let’s try — in Colab</h2>
-<p>Your turn:</p>
-<ul>
-<li>Change the <code>0</code> in <code>sentences[0]</code> to <code>1</code> — what prints?</li>
-<li>Ask for <code>record["text"]</code>, then <code>record["id"]</code>.</li>
-</ul>
-<p>Watch what comes out each time.</p>
-</section></section>
-<section>
-<section id="f-strings" class="title-slide slide level1 center">
-<h1>5 · f-strings</h1>
-
-</section>
-<section id="putting-your-data-into-the-prompt" class="slide level2 smaller">
-<h2>Putting your data <em>into</em> the prompt</h2>
-<p>An <strong>f-string</strong> is a normal string with an <code>f</code> in front — anything in <code>{ }</code> gets swapped for its value:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>sentence <span class="op">=</span> <span class="st">"Despite the rain, the game went ahead."</span></span>
-<span id="cb11-2"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="lets-try-predict-first" class="slide level2 smaller">
+<h2>🧪 Let’s try — predict first</h2>
+<p><strong>Write down what you expect</strong> each line to print, then run it. Two of the four surprise most people.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="bu">print</span>(<span class="bu">len</span>(<span class="st">"A1"</span>))                   <span class="co"># how long is the text "A1"?</span></span>
+<span id="cb12-2"><a></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="st">"A1"</span>) <span class="op">==</span> <span class="bu">type</span>(reply))   <span class="co"># is a level the same type as a whole reply?</span></span>
+<span id="cb12-3"><a></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="dv">7</span>))                     <span class="co"># a number</span></span>
+<span id="cb12-4"><a></a><span class="bu">print</span>(<span class="bu">type</span>(<span class="st">"7"</span>))                   <span class="co"># the same digit, in quotes</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p><code>{sentence}</code> is replaced by the actual sentence text inside the prompt. You do not copy and paste, and you do not join strings manually.</p>
+<p><code>"A1"</code> and a three-paragraph reply are the <strong>same type</strong> — <code>str</code> says what kind of value, not how much. And <code>7</code> and <code>"7"</code> differ: one you can divide, one is text.</p>
 </div>
+</section></section>
+<section>
+<section id="turn-the-answer-into-a-record-you-can-score" class="title-slide slide level1 center">
+<h1>5 · Turn the answer into a record you can score</h1>
+
+</section>
+<section id="a-label-is-a-decision-not-a-computation" class="slide level2 smaller">
+<h2>A label is a decision, not a computation</h2>
+<p>A string is <strong>one</strong> thing. To ask whether the model is any good, you need two answers side by side:</p>
+<ul>
+<li>what a <strong>person</strong> said the level is, and</li>
+<li>what the <strong>model</strong> said.</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>The <code>label</code> in a gold standard is <strong>a decision a person made</strong>. That is what you and your group spend Day 2 doing, by hand. A program does not produce it.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="lets-follow-your-judgment-first" class="slide level2 smaller">
+<h2>👀 Let’s follow — your judgment first</h2>
+<p>Read the sentence, decide its level <strong>yourself</strong>, then build the record:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="co"># ✏️ A1 is the simplest level, C2 the most advanced. Change it if you disagree.</span></span>
+<span id="cb13-2"><a></a>text <span class="op">=</span> <span class="st">"The cat sat on the mat."</span></span>
+<span id="cb13-3"><a></a>my_level <span class="op">=</span> <span class="st">"A1"</span></span>
+<span id="cb13-4"><a></a></span>
+<span id="cb13-5"><a></a>record <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">1</span>, <span class="st">"text"</span>: text, <span class="st">"label"</span>: my_level}   <span class="co"># a dict: named slots</span></span>
+<span id="cb13-6"><a></a><span class="bu">print</span>(record)                    <span class="co"># the whole record — note the { key: value ... }</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lets-follow-now-ask-the-model" class="slide level2 smaller">
+<h2>👀 Let’s follow — now ask the model</h2>
+<p>Same sentence, same question, stored under a <strong>new key</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>answer <span class="op">=</span> ai.generate_text(<span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-2"><a></a>record[<span class="st">"model"</span>] <span class="op">=</span> answer.strip()   <span class="co"># .strip() drops the newline the reply arrives with</span></span>
+<span id="cb14-3"><a></a><span class="bu">print</span>(record)                      <span class="co"># the same record, now with two answers in it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><code>record["model"] = ...</code> — the same square brackets, now on the <strong>left</strong> of the <code>=</code>: that stores a value instead of reading one.</p>
+</div>
+</section>
+<section id="one-record-then-many" class="slide level2 smaller">
+<h2>One record, then many</h2>
+<p>A dataset is a <strong>list</strong> of records. Here are two more, already answered:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>items <span class="op">=</span> [record,                                              <span class="co"># the one you just built</span></span>
+<span id="cb15-2"><a></a>         {<span class="st">"id"</span>: <span class="dv">2</span>, <span class="st">"text"</span>: <span class="st">"More research is needed."</span>,</span>
+<span id="cb15-3"><a></a>          <span class="st">"label"</span>: <span class="st">"B1"</span>, <span class="st">"model"</span>: <span class="st">"B1"</span>},</span>
+<span id="cb15-4"><a></a>         {<span class="st">"id"</span>: <span class="dv">3</span>, <span class="st">"text"</span>: <span class="st">"Nevertheless, the findings were inconclusive."</span>,</span>
+<span id="cb15-5"><a></a>          <span class="st">"label"</span>: <span class="st">"C1"</span>, <span class="st">"model"</span>: <span class="st">"B2"</span>}]      <span class="co"># here the two answers disagree</span></span>
+<span id="cb15-6"><a></a></span>
+<span id="cb15-7"><a></a><span class="bu">print</span>(<span class="st">"how many items:"</span>, <span class="bu">len</span>(items))   <span class="co"># len() on a list = how many records</span></span>
+<span id="cb15-8"><a></a><span class="bu">print</span>(items[<span class="dv">2</span>])                        <span class="co"># the third record — counting starts at 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lets-try-do-you-agree-with-it" class="slide level2 smaller">
+<h2>🧪 Let’s try — do you agree with it?</h2>
+<p>Your own sentence, your own judgment. <strong>Write your level down before you run it.</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>my_text <span class="op">=</span> <span class="st">"..."</span>                       <span class="co"># ✏️ a sentence of your own</span></span>
+<span id="cb16-2"><a></a>my_record <span class="op">=</span> {<span class="st">"id"</span>: <span class="dv">4</span>, <span class="st">"text"</span>: my_text, <span class="st">"label"</span>: <span class="st">"..."</span>}   <span class="co"># ✏️ your judgment</span></span>
+<span id="cb16-3"><a></a></span>
+<span id="cb16-4"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? Answer with just the level. </span><span class="sc">{</span>my_text<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb16-5"><a></a>my_record[<span class="st">"model"</span>] <span class="op">=</span> ai.generate_text(prompt).strip()</span>
+<span id="cb16-6"><a></a></span>
+<span id="cb16-7"><a></a><span class="bu">print</span>(my_record)</span>
+<span id="cb16-8"><a></a><span class="bu">print</span>(<span class="st">"we agree:"</span>, my_record[<span class="st">"label"</span>] <span class="op">==</span> my_record[<span class="st">"model"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="why-this-matters-3" class="slide level2">
 <h2>Why this matters</h2>
-<p>The prompt is now <strong>built from a variable</strong>.</p>
+<p><code>{id, text, label}</code> is the shape of <strong>every dataset in this course</strong> — the gold standard you build on Day 2, the file you score in Session 6, the sample you draw on Day 4.</p>
 <div class="fragment">
-<p>Change the value of <code>sentence</code> and the prompt changes automatically. This is how you run <strong>one prompt over many sentences</strong>, which Session 3 turns into a loop.</p>
+<p>The extra <code>model</code> key is what a prediction looks like once you have run one. Scoring is comparing those two columns.</p>
+</div>
+</section></section>
+<section>
+<section id="getting-the-answers-back-out-indexing" class="title-slide slide level1 center">
+<h1>6 · Getting the answers back out — indexing</h1>
+
+</section>
+<section id="getting-one-item-out" class="slide level2 smaller">
+<h2>Getting one item out</h2>
+<p>Use <strong><code>[...]</code></strong> to get one item:</p>
+<ul>
+<li>a <strong>list</strong> by <em>position</em> (starts at <strong>0</strong>): <code>items[0]</code></li>
+<li>a <strong>dict</strong> by <em>key</em>: <code>record["label"]</code></li>
+</ul>
+<p>Chain them to reach inside a record in a list: <code>items[2]["label"]</code>.</p>
+</section>
+<section id="lets-follow-in-colab-3" class="slide level2 smaller">
+<h2>👀 Let’s follow — in Colab</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="bu">print</span>(<span class="st">"sentence 3:"</span>, items[<span class="dv">2</span>][<span class="st">"text"</span>])    <span class="co"># list by position, then dict by key</span></span>
+<span id="cb17-2"><a></a><span class="bu">print</span>(<span class="st">"person said:"</span>, items[<span class="dv">2</span>][<span class="st">"label"</span>])</span>
+<span id="cb17-3"><a></a><span class="bu">print</span>(<span class="st">"model said: "</span>, items[<span class="dv">2</span>][<span class="st">"model"</span>])</span>
+<span id="cb17-4"><a></a><span class="bu">print</span>(<span class="st">"they agree: "</span>, items[<span class="dv">2</span>][<span class="st">"label"</span>] <span class="op">==</span> items[<span class="dv">2</span>][<span class="st">"model"</span>])   <span class="co"># == asks "same value?"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><code>False</code> — one record, one disagreement. On Day 2 you do this for every record and count the <code>True</code>s. That count over the total is the first score you report.</p>
 </div>
 </section>
-<section id="lets-follow-in-colab-4" class="slide level2 smaller">
-<h2>👀 Let’s follow — in Colab</h2>
-<p>Run this together — build a prompt from a variable, then send it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>sentence <span class="op">=</span> <span class="st">"Despite the rain, the game went ahead."</span>   <span class="co"># ✏️ your sentence</span></span>
-<span id="cb12-2"><a></a>prompt <span class="op">=</span> <span class="ss">f"What CEFR level (A1-C2) is this sentence? </span><span class="sc">{</span>sentence<span class="sc">}</span><span class="ss">"</span>  <span class="co"># f = fill in {}</span></span>
-<span id="cb12-3"><a></a><span class="bu">print</span>(<span class="st">"Prompt sent:"</span>, prompt)                <span class="co"># see what {sentence} became</span></span>
-<span id="cb12-4"><a></a></span>
-<span id="cb12-5"><a></a>reply <span class="op">=</span> generate_text(prompt)                <span class="co"># send the finished prompt</span></span>
-<span id="cb12-6"><a></a><span class="bu">print</span>(<span class="st">"Model says:"</span>, reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="lets-try-in-colab-4" class="slide level2 smaller">
-<h2>🧪 Let’s try — in Colab</h2>
-<p>Change <code>sentence</code> to one of your own and re-run.</p>
+<section id="several-items-at-once-slicing" class="slide level2 smaller">
+<h2>Several items at once — slicing</h2>
+<p>A colon takes a <strong>range</strong> instead of one item:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="bu">print</span>(<span class="st">"the first two:"</span>, items[:<span class="dv">2</span>])          <span class="co"># a slice — records 0 and 1</span></span>
+<span id="cb18-2"><a></a><span class="bu">print</span>(<span class="st">"all but the first:"</span>, items[<span class="dv">1</span>:])      <span class="co"># from position 1 to the end</span></span>
+<span id="cb18-3"><a></a><span class="bu">print</span>(<span class="st">"how many in the slice:"</span>, <span class="bu">len</span>(items[:<span class="dv">2</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>You built a prompt from data and sent it. Every later session uses this same operation.</p>
+<p><code>items[:2]</code> reads <em>“from the start, up to but not including position 2”</em>.</p>
+<p>From Session 7 on you use this to try a prompt on the <strong>first few</strong> items before running it on all of them.</p>
+</div>
+</section>
+<section id="lets-try-answer-before-you-run" class="slide level2 smaller">
+<h2>🧪 Let’s try — answer before you run</h2>
+<ol type="1">
+<li>How many records does <code>items[:2]</code> hold? How many does <code>items[1:3]</code>?</li>
+<li>Do <code>items[0]["label"]</code> and <code>items[0]["model"]</code> agree — and why do you already know?</li>
+<li>What happens when you ask for <code>items[3]</code>?</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="bu">print</span>(<span class="bu">len</span>(items[:<span class="dv">2</span>]), <span class="bu">len</span>(items[<span class="dv">1</span>:<span class="dv">3</span>]))   <span class="co"># count them before you run this</span></span>
+<span id="cb19-2"><a></a><span class="bu">print</span>(items[<span class="dv">0</span>][<span class="st">"label"</span>] <span class="op">==</span> items[<span class="dv">0</span>][<span class="st">"model"</span>])</span>
+<span id="cb19-3"><a></a><span class="bu">print</span>(items[<span class="dv">3</span>])                          <span class="co"># this one is supposed to fail — read the error</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<pre><code>IndexError: list index out of range</code></pre>
+<p>Both slices hold <strong>two</strong> records — a slice never includes its right-hand number. And three records sit at positions 0, 1 and 2, so there is no <code>items[3]</code>.</p>
 </div>
 </section></section>
 <section>
@@ -486,6 +598,7 @@
 <ul>
 <li>turn a paragraph into sentences (segmentation),</li>
 <li>loop the call over each with <code>for</code>,</li>
+<li>count and score what comes back,</li>
 <li>and wrap it in a reusable function.</li>
 </ul>
 <p>Then form your project groups.</p>
