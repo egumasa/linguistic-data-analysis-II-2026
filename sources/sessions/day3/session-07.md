@@ -22,6 +22,17 @@ By the end of this session, you will be able to:
 - Place a technique on the **run-it-this-week vs. know-it-exists** line (zero/few/CoT and structured output vs. self-consistency, RAG, and agentic prompting).
 - Explain the **train/test contamination** trap and why you **tune on a validation set** but **report on a held-out test set**.
 
+The message of the day: a prompt has parts you can design, and small changes to those parts change the score.
+
+## Agenda
+
+1. **The anatomy of a prompt** — the four elements (*instruction · context · input data · output indicator*), and how structure and persona sharpen the instruction. Worked on Huang & Mizumoto's (2025) writing-feedback prompt.
+2. **Zero-shot, few-shot, chain-of-thought** — what examples actually buy you, read off a real results table from Kim & Lu (2024), including where prompting alone stops improving and fine-tuning takes over. Then chain-of-thought, and the Example Prompt 1 → Example Prompt 2 refinement.
+3. **The wider design space** — which techniques to *run* this week and which to simply *know about* (self-consistency, RAG, agentic prompting).
+4. **Two errors to avoid before you tune** — train/test contamination, and tuning on validation while reporting on test.
+
+The four elements return in [Session 8](session-08.md), mapped onto the CEFR classification task, and again in [Session 9](session-09.md) as the error-analysis iteration loop.
+
 ## Reading
 
 **Read** (see all [course readings](../../syllabus/readings.md)):

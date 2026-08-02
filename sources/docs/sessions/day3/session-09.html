@@ -390,6 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#agenda" id="toc-agenda" class="nav-link" data-scroll-target="#agenda">Agenda</a></li>
   <li><a href="#the-cefr-wrap-up" id="toc-the-cefr-wrap-up" class="nav-link" data-scroll-target="#the-cefr-wrap-up">The CEFR wrap-up</a></li>
   <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
   <li><a href="#reading-1" id="toc-reading-1" class="nav-link" data-scroll-target="#reading-1">Reading</a></li>
@@ -443,6 +444,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Place your prompted-LLM result next to the <strong>published supervised results for the same corpus</strong> (Arase et al., 2022) — and say what the comparison does and does not license.</li>
 <li>Interpret what supervised training <strong>buys and costs</strong> versus zero-training prompting — the LLM as an assistant to evaluate and supervise, not a verdict to accept.</li>
 </ul>
+</section>
+<section id="agenda" class="level2">
+<h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
+<ol type="1">
+<li><strong>Error analysis</strong> — the number shows <em>that</em> something changed; the errors show <em>why</em>. Read down the per-class F1 column first, then separate the two causes: the model is wrong, or the scheme is fuzzy.</li>
+<li><strong>Iterating the prompt</strong> — say what you expect before you run it, then check the class you aimed at. One change per round.</li>
+<li><strong>Inside <code>run_prompt</code></strong> — a walkthrough of the helper you have called all day: how it fills the <code>{text}</code> slot, paces the calls to stay under the rate limit, retries on a <code>429</code>, scans the reply for the label, and returns labels in gold order. You do not edit it; the point is being able to describe what it does.</li>
+<li><strong>The LLM is one option, not the only one</strong> — put your score next to the published supervised results for the same corpus, and work out what that comparison does and does not license.</li>
+</ol>
 </section>
 <section id="the-cefr-wrap-up" class="level2">
 <h2 class="anchored" data-anchor-id="the-cefr-wrap-up">The CEFR wrap-up</h2>
@@ -994,48 +1004,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Place your prompted-LLM result next to the **published supervised results for the same corpus** (Arase et al., 2022) — and say what the comparison does and does not license.</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Interpret what supervised training **buys and costs** versus zero-training prompting — the LLM as an assistant to evaluate and supervise, not a verdict to accept.</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## The CEFR wrap-up</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>You spent Day 3 pushing a prompt as far as it goes on CEFR levels. The closing question is</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>the honest one: **how good is that, really?**</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Arase, Uchida &amp; Kajiwara (2022) — the paper behind the corpus you have been using since</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>Session 4 — trained models on this exact task and reported them in their Table 6. Their test</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>split is 3,012 sentences; ours is a balanced 72-item draw, so these are *not* the same</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>measurement. But both are macro-F1 over the same six labels on the same corpus, which is</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>enough to see where prompting sits:</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> System <span class="pp">|</span> macro-F1 <span class="pp">|</span> Quadratic weighted κ <span class="pp">|</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|</span>:--:<span class="pp">|</span>:--:<span class="pp">|</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Bag-of-words + SVM (their naive baseline) <span class="pp">|</span> 41.2 <span class="pp">|</span> 0.354 <span class="pp">|</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> *k*-NN over frozen BERT embeddings <span class="pp">|</span> 38.8 <span class="pp">|</span> 0.373 <span class="pp">|</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> BERT-Base classifier, loss-weighted <span class="pp">|</span> 82.5 <span class="pp">|</span> 0.609 <span class="pp">|</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Their proposed metric-based model <span class="pp">|</span> **84.5** | **0.628** <span class="pp">|</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> *Our zero-shot prompt, Day 2 frozen run (72 items)* | *≈36* | *0.849* <span class="pp">|</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>Two things to take from this, both uncomfortable in a useful way:</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**A zero-shot prompt lands near a bag-of-words baseline, not near a trained model.** The</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>   gap to 84.5 is what a labelled training set buys — and CEFR-SP took trained experts to</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>   build. That is the cost side of the trade.</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Our weighted κ looks *better* than theirs.** It is not, and working out why is the</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>   exercise: our 72 items are balanced 12-per-level while their test set is not, and κ is</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>   sensitive to the marginal distribution. A number that flatters you across two different</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>   test sets is exactly the kind of comparison a reader should refuse — and the kind your</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>   own report must not make.</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>The point is not that prompting is bad. It is that "the model got 36" means nothing until</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>you can say *36 compared to what, on which items*.</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Error analysis** — the number shows *that* something changed; the errors show *why*. Read down the per-class F1 column first, then separate the two causes: the model is wrong, or the scheme is fuzzy.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Iterating the prompt** — say what you expect before you run it, then check the class you aimed at. One change per round.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Inside `run_prompt`** — a walkthrough of the helper you have called all day: how it fills the <span class="in">`{text}`</span> slot, paces the calls to stay under the rate limit, retries on a <span class="in">`429`</span>, scans the reply for the label, and returns labels in gold order. You do not edit it; the point is being able to describe what it does.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**The LLM is one option, not the only one** — put your score next to the published supervised results for the same corpus, and work out what that comparison does and does not license.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## The CEFR wrap-up</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>You spent Day 3 pushing a prompt as far as it goes on CEFR levels. The closing question is</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>the honest one: **how good is that, really?**</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Arase, Uchida &amp; Kajiwara (2022) — the paper behind the corpus you have been using since</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>Session 4 — trained models on this exact task and reported them in their Table 6. Their test</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>split is 3,012 sentences; ours is a balanced 72-item draw, so these are *not* the same</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>measurement. But both are macro-F1 over the same six labels on the same corpus, which is</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>enough to see where prompting sits:</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> System <span class="pp">|</span> macro-F1 <span class="pp">|</span> Quadratic weighted κ <span class="pp">|</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|</span>:--:<span class="pp">|</span>:--:<span class="pp">|</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Bag-of-words + SVM (their naive baseline) <span class="pp">|</span> 41.2 <span class="pp">|</span> 0.354 <span class="pp">|</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> *k*-NN over frozen BERT embeddings <span class="pp">|</span> 38.8 <span class="pp">|</span> 0.373 <span class="pp">|</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> BERT-Base classifier, loss-weighted <span class="pp">|</span> 82.5 <span class="pp">|</span> 0.609 <span class="pp">|</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Their proposed metric-based model <span class="pp">|</span> **84.5** | **0.628** <span class="pp">|</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> *Our zero-shot prompt, Day 2 frozen run (72 items)* | *≈36* | *0.849* <span class="pp">|</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>Two things to take from this, both uncomfortable in a useful way:</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**A zero-shot prompt lands near a bag-of-words baseline, not near a trained model.** The</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>   gap to 84.5 is what a labelled training set buys — and CEFR-SP took trained experts to</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>   build. That is the cost side of the trade.</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Our weighted κ looks *better* than theirs.** It is not, and working out why is the</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>   exercise: our 72 items are balanced 12-per-level while their test set is not, and κ is</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>   sensitive to the marginal distribution. A number that flatters you across two different</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>   test sets is exactly the kind of comparison a reader should refuse — and the kind your</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>   own report must not make.</span>
 <span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 3 reading (Huang &amp; Mizumoto, 2025; Kim &amp; Lu, 2024) in <span class="co">[</span><span class="ot">Session 7</span><span class="co">](session-07.md)</span> and on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 9 slides](../../slides/slides-session-09.html){target="_blank"} --&gt;</span></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>The point is not that prompting is bad. It is that "the model got 36" means nothing until</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>you can say *36 compared to what, on which items*.</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 3 reading (Huang &amp; Mizumoto, 2025; Kim &amp; Lu, 2024) in <span class="co">[</span><span class="ot">Session 7</span><span class="co">](session-07.md)</span> and on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 9 slides](../../slides/slides-session-09.html){target="_blank"} --&gt;</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

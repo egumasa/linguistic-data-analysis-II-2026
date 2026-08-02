@@ -20,6 +20,16 @@ By the end of this session, you will be able to:
 - Run the **zero-shot → few-shot → chain-of-thought** progression on CEFR, re-evaluating each on a validation set, and score the final prompt **once** on the held-out test set.
 - Prompt for **structured output** and recognise **JSON** as the `{id, text, label}` data format.
 
+## Agenda
+
+1. **From feedback to classification** — the same four prompt elements from [Session 7](session-07.md), now on a new task: instruction = classify, context = the level descriptors, input = the sentence, output indicator = return only the label.
+2. **Your Gemini API key** — get one and store it in Colab Secrets, in four steps. Why a key is needed at all, and the two separate rate limits that govern how fast you can call.
+3. **Run classification in Colab** — two files with two purposes: tune every prompt on the 24-item validation set, and keep the 72-item test set for one final run. Then three rounds: **zero-shot**, **few-shot**, **chain-of-thought**, recording macro-F1 on validation after each.
+4. **Evaluate the outputs** — read the per-class report rather than the average alone, since one level with F1 near zero drags macro-F1 down and the report shows you which. Then the held-out run, once, on the 72 items.
+5. **Structured output** — ask the model to return JSON rather than a bare label, which is the same `{id, text, label}` shape from Day 1 in a format code can read.
+
+Expect the held-out score to come out **lower** than your validation score. That gap is the expected effect of having chosen the prompt by looking at validation results, not a mistake.
+
 ## Reading
 
 No new reading for this session — see the Day 3 reading (Huang & Mizumoto, 2025; Kim & Lu, 2024) in [Session 7](session-07.md) and on the [Readings](../../syllabus/readings.md) page.

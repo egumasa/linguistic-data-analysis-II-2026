@@ -20,6 +20,13 @@ By the end of this session, you will be able to:
 - Place your prompted-LLM result next to the **published supervised results for the same corpus** (Arase et al., 2022) — and say what the comparison does and does not license.
 - Interpret what supervised training **buys and costs** versus zero-training prompting — the LLM as an assistant to evaluate and supervise, not a verdict to accept.
 
+## Agenda
+
+1. **Error analysis** — the number shows *that* something changed; the errors show *why*. Read down the per-class F1 column first, then separate the two causes: the model is wrong, or the scheme is fuzzy.
+2. **Iterating the prompt** — say what you expect before you run it, then check the class you aimed at. One change per round.
+3. **Inside `run_prompt`** — a walkthrough of the helper you have called all day: how it fills the `{text}` slot, paces the calls to stay under the rate limit, retries on a `429`, scans the reply for the label, and returns labels in gold order. You do not edit it; the point is being able to describe what it does.
+4. **The LLM is one option, not the only one** — put your score next to the published supervised results for the same corpus, and work out what that comparison does and does not license.
+
 ## The CEFR wrap-up
 
 You spent Day 3 pushing a prompt as far as it goes on CEFR levels. The closing question is

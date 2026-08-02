@@ -390,6 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#agenda" id="toc-agenda" class="nav-link" data-scroll-target="#agenda">Agenda</a></li>
   <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
   <li><a href="#slides-colab" id="toc-slides-colab" class="nav-link" data-scroll-target="#slides-colab">Slides &amp; Colab</a></li>
   </ul>
@@ -442,6 +443,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Place a technique on the <strong>run-it-this-week vs.&nbsp;know-it-exists</strong> line (zero/few/CoT and structured output vs.&nbsp;self-consistency, RAG, and agentic prompting).</li>
 <li>Explain the <strong>train/test contamination</strong> trap and why you <strong>tune on a validation set</strong> but <strong>report on a held-out test set</strong>.</li>
 </ul>
+<p>The message of the day: a prompt has parts you can design, and small changes to those parts change the score.</p>
+</section>
+<section id="agenda" class="level2">
+<h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
+<ol type="1">
+<li><strong>The anatomy of a prompt</strong> — the four elements (<em>instruction · context · input data · output indicator</em>), and how structure and persona sharpen the instruction. Worked on Huang &amp; Mizumoto’s (2025) writing-feedback prompt.</li>
+<li><strong>Zero-shot, few-shot, chain-of-thought</strong> — what examples actually buy you, read off a real results table from Kim &amp; Lu (2024), including where prompting alone stops improving and fine-tuning takes over. Then chain-of-thought, and the Example Prompt 1 → Example Prompt 2 refinement.</li>
+<li><strong>The wider design space</strong> — which techniques to <em>run</em> this week and which to simply <em>know about</em> (self-consistency, RAG, agentic prompting).</li>
+<li><strong>Two errors to avoid before you tune</strong> — train/test contamination, and tuning on validation while reporting on test.</li>
+</ol>
+<p>The four elements return in <a href="../../sessions/day3/session-08.html">Session 8</a>, mapped onto the CEFR classification task, and again in <a href="../../sessions/day3/session-09.html">Session 9</a> as the error-analysis iteration loop.</p>
 </section>
 <section id="reading" class="level2">
 <h2 class="anchored" data-anchor-id="reading">Reading</h2>
@@ -954,24 +966,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Place a technique on the **run-it-this-week vs. know-it-exists** line (zero/few/CoT and structured output vs. self-consistency, RAG, and agentic prompting).</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Explain the **train/test contamination** trap and why you **tune on a validation set** but **report on a held-out test set**.</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>The message of the day: a prompt has parts you can design, and small changes to those parts change the score.</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>**Read** (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>):</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Huang, J., &amp; Mizumoto, A. (2025). Prompt engineering: Enhancing AI-driven language learning and feedback. In L. McCallum &amp; D. Tafazoli (Eds.), *The Palgrave Encyclopedia of Computer-Assisted Language Learning* (pp. 1–8). Springer Nature Switzerland. <span class="co">[</span><span class="ot">https://doi.org/10.1007/978-3-031-51447-0_103-1</span><span class="co">](https://doi.org/10.1007/978-3-031-51447-0_103-1)</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kim, M., &amp; Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. *Journal of English for Academic Purposes, 71*, 101422. <span class="co">[</span><span class="ot">https://doi.org/10.1016/j.jeap.2024.101422</span><span class="co">](https://doi.org/10.1016/j.jeap.2024.101422)</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple"}</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**The anatomy of a prompt** — the four elements (*instruction · context · input data · output indicator*), and how structure and persona sharpen the instruction. Worked on Huang &amp; Mizumoto's (2025) writing-feedback prompt.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Zero-shot, few-shot, chain-of-thought** — what examples actually buy you, read off a real results table from Kim &amp; Lu (2024), including where prompting alone stops improving and fine-tuning takes over. Then chain-of-thought, and the Example Prompt 1 → Example Prompt 2 refinement.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**The wider design space** — which techniques to *run* this week and which to simply *know about* (self-consistency, RAG, agentic prompting).</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Two errors to avoid before you tune** — train/test contamination, and tuning on validation while reporting on test.</span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>**Running example (Day 3).** We anchor the whole day in Huang &amp; Mizumoto's worked prompts — **Example Prompt 1** (a generic chain-of-thought paragraph-feedback prompt) refined into **Example Prompt 2** (the structured *Task / Criteria / "My paragraph"* prompt). That same structure returns in **Session 8** (mapped onto the CEFR classification prompt) and in **Session 9** (as the error-analysis iteration loop). A self-study map of the wider technique landscape: the <span class="co">[</span><span class="ot">Prompt Engineering Guide</span><span class="co">](https://www.promptingguide.ai/techniques)</span>.</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>The four elements return in <span class="co">[</span><span class="ot">Session 8</span><span class="co">](session-08.md)</span>, mapped onto the CEFR classification task, and again in <span class="co">[</span><span class="ot">Session 9</span><span class="co">](session-09.md)</span> as the error-analysis iteration loop.</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>**Read** (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>):</span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 7 slides](../../slides/slides-session-07.html){target="_blank"} --&gt;</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Huang, J., &amp; Mizumoto, A. (2025). Prompt engineering: Enhancing AI-driven language learning and feedback. In L. McCallum &amp; D. Tafazoli (Eds.), *The Palgrave Encyclopedia of Computer-Assisted Language Learning* (pp. 1–8). Springer Nature Switzerland. <span class="co">[</span><span class="ot">https://doi.org/10.1007/978-3-031-51447-0_103-1</span><span class="co">](https://doi.org/10.1007/978-3-031-51447-0_103-1)</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kim, M., &amp; Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. *Journal of English for Academic Purposes, 71*, 101422. <span class="co">[</span><span class="ot">https://doi.org/10.1016/j.jeap.2024.101422</span><span class="co">](https://doi.org/10.1016/j.jeap.2024.101422)</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple"}</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>**Running example (Day 3).** We anchor the whole day in Huang &amp; Mizumoto's worked prompts — **Example Prompt 1** (a generic chain-of-thought paragraph-feedback prompt) refined into **Example Prompt 2** (the structured *Task / Criteria / "My paragraph"* prompt). That same structure returns in **Session 8** (mapped onto the CEFR classification prompt) and in **Session 9** (as the error-analysis iteration loop). A self-study map of the wider technique landscape: the <span class="co">[</span><span class="ot">Prompt Engineering Guide</span><span class="co">](https://www.promptingguide.ai/techniques)</span>.</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 7 slides](../../slides/slides-session-07.html){target="_blank"} --&gt;</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

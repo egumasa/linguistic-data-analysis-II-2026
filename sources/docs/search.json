@@ -324,7 +324,7 @@
     "href": "sessions/day2/session-04.html#learning-objectives",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nExplain what an annotation scheme and coding guidelines are, and why operationalizing a category matters.\nDescribe where annotation sits in an NLP pipeline for applied linguistics (annotate → model → evaluate).\nExplain inter-annotator agreement conceptually — why we double-annotate, and what a simple agreement rate and Cohen’s κ tell you.\nDescribe what a gold-standard dataset is and how it is constructed.\nExplain, conceptually, what the core evaluation metrics (precision, recall, F1) and a confusion matrix are, and why we need them to judge model output against a gold standard.",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nPlace a linguistic annotation task in the classic NLP taxonomy — identify · extract · categorize, organized by unit of analysis.\nDescribe the NLP evaluation workflow (gold → predictions → metrics), and explain how it transfers from a trained model to a prompted LLM.\nOperationalize a linguistic category into an annotation scheme with coding guidelines.\nExplain inter-annotator agreement: percent agreement, why Cohen’s κ corrects for chance, and when to use quadratic weighted κ for ordered labels.\nRead a confusion matrix and compute precision, recall, and F1 from its four cells (TP · TN · FP · FN).\n\nThe message of the day: labelled data is only trustworthy if the category is operationalized and two coders agree beyond chance.",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -336,7 +336,7 @@
     "href": "sessions/day2/session-04.html#agenda",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Agenda",
-    "text": "Agenda\n\nWhy annotation? — from a linguistic construct to labelled data; the {id, text, label} shape.\nAnnotation schemes & coding guidelines — operationalizing a category so two people can apply it consistently.\nInter-annotator agreement (conceptual) — double annotation, percent agreement, and Cohen’s κ; why chance-corrected agreement matters.\nEvaluation metrics (conceptual) — what precision, recall, and F1 mean, and how a confusion matrix shows where a model goes wrong. This previews the hands-on evaluation you implement in Session 6.\nThe pipeline in context — how today’s gold standard feeds the prompt design and evaluation of the coming days (Eguchi & Kyle, 2024).\n\nThis is the conceptual grounding for the hands-on annotation in Session 5 and the evaluation code in Session 6.",
+    "text": "Agenda\nA · What NLP tasks are there — what annotation is, and the task taxonomy made concrete with linguistic examples: part of speech, word sense disambiguation, syntactic dependency, stance, and discourse moves. Tasks organized by unit and output — token-level sequence labelling, span categorization, and one label per unit. This course focuses on sentence and text categorization, where the evaluation code is manageable and the {id, text, label} shape from Session 3 is enough; span tasks bring boundary and partial-match problems that do not fit five days.\nB · How NLP evaluates a system — and how it transfers to LLMs — the evaluation workflow, and what changes when you swap a trained model for a prompted LLM. The four outcomes (TP · TN · FP · FN), precision and recall, accuracy between two coders, and Cohen’s κ as agreement beyond chance — how much κ is enough, and quadratic weighted κ when labels are ordered.\nC · The define-first workflow — you cannot evaluate what you have not defined. The five phases, borrowed from Eguchi & Kyle’s (2024) model-agnostic pipeline: ① define the annotation task, ② operationalize it into a scheme and guidelines, ③ build the gold standard, ④ set the target at human agreement, ⑤ evaluate the LLM against gold.\nD · The dataset for the class tutorials — Arase, Uchida & Kajiwara (2022), the CEFR-SP corpus: 17k English sentences, each labelled with a CEFR level. One sentence in, one level out — familiar enough to be worth doing and small enough to finish in five days.\nThis is the conceptual grounding for the hands-on annotation in Session 5, which executes phases ①–③, and the evaluation code in Session 6, which executes phases ④–⑤.\n\n\n\n\n\n\nNote\n\n\n\nBefore Session 5, skim §3.1 and §3.2 of Arase et al. (2022) — about a page and a half. The afternoon session opens by asking you to pull two design decisions out of it.",
     "crumbs": [
       "Sessions",
       "Day 2 · Annotation, Gold Standards & Metrics",
@@ -445,6 +445,18 @@
     "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
     "section": "Learning objectives",
     "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nUse show_errors to find misclassifications, hypothesize a fix, and re-run — the same generic → structured refinement you saw in Huang & Mizumoto’s Example Prompt 1 → 2 (Session 7), now driven by error data.\nCompare macro-F1 across iteration rounds, and keep the validation/test distinction honest.\nPlace your prompted-LLM result next to the published supervised results for the same corpus (Arase et al., 2022) — and say what the comparison does and does not license.\nInterpret what supervised training buys and costs versus zero-training prompting — the LLM as an assistant to evaluate and supervise, not a verdict to accept.",
+    "crumbs": [
+      "Sessions",
+      "Day 3 · Prompt Design & Iteration",
+      "Session 9: Error Analysis & Under-the-Hood Walkthrough"
+    ]
+  },
+  {
+    "objectID": "sessions/day3/session-09.html#agenda",
+    "href": "sessions/day3/session-09.html#agenda",
+    "title": "Session 9: Error Analysis & Under-the-Hood Walkthrough",
+    "section": "Agenda",
+    "text": "Agenda\n\nError analysis — the number shows that something changed; the errors show why. Read down the per-class F1 column first, then separate the two causes: the model is wrong, or the scheme is fuzzy.\nIterating the prompt — say what you expect before you run it, then check the class you aimed at. One change per round.\nInside run_prompt — a walkthrough of the helper you have called all day: how it fills the {text} slot, paces the calls to stay under the rate limit, retries on a 429, scans the reply for the label, and returns labels in gold order. You do not edit it; the point is being able to describe what it does.\nThe LLM is one option, not the only one — put your score next to the published supervised results for the same corpus, and work out what that comparison does and does not license.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -4565,7 +4577,19 @@
     "href": "sessions/day3/session-07.html#learning-objectives",
     "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
     "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nName the four prompt elements — instruction · context · input data · output indicator — and locate each in a real prompt.\nDistinguish zero-shot from few-shot prompting and judge when examples help.\nExplain chain-of-thought prompting and where it earns its keep.\nPlace a technique on the run-it-this-week vs. know-it-exists line (zero/few/CoT and structured output vs. self-consistency, RAG, and agentic prompting).\nExplain the train/test contamination trap and why you tune on a validation set but report on a held-out test set.",
+    "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nName the four prompt elements — instruction · context · input data · output indicator — and locate each in a real prompt.\nDistinguish zero-shot from few-shot prompting and judge when examples help.\nExplain chain-of-thought prompting and where it earns its keep.\nPlace a technique on the run-it-this-week vs. know-it-exists line (zero/few/CoT and structured output vs. self-consistency, RAG, and agentic prompting).\nExplain the train/test contamination trap and why you tune on a validation set but report on a held-out test set.\n\nThe message of the day: a prompt has parts you can design, and small changes to those parts change the score.",
+    "crumbs": [
+      "Sessions",
+      "Day 3 · Prompt Design & Iteration",
+      "Session 7: Prompt Design — Zero-shot vs Few-shot"
+    ]
+  },
+  {
+    "objectID": "sessions/day3/session-07.html#agenda",
+    "href": "sessions/day3/session-07.html#agenda",
+    "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
+    "section": "Agenda",
+    "text": "Agenda\n\nThe anatomy of a prompt — the four elements (instruction · context · input data · output indicator), and how structure and persona sharpen the instruction. Worked on Huang & Mizumoto’s (2025) writing-feedback prompt.\nZero-shot, few-shot, chain-of-thought — what examples actually buy you, read off a real results table from Kim & Lu (2024), including where prompting alone stops improving and fine-tuning takes over. Then chain-of-thought, and the Example Prompt 1 → Example Prompt 2 refinement.\nThe wider design space — which techniques to run this week and which to simply know about (self-consistency, RAG, agentic prompting).\nTwo errors to avoid before you tune — train/test contamination, and tuning on validation while reporting on test.\n\nThe four elements return in Session 8, mapped onto the CEFR classification task, and again in Session 9 as the error-analysis iteration loop.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -4614,6 +4638,18 @@
     "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
     "section": "Learning objectives",
     "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nGet and store a Gemini API key (Colab Secrets) and make reproducible calls (temperature=0, seed).\nMap the four prompt elements onto a classification prompt — recasting Huang & Mizumoto’s Task / Criteria / “My paragraph” structure as the CEFR prompt (instruction = classify; context = level descriptors; input = the sentence; output indicator = return only the label).\nRun the zero-shot → few-shot → chain-of-thought progression on CEFR, re-evaluating each on a validation set, and score the final prompt once on the held-out test set.\nPrompt for structured output and recognise JSON as the {id, text, label} data format.",
+    "crumbs": [
+      "Sessions",
+      "Day 3 · Prompt Design & Iteration",
+      "Session 8: Hands-on — LLM Classification & Prompt Iteration"
+    ]
+  },
+  {
+    "objectID": "sessions/day3/session-08.html#agenda",
+    "href": "sessions/day3/session-08.html#agenda",
+    "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
+    "section": "Agenda",
+    "text": "Agenda\n\nFrom feedback to classification — the same four prompt elements from Session 7, now on a new task: instruction = classify, context = the level descriptors, input = the sentence, output indicator = return only the label.\nYour Gemini API key — get one and store it in Colab Secrets, in four steps. Why a key is needed at all, and the two separate rate limits that govern how fast you can call.\nRun classification in Colab — two files with two purposes: tune every prompt on the 24-item validation set, and keep the 72-item test set for one final run. Then three rounds: zero-shot, few-shot, chain-of-thought, recording macro-F1 on validation after each.\nEvaluate the outputs — read the per-class report rather than the average alone, since one level with F1 near zero drags macro-F1 down and the report shows you which. Then the held-out run, once, on the 72 items.\nStructured output — ask the model to return JSON rather than a bare label, which is the same {id, text, label} shape from Day 1 in a format code can read.\n\nExpect the held-out score to come out lower than your validation score. That gap is the expected effect of having chosen the prompt by looking at validation results, not a mistake.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
