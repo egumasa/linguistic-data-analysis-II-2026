@@ -2,6 +2,10 @@ project:
   type: website
   title: "Linguistic Data Analysis II (Summer 2026)"
   output-dir: docs
+  # Standalone interactive widgets, embedded via <iframe>. Quarto does not follow
+  # iframe sources, so they are copied verbatim as project resources.
+  resources:
+    - assets/widgets/**
 
 website:
   title: "Linguistic Data Analysis II (Summer 2026)"

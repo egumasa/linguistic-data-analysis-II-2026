@@ -389,6 +389,15 @@
 <li><strong>So today</strong> — <strong>everyone’s precision, recall, F1 and κ are identical</strong>. If your number differs from the slide, you have a bug in your code.</li>
 </ul>
 <p><em>You run the model yourself, live, from Day 3 on.</em></p>
+</section>
+<section id="load-the-data-first" class="slide level2 smaller">
+<h2>Load the data first</h2>
+<p>Every evaluation begins by <strong>loading the two things it compares</strong> — the gold standard and the model’s predictions. This is a step of its own; the confusion matrix later is built from exactly what you load here.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>gold <span class="op">=</span> load_gold(GOLD_URL)                        <span class="co"># 72 records: {id, text, label}</span></span>
+<span id="cb1-2"><a></a>predictions <span class="op">=</span> load_predictions(PREDICTIONS_URL)   <span class="co"># one level per item, same order</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Both are plain lists in the <strong>same order</strong>: <code>predictions[i]</code> is the model’s answer for <code>gold[i]</code>.</p>
+</div>
 </section></section>
 <section>
 <section id="pass-1-step-1-collapse-to-one-yesno-question" class="title-slide slide level1 center">
@@ -421,9 +430,33 @@
 </div>
 </div>
 </section>
+<section id="build-the-twelve-from-what-you-loaded" class="slide level2 smaller">
+<h2>Build the twelve from what you loaded</h2>
+<p>The twelve rows are <strong>not typed in</strong> — they are sliced from the <code>gold</code> and <code>predictions</code> you just loaded (ids 17–28) and collapsed to yes/no. Same <code>for</code>, <code>if</code>, dictionaries as the rest of pass 1:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>ADVANCED <span class="op">=</span> [<span class="st">"C1"</span>, <span class="st">"C2"</span>]          <span class="co"># the levels that count as "yes"</span></span>
+<span id="cb2-2"><a></a></span>
+<span id="cb2-3"><a></a>gold_12 <span class="op">=</span> gold[<span class="dv">16</span>:<span class="dv">28</span>]            <span class="co"># positions 16–27 → ids 17–28</span></span>
+<span id="cb2-4"><a></a>pred_12 <span class="op">=</span> predictions[<span class="dv">16</span>:<span class="dv">28</span>]</span>
+<span id="cb2-5"><a></a></span>
+<span id="cb2-6"><a></a>items <span class="op">=</span> []</span>
+<span id="cb2-7"><a></a>i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-8"><a></a><span class="cf">for</span> g <span class="kw">in</span> gold_12:</span>
+<span id="cb2-9"><a></a>    p <span class="op">=</span> pred_12[i]               <span class="co"># the model's answer for that same sentence</span></span>
+<span id="cb2-10"><a></a>    <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="kw">in</span> ADVANCED:</span>
+<span id="cb2-11"><a></a>        gold_answer <span class="op">=</span> <span class="st">"yes"</span></span>
+<span id="cb2-12"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb2-13"><a></a>        gold_answer <span class="op">=</span> <span class="st">"no"</span></span>
+<span id="cb2-14"><a></a>    <span class="cf">if</span> p <span class="kw">in</span> ADVANCED:</span>
+<span id="cb2-15"><a></a>        pred_answer <span class="op">=</span> <span class="st">"yes"</span></span>
+<span id="cb2-16"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb2-17"><a></a>        pred_answer <span class="op">=</span> <span class="st">"no"</span></span>
+<span id="cb2-18"><a></a>    items.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"text"</span>: g[<span class="st">"text"</span>],</span>
+<span id="cb2-19"><a></a>                  <span class="st">"gold"</span>: gold_answer, <span class="st">"pred"</span>: pred_answer})</span>
+<span id="cb2-20"><a></a>    i <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
 <section id="twelve-sentences-count-them-yourself" class="slide level2 smaller">
 <h2>Twelve sentences — count them yourself</h2>
-<p>Here are 12 of the 72, with the gold level and the model’s level, collapsed to yes/no:</p>
+<p>The twelve <code>items</code> you just built, with the gold level and the model’s level collapsed to yes/no:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 15%">
@@ -558,9 +591,9 @@
 </section>
 <section id="open-colab-and-look-at-one-item" class="slide level2 smaller">
 <h2>Open Colab and look at one item</h2>
-<p>The 12 rows are already in the notebook, as a list of dictionaries — the same <code>{id, text, …}</code> shape you have used since Day 1, with two extra keys:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>item <span class="op">=</span> items[<span class="dv">0</span>]                     <span class="co"># the first of the 12 rows</span></span>
-<span id="cb1-2"><a></a><span class="bu">print</span>(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>])   <span class="co"># its gold answer, then the model's</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The 12 rows you just built are a list of dictionaries — the same <code>{id, text, …}</code> shape you have used since Day 1, with two extra keys:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>item <span class="op">=</span> items[<span class="dv">0</span>]                     <span class="co"># the first of the 12 rows</span></span>
+<span id="cb3-2"><a></a><span class="bu">print</span>(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>])   <span class="co"># its gold answer, then the model's</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>no no</code></pre>
 <p>Row 17: the gold says not advanced, and the model says not advanced. Every metric today is computed from pairs like this — <strong>one item, two labels</strong>.</p>
@@ -569,9 +602,9 @@
 <section id="ask-it-the-first-question" class="slide level2 smaller">
 <h2>Ask it the first question</h2>
 <p>Is this item a <strong>true positive</strong>? That means <em>both</em> labels are <code>"yes"</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="co"># `and` means BOTH sides have to be true:</span></span>
-<span id="cb3-2"><a></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
-<span id="cb3-3"><a></a>    <span class="bu">print</span>(<span class="st">"TP"</span>)     <span class="co"># only runs when both are "yes"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="co"># `and` means BOTH sides have to be true:</span></span>
+<span id="cb5-2"><a></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb5-3"><a></a>    <span class="bu">print</span>(<span class="st">"TP"</span>)     <span class="co"># only runs when both are "yes"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code></code></pre>
 <p><strong>Nothing printed.</strong> This is not a bug. Row 17 is not a TP, and one <code>if</code> can only answer <em>one</em> of the four questions.</p>
@@ -624,15 +657,15 @@
 </table>
 <p>Four cells, four branches, in the <strong>same order</strong>.</p>
 </div><div class="column" style="width:58%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="co"># checked top to bottom; only the FIRST match runs, so exactly one branch runs:</span></span>
-<span id="cb5-2"><a></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
-<span id="cb5-3"><a></a>    <span class="bu">print</span>(<span class="st">"TP"</span>)      <span class="co"># advanced, and the model said advanced</span></span>
-<span id="cb5-4"><a></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"no"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
-<span id="cb5-5"><a></a>    <span class="bu">print</span>(<span class="st">"FP"</span>)      <span class="co"># not advanced, but the model said advanced</span></span>
-<span id="cb5-6"><a></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"no"</span>:</span>
-<span id="cb5-7"><a></a>    <span class="bu">print</span>(<span class="st">"FN"</span>)      <span class="co"># advanced, but the model said not advanced</span></span>
-<span id="cb5-8"><a></a><span class="cf">else</span>:</span>
-<span id="cb5-9"><a></a>    <span class="bu">print</span>(<span class="st">"TN"</span>)      <span class="co"># not advanced, and the model said not advanced</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="co"># checked top to bottom; only the FIRST match runs, so exactly one branch runs:</span></span>
+<span id="cb7-2"><a></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb7-3"><a></a>    <span class="bu">print</span>(<span class="st">"TP"</span>)      <span class="co"># advanced, and the model said advanced</span></span>
+<span id="cb7-4"><a></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"no"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb7-5"><a></a>    <span class="bu">print</span>(<span class="st">"FP"</span>)      <span class="co"># not advanced, but the model said advanced</span></span>
+<span id="cb7-6"><a></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"no"</span>:</span>
+<span id="cb7-7"><a></a>    <span class="bu">print</span>(<span class="st">"FN"</span>)      <span class="co"># advanced, but the model said not advanced</span></span>
+<span id="cb7-8"><a></a><span class="cf">else</span>:</span>
+<span id="cb7-9"><a></a>    <span class="bu">print</span>(<span class="st">"TN"</span>)      <span class="co"># not advanced, and the model said not advanced</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="fragment">
 <p><code>elif</code> = <em>“only if none of the above matched.”</em> The branches are checked top to bottom and <strong>exactly one</strong> runs — so every item lands in exactly one cell. The final <code>else</code> needs no condition: if it isn’t TP, FP or FN, it can only be TN.</p>
@@ -641,8 +674,8 @@
 <section id="try-it-on-a-different-row" class="slide level2 smaller">
 <h2>Try it on a different row</h2>
 <p>Change which item you look at and re-run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>item <span class="op">=</span> items[<span class="dv">11</span>]          <span class="co"># row 28</span></span>
-<span id="cb6-2"><a></a><span class="bu">print</span>(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>item <span class="op">=</span> items[<span class="dv">11</span>]          <span class="co"># row 28</span></span>
+<span id="cb8-2"><a></a><span class="bu">print</span>(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>no yes</code></pre>
 <div class="fragment">
 <p>The gold says not advanced; the model said advanced. Branch 1 fails, branch 2 matches:</p>
@@ -672,23 +705,23 @@
 <section id="twelve-items-one-rule" class="slide level2 smaller">
 <h2>Twelve items, one rule</h2>
 <p>You are about to ask that same question of all 12 rows. Instead of copying the four branches twelve times, <strong>give them a name once</strong>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">def</span> outcome(gold_label, pred_label):</span>
-<span id="cb9-2"><a></a>    <span class="co">"""Which of the four cells does this one item belong to?"""</span></span>
-<span id="cb9-3"><a></a>    <span class="cf">if</span> gold_label <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"yes"</span>:</span>
-<span id="cb9-4"><a></a>        <span class="cf">return</span> <span class="st">"TP"</span>      <span class="co"># `return` gives the answer back, instead of printing it</span></span>
-<span id="cb9-5"><a></a>    <span class="cf">elif</span> gold_label <span class="op">==</span> <span class="st">"no"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"yes"</span>:</span>
-<span id="cb9-6"><a></a>        <span class="cf">return</span> <span class="st">"FP"</span></span>
-<span id="cb9-7"><a></a>    <span class="cf">elif</span> gold_label <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"no"</span>:</span>
-<span id="cb9-8"><a></a>        <span class="cf">return</span> <span class="st">"FN"</span></span>
-<span id="cb9-9"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb9-10"><a></a>        <span class="cf">return</span> <span class="st">"TN"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="kw">def</span> outcome(gold_label, pred_label):</span>
+<span id="cb11-2"><a></a>    <span class="co">"""Which of the four cells does this one item belong to?"""</span></span>
+<span id="cb11-3"><a></a>    <span class="cf">if</span> gold_label <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb11-4"><a></a>        <span class="cf">return</span> <span class="st">"TP"</span>      <span class="co"># `return` gives the answer back, instead of printing it</span></span>
+<span id="cb11-5"><a></a>    <span class="cf">elif</span> gold_label <span class="op">==</span> <span class="st">"no"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb11-6"><a></a>        <span class="cf">return</span> <span class="st">"FP"</span></span>
+<span id="cb11-7"><a></a>    <span class="cf">elif</span> gold_label <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> pred_label <span class="op">==</span> <span class="st">"no"</span>:</span>
+<span id="cb11-8"><a></a>        <span class="cf">return</span> <span class="st">"FN"</span></span>
+<span id="cb11-9"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb11-10"><a></a>        <span class="cf">return</span> <span class="st">"TN"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>Two changes from step 3, and only two: it is <strong>wrapped in <code>def</code></strong>, and every <code>print</code> became a <strong><code>return</code></strong>.</p>
 </div>
 </section>
 <section id="print-displays-return-gives-the-value-back" class="slide level2 smaller">
 <h2><code>print</code> displays · <code>return</code> gives the value back</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="bu">print</span>(outcome(<span class="st">"yes"</span>, <span class="st">"no"</span>))     <span class="co"># gold said advanced, model said not advanced</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="bu">print</span>(outcome(<span class="st">"yes"</span>, <span class="st">"no"</span>))     <span class="co"># gold said advanced, model said not advanced</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>FN</code></pre>
 </div>
@@ -722,11 +755,11 @@
 <section id="one-outcome-per-sentence" class="slide level2 smaller">
 <h2>One outcome per sentence</h2>
 <p>Now run that function over all 12 rows and <strong>keep</strong> the answers — the same “build a list in a loop” pattern you wrote on Day 1:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>decisions <span class="op">=</span> []                     <span class="co"># start empty; the loop adds to it</span></span>
-<span id="cb12-2"><a></a><span class="cf">for</span> item <span class="kw">in</span> items:                 <span class="co"># one pass per row of the table</span></span>
-<span id="cb12-3"><a></a>    decisions.append(outcome(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>]))   <span class="co"># add its outcome</span></span>
-<span id="cb12-4"><a></a></span>
-<span id="cb12-5"><a></a><span class="bu">print</span>(decisions)                   <span class="co"># 12 outcomes, in the table's order</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>decisions <span class="op">=</span> []                     <span class="co"># start empty; the loop adds to it</span></span>
+<span id="cb14-2"><a></a><span class="cf">for</span> item <span class="kw">in</span> items:                 <span class="co"># one pass per row of the table</span></span>
+<span id="cb14-3"><a></a>    decisions.append(outcome(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>]))   <span class="co"># add its outcome</span></span>
+<span id="cb14-4"><a></a></span>
+<span id="cb14-5"><a></a><span class="bu">print</span>(decisions)                   <span class="co"># 12 outcomes, in the table's order</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>['TN', 'TP', 'TN', 'TN', 'TP', 'FN', 'TN', 'FN', 'TN', 'TN', 'TP', 'FP']</code></pre>
 </div>
@@ -766,11 +799,11 @@
 <section id="count-the-four-outcomes" class="slide level2 smaller">
 <h2>Count the four outcomes</h2>
 <p>This is Day 1’s <code>count_labels</code> exercise, run on a new list:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>tally <span class="op">=</span> {}                         <span class="co"># a dict: outcome -&gt; how many times</span></span>
-<span id="cb14-2"><a></a><span class="cf">for</span> d <span class="kw">in</span> decisions:                <span class="co"># d is "TP", "FP", "FN" or "TN"</span></span>
-<span id="cb14-3"><a></a>    tally[d] <span class="op">=</span> tally.get(d, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>   <span class="co"># count so far (0 if new), plus one</span></span>
-<span id="cb14-4"><a></a></span>
-<span id="cb14-5"><a></a><span class="bu">print</span>(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>tally <span class="op">=</span> {}                         <span class="co"># a dict: outcome -&gt; how many times</span></span>
+<span id="cb16-2"><a></a><span class="cf">for</span> d <span class="kw">in</span> decisions:                <span class="co"># d is "TP", "FP", "FN" or "TN"</span></span>
+<span id="cb16-3"><a></a>    tally[d] <span class="op">=</span> tally.get(d, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>   <span class="co"># count so far (0 if new), plus one</span></span>
+<span id="cb16-4"><a></a></span>
+<span id="cb16-5"><a></a><span class="bu">print</span>(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>{'TN': 6, 'TP': 3, 'FN': 2, 'FP': 1}</code></pre>
 </div>
@@ -803,7 +836,7 @@
 <p>A confusion matrix is <strong>not a new calculation</strong>. It is those same four numbers, put in a square so you can <em>see</em> them:</p>
 <div class="columns">
 <div class="column" style="width:45%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>show_2x2(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>show_2x2(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>          pred yes  pred no
 gold yes         3        2
 gold no          1        6</code></pre>
@@ -867,11 +900,11 @@ gold no          1        6</code></pre>
 <section id="precision-of-what-it-called-advanced-how-much-was-correct" class="slide level2 smaller">
 <h2>Precision — of what it called advanced, how much was correct?</h2>
 <p><strong>Numbers first</strong>, so you can check it on paper:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="bu">print</span>(<span class="dv">3</span> <span class="op">/</span> (<span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>))            <span class="co"># TP / (TP + FP)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="bu">print</span>(<span class="dv">3</span> <span class="op">/</span> (<span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>))            <span class="co"># TP / (TP + FP)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.75</code></pre>
 <div class="fragment">
 <p><strong>Same thing, read off the tally</strong> — so it survives a change of data:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="bu">print</span>(tally[<span class="st">"TP"</span>] <span class="op">/</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]))    <span class="co"># the same, from the tally</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="bu">print</span>(tally[<span class="st">"TP"</span>] <span class="op">/</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]))    <span class="co"># the same, from the tally</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.75</code></pre>
 </div>
 <div class="fragment">
@@ -880,15 +913,15 @@ gold no          1        6</code></pre>
 </section>
 <section id="precision-now-as-a-function" class="slide level2 smaller">
 <h2>Precision — now as a function</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="kw">def</span> precision(tally):</span>
-<span id="cb22-2"><a></a>    <span class="co">"""Of everything CALLED advanced, how much really was?  TP / (TP + FP)"""</span></span>
-<span id="cb22-3"><a></a>    tp <span class="op">=</span> tally.get(<span class="st">"TP"</span>, <span class="dv">0</span>)      <span class="co"># .get(..., 0) so a missing count reads as 0</span></span>
-<span id="cb22-4"><a></a>    fp <span class="op">=</span> tally.get(<span class="st">"FP"</span>, <span class="dv">0</span>)</span>
-<span id="cb22-5"><a></a>    <span class="cf">if</span> tp <span class="op">+</span> fp <span class="op">==</span> <span class="dv">0</span>:             <span class="co"># the model never said "yes" at all</span></span>
-<span id="cb22-6"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span>               <span class="co"># no correct positives, and no division by zero</span></span>
-<span id="cb22-7"><a></a>    <span class="cf">return</span> tp <span class="op">/</span> (tp <span class="op">+</span> fp)        <span class="co"># correct positives, over all positive predictions</span></span>
-<span id="cb22-8"><a></a></span>
-<span id="cb22-9"><a></a><span class="bu">print</span>(<span class="bu">round</span>(precision(tally), <span class="dv">3</span>))   <span class="co"># round to 3 decimal places</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="kw">def</span> precision(tally):</span>
+<span id="cb24-2"><a></a>    <span class="co">"""Of everything CALLED advanced, how much really was?  TP / (TP + FP)"""</span></span>
+<span id="cb24-3"><a></a>    tp <span class="op">=</span> tally.get(<span class="st">"TP"</span>, <span class="dv">0</span>)      <span class="co"># .get(..., 0) so a missing count reads as 0</span></span>
+<span id="cb24-4"><a></a>    fp <span class="op">=</span> tally.get(<span class="st">"FP"</span>, <span class="dv">0</span>)</span>
+<span id="cb24-5"><a></a>    <span class="cf">if</span> tp <span class="op">+</span> fp <span class="op">==</span> <span class="dv">0</span>:             <span class="co"># the model never said "yes" at all</span></span>
+<span id="cb24-6"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span>               <span class="co"># no correct positives, and no division by zero</span></span>
+<span id="cb24-7"><a></a>    <span class="cf">return</span> tp <span class="op">/</span> (tp <span class="op">+</span> fp)        <span class="co"># correct positives, over all positive predictions</span></span>
+<span id="cb24-8"><a></a></span>
+<span id="cb24-9"><a></a><span class="bu">print</span>(<span class="bu">round</span>(precision(tally), <span class="dv">3</span>))   <span class="co"># round to 3 decimal places</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>0.75</code></pre>
 </div>
@@ -912,15 +945,15 @@ gold no          1        6</code></pre>
 <h2>Recall — your turn</h2>
 <p>Recall asks the <strong>other</strong> question: <em>of everything that truly was advanced, how much did we identify?</em></p>
 <p><span class="math display">\[R = \frac{TP}{TP + FN}\]</span></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="kw">def</span> recall(tally):</span>
-<span id="cb24-2"><a></a>    <span class="co">"""Of everything that TRULY was advanced, how much did we identify?"""</span></span>
-<span id="cb24-3"><a></a>    tp <span class="op">=</span> tally.get(<span class="st">"TP"</span>, <span class="dv">0</span>)</span>
-<span id="cb24-4"><a></a>    fn <span class="op">=</span> tally.get(<span class="st">"FN"</span>, <span class="dv">0</span>)       <span class="co"># ← the only real change</span></span>
-<span id="cb24-5"><a></a>    <span class="cf">if</span> tp <span class="op">+</span> fn <span class="op">==</span> <span class="dv">0</span>:              <span class="co"># nothing was truly advanced, so there is nothing to find</span></span>
-<span id="cb24-6"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
-<span id="cb24-7"><a></a>    <span class="cf">return</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)         <span class="co"># correct positives, over all true positives in the gold</span></span>
-<span id="cb24-8"><a></a></span>
-<span id="cb24-9"><a></a><span class="bu">print</span>(<span class="bu">round</span>(recall(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a><span class="kw">def</span> recall(tally):</span>
+<span id="cb26-2"><a></a>    <span class="co">"""Of everything that TRULY was advanced, how much did we identify?"""</span></span>
+<span id="cb26-3"><a></a>    tp <span class="op">=</span> tally.get(<span class="st">"TP"</span>, <span class="dv">0</span>)</span>
+<span id="cb26-4"><a></a>    fn <span class="op">=</span> tally.get(<span class="st">"FN"</span>, <span class="dv">0</span>)       <span class="co"># ← the only real change</span></span>
+<span id="cb26-5"><a></a>    <span class="cf">if</span> tp <span class="op">+</span> fn <span class="op">==</span> <span class="dv">0</span>:              <span class="co"># nothing was truly advanced, so there is nothing to find</span></span>
+<span id="cb26-6"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb26-7"><a></a>    <span class="cf">return</span> tp <span class="op">/</span> (tp <span class="op">+</span> fn)         <span class="co"># correct positives, over all true positives in the gold</span></span>
+<span id="cb26-8"><a></a></span>
+<span id="cb26-9"><a></a><span class="bu">print</span>(<span class="bu">round</span>(recall(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>0.6</code></pre>
 <p>Three of the five genuinely advanced sentences were found. <strong>Recall = 0.60.</strong></p>
@@ -930,15 +963,15 @@ gold no          1        6</code></pre>
 <h2>F1 — precision and recall in one number</h2>
 <p>Precision and recall move in opposite directions: if the model labels everything positive, recall becomes 1.0 and precision becomes very low. <strong>F1</strong> is the harmonic mean, so a high value on one side cannot compensate for a low value on the other:</p>
 <p><span class="math display">\[F_1 = 2 \cdot \frac{P \cdot R}{P + R}\]</span></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a><span class="kw">def</span> f1(tally):</span>
-<span id="cb26-2"><a></a>    <span class="co">"""Harmonic mean of precision and recall."""</span></span>
-<span id="cb26-3"><a></a>    p <span class="op">=</span> precision(tally)         <span class="co"># reuse the function you just wrote</span></span>
-<span id="cb26-4"><a></a>    r <span class="op">=</span> recall(tally)            <span class="co"># ...and the other one</span></span>
-<span id="cb26-5"><a></a>    <span class="cf">if</span> p <span class="op">+</span> r <span class="op">==</span> <span class="dv">0</span>:               <span class="co"># both zero — nothing to average</span></span>
-<span id="cb26-6"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
-<span id="cb26-7"><a></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> p <span class="op">*</span> r <span class="op">/</span> (p <span class="op">+</span> r)   <span class="co"># harmonic mean: a low value on either side lowers it</span></span>
-<span id="cb26-8"><a></a></span>
-<span id="cb26-9"><a></a><span class="bu">print</span>(<span class="bu">round</span>(precision(tally), <span class="dv">3</span>), <span class="bu">round</span>(recall(tally), <span class="dv">3</span>), <span class="bu">round</span>(f1(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a><span class="kw">def</span> f1(tally):</span>
+<span id="cb28-2"><a></a>    <span class="co">"""Harmonic mean of precision and recall."""</span></span>
+<span id="cb28-3"><a></a>    p <span class="op">=</span> precision(tally)         <span class="co"># reuse the function you just wrote</span></span>
+<span id="cb28-4"><a></a>    r <span class="op">=</span> recall(tally)            <span class="co"># ...and the other one</span></span>
+<span id="cb28-5"><a></a>    <span class="cf">if</span> p <span class="op">+</span> r <span class="op">==</span> <span class="dv">0</span>:               <span class="co"># both zero — nothing to average</span></span>
+<span id="cb28-6"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb28-7"><a></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> p <span class="op">*</span> r <span class="op">/</span> (p <span class="op">+</span> r)   <span class="co"># harmonic mean: a low value on either side lowers it</span></span>
+<span id="cb28-8"><a></a></span>
+<span id="cb28-9"><a></a><span class="bu">print</span>(<span class="bu">round</span>(precision(tally), <span class="dv">3</span>), <span class="bu">round</span>(recall(tally), <span class="dv">3</span>), <span class="bu">round</span>(f1(tally), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>0.75 0.6 0.667</code></pre>
 </div>
@@ -979,9 +1012,9 @@ gold no          1        6</code></pre>
 <section id="why-accuracy-isnt-enough" class="slide level2 smaller">
 <h2>Why accuracy isn’t enough</h2>
 <p>Start with the easy number — <strong>observed agreement</strong>, the diagonal over the total:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a>n <span class="op">=</span> tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]   <span class="co"># all 12 items</span></span>
-<span id="cb28-2"><a></a>p_o <span class="op">=</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n   <span class="co"># the diagonal (both agreed), over the total</span></span>
-<span id="cb28-3"><a></a><span class="bu">print</span>(<span class="bu">round</span>(p_o, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a>n <span class="op">=</span> tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]   <span class="co"># all 12 items</span></span>
+<span id="cb30-2"><a></a>p_o <span class="op">=</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n   <span class="co"># the diagonal (both agreed), over the total</span></span>
+<span id="cb30-3"><a></a><span class="bu">print</span>(<span class="bu">round</span>(p_o, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>0.75</code></pre>
 </div>
@@ -992,11 +1025,11 @@ gold no          1        6</code></pre>
 <section id="agreement-expected-by-chance" class="slide level2 smaller">
 <h2>Agreement expected by chance</h2>
 <p><span class="math inline">\(p_e\)</span> = the agreement two raters would reach <strong>by chance</strong>, given how often each one uses each label. Multiply their rates, label by label — the row and column totals from step 7:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a><span class="co"># each line: how often GOLD says it × how often the MODEL says it = chance agreement</span></span>
-<span id="cb30-2"><a></a>p_yes <span class="op">=</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]) <span class="op">/</span> n)</span>
-<span id="cb30-3"><a></a>p_no  <span class="op">=</span> ((tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n)</span>
-<span id="cb30-4"><a></a>p_e   <span class="op">=</span> p_yes <span class="op">+</span> p_no          <span class="co"># chance agreement on "yes" plus chance agreement on "no"</span></span>
-<span id="cb30-5"><a></a><span class="bu">print</span>(<span class="bu">round</span>(p_yes, <span class="dv">3</span>), <span class="bu">round</span>(p_no, <span class="dv">3</span>), <span class="bu">round</span>(p_e, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a><span class="co"># each line: how often GOLD says it × how often the MODEL says it = chance agreement</span></span>
+<span id="cb32-2"><a></a>p_yes <span class="op">=</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]) <span class="op">/</span> n)</span>
+<span id="cb32-3"><a></a>p_no  <span class="op">=</span> ((tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n)</span>
+<span id="cb32-4"><a></a>p_e   <span class="op">=</span> p_yes <span class="op">+</span> p_no          <span class="co"># chance agreement on "yes" plus chance agreement on "no"</span></span>
+<span id="cb32-5"><a></a><span class="bu">print</span>(<span class="bu">round</span>(p_yes, <span class="dv">3</span>), <span class="bu">round</span>(p_no, <span class="dv">3</span>), <span class="bu">round</span>(p_e, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>0.139 0.389 0.528</code></pre>
 </div>
@@ -1012,8 +1045,8 @@ gold no          1        6</code></pre>
 <h2>κ — agreement corrected for chance</h2>
 <p><span class="math display">\[\kappa = \frac{p_o - p_e}{1 - p_e}\]</span></p>
 <p><em>Of the agreement that chance does not explain, how much did they achieve?</em></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a><span class="co"># observed minus chance agreement (p_o - p_e), over the agreement still available (1 - p_e):</span></span>
-<span id="cb32-2"><a></a><span class="bu">print</span>(<span class="bu">round</span>((p_o <span class="op">-</span> p_e) <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> p_e), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a><span class="co"># observed minus chance agreement (p_o - p_e), over the agreement still available (1 - p_e):</span></span>
+<span id="cb34-2"><a></a><span class="bu">print</span>(<span class="bu">round</span>((p_o <span class="op">-</span> p_e) <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> p_e), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <pre><code>0.471</code></pre>
 </div>
@@ -1054,16 +1087,16 @@ gold no          1        6</code></pre>
 </section>
 <section id="the-whole-calculation-as-one-function" class="slide level2 smaller">
 <h2>The whole calculation as one function</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a><span class="kw">def</span> kappa(tally):</span>
-<span id="cb34-2"><a></a>    <span class="co">"""Agreement corrected for chance: (p_o - p_e) / (1 - p_e)."""</span></span>
-<span id="cb34-3"><a></a>    n <span class="op">=</span> tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]   <span class="co"># every item</span></span>
-<span id="cb34-4"><a></a>    p_o <span class="op">=</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n     <span class="co"># agreement we actually observed</span></span>
-<span id="cb34-5"><a></a>    p_yes <span class="op">=</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]) <span class="op">/</span> n)</span>
-<span id="cb34-6"><a></a>    p_no <span class="op">=</span> ((tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n)</span>
-<span id="cb34-7"><a></a>    p_e <span class="op">=</span> p_yes <span class="op">+</span> p_no                        <span class="co"># agreement expected by chance</span></span>
-<span id="cb34-8"><a></a>    <span class="cf">if</span> <span class="dv">1</span> <span class="op">-</span> p_e <span class="op">==</span> <span class="dv">0</span>:                          <span class="co"># chance already explains all agreement</span></span>
-<span id="cb34-9"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
-<span id="cb34-10"><a></a>    <span class="cf">return</span> (p_o <span class="op">-</span> p_e) <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> p_e)            <span class="co"># the share of the remaining agreement achieved</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a><span class="kw">def</span> kappa(tally):</span>
+<span id="cb36-2"><a></a>    <span class="co">"""Agreement corrected for chance: (p_o - p_e) / (1 - p_e)."""</span></span>
+<span id="cb36-3"><a></a>    n <span class="op">=</span> tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]   <span class="co"># every item</span></span>
+<span id="cb36-4"><a></a>    p_o <span class="op">=</span> (tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n     <span class="co"># agreement we actually observed</span></span>
+<span id="cb36-5"><a></a>    p_yes <span class="op">=</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"TP"</span>] <span class="op">+</span> tally[<span class="st">"FP"</span>]) <span class="op">/</span> n)</span>
+<span id="cb36-6"><a></a>    p_no <span class="op">=</span> ((tally[<span class="st">"FP"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n) <span class="op">*</span> ((tally[<span class="st">"FN"</span>] <span class="op">+</span> tally[<span class="st">"TN"</span>]) <span class="op">/</span> n)</span>
+<span id="cb36-7"><a></a>    p_e <span class="op">=</span> p_yes <span class="op">+</span> p_no                        <span class="co"># agreement expected by chance</span></span>
+<span id="cb36-8"><a></a>    <span class="cf">if</span> <span class="dv">1</span> <span class="op">-</span> p_e <span class="op">==</span> <span class="dv">0</span>:                          <span class="co"># chance already explains all agreement</span></span>
+<span id="cb36-9"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb36-10"><a></a>    <span class="cf">return</span> (p_o <span class="op">-</span> p_e) <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> p_e)            <span class="co"># the share of the remaining agreement achieved</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -1081,43 +1114,20 @@ gold no          1        6</code></pre>
 </div>
 </section></section>
 <section>
-<section id="pass-1-step-10-scale-up-then-check-yourself" class="title-slide slide level1 center">
-<h1>Pass 1 · Step 10 — scale up, then check yourself</h1>
+<section id="pass-1-step-10-check-yourself-against-scikit-learn" class="title-slide slide level1 center">
+<h1>Pass 1 · Step 10 — check yourself against scikit-learn</h1>
 
 </section>
-<section id="the-same-functions-all-72-items" class="slide level2 smaller">
-<h2>The same functions, all 72 items</h2>
-<p>Nothing changes but the input — <code>items</code> becomes all 72 sentences:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a></a><span class="co">### Step 1: all 72 items, in the same yes/no shape as the 12 </span><span class="al">###</span></span>
-<span id="cb35-2"><a></a>all_items <span class="op">=</span> pair_up(gold, predictions, ADVANCED)</span>
-<span id="cb35-3"><a></a></span>
-<span id="cb35-4"><a></a><span class="co">### Step 2: the SAME loop as step 5 — only the input changed </span><span class="al">###</span></span>
-<span id="cb35-5"><a></a>decisions <span class="op">=</span> []</span>
-<span id="cb35-6"><a></a><span class="cf">for</span> item <span class="kw">in</span> all_items:</span>
-<span id="cb35-7"><a></a>    decisions.append(outcome(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>]))</span>
-<span id="cb35-8"><a></a></span>
-<span id="cb35-9"><a></a><span class="co">### Step 3: the SAME tally as step 6 </span><span class="al">###</span></span>
-<span id="cb35-10"><a></a>tally <span class="op">=</span> {}</span>
-<span id="cb35-11"><a></a><span class="cf">for</span> d <span class="kw">in</span> decisions:</span>
-<span id="cb35-12"><a></a>    tally[d] <span class="op">=</span> tally.get(d, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb35-13"><a></a><span class="bu">print</span>(tally)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<pre><code>{'TN': 46, 'TP': 16, 'FN': 8, 'FP': 2}</code></pre>
-<pre><code>precision 0.889   recall 0.667   F1 0.762   kappa 0.667</code></pre>
-</div>
-<div class="fragment">
-<p><strong>The 12-item sample did not show everything</strong> — precision rose, recall stayed low. The pattern is the same: the model applies the positive label rarely, but is usually correct when it does. A 12-item sample is enough to learn the procedure, and never enough to evaluate a model.</p>
-</div>
-</section>
-<section id="check-yourself-against-scikit-learn" class="slide level2 smaller">
-<h2>Check yourself against scikit-learn</h2>
-<p>The self-check cell runs the library’s version of every metric you wrote and compares:</p>
-<pre><code>✅ precision      yours=0.888889  sklearn=0.888889
-✅ recall         yours=0.666667  sklearn=0.666667
-✅ f1             yours=0.761905  sklearn=0.761905
-✅ cohen_kappa    yours=0.666667  sklearn=0.666667
+<section id="does-your-code-match-the-library" class="slide level2 smaller">
+<h2>Does your code match the library?</h2>
+<p>You built a confusion matrix and four metrics by hand. Before trusting them, check them against <code>scikit-learn</code> <strong>on the same twelve items</strong> — it builds the same 2×2 and computes the same numbers, and if yours differ you have a bug. This is the only place <code>scikit-learn</code> enters pass 1:</p>
+<pre><code>✅ TP/FP/FN/TN     yours=3/1/2/6  sklearn=3/1/2/6
+✅ precision      yours=0.750000  sklearn=0.750000
+✅ recall         yours=0.600000  sklearn=0.600000
+✅ f1             yours=0.666667  sklearn=0.666667
+✅ cohen_kappa    yours=0.470588  sklearn=0.470588
 -----------------------------------------------
-All 4 checks passed ✅  — your metrics match scikit-learn.</code></pre>
+All 5 checks passed ✅  — your confusion matrix and metrics match scikit-learn.</code></pre>
 <div class="fragment">
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
@@ -1128,7 +1138,7 @@ All 4 checks passed ✅  — your metrics match scikit-learn.</code></pre>
 <p><strong>This is the point of pass 1</strong></p>
 </div>
 <div class="callout-content">
-<p><code>sklearn</code> is not doing anything you cannot do. It is doing <strong>exactly what you just wrote</strong>, faster and for every class at once. From here on, when a report prints <code>0.36</code>, you know precisely which counts produced it.</p>
+<p><code>sklearn</code> is not doing anything you cannot do. It is doing <strong>exactly what you just wrote</strong>, faster and for every class at once. <strong>Twelve items is enough to learn the mechanics, never enough to judge a model</strong> — so pass 2 hands the full 72 to <code>scikit-learn</code>. From here on, when a report prints <code>0.36</code>, you know precisely which counts produced it.</p>
 </div>
 </div>
 </div>
@@ -1141,15 +1151,15 @@ All 4 checks passed ✅  — your metrics match scikit-learn.</code></pre>
 </section>
 <section id="six-levels-thirty-six-cells" class="slide level2 smaller">
 <h2>Six levels, thirty-six cells</h2>
-<p>Drop the yes/no simplification. The actual task is: <strong>A1 · A2 · B1 · B2 · C1 · C2</strong>.</p>
+<p>Drop the yes/no simplification. The actual task is the <strong>full ordinal CEFR scale</strong>: <strong>A1 · A2 · B1 · B2 · C1 · C2</strong>. Nothing new is loaded — the <code>gold</code> and <code>predictions</code> from the start already carry the full level; pass 1 only <em>collapsed</em> them to yes/no.</p>
 <ul>
 <li><strong>4 cells → 36.</strong> Counting by hand is no longer practical.</li>
 <li><strong>One positive class at a time</strong> — with six classes you get <strong>six</strong> precisions, <strong>six</strong> recalls, <strong>six</strong> F1s.</li>
 <li><strong>The method is unchanged</strong> — to score <code>C1</code>, treat <strong><code>C1</code> as “yes” and all five others as “no”</strong>: pass 1, run six times. This is called <strong>one-vs-rest</strong>, and it is what <code>classification_report</code> does.</li>
 </ul>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a></a><span class="co"># ordered=True: the six levels form a scale, so also report weighted κ</span></span>
-<span id="cb39-2"><a></a>evaluate(gold, predictions, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a><span class="co"># ordered=True: the six levels form a scale, so also report weighted κ</span></span>
+<span id="cb38-2"><a></a>evaluate(gold, predictions, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>ordered=True</code> states that these labels form a <strong>scale</strong>, which changes which κ you should read. We return to this below.</p>
 </div>
 </section>
@@ -1291,7 +1301,7 @@ All 4 checks passed ✅  — your metrics match scikit-learn.</code></pre>
 <ul>
 <li><strong>Predictions concentrate in the middle</strong> of the scale; the two ends are used rarely.</li>
 <li><strong>Why?</strong> When a rater — human or machine — has to judge something as unclear as “difficulty”, the middle categories are the safest choice.</li>
-<li><strong>Same finding as pass 1</strong> — with “advanced” as positive, precision 0.89 but recall 0.67. <strong>The model under-uses the top of the scale.</strong></li>
+<li><strong>Same finding as pass 1</strong> — with “advanced” as positive, precision ran ahead of recall (0.75 vs 0.60 on your twelve). <strong>The model under-uses the top of the scale.</strong></li>
 </ul>
 </div>
 <div class="fragment">
@@ -1338,8 +1348,8 @@ Cohen's kappa (weighted) 0.849   &lt;- labels are ordered</code></pre>
 </section>
 <section id="error-analysis-the-models-error-or-the-schemes" class="slide level2 smaller">
 <h2>Error analysis — the model’s error, or the scheme’s?</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a></a>errors <span class="op">=</span> show_errors(gold, predictions)   <span class="co"># a table of every item it got wrong</span></span>
-<span id="cb42-2"><a></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] for the highest level</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a></a>errors <span class="op">=</span> show_errors(gold, predictions)   <span class="co"># a table of every item it got wrong</span></span>
+<span id="cb41-2"><a></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] for the highest level</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>44 errors — too many to read one by one, and you do not need to. <strong>Read about a dozen</strong>, then look closely at the rows where gold is <strong>C2</strong> or <strong>A1</strong>: disagreements concentrate at the two ends of the scale.</p>
 <div class="fragment">
 <p>For each error you read, ask:</p>

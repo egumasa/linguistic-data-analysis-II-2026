@@ -433,9 +433,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This is your <strong>single submission for the day</strong>. It has two parts:</p>
 <ul>
 <li><strong>Part A · Tutorial</strong> — sample a balanced gold subset from a dataset pool, ready for QC.</li>
-<li><strong>Part B · Corpus Lab</strong> — quality-control and adjudicate your sampled gold set (to be written).</li>
+<li><strong>Part B · Corpus Lab</strong> — draw the line between the items you may look at while you work (dev) and the items you open once, at the end (test).</li>
 </ul>
-<p>You only edit the cells marked <strong>✏️ YOU EDIT</strong>. Cells marked <strong>🔧 Library cell</strong> are pre-written — run them, don’t change them.</p>
+<p>You only edit the cells marked <strong>✏️ YOU EDIT</strong>. Run the <strong>🔧 Library cell</strong>s and leave them alone.</p>
 <p>➡️ Work top to bottom. When you’re done, <strong>Runtime → Run all</strong>, then <strong>File → Download → Download <code>.ipynb</code></strong> and submit that file.</p>
 </section>
 <section id="part-a-tutorial-sample-a-balanced-gold-subset" class="level2">
@@ -443,41 +443,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For your mini-project you build your <strong>own</strong> gold set by sampling from a <em>pool</em>. A balanced sample (equal items per label) keeps precision/recall/F1 and the confusion matrix meaningful. Here we demo it on the familiar CEFR pool; swap <code>POOL_URL</code> for your track’s pool. See the <a href="../resources/datasets/mini-project-tracks.html">mini-project tracks</a> for the full list.</p>
 <section id="setup-run-this-first" class="level3">
 <h3 class="anchored" data-anchor-id="setup-run-this-first">Setup — run this first</h3>
-<div id="cell-4" class="cell">
+<div id="cell-4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;generated&quot;:&quot;setup&quot;,&quot;backend&quot;:null,&quot;lib_names&quot;:[&quot;load_gold&quot;],&quot;gold_url&quot;:null,&quot;gold_comment&quot;:null,&quot;predictions_url&quot;:null,&quot;val_url&quot;:null,&quot;sampling&quot;:false}}">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json, urllib.request</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Setup done."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generated from _notebook_lib.py — edit there, not here; changes to this cell are replaced.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json, urllib.request</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Setup done."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-5" class="cell">
+<div id="cell-5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;generated&quot;:&quot;libs&quot;,&quot;names&quot;:[&quot;load_gold&quot;]}}">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: load_gold { display-mode: "form" }</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   load_gold(url_or_path) → gold</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_gold(url_or_path: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]]:</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read the canonical gold JSON: [{'id','text','label'}, ...].</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">        url_or_path: a web address, or the path to a file on this machine.</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">        The gold items, each a dict with "id", "text" and "label".</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; gold = load_gold(GOLD_URL)</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):                 <span class="co"># a web address?</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)  <span class="co"># download it</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(raw)                              <span class="co"># JSON text -&gt; list of dicts</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                                   <span class="co"># otherwise a file on disk</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(<span class="bu">open</span>(url_or_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read())</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items. First one:"</span>, gold[<span class="dv">0</span>])  <span class="co"># proof it worked</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gold</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generated from _notebook_lib.py — edit there, not here; changes to this cell are replaced.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   load_gold(url_or_path) → gold</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_gold(url_or_path: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]]:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Read the canonical gold JSON: [{'id','text','label'}, ...].</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">        url_or_path: a web address, or the path to a file on this machine.</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">        The gold items, each a dict with "id", "text" and "label".</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; gold = load_gold(GOLD_URL)</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">str</span>(url_or_path).startswith(<span class="st">"http"</span>):                 <span class="co"># a web address?</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> urllib.request.urlopen(url_or_path).read().decode(<span class="st">"utf-8"</span>)  <span class="co"># download it</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(raw)                              <span class="co"># JSON text -&gt; list of dicts</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                                   <span class="co"># otherwise a file on disk</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> json.loads(<span class="bu">open</span>(url_or_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read())</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items. First one:"</span>, gold[<span class="dv">0</span>])  <span class="co"># proof it worked</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gold</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="cell-6" class="cell">
@@ -624,18 +627,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>the draw you wrote in Part A, plus the blind annotation sheet</td>
 </tr>
 <tr class="odd">
+<td><code>02b_add_samples</code></td>
+<td>optional — time left over, so more items into the same sheet</td>
+</tr>
+<tr class="even">
 <td><code>03_annotate</code></td>
 <td>agreement, adjudication, and the split you wrote in Part B</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>04_develop</code></td>
 <td>prompt rounds, on <strong>dev</strong> only</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>05_test</code></td>
 <td>the held-out run, once</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>06_report</code></td>
 <td>scoring, error analysis, export</td>
 </tr>
