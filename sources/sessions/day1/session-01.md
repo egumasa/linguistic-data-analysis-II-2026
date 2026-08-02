@@ -46,6 +46,6 @@ No laptop setup is needed today — the hands-on tooling starts in Session 2.
 
 ## Slides & Colab
 
-<!-- Slides: [Session 1 slides](../../slides/slides-session-01.html){target="_blank"} -->
+- Slides: [Session 1 slides](../../slides/slides-session-01.html){target="_blank"}
 
 <!-- Colab notebook link: to be added -->

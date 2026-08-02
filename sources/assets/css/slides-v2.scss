@@ -428,3 +428,32 @@ $presentation-heading-text-align: left;
 .deck-pill--fill-accent { background: var(--accent-50); color: var(--white); }
 .deck-pill--outline-primary{ background: transparent; color: var(--ink); border: 3px solid var(--primary-40); }
 .deck-pill--outline-accent { background: transparent; color: var(--ink); border: 3px solid var(--accent-50); }
+
+/* =========================
+   Inline SVG figures and captions
+   ========================= */
+.cosfig{
+  display: block;
+  width: 100%;
+  margin: 0.2em 0 0.15em;
+}
+.cosfig svg{
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;          /* labels near the viewBox edge stay visible */
+}
+.cosfig svg text{
+  font-family: inherit;
+  fill: var(--ink);
+}
+
+.figcap{
+  display: block;
+  margin: 0.15em 0 0.6em;
+  font-size: 0.62em;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  text-align: center;
+  font-style: italic;
+}

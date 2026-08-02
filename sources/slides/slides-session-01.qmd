@@ -1,7 +1,7 @@
 ---
 title: "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis"
-subtitle: "Day 1 · Introduction & First Experience (1-1)"
-kicker: "Linguistic Data Analysis II · Day 1"
+subtitle: "Day 1 · Introduction & First Experience"
+kicker: "Linguistic Data Analysis II"
 format:
   revealjs:
     # Per-deck flavor. slides-v2 = shared rules; slide-<flavor> = palette only.
@@ -18,24 +18,146 @@ metadata-files:
      (framing paragraph + `. . .` fragments + callouts). Derived from course-design.md S1
      (the 7-beat single argument, "Five-day arc" block). -->
 
-# Session 1: Introduction to LLMs as Tools
 
 ## 📋 Agenda
 
-0. Self-introductions
 1. Why this course
-2. The 5-day map & objectives
-3. What do you know about LLM?
-4. What an LLM is — and why it's relevant
-5. LLM follows instructions — a no-code demo
-6. But — we need evaluation
-7. Discussion
+2. Self-introductions
+3. Syllabus — the 5-day map & objectives
+4. What an LLM is
+5. Detour — History of embeddings
+6. Discussion
+
+# 1 · Why this course
+
+## LLMs are everywhere now
+
+Since OpenAI released ChatGPT in late 2022, Large Language Models (LLMs) have now become **common tools** — for searching, translating, coding, and more.
+
+::: {.columns}
+
+::: {.column width = "30%"}
+
+![](../assets/img/session1/GPT.png)
+
+![](../assets/img/session1/claude.png)
+:::
 
 
- 
-# 0 · Self-introductions
+::: {.column width = "60%"}
 
-## 
+![](../assets/img/session1/llm-in-medicine.png)
+
+::: {style="font-size:40%"}
+Wang, D., & Zhang, S. (2024). Large language models in medical and healthcare fields: Applications, advances, and challenges. Artificial Intelligence Review, 57(11), 299. https://doi.org/10.1007/s10462-024-10921-0
+:::
+
+:::
+
+:::
+
+
+## LLMs have already changed how science is written {.smaller}
+
+
+::: {.columns}
+
+::: {.column width = "50%"}
+
+Kobak et al. (2025) tracked word frequencies across **15 million PubMed abstracts** (2010–2024).
+
+The authors estimate that **at least 13.5% of 2024 abstracts** were written with help from an LLM — over 40% in some journals and countries.
+
+::: {style="font-size: 80%"}
+
+How to look at the charts:
+
+- Top row: words that became far more frequent right after ChatGPT. 
+- Bottom row: for comparison, words that rose because of real events (COVID, Ebola) or a new method.
+:::
+:::
+
+::: {.column width = "50%"}
+
+![](../assets/img/session1/kobak-excess-words.png)
+
+
+:::
+
+:::
+
+
+
+::: {style="font-size: 50%"}
+Kobak, D., González-Márquez, R., Horvát, E.-Á., & Lause, J. (2025). Delving into
+LLM-assisted writing in biomedical publications through excess vocabulary.
+*Science Advances*, 11(27), eadt3813. https://doi.org/10.1126/sciadv.adt3813
+:::
+
+## Emerging research using LLM as annotator {.smaller}
+
+Already tons of research uses LLMs in Applied Linguistics:
+
+| Study | What it annotated | 
+|---|------|
+| Kim & Lu (2024), *JEAP* | rhetorical **moves** in article abstracts | 
+| Mizumoto (2025), *SSLA* | L2 **errors** — *r* = .94 with human raters, F1 = .95 | 
+| Yamashita (2024), *RMAL* | essay **scores** | 
+
+So the question isn't *whether* linguists will use them. It's **how to use them responsibly** for linguistic analysis.
+
+## Linguistic annotation: promising but costly
+
+One especially promising use is **annotation** — labelling language data for analysis.
+
+- But careful annotation is **expensive**: expert time, training, guidelines, double-coding.
+- If an LLM could annotate reliably, then it facilitates research.
+
+So the question arises: *can an LLM do this annotation for us?*
+
+
+## One simple Goal of the course
+
+Question you might have: ***Can we trust an LLM on annotating this?***
+
+
+
+::: {.columns}
+
+::: {.column}
+
+**Until today**
+
+- Well, maybe? 
+
+OR 
+
+- Are there any paper on this?
+
+:::
+
+::: {.column}
+
+**After this course**
+
+- Let's find out! 
+
+
+:::
+
+:::
+
+
+**We will learn *methodology* to investigate LLM's capability for lingusitic data analysis.**
+
+# 2 · Self-introductions
+
+## Your instructor
+
+- Masaki Eguchi
+- Research Scientist at Equmenopolis, Inc.
+- Research Associate Processor, Perceptual Computing Lab, Waseda University
+
 
 ## Introduce yourself - Round 1
 
@@ -51,44 +173,8 @@ Tell us:
 - What is your research interest
 - Why you decided to take this course — any goals, any concerns
 
-# 1 · Why this course
 
-## LLMs are everywhere now
-
-Large language models are now **common tools** — for searching, translating, coding, and more.
-
-So the question isn't *whether* linguists will use them. It's **how to use them responsibly** for linguistic analysis.
-
-## Linguistic annotation: promising but costly
-
-One especially promising use is **annotation** — labelling language data for analysis.
-
-- But careful annotation is **expensive**: expert time, training, guidelines, double-coding.
-- If an LLM could annotate reliably, then it facilitates research.
-
-So the question arises: *can an LLM do this annotation for us?*
-
-## One simple Goal of the course
-
-Can we trust an LLM on annotating this?
-
-**Until today**
-
-- Well, maybe? 
-
-OR 
-
-- Are there any paper on this?
-
-**After this course**
-
-- Let's find out! 
-
-
-Each day adds one part of the method. By Friday you can run the whole procedure yourself.
-
-
-# 2 Syllabus
+# 3 · Syllabus
 
 
 ## Course objectives {.smaller}
@@ -130,7 +216,7 @@ All project work is produced and submitted **during** the course — there is no
 Full details on the course website: [Syllabus](../syllabus/index.md) · [Readings](../syllabus/readings.md)
 :::
 
-# Session 1
+# Session 1: Introduction to LLMs
 
 ## 🎯 Learning Objectives
 
@@ -154,6 +240,10 @@ Everything this week is a method for doing that checking. Today we explain **why
 - Have you ever used LLMs?
   - What was it for? / Did it work?
   - What surprised you?
+
+
+## General Capability of LLMs
+
 
 ## What do you know about LLMs?
 
@@ -189,7 +279,7 @@ or https://www.youtube.com/watch?v=WMcwoIyK4DA
 2. Where do the **numbers** inside the model come from?
 3. What does **attention** do?
 
-# Detour — Brief history of *embedding*
+# 5 · Detour — Brief history of *embedding*
 
 ## Before LLM — Brief history of *embedding*
 
@@ -326,7 +416,7 @@ A statistical method for uncovering the latent structure of data:
 . . .
 
 ::::: {.columns}
-:::: {.column width="57%"}
+:::: {.column width="50%"}
 
 ```{=html}
 <div class="cosfig">
@@ -406,9 +496,9 @@ Six items, two latent variables. Each item loads high on one and near zero on th
 ::::
 :::::
 
-## Finding latent dimension of word meaning {.smaller}
+## Latent Semantic Analysis {.smaller}
 
-The words in corpus are the observed variables, and we explore underlying dimensions of that.
+Treating the words in corpus like `observed variables` in factor analysis, we explore underlying dimensions of meaning.
 
 . . .
 
@@ -468,12 +558,10 @@ The words in corpus are the observed variables, and we explore underlying dimens
 <div class="figcap">The same diagram as the questionnaire. Context words are the observed variables; the dimensions are what factor analysis extracts.</div>
 ```
 
-. . .
-
 ::::
 :::: {.column width="43%"}
 
-Each dimension gives every context word a **loading** — how much that word counts towards it:
+By applying dimensional reduction, a word will associate with "latent" dimension, which explains some underlying semantic distribution in corpus.
 
 ::: {style="font-size:0.8em"}
 |  | dimension 1 | dimension 2 |
@@ -485,198 +573,478 @@ Each dimension gives every context word a **loading** — how much that word cou
 | sugar | 0.002 | 0.061 |
 :::
 
-*result* loads on neither. Not every word belongs to a dimension.
-
 ::::
 :::::
 
-. . .
-
 **Nobody assigned these weights** — they were derived from the corpus counts. 
-This technique is called **Latent Semantic Analysis (LSA)**.
+This technique is called **Latent Semantic Analysis (LSA) (Landauer, 1999)**.
 
 
-## word2vec: We actually do not need table {.smaller}
+## word2vec: We actually do not need a table
 
-LSA provided the support for *distributional semantics*. 
+- LSA support *distributional semantics*.
 
-But it is usually applied to document-level co-occurrence, and very coarse meaning dimensions. The table is huge and difficult to use large corpus.
+BUT LSA has some limitations:
 
-Also, co-occurrence pattern is local phenomena.
+- LSA is usually applied to document-level co-occurrence, but a document can have multiple topics.
+- The table is huge and difficult to use large corpus.
 
-## word2vec learns a word's vector by predicting it from its neighbours {.smaller}
+→ We want to model the dimension without huge co-occurrence table and focusing on local co-occurence.
+
+
+## word2vec: Learns whether a word pair co-occur or not
+
+Take a target word and one word near it. **Did this pair really occur together?**
+
+```text
+...  your  [ account   is   free   of   charge ]  a  standard  fee ...
+                c1     c2    w     c3     c4
+```
+
+The corpus already knows the answer, so no one has to label anything.
+
+## word2vec: Vector representation {.smaller}
+
+Learn the vector representation that predicts real co-occurence in corpus as YES and fake ones as NO.
+
 
 ::::: {.columns}
-:::: {.column width="55%"}
+:::: {.column width="50%"}
 
 ```{=html}
 <div class="cosfig">
-<svg viewBox="0 0 520 380" role="img" aria-label="Diagram running top to bottom: four context words, arrows converging into a layer of 300 numbers, then one arrow down to the predicted word free">
+<svg viewBox="0 0 500 300" role="img" aria-label="Positive example: the target vector for free and the context vector for charge are combined and the classifier answers yes, so the two vectors are pulled closer">
   <defs>
-    <marker id="ahp3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="ahp4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--primary)"/>
-    </marker>
-    <marker id="aha3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--accent)"/>
     </marker>
   </defs>
 
-  <text x="260" y="18" style="font-size:13px;text-anchor:middle;fill:var(--ink-soft)">your account is ____ of charge</text>
+  <text x="250" y="20" style="font-size:15px;text-anchor:middle;font-weight:700;fill:var(--primary)">a pair that really occurred</text>
 
   <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
-    <rect x="25"  y="36" width="110" height="34" rx="4"/>
-    <rect x="150" y="36" width="110" height="34" rx="4"/>
-    <rect x="275" y="36" width="110" height="34" rx="4"/>
-    <rect x="400" y="36" width="110" height="34" rx="4"/>
+    <rect x="55"  y="38" width="150" height="34" rx="4"/>
+    <rect x="295" y="38" width="150" height="34" rx="4"/>
   </g>
-  <g style="font-size:14px;text-anchor:middle">
-    <text x="80"  y="58">account</text>
-    <text x="205" y="58">is</text>
-    <text x="330" y="58">of</text>
-    <text x="455" y="58">charge</text>
+  <g style="font-size:15px;text-anchor:middle">
+    <text x="130" y="60" style="font-weight:700">free</text>
+    <text x="370" y="60">charge</text>
   </g>
-  <text x="260" y="92" style="font-size:12px;text-anchor:middle;fill:var(--ink-soft)">the four words around the gap</text>
+  <text x="130" y="88" style="font-size:11.5px;text-anchor:middle;fill:var(--ink-soft)">the target</text>
+  <text x="370" y="88" style="font-size:11.5px;text-anchor:middle;fill:var(--ink-soft)">a word next to it</text>
 
-  <g style="fill:none;stroke:var(--primary);stroke-width:2;marker-end:url(#ahp3)">
-    <line x1="80"  y1="102" x2="125" y2="168"/>
-    <line x1="205" y1="102" x2="215" y2="168"/>
-    <line x1="330" y1="102" x2="305" y2="168"/>
-    <line x1="455" y1="102" x2="395" y2="168"/>
+  <g style="fill:none;stroke:var(--primary);stroke-width:2;marker-end:url(#ahp4)">
+    <line x1="130" y1="98" x2="130" y2="120"/>
+    <line x1="370" y1="98" x2="370" y2="120"/>
   </g>
 
-  <rect x="70" y="180" width="380" height="46" rx="6" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"/>
-  <text x="260" y="208" style="font-size:16px;text-anchor:middle;font-weight:700">300 numbers</text>
-  <text x="260" y="245" style="font-size:13px;text-anchor:middle;fill:var(--accent);font-weight:700">this layer is the vector for &#8220;free&#8221;</text>
+  <rect x="30" y="132" width="200" height="42" rx="6" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"/>
+  <text x="130" y="152" style="font-size:13px;text-anchor:middle;font-weight:700">target vector</text>
+  <text x="130" y="167" style="font-size:11px;text-anchor:middle;fill:var(--ink-soft)">from matrix W</text>
 
-  <line x1="260" y1="258" x2="260" y2="298" style="fill:none;stroke:var(--accent);stroke-width:2;marker-end:url(#aha3)"/>
+  <rect x="270" y="132" width="200" height="42" rx="6" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"/>
+  <text x="370" y="152" style="font-size:13px;text-anchor:middle;font-weight:700">context vector</text>
+  <text x="370" y="167" style="font-size:11px;text-anchor:middle;fill:var(--ink-soft)">from matrix C</text>
 
-  <rect x="195" y="308" width="130" height="38" rx="6" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"/>
-  <text x="260" y="333" style="font-size:16px;text-anchor:middle;font-weight:700">free</text>
-  <text x="260" y="368" style="font-size:12px;text-anchor:middle;fill:var(--ink-soft)">the guess. Discarded once training ends.</text>
+  <g style="fill:none;stroke:var(--ink-soft);stroke-width:1.5;marker-end:url(#ahp4)">
+    <line x1="130" y1="180" x2="215" y2="212"/>
+    <line x1="370" y1="180" x2="285" y2="212"/>
+  </g>
+
+  <rect x="150" y="222" width="200" height="34" rx="6" style="fill:var(--surface);stroke:var(--primary);stroke-width:2"/>
+  <text x="250" y="244" style="font-size:13px;text-anchor:middle;font-weight:700">Do they co-occur?</text>
+
+  <text x="250" y="284" style="font-size:15px;text-anchor:middle;font-weight:700;fill:var(--primary)">answer YES &#8594; pull them closer</text>
 </svg>
 </div>
-<div class="figcap">The contexts go in at the top, the guess comes out at the bottom, and the layer in between holds the 300 numbers we keep.</div>
 ```
 
 ::::
-:::: {.column width="45%"}
+:::: {.column width="50%"}
 
-The model is given the words around a gap and has to guess the word that was removed.
+```{=html}
+<div class="cosfig">
+<svg viewBox="0 0 500 300" role="img" aria-label="Negative example: the target vector for free and the context vector for a randomly drawn word Tolstoy are combined and the classifier answers no, so the two vectors are pushed apart">
+  <defs>
+    <marker id="ahn4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--ink-soft)"/>
+    </marker>
+  </defs>
 
-::: {.fragment}
-It works through billions of gaps like this one. Each time the guess is wrong, the 300 numbers in the middle are adjusted a little.
-:::
+  <text x="250" y="20" style="font-size:15px;text-anchor:middle;font-weight:700;fill:var(--warn)">a pair drawn at random</text>
 
-::: {.fragment}
-After training, **the guess is not what we want** — the output layer is discarded. What we keep is the middle layer: the 300 numbers a word arrives with. Words that fill the same kinds of gaps end up with similar numbers.
-:::
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="55"  y="38" width="150" height="34" rx="4"/>
+    <rect x="295" y="38" width="150" height="34" rx="4"/>
+  </g>
+  <g style="font-size:15px;text-anchor:middle">
+    <text x="130" y="60" style="font-weight:700">free</text>
+    <text x="370" y="60">Tolstoy</text>
+  </g>
+  <text x="130" y="88" style="font-size:11.5px;text-anchor:middle;fill:var(--ink-soft)">the same target</text>
+  <text x="370" y="88" style="font-size:11.5px;text-anchor:middle;fill:var(--ink-soft)">any word from the corpus</text>
 
-::: {.fragment}
-Still **one vector per word form**. *free* in "your account is free of charge" and *FREE* in "claim your FREE prize now" get the same 300 numbers.
-:::
+  <g style="fill:none;stroke:var(--ink-soft);stroke-width:2;marker-end:url(#ahn4)">
+    <line x1="130" y1="98" x2="130" y2="120"/>
+    <line x1="370" y1="98" x2="370" y2="120"/>
+  </g>
+
+  <rect x="30" y="132" width="200" height="42" rx="6" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"/>
+  <text x="130" y="152" style="font-size:13px;text-anchor:middle;font-weight:700">target vector</text>
+  <text x="130" y="167" style="font-size:11px;text-anchor:middle;fill:var(--ink-soft)">the same row of W</text>
+
+  <rect x="270" y="132" width="200" height="42" rx="6" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"/>
+  <text x="370" y="152" style="font-size:13px;text-anchor:middle;font-weight:700">context vector</text>
+  <text x="370" y="167" style="font-size:11px;text-anchor:middle;fill:var(--ink-soft)">from matrix C</text>
+
+  <g style="fill:none;stroke:var(--ink-soft);stroke-width:1.5;marker-end:url(#ahn4)">
+    <line x1="130" y1="180" x2="215" y2="212"/>
+    <line x1="370" y1="180" x2="285" y2="212"/>
+  </g>
+
+  <rect x="150" y="222" width="200" height="34" rx="6" style="fill:var(--surface);stroke:var(--ink-soft);stroke-width:2"/>
+  <text x="250" y="244" style="font-size:13px;text-anchor:middle;font-weight:700">Do they co-occur?</text>
+
+  <text x="250" y="284" style="font-size:15px;text-anchor:middle;font-weight:700;fill:var(--warn)">answer NO &#8594; push them apart</text>
+</svg>
+</div>
+```
 
 ::::
 :::::
 
-
-## BERT: word2vec with a transformer {.smaller}
-
-Same training idea — fill in the blank — but the vector for a word is now computed from the
-sentence around it, using the attention step the video described. One word form no longer
-gets one fixed vector.
-
-Here is what that does to the pair from the last slide:
-
-| Sentence | *free* attends most to | Resulting sense |
-|---|---|---|
-| "your account is **free** of charge" | *account*, *charge* | banking, benign |
-| "claim your **FREE** prize now" | *claim*, *prize*, *now* | promotional |
-
-
-The same word form now has **two different vectors**, because the surrounding words differ. Static embeddings could not do this; there was only ever one vector for *free*.
-
-
-## Why this matters for you {.smaller}
-
-This is the whole reason an LLM can annotate at all.
-
-The categories you care about — *is this stance hedged?*, *is this move a Gap or a Purpose?*, *what CEFR level is this?* — are **not** properties of the words in isolation. They are properties of words **in context**.
-
-A bag-of-words model cannot represent that. A transformer can.
-
-::: {.callout-warning}
-Being able to represent context is not the same as producing correct labels. Measuring that difference is what the rest of the week is about.
+::: {.fragment}
+- Two matrices: **W** holds a vector for every word as a  target, **C** holds one for every word as context.
 :::
 
-## The paradigm shift {.smaller}
+::: {.fragment}
+- Word2Vec learns this through thousands of trials. 
 
-Classic NLP **consumed** annotation to *build* models.
-
-Now the model can **produce** annotation, so the direction is reversed:
-
-**before:** humans annotate → train the model
-**now:** the model annotates → *and who checks it?*
+- We then often only keep **W** (while sometimes use both W and C). 
+:::
 
 
-## What people have already done with this {.smaller}
+## Transformer — The breakthrough {.smaller}
 
-Historically each task had its own model — a POS tagger, an NER model, a parser. Now one model does many tasks, because you change the **request** rather than the model [(Liu et al., 2023)](https://doi.org/10.1145/3560815).
+In 2018, the paper "Attention is All You Need" published.
+The introduction of `self-attention` changed everything.
 
-That is not a promise. It is a research literature, and you can read it:
+![Attention Is All You Need](../assets/img/session1/Attention.png)
 
-| Study | What it annotated | Track you could pick |
-|---|---|---|
-| Yu et al. (2024), *IJCL* | apology **components** — a function, not a form | pragmatics |
-| Kim & Lu (2024), *JEAP* | rhetorical **moves** in article abstracts | RAAMove · CaRS-50 |
-| Mizumoto (2025), *SSLA* | L2 **errors** — *r* = .94 with human raters, F1 = .95 | AutoErrorAnalyzer |
-| Yamashita (2024), *RMAL* | essay **scores** | ICNALE GRA |
+## Self-Attention is the key {.smaller}
 
-Three of these are on your readings page. Four of them do a task you could choose for your own project.
+Self-attention builds the vector for *bank* on the fly, using the contexts (Jurafsky & Martin, 2026, p. 178).
 
-## What an LLM lets you do {.smaller}
+```{=html}
+<div class="cosfig" style="max-width:88%;margin:0 auto">
+<svg viewBox="0 0 1000 318" role="img" aria-label="Two sentences containing the word bank. In the first, along the pond and the trees, the arrows from bank to pond and trees are thick, so the vector built for bank is a weighted sum dominated by those two words. In the second, deposited the cheque, the thick arrows instead go to deposited and cheque, so a different vector is built for the same word.">
+  <defs>
+    <marker id="attn1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--accent)"/>
+    </marker>
+    <marker id="attn2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--rule)"/>
+    </marker>
+    <marker id="attn3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--primary)"/>
+    </marker>
+  </defs>
 
-Three things, and they are the reason the rest of the week is worth the effort.
+  <!-- ============ sentence 1 ============ -->
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="20"  y="34" width="46"  height="30" rx="4"/>
+    <rect x="74"  y="34" width="84"  height="30" rx="4"/>
+    <rect x="166" y="34" width="72"  height="30" rx="4"/>
+    <rect x="246" y="34" width="52"  height="30" rx="4"/>
+    <rect x="306" y="34" width="72"  height="30" rx="4"/>
+    <rect x="386" y="34" width="52"  height="30" rx="4"/>
+    <rect x="446" y="34" width="94"  height="30" rx="4"/>
+    <rect x="548" y="34" width="52"  height="30" rx="4"/>
+    <rect x="608" y="34" width="66"  height="30" rx="4"/>
+    <rect x="682" y="34" width="72"  height="30" rx="4"/>
+  </g>
+  <rect x="762" y="34" width="72" height="30" rx="4" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2.5"/>
+
+  <g style="font-size:14px;text-anchor:middle">
+    <text x="43"  y="54">I</text>
+    <text x="116" y="54">walked</text>
+    <text x="202" y="54">along</text>
+    <text x="272" y="54">the</text>
+    <text x="342" y="54" style="font-weight:700">pond</text>
+    <text x="412" y="54">and</text>
+    <text x="493" y="54">noticed</text>
+    <text x="574" y="54">the</text>
+    <text x="641" y="54" style="font-weight:700">trees</text>
+    <text x="718" y="54">along</text>
+    <text x="798" y="54" style="font-weight:700">bank</text>
+  </g>
+
+  <text x="798" y="24" style="font-size:11.5px;text-anchor:middle;fill:var(--primary);font-weight:700">the word being built</text>
+
+  <!-- weak arrows: bank back to the unimportant words -->
+  <g style="fill:none;stroke:var(--rule);stroke-width:1;marker-end:url(#attn2)">
+    <path d="M 790 70 C 600 118, 240 118, 46 70"/>
+    <path d="M 792 72 C 640 116, 320 116, 118 70"/>
+    <path d="M 794 74 C 680 112, 400 112, 204 70"/>
+    <path d="M 796 76 C 700 108, 470 108, 274 70"/>
+    <path d="M 798 76 C 720 106, 530 106, 414 70"/>
+    <path d="M 800 76 C 740 104, 600 104, 494 70"/>
+    <path d="M 802 76 C 760 102, 660 102, 576 70"/>
+    <path d="M 806 76 C 790 98, 760 98, 720 70"/>
+  </g>
+  <!-- strong arrows: bank back to pond and trees -->
+  <g style="fill:none;stroke:var(--accent);stroke-width:3.5;marker-end:url(#attn1)">
+    <path d="M 792 78 C 690 116, 470 116, 344 76"/>
+    <path d="M 798 80 C 740 112, 700 112, 643 76"/>
+  </g>
+  <text x="520" y="132" style="font-size:12px;text-anchor:middle;fill:var(--accent);font-weight:700">these two get most of the weight</text>
+
+  <rect x="700" y="140" width="270" height="40" rx="6" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"/>
+  <text x="835" y="158" style="font-size:13px;text-anchor:middle;font-weight:700">one vector for &#8220;bank&#8221;</text>
+  <text x="835" y="173" style="font-size:11px;text-anchor:middle;fill:var(--ink-soft)">mostly pond and trees</text>
+
+  <line x1="835" y1="80" x2="835" y2="136" style="fill:none;stroke:var(--primary);stroke-width:2;marker-end:url(#attn3)"/>
+
+  <line x1="20" y1="196" x2="980" y2="196" style="stroke:var(--rule);stroke-width:1;stroke-dasharray:5 5"/>
+
+  <!-- ============ sentence 2 ============ -->
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="20"  y="218" width="46"  height="30" rx="4"/>
+    <rect x="74"  y="218" width="112" height="30" rx="4"/>
+    <rect x="194" y="218" width="52"  height="30" rx="4"/>
+    <rect x="254" y="218" width="82"  height="30" rx="4"/>
+    <rect x="344" y="218" width="44"  height="30" rx="4"/>
+    <rect x="396" y="218" width="52"  height="30" rx="4"/>
+  </g>
+  <rect x="456" y="218" width="72" height="30" rx="4" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2.5"/>
+
+  <g style="font-size:14px;text-anchor:middle">
+    <text x="43"  y="238">I</text>
+    <text x="130" y="238" style="font-weight:700">deposited</text>
+    <text x="220" y="238">the</text>
+    <text x="295" y="238" style="font-weight:700">cheque</text>
+    <text x="366" y="238">at</text>
+    <text x="422" y="238">the</text>
+    <text x="492" y="238" style="font-weight:700">bank</text>
+  </g>
+
+  <g style="fill:none;stroke:var(--rule);stroke-width:1;marker-end:url(#attn2)">
+    <path d="M 480 254 C 380 298, 160 298, 46 254"/>
+    <path d="M 486 256 C 420 294, 300 294, 220 254"/>
+    <path d="M 490 258 C 450 290, 400 290, 366 254"/>
+    <path d="M 494 258 C 470 286, 446 286, 422 254"/>
+  </g>
+  <g style="fill:none;stroke:var(--accent);stroke-width:3.5;marker-end:url(#attn1)">
+    <path d="M 478 258 C 400 308, 210 308, 130 256"/>
+    <path d="M 486 260 C 430 300, 340 300, 295 256"/>
+  </g>
+
+  <rect x="700" y="226" width="270" height="40" rx="6" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"/>
+  <text x="835" y="244" style="font-size:13px;text-anchor:middle;font-weight:700">a different vector for &#8220;bank&#8221;</text>
+  <text x="835" y="259" style="font-size:11px;text-anchor:middle;fill:var(--ink-soft)">mostly deposited and cheque</text>
+
+  <line x1="534" y1="233" x2="694" y2="244" style="fill:none;stroke:var(--primary);stroke-width:2;marker-end:url(#attn3)"/>
+</svg>
+</div>
+<div class="figcap">Arrow thickness is the weight the model gives that neighbour. Weights are illustrative.</div>
+```
+
+::: {.fragment style="font-size:0.8em"}
+- **Query** — sent by *bank*, the word being built: *which words here tell me what I mean?*
+- **Key** — every other word's answer. *pond* matches the query closely, *the* and *walked* do not, so *pond* gets a large weight.
+- **Value** — what each word contributes to the total.
+- **Vector** — the values added up, each multiplied by its weight. In the second sentence the same query meets different keys, so *deposited* and *cheque* take the weight and the sum comes out different.
+:::
+
+
+## Where does Attention come from? {.smaller}
+
+Every word turns itself into three separate vectors. *bank* uses its **q**; every other word offers its own **k** for the comparison and its own **v** for the sum.
+
+```{=html}
+<div class="cosfig" style="max-width:96%;margin:0 auto">
+<svg viewBox="0 0 1000 450" role="img" aria-label="The same two sentences, now showing that each word produces a key and a value vector while bank produces a query. The query is multiplied with each key to give a score, the scores are turned into weights that add up to one, and the new vector for bank is the sum of every value multiplied by its weight. In the first sentence pond takes most of the weight; in the second sentence cheque does.">
+  <defs>
+    <marker id="qkv1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--primary)"/>
+    </marker>
+  </defs>
+
+  <!-- ================= sentence 1 ================= -->
+  <text x="20" y="16" style="font-size:12px;font-weight:700;fill:var(--ink-soft)">I walked along the pond … bank</text>
+
+  <!-- token boxes -->
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="20"  y="26" width="80" height="28" rx="4"/>
+    <rect x="112" y="26" width="80" height="28" rx="4"/>
+    <rect x="204" y="26" width="80" height="28" rx="4"/>
+  </g>
+  <rect x="330" y="26" width="80" height="28" rx="4" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2.5"/>
+  <g style="font-size:13px;text-anchor:middle">
+    <text x="60"  y="45">I</text>
+    <text x="152" y="45">walked</text>
+    <text x="244" y="45" style="font-weight:700">pond</text>
+    <text x="370" y="45" style="font-weight:700">bank</text>
+  </g>
+  <text x="296" y="45" style="font-size:14px;text-anchor:middle;fill:var(--ink-soft)">…</text>
+
+  <!-- each context word makes its own k and its own v; bank makes q -->
+  <g style="font-size:11px;text-anchor:middle;font-weight:700;fill:var(--accent)">
+    <text x="60"  y="72">k<tspan style="font-size:8px" dy="2">I</tspan></text>
+    <text x="152" y="72">k<tspan style="font-size:8px" dy="2">walked</tspan></text>
+    <text x="244" y="72">k<tspan style="font-size:8px" dy="2">pond</tspan></text>
+  </g>
+  <g style="font-size:11px;text-anchor:middle;font-weight:700;fill:var(--primary)">
+    <text x="60"  y="86">v<tspan style="font-size:8px" dy="2">I</tspan></text>
+    <text x="152" y="86">v<tspan style="font-size:8px" dy="2">walked</tspan></text>
+    <text x="244" y="86">v<tspan style="font-size:8px" dy="2">pond</tspan></text>
+    <text x="370" y="72">q<tspan style="font-size:8px" dy="2">bank</tspan></text>
+  </g>
+  <text x="440" y="88" style="font-size:10.5px;text-anchor:start;fill:var(--ink-soft)">each word makes its own k and its own v</text>
+
+  <!-- row labels -->
+  <g style="font-size:11.5px;text-anchor:end;fill:var(--ink-soft)">
+    <text x="470" y="120">score = q · k</text>
+    <text x="470" y="148">weight = softmax</text>
+    <text x="470" y="176">weight × v</text>
+  </g>
+
+  <!-- scores -->
+  <g style="font-size:13px;text-anchor:middle">
+    <text x="60"  y="120">0.4</text>
+    <text x="152" y="120">1.1</text>
+    <text x="244" y="120" style="font-weight:700;fill:var(--accent)">6.2</text>
+  </g>
+  <!-- weights -->
+  <g style="font-size:13px;text-anchor:middle">
+    <text x="60"  y="148">0.02</text>
+    <text x="152" y="148">0.04</text>
+    <text x="244" y="148" style="font-weight:700;fill:var(--accent)">0.71</text>
+  </g>
+  <text x="490" y="148" style="font-size:11.5px;fill:var(--ink-soft)">… all weights add up to 1</text>
+
+  <!-- weighted values -->
+  <g style="font-size:13px;text-anchor:middle">
+    <text x="60"  y="176">0.02·v<tspan style="font-size:9px" dy="2">I</tspan></text>
+    <text x="152" y="176">0.04·v<tspan style="font-size:9px" dy="2">walked</tspan></text>
+    <text x="244" y="176" style="font-weight:700;fill:var(--accent)">0.71·v<tspan style="font-size:9px" dy="2">pond</tspan></text>
+  </g>
+  <text x="300" y="176" style="font-size:14px;text-anchor:middle;fill:var(--ink-soft)">+ … =</text>
+
+  <rect x="620" y="158" width="330" height="36" rx="6" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2"/>
+  <text x="785" y="181" style="font-size:13px;text-anchor:middle;font-weight:700">the vector for &#8220;bank&#8221; here</text>
+
+  <line x1="20" y1="218" x2="980" y2="218" style="stroke:var(--rule);stroke-width:1;stroke-dasharray:5 5"/>
+
+  <!-- ================= sentence 2 ================= -->
+  <text x="20" y="264" style="font-size:12px;font-weight:700;fill:var(--ink-soft)">I deposited the cheque at the bank</text>
+
+  <g style="fill:var(--surface);stroke:var(--rule);stroke-width:1.5">
+    <rect x="20"  y="274" width="80" height="28" rx="4"/>
+    <rect x="112" y="274" width="80" height="28" rx="4"/>
+    <rect x="204" y="274" width="80" height="28" rx="4"/>
+  </g>
+  <rect x="330" y="274" width="80" height="28" rx="4" style="fill:var(--primary-90);stroke:var(--primary);stroke-width:2.5"/>
+  <g style="font-size:13px;text-anchor:middle">
+    <text x="60"  y="293">I</text>
+    <text x="152" y="293">at</text>
+    <text x="244" y="293" style="font-weight:700">cheque</text>
+    <text x="370" y="293" style="font-weight:700">bank</text>
+  </g>
+  <text x="296" y="293" style="font-size:14px;text-anchor:middle;fill:var(--ink-soft)">…</text>
+
+  <g style="font-size:11px;text-anchor:middle;font-weight:700;fill:var(--accent)">
+    <text x="60"  y="320">k<tspan style="font-size:8px" dy="2">I</tspan></text>
+    <text x="152" y="320">k<tspan style="font-size:8px" dy="2">at</tspan></text>
+    <text x="244" y="320">k<tspan style="font-size:8px" dy="2">cheque</tspan></text>
+  </g>
+  <g style="font-size:11px;text-anchor:middle;font-weight:700;fill:var(--primary)">
+    <text x="60"  y="334">v<tspan style="font-size:8px" dy="2">I</tspan></text>
+    <text x="152" y="334">v<tspan style="font-size:8px" dy="2">at</tspan></text>
+    <text x="244" y="334">v<tspan style="font-size:8px" dy="2">cheque</tspan></text>
+    <text x="370" y="320">q<tspan style="font-size:8px" dy="2">bank</tspan></text>
+  </g>
+  <text x="440" y="304" style="font-size:10.5px;text-anchor:start;fill:var(--ink-soft)">the same word, two different vectors</text>
+
+  <g style="font-size:11.5px;text-anchor:end;fill:var(--ink-soft)">
+    <text x="470" y="368">score = q · k</text>
+    <text x="470" y="396">weight = softmax</text>
+    <text x="470" y="424">weight × v</text>
+  </g>
+
+  <g style="font-size:13px;text-anchor:middle">
+    <text x="60"  y="368">0.5</text>
+    <text x="152" y="368">0.9</text>
+    <text x="244" y="368" style="font-weight:700;fill:var(--accent)">5.8</text>
+  </g>
+  <g style="font-size:13px;text-anchor:middle">
+    <text x="60"  y="396">0.03</text>
+    <text x="152" y="396">0.04</text>
+    <text x="244" y="396" style="font-weight:700;fill:var(--accent)">0.66</text>
+  </g>
+  <text x="490" y="396" style="font-size:11.5px;fill:var(--ink-soft)">… all weights add up to 1</text>
+
+  <g style="font-size:13px;text-anchor:middle">
+    <text x="60"  y="424">0.03·v<tspan style="font-size:9px" dy="2">I</tspan></text>
+    <text x="152" y="424">0.04·v<tspan style="font-size:9px" dy="2">at</tspan></text>
+    <text x="244" y="424" style="font-weight:700;fill:var(--accent)">0.66·v<tspan style="font-size:9px" dy="2">cheque</tspan></text>
+  </g>
+  <text x="300" y="424" style="font-size:14px;text-anchor:middle;fill:var(--ink-soft)">+ … =</text>
+
+  <rect x="620" y="406" width="330" height="36" rx="6" style="fill:var(--accent-90);stroke:var(--accent);stroke-width:2"/>
+  <text x="785" y="429" style="font-size:13px;text-anchor:middle;font-weight:700">a different vector for &#8220;bank&#8221;</text>
+
+  <line x1="370" y1="80" x2="370" y2="110" style="fill:none;stroke:var(--primary);stroke-width:1.5;marker-end:url(#qkv1)"/>
+  <line x1="370" y1="326" x2="370" y2="358" style="fill:none;stroke:var(--primary);stroke-width:1.5;marker-end:url(#qkv1)"/>
+</svg>
+</div>
+<div class="figcap">Scores and weights are illustrative. Only three context words are shown; the real sum runs over every word.</div>
+```
+
+
+
+## Transformer make full use of attention
+
+::: {style="font-size:0.6em"}
+- BERT-base models 12 layers of 12 attention heads.
+- GPT-3 had 96 layer × 96 heads = 9216 attention heads
+:::
+
+::: {.columns}
+
+::: {.column width = "33%"}
+
+
+![Transformer architecture](../assets/img/session1/transformer.png)
+:::
+
+::: {.column width = "33%"}
+
+![Transformer discovers Noun phrase](../assets/img/session1/clark-1.png)
+
+:::
+
+::: {.column width = "33%"}
+
+![Transformer discovers coreference](../assets/img/session1/clark-2.png)
+
+::: {style="font-size:0.4em"}
+Clark, K., Khandelwal, U., Levy, O., & Manning, C. D. (2019). *What Does BERT Look At? An Analysis of BERT’s Attention* (arXiv:1906.04341). arXiv. https://doi.org/10.48550/arXiv.1906.04341
+
+:::
+:::
+:::
+
+
+
+## What an LLM lets you do
 
 
 1. It can label categories that **depend on context**. Most of the categories linguists work with are of that kind, and a bag-of-words model could never represent them.
 
-2. **One model, many tasks.** A new question needs a new prompt, not a new trained model and a new annotated training set.
+2. **One model, many tasks.** Generative model can do many things with a prompt. We do not train a new model for each task with a new annotated training set.
 
-3. Careful annotation — expert time, training, double-coding — used to need more resources than a small project has. A five-day project can now attempt it.
-
-None of that says the labels are **correct**. That is the next question, and it is the rest of the course.
-
-
-# 5 · LLM follows language instructions
-
-## Give language data to an LLM {.smaller}
-
-Let's **try it** — no code:
-
-- paste some real language data into a chat LLM,
-- ask it to label / analyze it,
-- read the output together.
-
-**What did it get right? What looks wrong?** And the question for the whole course:
-*how could we **know** this, other than by reading a few outputs?*
-
-
-# 6 · But — we need evaluation
-
-## …and where it did not work {.smaller}
-
-The same literature reports the other half.
-
-- **Curry, Baker & Brookes (2024)**, *Applied Corpus Linguistics* — passable at grouping keywords, but **poor at concordance analysis**: it made false inferences, and it altered the data it was given.
-
-
-- **Ziems et al. (2024)**, *Computational Linguistics* — 13 models across 25 benchmarks. It scores lower than trained supervised models on classification, and higher than crowd workers on open-ended coding. **Fair, not expert.**
-
-
-- **Crosthwaite & Baisa (2023)** — with a corpus you can say which texts your evidence came from. With an LLM you cannot.
-
-
-So: same tool, opposite results, depending on the task. The only way to know which case you are in is to **measure it**.
+3. Quick iteration: Annotation is painstaking, but you can iterate with LLM early.
 
 ## *Sounding* right is not *being* right {.smaller}
 
@@ -685,6 +1053,22 @@ An LLM essentially learns to predict next **plausible** word.
 Plausible is **not** the same as **correct** — which is exactly what Curry et al. found when the output read well and the analysis was wrong. 
 
 That's why we still need NLP evaluation.
+
+
+## What people have already done with LLMs {.smaller}
+
+Historically each task had its own model — a POS tagger, an NER model, a parser. 
+
+Already tons of research uses LLMs:
+
+| Study | What it annotated | Track you could pick |
+|---|---|---|
+| Kim & Lu (2024), *JEAP* | rhetorical **moves** in article abstracts | RAAMove · CaRS-50 |
+| Mizumoto (2025), *SSLA* | L2 **errors** — *r* = .94 with human raters, F1 = .95 | AutoErrorAnalyzer |
+| Yamashita (2024), *RMAL* | essay **scores** | ICNALE GRA |
+
+Three of these are on your mini-project list. 
+You can pick one as a group to work on conceptual replication.
 
 
 ## What this course covers {.smaller}
@@ -699,17 +1083,18 @@ We do not cover the *training* part of NLP. The **evaluation** part provides exa
 - **precision / recall / F1**, **confusion matrix**
 
 
-# 7 · Discussion 
+# 6 · Discussion
 
-## Your turn {.smaller}
+## Your turn
 
 - What was new information to you about LLM?
-- What do you want to know more about? 
+
+- Given the lecture, are you optimistic or skeptical about the use of LLM? Why do you think so?
 
 
 # Recap · The 5-day map
 
-## What we'll do this week {.smaller}
+## What we'll do this week
 
 | Day | Focus |
 |-----|-------|
