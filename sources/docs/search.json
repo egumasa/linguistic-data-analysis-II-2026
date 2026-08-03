@@ -1444,7 +1444,7 @@
     "href": "slides/slides-session-01.html#your-instructor",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Your instructor",
-    "text": "Your instructor\n\n\n\nMasaki Eguchi (江口 政貴), Ph.D.\n\nPosition - Research Scientist at Equmenopolis, Inc. - Research Associate Processor, Perceptual Computing Lab, Waseda University"
+    "text": "Your instructor\n\n\n\nMasaki Eguchi (江口 政貴)\n\nPosition\n\nResearch Scientist at Equmenopolis, Inc.\nResearch Associate Processor, Perceptual Computing Lab, Waseda University\n\nEducation\n\nPh.D. in Linguistics, University of Oregon.\nM.A. in Education, Waseda University"
   },
   {
     "objectID": "slides/slides-session-01.html#introduce-yourself---round-1",
@@ -1479,7 +1479,7 @@
     "href": "slides/slides-session-01.html#assignments-grading",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Assignments & grading",
-    "text": "Assignments & grading\n\n\n\nComponent\n\nPercent\n\n\n\n\nAttendance / participation\n\n20%\n\n\nHands-on activities (Day 1–3) + completed notebook\n\n40%\n\n\nMini-project group presentation + Q&A\n(Day 5)\n20%\n\n\nIn-class one-page report\n(Day 5)\n20%\n\n\n\nAll project work is produced and submitted during the course — there is no post-course write-up. The completed notebook, run end-to-end with your group’s gold subset, prompt, and evaluation output, is the evidence that the hands-on work was done.\n\n\n\n\n\n\nNote\n\n\nFull details on the course website: Syllabus · Readings"
+    "text": "Assignments & grading\n\n\n\nComponent\n\nPercent\n\n\n\n\nAttendance / participation\n\n20%\n\n\nHands-on activities (Day 1–3) + completed notebook\n\n40%\n\n\nMini-project group presentation + Q&A\n(Day 5)\n20%\n\n\nIn-class one-page report\n(TBA)\n20%\n\n\n\n\n\n\n\n\n\nNote\n\n\nFull details on the course website: Syllabus · Readings"
   },
   {
     "objectID": "slides/slides-session-01.html#learning-objectives",
