@@ -266,7 +266,8 @@ else:
 
 
 def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
-               predictions_url=None, val_url=None, sampling=False):
+               predictions_url=None, val_url=None, sampling=False,
+               sklearn_direct=False):
     """Build a day's 📦 Setup cell, importing ONLY what that day uses.
 
     backend    : "demo" (Day 1), "api" (Day 3+), or None (Days 2 & 4 — no model).
@@ -277,6 +278,10 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
     sampling   : the day draws its own sample, so it needs `random`. S5 uses this to
                  draw a seeded sample in step A; no 🔧 helper pulls `random` in, since
                  the draw is student-written code rather than something we hand them.
+    sklearn_direct : the day calls scikit-learn in its own cells rather than through a
+                 helper, so the imports cannot be read off `lib_names`. S6 Part B uses
+                 this: it names classification_report, cohen_kappa_score and
+                 confusion_matrix itself, having built those metrics by hand in Part A.
     """
     lib_names = set(lib_names)
     simple = []                                   # single-line `import x` modules
@@ -292,9 +297,9 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
     # The sheets helpers draw a confusion matrix too (annotator-vs-annotator), so they
     # need the same plotting stack as `evaluate` — but not classification_report.
     sheets_names = {n for n in lib_names if n.startswith("sheets")}
-    want_report = "evaluate" in lib_names
-    want_matrix = bool(lib_names & {"evaluate"} or sheets_names)
-    want_viz = bool(lib_names & {"evaluate", "show_errors"} or sheets_names)
+    want_report = "evaluate" in lib_names or sklearn_direct
+    want_matrix = bool(lib_names & {"evaluate"} or sheets_names) or sklearn_direct
+    want_viz = bool(lib_names & {"evaluate", "show_errors"} or sheets_names) or sklearn_direct
 
     lines = ['#@title 📦 Setup — run me first { display-mode: "form" }',
              "# Helper — you don't need to read this. Run it and move on.",
@@ -980,5 +985,78 @@ def show_2x2(tally: dict[str, int]) -> None:
     print(f"{'':<9}{'pred yes':>9}{'pred no':>9}")     # column headings
     print(f"{'gold yes':<9}{tp:>9}{fn:>9}")              # top row:    TP  FN
     print(f"{'gold no':<9}{fp:>9}{tn:>9}")               # bottom row: FP  TN
+
+# === your_gold :: load_your_gold(path, fallback_url) → your gold, or the published one ===
+def load_your_gold(path: str, fallback_url: str) -> list[dict[str, str]]:
+    """Load the gold set you saved in S5, and fall back to the published one.
+
+    S5's last step writes your adjudicated labels to your Drive. If that file is
+    there, this reads it and you score the model against your own labels. If it is
+    not — you did not save it, or Drive is not mounted — you get the published
+    CEFR-SP set instead, and the notebook still runs from top to bottom.
+
+    Args:
+        path: where S5 saved your gold set, e.g. the Drive path in the cell above.
+        fallback_url: the published gold set, used when `path` is not readable.
+
+    Returns:
+        The gold items, each {"id", "text", "label"}.
+
+    Example:
+        >>> gold = load_your_gold(MY_GOLD_PATH, GOLD_URL)
+    """
+    try:
+        gold = load_gold(path)
+        print(f"→ scoring against YOUR gold set ({len(gold)} items).")
+        return gold
+    except OSError:                      # no such file, or Drive not mounted
+        print(f"No file at {path} — falling back to the published gold set.")
+        gold = load_gold(fallback_url)
+        print(f"→ scoring against the PUBLISHED gold set ({len(gold)} items).")
+        return gold
+
+# === predictions_for :: predictions_for(gold, published, predictions) → predictions in YOUR order ===
+def predictions_for(gold: list[dict[str, str]],
+                    published: list[dict[str, str]],
+                    predictions: list[str]) -> tuple[list[dict[str, str]], list[str]]:
+    """Line the frozen predictions up with YOUR gold items, matching on text.
+
+    The frozen predictions are one label per *published* item, in published order.
+    Your own gold set is a sample of those sentences, renumbered from 1, so
+    position 3 of yours and position 3 of theirs are two unrelated sentences.
+    Matching on the text pairs each of your items with the answer the model gave
+    for that same sentence. Items whose text is not in the published set have no
+    frozen prediction and are dropped, with a count.
+
+    Args:
+        gold: your gold items, from load_your_gold.
+        published: the published gold items, from load_gold(GOLD_URL).
+        predictions: the frozen predictions, in published order.
+
+    Returns:
+        Two lists of the same length: your matched items, and their predictions.
+
+    Example:
+        >>> gold, predictions = predictions_for(gold, published, predictions)
+    """
+    ### Step 1: which prediction belongs to which sentence? ###
+    pred_by_text = {}
+    for i, item in enumerate(published):
+        if i < len(predictions):                  # published and predictions run together
+            pred_by_text[str(item["text"])] = predictions[i]
+
+    ### Step 2: keep the items we have a frozen answer for ###
+    matched, matched_predictions = [], []
+    for item in gold:
+        text = str(item["text"])
+        if text in pred_by_text:
+            matched.append(item)
+            matched_predictions.append(pred_by_text[text])
+
+    dropped = len(gold) - len(matched)
+    print(f"{len(matched)} of your {len(gold)} items have a frozen prediction.")
+    if dropped:
+        print(f"  {dropped} dropped — not in the published set, so no answer was frozen for them.")
+    return matched, matched_predictions
 
 # === end ===
