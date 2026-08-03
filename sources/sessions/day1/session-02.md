@@ -5,12 +5,6 @@ toc: true
 ---
 <!-- BEING-PREPARED-BANNER -->
 
-::: {.callout-warning appearance="simple"}
-
-## 🚧 Being prepared
-
-This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The [syllabus](/syllabus/index.md) and [readings](/syllabus/readings.md) are ready now.
-:::
 
 ## Learning objectives
 
@@ -44,8 +38,9 @@ No new reading for this session — the Day 1 reading (Abdurahman et al., 2025, 
 
 ## Slides & Colab
 
-<!--
 - Notebook — **Part A** (guided): [`day1_python_and_first_llm.ipynb`](../../notebooks/day1_python_and_first_llm.ipynb) —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day1_python_and_first_llm.ipynb)
+
+<!--
 - Slides: [Session 2 slides](../../slides/slides-session-02.html){target="_blank"}
 -->

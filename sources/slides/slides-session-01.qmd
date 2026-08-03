@@ -17,7 +17,7 @@ metadata-files:
      final prose; once the structure is approved these get written out in the S2/S3 style
      (framing paragraph + `. . .` fragments + callouts). Derived from course-design.md S1
      (the 7-beat single argument, "Five-day arc" block). -->
-
+ 
 
 ## 📋 Agenda
 
@@ -346,7 +346,7 @@ or https://www.youtube.com/watch?v=WMcwoIyK4DA
 
 ## Before LLM — Brief history of *embedding*
 
-LLM encodes language into numbers — The fundational NLP technique called **embedding**.
+LLM encodes language into numbers — i.e., **embedding**.
 
 **Embedding**: "vector representations of the meaning of words that are learned directly from word distributions in texts" (Jurafsky & Martin, 2026, p. 96).
 

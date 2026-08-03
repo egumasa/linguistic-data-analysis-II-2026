@@ -147,7 +147,7 @@
     "href": "sessions/day1/session-02.html",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "",
-    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
+    "text": "By the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.\nStore a value in a variable, and send a prompt to a language model with ai.generate_text(...).\nBuild a prompt from a variable with an f-string, and recognise the .format() template form you will edit from Session 7 on.\nRecognise Python’s core data types — str, list, dict — in what the model hands back.\nBuild the {id, text, label} record the rest of the course uses, with a label you decided yourself, and add the model’s answer beside it.\nIndex and slice into a list of records to compare the two answers.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -158,8 +158,8 @@
     "objectID": "sessions/day1/session-02.html#learning-objectives",
     "href": "sessions/day1/session-02.html#learning-objectives",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.\nStore a value in a variable, and send a prompt to a language model with ai.generate_text(...).\nBuild a prompt from a variable with an f-string, and recognise the .format() template form you will edit from Session 7 on.\nRecognise Python’s core data types — str, list, dict — in what the model hands back.\nBuild the {id, text, label} record the rest of the course uses, with a label you decided yourself, and add the model’s answer beside it.\nIndex and slice into a list of records to compare the two answers.",
+    "section": "",
+    "text": "By the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.\nStore a value in a variable, and send a prompt to a language model with ai.generate_text(...).\nBuild a prompt from a variable with an f-string, and recognise the .format() template form you will edit from Session 7 on.\nRecognise Python’s core data types — str, list, dict — in what the model hands back.\nBuild the {id, text, label} record the rest of the course uses, with a label you decided yourself, and add the model’s answer beside it.\nIndex and slice into a list of records to compare the two answers.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -195,7 +195,7 @@
     "href": "sessions/day1/session-02.html#slides-colab",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "Slides & Colab",
-    "text": "Slides & Colab",
+    "text": "Slides & Colab\n\nNotebook — Part A (guided): day1_python_and_first_llm.ipynb —",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -1542,7 +1542,7 @@
     "href": "slides/slides-session-01.html#before-llm-brief-history-of-embedding",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Before LLM — Brief history of embedding",
-    "text": "Before LLM — Brief history of embedding\nLLM encodes language into numbers — The fundational NLP technique called embedding.\nEmbedding: “vector representations of the meaning of words that are learned directly from word distributions in texts” (Jurafsky & Martin, 2026, p. 96).\nTwo families, and we build up to both:\n\nStatic — one fixed vector per word: counting contexts, then Word2Vec.\nContextual — a different vector each time the word appears: BERT, and the models you use."
+    "text": "Before LLM — Brief history of embedding\nLLM encodes language into numbers — i.e., embedding.\nEmbedding: “vector representations of the meaning of words that are learned directly from word distributions in texts” (Jurafsky & Martin, 2026, p. 96).\nTwo families, and we build up to both:\n\nStatic — one fixed vector per word: counting contexts, then Word2Vec.\nContextual — a different vector each time the word appears: BERT, and the models you use."
   },
   {
     "objectID": "slides/slides-session-01.html#rgb-color-space",
@@ -4937,7 +4937,7 @@
     "href": "sessions/day1/session-03.html#slides-colab",
     "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "Slides & Colab",
-    "text": "Slides & Colab",
+    "text": "Slides & Colab\n\nNotebook — Part B (practice): day1_python_and_first_llm.ipynb —",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
