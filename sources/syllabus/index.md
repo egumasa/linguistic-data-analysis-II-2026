@@ -150,10 +150,6 @@ Each day follows this general pattern:
   - thinking about the approaches to corpus lab
 - However, you MUST write your own write-up of the assignments, meaning that you MUST make outlines, draft, and finalize the written submission by yourselves.
 
-### Plagiarism
-
-Policy to be determined.
-
 ## Technology Policy
 
 ### Required Technology
