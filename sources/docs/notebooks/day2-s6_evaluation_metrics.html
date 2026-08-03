@@ -626,7 +626,7 @@ window.Quarto = {
 </section>
 <section id="part-a-corpus-lab-build-the-metrics-yourself" class="level2">
 <h2 class="anchored" data-anchor-id="part-a-corpus-lab-build-the-metrics-yourself">Part A · Corpus Lab — build the metrics yourself</h2>
-<p>In S5 <code>annotator_agreement()</code> printed Cohen’s κ for you. <strong>Here you build precision, recall, F1 and κ yourself</strong>, before Part B’s <code>evaluate()</code> prints them for you again.</p>
+<p>In S5 <code>calc_cohen_kappa()</code> printed Cohen’s κ for you. <strong>Here you build precision, recall, F1 and κ yourself</strong>, before Part B’s <code>evaluate()</code> prints them for you again.</p>
 <p>Work in <strong>ten small steps</strong>. Steps 1–7 build the confusion matrix, and you can run them as they are. <strong>In steps 8 and 9 you write the formulas</strong>: each metric arrives with its lookups and its zero-guard already there, and a <code>None</code> where the arithmetic goes. Replace every <code>None</code> marked ✏️. Step 10 checks all four against <code>scikit-learn</code>. No imports — just <code>for</code>, <code>if</code>, and dictionaries.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">

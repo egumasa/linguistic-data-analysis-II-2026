@@ -640,14 +640,15 @@ def load_annotation_sheet(sheet_id: str,
     print(f"Read {len(rows)} rows from tab '{worksheet}'.")
     return rows
 
-# === sheets_agreement :: annotator_agreement(rows) → % agreement, κ, matrix ===
-def _labelled_pairs(rows: list[dict[str, str]],
-                    a: str,
-                    b: str) -> tuple[list[str], list[str]]:
-    """The two annotators' labels, keeping only rows where BOTH of them chose one.
+# === sheets_pairs :: labelled_pairs(rows) → the labels you BOTH chose ===
+def labelled_pairs(rows: list[dict[str, str]],
+                   a: str = COL_A,
+                   b: str = COL_B) -> tuple[list[str], list[str]]:
+    """The two annotators' labels, keeping only the rows BOTH of them labelled.
 
-    A row one annotator has not reached yet is not two people disagreeing, so it is
-    dropped rather than counted.
+    A row one of you has not reached yet is not a disagreement, so it is left out
+    rather than counted. The three functions below all start by calling this, which
+    is why each of them can be run on its own.
 
     Args:
         rows: the rows read back by load_annotation_sheet.
@@ -656,55 +657,111 @@ def _labelled_pairs(rows: list[dict[str, str]],
 
     Returns:
         Two lists of the same length: annotator A's labels, annotator B's labels.
+
+    Example:
+        >>> a_labels, b_labels = labelled_pairs(rows)
     """
     a_labels = []
     b_labels = []
     for row in rows:
-        label_a = str(row.get(a, "")).strip()   # .strip() drops the spaces a sheet adds
-        label_b = str(row.get(b, "")).strip()
-        if label_a != "" and label_b != "":     # drop half-finished rows
+        label_a = str(row[a]).strip()           # .strip() drops the spaces a sheet adds
+        label_b = str(row[b]).strip()
+        if label_a != "" and label_b != "":     # skip the rows only one of you reached
             a_labels.append(label_a)
             b_labels.append(label_b)
     return a_labels, b_labels
 
 
-def _agreement_scores(a_labels: list[str],
-                      b_labels: list[str]) -> dict[str, float]:
-    """How often the two annotators matched, raw and corrected for chance.
+# === sheets_percent :: calc_percentage_agreement(rows) → how often you matched ===
+def calc_percentage_agreement(rows: list[dict[str, str]],
+                              a: str = COL_A,
+                              b: str = COL_B) -> float | None:
+    """How often the two of you chose the same label.
 
-    Percent agreement counts every match, including the ones two annotators would hit
-    by luck alone. Cohen's κ subtracts that luck, which is why the two numbers differ.
+    This counts every match, including the ones two annotators would hit by luck
+    alone — which is why it is always higher than the κ below it.
 
     Args:
-        a_labels: annotator A's labels.
-        b_labels: annotator B's labels, item for item.
+        rows: the rows read back by load_annotation_sheet.
+        a: the column holding the first annotator's labels.
+        b: the column holding the second annotator's labels.
 
     Returns:
-        {"n", "percent_agreement", "kappa"}.
+        The proportion of doubly-labelled rows you matched on, or None when no row
+        has both annotators filled in.
+
+    Example:
+        >>> agreement = calc_percentage_agreement(rows)
     """
-    from sklearn.metrics import cohen_kappa_score
+    a_labels, b_labels = labelled_pairs(rows, a, b)   # rows you BOTH labelled
+    if len(a_labels) == 0:
+        print("No rows where BOTH annotators have labelled. Nothing to compare yet.")
+        return None
     matches = 0
     for i in range(len(a_labels)):
         if a_labels[i] == b_labels[i]:
             matches = matches + 1
-    percent = matches / len(a_labels)                # how often you matched
-    kappa = cohen_kappa_score(a_labels, b_labels)    # ...minus the luck
-    print(f"{len(a_labels)} doubly-annotated · agreement {percent:.1%} · Cohen's κ {kappa:.3f}")
-    return {"n": len(a_labels), "percent_agreement": percent, "kappa": kappa}
+    percent = matches / len(a_labels)
+    print(f"{len(a_labels)} doubly-annotated · agreement {percent:.1%}")
+    return percent
 
 
-def _draw_coder_matrix(a_labels: list[str],
-                       b_labels: list[str]) -> None:
-    """Draw WHICH labels the two annotators confuse, not just how often.
+# === sheets_kappa :: calc_cohen_kappa(rows) → the same, minus the luck ===
+def calc_cohen_kappa(rows: list[dict[str, str]],
+                     a: str = COL_A,
+                     b: str = COL_B) -> float | None:
+    """The same comparison, with agreement-by-luck subtracted.
 
-    The diagonal is where they agreed; an off-diagonal cell is a label pair whose
-    boundary the scheme has not made decidable yet. Mirrors the gold-vs-model
-    confusion matrix that evaluate() draws.
+    Two annotators who both lean on the same label agree often without the scheme
+    doing any work. Cohen's κ takes that luck out, so it is the number to trust —
+    recall S4, where 80% raw agreement was only κ ≈ 0.52.
 
     Args:
-        a_labels: annotator A's labels.
-        b_labels: annotator B's labels, item for item.
+        rows: the rows read back by load_annotation_sheet.
+        a: the column holding the first annotator's labels.
+        b: the column holding the second annotator's labels.
+
+    Returns:
+        Cohen's κ, or None when no row has both annotators filled in.
+
+    Example:
+        >>> kappa = calc_cohen_kappa(rows)
     """
+    from sklearn.metrics import cohen_kappa_score
+    a_labels, b_labels = labelled_pairs(rows, a, b)   # rows you BOTH labelled
+    if len(a_labels) == 0:
+        print("No rows where BOTH annotators have labelled. Nothing to compare yet.")
+        return None
+    kappa = cohen_kappa_score(a_labels, b_labels)
+    print(f"{len(a_labels)} doubly-annotated · Cohen's κ {kappa:.3f}")
+    return kappa
+
+
+# === sheets_plot_confusion :: plot_confusion(rows) → which labels you confuse ===
+def plot_confusion(rows: list[dict[str, str]],
+                   a: str = COL_A,
+                   b: str = COL_B) -> None:
+    """Draw WHICH labels the two of you confuse, not just how often.
+
+    The diagonal is where you agreed; an off-diagonal cell is a label pair whose
+    boundary your scheme has not made decidable yet. That cell is your worklist for
+    step E. Same kind of picture evaluate() draws for gold against a model.
+
+    Args:
+        rows: the rows read back by load_annotation_sheet.
+        a: the column holding the first annotator's labels.
+        b: the column holding the second annotator's labels.
+
+    Returns:
+        Nothing. It shows the matrix.
+
+    Example:
+        >>> plot_confusion(rows)
+    """
+    a_labels, b_labels = labelled_pairs(rows, a, b)   # rows you BOTH labelled
+    if len(a_labels) == 0:
+        print("No rows where BOTH annotators have labelled. Nothing to compare yet.")
+        return None
     labels = sorted(set(a_labels) | set(b_labels))   # every label either of you used
     cm = confusion_matrix(a_labels, b_labels, labels=labels)
     plt.figure(figsize=(5.5, 4.5))
@@ -713,34 +770,6 @@ def _draw_coder_matrix(a_labels: list[str],
     plt.xlabel("Annotator B"); plt.ylabel("Annotator A")   # diagonal = you agreed
     plt.title("Annotator-vs-annotator confusion matrix")
     plt.tight_layout(); plt.show()
-
-
-def annotator_agreement(rows: list[dict[str, str]],
-                        a: str = COL_A,
-                        b: str = COL_B) -> dict[str, float] | None:
-    """Percent agreement + Cohen's κ between the two annotator columns, PLUS an
-    annotator-vs-annotator confusion matrix (the diagonal is where you agreed;
-    off-diagonal cells show which label pairs the two of you confuse).
-
-    Args:
-        rows: the rows read back by load_annotation_sheet.
-        a: the column holding the first annotator's labels.
-        b: the column holding the second annotator's labels.
-
-    Returns:
-        {"n", "percent_agreement", "kappa"}, or None when no row has both
-        annotators filled in.
-
-    Example:
-        >>> annotator_agreement(rows)
-    """
-    a_labels, b_labels = _labelled_pairs(rows, a, b)   # rows you BOTH labelled
-    if len(a_labels) == 0:
-        print("No rows where BOTH annotators have labelled. Nothing to compare yet.")
-        return None
-    scores = _agreement_scores(a_labels, b_labels)     # prints % agreement and κ
-    _draw_coder_matrix(a_labels, b_labels)             # draws the matrix
-    return scores
 
 # === sheets_disagree :: disagreements(rows) → the rows to argue about ===
 def disagreements(rows: list[dict[str, str]],

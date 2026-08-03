@@ -255,7 +255,7 @@ Now Colab opens for the first time. It reads your sheet and reports three number
 Recall from S4: **80% raw agreement was only κ ≈ 0.52** once chance was removed.
 :::
 
-*→ run this in **step D** (Colab): `load_annotation_sheet` → `annotator_agreement`.*
+*→ run this in **step D** (Colab): `load_annotation_sheet` → `calc_percentage_agreement` → `calc_cohen_kappa`.*
 
 ## Read the confusion matrix {.smaller}
 
