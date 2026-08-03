@@ -966,34 +966,26 @@ Total
 <h1>Dataset for class tutorials — Arase et al.&nbsp;(2022)</h1>
 
 </section>
-<section id="arase-uchida-kajiwara-2022" class="slide level2">
+<section id="arase-uchida-kajiwara-2022" class="slide level2 smaller">
 <h2>Arase, Uchida &amp; Kajiwara (2022)</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
 <p><strong>“CEFR-Based Sentence Difficulty Annotation and Assessment”</strong> (EMNLP 2022).</p>
-</div><div class="column" style="width:55%;">
-<p><img data-src="../assets/img/session4/arase.png"></p>
-</div></div>
 <ul>
-<li><p><strong>The problem.</strong> Simplifying text for learners requires knowing <em>how hard a sentence is</em>.</p></li>
-<li><p><strong>Goal</strong>: Creating a corpus that is annotated for sentence difficulties according to CEFR levels.</p></li>
-<li><p><em>How did they operationalize CEFR levels?</em></p></li>
+<li><p><strong>The problem.</strong> Simplifying text for learners requires knowing <em>how hard a sentence is</em>. Creating an L2 corpus will make help it.</p></li>
+<li><p>They used CEFR “can-do” statements to infer the level of the passage.</p></li>
 </ul>
 </section>
-<section id="methodology" class="slide level2 smaller">
-<h2>Methodology</h2>
-<ul>
-<li>They used CEFR “can-do” statements to infer the level of the passage.</li>
-</ul>
+<section id="cefr-can-do-descriptors" class="slide level2 smaller">
+<h2>CEFR can-do descriptors</h2>
+<p><strong>Overall reading comprehension</strong> — the CEFR scale Arase et al.&nbsp;worked from:</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 13%">
-<col style="width: 86%">
+<col style="width: 36%">
+<col style="width: 63%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">Level</th>
-<th style="text-align: left;">Overall reading comprehension descriptor</th>
+<th style="text-align: left;">Can-do descriptor</th>
 </tr>
 </thead>
 <tbody>
@@ -1021,20 +1013,24 @@ Total
 <td style="text-align: center;"><strong>A1</strong></td>
 <td style="text-align: left;">Can understand very short, simple texts a single phrase at a time, picking up familiar names, words and basic phrases and rereading as required.</td>
 </tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Pre-A1</strong></td>
+<td style="text-align: left;">Can recognise familiar words/signs accompanied by pictures, such as a fast-food restaurant menu illustrated with photos.</td>
+</tr>
 </tbody>
 </table>
 <div style="font-size: 60%">
 <p>Council of Europe (2020). <em>Common European Framework of Reference for Languages: Learning, teaching, assessment — Companion volume.</em></p>
 </div>
 </section>
-<section id="a-problem-with-the-approach" class="slide level2">
-<h2>A problem with the approach</h2>
+<section id="the-problem-with-these-descriptors" class="slide level2">
+<h2>The problem with these descriptors</h2>
 <p>The descriptors describe what a <strong>learner</strong> can do — not what a <strong>sentence</strong> is.</p>
 <ul>
 <li>They talk about text <em>types</em> (“literary writings”, “factual texts”) and reading <em>conditions</em> (“provided they can reread”).</li>
 <li>None of that applies to a single, context-free sentence.</li>
 </ul>
-<p><strong>Making the scale apply to one sentence is the design problem</strong></p>
+<p><strong>Making the scale apply to one sentence is the design problem</strong> Arase et al.&nbsp;had to solve — and the same kind of problem you will solve for your own task.</p>
 </section>
 <section id="what-the-labels-look-like" class="slide level2 smaller">
 <h2>What the labels look like</h2>
@@ -1086,8 +1082,8 @@ Total
 </tbody>
 </table>
 </section>
-<section id="why-do-we-use-cefr-sp-project" class="slide level2">
-<h2>Why do we use CEFR-SP project?</h2>
+<section id="why-this-paper-for-this-course" class="slide level2 smaller">
+<h2>Why this paper, for this course</h2>
 <ul>
 <li><strong>The task is familiar.</strong> Simplification — and judging what level a sentence is pitched at — is something language teachers and applied linguists are interested in.</li>
 <li><strong>The task is simple enough.</strong> One sentence, one label. Simple enough for the tutorial example.</li>
@@ -1107,8 +1103,8 @@ Total
 </div>
 </div>
 </section>
-<section id="in-the-afternoon" class="slide level2">
-<h2>In the afternoon</h2>
+<section id="coming-up" class="slide level2">
+<h2>Coming up</h2>
 <ul>
 <li><p><strong>S5 — Gold-Standard Annotation &amp; Agreement</strong> <em>(hands-on)</em>: extract Arase’s two design decisions, then build a gold standard and measure agreement — executes <strong>Phases ①–③</strong>.</p></li>
 <li><p><strong>S6 — Gold Standards &amp; Evaluation Metrics</strong> <em>(hands-on)</em>: score an LLM against that gold — executes <strong>Phases ④–⑤</strong>.</p></li>

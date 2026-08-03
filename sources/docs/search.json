@@ -1283,7 +1283,7 @@
     "href": "slides/slides-session-04.html#arase-uchida-kajiwara-2022",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Arase, Uchida & Kajiwara (2022)",
-    "text": "Arase, Uchida & Kajiwara (2022)\n\n\n“CEFR-Based Sentence Difficulty Annotation and Assessment” (EMNLP 2022).\n\n\n\n\nThe problem. Simplifying text for learners requires knowing how hard a sentence is.\nGoal: Creating a corpus that is annotated for sentence difficulties according to CEFR levels.\nHow did they operationalize CEFR levels?"
+    "text": "Arase, Uchida & Kajiwara (2022)\n“CEFR-Based Sentence Difficulty Annotation and Assessment” (EMNLP 2022).\n\nThe problem. Simplifying text for learners requires knowing how hard a sentence is. Creating an L2 corpus will make help it.\nThey used CEFR “can-do” statements to infer the level of the passage."
   },
   {
     "objectID": "slides/slides-session-04.html#what-the-labels-look-like",
@@ -5486,14 +5486,14 @@
     "href": "slides/slides-session-04.html#cefr-can-do-descriptors",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "CEFR can-do descriptors",
-    "text": "CEFR can-do descriptors\nOverall reading comprehension (Example):\n\nThey used CEFR “can-do” statements to infer the level of the passage.\n\n\n\n\n\n\n\n\nLevel\nCan-do descriptor\n\n\n\n\nC2\nCan understand virtually all types of texts including abstract, structurally complex, or highly colloquial literary and non-literary writings.\n\n\nC1\nCan understand in detail lengthy, complex texts, whether or not these relate to their own area of speciality, provided they can reread difficult sections.\n\n\nB2\nCan read with a large degree of independence, adapting style and speed of reading to different texts and purposes. Has a broad active reading vocabulary, but may experience some difficulty with low-frequency idioms.\n\n\nB1\nCan read straightforward factual texts on subjects related to their field of interest with a satisfactory level of comprehension.\n\n\nA2\nCan understand short, simple texts on familiar matters of a concrete type which consist of high frequency everyday or job-related language.\n\n\nA1\nCan understand very short, simple texts a single phrase at a time, picking up familiar names, words and basic phrases and rereading as required.\n\n\n\n\nCouncil of Europe (2020). Common European Framework of Reference for Languages: Learning, teaching, assessment — Companion volume."
+    "text": "CEFR can-do descriptors\nOverall reading comprehension — the CEFR scale Arase et al. worked from:\n\n\n\n\n\n\n\nLevel\nCan-do descriptor\n\n\n\n\nC2\nCan understand virtually all types of texts including abstract, structurally complex, or highly colloquial literary and non-literary writings.\n\n\nC1\nCan understand in detail lengthy, complex texts, whether or not these relate to their own area of speciality, provided they can reread difficult sections.\n\n\nB2\nCan read with a large degree of independence, adapting style and speed of reading to different texts and purposes. Has a broad active reading vocabulary, but may experience some difficulty with low-frequency idioms.\n\n\nB1\nCan read straightforward factual texts on subjects related to their field of interest with a satisfactory level of comprehension.\n\n\nA2\nCan understand short, simple texts on familiar matters of a concrete type which consist of high frequency everyday or job-related language.\n\n\nA1\nCan understand very short, simple texts a single phrase at a time, picking up familiar names, words and basic phrases and rereading as required.\n\n\nPre-A1\nCan recognise familiar words/signs accompanied by pictures, such as a fast-food restaurant menu illustrated with photos.\n\n\n\n\nCouncil of Europe (2020). Common European Framework of Reference for Languages: Learning, teaching, assessment — Companion volume."
   },
   {
     "objectID": "slides/slides-session-04.html#the-problem-with-these-descriptors",
     "href": "slides/slides-session-04.html#the-problem-with-these-descriptors",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "The problem with these descriptors",
-    "text": "The problem with these descriptors\nThe descriptors describe what a learner can do — not what a sentence is.\n\nThey talk about text types (“literary writings”, “factual texts”) and reading conditions (“provided they can reread”).\nNone of that applies to a single, context-free sentence.\n\nMaking the scale apply to one sentence is the design problem"
+    "text": "The problem with these descriptors\nThe descriptors describe what a learner can do — not what a sentence is.\n\nThey talk about text types (“literary writings”, “factual texts”) and reading conditions (“provided they can reread”).\nNone of that applies to a single, context-free sentence.\n\nMaking the scale apply to one sentence is the design problem Arase et al. had to solve — and the same kind of problem you will solve for your own task."
   },
   {
     "objectID": "slides/slides-session-04.html#why-cefr-sp-project",
