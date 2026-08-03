@@ -3,9 +3,7 @@ title: "Final Project"
 subtitle: "Group Mini-Project — LLM-Based Linguistic Analysis"
 toc: true
 ---
-
-You run a small, end-to-end LLM-annotation study on a real annotated dataset, and report what
-you find. It is introduced in [Session 3](../sessions/day1/session-03.md) (track selection and
+You run a small, end-to-end LLM-annotation study on a real annotated dataset, and report what you find. It is introduced in [Session 3](../sessions/day1/session-03.md) (track selection and
 group formation), planned in [Session 11](../sessions/day4/session-11.md), and carried out
 across Sessions [12](../sessions/day4/session-12.md)–[15](../sessions/day5/session-15.md).
 
@@ -30,7 +28,9 @@ where you first ran it — every one of them has an ancestor in Days 1–4. The
 [inventory page](pipeline-cheatsheet.md) has the full list.
 
 ::: {.callout-tip}
+
 ## One clone, shared by the group
+
 **One member** clones the repo into their Google Drive and shares the folder with the team.
 **Nobody pushes** — git is just how you get the code onto the machine.
 
@@ -45,14 +45,14 @@ together.
 
 ## The six notebooks
 
-| | | |
-|---|---|---|
-| `01_build_pool_<track>` | your track's raw corpus → a pool | no model |
-| `02_sample` | the pool → your sample, and the blind annotation sheet | no model |
-| `03_annotate` | the filled-in sheet → **your** gold set, split into dev and test | no model |
-| `04_develop` | prompt rounds, on **dev** only | the model, many times |
-| `05_test` | the held-out run, once, frozen to a file | the model, once |
-| `06_report` | the frozen run → error analysis and the report scaffold | no model |
+|                           |                                                                        |                       |
+| ------------------------- | ---------------------------------------------------------------------- | --------------------- |
+| `01_build_pool_<track>` | your track's raw corpus → a pool                                      | no model              |
+| `02_sample`             | the pool → your sample, and the blind annotation sheet                | no model              |
+| `03_annotate`           | the filled-in sheet →**your** gold set, split into dev and test | no model              |
+| `04_develop`            | prompt rounds, on**dev** only                                    | the model, many times |
+| `05_test`               | the held-out run, once, frozen to a file                               | the model, once       |
+| `06_report`             | the frozen run → error analysis and the report scaffold               | no model              |
 
 **04 and 05 are separate files on purpose.** "You may not look at the test set while you are
 still changing the prompt" is a rule that only holds if it is a file boundary rather than a
@@ -62,7 +62,9 @@ Notebooks 01–03 need no model, so there is plenty to get on with while your `P
 signed off.
 
 ::: {.callout-important}
+
 ## Your adjudicated gold is the gold
+
 The model is scored against **what your group decided in `03_annotate`**, not against the published
 labels. That is what makes the QC pass matter: the boundaries you argued over in `03_annotate` are
 exactly the ones you will be pointing at in `06_report` when you explain a miss.
@@ -72,7 +74,9 @@ is itself a finding worth a line in your report.
 :::
 
 ::: {.callout-important}
+
 ## Run it once, then freeze it
+
 You run the model through the **Gemini API** with `temperature=0` and a fixed seed
 ([get a free key](../resources/tools/gemini-api-key.md)). Even then, a hosted LLM is only
 *best-effort* reproducible — so once your prompt is final, **run it once and save the
@@ -87,16 +91,16 @@ Four, easy to hard. Details, licences and provenance: [Replication
 Datasets](../resources/datasets/index.md) and [Mini-Project Starter
 Tracks](../resources/datasets/mini-project-tracks.md).
 
-| Track | Task | Difficulty |
-|---|---|---|
-| `raamove` | Rhetorical moves in RA abstracts (8) | ★★☆ |
-| `cars50` | CARS moves in RA introductions | ★★★ the annotators themselves got κ ≈ 0.43 |
-| `l2_errors` | L2 error type, or error detection | ★★★ also benchmarkable against the published tool |
-| `icnale` | Holistic essay score band | ★★☆ needs a registered download |
+| Track         | Task                                 | Difficulty                                           |
+| ------------- | ------------------------------------ | ---------------------------------------------------- |
+| `raamove`   | Rhetorical moves in RA abstracts (8) | ★★☆                                               |
+| `cars50`    | CARS moves in RA introductions       | ★★★ the annotators themselves got κ ≈ 0.43      |
+| `l2_errors` | L2 error type, or error detection    | ★★★ also benchmarkable against the published tool |
+| `icnale`    | Holistic essay score band            | ★★☆ needs a registered download                   |
 
 ## What to read next
 
 - **[The `PLAN.md` gate](plan.md)** — the one page you write *before* you call the model.
-- **[Deliverables & submission](deliverables.md)** — exactly what to hand in, and how.
+- **[Deliverables &amp; submission](deliverables.md)** — exactly what to hand in, and how.
 - **[Rubric](rubric.md)** — what is graded. (Not your F1.)
 - **[What you have to work with](pipeline-cheatsheet.md)** — every call the notebooks offer, and where you first ran it.

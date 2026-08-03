@@ -93,7 +93,7 @@ We have two possible choices for the grade distribution for this course. I will 
 | Attendance / Participation                          |         | 20%     |
 | Hands-on activities (Day 1–3) + completed notebook |         | 40%     |
 | Mini-project group presentation + Q&A               | (Day 5) | 20%     |
-| In-class one-page report (individual)               | (Day 5) | 20%     |
+| In-class one-page report (individual)               | (TBA)   | 20%     |
 
 The **completed project notebook** — assembled from the cell library and run end-to-end, with your group's sampled gold subset, prompt, and evaluation outputs — is submitted as evidence that the in-class hands-on work was done, and is graded under the hands-on component. All project deliverables are produced and submitted **during** the course; there is no post-course write-up.
 
@@ -113,14 +113,14 @@ We follow [the grading system at Tohoku University](https://www.tohoku.ac.jp/jap
 
 Each day follows this general pattern:
 
-| Time        | Activity                            |
-| ----------- | ----------------------------------- |
-| 10:30-12:00 | Session 1                           |
-| 12:00-13:00 | Lunch break                         |
-| 13:00-14:30 | Session 2                           |
-| 14:30-14:40 | Break                               |
-| 14:40-16:10 | Session 3                           |
-| 16:15-17:00 | Optional sessions (on Open Science) |
+| Time        | Activity    |
+| ----------- | ----------- |
+| 10:30-12:00 | Session 1   |
+| 12:00-13:00 | Lunch break |
+| 13:00-14:30 | Session 2   |
+| 14:30-14:40 | Break       |
+| 14:40-16:10 | Session 3   |
+| 16:15-17:00 | Office Hour |
 
 ## Attendance Policy
 
