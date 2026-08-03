@@ -409,7 +409,7 @@ We could have counted as we went. We keep the list because **the list records ev
 . . .
 
 ::: {.callout-note}
-Later today `show_errors()` does exactly this for you on the 6-class task — it selects the items the model got wrong and prints them. You have just written the same logic yourself.
+Later today you write this same loop again on the 6-class task, to select the items the model got wrong and put them in a table. The logic is the one you just wrote.
 :::
 
 # Pass 1 · Step 6 — tally the outcomes
@@ -757,11 +757,16 @@ Drop the yes/no simplification. The actual task is the **full ordinal CEFR scale
 . . .
 
 ```python
-# ordered=True: the six levels form a scale, so also report weighted κ
-evaluate(gold, predictions, ordered=True)
+# The gold labels as a plain list — the shape every scikit-learn call wants:
+y_true = []
+for item in gold:
+    y_true.append(item["label"])
+y_pred = predictions              # the model's labels, already a plain list
+
+print(classification_report(y_true, y_pred, labels=LEVELS, zero_division=0))
 ```
 
-`ordered=True` states that these labels form a **scale**, which changes which κ you should read. We return to this below.
+These are the names from the table in pass 1, called directly. You built each one by hand — this is the same work, for six classes at once.
 
 ## Read the report {.smaller}
 
@@ -803,6 +808,16 @@ Before concluding that the model is useless, look at the size of its errors.
 
 ## The confusion matrix — read *down the columns* {.smaller}
 
+```python
+matrix = confusion_matrix(y_true, y_pred, labels=LEVELS)   # counts per gold/pred pair
+
+plt.figure(figsize=(5.5, 4.5))
+sns.heatmap(matrix, annot=True, fmt="d", cmap="Blues",     # annot=True writes the counts
+            xticklabels=LEVELS, yticklabels=LEVELS)
+plt.xlabel("Predicted"); plt.ylabel("Gold"); plt.title("Confusion matrix")
+plt.tight_layout(); plt.show()
+```
+
 |  | pred A1 | pred A2 | pred B1 | pred B2 | pred C1 | pred C2 |
 |--|:--:|:--:|:--:|:--:|:--:|:--:|
 | **gold A1** | **3** | 9 | 0 | 0 | 0 | 0 |
@@ -835,7 +850,15 @@ You will meet this tendency in **your own annotation** — and in your teammates
 
 ## Two κ values, same data {.smaller}
 
-`evaluate(..., ordered=True)` printed both, right under the report:
+`weights="quadratic"` is the one argument that separates them:
+
+```python
+print("Cohen's kappa           ", round(cohen_kappa_score(y_true, y_pred), 3))
+
+# weights="quadratic": A1 -> A2 is a smaller error than A1 -> C2.
+weighted = cohen_kappa_score(y_true, y_pred, labels=LEVELS, weights="quadratic")
+print("Cohen's kappa (weighted)", round(weighted, 3), "  <- labels are ordered")
+```
 
 ```
 Cohen's kappa            0.267
@@ -860,7 +883,13 @@ Same predictions, 0.27 or 0.85 depending on a single argument. **Ordered labels 
 ## Error analysis — the model's error, or the scheme's? {.smaller}
 
 ```python
-errors = show_errors(gold, predictions)   # a table of every item it got wrong
+rows = []
+for g, p in zip(gold, predictions):   # walk gold and predictions side by side
+    if g["label"] != p:               # keep only the disagreements
+        rows.append({"id": g["id"], "gold": g["label"], "pred": p, "text": g["text"]})
+print(len(rows), "of", len(gold), "wrong.")
+
+errors = pd.DataFrame(rows, columns=["id", "gold", "pred", "text"])
 errors.head(15)     # ...or errors[errors["gold"] == "C2"] for the highest level
 ```
 

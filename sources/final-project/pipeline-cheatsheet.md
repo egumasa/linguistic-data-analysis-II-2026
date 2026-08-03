@@ -81,8 +81,8 @@ over without answering it for you. You saw the six lines in Day 2 S5, step E.
 | `run_prompt(prompt, dev)` | one predicted label per item | Day 3, every iteration |
 | `build_fewshot(prompt, pool, gold)` | the prompt with worked examples in front of it | Day 3 iteration 1 — you typed the examples by hand |
 | `extract_label(reply, labels)` | one label out of one reply | Day 3, as the parser behind `run_prompt` |
-| `evaluate(dev, pred, ordered=False)` | per-class table, κ, matrix, and macro-F1 back | Day 2 S6 Part B · Day 3 |
-| `show_errors(dev, pred)` | just the rows it got wrong | Day 2 S6 Part B · Day 3 |
+| `evaluate(dev, pred, ordered=False)` | per-class table, κ, matrix, and macro-F1 back | Day 3 |
+| `show_errors(dev, pred)` | just the rows it got wrong | Day 3 |
 
 **And the prompt itself is the other half.** S7's menu — instruction · context · input data ·
 output indicator · persona · few-shot · chain-of-thought · structured output — is the space
@@ -110,7 +110,7 @@ recall, F1 and κ from scratch, then checked your numbers against these very fun
 
 | Call | What it gives you | Where you first ran it |
 |---|---|---|
-| `labels_of(test)` | the gold labels as a plain list, ready to score | new here — you wrote the same loop in Day 2 S6 |
+| `labels_of(test)` | the gold labels as a plain list, ready to score | new here — you wrote the same loop in Day 2 S6 Part B, as `y_true` |
 | `classification_report(y, p, labels=LABELS)` | precision, recall and F1 for **every** class | Day 2 S6 Part B |
 | `f1_score(y, p, average="macro")` | one number: every **class** counts the same | Day 2 S6 Part B |
 | `f1_score(y, p, average="micro")` | one number: every **item** counts the same | Day 2 S6 Part B |
@@ -119,7 +119,7 @@ recall, F1 and κ from scratch, then checked your numbers against these very fun
 | `cohen_kappa_score(y, p, weights="quadratic")` | the same, a near miss counting less | Day 2 S6 Part B |
 | `confusion_matrix(y, p, labels=LABELS)` | which classes it mixes up with which | Day 2 S6 Part B |
 | `plot_confusion_matrix(m, LABELS, title)` | that matrix, drawn | Day 2 S5 step D |
-| `show_errors(test, pred)` | just the rows it got wrong | Day 2 S6 Part B · Day 3 |
+| `show_errors(test, pred)` | just the rows it got wrong | Day 3 — and you wrote the same loop by hand in Day 2 S6 Part B |
 | `errors_on_disagreed(errors, disagreed)` | the errors landing where **your** coders also disagreed | Day 2 S6 Part B, written out as a loop |
 | `triage_category(line, CODER_CATEGORIES)` | reads back the triage you wrote in 03, so you can ask whether the model missed the items *you* called `scheme` | 03, if you did its optional section |
 | `triage_counts(TRIAGE, errors)` | your judgments, counted by category | new here — the four words are Day 2 S6 Part B, where you sorted errors aloud rather than writing them down |

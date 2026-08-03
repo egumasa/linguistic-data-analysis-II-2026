@@ -40,14 +40,14 @@ Important: the example notebooks under [sources/resources/code-examples/python/]
 
 Any work on the day notebooks MUST follow
 [planning/course_planning/notebook-coding-principles.md](planning/course_planning/notebook-coding-principles.md).
-In short: **the `.ipynb` files are the source — edit them directly.** 297 of the 316 cells
+In short: **the `.ipynb` files are the source — edit them directly.** 364 of the 382 cells
 are ordinary and stay exactly as you leave them.
 
-The 19 exceptions are the 📦 Setup cell and each 🔧 Library cell. They say so in their own
+The 18 exceptions are the 📦 Setup cell and each 🔧 Library cell. They say so in their own
 second line, and `_sync_notebooks.py` rewrites them, so an edit typed into one is
-replaced. They exist because `load_gold` appears in four notebooks and `evaluate` /
-`show_errors` in two, and because the Setup cell's import line is computed from the
-helper list — a day imports exactly what it ships. To change one:
+replaced. They exist because `load_gold` appears in four notebooks (`evaluate` /
+`show_errors` are Day 3 only), and because the Setup cell's import line is computed from
+the helper list — a day imports exactly what it ships. To change one:
 
 - **the helper's code** → edit [sources/notebooks/_notebook_lib.py](sources/notebooks/_notebook_lib.py), then sync. Every day using it updates together. The helpers sit at the end of that file as ordinary Python, one `# === name :: caption ===` section each — edit them as you would any function.
 - **which helpers a cell ships, or a day's backend** → edit that cell's `lda2` metadata, then sync.

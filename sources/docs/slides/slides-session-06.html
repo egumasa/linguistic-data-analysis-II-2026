@@ -785,7 +785,7 @@
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>Later today <code>show_errors()</code> does exactly this for you on the 6-class task — it selects the items the model got wrong and prints them. You have just written the same logic yourself.</p>
+<p>Later today you write this same loop again on the 6-class task, to select the items the model got wrong and put them in a table. The logic is the one you just wrote.</p>
 </div>
 </div>
 </div>
@@ -1158,9 +1158,14 @@ All 5 checks passed ✅  — your confusion matrix and metrics match scikit-lear
 <li><strong>The method is unchanged</strong> — to score <code>C1</code>, treat <strong><code>C1</code> as “yes” and all five others as “no”</strong>: pass 1, run six times. This is called <strong>one-vs-rest</strong>, and it is what <code>classification_report</code> does.</li>
 </ul>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a><span class="co"># ordered=True: the six levels form a scale, so also report weighted κ</span></span>
-<span id="cb38-2"><a></a>evaluate(gold, predictions, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>ordered=True</code> states that these labels form a <strong>scale</strong>, which changes which κ you should read. We return to this below.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a><span class="co"># The gold labels as a plain list — the shape every scikit-learn call wants:</span></span>
+<span id="cb38-2"><a></a>y_true <span class="op">=</span> []</span>
+<span id="cb38-3"><a></a><span class="cf">for</span> item <span class="kw">in</span> gold:</span>
+<span id="cb38-4"><a></a>    y_true.append(item[<span class="st">"label"</span>])</span>
+<span id="cb38-5"><a></a>y_pred <span class="op">=</span> predictions              <span class="co"># the model's labels, already a plain list</span></span>
+<span id="cb38-6"><a></a></span>
+<span id="cb38-7"><a></a><span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>These are the names from the table in pass 1, called directly. You built each one by hand — this is the same work, for six classes at once.</p>
 </div>
 </section>
 <section id="read-the-report" class="slide level2 smaller">
@@ -1212,6 +1217,13 @@ All 5 checks passed ✅  — your confusion matrix and metrics match scikit-lear
 </section>
 <section id="the-confusion-matrix-read-down-the-columns" class="slide level2 smaller">
 <h2>The confusion matrix — read <em>down the columns</em></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a></a>matrix <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)   <span class="co"># counts per gold/pred pair</span></span>
+<span id="cb40-2"><a></a></span>
+<span id="cb40-3"><a></a>plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb40-4"><a></a>sns.heatmap(matrix, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,     <span class="co"># annot=True writes the counts</span></span>
+<span id="cb40-5"><a></a>            xticklabels<span class="op">=</span>LEVELS, yticklabels<span class="op">=</span>LEVELS)</span>
+<span id="cb40-6"><a></a>plt.xlabel(<span class="st">"Predicted"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Gold"</span>)<span class="op">;</span> plt.title(<span class="st">"Confusion matrix"</span>)</span>
+<span id="cb40-7"><a></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1322,7 +1334,12 @@ All 5 checks passed ✅  — your confusion matrix and metrics match scikit-lear
 </section>
 <section id="two-κ-values-same-data" class="slide level2 smaller">
 <h2>Two κ values, same data</h2>
-<p><code>evaluate(..., ordered=True)</code> printed both, right under the report:</p>
+<p><code>weights="quadratic"</code> is the one argument that separates them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a></a><span class="bu">print</span>(<span class="st">"Cohen's kappa           "</span>, <span class="bu">round</span>(cohen_kappa_score(y_true, y_pred), <span class="dv">3</span>))</span>
+<span id="cb41-2"><a></a></span>
+<span id="cb41-3"><a></a><span class="co"># weights="quadratic": A1 -&gt; A2 is a smaller error than A1 -&gt; C2.</span></span>
+<span id="cb41-4"><a></a>weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS, weights<span class="op">=</span><span class="st">"quadratic"</span>)</span>
+<span id="cb41-5"><a></a><span class="bu">print</span>(<span class="st">"Cohen's kappa (weighted)"</span>, <span class="bu">round</span>(weighted, <span class="dv">3</span>), <span class="st">"  &lt;- labels are ordered"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>Cohen's kappa            0.267
 Cohen's kappa (weighted) 0.849   &lt;- labels are ordered</code></pre>
 <div class="fragment">
@@ -1348,8 +1365,14 @@ Cohen's kappa (weighted) 0.849   &lt;- labels are ordered</code></pre>
 </section>
 <section id="error-analysis-the-models-error-or-the-schemes" class="slide level2 smaller">
 <h2>Error analysis — the model’s error, or the scheme’s?</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a></a>errors <span class="op">=</span> show_errors(gold, predictions)   <span class="co"># a table of every item it got wrong</span></span>
-<span id="cb41-2"><a></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] for the highest level</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a></a>rows <span class="op">=</span> []</span>
+<span id="cb43-2"><a></a><span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):   <span class="co"># walk gold and predictions side by side</span></span>
+<span id="cb43-3"><a></a>    <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="op">!=</span> p:               <span class="co"># keep only the disagreements</span></span>
+<span id="cb43-4"><a></a>        rows.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"gold"</span>: g[<span class="st">"label"</span>], <span class="st">"pred"</span>: p, <span class="st">"text"</span>: g[<span class="st">"text"</span>]})</span>
+<span id="cb43-5"><a></a><span class="bu">print</span>(<span class="bu">len</span>(rows), <span class="st">"of"</span>, <span class="bu">len</span>(gold), <span class="st">"wrong."</span>)</span>
+<span id="cb43-6"><a></a></span>
+<span id="cb43-7"><a></a>errors <span class="op">=</span> pd.DataFrame(rows, columns<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"gold"</span>, <span class="st">"pred"</span>, <span class="st">"text"</span>])</span>
+<span id="cb43-8"><a></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] for the highest level</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>44 errors — too many to read one by one, and you do not need to. <strong>Read about a dozen</strong>, then look closely at the rows where gold is <strong>C2</strong> or <strong>A1</strong>: disagreements concentrate at the two ends of the scale.</p>
 <div class="fragment">
 <p>For each error you read, ask:</p>

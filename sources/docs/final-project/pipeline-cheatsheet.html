@@ -424,12 +424,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td><code>evaluate(dev, pred, ordered=False)</code></td>
 <td>per-class table, κ, matrix, and macro-F1 back</td>
-<td>Day 2 S6 Part B · Day 3</td>
+<td>Day 3</td>
 </tr>
 <tr class="odd">
 <td><code>show_errors(dev, pred)</code></td>
 <td>just the rows it got wrong</td>
-<td>Day 2 S6 Part B · Day 3</td>
+<td>Day 3</td>
 </tr>
 </tbody>
 </table>
@@ -486,7 +486,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td><code>labels_of(test)</code></td>
 <td>the gold labels as a plain list, ready to score</td>
-<td>new here — you wrote the same loop in Day 2 S6</td>
+<td>new here — you wrote the same loop in Day 2 S6 Part B, as <code>y_true</code></td>
 </tr>
 <tr class="even">
 <td><code>classification_report(y, p, labels=LABELS)</code></td>
@@ -531,7 +531,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td><code>show_errors(test, pred)</code></td>
 <td>just the rows it got wrong</td>
-<td>Day 2 S6 Part B · Day 3</td>
+<td>Day 3 — and you wrote the same loop by hand in Day 2 S6 Part B</td>
 </tr>
 <tr class="odd">
 <td><code>errors_on_disagreed(errors, disagreed)</code></td>
@@ -1115,8 +1115,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`run_prompt(prompt, dev)`</span> <span class="pp">|</span> one predicted label per item <span class="pp">|</span> Day 3, every iteration <span class="pp">|</span></span>
 <span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`build_fewshot(prompt, pool, gold)`</span> <span class="pp">|</span> the prompt with worked examples in front of it <span class="pp">|</span> Day 3 iteration 1 — you typed the examples by hand <span class="pp">|</span></span>
 <span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`extract_label(reply, labels)`</span> <span class="pp">|</span> one label out of one reply <span class="pp">|</span> Day 3, as the parser behind <span class="in">`run_prompt`</span> <span class="pp">|</span></span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`evaluate(dev, pred, ordered=False)`</span> <span class="pp">|</span> per-class table, κ, matrix, and macro-F1 back <span class="pp">|</span> Day 2 S6 Part B · Day 3 <span class="pp">|</span></span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`show_errors(dev, pred)`</span> <span class="pp">|</span> just the rows it got wrong <span class="pp">|</span> Day 2 S6 Part B · Day 3 <span class="pp">|</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`evaluate(dev, pred, ordered=False)`</span> <span class="pp">|</span> per-class table, κ, matrix, and macro-F1 back <span class="pp">|</span> Day 3 <span class="pp">|</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`show_errors(dev, pred)`</span> <span class="pp">|</span> just the rows it got wrong <span class="pp">|</span> Day 3 <span class="pp">|</span></span>
 <span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>**And the prompt itself is the other half.** S7's menu — instruction · context · input data ·</span>
 <span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>output indicator · persona · few-shot · chain-of-thought · structured output — is the space</span>
@@ -1144,7 +1144,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Call <span class="pp">|</span> What it gives you <span class="pp">|</span> Where you first ran it <span class="pp">|</span></span>
 <span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`labels_of(test)`</span> <span class="pp">|</span> the gold labels as a plain list, ready to score <span class="pp">|</span> new here — you wrote the same loop in Day 2 S6 <span class="pp">|</span></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`labels_of(test)`</span> <span class="pp">|</span> the gold labels as a plain list, ready to score <span class="pp">|</span> new here — you wrote the same loop in Day 2 S6 Part B, as <span class="in">`y_true`</span> <span class="pp">|</span></span>
 <span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`classification_report(y, p, labels=LABELS)`</span> <span class="pp">|</span> precision, recall and F1 for **every** class <span class="pp">|</span> Day 2 S6 Part B <span class="pp">|</span></span>
 <span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`f1_score(y, p, average="macro")`</span> <span class="pp">|</span> one number: every **class** counts the same <span class="pp">|</span> Day 2 S6 Part B <span class="pp">|</span></span>
 <span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`f1_score(y, p, average="micro")`</span> <span class="pp">|</span> one number: every **item** counts the same <span class="pp">|</span> Day 2 S6 Part B <span class="pp">|</span></span>
@@ -1153,7 +1153,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`cohen_kappa_score(y, p, weights="quadratic")`</span> <span class="pp">|</span> the same, a near miss counting less <span class="pp">|</span> Day 2 S6 Part B <span class="pp">|</span></span>
 <span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`confusion_matrix(y, p, labels=LABELS)`</span> <span class="pp">|</span> which classes it mixes up with which <span class="pp">|</span> Day 2 S6 Part B <span class="pp">|</span></span>
 <span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`plot_confusion_matrix(m, LABELS, title)`</span> <span class="pp">|</span> that matrix, drawn <span class="pp">|</span> Day 2 S5 step D <span class="pp">|</span></span>
-<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`show_errors(test, pred)`</span> <span class="pp">|</span> just the rows it got wrong <span class="pp">|</span> Day 2 S6 Part B · Day 3 <span class="pp">|</span></span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`show_errors(test, pred)`</span> <span class="pp">|</span> just the rows it got wrong <span class="pp">|</span> Day 3 — and you wrote the same loop by hand in Day 2 S6 Part B <span class="pp">|</span></span>
 <span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`errors_on_disagreed(errors, disagreed)`</span> <span class="pp">|</span> the errors landing where **your** coders also disagreed <span class="pp">|</span> Day 2 S6 Part B, written out as a loop <span class="pp">|</span></span>
 <span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`triage_category(line, CODER_CATEGORIES)`</span> <span class="pp">|</span> reads back the triage you wrote in 03, so you can ask whether the model missed the items *you* called <span class="in">`scheme`</span> <span class="pp">|</span> 03, if you did its optional section <span class="pp">|</span></span>
 <span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`triage_counts(TRIAGE, errors)`</span> <span class="pp">|</span> your judgments, counted by category <span class="pp">|</span> new here — the four words are Day 2 S6 Part B, where you sorted errors aloud rather than writing them down <span class="pp">|</span></span>

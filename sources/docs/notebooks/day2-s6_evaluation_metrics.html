@@ -441,6 +441,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#part-b-tutorial-the-same-job-six-classes-with-scikit-learn" id="toc-part-b-tutorial-the-same-job-six-classes-with-scikit-learn" class="nav-link" data-scroll-target="#part-b-tutorial-the-same-job-six-classes-with-scikit-learn">Part B · Tutorial — the same job, six classes, with scikit-learn</a>
   <ul class="collapse">
+  <li><a href="#which-gold-set-do-you-score-against" id="toc-which-gold-set-do-you-score-against" class="nav-link" data-scroll-target="#which-gold-set-do-you-score-against">Which gold set do you score against?</a></li>
   <li><a href="#reading-the-report" id="toc-reading-the-report" class="nav-link" data-scroll-target="#reading-the-report">Reading the report</a></li>
   <li><a href="#one-number-three-different-questions" id="toc-one-number-three-different-questions" class="nav-link" data-scroll-target="#one-number-three-different-questions">One number, three different questions</a></li>
   <li><a href="#read-the-matrix-down-the-columns" id="toc-read-the-matrix-down-the-columns" class="nav-link" data-scroll-target="#read-the-matrix-down-the-columns">Read the matrix <em>down the columns</em></a></li>
@@ -501,7 +502,7 @@ window.Quarto = {
 <p>On Day 1 the live model’s answers changed from run to run, which would get in the way while you are learning to <em>measure</em> quality. So today’s predictions are <strong>pre-computed and committed</strong> to a file. Everyone’s precision, recall, F1 and κ come out <strong>identical every run</strong>: if your number differs from the slide, you have a bug, not a different model.</p>
 </div>
 </div>
-<div id="cell-3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;generated&quot;:&quot;setup&quot;,&quot;backend&quot;:null,&quot;lib_names&quot;:[&quot;evaluate&quot;,&quot;load_gold&quot;,&quot;predictions&quot;,&quot;show_2x2&quot;,&quot;show_errors&quot;],&quot;gold_url&quot;:&quot;https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json&quot;,&quot;gold_comment&quot;:&quot;CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.&quot;,&quot;predictions_url&quot;:&quot;https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/predictions_day2.json&quot;,&quot;val_url&quot;:null,&quot;sampling&quot;:false}}">
+<div id="cell-3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;backend&quot;:null,&quot;generated&quot;:&quot;setup&quot;,&quot;gold_comment&quot;:&quot;CEFR-SP gold set (72 sentences, 12 per level), fetched from the course repo.&quot;,&quot;gold_url&quot;:&quot;https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_sentences.json&quot;,&quot;lib_names&quot;:[&quot;load_gold&quot;,&quot;predictions&quot;,&quot;predictions_for&quot;,&quot;show_2x2&quot;,&quot;your_gold&quot;],&quot;predictions_url&quot;:&quot;https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/predictions_day2.json&quot;,&quot;sampling&quot;:false,&quot;val_url&quot;:null,&quot;sklearn_direct&quot;:true}}">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 📦 Setup — run me first { display-mode: "form" }</span></span>
@@ -626,7 +627,7 @@ window.Quarto = {
 </section>
 <section id="part-a-corpus-lab-build-the-metrics-yourself" class="level2">
 <h2 class="anchored" data-anchor-id="part-a-corpus-lab-build-the-metrics-yourself">Part A · Corpus Lab — build the metrics yourself</h2>
-<p>In S5 <code>calc_cohen_kappa()</code> printed Cohen’s κ for you. <strong>Here you build precision, recall, F1 and κ yourself</strong>, before Part B’s <code>evaluate()</code> prints them for you again.</p>
+<p>In S5 <code>calc_cohen_kappa()</code> printed Cohen’s κ for you. <strong>Here you build precision, recall, F1 and κ yourself</strong>, before Part B runs the same job with the scikit-learn functions themselves.</p>
 <p>Work in <strong>ten small steps</strong>. Steps 1–7 build the confusion matrix, and you can run them as they are. <strong>In steps 8 and 9 you write the formulas</strong>: each metric arrives with its lookups and its zero-guard already there, and a <code>None</code> where the arithmetic goes. Replace every <code>None</code> marked ✏️. Step 10 checks all four against <code>scikit-learn</code>. No imports — just <code>for</code>, <code>if</code>, and dictionaries.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -638,7 +639,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The maths is on the slide above each step, and the expected number is written in the prose next to every cell. Compare what you get against it before moving on.</p>
+<p>The maths is on the slide above each step, and every formula is one line. If a cell errors, read the line it names — the fix is almost always a <code>+</code> where a <code>/</code> belongs, or a count you have not looked up yet.</p>
 </div>
 </div>
 <section id="step-1-collapse-to-one-yesno-question" class="level3">
@@ -755,11 +756,11 @@ window.Quarto = {
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># checked top to bottom; the FIRST match wins, so exactly one branch runs:</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="va">None</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="va">None</span>:</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"TP"</span>)      <span class="co"># advanced, and the model agreed</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"no"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"yes"</span>:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="va">None</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="va">None</span>:</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"FP"</span>)      <span class="co"># a false alarm</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="st">"yes"</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="st">"no"</span>:</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> item[<span class="st">"gold"</span>] <span class="op">==</span> <span class="va">None</span> <span class="kw">and</span> item[<span class="st">"pred"</span>] <span class="op">==</span> <span class="va">None</span>:</span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"FN"</span>)      <span class="co"># a real one, missed</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"TN"</span>)      <span class="co"># not advanced, left alone</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -810,7 +811,7 @@ window.Quarto = {
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>decisions <span class="op">=</span> []                     <span class="co"># start empty; the loop fills it</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:                 <span class="co"># one pass per row of the table</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    decisions.append(outcome(item[<span class="st">"gold"</span>], item[<span class="st">"pred"</span>]))   <span class="co"># add its verdict</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    decisions.append(____)   <span class="co"># add its verdict</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(decisions)                   <span class="co"># 12 verdicts, in the table's order</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -1209,12 +1210,122 @@ window.Quarto = {
 <section id="part-b-tutorial-the-same-job-six-classes-with-scikit-learn" class="level2">
 <h2 class="anchored" data-anchor-id="part-b-tutorial-the-same-job-six-classes-with-scikit-learn">Part B · Tutorial — the same job, six classes, with scikit-learn</h2>
 <p>Drop the yes/no simplification. The real task is the <strong>full ordinal CEFR scale</strong>: <strong>A1 · A2 · B1 · B2 · C1 · C2</strong>.</p>
-<p>You do not load anything new — the <code>gold</code> and <code>predictions</code> from the start of the notebook already carry the full level. Part A only <em>collapsed</em> them to yes/no; here you use them as they are:</p>
-<div id="cell-60" class="cell">
+<p>The <code>gold</code> and <code>predictions</code> you loaded at the start already carry the full level. Part A only <em>collapsed</em> them to yes/no; here you use them as they are:</p>
+<div id="39a5dc4b" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The same items, now with their full CEFR level instead of yes/no:</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"full gold label:"</span>, gold[<span class="dv">0</span>][<span class="st">"label"</span>], <span class="st">" full prediction:"</span>, predictions[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-61" class="cell" data-cellview="form" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;generated&quot;:&quot;libs&quot;,&quot;names&quot;:[&quot;your_gold&quot;,&quot;predictions_for&quot;]}}">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: load_your_gold, predictions_for { display-mode: "form" }</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generated from _notebook_lib.py — edit there, not here; changes to this cell are replaced.</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   load_your_gold(path, fallback_url) → your gold, or the published one</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   predictions_for(gold, published, predictions) → predictions in YOUR order</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_your_gold(path: <span class="bu">str</span>, fallback_url: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]]:</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Load the gold set you saved in S5, and fall back to the published one.</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">    S5's last step writes your adjudicated labels to your Drive. If that file is</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">    there, this reads it and you score the model against your own labels. If it is</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co">    not — you did not save it, or Drive is not mounted — you get the published</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co">    CEFR-SP set instead, and the notebook still runs from top to bottom.</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co">        path: where S5 saved your gold set, e.g. the Drive path in the cell above.</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co">        fallback_url: the published gold set, used when `path` is not readable.</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="co">        The gold items, each {"id", "text", "label"}.</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; gold = load_your_gold(MY_GOLD_PATH, GOLD_URL)</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> load_gold(path)</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"→ scoring against YOUR gold set (</span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items)."</span>)</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> gold</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">OSError</span>:                      <span class="co"># no such file, or Drive not mounted</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"No file at </span><span class="sc">{</span>path<span class="sc">}</span><span class="ss"> — falling back to the published gold set."</span>)</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>        gold <span class="op">=</span> load_gold(fallback_url)</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"→ scoring against the PUBLISHED gold set (</span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items)."</span>)</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> gold</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predictions_for(gold: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]],</span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>                    published: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]],</span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>                    predictions: <span class="bu">list</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]], <span class="bu">list</span>[<span class="bu">str</span>]]:</span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Line the frozen predictions up with YOUR gold items, matching on text.</span></span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a><span class="co">    The frozen predictions are one label per *published* item, in published order.</span></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a><span class="co">    Your own gold set is a sample of those sentences, renumbered from 1, so</span></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a><span class="co">    position 3 of yours and position 3 of theirs are two unrelated sentences.</span></span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a><span class="co">    Matching on the text pairs each of your items with the answer the model gave</span></span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a><span class="co">    for that same sentence. Items whose text is not in the published set have no</span></span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a><span class="co">    frozen prediction and are dropped, with a count.</span></span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a><span class="co">        gold: your gold items, from load_your_gold.</span></span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a><span class="co">        published: the published gold items, from load_gold(GOLD_URL).</span></span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a><span class="co">        predictions: the frozen predictions, in published order.</span></span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a><span class="co">        Two lists of the same length: your matched items, and their predictions.</span></span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; gold, predictions = predictions_for(gold, published, predictions)</span></span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: which prediction belongs to which sentence? </span><span class="al">###</span></span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a>    pred_by_text <span class="op">=</span> {}</span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(published):</span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">&lt;</span> <span class="bu">len</span>(predictions):                  <span class="co"># published and predictions run together</span></span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a>            pred_by_text[<span class="bu">str</span>(item[<span class="st">"text"</span>])] <span class="op">=</span> predictions[i]</span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: keep the items we have a frozen answer for </span><span class="al">###</span></span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a>    matched, matched_predictions <span class="op">=</span> [], []</span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> gold:</span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> <span class="bu">str</span>(item[<span class="st">"text"</span>])</span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> text <span class="kw">in</span> pred_by_text:</span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>            matched.append(item)</span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a>            matched_predictions.append(pred_by_text[text])</span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>    dropped <span class="op">=</span> <span class="bu">len</span>(gold) <span class="op">-</span> <span class="bu">len</span>(matched)</span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(matched)<span class="sc">}</span><span class="ss"> of your </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> items have a frozen prediction."</span>)</span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dropped:</span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>dropped<span class="sc">}</span><span class="ss"> dropped — not in the published set, so no answer was frozen for them."</span>)</span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> matched, matched_predictions</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="which-gold-set-do-you-score-against" class="level3">
+<h3 class="anchored" data-anchor-id="which-gold-set-do-you-score-against">Which gold set do you score against?</h3>
+<p>Part A ran on the <strong>published</strong> CEFR-SP set, so your hand-count and everyone else’s matched. Part B lets you choose.</p>
+<p>At the end of S5 you saved your own adjudicated labels to your Drive. Load them here and the model is scored against <strong>the boundaries you and your partner argued about</strong> — which is what makes the error analysis at the end of this notebook yours rather than a demonstration. If you did not save that file, the cells below fall back to the published set and the notebook still runs from top to bottom.</p>
+<div id="1fc47958" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ Uncomment the mount if you are in Colab and saved a gold set in S5:</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from google.colab import drive; drive.mount("/content/drive")</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>MY_GOLD_PATH <span class="op">=</span> <span class="st">"/content/drive/MyDrive/my_gold_day2.json"</span>   <span class="co"># where S5 saved it</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>published <span class="op">=</span> load_gold(GOLD_URL)                  <span class="co"># the published set, always needed below</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>gold <span class="op">=</span> load_your_gold(MY_GOLD_PATH, GOLD_URL)    <span class="co"># yours if it is there, published if not</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Now the predictions. The frozen file holds one answer per <strong>published</strong> item, in published order — but your gold set is a <em>sample</em> of those sentences, renumbered from 1. Position 3 of yours and position 3 of theirs are two unrelated sentences, so pairing them by position would score the model against the wrong labels.</p>
+<p><code>predictions_for(...)</code> pairs each of your items with the answer the model gave for <strong>that same sentence</strong>, matching on the text. It is the same reason S5’s <code>compare_to_published</code> matched on text rather than id.</p>
+<div id="3ed77cee" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> load_predictions(PREDICTIONS_URL)   <span class="co"># one answer per published item</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Line them up with whichever gold set you just loaded:</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>gold, predictions <span class="op">=</span> predictions_for(gold, published, predictions)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(gold), <span class="st">"items to score ·"</span>, <span class="bu">len</span>(predictions), <span class="st">"predictions"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <ul>
@@ -1222,118 +1333,71 @@ window.Quarto = {
 <li>Six classes give you <strong>six</strong> precisions, <strong>six</strong> recalls, <strong>six</strong> F1s.</li>
 <li>To score <code>C1</code>, treat <strong><code>C1</code> as “yes” and the other five as “no”</strong> — Part A, run six times. That is <strong>one-vs-rest</strong>, and it is all <code>classification_report</code> does.</li>
 </ul>
-<p><code>ordered=True</code> tells <code>evaluate</code> the labels sit on a <strong>scale</strong>, so it also reports quadratic weighted κ.</p>
-<div id="cell-62" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;generated&quot;:&quot;libs&quot;,&quot;names&quot;:[&quot;evaluate&quot;,&quot;show_errors&quot;]}}">
+<p>These are the scikit-learn functions from the table above, called by their own names. You built each of them by hand in Part A, so nothing below is new — only faster, and for six classes at once.</p>
+<div id="cell-67" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: evaluate, show_errors { display-mode: "form" }</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generated from _notebook_lib.py — edit there, not here; changes to this cell are replaced.</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   evaluate(gold, predictions) → P/R/F1 + κ + confusion matrix</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_errors(gold, predictions) → misclassified table</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(gold: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]],</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>             predictions: <span class="bu">list</span>[<span class="bu">str</span>],</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>             ordered: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Score predictions against gold: per-class P/R/F1 + macro, Cohen's κ, and a</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">    confusion-matrix heatmap.</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co">    ordered=True adds QUADRATIC WEIGHTED κ — use it only when the labels sit on a</span></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="co">    scale (A1 &lt; A2 &lt; ... &lt; C2), so that a near miss counts as a smaller error than</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co">    a far one. For unordered categories, plain κ is the one to report.</span></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">        gold: the gold items, each with a "label" key.</span></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">        predictions: one predicted label per gold item, in the same order.</span></span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="co">        ordered: True when the labels sit on a scale.</span></span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="co">        Nothing. It prints the table and the κ values, and draws the matrix.</span></span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; evaluate(gold, predictions, ordered=True)</span></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: line the two label lists up, gold first </span><span class="al">###</span></span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> []                          <span class="co"># the correct labels, from the gold set</span></span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> gold:</span>
-<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>        y_true.append(item[<span class="st">"label"</span>])</span>
-<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> predictions                 <span class="co"># the model's labels, in the same order</span></span>
-<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: per-class precision / recall / F1, as a text table </span><span class="al">###</span></span>
-<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: one overall number — agreement corrected for chance </span><span class="al">###</span></span>
-<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Cohen's kappa            </span><span class="sc">{</span>cohen_kappa_score(y_true, y_pred)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ordered:                          <span class="co"># only when the labels sit on a scale</span></span>
-<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>        weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS,</span>
-<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>                                     weights<span class="op">=</span><span class="st">"quadratic"</span>)   <span class="co"># near misses hurt less</span></span>
-<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Cohen's kappa (weighted) </span><span class="sc">{</span>weighted<span class="sc">:.3f}</span><span class="ss">   &lt;- labels are ordered"</span>)</span>
-<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 4: draw the same information as a picture </span><span class="al">###</span></span>
-<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)   <span class="co"># counts per gold/pred pair</span></span>
-<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
-<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,     <span class="co"># annot=True writes the counts</span></span>
-<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>                xticklabels<span class="op">=</span>LEVELS, yticklabels<span class="op">=</span>LEVELS)</span>
-<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Predicted"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Gold"</span>)<span class="op">;</span> plt.title(<span class="st">"Confusion matrix"</span>)</span>
-<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()<span class="op">;</span> plt.show()</span>
-<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_errors(gold: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]], predictions: <span class="bu">list</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The items the model got wrong, as a table you can read and argue about.</span></span>
-<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a><span class="co">        gold: the gold items, each with "id", "text" and "label".</span></span>
-<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a><span class="co">        predictions: one predicted label per gold item, in the same order.</span></span>
-<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a><span class="co">        A table with one row per mistake: id, gold, pred, text.</span></span>
-<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
-<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; show_errors(gold, predictions)</span></span>
-<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
-<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):   <span class="co"># walk gold and predictions side by side</span></span>
-<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="op">!=</span> p:               <span class="co"># keep only the disagreements</span></span>
-<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a>            rows.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"gold"</span>: g[<span class="st">"label"</span>], <span class="st">"pred"</span>: p, <span class="st">"text"</span>: g[<span class="st">"text"</span>]})</span>
-<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> wrong."</span>)</span>
-<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Name the columns even when there are no rows. A table built from an empty list has</span></span>
-<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a>    <span class="co"># no columns at all, and then errors["gold"] fails for a student whose prompt got</span></span>
-<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>    <span class="co"># everything right.</span></span>
-<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows, columns<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"gold"</span>, <span class="st">"pred"</span>, <span class="st">"text"</span>])   <span class="co"># Colab shows a table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The gold labels as a plain list — the shape every scikit-learn call wants:</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> []</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> gold:</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    y_true.append(item[<span class="st">"label"</span>])</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> predictions              <span class="co"># the model's labels, already a plain list</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-63" class="cell">
+<p>Now the two κ values. <code>cohen_kappa_score</code> corrects agreement for chance, exactly as it did coder-against-coder in S5 — the only change is that one of the two columns is now the model.</p>
+<p><code>weights="quadratic"</code> is the argument that says the labels sit on a <strong>scale</strong>, so a near miss counts as a smaller error than a far one. Run both and compare:</p>
+<div id="cell-69" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ordered=True: the six levels sit on a scale, so also report weighted κ</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>evaluate(gold, predictions, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cohen's kappa           "</span>, <span class="bu">round</span>(cohen_kappa_score(y_true, y_pred), <span class="dv">3</span>))</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># weights="quadratic": A1 -&gt; A2 is a smaller error than A1 -&gt; C2.</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS, weights<span class="op">=</span><span class="st">"quadratic"</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Cohen's kappa (weighted)"</span>, <span class="bu">round</span>(weighted, <span class="dv">3</span>), <span class="st">"  &lt;- labels are ordered"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p>And the confusion matrix — the same 36 numbers the report is built from, drawn so you can see <em>where</em> the errors went. <code>seaborn</code> does the drawing; you are not asked to write it.</p>
+<div id="cell-71" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)   <span class="co"># counts per gold/pred pair</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>sns.heatmap(matrix, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,     <span class="co"># annot=True writes the counts</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>LEVELS, yticklabels<span class="op">=</span>LEVELS)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Predicted"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Gold"</span>)<span class="op">;</span> plt.title(<span class="st">"Confusion matrix"</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
 <section id="reading-the-report" class="level3">
 <h3 class="anchored" data-anchor-id="reading-the-report">Reading the report</h3>
 <ul>
 <li>Every <strong>row</strong> is one Part-A run: for <code>C1</code>, TP/FP/FN/TN with C1 as the positive class.</li>
-<li><strong><code>support</code></strong> is how many gold items that class has — 12 each, by design.</li>
+<li><strong><code>support</code></strong> is how many gold items that class has.</li>
 <li><strong><code>macro avg</code></strong> is the plain average of the six F1s: every class counts equally, however rare.</li>
 </ul>
-<p><strong>Overall accuracy is about 39%</strong> — but look at <em>how</em> it is wrong. Roughly <strong>97% of its answers are within one level</strong> of the gold label. It has the right idea and imprecise thresholds, which no accuracy figure can tell apart from not understanding the task.</p>
+<p>The figures quoted here and below are the ones the <strong>published</strong> 72-item set gives. If you loaded your own gold set, your numbers differ — read your own output and make the same kind of observation about it.</p>
+<p>On the published set, <strong>overall accuracy is about 39%</strong> — but look at <em>how</em> it is wrong. Roughly <strong>97% of its answers are within one level</strong> of the gold label. It has the right idea and imprecise thresholds, which no accuracy figure can tell apart from not understanding the task.</p>
 </section>
 <section id="one-number-three-different-questions" class="level3">
 <h3 class="anchored" data-anchor-id="one-number-three-different-questions">One number, three different questions</h3>
 <p>The report prints two other averages beside <code>macro avg</code>. On an uneven label set they disagree:</p>
-<div id="cell-65" class="cell">
+<div id="b717a1d9" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> f1_score</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The same predictions, scored three ways.</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>y_gold <span class="op">=</span> []                        <span class="co"># the gold column, as a plain list</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> gold:</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    y_gold.append(item[<span class="st">"label"</span>])</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> how <span class="kw">in</span> [<span class="st">"macro"</span>, <span class="st">"micro"</span>, <span class="st">"weighted"</span>]:</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> f1_score(y_gold, predictions, average<span class="op">=</span>how, zero_division<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(how, <span class="bu">round</span>(score, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> f1_score</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The same predictions, scored three ways.</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>y_gold <span class="op">=</span> []                        <span class="co"># the gold column, as a plain list</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> gold:</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    y_gold.append(item[<span class="st">"label"</span>])</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> how <span class="kw">in</span> [<span class="st">"macro"</span>, <span class="st">"micro"</span>, <span class="st">"weighted"</span>]:</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> f1_score(y_gold, predictions, average<span class="op">=</span>how, zero_division<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(how, <span class="bu">round</span>(score, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <ul>
@@ -1358,12 +1422,12 @@ window.Quarto = {
 </section>
 <section id="read-the-matrix-down-the-columns" class="level3">
 <h3 class="anchored" data-anchor-id="read-the-matrix-down-the-columns">Read the matrix <em>down the columns</em></h3>
-<p>Rows are gold, so <em>rows</em> tell you what happened to each true level. Read <strong>down the columns</strong> instead — how often the model <em>says</em> each level. The gold set is balanced, 12 per level, so an unbiased rater would use each label about 12 times.</p>
-<p>This one says <strong>A2 twenty times</strong>, <strong>A1 four times</strong>, and <strong>C2 exactly once</strong> in 72 chances: everything is squeezed toward the <strong>middle of the scale</strong>. It is your Part-A finding again — precision ran ahead of recall (0.75 vs 0.60 on your twelve), because it under-uses the top of the scale.</p>
+<p>Rows are gold, so <em>rows</em> tell you what happened to each true level. Read <strong>down the columns</strong> instead — how often the model <em>says</em> each level. The published gold set is balanced, 12 per level, so an unbiased rater would use each label about 12 times. (Your own set is smaller and need not be balanced, so work out what an even spread would look like for it before you judge the columns.)</p>
+<p>On the published set it says <strong>A2 twenty times</strong>, <strong>A1 four times</strong>, and <strong>C2 exactly once</strong> in 72 chances: everything is squeezed toward the <strong>middle of the scale</strong>. It is your Part-A finding again — precision ran ahead of recall (0.75 vs 0.60 on your twelve), because it under-uses the top of the scale.</p>
 </section>
 <section id="two-κ-values-same-predictions" class="level3">
 <h3 class="anchored" data-anchor-id="two-κ-values-same-predictions">Two κ values, same predictions</h3>
-<p>Plain <strong>κ = 0.27</strong>, because plain κ treats <strong>A1 → A2 as exactly as wrong as A1 → C2</strong>. Quadratic <strong>weighted κ = 0.85</strong>, because CEFR levels are <strong>ordinal</strong> and a near miss should hurt less.</p>
+<p>On the published set, plain <strong>κ = 0.27</strong>, because plain κ treats <strong>A1 → A2 as exactly as wrong as A1 → C2</strong>. Quadratic <strong>weighted κ = 0.85</strong>, because CEFR levels are <strong>ordinal</strong> and a near miss should hurt less. Your own gold set will give two different values, and the gap between them will still be large.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1374,7 +1438,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Same predictions: 0.27 or 0.85, depending on a single argument. <strong>Ordered labels → weighted κ. Unordered categories → plain κ.</strong> State which you used and why. <em>(Arase et al.&nbsp;reported weighted κ = .628 on this task.)</em></p>
+<p>Same predictions: 0.27 or 0.85, depending on a single argument. <strong>Ordered labels → weighted κ. Unordered categories → plain κ.</strong> State which you used and why, and say which gold set it came from. <em>(Arase et al.&nbsp;reported weighted κ = .628 on this task.)</em></p>
 </div>
 </div>
 </section>
@@ -1382,11 +1446,19 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="error-analysis-the-models-fault-or-the-schemes">Error analysis — the model’s fault, or the scheme’s?</h3>
 <p>There are 44 misses — too many to read one by one. Skim a dozen, then look at the rows where the gold label is <strong>C2</strong> or <strong>A1</strong>, where this model disagrees most often.</p>
 <p>For each miss, ask: is the <strong>gold</strong> defensible, or is this a genuinely borderline sentence? Would <strong>you and your partner</strong> have agreed on it? <em>“Is the disagreement the model’s fault or the scheme’s?”</em> is the central question of annotation work.</p>
-<div id="cell-70" class="cell">
+<div id="26b7f087" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(gold, predictions)   <span class="co"># a table of every item it got wrong</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] to see the hard end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):   <span class="co"># walk gold and predictions side by side</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="op">!=</span> p:               <span class="co"># keep only the disagreements</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>        rows.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"gold"</span>: g[<span class="st">"label"</span>], <span class="st">"pred"</span>: p, <span class="st">"text"</span>: g[<span class="st">"text"</span>]})</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(rows), <span class="st">"of"</span>, <span class="bu">len</span>(gold), <span class="st">"wrong."</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Name the columns even when there are no rows. A table built from an empty list has</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co"># no columns at all, and then errors["gold"] fails for a student who got everything right.</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> pd.DataFrame(rows, columns<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"gold"</span>, <span class="st">"pred"</span>, <span class="st">"text"</span>])</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)     <span class="co"># ...or errors[errors["gold"] == "C2"] to see the hard end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="four-words-for-four-different-findings" class="level4">
@@ -1435,19 +1507,20 @@ window.Quarto = {
 <section id="the-cross-reference-where-did-you-two-disagree" class="level4">
 <h4 class="anchored" data-anchor-id="the-cross-reference-where-did-you-two-disagree">The cross-reference: where did <em>you two</em> disagree?</h4>
 <p>Here is the join that makes <code>scheme</code> an evidenced claim rather than an impression. You already have a list of items your S5 partner and you labelled differently. If the model’s errors land on those same items, what you have measured is a fuzzy boundary in your scheme — not a stupid model.</p>
+<p>This join is only exact if you loaded <strong>your own</strong> gold set above, because then the ids here are the ids in your S5 sheet. On the published set the ids are the published ones, and the comparison is a demonstration rather than a finding about your scheme.</p>
 <p>Type in a few ids from your own <code>disagreements(rows)</code> table in S5 and see:</p>
-<div id="cell-73" class="cell">
+<div id="66d215ed" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ ids from YOUR S5 disagreement table — the rows you two argued about.</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>DISAGREED_IDS <span class="op">=</span> [<span class="dv">17</span>, <span class="dv">23</span>, <span class="dv">41</span>]</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>both <span class="op">=</span> []</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row_id <span class="kw">in</span> errors[<span class="st">"id"</span>]:          <span class="co"># every item the model got wrong</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row_id <span class="kw">in</span> DISAGREED_IDS:      <span class="co"># ...that you two also disagreed about</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        both.append(row_id)</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(both), <span class="st">"of"</span>, <span class="bu">len</span>(errors), <span class="st">"model errors are items you argued about too:"</span>, both)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ ids from YOUR S5 disagreement table — the rows you two argued about.</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>DISAGREED_IDS <span class="op">=</span> [<span class="dv">17</span>, <span class="dv">23</span>, <span class="dv">41</span>]</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>both <span class="op">=</span> []</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row_id <span class="kw">in</span> errors[<span class="st">"id"</span>]:          <span class="co"># every item the model got wrong</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row_id <span class="kw">in</span> DISAGREED_IDS:      <span class="co"># ...that you two also disagreed about</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>        both.append(row_id)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(both), <span class="st">"of"</span>, <span class="bu">len</span>(errors), <span class="st">"model errors are items you argued about too:"</span>, both)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>A <strong>high</strong> overlap says the scheme is the problem. A <strong>low</strong> one says the model is missing things two humans found easy — a different finding, and just as reportable. In the project this is one call, <code>errors_on_disagreed(errors, disagreed)</code>.</p>
@@ -1461,7 +1534,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Look back at rows 19, 23 and 25 in step 1 — the three obituary sentences. Under Part A’s yes/no question the model got all three <strong>right</strong>. In six classes it called every one of them A2 instead of A1. Same predictions, same gold; a different question made a different error visible.</p>
+<p>Look back at rows 19, 23 and 25 in step 1 — the three obituary sentences. Under Part A’s yes/no question the model got all three <strong>right</strong>. Scored on the published set in six classes, it called every one of them A2 instead of A1. Same predictions, same gold; a different question made a different error visible.</p>
 </div>
 </div>
 <hr>
@@ -1474,6 +1547,7 @@ window.Quarto = {
 <li><strong>Runtime → Run all</strong> and check every cell ran without error.</li>
 <li>Tutorial outputs are visible (tables / charts / the model’s answers).</li>
 <li>Every Corpus Lab self-check prints ✅ (or your TODO answers are filled in).</li>
+<li>Part B says which gold set it scored against — your own S5 set, or the published one — and your reported numbers come from that same run.</li>
 <li><strong>File → Download → Download <code>.ipynb</code></strong> and upload <strong>both</strong> of today’s Day-2 notebooks.</li>
 </ol>
 
