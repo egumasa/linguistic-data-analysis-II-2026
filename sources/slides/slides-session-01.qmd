@@ -419,7 +419,7 @@ The table on the right counts co-occurence frequency.
 ::: 
 
 :::
-
+ 
 :::
 
 Already suggests some ***topical*** clustering. 
@@ -1073,21 +1073,19 @@ Every word turns itself into three separate vectors. *bank* uses its **q**; ever
 - GPT-3 had 96 layer × 96 heads = 9216 attention heads
 :::
 
+## 
+
 ::: {.columns}
 
-::: {.column width = "33%"}
 
 
-![Transformer architecture](../assets/img/session1/transformer.png)
-:::
-
-::: {.column width = "33%"}
+::: {.column width = "50%"}
 
 ![Transformer discovers Noun phrase](../assets/img/session1/clark-1.png)
 
 :::
 
-::: {.column width = "33%"}
+::: {.column width = "50%"}
 
 ![Transformer discovers coreference](../assets/img/session1/clark-2.png)
 

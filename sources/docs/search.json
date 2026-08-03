@@ -147,7 +147,7 @@
     "href": "sessions/day1/session-02.html",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "",
-    "text": "By the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.\nStore a value in a variable, and send a prompt to a language model with ai.generate_text(...).\nBuild a prompt from a variable with an f-string, and recognise the .format() template form you will edit from Session 7 on.\nRecognise Python’s core data types — str, list, dict — in what the model hands back.\nBuild the {id, text, label} record the rest of the course uses, with a label you decided yourself, and add the model’s answer beside it.\nIndex and slice into a list of records to compare the two answers.",
+    "text": "Warning🚧 Being prepared\n\n\n\nThis page is being finalized ahead of the course (Aug 3–7, 2026) and may be incomplete or change before your session. The syllabus and readings are ready now.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -158,8 +158,8 @@
     "objectID": "sessions/day1/session-02.html#learning-objectives",
     "href": "sessions/day1/session-02.html#learning-objectives",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
-    "section": "",
-    "text": "By the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.\nStore a value in a variable, and send a prompt to a language model with ai.generate_text(...).\nBuild a prompt from a variable with an f-string, and recognise the .format() template form you will edit from Session 7 on.\nRecognise Python’s core data types — str, list, dict — in what the model hands back.\nBuild the {id, text, label} record the rest of the course uses, with a label you decided yourself, and add the model’s answer beside it.\nIndex and slice into a list of records to compare the two answers.",
+    "section": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this session you will be able to:\n\nSign in to Google Colab, run a cell (Shift+Enter), and read a Python error message well enough to fix a typo.\nStore a value in a variable, and send a prompt to a language model with ai.generate_text(...).\nBuild a prompt from a variable with an f-string, and recognise the .format() template form you will edit from Session 7 on.\nRecognise Python’s core data types — str, list, dict — in what the model hands back.\nBuild the {id, text, label} record the rest of the course uses, with a label you decided yourself, and add the model’s answer beside it.\nIndex and slice into a list of records to compare the two answers.",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -195,7 +195,7 @@
     "href": "sessions/day1/session-02.html#slides-colab",
     "title": "Session 2: Colab Onboarding & Your First LLM Call",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook — Part A (guided): day1_python_and_first_llm.ipynb —",
+    "text": "Slides & Colab",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -1640,7 +1640,7 @@
     "href": "slides/slides-session-01.html#transformer-make-full-use-of-attention",
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "Transformer make full use of attention",
-    "text": "Transformer make full use of attention\n\n\nBERT-base models 12 layers of 12 attention heads.\nGPT-3 had 96 layer × 96 heads = 9216 attention heads\n\n\n\n\n\n\n\nTransformer architecture\n\n\n\n\n\n\nTransformer discovers Noun phrase\n\n\n\n\n\n\nTransformer discovers coreference\n\n\n\nClark, K., Khandelwal, U., Levy, O., & Manning, C. D. (2019). What Does BERT Look At? An Analysis of BERT’s Attention (arXiv:1906.04341). arXiv. https://doi.org/10.48550/arXiv.1906.04341"
+    "text": "Transformer make full use of attention\n\n\nBERT-base models 12 layers of 12 attention heads.\nGPT-3 had 96 layer × 96 heads = 9216 attention heads"
   },
   {
     "objectID": "slides/slides-session-01.html#what-an-llm-lets-you-do",
@@ -4937,7 +4937,7 @@
     "href": "sessions/day1/session-03.html#slides-colab",
     "title": "Session 3: Python Practice & Mini-Project Setup",
     "section": "Slides & Colab",
-    "text": "Slides & Colab\n\nNotebook — Part B (practice): day1_python_and_first_llm.ipynb —",
+    "text": "Slides & Colab",
     "crumbs": [
       "Sessions",
       "Day 1 · Introduction & First Experience",
@@ -5305,5 +5305,12 @@
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "My research",
     "text": "My research"
+  },
+  {
+    "objectID": "slides/slides-session-01.html#section-1",
+    "href": "slides/slides-session-01.html#section-1",
+    "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
+    "section": "",
+    "text": "Transformer discovers Noun phrase\n\n\n\n\n\n\nTransformer discovers coreference\n\n\n\nClark, K., Khandelwal, U., Levy, O., & Manning, C. D. (2019). What Does BERT Look At? An Analysis of BERT’s Attention (arXiv:1906.04341). arXiv. https://doi.org/10.48550/arXiv.1906.04341"
   }
 ]
