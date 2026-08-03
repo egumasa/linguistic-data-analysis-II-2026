@@ -1073,21 +1073,21 @@
     "href": "slides/slides-session-04.html#agenda",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nA · What NLP tasks are there — the task taxonomy, now concrete in linguistics\nB · How NLP is evaluated — the workflow, and how it transfers to LLMs\nC · The annotation-&-evaluation workflow — what you’ll run hands-on in S5–S6"
+    "text": "📋 Agenda\n\nAnnotation — what it is, what it is used for, and which tasks this course targets\nThe NLP evaluation workflow — reliability, validity, and the five steps you’ll run in S5–S6\nEvaluation metrics — P / R / F1, the confusion matrix, and Cohen’s κ\nDataset for class tutorials — Arase et al. (2022), the example we work with from S5 on"
   },
   {
     "objectID": "slides/slides-session-04.html#learning-objectives",
     "href": "slides/slides-session-04.html#learning-objectives",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nPlace a linguistic annotation task in the classic NLP taxonomy (identify · extract · categorize, by unit of analysis).\nDescribe the NLP evaluation workflow (gold → predictions → metrics) and how it transfers from a trained model to a prompted LLM.\nOperationalize a linguistic category into an annotation scheme with coding guidelines.\nExplain inter-annotator agreement: percent agreement vs. why Cohen’s κ corrects for chance — including quadratic weighted κ for ordered labels.\nRead a confusion matrix and compute P / R / F1 from its four cells (TP · TN · FP · FN).\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: labelled data is only trustworthy if the category is operationalized and two coders agree beyond chance."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nDescribe an annotation task as labels placed on a unit of analysis, and say why applied-linguistic findings depend on it.\nExplain why this course targets sentence and text categorization, and what changes for span-level tasks.\nDistinguish reliability from validity in annotation, and name what each one depends on.\nExplain inter-annotator agreement: percent agreement vs. why Cohen’s κ corrects for chance — including quadratic weighted κ for ordered labels.\nRead a confusion matrix and compute P / R / F1 from its four cells (TP · TN · FP · FN)."
   },
   {
     "objectID": "slides/slides-session-04.html#what-is-annotation",
     "href": "slides/slides-session-04.html#what-is-annotation",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "What is annotation?",
-    "text": "What is annotation?\nAnnotation = adding interpretive labels to the available linguistic data.\n\nPOS — noun / verb / adjective…\nWord sense — which meaning of bank?\nStance / engagement — is the writer hedging, endorsing?\nDiscourse moves — what is this sentence doing in the argument?\nError tags, CEFR level, …"
+    "text": "What is annotation?\nAnnotation = adding interpretive labels to the available linguistic data.\n\nPOS — noun / verb / adjective…\nWord sense — which meaning of bank?\nStance / engagement — is the writer hedging, endorsing?\nDiscourse moves — what is this sentence doing in the argument?\nError tags, …, CEFR level,"
   },
   {
     "objectID": "slides/slides-session-04.html#annotation",
@@ -1108,21 +1108,21 @@
     "href": "slides/slides-session-04.html#word-sense-disambiguation",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Word Sense Disambiguation",
-    "text": "Word Sense Disambiguation\nWord-sense disambiguation = decide which meaning a word carries in context. Same form, different sense.\n\nShe sat on the bank of the river. → riverbank\nShe deposited the cheque at the bank. → financial institution\n\nThe token is identical — only context resolves the sense. Harder than POS: the label set is per word, not a fixed grammar."
+    "text": "Word Sense Disambiguation\nWord-sense disambiguation = decide which meaning a word carries in context. Same form, different sense.\n\nShe sat on the bank of the river. → riverbank\nShe deposited the cheque at the bank. → financial institution\n\nThe surface form is identical — only context resolves the sense. Harder than POS: the label set is per word, not a fixed grammar."
   },
   {
     "objectID": "slides/slides-session-04.html#syntactic-dependency",
     "href": "slides/slides-session-04.html#syntactic-dependency",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Syntactic Dependency",
-    "text": "Syntactic Dependency\nDependency parsing = link each token to its head, building a tree; the top is the ROOT. Still token-level, but the label is a relation between tokens.\n\nDependency tree for I play baseball — I →nsubj→ play (ROOT), baseball →dobj→ play"
+    "text": "Syntactic Dependency\nDependency parsing = Identifying a binary syntactic relationships between a head and its dependency.\n\nDependency tree for “They buy and sell books.”"
   },
   {
     "objectID": "slides/slides-session-04.html#stance",
     "href": "slides/slides-session-04.html#stance",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Stance",
-    "text": "Stance\n\n\nStance annotation = label how a writer positions themselves toward a proposition — hedging vs. endorsing.\nUnit of analysis is a span .\n\n\n\n\nEngagement Span Annotation (Eguchi & Kyle, 2023)"
+    "text": "Stance\n\n\nStance annotation = label how a writer positions themselves toward a proposition .\nUnit of analysis is a span - textual segments with specified beginning and end.\n\n\n\n\nEngagement Span Annotation (Eguchi & Kyle, 2023)"
   },
   {
     "objectID": "slides/slides-session-04.html#discourse-moves",
@@ -1143,21 +1143,21 @@
     "href": "slides/slides-session-04.html#the-scope-of-the-current-course",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "The scope of the current course",
-    "text": "The scope of the current course\nWe will focus mostly on sentence categorization and text categorization:\n\nThe evaluation code is easy to build\nthe canonical {id, text, label} schema you met in S3 is sufficient.\nSpan / sequence tasks carry boundary + partial-match problems and is too heavy for 5 days."
+    "text": "The scope of the current course\nWe will focus mostly on sentence categorization and text categorization:\n\nThe evaluation code is easy to build.\nthe canonical {id, text, label} schema you met in S3 is sufficient.\n\ndata = {\n        \"id\": 1,\n        \"text\": \"\",\n        \"CoderA\": \"\",\n        \"CoderB\": \"\" \n        }\nBUT you can apply the same workflow for different annotation tasks. Only the data and annotation gets complex."
   },
   {
     "objectID": "slides/slides-session-04.html#note-on-the-error-annotation",
     "href": "slides/slides-session-04.html#note-on-the-error-annotation",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Note on the error annotation",
-    "text": "Note on the error annotation\nOriginally, the AutoErrorAnalyzer track has two routes:\n\nDefault — sentence-level: one label per unit; uses the same pipeline as every other track.\nStretch — locate-a-span-then-categorize: the real error-annotation task. It does not fit one-label-per-unit, and needs span matching + partial-match scoring.\n\nYou can pick which route you will do. A bit more challenging but more rewarding."
+    "text": "Note on the error annotation\nOriginally, the AutoErrorAnalyzer track has two routes:\n\nDefault — sentence-level: one label per unit; uses the same pipeline as every other track.\nStretch — locate-a-span-then-categorize: the real error-annotation task. It does not fit one-label-per-unit, and needs span matching + partial-match scoring.\n\nYou can pick which route you will do. A bit more challenging but more rewarding. You will decide this by Day 4."
   },
   {
     "objectID": "slides/slides-session-04.html#the-nlp-evaluation-workflow",
     "href": "slides/slides-session-04.html#the-nlp-evaluation-workflow",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "The NLP evaluation workflow",
-    "text": "The NLP evaluation workflow\nEguchi & Kyle (2024) describe the full workflow:\nbuild a gold standard → a system produces predictions → score predictions against gold.\nWe use the evaluation part of this workflow, not the training part."
+    "text": "The NLP evaluation workflow\nThe evaluation approach: Evaluation entails comparing the performance of a machine against human-labeled dataset.\n\nHow can we define the answer?"
   },
   {
     "objectID": "slides/slides-session-04.html#model-prompted-llm",
@@ -1171,7 +1171,7 @@
     "href": "slides/slides-session-04.html#what-evaluation-means",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "What “evaluation” means",
-    "text": "What “evaluation” means\n\nP / R / F1, and macro-F1 across classes.\nConfusion matrix — which labels are confused with which.\nCohen’s κ — agreement corrected for chance.\nTrain / validation / test — the held-out logic (seed now; applied when we tune prompts in S7–S8)."
+    "text": "What “evaluation” means\nThe evaluation approach: Evaluation entails comparing the performance of a machine against human-labeled dataset.\n\nHow can we define the answer?"
   },
   {
     "objectID": "slides/slides-session-04.html#the-four-outcomes-tp-tn-fp-fn",
@@ -1241,28 +1241,28 @@
     "href": "slides/slides-session-04.html#the-loop-we-borrow-model-agnostic",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "The loop we borrow — model-agnostic",
-    "text": "The loop we borrow — model-agnostic\nEguchi & Kyle (2024) lay out an 11-step tool-building pipeline. It runs define → operationalize → gold → evaluate — the model comes almost last:\n\nThe steps that define the task and judge the output don’t care what produces the labels.\nSo we keep them and swap their trained model for a prompted LLM.\nE&K even suggest LLM prompting as a first scoping move — to see which categories are hard."
+    "text": "The loop we borrow — model-agnostic\nEguchi & Kyle (2024) lay out an 11-step tool-building pipeline.\nIt runs define → operationalize → gold → evaluate — the model comes almost last:\n\nThe steps that define the task and judge the output don’t care what produces the labels.\nSo we keep them and swap their trained model for a prompted LLM."
   },
   {
     "objectID": "slides/slides-session-04.html#define-the-annotation-task",
     "href": "slides/slides-session-04.html#define-the-annotation-task",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "① Define the annotation task",
-    "text": "① Define the annotation task\n(E&K Steps 1–3)\n\nScope & purpose — who uses it, on what texts, for what output?\nDesign the task — input → output over a unit of analysis (identify / extract / categorize).\nReuse or draft — adopt an existing scheme / tag set if one fits; else draft from the literature.\nChoose the metrics now (P / R / F1, κ) — so evaluation is planned, not retrofitted.\nSample data to represent the domain (proficiency, L1) and fix the unit."
+    "text": "① Define the annotation task\n\nScope & purpose — What is the source text?\nDesign the task — input → output over a unit of analysis of choice.\nReuse or draft — adopt an existing scheme / tag set if one fits; else draft from the literature.\nChoose the metrics now (P / R / F1, κ) — so evaluation is planned, not retrofitted.\nSample data to represent the domain (proficiency, L1) and fix the unit."
   },
   {
     "objectID": "slides/slides-session-04.html#operationalize-into-a-scheme-guidelines",
     "href": "slides/slides-session-04.html#operationalize-into-a-scheme-guidelines",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "② Operationalize into a scheme + guidelines",
-    "text": "② Operationalize into a scheme + guidelines\n(E&K Steps 4–5; Fuoli, 2018)\n\nTurn the fuzzy construct into a decidable rule a second coder can follow.\nPilot on a handful of items — run the whole pipeline once, end to end.\n\nFuoli’s three principles:\n\nAll choices accounted for.\nGuidelines tested & refined until reliable.\nReliability always assessed — and reported.\n\nIf two trained coders can’t agree on it, a model can’t be trusted on it either."
+    "text": "② Operationalize into a scheme + guidelines\n\nTurn the theoretical construct into descriptive rules.\n\nFuoli (2018) gives three principles:\n\nAll choices accounted for.\nGuidelines tested & refined until reliable.\nReliability always assessed — and reported.\n\nIf two trained coders can’t agree on it, a model can’t be trusted on it either."
   },
   {
     "objectID": "slides/slides-session-04.html#build-the-gold-standard",
     "href": "slides/slides-session-04.html#build-the-gold-standard",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "③ Build the gold standard",
-    "text": "③ Build the gold standard\n(E&K Step 6 → you’ll run this in S5)\n\nTwo coders annotate the same items blind.\nMeasure inter-annotator agreement — percent + κ.\nRead the confusion matrix → refine the scheme, re-annotate.\nAdjudicate disagreements → a gold standard.\n\n\n\n\n\n\n\nTip\n\n\nKeep the pre-adjudication human agreement — it becomes your benchmark."
+    "text": "③ Build the gold standard\n\nTwo coders annotate the same items blind.\nMeasure inter-annotator agreement — percent + κ.\nRead the confusion matrix → refine the scheme, re-annotate.\nAdjudicate disagreements → a gold standard."
   },
   {
     "objectID": "slides/slides-session-04.html#set-the-target-human-agreement",
@@ -1276,14 +1276,14 @@
     "href": "slides/slides-session-04.html#evaluate-the-llm-against-gold",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "⑤ Evaluate the LLM against gold",
-    "text": "⑤ Evaluate the LLM against gold\n(E&K Step 9 → you’ll run this in S6) — same metrics, two comparisons:\n\nannotator vs. annotator → inter-annotator agreement (IAA)\ngold vs. model → model evaluation\n\nReport P / R / F1 + macro-F1 + κ, and read the confusion matrix to see which labels it confuses. Here the “model” is a prompted LLM."
+    "text": "⑤ Evaluate the LLM against gold\nFinally, we will explore and evaluate LLM against gold-standard.\nIn classical machine-learning experiment, we split the entire dataset into three parts.\n\n\n\n\n\n\n\n\nSplit\nRoughly\nWhat it is for\n\n\n\n\nTrain\n70%\nThe model learns from these items.\n\n\nDevelopment (validation)\n15%\nYou compare settings here and pick the one to keep.\n\n\nTest\n15%\nHeld back until the end. Score it once → Precision · Recall · F1.\n\n\n\nUsing LLM, we might not need Train\n\n\n\n\n\n\n\n\nSplit\nRoughly\nWhat it is for\n\n\n\n\nDevelopment (validation)\n??%\nYou compare settings here and pick the one to keep.\n\n\nTest\n??%\nHeld back until the end. Score it once → Precision · Recall · F1."
   },
   {
     "objectID": "slides/slides-session-04.html#arase-uchida-kajiwara-2022",
     "href": "slides/slides-session-04.html#arase-uchida-kajiwara-2022",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Arase, Uchida & Kajiwara (2022)",
-    "text": "Arase, Uchida & Kajiwara (2022)\n“CEFR-Based Sentence Difficulty Annotation and Assessment” (EMNLP 2022) — the CEFR-SP corpus: 17k English sentences, each labelled with a CEFR level by English-education professionals.\n\nThe problem. Simplifying text for learners requires knowing how hard a sentence is. But readability corpora are document-level and built for L1 readers — while simplification rewrites sentences, for L2 readers.\nThe gap that fixes the task. Nothing labelled sentence difficulty against language ability. So: input = one sentence · output = one CEFR level.\nThe difficulty is in the task definition, not the model. CEFR is a skill scale — “can-do” statements about what learners can do. It says nothing about sentences. Making it apply to a sentence is the design problem."
+    "text": "Arase, Uchida & Kajiwara (2022)\n\n\n“CEFR-Based Sentence Difficulty Annotation and Assessment” (EMNLP 2022).\n\n\n\n\nThe problem. Simplifying text for learners requires knowing how hard a sentence is.\nGoal: Creating a corpus that is annotated for sentence difficulties according to CEFR levels.\nHow did they operationalize CEFR levels?"
   },
   {
     "objectID": "slides/slides-session-04.html#what-the-labels-look-like",
@@ -5312,5 +5312,222 @@
     "title": "Session 1: Introduction to LLMs as Tools for Linguistic Data Analysis",
     "section": "",
     "text": "Transformer discovers Noun phrase\n\n\n\n\n\n\nTransformer discovers coreference\n\n\n\nClark, K., Khandelwal, U., Levy, O., & Manning, C. D. (2019). What Does BERT Look At? An Analysis of BERT’s Attention (arXiv:1906.04341). arXiv. https://doi.org/10.48550/arXiv.1906.04341"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#metrics",
+    "href": "slides/slides-session-04.html#metrics",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Metrics",
+    "text": "Metrics\n\nP / R / F1, and macro-F1 across classes.\nConfusion matrix — which labels are confused with which.\nCohen’s κ — agreement corrected for chance.\nTrain / validation / test — the held-out logic (seed now; applied when we tune prompts in S7–S8)."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#annotation-is-not-the-end-point-but-starting-point",
+    "href": "slides/slides-session-04.html#annotation-is-not-the-end-point-but-starting-point",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Annotation is not the end point, but starting point",
+    "text": "Annotation is not the end point, but starting point"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#annotation-1",
+    "href": "slides/slides-session-04.html#annotation-1",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Annotation",
+    "text": "Annotation\nAnnotation: Putting labels on a specific unit of analysis\n\nLabel:\n\nThe actual value (often category) we put as a result of the annotation\n\nUnit of analysis:\n\nThe chunk/layer that the specific annotation will be put on.\n\nMorphology\nWord\nMultiword Units\nSentence\nParagraph …"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#example",
+    "href": "slides/slides-session-04.html#example",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Example",
+    "text": "Example"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#applications",
+    "href": "slides/slides-session-04.html#applications",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Applications",
+    "text": "Applications\nHow do learner across proficiency level use collocations?\n\nAdjective + Noun (JN)\nNoun + Noun (NN)\nVerb + Noun (VN)\n\n\n\nGranger, S., & Bestgen, Y. (2014). The use of collocations by intermediate vs. advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#example-with-part-of-speech",
+    "href": "slides/slides-session-04.html#example-with-part-of-speech",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Example with Part Of Speech",
+    "text": "Example with Part Of Speech\nPOS tagging = label every token with its grammatical category (NOUN, VERB, ADJ…). One label per token — the simplest sequence-labelling task.\nThe_DET dogs_NOUN ran_VERB quickly_ADV ._PUNCT\n\nPenn Tag"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#example-with-part-of-speech-tagging",
+    "href": "slides/slides-session-04.html#example-with-part-of-speech-tagging",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Example with Part Of Speech tagging",
+    "text": "Example with Part Of Speech tagging\nPOS tagging = labeling every token with its grammatical category (NOUN, VERB, ADJ…). One label per token — the simplest sequence-labelling task.\nThe_DET dogs_NOUN ran_VERB quickly_ADV ._PUNCT\n\n\nFour of the 17 UPOS tags\n\n\n\nTag\nCategory\nIn the example\n\n\n\n\nDET\ndeterminer\nThe\n\n\nNOUN\nnoun\ndogs\n\n\nVERB\nverb\nran\n\n\nADV\nadverb\nquickly\n\n\n\n\nFour out of 36 Penn tags set\n\n\n\nTag\nCategory\nIn the example\n\n\n\n\nDT\ndeterminer\nThe\n\n\nNNS\nnoun, plural\ndogs\n\n\nVBD\nverb, past tense\nran\n\n\nRB\nadverb\nquickly\n\n\n\n\nEven with POS, you have different choices.\n\nThe tag set is a design decision — the first one you make when you define an annotation task."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#annotation-is-not-the-end-point-it-is-the-beginning-of-applied-work",
+    "href": "slides/slides-session-04.html#annotation-is-not-the-end-point-it-is-the-beginning-of-applied-work",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Annotation is not the end-point, it is the beginning of Applied work",
+    "text": "Annotation is not the end-point, it is the beginning of Applied work\nIn most of the Applied Linguistics work, performing annotation is one of the preliminary steps BUT not trivial one.\nThe subsequent analyses and conclusion (e.g., statistics) depend on the annotation results.\n\n\n\n\n\n\nImportant"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#annotation-is-not-the-end-point-it-is-the-beginning-of-the-applied-work",
+    "href": "slides/slides-session-04.html#annotation-is-not-the-end-point-it-is-the-beginning-of-the-applied-work",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Annotation is not the end-point, it is the beginning of the Applied work",
+    "text": "Annotation is not the end-point, it is the beginning of the Applied work\nIn most of the Applied Linguistics work, performing annotation is one of the preliminary steps BUT NEVER a trivial one.\nThe subsequent analyses and conclusion depend on the annotation results.\n\n\n\n\n\n\nImportant\n\n\n\nThis is why we need a standardized workflow."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#the-nlp-evaluation-workflow-that-we-cover",
+    "href": "slides/slides-session-04.html#the-nlp-evaluation-workflow-that-we-cover",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "The NLP evaluation workflow that we cover",
+    "text": "The NLP evaluation workflow that we cover\n\n\n\n\n\n\nImportant\n\n\nWe evaluate the machine’s performance on a task, by comparing it against human-annotated answers.\n\n\n\n\nHow can we define the answer?"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#reliability-and-validity",
+    "href": "slides/slides-session-04.html#reliability-and-validity",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Reliability and Validity",
+    "text": "Reliability and Validity\nWhat are reliability and validity?\n\n\nReliability:\n\nHow consistent the annotation results are (e.g., across human or AI coders).\n\nHow trustworthy your reported results are.\nDepends on coder, scheme, type of data, familiarity, etc.\n\n\n\n\n\nValidity:\n\nHow well the actual annotation captures what you are proposed to capture.\nDepends on the quality of your coding scheme."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#the-nlp-evaluation-workflow-we-cover",
+    "href": "slides/slides-session-04.html#the-nlp-evaluation-workflow-we-cover",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "The NLP evaluation workflow we cover",
+    "text": "The NLP evaluation workflow we cover\n\n\n\n\n\n\nImportant\n\n\nWe evaluate the machine’s performance on a task, by comparing it against human-annotated answers.\n\n\n\n\nWe call these human-annotated dataset, gold-standard.\nWe want to consider discrepancies from human-annotated answer is error on the machine side.\nHow can we define the answer?\n\nReliability and Validity is core concern."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#constructing-an-answer-gold-standard",
+    "href": "slides/slides-session-04.html#constructing-an-answer-gold-standard",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Constructing an answer (= Gold-standard)",
+    "text": "Constructing an answer (= Gold-standard)\n\nIn machine-learning literature, we assume that we can construct sets of answer to a specific task (Part Of Speech, Collocation Extraction).\nWe call these dataset as gold-standard."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#proposed-steps",
+    "href": "slides/slides-session-04.html#proposed-steps",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Proposed steps",
+    "text": "Proposed steps\nEguchi & Kyle (2024) lay out the annotation-and-evaluation workflow. We compress it into five steps, and you run steps ③–⑤ yourself in S5–S6.\n\n\n\n\n\n\n\n\nStep\nWhat you do\nOriginal\n\n\n\n\n①\nDefine the annotation task\nscope, unit of analysis, metrics\n\n\n②\nOperationalize into a scheme + guidelines\nWrite/Adapt guideline / Pilot annotation\n\n\n③\nBuild the gold standard\nTwo (or more) blind coders, agreement, adjudication\n\n\n④\nSet the target = human agreement\nthe ceiling for any model\n\n\n⑤\nEvaluate the LLM against gold\nP / R / F1, κ, confusion matrix"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#summary-nlp-task-by-unit-and-output",
+    "href": "slides/slides-session-04.html#summary-nlp-task-by-unit-and-output",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Summary: NLP task by unit and output",
+    "text": "Summary: NLP task by unit and output\n\nToken-level sequence labelling — POS, NER (one label per token).\nSpan categorization — stance spans (label a stretch of text).\nUnit categorization → one label per unit — a sentence or a whole text."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#annotation-terminologies",
+    "href": "slides/slides-session-04.html#annotation-terminologies",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Annotation terminologies",
+    "text": "Annotation terminologies\n\nLabel:\n\nThe actual value (often category) we put as a result of the annotation\n\nUnit of analysis:\n\nThe level/layer of phenomena that the specific annotation will be put on.\n\nMorphology\nWord\nMultiword Units\nSentence\nParagraph …"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#applications-in-l2-research",
+    "href": "slides/slides-session-04.html#applications-in-l2-research",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Applications in L2 research",
+    "text": "Applications in L2 research\nHow do learner across proficiency level use collocations?\n\n\n\nAdjective + Noun (JN)\nNoun + Noun (NN)\nVerb + Noun (VN)\n\n\n\n\n\nGranger, S., & Bestgen, Y. (2014). The use of collocations by intermediate vs. advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#annotation-format",
+    "href": "slides/slides-session-04.html#annotation-format",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Annotation format",
+    "text": "Annotation format\nIn NLP tasks, we often use CoNLL-U format.\nID   Form     Lemma   POS     TAG    MORPH                              HEAD DEP      \n1    They     they    PRON    PRP    Case=Nom|Number=Plur               2    nsubj\n2    buy      buy     VERB    VBP    Number=Plur|Person=3|Tense=Pres    0    root\n3    and      and     CCONJ   CC     _                                  2    cc\n4    sell     sell    VERB    VBP    Number=Plur|Person=3|Tense=Pres    2    conj\n5    books    book    NOUN    NNS    Number=Plur                        4    obj\n6    .        .       PUNCT   .      _                                  2    punct\n\nDependency tree for “They buy and sell books.”"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#an-example-of",
+    "href": "slides/slides-session-04.html#an-example-of",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "An example of",
+    "text": "An example of"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#an-example-of-an-annotation-process",
+    "href": "slides/slides-session-04.html#an-example-of-an-annotation-process",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "An example of an annotation process",
+    "text": "An example of an annotation process"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#measuring-human-agreement",
+    "href": "slides/slides-session-04.html#measuring-human-agreement",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "④ Measuring human agreement",
+    "text": "④ Measuring human agreement\n\nHuman inter-annotator agreement\nE&K expected ~0.70 F1 because their coders agreed at ~0.67 κ."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#measuring-human-agreement-as-a-benchmark",
+    "href": "slides/slides-session-04.html#measuring-human-agreement-as-a-benchmark",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "④ Measuring human agreement as a benchmark",
+    "text": "④ Measuring human agreement as a benchmark\n\n\n\nHuman inter-annotator agreement after modifying the scheme should be reported.\nHuman agreement lays a good benchmark."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#proposed-steps-1",
+    "href": "slides/slides-session-04.html#proposed-steps-1",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Proposed steps",
+    "text": "Proposed steps\nEguchi & Kyle (2024) lay out the annotation-and-evaluation workflow. We compress it into five steps, and you run steps ③–⑤ yourself in S5–S6.\n\n\n\n\n\n\n\n\nStep\nWhat you do\nOriginal\n\n\n\n\n①\nDefine the annotation task\nscope, unit of analysis, metrics\n\n\n②\nOperationalize into a scheme + guidelines\nWrite/Adapt guideline / Pilot annotation\n\n\n③\nBuild the gold standard\nTwo (or more) blind coders, agreement, adjudication\n\n\n④\nSet the target = human agreement\nthe ceiling for any model\n\n\n⑤\nEvaluate the LLM against gold\nP / R / F1, κ, confusion matrix"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#train-development-test",
+    "href": "slides/slides-session-04.html#train-development-test",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Train / development / test",
+    "text": "Train / development / test\nThe gold standard is split into three parts, and each part has one job:\n\n\n\n\n\n\n\n\nSplit\nRoughly\nWhat it is for\n\n\n\n\nTrain\n70%\nThe model learns from these items.\n\n\nDevelopment (validation)\n15%\nYou compare settings here and pick the one to keep.\n\n\nTest\n15%\nHeld back until the end. Score it once → Precision · Recall · F1.\n\n\n\n\n\n\n\n\n\nImportant\n\n\nIf you tune on the test set, its score no longer tells you how the model does on new data — you have already fitted your choices to it."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#cefr-can-do-descriptors",
+    "href": "slides/slides-session-04.html#cefr-can-do-descriptors",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "CEFR can-do descriptors",
+    "text": "CEFR can-do descriptors\nOverall reading comprehension (Example):\n\nThey used CEFR “can-do” statements to infer the level of the passage.\n\n\n\n\n\n\n\n\nLevel\nCan-do descriptor\n\n\n\n\nC2\nCan understand virtually all types of texts including abstract, structurally complex, or highly colloquial literary and non-literary writings.\n\n\nC1\nCan understand in detail lengthy, complex texts, whether or not these relate to their own area of speciality, provided they can reread difficult sections.\n\n\nB2\nCan read with a large degree of independence, adapting style and speed of reading to different texts and purposes. Has a broad active reading vocabulary, but may experience some difficulty with low-frequency idioms.\n\n\nB1\nCan read straightforward factual texts on subjects related to their field of interest with a satisfactory level of comprehension.\n\n\nA2\nCan understand short, simple texts on familiar matters of a concrete type which consist of high frequency everyday or job-related language.\n\n\nA1\nCan understand very short, simple texts a single phrase at a time, picking up familiar names, words and basic phrases and rereading as required.\n\n\n\n\nCouncil of Europe (2020). Common European Framework of Reference for Languages: Learning, teaching, assessment — Companion volume."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#the-problem-with-these-descriptors",
+    "href": "slides/slides-session-04.html#the-problem-with-these-descriptors",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "The problem with these descriptors",
+    "text": "The problem with these descriptors\nThe descriptors describe what a learner can do — not what a sentence is.\n\nThey talk about text types (“literary writings”, “factual texts”) and reading conditions (“provided they can reread”).\nNone of that applies to a single, context-free sentence.\n\nMaking the scale apply to one sentence is the design problem"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#why-cefr-sp-project",
+    "href": "slides/slides-session-04.html#why-cefr-sp-project",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Why CEFR-SP project",
+    "text": "Why CEFR-SP project\n\nThe task is familiar. Simplification — and judging what level a sentence is pitched at — is something language teachers and applied linguists are interested in.\nThe task is simple enough. One sentence, one label. Simple enough for the tutorial example.\n\n→ A good tutorial project. Interesting enough to be worth doing, small enough to actually finish in five days.\n\n\n\n\n\n\nNote\n\n\nSkim §3.1 and §3.2 — about a page and a half. That’s where we start the afternoon session."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#in-the-afternoon",
+    "href": "slides/slides-session-04.html#in-the-afternoon",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "In the afternoon",
+    "text": "In the afternoon\n\nS5 — Gold-Standard Annotation & Agreement (hands-on): extract Arase’s two design decisions, then build a gold standard and measure agreement — executes Phases ①–③.\nS6 — Gold Standards & Evaluation Metrics (hands-on): score an LLM against that gold — executes Phases ④–⑤."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#methodology",
+    "href": "slides/slides-session-04.html#methodology",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Methodology",
+    "text": "Methodology\n\nThey used CEFR “can-do” statements to infer the level of the passage.\n\n\n\n\n\n\n\n\nLevel\nOverall reading comprehension descriptor\n\n\n\n\nC2\nCan understand virtually all types of texts including abstract, structurally complex, or highly colloquial literary and non-literary writings.\n\n\nC1\nCan understand in detail lengthy, complex texts, whether or not these relate to their own area of speciality, provided they can reread difficult sections.\n\n\nB2\nCan read with a large degree of independence, adapting style and speed of reading to different texts and purposes. Has a broad active reading vocabulary, but may experience some difficulty with low-frequency idioms.\n\n\nB1\nCan read straightforward factual texts on subjects related to their field of interest with a satisfactory level of comprehension.\n\n\nA2\nCan understand short, simple texts on familiar matters of a concrete type which consist of high frequency everyday or job-related language.\n\n\nA1\nCan understand very short, simple texts a single phrase at a time, picking up familiar names, words and basic phrases and rereading as required.\n\n\n\n\nCouncil of Europe (2020). Common European Framework of Reference for Languages: Learning, teaching, assessment — Companion volume."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#why-do-we-use-cefr-sp-project",
+    "href": "slides/slides-session-04.html#why-do-we-use-cefr-sp-project",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Why do we use CEFR-SP project?",
+    "text": "Why do we use CEFR-SP project?\n\nThe task is familiar. Simplification — and judging what level a sentence is pitched at — is something language teachers and applied linguists are interested in.\nThe task is simple enough. One sentence, one label. Simple enough for the tutorial example.\n\n→ A good tutorial project. Interesting enough to be worth doing, small enough to actually finish in five days.\n\n\n\n\n\n\nNote\n\n\nSkim §3.1 and §3.2 — about a page and a half. That’s where we start the afternoon session."
+  },
+  {
+    "objectID": "slides/slides-session-04.html#a-problem-with-the-approach",
+    "href": "slides/slides-session-04.html#a-problem-with-the-approach",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "A problem with the approach",
+    "text": "A problem with the approach\nThe descriptors describe what a learner can do — not what a sentence is.\n\nThey talk about text types (“literary writings”, “factual texts”) and reading conditions (“provided they can reread”).\nNone of that applies to a single, context-free sentence.\n\nMaking the scale apply to one sentence is the design problem"
   }
 ]

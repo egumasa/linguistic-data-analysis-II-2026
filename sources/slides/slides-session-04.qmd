@@ -1,7 +1,7 @@
 ---
 title: "Session 4: Annotation Principles & Inter-Annotator Agreement"
 subtitle: "Day 2 · Annotation, Gold Standards & Metrics (2-1)"
-kicker: "Linguistic Data Analysis II · Day 2"
+kicker: "Linguistic Data Analysis II"
 format:
   revealjs:
     # Per-deck flavor. slides-v2 = shared rules; slide-<flavor> = palette only.
@@ -16,34 +16,31 @@ metadata-files:
 <!-- OUTLINE DECK — slide-by-slide beat list for review. Bodies are condensed bullets, not
      final prose; once the structure is approved these get written out in the S2/S3 style
      (framing paragraph + `. . .` fragments + callouts). Derived from course-design.md S4
-     (S4 §Outline), the three-move A → B → C outline, anchored in Eguchi & Kyle (2024). -->
+     (S4 §Outline), in four sections — annotation → evaluation workflow → metrics → the Arase
+     dataset — anchored in Eguchi & Kyle (2024). -->
 
-# Session 4: Annotation Principles & Inter-Annotator Agreement
 
 ## 📋 Agenda
 
-
-1. **A · What NLP tasks are there** — the task taxonomy, now concrete in linguistics
-2. **B · How NLP is evaluated** — the workflow, and how it transfers to **LLMs**
-3. **C · The annotation-&-evaluation workflow** — what you'll run hands-on in S5–S6
+1. **Annotation** — what it is, what it is used for, and which tasks this course targets
+2. **The NLP evaluation workflow** — reliability, validity, and the five steps you'll run in S5–S6
+3. **Evaluation metrics** — P / R / F1, the confusion matrix, and Cohen's κ
+4. **Dataset for class tutorials** — Arase et al. (2022), the example we work with from S5 on
 
 ## 🎯 Learning Objectives
 
 By the end of this session, you will be able to:
 
-- Place a linguistic annotation task in the classic NLP taxonomy (*identify · extract · categorize*, by **unit of analysis**).
-- Describe the NLP **evaluation workflow** (gold → predictions → metrics) and how it transfers from a trained model to a prompted **LLM**.
-- Operationalize a linguistic category into an **annotation scheme** with coding guidelines.
+- Describe an annotation task as **labels** placed on a **unit of analysis**, and say why applied-linguistic findings depend on it.
+- Explain why this course targets **sentence** and **text categorization**, and what changes for span-level tasks.
+- Distinguish **reliability** from **validity** in annotation, and name what each one depends on.
 - Explain **inter-annotator agreement**: percent agreement vs. why **Cohen's κ** corrects for chance — including **quadratic weighted κ** for *ordered* labels.
 - Read a **confusion matrix** and **compute P / R / F1** from its four cells (TP · TN · FP · FN).
 
-::: {.callout-note}
-The message of the day: *labelled data is only trustworthy if the category is **operationalized** and two coders agree **beyond chance**.*
-:::
 
-# A · What NLP tasks are there
+# Annotation
 
-## What is annotation? {.smaller}
+## What is annotation? 
 
 **Annotation** = adding **interpretive labels** to the available linguistic data.
 
@@ -51,11 +48,9 @@ The message of the day: *labelled data is only trustworthy if the category is **
 - **Word sense** — which meaning of *bank*?
 - **Stance / engagement** — is the writer hedging, endorsing?
 - **Discourse moves** — what is this sentence *doing* in the argument?
-- **Error tags**, **CEFR level**, …
+- **Error tags**, ..., **CEFR level**, 
 
-## Annotation
-
-**Annotation**: Putting *labels* on a specific *unit of analysis*
+## Annotation terminologies
 
 - **Label**: 
   
@@ -63,22 +58,83 @@ The message of the day: *labelled data is only trustworthy if the category is **
 
 - **Unit of analysis**: 
 
-  - The chunk/layer that the specific annotation will be put on.
+  - The level/layer of phenomena that the specific annotation will be put on.
     - Morphology
     - Word
     - Multiword Units
     - Sentence
     - Paragraph ...
 
+## Example with Part Of Speech tagging {.smaller}
 
-## Part of Speech {.smaller}
-
-**POS tagging** = label every token with its grammatical category (NOUN, VERB, ADJ…). One label *per token* — the simplest sequence-labelling task.
+**POS tagging** = labeling every token with its grammatical category (NOUN, VERB, ADJ…). One label *per token* — the simplest sequence-labelling task.
 
 `The_DET dogs_NOUN ran_VERB quickly_ADV ._PUNCT`
 
-- Penn Tag
-- 
+
+::: {.columns}
+
+::: {.column}
+
+Four of the 17 [UPOS tags](https://universaldependencies.org/u/pos/)
+
+| Tag | Category | In the example |
+|:--|:--|:--|
+| `DET` | determiner | *The* |
+| `NOUN` | noun | *dogs* |
+| `VERB` | verb | *ran* |
+| `ADV` | adverb | *quickly* |
+
+:::
+
+::: {.column}
+
+Four out of 36 [Penn tags](https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html) set
+
+| Tag | Category | In the example |
+|:--|:--|:--|
+| `DT` | determiner | *The* |
+| `NNS` | noun, plural | *dogs* |
+| `VBD` | verb, past tense | *ran* |
+| `RB` | adverb | *quickly* |
+
+:::
+
+:::
+
+Even with POS, you have different choices.  
+
+- **The tag set is a design decision** — the first one you make when you define an annotation task.
+
+
+## Applications in L2 research
+
+How do learner across proficiency level use collocations?
+
+::: {.columns}
+
+::: {.column width = "40%"}
+
+- Adjective + Noun (JN)
+- Noun + Noun (NN)
+- Verb + Noun (VN)
+
+:::
+
+::: {.column width = "60%"}
+
+![](../assets/img/session4/JN_collocation.png)
+
+
+:::
+
+:::
+
+
+::: {style="font-size: 60%"}
+Granger, S., & Bestgen, Y. (2014). The use of collocations by intermediate vs. advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011
+:::
+
 
 ## Word Sense Disambiguation
 
@@ -87,15 +143,31 @@ The message of the day: *labelled data is only trustworthy if the category is **
 - *She sat on the **bank** of the river.* → **riverbank**
 - *She deposited the cheque at the **bank**.* → **financial institution**
 
+The surface form is identical — only context resolves the sense. Harder than POS: the label set is *per word*, not a fixed grammar.
 
-The token is identical — only context resolves the sense. Harder than POS: the label set is *per word*, not a fixed grammar.
 
 ## Syntactic Dependency
 
-**Dependency parsing** = link each token to its **head**, building a tree; the top is the **ROOT**. Still token-level, but the label is a *relation between tokens*.
+**Dependency parsing** = Identifying a binary syntactic relationships between a head and its dependency.
 
-![Dependency tree for *I play baseball* — `I` →nsubj→ `play` (ROOT), `baseball` →dobj→ `play`](../assets/img/nlp-tasks/dep-1.png)
+![Dependency tree for "They buy and sell books."](../assets/img/nlp-tasks/dep-2.png)
 
+
+## Annotation format
+
+In NLP tasks, we often use [CoNLL-U format](https://universaldependencies.org/format.html).  
+
+```md
+ID   Form     Lemma   POS     TAG    MORPH                              HEAD DEP      
+1    They     they    PRON    PRP    Case=Nom|Number=Plur               2    nsubj
+2    buy      buy     VERB    VBP    Number=Plur|Person=3|Tense=Pres    0    root
+3    and      and     CCONJ   CC     _                                  2    cc
+4    sell     sell    VERB    VBP    Number=Plur|Person=3|Tense=Pres    2    conj
+5    books    book    NOUN    NNS    Number=Plur                        4    obj
+6    .        .       PUNCT   .      _                                  2    punct
+```
+
+![Dependency tree for "They buy and sell books."](../assets/img/nlp-tasks/dep-2.png)
 
 ## Stance
 
@@ -103,9 +175,9 @@ The token is identical — only context resolves the sense. Harder than POS: the
 
 ::: {.column width="50%"}
 
-**Stance annotation** = label how a writer *positions* themselves toward a proposition — **hedging** vs. **endorsing**.
+**Stance annotation** = label how a writer *positions* themselves toward a proposition .
 
-Unit of analysis is a **span** .
+Unit of analysis is a **span** - textual segments with specified beginning and end.
 :::
 
 ::: {.column width="50%"}
@@ -127,7 +199,7 @@ Unit of analysis is a **span** .
 **Kim & Lu (2024)** had GPT annotate these moves — near-perfect when fine-tuned, though *steps* stayed hard. Unit: **sentence/clause → one label**.
 
 
-## Organize by unit + output
+## Summary: NLP task by unit and output
 
 - **Token-level sequence labelling** — POS, NER (one label *per token*).
 - **Span categorization** — stance spans (label a *stretch* of text).
@@ -138,11 +210,21 @@ Unit of analysis is a **span** .
 
 We will focus mostly on **sentence categorization** and **text categorization**:
 
-- The evaluation code is easy to build
+- The evaluation code is easy to build.
 - the canonical `{id, text, label}` schema you met in S3 is sufficient.
-- Span / sequence tasks carry **boundary + partial-match** problems and is too heavy for 5 days.
 
-## Note on the error annotation 
+```Python
+data = {
+        "id": 1,
+        "text": "",
+        "CoderA": "",
+        "CoderB": "" 
+        }
+```
+
+BUT you can apply the same workflow for different annotation tasks. Only the data and annotation gets complex.
+
+<!-- ## Note on the error annotation 
 
 Originally, the **AutoErrorAnalyzer** track has two routes:
 
@@ -150,33 +232,166 @@ Originally, the **AutoErrorAnalyzer** track has two routes:
 - **Stretch — locate-a-span-then-categorize:** the *real* error-annotation task. It does not fit one-label-per-unit, and needs **span matching + partial-match scoring**.
 
 You can pick which route you will do. A bit more challenging but more rewarding.
-
-# B · How NLP evaluates a system — and how it transfers to LLMs
-
-## The NLP evaluation workflow
-
-Eguchi & Kyle (2024) describe the full workflow:
-
-**build a gold standard → a system produces predictions → score predictions against gold.**
+You will decide this by Day 4. -->
 
 
-We use the **evaluation part** of this workflow, not the training part.
+## Annotation is not the end-point, it is the beginning of the Applied work
 
-## Model → prompted LLM
+In most of the Applied Linguistics work, performing annotation is one of the preliminary steps BUT NEVER a trivial one.
 
-- Classic NLP trains a **supervised model** on gold (context, not our method).
-- This course **replaces the model with a prompted LLM**…
-- …but **evaluates it the same way.**
+The subsequent analyses and conclusion depend on the annotation results.
+
+::: {.callout-important}
+
+- This is why we need a standardized workflow.
+
+:::
 
 
-This is why the NLP evaluation workflow applies to this course.
+# The NLP evaluation workflow
 
-## What "evaluation" means
+## The NLP evaluation workflow we cover
+
+::: {.callout-important}
+
+We evaluate the machine's performance on a task, by comparing it against human-annotated answers.
+
+:::
+
+- We call these human-annotated dataset, `gold-standard`.
+- We want to consider discrepancies from human-annotated answer is `error` on the machine side. 
+- How can we define the `answer`?
+  - Reliability and Validity is core concern.
+
+
+## Reliability and Validity
+
+What are reliability and validity?
+
+. . .
+
+- **Reliability**: 
+  - How consistent the annotation results are (e.g., across human or AI coders).  
+  - How trustworthy your reported results are.
+  - Depends on coder, scheme, type of data, familiarity, etc.
+
+. . . 
+
+- **Validity**:
+  - How well the actual annotation captures what you are proposed to capture. 
+  - Depends on the quality of your coding scheme.
+
+## Proposed steps {.smaller}
+
+Eguchi & Kyle (2024) lay out the annotation-and-evaluation workflow. We compress it into five steps, and you run steps ③–⑤ yourself in S5–S6.
+
+| Step | What you do | Original |
+|:-:|:-----|:-----|
+| ① | **Define the annotation task** | scope, unit of analysis, metrics |
+| ② | **Operationalize into a scheme + guidelines**  | Write/Adapt guideline / Pilot annotation |
+| ③ | **Build the gold standard** | Two (or more) blind coders, agreement, adjudication |
+| ④ | **Set the target = human agreement** | the ceiling for any model | 
+| ⑤ | **Evaluate the LLM against gold** | P / R / F1, κ, confusion matrix |
+
+## ① Define the annotation task
+
+- **Scope & purpose** — What is the source text?
+- **Design the task** — *input → output* over a **unit of analysis** of choice.
+- **Reuse or draft** — adopt an existing scheme / tag set if one fits; else draft from the literature.
+- **Choose the metrics now** (P / R / F1, κ) — so evaluation is *planned*, not retrofitted.
+- **Sample data** to represent the domain (proficiency, L1) and **fix the unit**.
+
+## ② Operationalize into a scheme + guidelines
+
+- Turn the theoretical construct into descriptive rules.
+
+**Fuoli (2018)** gives three principles:
+
+1. **All choices accounted for.**
+2. **Guidelines tested & refined** until reliable.
+3. **Reliability always assessed** — and reported.
+
+If two trained coders can't agree on it, a model can't be trusted on it either.
+
+## An example of an annotation process
+
+![](../assets/img/nlp-tasks/annotation-process.png)
+
+
+## ③ Build the gold standard
+
+1. Two coders annotate the same items **blind**.
+2. Measure **inter-annotator agreement** — percent **+ κ**.
+3. Read the confusion matrix → **refine the scheme, re-annotate**.
+4. **Adjudicate** disagreements → a **gold standard**.
+
+
+## ④ Measuring human agreement as a benchmark
+
+
+::: {.columns}
+
+::: {.column width = "65%"}
+
+- **Human inter-annotator agreement** after modifying the scheme should be reported.
+
+- Human agreement lays a good benchmark.
+
+:::
+
+::: {.column width = "35%"}
+
+![](../assets/img/session4/annotation-reliability.png)
+
+:::
+
+:::
+
+
+## ⑤ Evaluate the LLM against gold {.smaller}
+
+Finally, we will explore and evaluate LLM against gold-standard.
+
+In classical machine-learning experiment, we split the entire dataset into three parts.
+
+| Split | Roughly | What it is for |
+|:--|:--:|:-----|
+| **Train** | 70% | The model learns from these items. |
+| **Development** (validation) | 15% | You compare settings here and pick the one to keep. |
+| **Test** | 15% | Held back until the end. Score it **once** → **Precision · Recall · F1**. |
+
+**Using LLM, we might not need Train**
+
+| Split | Roughly | What it is for |
+|:--|:--:|:-----|
+| **Development** (validation) | ??% | You compare settings here and pick the one to keep. |
+| **Test** | ??% | Held back until the end. Score it **once** → **Precision · Recall · F1**. |
+
+
+
+
+
+## Proposed steps {.smaller}
+
+Eguchi & Kyle (2024) lay out the annotation-and-evaluation workflow. We compress it into five steps, and you run steps ③–⑤ yourself in S5–S6.
+
+| Step | What you do | Original |
+|:-:|:-----|:-----|
+| ① | **Define the annotation task** | scope, unit of analysis, metrics |
+| ② | **Operationalize into a scheme + guidelines**  | Write/Adapt guideline / Pilot annotation |
+| ③ | **Build the gold standard** | Two (or more) blind coders, agreement, adjudication |
+| ④ | **Set the target = human agreement** | the ceiling for any model | 
+| ⑤ | **Evaluate the LLM against gold** | P / R / F1, κ, confusion matrix |
+
+# Evaluation metrics
+
+## Metrics
 
 - **P / R / F1**, and **macro-F1** across classes.
 - **Confusion matrix** — which labels are confused with which.
 - **Cohen's κ** — agreement corrected for chance.
 - **Train / validation / test** — the held-out logic (seed now; applied when we tune prompts in S7–S8).
+
 
 ## The four outcomes: TP · TN · FP · FN
 
@@ -302,106 +517,60 @@ There's no single cut-off — you read κ against a **benchmark**.
 Our two coders' raw **80 %** agreement is only **κ ≈ 0.52** once chance is removed — **inadequate** on that rule. This difference is why κ is reported instead of raw agreement.
 :::
 
-## Ordered labels: quadratic weighted κ
 
-Plain κ treats **every** disagreement as equally bad — scoring **A1 → A2 exactly as wrong as A1 → C2**. But CEFR levels are **ordinal** (A1 < A2 < … < C2), so an error of one level should count less than an error of five.
+# Dataset for class tutorials — Arase et al. (2022)
 
-**Weighted κ** puts a penalty $w_{ij}$ on each off-diagonal cell. With **quadratic** weights over $N$ ordered levels (indices $i, j$):
-
-$$w_{ij} = \frac{(i - j)^2}{(N - 1)^2}, \qquad \kappa_w = 1 - \frac{\sum_{ij} w_{ij}\,O_{ij}}{\sum_{ij} w_{ij}\,E_{ij}}$$
+## Arase, Uchida & Kajiwara (2022)
 
 
-For CEFR ($N = 6$): an error of **one level** weighs $\tfrac{1}{25} = 0.04$ (barely penalized); a distant **A1 ↔ C2** error weighs $\tfrac{25}{25} = 1.0$ (full penalty).
+::: {.columns}
 
+::: {.column width="45%"}
 
-# C · The define-first workflow — you can't evaluate what you haven't defined
+**"CEFR-Based Sentence Difficulty Annotation and Assessment"** (EMNLP 2022).
 
-## Why define the task first? {.smaller}
-
-An LLM's **P / R / F1 is only meaningful against a gold standard** — and a gold standard only exists once the category is **operationalized** well enough that two coders agree beyond chance.
-
-- No gold → the score has nothing to compare against.
-- Fuzzy category → coders disagree → no trustworthy gold in the first place.
-
-So before we prompt anything, we **define the task well enough that humans can agree on it.**
-
-## The loop we borrow — model-agnostic {.smaller}
-
-**Eguchi & Kyle (2024)** lay out an 11-step tool-building pipeline. It runs **define → operationalize → gold → evaluate** — the *model comes almost last*:
-
-- The steps that **define the task** and **judge the output** don't care *what* produces the labels.
-- So we keep them and **swap their trained model for a prompted LLM.**
-- E&K even suggest **LLM prompting as a first scoping move** — to see which categories are hard.
-
-## ① Define the annotation task {.smaller}
-
-*(E&K Steps 1–3)*
-
-- **Scope & purpose** — who uses it, on what texts, for what output?
-- **Design the task** — *input → output* over a **unit of analysis** (identify / extract / categorize).
-- **Reuse or draft** — adopt an existing scheme / tag set if one fits; else draft from the literature.
-- **Choose the metrics now** (P / R / F1, κ) — so evaluation is *planned*, not retrofitted.
-- **Sample data** to represent the domain (proficiency, L1) and **fix the unit**.
-
-## ② Operationalize into a scheme + guidelines {.smaller}
-
-*(E&K Steps 4–5; **Fuoli, 2018**)*
-
-- Turn the fuzzy construct into a **decidable rule** a second coder can follow.
-- **Pilot** on a handful of items — run the whole pipeline once, end to end.
-
-Fuoli's three principles:
-
-1. **All choices accounted for.**
-2. **Guidelines tested & refined** until reliable.
-3. **Reliability always assessed** — and reported.
-
-If two trained coders can't agree on it, a model can't be trusted on it either.
-
-## ③ Build the gold standard {.smaller}
-
-*(E&K Step 6 → you'll run this in **S5**)*
-
-1. Two coders annotate the same items **blind**.
-2. Measure **inter-annotator agreement** — percent **+ κ**.
-3. Read the confusion matrix → **refine the scheme, re-annotate**.
-4. **Adjudicate** disagreements → a **gold standard**.
-
-::: {.callout-tip}
-Keep the pre-adjudication human agreement — it becomes your **benchmark**.
 :::
 
-## ④ Set the target = human agreement {.smaller}
+::: {.column width="55%"}
 
-*(E&K Step 8a)* — the highest score you can realistically expect from **any** model is the **human IAA**.
+![](../assets/img/session4/arase.png)
 
-- E&K expected **~0.70 F1** because their coders agreed at **~0.67 κ**.
-
-::: {.callout-note}
-The central point: *the better you define the task, the higher humans agree — and the more you can legitimately ask of the LLM.*
 :::
 
-## ⑤ Evaluate the LLM against gold {.smaller}
+:::
 
-*(E&K Step 9 → you'll run this in **S6**)* — same metrics, two comparisons:
+- **The problem.** Simplifying text for learners requires knowing *how hard a sentence is*. 
 
-- **annotator vs. annotator** → **inter-annotator agreement (IAA)**
-- **gold vs. model** → **model evaluation**
+- **Goal**: Creating a corpus that is annotated for sentence difficulties according to CEFR levels.
 
-Report **P / R / F1 + macro-F1 + κ**, and read the **confusion matrix** to see *which* labels it confuses. Here the "model" is a **prompted LLM**.
+- *How did they operationalize CEFR levels?*
 
-# D · Dataset for class tutorials — Arase et al. (2022)
+## Methodology {.smaller}
 
-<!-- The overarching introduction + motivation lives HERE, at the end of S4. S5 opens directly
-     with the guided extraction of §3.1/§3.2 — do NOT re-summarise the paper there. -->
+- They used CEFR "can-do" statements to infer the level of the passage. 
 
-## Arase, Uchida & Kajiwara (2022) {.smaller}
+| Level | Overall reading comprehension descriptor |
+|:-:|:------------------|
+| **C2** | Can understand virtually all types of texts including abstract, structurally complex, or highly colloquial literary and non-literary writings. |
+| **C1** | Can understand in detail lengthy, complex texts, whether or not these relate to their own area of speciality, provided they can reread difficult sections. |
+| **B2** | Can read with a large degree of independence, adapting style and speed of reading to different texts and purposes. Has a broad active reading vocabulary, but may experience some difficulty with low-frequency idioms. |
+| **B1** | Can read straightforward factual texts on subjects related to their field of interest with a satisfactory level of comprehension. |
+| **A2** | Can understand short, simple texts on familiar matters of a concrete type which consist of high frequency everyday or job-related language. |
+| **A1** | Can understand very short, simple texts a single phrase at a time, picking up familiar names, words and basic phrases and rereading as required. |
 
-**"CEFR-Based Sentence Difficulty Annotation and Assessment"** (EMNLP 2022) — the **CEFR-SP** corpus: 17k English sentences, each labelled with a **CEFR level** by English-education professionals.
+::: {style="font-size: 60%"}
+Council of Europe (2020). *Common European Framework of Reference for Languages: Learning, teaching, assessment — Companion volume.*
+:::
 
-- **The problem.** Simplifying text for learners requires knowing *how hard a sentence is*. But readability corpora are **document**-level and built for **L1** readers — while simplification rewrites **sentences**, for **L2** readers.
-- **The gap that fixes the task.** Nothing labelled *sentence* difficulty against *language ability*. So: **input = one sentence · output = one CEFR level.**
-- **The difficulty is in the task definition, not the model.** CEFR is a **skill** scale — "can-do" statements about what *learners* can do. It says nothing about sentences. Making it apply to a sentence *is* the design problem.
+## A problem with the approach
+
+The descriptors describe what a **learner** can do — not what a **sentence** is.
+
+- They talk about text *types* ("literary writings", "factual texts") and reading *conditions* ("provided they can reread").
+- None of that applies to a single, context-free sentence.
+
+**Making the scale apply to one sentence is the design problem**
+
 
 ## What the labels look like {.smaller}
 
@@ -417,7 +586,7 @@ One example sentence per level, from the corpus (Arase et al., 2022, Table 1):
 | In the past, non-photosynthetic plants were mistakenly thought to get food by breaking down organic matter in a manner similar to saprotrophic fungi. | → | **C2** |
 
 
-## Why this paper, for this course {.smaller}
+## Why do we use CEFR-SP project?
 
 - **The task is familiar.** Simplification — and judging what level a sentence is pitched at — is something language teachers and applied linguists are interested in.
 - **The task is simple enough.** One sentence, one label. Simple enough for the tutorial example. 
@@ -428,9 +597,10 @@ One example sentence per level, from the corpus (Arase et al., 2022, Table 1):
 **Skim §3.1 and §3.2** — about a page and a half. That's where we start the afternoon session.
 :::
 
+## In the afternoon
 
-## Coming up
 - **S5 — Gold-Standard Annotation & Agreement** *(hands-on)*: extract Arase's two design decisions, then build a gold standard and measure agreement — executes **Phases ①–③**.
+
 - **S6 — Gold Standards & Evaluation Metrics** *(hands-on)*: score an LLM against that gold — executes **Phases ④–⑤**.
 
 

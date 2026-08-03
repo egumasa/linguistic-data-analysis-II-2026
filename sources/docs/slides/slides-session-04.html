@@ -28,6 +28,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-9cd7da8a39d11504fbb2f1ac3cebc7bd.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -129,7 +195,7 @@
     <div class="slides">
 
 <section id="title-slide" class="center quarto-title-block">
-  <p class="kicker">Linguistic Data Analysis II · Day 2</p>
+  <p class="kicker">Linguistic Data Analysis II</p>
   <h1 class="title">Session 4: Annotation Principles &amp; Inter-Annotator Agreement</h1>
   <p class="subtitle">Day 2 · Annotation, Gold Standards &amp; Metrics (2-1)</p>
   <div class="title-meta">
@@ -142,51 +208,35 @@
 <!-- OUTLINE DECK — slide-by-slide beat list for review. Bodies are condensed bullets, not
      final prose; once the structure is approved these get written out in the S2/S3 style
      (framing paragraph + `. . .` fragments + callouts). Derived from course-design.md S4
-     (S4 §Outline), the three-move A → B → C outline, anchored in Eguchi & Kyle (2024). -->
-</section>
-<section>
-<section id="session-4-annotation-principles-inter-annotator-agreement" class="title-slide slide level1 center">
-<h1>Session 4: Annotation Principles &amp; Inter-Annotator Agreement</h1>
-
+     (S4 §Outline), in four sections — annotation → evaluation workflow → metrics → the Arase
+     dataset — anchored in Eguchi & Kyle (2024). -->
 </section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
 <ol type="1">
-<li><strong>A · What NLP tasks are there</strong> — the task taxonomy, now concrete in linguistics</li>
-<li><strong>B · How NLP is evaluated</strong> — the workflow, and how it transfers to <strong>LLMs</strong></li>
-<li><strong>C · The annotation-&amp;-evaluation workflow</strong> — what you’ll run hands-on in S5–S6</li>
+<li><strong>Annotation</strong> — what it is, what it is used for, and which tasks this course targets</li>
+<li><strong>The NLP evaluation workflow</strong> — reliability, validity, and the five steps you’ll run in S5–S6</li>
+<li><strong>Evaluation metrics</strong> — P / R / F1, the confusion matrix, and Cohen’s κ</li>
+<li><strong>Dataset for class tutorials</strong> — Arase et al.&nbsp;(2022), the example we work with from S5 on</li>
 </ol>
 </section>
 <section id="learning-objectives" class="slide level2">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
 <ul>
-<li>Place a linguistic annotation task in the classic NLP taxonomy (<em>identify · extract · categorize</em>, by <strong>unit of analysis</strong>).</li>
-<li>Describe the NLP <strong>evaluation workflow</strong> (gold → predictions → metrics) and how it transfers from a trained model to a prompted <strong>LLM</strong>.</li>
-<li>Operationalize a linguistic category into an <strong>annotation scheme</strong> with coding guidelines.</li>
+<li>Describe an annotation task as <strong>labels</strong> placed on a <strong>unit of analysis</strong>, and say why applied-linguistic findings depend on it.</li>
+<li>Explain why this course targets <strong>sentence</strong> and <strong>text categorization</strong>, and what changes for span-level tasks.</li>
+<li>Distinguish <strong>reliability</strong> from <strong>validity</strong> in annotation, and name what each one depends on.</li>
 <li>Explain <strong>inter-annotator agreement</strong>: percent agreement vs.&nbsp;why <strong>Cohen’s κ</strong> corrects for chance — including <strong>quadratic weighted κ</strong> for <em>ordered</em> labels.</li>
 <li>Read a <strong>confusion matrix</strong> and <strong>compute P / R / F1</strong> from its four cells (TP · TN · FP · FN).</li>
 </ul>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>The message of the day: <em>labelled data is only trustworthy if the category is <strong>operationalized</strong> and two coders agree <strong>beyond chance</strong>.</em></p>
-</div>
-</div>
-</div>
-</section></section>
+</section>
 <section>
-<section id="a-what-nlp-tasks-are-there" class="title-slide slide level1 center">
-<h1>A · What NLP tasks are there</h1>
+<section id="annotation" class="title-slide slide level1 center">
+<h1>Annotation</h1>
 
 </section>
-<section id="what-is-annotation" class="slide level2 smaller">
+<section id="what-is-annotation" class="slide level2">
 <h2>What is annotation?</h2>
 <p><strong>Annotation</strong> = adding <strong>interpretive labels</strong> to the available linguistic data.</p>
 <ul>
@@ -194,12 +244,11 @@
 <li><strong>Word sense</strong> — which meaning of <em>bank</em>?</li>
 <li><strong>Stance / engagement</strong> — is the writer hedging, endorsing?</li>
 <li><strong>Discourse moves</strong> — what is this sentence <em>doing</em> in the argument?</li>
-<li><strong>Error tags</strong>, <strong>CEFR level</strong>, …</li>
+<li><strong>Error tags</strong>, …, <strong>CEFR level</strong>,</li>
 </ul>
 </section>
-<section id="annotation" class="slide level2">
-<h2>Annotation</h2>
-<p><strong>Annotation</strong>: Putting <em>labels</em> on a specific <em>unit of analysis</em></p>
+<section id="annotation-terminologies" class="slide level2">
+<h2>Annotation terminologies</h2>
 <ul>
 <li><p><strong>Label</strong>:</p>
 <ul>
@@ -207,7 +256,7 @@
 </ul></li>
 <li><p><strong>Unit of analysis</strong>:</p>
 <ul>
-<li>The chunk/layer that the specific annotation will be put on.
+<li>The level/layer of phenomena that the specific annotation will be put on.
 <ul>
 <li>Morphology</li>
 <li>Word</li>
@@ -218,14 +267,99 @@
 </ul></li>
 </ul>
 </section>
-<section id="part-of-speech" class="slide level2 smaller">
-<h2>Part of Speech</h2>
-<p><strong>POS tagging</strong> = label every token with its grammatical category (NOUN, VERB, ADJ…). One label <em>per token</em> — the simplest sequence-labelling task.</p>
+<section id="example-with-part-of-speech-tagging" class="slide level2 smaller">
+<h2>Example with Part Of Speech tagging</h2>
+<p><strong>POS tagging</strong> = labeling every token with its grammatical category (NOUN, VERB, ADJ…). One label <em>per token</em> — the simplest sequence-labelling task.</p>
 <p><code>The_DET dogs_NOUN ran_VERB quickly_ADV ._PUNCT</code></p>
+<div class="columns">
+<div class="column">
+<p>Four of the 17 <a href="https://universaldependencies.org/u/pos/">UPOS tags</a></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Tag</th>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">In the example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>DET</code></td>
+<td style="text-align: left;">determiner</td>
+<td style="text-align: left;"><em>The</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>NOUN</code></td>
+<td style="text-align: left;">noun</td>
+<td style="text-align: left;"><em>dogs</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>VERB</code></td>
+<td style="text-align: left;">verb</td>
+<td style="text-align: left;"><em>ran</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>ADV</code></td>
+<td style="text-align: left;">adverb</td>
+<td style="text-align: left;"><em>quickly</em></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column">
+<p>Four out of 36 <a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html">Penn tags</a> set</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Tag</th>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">In the example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>DT</code></td>
+<td style="text-align: left;">determiner</td>
+<td style="text-align: left;"><em>The</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>NNS</code></td>
+<td style="text-align: left;">noun, plural</td>
+<td style="text-align: left;"><em>dogs</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>VBD</code></td>
+<td style="text-align: left;">verb, past tense</td>
+<td style="text-align: left;"><em>ran</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>RB</code></td>
+<td style="text-align: left;">adverb</td>
+<td style="text-align: left;"><em>quickly</em></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<p>Even with POS, you have different choices.</p>
 <ul>
-<li>Penn Tag</li>
-<li></li>
+<li><strong>The tag set is a design decision</strong> — the first one you make when you define an annotation task.</li>
 </ul>
+</section>
+<section id="applications-in-l2-research" class="slide level2">
+<h2>Applications in L2 research</h2>
+<p>How do learner across proficiency level use collocations?</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>Adjective + Noun (JN)</li>
+<li>Noun + Noun (NN)</li>
+<li>Verb + Noun (VN)</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<p><img data-src="../assets/img/session4/JN_collocation.png"></p>
+</div></div>
+<div style="font-size: 60%">
+<p>Granger, S., &amp; Bestgen, Y. (2014). The use of collocations by intermediate vs.&nbsp;advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011</p>
+</div>
 </section>
 <section id="word-sense-disambiguation" class="slide level2">
 <h2>Word Sense Disambiguation</h2>
@@ -234,19 +368,31 @@
 <li><em>She sat on the <strong>bank</strong> of the river.</em> → <strong>riverbank</strong></li>
 <li><em>She deposited the cheque at the <strong>bank</strong>.</em> → <strong>financial institution</strong></li>
 </ul>
-<p>The token is identical — only context resolves the sense. Harder than POS: the label set is <em>per word</em>, not a fixed grammar.</p>
+<p>The surface form is identical — only context resolves the sense. Harder than POS: the label set is <em>per word</em>, not a fixed grammar.</p>
 </section>
 <section id="syntactic-dependency" class="slide level2">
 <h2>Syntactic Dependency</h2>
-<p><strong>Dependency parsing</strong> = link each token to its <strong>head</strong>, building a tree; the top is the <strong>ROOT</strong>. Still token-level, but the label is a <em>relation between tokens</em>.</p>
+<p><strong>Dependency parsing</strong> = Identifying a binary syntactic relationships between a head and its dependency.</p>
 
-<img data-src="../assets/img/nlp-tasks/dep-1.png" class="r-stretch quarto-figure-center"><p class="caption">Dependency tree for <em>I play baseball</em> — <code>I</code> →nsubj→ <code>play</code> (ROOT), <code>baseball</code> →dobj→ <code>play</code></p></section>
+<img data-src="../assets/img/nlp-tasks/dep-2.png" class="r-stretch quarto-figure-center"><p class="caption">Dependency tree for “They buy and sell books.”</p></section>
+<section id="annotation-format" class="slide level2">
+<h2>Annotation format</h2>
+<p>In NLP tasks, we often use <a href="https://universaldependencies.org/format.html">CoNLL-U format</a>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource md number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a></a>ID   Form     Lemma   POS     TAG    MORPH                              HEAD DEP      </span>
+<span id="cb1-2"><a></a>1    They     they    PRON    PRP    Case=Nom|Number=Plur               2    nsubj</span>
+<span id="cb1-3"><a></a>2    buy      buy     VERB    VBP    Number=Plur|Person=3|Tense=Pres    0    root</span>
+<span id="cb1-4"><a></a>3    and      and     CCONJ   CC     _                                  2    cc</span>
+<span id="cb1-5"><a></a>4    sell     sell    VERB    VBP    Number=Plur|Person=3|Tense=Pres    2    conj</span>
+<span id="cb1-6"><a></a>5    books    book    NOUN    NNS    Number=Plur                        4    obj</span>
+<span id="cb1-7"><a></a>6    .        .       PUNCT   .      _                                  2    punct</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<img data-src="../assets/img/nlp-tasks/dep-2.png" class="r-stretch quarto-figure-center"><p class="caption">Dependency tree for “They buy and sell books.”</p></section>
 <section id="stance" class="slide level2">
 <h2>Stance</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Stance annotation</strong> = label how a writer <em>positions</em> themselves toward a proposition — <strong>hedging</strong> vs.&nbsp;<strong>endorsing</strong>.</p>
-<p>Unit of analysis is a <strong>span</strong> .</p>
+<p><strong>Stance annotation</strong> = label how a writer <em>positions</em> themselves toward a proposition .</p>
+<p>Unit of analysis is a <strong>span</strong> - textual segments with specified beginning and end.</p>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -283,8 +429,8 @@
 </table>
 <p><strong>Kim &amp; Lu (2024)</strong> had GPT annotate these moves — near-perfect when fine-tuned, though <em>steps</em> stayed hard. Unit: <strong>sentence/clause → one label</strong>.</p>
 </section>
-<section id="organize-by-unit-output" class="slide level2">
-<h2>Organize by unit + output</h2>
+<section id="summary-nlp-task-by-unit-and-output" class="slide level2">
+<h2>Summary: NLP task by unit and output</h2>
 <ul>
 <li><strong>Token-level sequence labelling</strong> — POS, NER (one label <em>per token</em>).</li>
 <li><strong>Span categorization</strong> — stance spans (label a <em>stretch</em> of text).</li>
@@ -295,42 +441,307 @@
 <h2>The scope of the current course</h2>
 <p>We will focus mostly on <strong>sentence categorization</strong> and <strong>text categorization</strong>:</p>
 <ul>
-<li>The evaluation code is easy to build</li>
+<li>The evaluation code is easy to build.</li>
 <li>the canonical <code>{id, text, label}</code> schema you met in S3 is sufficient.</li>
-<li>Span / sequence tasks carry <strong>boundary + partial-match</strong> problems and is too heavy for 5 days.</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>data <span class="op">=</span> {</span>
+<span id="cb2-2"><a></a>        <span class="st">"id"</span>: <span class="dv">1</span>,</span>
+<span id="cb2-3"><a></a>        <span class="st">"text"</span>: <span class="st">""</span>,</span>
+<span id="cb2-4"><a></a>        <span class="st">"CoderA"</span>: <span class="st">""</span>,</span>
+<span id="cb2-5"><a></a>        <span class="st">"CoderB"</span>: <span class="st">""</span> </span>
+<span id="cb2-6"><a></a>        }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>BUT you can apply the same workflow for different annotation tasks. Only the data and annotation gets complex.</p>
+<!-- ## Note on the error annotation 
+
+Originally, the **AutoErrorAnalyzer** track has two routes:
+
+- **Default — sentence-level:** one label per unit; uses the same pipeline as every other track.
+- **Stretch — locate-a-span-then-categorize:** the *real* error-annotation task. It does not fit one-label-per-unit, and needs **span matching + partial-match scoring**.
+
+You can pick which route you will do. A bit more challenging but more rewarding.
+You will decide this by Day 4. -->
 </section>
-<section id="note-on-the-error-annotation" class="slide level2">
-<h2>Note on the error annotation</h2>
-<p>Originally, the <strong>AutoErrorAnalyzer</strong> track has two routes:</p>
+<section id="annotation-is-not-the-end-point-it-is-the-beginning-of-the-applied-work" class="slide level2">
+<h2>Annotation is not the end-point, it is the beginning of the Applied work</h2>
+<p>In most of the Applied Linguistics work, performing annotation is one of the preliminary steps BUT NEVER a trivial one.</p>
+<p>The subsequent analyses and conclusion depend on the annotation results.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
 <ul>
-<li><strong>Default — sentence-level:</strong> one label per unit; uses the same pipeline as every other track.</li>
-<li><strong>Stretch — locate-a-span-then-categorize:</strong> the <em>real</em> error-annotation task. It does not fit one-label-per-unit, and needs <strong>span matching + partial-match scoring</strong>.</li>
+<li>This is why we need a standardized workflow.</li>
 </ul>
-<p>You can pick which route you will do. A bit more challenging but more rewarding.</p>
+</div>
+</div>
+</div>
 </section></section>
 <section>
-<section id="b-how-nlp-evaluates-a-system-and-how-it-transfers-to-llms" class="title-slide slide level1 center">
-<h1>B · How NLP evaluates a system — and how it transfers to LLMs</h1>
+<section id="the-nlp-evaluation-workflow" class="title-slide slide level1 center">
+<h1>The NLP evaluation workflow</h1>
 
 </section>
-<section id="the-nlp-evaluation-workflow" class="slide level2">
-<h2>The NLP evaluation workflow</h2>
-<p>Eguchi &amp; Kyle (2024) describe the full workflow:</p>
-<p><strong>build a gold standard → a system produces predictions → score predictions against gold.</strong></p>
-<p>We use the <strong>evaluation part</strong> of this workflow, not the training part.</p>
-</section>
-<section id="model-prompted-llm" class="slide level2">
-<h2>Model → prompted LLM</h2>
+<section id="the-nlp-evaluation-workflow-we-cover" class="slide level2">
+<h2>The NLP evaluation workflow we cover</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>We evaluate the machine’s performance on a task, by comparing it against human-annotated answers.</p>
+</div>
+</div>
+</div>
 <ul>
-<li>Classic NLP trains a <strong>supervised model</strong> on gold (context, not our method).</li>
-<li>This course <strong>replaces the model with a prompted LLM</strong>…</li>
-<li>…but <strong>evaluates it the same way.</strong></li>
+<li>We call these human-annotated dataset, <code>gold-standard</code>.</li>
+<li>We want to consider discrepancies from human-annotated answer is <code>error</code> on the machine side.</li>
+<li>How can we define the <code>answer</code>?
+<ul>
+<li>Reliability and Validity is core concern.</li>
+</ul></li>
 </ul>
-<p>This is why the NLP evaluation workflow applies to this course.</p>
 </section>
-<section id="what-evaluation-means" class="slide level2">
-<h2>What “evaluation” means</h2>
+<section id="reliability-and-validity" class="slide level2">
+<h2>Reliability and Validity</h2>
+<p>What are reliability and validity?</p>
+<div class="fragment">
+<ul>
+<li><strong>Reliability</strong>:
+<ul>
+<li>How consistent the annotation results are (e.g., across human or AI coders).<br>
+</li>
+<li>How trustworthy your reported results are.</li>
+<li>Depends on coder, scheme, type of data, familiarity, etc.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Validity</strong>:
+<ul>
+<li>How well the actual annotation captures what you are proposed to capture.</li>
+<li>Depends on the quality of your coding scheme.</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="proposed-steps" class="slide level2 smaller">
+<h2>Proposed steps</h2>
+<p>Eguchi &amp; Kyle (2024) lay out the annotation-and-evaluation workflow. We compress it into five steps, and you run steps ③–⑤ yourself in S5–S6.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 40%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Step</th>
+<th style="text-align: left;">What you do</th>
+<th style="text-align: left;">Original</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">①</td>
+<td style="text-align: left;"><strong>Define the annotation task</strong></td>
+<td style="text-align: left;">scope, unit of analysis, metrics</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">②</td>
+<td style="text-align: left;"><strong>Operationalize into a scheme + guidelines</strong></td>
+<td style="text-align: left;">Write/Adapt guideline / Pilot annotation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">③</td>
+<td style="text-align: left;"><strong>Build the gold standard</strong></td>
+<td style="text-align: left;">Two (or more) blind coders, agreement, adjudication</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">④</td>
+<td style="text-align: left;"><strong>Set the target = human agreement</strong></td>
+<td style="text-align: left;">the ceiling for any model</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">⑤</td>
+<td style="text-align: left;"><strong>Evaluate the LLM against gold</strong></td>
+<td style="text-align: left;">P / R / F1, κ, confusion matrix</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="define-the-annotation-task" class="slide level2">
+<h2>① Define the annotation task</h2>
+<ul>
+<li><strong>Scope &amp; purpose</strong> — What is the source text?</li>
+<li><strong>Design the task</strong> — <em>input → output</em> over a <strong>unit of analysis</strong> of choice.</li>
+<li><strong>Reuse or draft</strong> — adopt an existing scheme / tag set if one fits; else draft from the literature.</li>
+<li><strong>Choose the metrics now</strong> (P / R / F1, κ) — so evaluation is <em>planned</em>, not retrofitted.</li>
+<li><strong>Sample data</strong> to represent the domain (proficiency, L1) and <strong>fix the unit</strong>.</li>
+</ul>
+</section>
+<section id="operationalize-into-a-scheme-guidelines" class="slide level2">
+<h2>② Operationalize into a scheme + guidelines</h2>
+<ul>
+<li>Turn the theoretical construct into descriptive rules.</li>
+</ul>
+<p><strong>Fuoli (2018)</strong> gives three principles:</p>
+<ol type="1">
+<li><strong>All choices accounted for.</strong></li>
+<li><strong>Guidelines tested &amp; refined</strong> until reliable.</li>
+<li><strong>Reliability always assessed</strong> — and reported.</li>
+</ol>
+<p>If two trained coders can’t agree on it, a model can’t be trusted on it either.</p>
+</section>
+<section id="an-example-of-an-annotation-process" class="slide level2">
+<h2>An example of an annotation process</h2>
+
+<img data-src="../assets/img/nlp-tasks/annotation-process.png" class="r-stretch"></section>
+<section id="build-the-gold-standard" class="slide level2">
+<h2>③ Build the gold standard</h2>
+<ol type="1">
+<li>Two coders annotate the same items <strong>blind</strong>.</li>
+<li>Measure <strong>inter-annotator agreement</strong> — percent <strong>+ κ</strong>.</li>
+<li>Read the confusion matrix → <strong>refine the scheme, re-annotate</strong>.</li>
+<li><strong>Adjudicate</strong> disagreements → a <strong>gold standard</strong>.</li>
+</ol>
+</section>
+<section id="measuring-human-agreement-as-a-benchmark" class="slide level2">
+<h2>④ Measuring human agreement as a benchmark</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<ul>
+<li><p><strong>Human inter-annotator agreement</strong> after modifying the scheme should be reported.</p></li>
+<li><p>Human agreement lays a good benchmark.</p></li>
+</ul>
+</div><div class="column" style="width:35%;">
+<p><img data-src="../assets/img/session4/annotation-reliability.png"></p>
+</div></div>
+</section>
+<section id="evaluate-the-llm-against-gold" class="slide level2 smaller">
+<h2>⑤ Evaluate the LLM against gold</h2>
+<p>Finally, we will explore and evaluate LLM against gold-standard.</p>
+<p>In classical machine-learning experiment, we split the entire dataset into three parts.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Split</th>
+<th style="text-align: center;">Roughly</th>
+<th style="text-align: left;">What it is for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Train</strong></td>
+<td style="text-align: center;">70%</td>
+<td style="text-align: left;">The model learns from these items.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Development</strong> (validation)</td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: left;">You compare settings here and pick the one to keep.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Test</strong></td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: left;">Held back until the end. Score it <strong>once</strong> → <strong>Precision · Recall · F1</strong>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Using LLM, we might not need Train</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Split</th>
+<th style="text-align: center;">Roughly</th>
+<th style="text-align: left;">What it is for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Development</strong> (validation)</td>
+<td style="text-align: center;">??%</td>
+<td style="text-align: left;">You compare settings here and pick the one to keep.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Test</strong></td>
+<td style="text-align: center;">??%</td>
+<td style="text-align: left;">Held back until the end. Score it <strong>once</strong> → <strong>Precision · Recall · F1</strong>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="proposed-steps-1" class="slide level2 smaller">
+<h2>Proposed steps</h2>
+<p>Eguchi &amp; Kyle (2024) lay out the annotation-and-evaluation workflow. We compress it into five steps, and you run steps ③–⑤ yourself in S5–S6.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 40%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Step</th>
+<th style="text-align: left;">What you do</th>
+<th style="text-align: left;">Original</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">①</td>
+<td style="text-align: left;"><strong>Define the annotation task</strong></td>
+<td style="text-align: left;">scope, unit of analysis, metrics</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">②</td>
+<td style="text-align: left;"><strong>Operationalize into a scheme + guidelines</strong></td>
+<td style="text-align: left;">Write/Adapt guideline / Pilot annotation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">③</td>
+<td style="text-align: left;"><strong>Build the gold standard</strong></td>
+<td style="text-align: left;">Two (or more) blind coders, agreement, adjudication</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">④</td>
+<td style="text-align: left;"><strong>Set the target = human agreement</strong></td>
+<td style="text-align: left;">the ceiling for any model</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">⑤</td>
+<td style="text-align: left;"><strong>Evaluate the LLM against gold</strong></td>
+<td style="text-align: left;">P / R / F1, κ, confusion matrix</td>
+</tr>
+</tbody>
+</table>
+</section></section>
+<section>
+<section id="evaluation-metrics" class="title-slide slide level1 center">
+<h1>Evaluation metrics</h1>
+
+</section>
+<section id="metrics" class="slide level2">
+<h2>Metrics</h2>
 <ul>
 <li><strong>P / R / F1</strong>, and <strong>macro-F1</strong> across classes.</li>
 <li><strong>Confusion matrix</strong> — which labels are confused with which.</li>
@@ -549,129 +960,81 @@ Total
 </div>
 </div>
 </div>
-</section>
-<section id="ordered-labels-quadratic-weighted-κ" class="slide level2">
-<h2>Ordered labels: quadratic weighted κ</h2>
-<p>Plain κ treats <strong>every</strong> disagreement as equally bad — scoring <strong>A1 → A2 exactly as wrong as A1 → C2</strong>. But CEFR levels are <strong>ordinal</strong> (A1 &lt; A2 &lt; … &lt; C2), so an error of one level should count less than an error of five.</p>
-<p><strong>Weighted κ</strong> puts a penalty <span class="math inline">\(w_{ij}\)</span> on each off-diagonal cell. With <strong>quadratic</strong> weights over <span class="math inline">\(N\)</span> ordered levels (indices <span class="math inline">\(i, j\)</span>):</p>
-<p><span class="math display">\[w_{ij} = \frac{(i - j)^2}{(N - 1)^2}, \qquad \kappa_w = 1 - \frac{\sum_{ij} w_{ij}\,O_{ij}}{\sum_{ij} w_{ij}\,E_{ij}}\]</span></p>
-<p>For CEFR (<span class="math inline">\(N = 6\)</span>): an error of <strong>one level</strong> weighs <span class="math inline">\(\tfrac{1}{25} = 0.04\)</span> (barely penalized); a distant <strong>A1 ↔︎ C2</strong> error weighs <span class="math inline">\(\tfrac{25}{25} = 1.0\)</span> (full penalty).</p>
 </section></section>
 <section>
-<section id="c-the-define-first-workflow-you-cant-evaluate-what-you-havent-defined" class="title-slide slide level1 center">
-<h1>C · The define-first workflow — you can’t evaluate what you haven’t defined</h1>
+<section id="dataset-for-class-tutorials-arase-et-al.-2022" class="title-slide slide level1 center">
+<h1>Dataset for class tutorials — Arase et al.&nbsp;(2022)</h1>
 
 </section>
-<section id="why-define-the-task-first" class="slide level2 smaller">
-<h2>Why define the task first?</h2>
-<p>An LLM’s <strong>P / R / F1 is only meaningful against a gold standard</strong> — and a gold standard only exists once the category is <strong>operationalized</strong> well enough that two coders agree beyond chance.</p>
-<ul>
-<li>No gold → the score has nothing to compare against.</li>
-<li>Fuzzy category → coders disagree → no trustworthy gold in the first place.</li>
-</ul>
-<p>So before we prompt anything, we <strong>define the task well enough that humans can agree on it.</strong></p>
-</section>
-<section id="the-loop-we-borrow-model-agnostic" class="slide level2 smaller">
-<h2>The loop we borrow — model-agnostic</h2>
-<p><strong>Eguchi &amp; Kyle (2024)</strong> lay out an 11-step tool-building pipeline. It runs <strong>define → operationalize → gold → evaluate</strong> — the <em>model comes almost last</em>:</p>
-<ul>
-<li>The steps that <strong>define the task</strong> and <strong>judge the output</strong> don’t care <em>what</em> produces the labels.</li>
-<li>So we keep them and <strong>swap their trained model for a prompted LLM.</strong></li>
-<li>E&amp;K even suggest <strong>LLM prompting as a first scoping move</strong> — to see which categories are hard.</li>
-</ul>
-</section>
-<section id="define-the-annotation-task" class="slide level2 smaller">
-<h2>① Define the annotation task</h2>
-<p><em>(E&amp;K Steps 1–3)</em></p>
-<ul>
-<li><strong>Scope &amp; purpose</strong> — who uses it, on what texts, for what output?</li>
-<li><strong>Design the task</strong> — <em>input → output</em> over a <strong>unit of analysis</strong> (identify / extract / categorize).</li>
-<li><strong>Reuse or draft</strong> — adopt an existing scheme / tag set if one fits; else draft from the literature.</li>
-<li><strong>Choose the metrics now</strong> (P / R / F1, κ) — so evaluation is <em>planned</em>, not retrofitted.</li>
-<li><strong>Sample data</strong> to represent the domain (proficiency, L1) and <strong>fix the unit</strong>.</li>
-</ul>
-</section>
-<section id="operationalize-into-a-scheme-guidelines" class="slide level2 smaller">
-<h2>② Operationalize into a scheme + guidelines</h2>
-<p><em>(E&amp;K Steps 4–5; <strong>Fuoli, 2018</strong>)</em></p>
-<ul>
-<li>Turn the fuzzy construct into a <strong>decidable rule</strong> a second coder can follow.</li>
-<li><strong>Pilot</strong> on a handful of items — run the whole pipeline once, end to end.</li>
-</ul>
-<p>Fuoli’s three principles:</p>
-<ol type="1">
-<li><strong>All choices accounted for.</strong></li>
-<li><strong>Guidelines tested &amp; refined</strong> until reliable.</li>
-<li><strong>Reliability always assessed</strong> — and reported.</li>
-</ol>
-<p>If two trained coders can’t agree on it, a model can’t be trusted on it either.</p>
-</section>
-<section id="build-the-gold-standard" class="slide level2 smaller">
-<h2>③ Build the gold standard</h2>
-<p><em>(E&amp;K Step 6 → you’ll run this in <strong>S5</strong>)</em></p>
-<ol type="1">
-<li>Two coders annotate the same items <strong>blind</strong>.</li>
-<li>Measure <strong>inter-annotator agreement</strong> — percent <strong>+ κ</strong>.</li>
-<li>Read the confusion matrix → <strong>refine the scheme, re-annotate</strong>.</li>
-<li><strong>Adjudicate</strong> disagreements → a <strong>gold standard</strong>.</li>
-</ol>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>Keep the pre-adjudication human agreement — it becomes your <strong>benchmark</strong>.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="set-the-target-human-agreement" class="slide level2 smaller">
-<h2>④ Set the target = human agreement</h2>
-<p><em>(E&amp;K Step 8a)</em> — the highest score you can realistically expect from <strong>any</strong> model is the <strong>human IAA</strong>.</p>
-<ul>
-<li>E&amp;K expected <strong>~0.70 F1</strong> because their coders agreed at <strong>~0.67 κ</strong>.</li>
-</ul>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>The central point: <em>the better you define the task, the higher humans agree — and the more you can legitimately ask of the LLM.</em></p>
-</div>
-</div>
-</div>
-</section>
-<section id="evaluate-the-llm-against-gold" class="slide level2 smaller">
-<h2>⑤ Evaluate the LLM against gold</h2>
-<p><em>(E&amp;K Step 9 → you’ll run this in <strong>S6</strong>)</em> — same metrics, two comparisons:</p>
-<ul>
-<li><strong>annotator vs.&nbsp;annotator</strong> → <strong>inter-annotator agreement (IAA)</strong></li>
-<li><strong>gold vs.&nbsp;model</strong> → <strong>model evaluation</strong></li>
-</ul>
-<p>Report <strong>P / R / F1 + macro-F1 + κ</strong>, and read the <strong>confusion matrix</strong> to see <em>which</em> labels it confuses. Here the “model” is a <strong>prompted LLM</strong>.</p>
-</section></section>
-<section>
-<section id="d-dataset-for-class-tutorials-arase-et-al.-2022" class="title-slide slide level1 center">
-<h1>D · Dataset for class tutorials — Arase et al.&nbsp;(2022)</h1>
-<!-- The overarching introduction + motivation lives HERE, at the end of S4. S5 opens directly
-     with the guided extraction of §3.1/§3.2 — do NOT re-summarise the paper there. -->
-</section>
-<section id="arase-uchida-kajiwara-2022" class="slide level2 smaller">
+<section id="arase-uchida-kajiwara-2022" class="slide level2">
 <h2>Arase, Uchida &amp; Kajiwara (2022)</h2>
-<p><strong>“CEFR-Based Sentence Difficulty Annotation and Assessment”</strong> (EMNLP 2022) — the <strong>CEFR-SP</strong> corpus: 17k English sentences, each labelled with a <strong>CEFR level</strong> by English-education professionals.</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><strong>“CEFR-Based Sentence Difficulty Annotation and Assessment”</strong> (EMNLP 2022).</p>
+</div><div class="column" style="width:55%;">
+<p><img data-src="../assets/img/session4/arase.png"></p>
+</div></div>
 <ul>
-<li><strong>The problem.</strong> Simplifying text for learners requires knowing <em>how hard a sentence is</em>. But readability corpora are <strong>document</strong>-level and built for <strong>L1</strong> readers — while simplification rewrites <strong>sentences</strong>, for <strong>L2</strong> readers.</li>
-<li><strong>The gap that fixes the task.</strong> Nothing labelled <em>sentence</em> difficulty against <em>language ability</em>. So: <strong>input = one sentence · output = one CEFR level.</strong></li>
-<li><strong>The difficulty is in the task definition, not the model.</strong> CEFR is a <strong>skill</strong> scale — “can-do” statements about what <em>learners</em> can do. It says nothing about sentences. Making it apply to a sentence <em>is</em> the design problem.</li>
+<li><p><strong>The problem.</strong> Simplifying text for learners requires knowing <em>how hard a sentence is</em>.</p></li>
+<li><p><strong>Goal</strong>: Creating a corpus that is annotated for sentence difficulties according to CEFR levels.</p></li>
+<li><p><em>How did they operationalize CEFR levels?</em></p></li>
 </ul>
+</section>
+<section id="methodology" class="slide level2 smaller">
+<h2>Methodology</h2>
+<ul>
+<li>They used CEFR “can-do” statements to infer the level of the passage.</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 86%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Level</th>
+<th style="text-align: left;">Overall reading comprehension descriptor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>C2</strong></td>
+<td style="text-align: left;">Can understand virtually all types of texts including abstract, structurally complex, or highly colloquial literary and non-literary writings.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>C1</strong></td>
+<td style="text-align: left;">Can understand in detail lengthy, complex texts, whether or not these relate to their own area of speciality, provided they can reread difficult sections.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>B2</strong></td>
+<td style="text-align: left;">Can read with a large degree of independence, adapting style and speed of reading to different texts and purposes. Has a broad active reading vocabulary, but may experience some difficulty with low-frequency idioms.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>B1</strong></td>
+<td style="text-align: left;">Can read straightforward factual texts on subjects related to their field of interest with a satisfactory level of comprehension.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>A2</strong></td>
+<td style="text-align: left;">Can understand short, simple texts on familiar matters of a concrete type which consist of high frequency everyday or job-related language.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>A1</strong></td>
+<td style="text-align: left;">Can understand very short, simple texts a single phrase at a time, picking up familiar names, words and basic phrases and rereading as required.</td>
+</tr>
+</tbody>
+</table>
+<div style="font-size: 60%">
+<p>Council of Europe (2020). <em>Common European Framework of Reference for Languages: Learning, teaching, assessment — Companion volume.</em></p>
+</div>
+</section>
+<section id="a-problem-with-the-approach" class="slide level2">
+<h2>A problem with the approach</h2>
+<p>The descriptors describe what a <strong>learner</strong> can do — not what a <strong>sentence</strong> is.</p>
+<ul>
+<li>They talk about text <em>types</em> (“literary writings”, “factual texts”) and reading <em>conditions</em> (“provided they can reread”).</li>
+<li>None of that applies to a single, context-free sentence.</li>
+</ul>
+<p><strong>Making the scale apply to one sentence is the design problem</strong></p>
 </section>
 <section id="what-the-labels-look-like" class="slide level2 smaller">
 <h2>What the labels look like</h2>
@@ -723,8 +1086,8 @@ Total
 </tbody>
 </table>
 </section>
-<section id="why-this-paper-for-this-course" class="slide level2 smaller">
-<h2>Why this paper, for this course</h2>
+<section id="why-do-we-use-cefr-sp-project" class="slide level2">
+<h2>Why do we use CEFR-SP project?</h2>
 <ul>
 <li><strong>The task is familiar.</strong> Simplification — and judging what level a sentence is pitched at — is something language teachers and applied linguists are interested in.</li>
 <li><strong>The task is simple enough.</strong> One sentence, one label. Simple enough for the tutorial example.</li>
@@ -744,11 +1107,11 @@ Total
 </div>
 </div>
 </section>
-<section id="coming-up" class="slide level2">
-<h2>Coming up</h2>
+<section id="in-the-afternoon" class="slide level2">
+<h2>In the afternoon</h2>
 <ul>
-<li><strong>S5 — Gold-Standard Annotation &amp; Agreement</strong> <em>(hands-on)</em>: extract Arase’s two design decisions, then build a gold standard and measure agreement — executes <strong>Phases ①–③</strong>.</li>
-<li><strong>S6 — Gold Standards &amp; Evaluation Metrics</strong> <em>(hands-on)</em>: score an LLM against that gold — executes <strong>Phases ④–⑤</strong>.</li>
+<li><p><strong>S5 — Gold-Standard Annotation &amp; Agreement</strong> <em>(hands-on)</em>: extract Arase’s two design decisions, then build a gold standard and measure agreement — executes <strong>Phases ①–③</strong>.</p></li>
+<li><p><strong>S6 — Gold Standards &amp; Evaluation Metrics</strong> <em>(hands-on)</em>: score an LLM against that gold — executes <strong>Phases ④–⑤</strong>.</p></li>
 </ul>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
