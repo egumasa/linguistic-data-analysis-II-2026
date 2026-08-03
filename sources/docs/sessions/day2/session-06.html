@@ -420,19 +420,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <!-- BEING-PREPARED-BANNER -->
-<div class="callout callout-style-simple callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>🚧 Being prepared
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This page is being finalized ahead of the course (<strong>Aug 3–7, 2026</strong>) and may be incomplete or change before your session. The <a href="../../syllabus/index.html">syllabus</a> and <a href="../../syllabus/readings.html">readings</a> are ready now.</p>
-</div>
-</div>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this session you will be able to:</p>
@@ -481,11 +468,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="slides-colab" class="level2">
 <h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
-<!--
-- Notebook (tutorial + Corpus Lab): [`day2-s6_evaluation_metrics.ipynb`](../../notebooks/day2-s6_evaluation_metrics.ipynb) —
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s6_evaluation_metrics.ipynb)
-- Slides: [Session 6 slides](../../slides/slides-session-06.html){target="_blank"}
--->
+<ul>
+<li>Notebook (session 6): <a href="../../notebooks/day2-s6_evaluation_metrics.html"><code>day2-s6_evaluation_metrics.ipynb</code></a> — <a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s6_evaluation_metrics.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open In Colab"></a></li>
+</ul>
 
 
 <!-- -->
@@ -956,61 +941,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Day 2 · Annotation, Gold Standards &amp; Metrics (2-3)"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning appearance="simple"}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🚧 Being prepared</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The <span class="co">[</span><span class="ot">syllabus</span><span class="co">](/syllabus/index.md)</span> and <span class="co">[</span><span class="ot">readings</span><span class="co">](/syllabus/readings.md)</span> are ready now.</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Decide, for a single item, which of **TP · FP · FN · TN** it lands in, and write that decision as an <span class="in">`if`</span>/<span class="in">`elif`</span>.</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Loop** over a labelled set, **store** one verdict per item, and **tally** the four counts.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Build a **confusion matrix** from those counts and read it — which errors are misses, and which are false alarms.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compute **precision, recall, F1** and **Cohen's κ** *from scratch*, and say what question each one answers.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reproduce all of it with **scikit-learn** on the real six-level task — `classification_report`, `confusion_matrix`, `cohen_kappa_score` — and choose between **plain and weighted κ** depending on whether your labels are ordered.</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Read a gold file as a <span class="in">`{id, text, label}`</span> list of dicts, and recognise <span class="in">`with open(...)`</span> for reading/writing data files.</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Interpret the metrics critically — what a high or low score does and doesn't tell you.</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Yesterday's question was *"do two people agree?"* Today's is **"is the model any good?"** — the same tools, with one column swapped. Works through `day2-s6_evaluation_metrics.ipynb` in **two passes** over the same data.</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>**Pass 1 — you build the metrics** *(notebook Part A)*. On a single yes/no question — *is this sentence advanced?* — so there are four counts to track instead of thirty-six, and twelve items you can count by hand.</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Collapse six CEFR levels to one yes/no question, and name the **positive class**.</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Decide one item with an <span class="in">`if`</span>, then all four outcomes with an <span class="in">`if`</span>/<span class="in">`elif`</span> ladder.</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Wrap it in a function, **loop** over the items, and **store** every verdict.</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Tally** the verdicts → build the **confusion matrix** → read it.</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Derive **precision, recall, F1** and **Cohen's κ** from those same four numbers.</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Re-run on all 72 items, then **check your code against scikit-learn**.</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>**Pass 2 — scikit-learn at scale** *(notebook Part B)*. The real six-level task: `classification_report` as one-vs-rest run six times, the confusion matrix read **down the columns**, plain vs. quadratic-weighted κ, and error analysis — *"is the disagreement the model's fault, or the scheme's?"*</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>The session closes with the **作戦会議** strategy huddle: turn today's mechanics onto your own project track — a draft annotation scheme, your gold source, and the agreement you would accept.</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>The whole session runs on **frozen predictions** — no API key, no live model — so everyone's numbers come out identical every run. You'll run the model live yourself from Day 3 onward; today the focus is *measuring* quality, not producing it.</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Keep the slides and Colab open side by side</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>The code is on the slides, line by line, next to what it prints — and you type it in Colab as we go. If you fall behind, copy the cell from the slide, run it, and rejoin.</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 2 reading (Eguchi &amp; Kyle, 2024) in <span class="co">[</span><span class="ot">Session 4</span><span class="co">](session-04.md)</span> and the optional further reading on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">- Notebook (tutorial + Corpus Lab): [`day2-s6_evaluation_metrics.ipynb`](../../notebooks/day2-s6_evaluation_metrics.ipynb) —</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co">  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s6_evaluation_metrics.ipynb)</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">- Slides: [Session 6 slides](../../slides/slides-session-06.html){target="_blank"}</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Decide, for a single item, which of **TP · FP · FN · TN** it lands in, and write that decision as an <span class="in">`if`</span>/<span class="in">`elif`</span>.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Loop** over a labelled set, **store** one verdict per item, and **tally** the four counts.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Build a **confusion matrix** from those counts and read it — which errors are misses, and which are false alarms.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compute **precision, recall, F1** and **Cohen's κ** *from scratch*, and say what question each one answers.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reproduce all of it with **scikit-learn** on the real six-level task — `classification_report`, `confusion_matrix`, `cohen_kappa_score` — and choose between **plain and weighted κ** depending on whether your labels are ordered.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Read a gold file as a <span class="in">`{id, text, label}`</span> list of dicts, and recognise <span class="in">`with open(...)`</span> for reading/writing data files.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Interpret the metrics critically — what a high or low score does and doesn't tell you.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>Yesterday's question was *"do two people agree?"* Today's is **"is the model any good?"** — the same tools, with one column swapped. Works through `day2-s6_evaluation_metrics.ipynb` in **two passes** over the same data.</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>**Pass 1 — you build the metrics** *(notebook Part A)*. On a single yes/no question — *is this sentence advanced?* — so there are four counts to track instead of thirty-six, and twelve items you can count by hand.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Collapse six CEFR levels to one yes/no question, and name the **positive class**.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Decide one item with an <span class="in">`if`</span>, then all four outcomes with an <span class="in">`if`</span>/<span class="in">`elif`</span> ladder.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Wrap it in a function, **loop** over the items, and **store** every verdict.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Tally** the verdicts → build the **confusion matrix** → read it.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Derive **precision, recall, F1** and **Cohen's κ** from those same four numbers.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Re-run on all 72 items, then **check your code against scikit-learn**.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>**Pass 2 — scikit-learn at scale** *(notebook Part B)*. The real six-level task: `classification_report` as one-vs-rest run six times, the confusion matrix read **down the columns**, plain vs. quadratic-weighted κ, and error analysis — *"is the disagreement the model's fault, or the scheme's?"*</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>The session closes with the **作戦会議** strategy huddle: turn today's mechanics onto your own project track — a draft annotation scheme, your gold source, and the agreement you would accept.</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>The whole session runs on **frozen predictions** — no API key, no live model — so everyone's numbers come out identical every run. You'll run the model live yourself from Day 3 onward; today the focus is *measuring* quality, not producing it.</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## Keep the slides and Colab open side by side</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>The code is on the slides, line by line, next to what it prints — and you type it in Colab as we go. If you fall behind, copy the cell from the slide, run it, and rejoin.</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 2 reading (Eguchi &amp; Kyle, 2024) in <span class="co">[</span><span class="ot">Session 4</span><span class="co">](session-04.md)</span> and the optional further reading on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Notebook (session 6): <span class="co">[</span><span class="ot">`day2-s6_evaluation_metrics.ipynb`</span><span class="co">](../../notebooks/day2-s6_evaluation_metrics.ipynb)</span> —</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s6_evaluation_metrics.ipynb)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

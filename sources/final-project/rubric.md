@@ -3,21 +3,16 @@ title: "Rubric"
 subtitle: "What is graded — and what is not"
 toc: true
 ---
-
 ::: {.callout-important}
-## Macro-F1 is not graded
-A careful study reporting **F1 = 0.31** with a clear account of *why* scores higher than a
-sloppy one reporting **0.82**.
 
-What is graded is whether your numbers are **defensible**: reproducible (frozen predictions,
-pinned model, `temperature=0`), honestly reported, and interpreted. A low κ is likewise not a
-penalty — it is a finding about your scheme.
+## The accuracy is not graded
+
+A careful study reporting **F1 = 0.31** with a clear account of *why* scores higher than a sloppy one reporting **0.82**.
+
+What is graded is whether your numbers are **defensible**: reproducible (frozen predictions, pinned model, `temperature=0`), honestly reported, and interpreted. A low κ is likewise not a penalty — it is a finding about your scheme.
 :::
 
-This matters for your track choice. `cars50` is the hardest track precisely because its own
-annotators only reached κ ≈ 0.43 — which makes it the *best* track for showing you can tell
-"the model is wrong" apart from "the scheme is fuzzy". Picking the easy track to protect your
-F1 buys you nothing here.
+This matters for your track choice. `cars50` is the hardest track precisely because its own annotators only reached κ ≈ 0.43 — which makes it the *best* track for showing you can tell "the model is wrong" apart from "the scheme is fuzzy". Picking the easy track to protect your F1 buys you nothing here.
 
 ## Presentation + Q&A
 
@@ -31,21 +26,23 @@ Four criteria. The weighting is on the syllabus.
    the most disagreement, and what your scheme now says about it.
 4. **Every member speaks** and can answer a question about their own slide.
 
-## One-page report
+## Two-page report
 
-Five sections, each scored on **specificity** — named items and actual numbers, not high
-numbers.
+**Written individually**, so this part of your mark is your own. Six sections, each scored
+on **specificity** — named items and actual numbers, not high numbers.
 
-| Section | What earns the marks |
-|---|---|
-| 1 · Scheme & gold | the label set, sample size, per-label counts, your κ, and **what adjudication changed** |
-| 2 · Prompt iterations | ≥2 rounds, each with a **stated reason** for the change — not "added examples" |
-| 3 · Evaluation | per-class P/R/F1 + confusion matrix + which class did worst, and what it was confused with |
-| 4 · Error analysis | ≥3 misses attributed to model or scheme, **with a reason each** |
-| 5 · Limitations | ≥2 that apply to **your** run — not the generic three the scaffold ships with |
+| Section                | What earns the marks                                                                          |
+| ---------------------- | --------------------------------------------------------------------------------------------- |
+| 1 · Intro             | what the topic is and why it matters, in your own framing                                    |
+| 2 · Methodology       | the corpus and sampling; the label set, sample size, per-label counts, your κ and**what adjudication changed**; and your split, with a reason |
+| 3 · Prompt iterations | ≥2 rounds, each with a**stated reason** for the change — not "added examples"         |
+| 4 · Evaluation        | per-class P/R/F1 + confusion matrix + which class did worst, and what it was confused with    |
+| 5 · Error analysis    | ≥3 misses attributed to model or scheme,**with a reason each**                         |
+| 6 · Limitations       | ≥2 that apply to**your** run — not the three generic ones anyone could write         |
 
-A section left as the export scaffold's own italic placeholder prose scores **0** for that
-section. `make_submission.py` warns you if any are still there.
+Sections 5 and 6 are where two members of the same group should visibly diverge. You ran
+one study together; what you make of its errors, and which of its limits you think matter
+most, is yours to argue.
 
 ## Two mechanical integrity checks
 

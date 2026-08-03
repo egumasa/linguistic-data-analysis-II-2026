@@ -62,8 +62,8 @@ This intensive 5-day course covers LLM-based linguistic data analysis — annota
 
 | #  | Session | What we'll do |
 | -- | ------- | ------------- |
-| 13 | [Project Work: Prompt Iteration & Final Evaluation](day5/session-13.md) | Iterate your prompt (2–3 cycles), run the final evaluation, and begin the in-class one-page report. |
-| 14 | [Project Work: Finalize Report & Notebook](day5/session-14.md) | Finalize the one-page report, prepare your presentation, and submit the completed notebook. |
+| 13 | [Project Work: Prompt Iteration & Final Evaluation](day5/session-13.md) | Iterate your prompt (2–3 cycles), run the final evaluation, and begin the in-class two-page report. |
+| 14 | [Project Work: Finalize Report & Notebook](day5/session-14.md) | Finalize the two-page report, prepare your presentation, and submit the completed notebook. |
 | 15 | [Final Presentations & Wrap-up](day5/session-15.md) | Group presentations with instructor Q&A and a course wrap-up discussion. |
 
 *No new reading for Day 5 — project work only.*

@@ -212,7 +212,7 @@
 <h2>📋 Agenda</h2>
 <ul>
 <li><strong>Error analysis</strong> — the highest-value part of the project</li>
-<li>Writing the four things the scaffold cannot compute</li>
+<li>Writing your own two-page report from the numbers on screen</li>
 <li>Building the bundle, and checking it reproduces</li>
 <li>Five slides</li>
 </ul>
@@ -320,29 +320,36 @@
 <h1>The report</h1>
 
 </section>
-<section id="the-scaffold-computes-the-numbers-for-you" class="slide level2">
-<h2>The scaffold computes the numbers for you</h2>
-<p><code>export_results</code> fills in your label set, per-label counts, and the F1-per-round table.</p>
-<p>Everything in <em>italics</em> is yours:</p>
-<ol type="1">
-<li>what your adjudication <strong>changed</strong></li>
-<li>the <strong>reason</strong> for each prompt change</li>
-<li>the error <strong>attributions</strong></li>
-<li>limitations that apply to <strong>your</strong> run</li>
-</ol>
-<div class="callout callout-warning callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Warning</strong></p>
-</div>
-<div class="callout-content">
-<p>A section left with the scaffold’s own text scores <strong>zero</strong>. <code>make_submission.py</code> warns you about this.</p>
-</div>
-</div>
-</div>
+<section id="the-notebook-prints-you-write" class="slide level2">
+<h2>The notebook prints; you write</h2>
+<p>Nothing drafts the report for you. Every number it needs is on screen in <code>06_report.ipynb</code>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Section</th>
+<th>Where the numbers are</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2 Methodology</td>
+<td>your κ and counts, from notebook 03</td>
+</tr>
+<tr class="even">
+<td>3 Prompt iterations</td>
+<td>the rounds-and-reasons table, step 1</td>
+</tr>
+<tr class="odd">
+<td>4 Evaluation</td>
+<td>per-class P/R/F1 and the matrix, step 3</td>
+</tr>
+<tr class="even">
+<td>5 Error analysis</td>
+<td><code>show_errors</code>, step 4</td>
+</tr>
+</tbody>
+</table>
+<p>Two pages, six sections, in Word. <strong>One per person</strong> — the study is the group’s, the report is yours.</p>
 </section>
 <section id="limitations-that-are-actually-yours" class="slide level2">
 <h2>Limitations that are actually yours</h2>
@@ -352,7 +359,7 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Generic (already in the scaffold)</strong></p>
+<p><strong>Generic — true of every project on the course</strong></p>
 </div>
 <div class="callout-content">
 <p>“LLM output is stochastic.” · “Contamination risk.” · “Small sample.”</p>

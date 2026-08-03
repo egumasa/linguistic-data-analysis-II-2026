@@ -26,7 +26,7 @@ By the end of this session you will be able to:
 2. **Reproducibility in practice** — pin · log · `temperature=0` + seed · freeze.
 3. **Limits** — hallucination, contamination, stochasticity. Which apply to *your* track?
 4. **Ethics** — privacy in learner data, authorship, and what you owe a corpus's licence.
-5. **The reporting checklist** — the five sections your report must cover, and why each exists.
+5. **The reporting checklist** — the six sections your report must cover, and why each exists.
 
 This session is the switch from tutorial mode to project mode. Everything after it is your own study.
 

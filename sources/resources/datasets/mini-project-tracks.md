@@ -93,6 +93,6 @@ Extensions: compare holistic vs. a single analytic dimension; check whether the 
 All on the Final Project pages, so there is one authoritative copy of each:
 
 - [Deliverables & submission](../../final-project/deliverables.md) — the bundle, the report's
-  five sections, the presentation format.
+  six sections, the presentation format.
 - [Rubric](../../final-project/rubric.md) — what is graded. Your F1 is not.
 - [The `PLAN.md` gate](../../final-project/plan.md) — write this before you call the model.

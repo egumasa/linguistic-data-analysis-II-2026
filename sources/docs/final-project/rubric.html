@@ -234,7 +234,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#presentation-qa" id="toc-presentation-qa" class="nav-link active" data-scroll-target="#presentation-qa">Presentation + Q&amp;A</a></li>
-  <li><a href="#one-page-report" id="toc-one-page-report" class="nav-link" data-scroll-target="#one-page-report">One-page report</a></li>
+  <li><a href="#two-page-report" id="toc-two-page-report" class="nav-link" data-scroll-target="#two-page-report">Two-page report</a></li>
   <li><a href="#two-mechanical-integrity-checks" id="toc-two-mechanical-integrity-checks" class="nav-link" data-scroll-target="#two-mechanical-integrity-checks">Two mechanical integrity checks</a></li>
   <li><a href="#completed-notebook" id="toc-completed-notebook" class="nav-link" data-scroll-target="#completed-notebook">Completed notebook</a></li>
   </ul>
@@ -269,7 +269,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Macro-F1 is not graded
+<span class="screen-reader-only">Important</span>The accuracy is not graded
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -288,13 +288,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Every member speaks</strong> and can answer a question about their own slide.</li>
 </ol>
 </section>
-<section id="one-page-report" class="level2">
-<h2 class="anchored" data-anchor-id="one-page-report">One-page report</h2>
-<p>Five sections, each scored on <strong>specificity</strong> — named items and actual numbers, not high numbers.</p>
+<section id="two-page-report" class="level2">
+<h2 class="anchored" data-anchor-id="two-page-report">Two-page report</h2>
+<p><strong>Written individually</strong>, so this part of your mark is your own. Six sections, each scored on <strong>specificity</strong> — named items and actual numbers, not high numbers.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 19%">
+<col style="width: 80%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -304,28 +304,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>1 · Scheme &amp; gold</td>
-<td>the label set, sample size, per-label counts, your κ, and <strong>what adjudication changed</strong></td>
+<td>1 · Intro</td>
+<td>what the topic is and why it matters, in your own framing</td>
 </tr>
 <tr class="even">
-<td>2 · Prompt iterations</td>
-<td>≥2 rounds, each with a <strong>stated reason</strong> for the change — not “added examples”</td>
+<td>2 · Methodology</td>
+<td>the corpus and sampling; the label set, sample size, per-label counts, your κ and<strong>what adjudication changed</strong>; and your split, with a reason</td>
 </tr>
 <tr class="odd">
-<td>3 · Evaluation</td>
+<td>3 · Prompt iterations</td>
+<td>≥2 rounds, each with a<strong>stated reason</strong> for the change — not “added examples”</td>
+</tr>
+<tr class="even">
+<td>4 · Evaluation</td>
 <td>per-class P/R/F1 + confusion matrix + which class did worst, and what it was confused with</td>
 </tr>
-<tr class="even">
-<td>4 · Error analysis</td>
-<td>≥3 misses attributed to model or scheme, <strong>with a reason each</strong></td>
-</tr>
 <tr class="odd">
-<td>5 · Limitations</td>
-<td>≥2 that apply to <strong>your</strong> run — not the generic three the scaffold ships with</td>
+<td>5 · Error analysis</td>
+<td>≥3 misses attributed to model or scheme,<strong>with a reason each</strong></td>
+</tr>
+<tr class="even">
+<td>6 · Limitations</td>
+<td>≥2 that apply to<strong>your</strong> run — not the three generic ones anyone could write</td>
 </tr>
 </tbody>
 </table>
-<p>A section left as the export scaffold’s own italic placeholder prose scores <strong>0</strong> for that section. <code>make_submission.py</code> warns you if any are still there.</p>
+<p>Sections 5 and 6 are where two members of the same group should visibly diverge. You ran one study together; what you make of its errors, and which of its limits you think matter most, is yours to argue.</p>
 </section>
 <section id="two-mechanical-integrity-checks" class="level2">
 <h2 class="anchored" data-anchor-id="two-mechanical-integrity-checks">Two mechanical integrity checks</h2>
@@ -809,69 +813,66 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "What is graded — and what is not"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Macro-F1 is not graded</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>A careful study reporting **F1 = 0.31** with a clear account of *why* scores higher than a</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>sloppy one reporting **0.82**.</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## The accuracy is not graded</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>A careful study reporting **F1 = 0.31** with a clear account of *why* scores higher than a sloppy one reporting **0.82**.</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>What is graded is whether your numbers are **defensible**: reproducible (frozen predictions,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>pinned model, <span class="in">`temperature=0`</span>), honestly reported, and interpreted. A low κ is likewise not a</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>penalty — it is a finding about your scheme.</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>What is graded is whether your numbers are **defensible**: reproducible (frozen predictions, pinned model, <span class="in">`temperature=0`</span>), honestly reported, and interpreted. A low κ is likewise not a penalty — it is a finding about your scheme.</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>This matters for your track choice. <span class="in">`cars50`</span> is the hardest track precisely because its own annotators only reached κ ≈ 0.43 — which makes it the *best* track for showing you can tell "the model is wrong" apart from "the scheme is fuzzy". Picking the easy track to protect your F1 buys you nothing here.</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>This matters for your track choice. <span class="in">`cars50`</span> is the hardest track precisely because its own</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>annotators only reached κ ≈ 0.43 — which makes it the *best* track for showing you can tell</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>"the model is wrong" apart from "the scheme is fuzzy". Picking the easy track to protect your</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>F1 buys you nothing here.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Presentation + Q&amp;A</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Four criteria. The weighting is on the syllabus.</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**The pipeline is narrated as an I/O chain** — what each step consumes and produces — not</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>   read off the slides. This is the <span class="co">[</span><span class="ot">`PLAN.md`</span><span class="co">](plan.md)</span> table, out loud.</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**The mandatory error item is answered with a reasoned attribution.** Evidence from the</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>   item itself, not "the model is bad at C1".</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**The QC pass is described concretely**: how many labels changed, which label pair caused</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>   the most disagreement, and what your scheme now says about it.</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Every member speaks** and can answer a question about their own slide.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Presentation + Q&amp;A</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>Four criteria. The weighting is on the syllabus.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**The pipeline is narrated as an I/O chain** — what each step consumes and produces — not</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>   read off the slides. This is the <span class="co">[</span><span class="ot">`PLAN.md`</span><span class="co">](plan.md)</span> table, out loud.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**The mandatory error item is answered with a reasoned attribution.** Evidence from the</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>   item itself, not "the model is bad at C1".</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**The QC pass is described concretely**: how many labels changed, which label pair caused</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>   the most disagreement, and what your scheme now says about it.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Every member speaks** and can answer a question about their own slide.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two-page report</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>**Written individually**, so this part of your mark is your own. Six sections, each scored</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>on **specificity** — named items and actual numbers, not high numbers.</span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## One-page report</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>Five sections, each scored on **specificity** — named items and actual numbers, not high</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>numbers.</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Section <span class="pp">|</span> What earns the marks <span class="pp">|</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 · Scheme &amp; gold <span class="pp">|</span> the label set, sample size, per-label counts, your κ, and **what adjudication changed** <span class="pp">|</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · Prompt iterations <span class="pp">|</span> ≥2 rounds, each with a **stated reason** for the change — not "added examples" <span class="pp">|</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 · Evaluation <span class="pp">|</span> per-class P/R/F1 + confusion matrix + which class did worst, and what it was confused with <span class="pp">|</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 · Error analysis <span class="pp">|</span> ≥3 misses attributed to model or scheme, **with a reason each** <span class="pp">|</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 · Limitations <span class="pp">|</span> ≥2 that apply to **your** run — not the generic three the scaffold ships with <span class="pp">|</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Section                <span class="pp">|</span> What earns the marks                                                                          <span class="pp">|</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="pp">| ----------------------</span> <span class="pp">| ---------------------------------------------------------------------------------------------</span> <span class="pp">|</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 · Intro             <span class="pp">|</span> what the topic is and why it matters, in your own framing                                    <span class="pp">|</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · Methodology       <span class="pp">|</span> the corpus and sampling; the label set, sample size, per-label counts, your κ and**what adjudication changed**; and your split, with a reason <span class="pp">|</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 · Prompt iterations <span class="pp">|</span> ≥2 rounds, each with a**stated reason** for the change — not "added examples"         <span class="pp">|</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 · Evaluation        <span class="pp">|</span> per-class P/R/F1 + confusion matrix + which class did worst, and what it was confused with    <span class="pp">|</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 · Error analysis    <span class="pp">|</span> ≥3 misses attributed to model or scheme,**with a reason each**                         <span class="pp">|</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 6 · Limitations       <span class="pp">|</span> ≥2 that apply to**your** run — not the three generic ones anyone could write         <span class="pp">|</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>Sections 5 and 6 are where two members of the same group should visibly diverge. You ran</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>one study together; what you make of its errors, and which of its limits you think matter</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>most, is yours to argue.</span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>A section left as the export scaffold's own italic placeholder prose scores **0** for that</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>section. <span class="in">`make_submission.py`</span> warns you if any are still there.</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two mechanical integrity checks</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>Neither is about suspicion; both are about the numbers meaning what they say.</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`PLAN.md` signed before the first model call.** A final run made before sign-off is not</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  accepted as the final run. (See <span class="co">[</span><span class="ot">the gate</span><span class="co">](plan.md)</span>.)</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`scripts/` is unmodified.** The plumbing is documented as not-to-be-edited, so your</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  submitted copy is diffed against the template. A changed <span class="in">`metrics.py`</span> or <span class="in">`pipeline.py`</span> needs</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  explaining before the numbers can be taken at face value.</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>If you *did* need to change something in <span class="in">`scripts/`</span> — a bug, a track the helpers do not</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>handle — say so in your limitations section and explain what and why. That is a perfectly good</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>outcome. Silently changing it is not.</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="fu">## Completed notebook</span></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>Graded under hands-on. What is checked: it runs top to bottom on a fresh runtime, your frozen</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>predictions file exists, and the numbers in your report are the ones the notebook actually</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>produces.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two mechanical integrity checks</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>Neither is about suspicion; both are about the numbers meaning what they say.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`PLAN.md` signed before the first model call.** A final run made before sign-off is not</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  accepted as the final run. (See <span class="co">[</span><span class="ot">the gate</span><span class="co">](plan.md)</span>.)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`scripts/` is unmodified.** The plumbing is documented as not-to-be-edited, so your</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  submitted copy is diffed against the template. A changed <span class="in">`metrics.py`</span> or <span class="in">`pipeline.py`</span> needs</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  explaining before the numbers can be taken at face value.</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>If you *did* need to change something in <span class="in">`scripts/`</span> — a bug, a track the helpers do not</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>handle — say so in your limitations section and explain what and why. That is a perfectly good</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>outcome. Silently changing it is not.</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="fu">## Completed notebook</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>Graded under hands-on. What is checked: it runs top to bottom on a fresh runtime, your frozen</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>predictions file exists, and the numbers in your report are the ones the notebook actually</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>produces.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

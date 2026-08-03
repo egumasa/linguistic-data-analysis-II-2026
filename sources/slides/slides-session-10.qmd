@@ -22,7 +22,7 @@ For three days you have checked an LLM's output against a gold standard. Today: 
 - **Reproducibility** — pin · log · `temperature=0` + seed · **freeze**
 - **Limits** — hallucination, data contamination, stochasticity
 - **Ethics** — privacy, authorship, and what a licence actually asks of you
-- **The reporting checklist** — the five sections you will hand in
+- **The reporting checklist** — the six sections you will hand in
 
 ::: {.callout-note}
 This is the switch from tutorial mode to **project mode**. Everything after this session is your own study.
@@ -174,15 +174,18 @@ So is most of the published literature. The difference between good and bad work
 
 # The reporting checklist
 
-## Five sections
+## Six sections
 
 | | Section | The thing that makes it good |
 |---|---|---|
-| 1 | Scheme & gold | **what adjudication changed** |
-| 2 | Prompt iterations | a *reason* per round, not just an F1 |
-| 3 | Evaluation | which class did worst, and what it got confused with |
-| 4 | Error analysis | model error or unclear scheme — with evidence |
-| 5 | Limitations | ≥2 that apply to **your** run |
+| 1 | Intro | why this topic matters |
+| 2 | Methodology | sampling · scheme & gold · split — and **what adjudication changed** |
+| 3 | Prompt iterations | a *reason* per round, not just an F1 |
+| 4 | Evaluation | which class did worst, and what it got confused with |
+| 5 | Error analysis | model error or unclear scheme — with evidence |
+| 6 | Limitations | ≥2 that apply to **your** run |
+
+Two pages, written **individually**. One study per group, one report per person.
 
 ## How the report is graded
 

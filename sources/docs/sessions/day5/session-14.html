@@ -441,17 +441,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Attribute concrete errors to the <strong>model</strong> or to the <strong>scheme</strong>, with a reason for each.</li>
 <li>Write limitations that apply to <em>your</em> run rather than generic ones.</li>
 <li>Assemble the submission bundle and confirm the notebook runs top to bottom on a fresh runtime.</li>
-<li>Build five slides that map onto the five report sections.</li>
+<li>Build five slides that map onto the report’s sections.</li>
 </ul>
 </section>
 <section id="agenda" class="level2">
 <h2 class="anchored" data-anchor-id="agenda">Agenda</h2>
 <ol type="1">
 <li><strong>Error analysis</strong> — <code>show_errors</code>, then cross-reference against the rows you adjudicated in Session 12. Overlap between the two is a finding, not a failure.</li>
-<li><strong>Write the report</strong> — <code>export_results</code> gives you the scaffold; you write the four things it cannot compute.</li>
+<li><strong>Write the report</strong> — your own two pages, six sections, from the numbers <code>06_report.ipynb</code> prints on screen.</li>
 <li><strong>Build the bundle</strong> — <code>python scripts/make_submission.py --group &lt;yours&gt;</code>, then check what it says is missing.</li>
 <li><strong>Restart and Run all</strong> — if your notebook only works in the session you built it in, it does not reproduce.</li>
-<li><strong>Five slides</strong>, one per report section.</li>
+<li><strong>Five slides</strong>, one per section from methodology onward.</li>
 </ol>
 </section>
 <section id="reading" class="level2">
@@ -475,11 +475,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>The placeholders are not filler
+<span class="screen-reader-only">Warning</span>The report is written individually
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>export_results</code> writes the report in <em>italics</em> where you are meant to write. A section left as the scaffold’s own prose scores zero — and <code>make_submission.py</code> will warn you if any are still there.</p>
+<p>Your group runs one study and hands in one bundle. Each member then writes their own two-page report and uploads it separately. Sections 5 and 6 — what you make of the errors, and which limits you think matter — are where two members of the same group should differ.</p>
 </div>
 </div>
 
@@ -967,15 +967,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Attribute concrete errors to the **model** or to the **scheme**, with a reason for each.</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Write limitations that apply to *your* run rather than generic ones.</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Assemble the submission bundle and confirm the notebook runs top to bottom on a fresh runtime.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Build five slides that map onto the five report sections.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Build five slides that map onto the report's sections.</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Error analysis** — <span class="in">`show_errors`</span>, then cross-reference against the rows you adjudicated in Session 12. Overlap between the two is a finding, not a failure.</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Write the report** — <span class="in">`export_results`</span> gives you the scaffold; you write the four things it cannot compute.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Write the report** — your own two pages, six sections, from the numbers <span class="in">`06_report.ipynb`</span> prints on screen.</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Build the bundle** — <span class="in">`python scripts/make_submission.py --group &lt;yours&gt;`</span>, then check what it says is missing.</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Restart and Run all** — if your notebook only works in the session you built it in, it does not reproduce.</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Five slides**, one per report section.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Five slides**, one per section from methodology onward.</span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
@@ -993,10 +993,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>What earns marks: <span class="co">[</span><span class="ot">Rubric</span><span class="co">](../../final-project/rubric.md)</span>.</span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## The placeholders are not filler</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="in">`export_results`</span> writes the report in *italics* where you are meant to write. A section left</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>as the scaffold's own prose scores zero — and <span class="in">`make_submission.py`</span> will warn you if any are</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>still there.</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## The report is written individually</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>Your group runs one study and hands in one bundle. Each member then writes their own</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>two-page report and uploads it separately. Sections 5 and 6 — what you make of the errors,</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>and which limits you think matter — are where two members of the same group should differ.</span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

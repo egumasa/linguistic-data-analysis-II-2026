@@ -274,7 +274,7 @@ By the end of this course, you will be able to:
 | Attendance / participation | | 20% |
 | Hands-on activities (Day 1–3) + completed notebook | | 40% |
 | Mini-project group presentation + Q&A | (Day 5) | 20% |
-| In-class one-page report | (TBA) | 20% |
+| In-class two-page report (individual) | (TBA) | 20% |
 
 
 ::: {.callout-note}

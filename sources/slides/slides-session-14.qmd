@@ -18,7 +18,7 @@ metadata-files:
 ## 📋 Agenda
 
 - **Error analysis** — the highest-value part of the project
-- Writing the four things the scaffold cannot compute
+- Writing your own two-page report from the numbers on screen
 - Building the bundle, and checking it reproduces
 - Five slides
 
@@ -82,25 +82,23 @@ A sentence like this is worth more in your report than the F1 value itself.
 
 # The report
 
-## The scaffold computes the numbers for you
+## The notebook prints; you write
 
-`export_results` fills in your label set, per-label counts, and the F1-per-round table.
+Nothing drafts the report for you. Every number it needs is on screen in `06_report.ipynb`:
 
-Everything in *italics* is yours:
+| Section | Where the numbers are |
+|---|---|
+| 2 Methodology | your κ and counts, from notebook 03 |
+| 3 Prompt iterations | the rounds-and-reasons table, step 1 |
+| 4 Evaluation | per-class P/R/F1 and the matrix, step 3 |
+| 5 Error analysis | `show_errors`, step 4 |
 
-1. what your adjudication **changed**
-2. the **reason** for each prompt change
-3. the error **attributions**
-4. limitations that apply to **your** run
-
-::: {.callout-warning}
-A section left with the scaffold's own text scores **zero**. `make_submission.py` warns you about this.
-:::
+Two pages, six sections, in Word. **One per person** — the study is the group's, the report is yours.
 
 ## Limitations that are actually yours
 
 ::: {.callout-warning}
-## Generic (already in the scaffold)
+## Generic — true of every project on the course
 "LLM output is stochastic." · "Contamination risk." · "Small sample."
 :::
 

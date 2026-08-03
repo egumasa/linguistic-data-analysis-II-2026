@@ -3,12 +3,7 @@ title: "Session 5: Hands-on — Gold-Standard Annotation & Agreement"
 subtitle: "Day 2 · Annotation, Gold Standards & Metrics (2-2)"
 toc: true
 ---
-
 <!-- BEING-PREPARED-BANNER -->
-::: {.callout-warning appearance="simple"}
-## 🚧 Being prepared
-This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The [syllabus](/syllabus/index.md) and [readings](/syllabus/readings.md) are ready now.
-:::
 
 
 ## Learning objectives
@@ -45,8 +40,5 @@ No new reading for this session — see the Day 2 reading (Eguchi & Kyle, 2024) 
 
 ## Slides & Colab
 
-<!--
-- Notebook (Corpus Lab, steps A–F): [`day2-s5_gold_standard_construction.ipynb`](../../notebooks/day2-s5_gold_standard_construction.ipynb) —
+- Notebook (Session 5): [`day2-s5_gold_standard_construction.ipynb`](../../notebooks/day2-s5_gold_standard_construction.ipynb) —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s5_gold_standard_construction.ipynb)
-- Slides: [Session 5 slides](../../slides/slides-session-05.html){target="_blank"}
--->

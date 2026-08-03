@@ -3,55 +3,32 @@ title: "Deliverables & submission"
 subtitle: "What to hand in, and how"
 toc: true
 ---
-
 Three deliverables, all produced in class:
 
-- **Presentation + Q&A** — the main one.
-- **One-page report** — five sections. `export_results` writes the scaffold; you write the
-  parts that need judgment.
-- **Completed notebook**, run top to bottom.
+- **Presentation + Q&A** — the main one. One per group.
+- **Two-page report** — six sections, written and handed in **individually**.
+- **Completed notebook**, run top to bottom. One per group.
 
-## The bundle
+The report is the one thing you do not share. Your group runs one study together, and
+then each member writes their own account of it. Two people who ran the same pipeline
+should still hand in two different reports, because section 5 asks what *you* make of
+the errors and section 6 asks which limitations *you* think matter.
 
-One command collects everything:
+## Submit with zipped folder
 
-```bash
-python scripts/make_submission.py --group groupA
-```
+- You work on the repository. Once you are done, you will submit a zip file that contains all the information.
+- You will also share the actual google drive folder with me.
 
-It builds `../lda2_project_<group>/` next to your cloned repo, keeping the folder structure
-intact:
+The zip is the group's work — the plan, the notebooks, the gold set, the predictions and
+the slides. **Your report is not in it.** You upload that separately, as your own file.
 
-```
-lda2_project_groupA/
-├── PLAN.md                                  ← signed before the first model call
-├── notebooks/
-│   ├── 01_build_pool_raamove.ipynb          ← run in order, outputs visible
-│   ├── 02_sample.ipynb
-│   ├── 03_annotate.ipynb
-│   ├── 04_develop.ipynb
-│   ├── 05_test.ipynb
-│   └── 06_report.ipynb
-├── prompts/
-│   ├── raamove_v0.txt  raamove_v1.txt       ← the round-by-round trail (04)
-│   └── raamove.txt                          ← the one you tested
-├── data/gold/
-│   └── raamove_groupA_gold.json             ← your adjudicated gold (03)
-├── outputs/
-│   ├── raamove_groupA_predictions.json      ← the FROZEN held-out run (05)
-│   ├── raamove_groupA_test_log.jsonl        ← every held-out scoring, fingerprinted
-│   ├── raamove_groupA_predictions.csv
-│   └── raamove_groupA_report.md
-├── scripts/                                 ← the plumbing, unmodified
-└── slides.pdf                               ← your 5 slides
-```
+
 
 ### Why the folders are kept
 
 Two reasons, and neither is tidiness.
 
-That `scripts/ · prompts/ · data/ · outputs/` split **is** the reproducibility checklist from
-[Session 10](../sessions/day4/session-10.md), made physical — code, prompts, data and outputs,
+That `scripts/ · prompts/ · data/ · outputs/` split **is** the reproducibility checklist from [Session 10](../sessions/day4/session-10.md), made physical — code, prompts, data and outputs,
 each separately pointable-at. And practically: the notebook reads `../scripts` and
 `../data/…`, so a flattened folder no longer runs.
 
@@ -62,19 +39,26 @@ and anything ICNALE-derived — the last because ICNALE's licence does not permi
 redistribution. The script excludes all of it by name, which is why you should use the script
 rather than dragging files by hand.
 
-It also **tells you what is missing** — no frozen predictions, no `PLAN.md`, or a report still
-carrying the scaffold's italic placeholder text.
+It also **tells you what is missing** — no frozen predictions, no `PLAN.md`, no per-item
+predictions CSV.
 
 ## Handing it in
+
+**The group's bundle**, once per group:
 
 1. Run `make_submission.py`.
 2. Find `lda2_project_<group>/` in Drive → right-click → **Download** (Drive zips it).
 3. Google Classroom → *Final mini-project* → **Add or create → File** → upload → **Turn in**.
 
-**One submission per group**, with every member's name in `PLAN.md`.
+Every member's name goes in `PLAN.md`.
+
+**Your report**, once per person: upload your own file to the same assignment, named
+`report_<yourname>.pdf`. PDF, so the formatting is the formatting I see.
 
 ::: {.callout-warning}
+
 ## Check it runs on a fresh runtime first
+
 Before you submit, restart the runtime and **Run all**. If your notebook only works in the
 session where you built it up cell by cell, it does not reproduce — and reproducing is the
 claim you are making.
@@ -83,29 +67,48 @@ The bundle is self-contained for the claim that matters: given your gold set and
 predictions, anyone can recompute your reported numbers with no API key and no network.
 :::
 
-## The one-page report
+## The two-page report
 
-`export_results` fills in what it can compute — your label set, per-label counts, the
-F1-per-round table. Everything in *italics* is a placeholder for you.
+**Written individually.** Six sections, about 900–1050 words of prose, plus your table
+and confusion matrix.
 
-1. **Scheme & gold** — your labels; how you built the gold set (size, balance); your percent
-   agreement and κ; and **what your adjudication changed**.
-2. **Prompt iterations** — the table of F1 per round, and for each round *what you changed and
-   why you expected it to help*.
-3. **Evaluation** — per-class precision/recall/F1, the confusion matrix, and which class did
-   worst.
-4. **Error analysis** — at least three concrete misses, each attributed: the **model's** fault
-   or the **scheme's**, with a reason.
-5. **Limitations** — at least two that apply to *your* run, not the generic three the scaffold
-   ships with.
+1. **Brief intro** (150 words) — brief description of the topic and why it is important.
+2. **Methodology** (300 words)
+   1. **Data sampling strategy** — what corpus, what sources, how many examples.
+   2. **Scheme & gold** — your labels; how you built the gold set (size, balance); your
+      percent agreement and κ; and **what your adjudication changed**.
+   3. **(Train) / Dev / Test split** — which split you chose and why.
+3. **Prompt iterations** (100–200 words) — the table of F1 per round, and for each round
+   *what you changed and why you expected it to help*.
+4. **Evaluation** (200 words) — per-class precision/recall/F1, the confusion matrix, and
+   which class did worst.
+5. **Error analysis** (100 words) — at least three concrete misses, each attributed: the
+   **model's** fault or the **scheme's**, with a reason.
+6. **Limitations** (50–100 words) — at least two that apply to *your* run, not the three
+   generic ones everyone can write without having run anything.
 
-A section left as the scaffold's own prose scores zero for that section. See the
-[rubric](rubric.md).
+### Length and format
+
+Two pages, A4 or US Letter, 11–12pt, single-spaced, 1-inch margins. At that setting a page
+holds roughly 500–550 words of prose, so the word budgets above fill about one and a half
+pages and the table and confusion matrix take the rest.
+
+The budgets are targets, not limits. If you are well over two pages, the section to cut is
+usually the intro — not the error analysis, which is what the Q&A goes to.
+
+Hand it in as **PDF**. Write it in Word, or anything else you like; nothing in the
+notebooks drafts it for you. Every number you need is printed on screen in `06_report.ipynb`.
+
+See the [rubric](rubric.md).
 
 ## The presentation
 
-**8 minutes + 4 minutes of Q&A.** Five slides, one per report section. **Every member speaks**
-— one slide each; a three-person group doubles up.
+**8 minutes + 4 minutes of Q&A.** Five slides: methodology, prompt iterations, evaluation,
+error analysis, limitations. The report's intro section is a sentence of framing at the
+start, not a slide of its own. **Every member speaks** — one slide each; a three-person
+group doubles up.
+
+The presentation is the group's shared account of the study. The report is your own.
 
 Have your `show_errors` table on screen and ready before you start, because every group gets
 these two questions:

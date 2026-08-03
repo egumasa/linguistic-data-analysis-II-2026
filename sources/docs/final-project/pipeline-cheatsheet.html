@@ -550,7 +550,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><code>export_results(...)</code></td>
-<td>the report scaffold, the predictions CSV, your test set</td>
+<td>the predictions CSV and a copy of your test set — the two files that let someone else recheck your F1</td>
 <td>new</td>
 </tr>
 </tbody>
@@ -1157,7 +1157,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`errors_on_disagreed(errors, disagreed)`</span> <span class="pp">|</span> the errors landing where **your** coders also disagreed <span class="pp">|</span> Day 2 S6 Part B, written out as a loop <span class="pp">|</span></span>
 <span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`triage_category(line, CODER_CATEGORIES)`</span> <span class="pp">|</span> reads back the triage you wrote in 03, so you can ask whether the model missed the items *you* called <span class="in">`scheme`</span> <span class="pp">|</span> 03, if you did its optional section <span class="pp">|</span></span>
 <span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`triage_counts(TRIAGE, errors)`</span> <span class="pp">|</span> your judgments, counted by category <span class="pp">|</span> new here — the four words are Day 2 S6 Part B, where you sorted errors aloud rather than writing them down <span class="pp">|</span></span>
-<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`export_results(...)`</span> <span class="pp">|</span> the report scaffold, the predictions CSV, your test set <span class="pp">|</span> new <span class="pp">|</span></span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`export_results(...)`</span> <span class="pp">|</span> the predictions CSV and a copy of your test set — the two files that let someone else recheck your F1 <span class="pp">|</span> new <span class="pp">|</span></span>
 <span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a><span class="fu">## Things that are easy to get wrong</span></span>
 <span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a></span>

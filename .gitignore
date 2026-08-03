@@ -10,23 +10,21 @@ planning/
 # Instructor private end-to-end run-through of the final mini-project
 project-runthrough/
 
-# Answer key for the metrics exercise — instructor-only, never publish (students fetch
-# metrics_exercise.py + check_metrics.py by URL, so the solution must stay out of the repo)
-sources/resources/code-examples/python/metrics_solution.py
-
 # Copyrighted / source material — do not publish
 papers/
 
-# Regenerable datasets (raw corpora + derived gold; see data/SOURCES.md).
-# Students rebuild these with prep_datasets.py / the download notebooks.
-sources/resources/code-examples/data/raw/
-sources/resources/code-examples/data/gold/
-# ...and never let a render leak them into the published site
-sources/docs/resources/code-examples/data/raw/
+# Raw corpora (see sources/resources/datasets/SOURCES.md). Rebuilt with
+# sources/resources/datasets/prep_datasets.py or the download notebooks.
+# Already covered by sources/resources/datasets/.gitignore; repeated here so a render
+# cannot leak them into the published site.
+sources/docs/resources/datasets/raw/
+
+# The derived gold JSON files under sources/resources/datasets/gold/ are TRACKED on
+# purpose — the notebooks fetch them by raw.githubusercontent.com URL, so ignoring them
+# would break the downloads.
 
 # Runtime artifact written by the Day-2 notebook warm-up cell (not a source file).
 sources/notebooks/example_gold.json
-sources/docs/resources/code-examples/data/gold/
 
 # Quarto local build cache for `execute: freeze: auto` (executed cell outputs).
 # Not part of deployment — .github/workflows/deploy.yml uploads sources/docs/ only,

@@ -233,13 +233,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-bundle" id="toc-the-bundle" class="nav-link active" data-scroll-target="#the-bundle">The bundle</a>
+  <li><a href="#submit-with-zipped-folder" id="toc-submit-with-zipped-folder" class="nav-link active" data-scroll-target="#submit-with-zipped-folder">Submit with zipped folder</a>
   <ul class="collapse">
   <li><a href="#why-the-folders-are-kept" id="toc-why-the-folders-are-kept" class="nav-link" data-scroll-target="#why-the-folders-are-kept">Why the folders are kept</a></li>
   <li><a href="#what-it-deliberately-leaves-out" id="toc-what-it-deliberately-leaves-out" class="nav-link" data-scroll-target="#what-it-deliberately-leaves-out">What it deliberately leaves out</a></li>
   </ul></li>
   <li><a href="#handing-it-in" id="toc-handing-it-in" class="nav-link" data-scroll-target="#handing-it-in">Handing it in</a></li>
-  <li><a href="#the-one-page-report" id="toc-the-one-page-report" class="nav-link" data-scroll-target="#the-one-page-report">The one-page report</a></li>
+  <li><a href="#the-two-page-report" id="toc-the-two-page-report" class="nav-link" data-scroll-target="#the-two-page-report">The two-page report</a>
+  <ul class="collapse">
+  <li><a href="#length-and-format" id="toc-length-and-format" class="nav-link" data-scroll-target="#length-and-format">Length and format</a></li>
+  </ul></li>
   <li><a href="#the-presentation" id="toc-the-presentation" class="nav-link" data-scroll-target="#the-presentation">The presentation</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/edit/main/final-project/deliverables.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -269,36 +272,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>Three deliverables, all produced in class:</p>
 <ul>
-<li><strong>Presentation + Q&amp;A</strong> — the main one.</li>
-<li><strong>One-page report</strong> — five sections. <code>export_results</code> writes the scaffold; you write the parts that need judgment.</li>
-<li><strong>Completed notebook</strong>, run top to bottom.</li>
+<li><strong>Presentation + Q&amp;A</strong> — the main one. One per group.</li>
+<li><strong>Two-page report</strong> — six sections, written and handed in <strong>individually</strong>.</li>
+<li><strong>Completed notebook</strong>, run top to bottom. One per group.</li>
 </ul>
-<section id="the-bundle" class="level2">
-<h2 class="anchored" data-anchor-id="the-bundle">The bundle</h2>
-<p>One command collects everything:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/make_submission.py <span class="at">--group</span> groupA</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>It builds <code>../lda2_project_&lt;group&gt;/</code> next to your cloned repo, keeping the folder structure intact:</p>
-<pre><code>lda2_project_groupA/
-├── PLAN.md                                  ← signed before the first model call
-├── notebooks/
-│   ├── 01_build_pool_raamove.ipynb          ← run in order, outputs visible
-│   ├── 02_sample.ipynb
-│   ├── 03_annotate.ipynb
-│   ├── 04_develop.ipynb
-│   ├── 05_test.ipynb
-│   └── 06_report.ipynb
-├── prompts/
-│   ├── raamove_v0.txt  raamove_v1.txt       ← the round-by-round trail (04)
-│   └── raamove.txt                          ← the one you tested
-├── data/gold/
-│   └── raamove_groupA_gold.json             ← your adjudicated gold (03)
-├── outputs/
-│   ├── raamove_groupA_predictions.json      ← the FROZEN held-out run (05)
-│   ├── raamove_groupA_test_log.jsonl        ← every held-out scoring, fingerprinted
-│   ├── raamove_groupA_predictions.csv
-│   └── raamove_groupA_report.md
-├── scripts/                                 ← the plumbing, unmodified
-└── slides.pdf                               ← your 5 slides</code></pre>
+<p>The report is the one thing you do not share. Your group runs one study together, and then each member writes their own account of it. Two people who ran the same pipeline should still hand in two different reports, because section 5 asks what <em>you</em> make of the errors and section 6 asks which limitations <em>you</em> think matter.</p>
+<section id="submit-with-zipped-folder" class="level2">
+<h2 class="anchored" data-anchor-id="submit-with-zipped-folder">Submit with zipped folder</h2>
+<ul>
+<li>You work on the repository. Once you are done, you will submit a zip file that contains all the information.</li>
+<li>You will also share the actual google drive folder with me.</li>
+</ul>
+<p>The zip is the group’s work — the plan, the notebooks, the gold set, the predictions and the slides. <strong>Your report is not in it.</strong> You upload that separately, as your own file.</p>
 <section id="why-the-folders-are-kept" class="level3">
 <h3 class="anchored" data-anchor-id="why-the-folders-are-kept">Why the folders are kept</h3>
 <p>Two reasons, and neither is tidiness.</p>
@@ -307,17 +292,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-it-deliberately-leaves-out" class="level3">
 <h3 class="anchored" data-anchor-id="what-it-deliberately-leaves-out">What it deliberately leaves out</h3>
 <p><code>.git/</code>, <code>.venv/</code>, <strong>your <code>.env</code></strong> (it holds your API key), the full pools in <code>data/pools/</code>, and anything ICNALE-derived — the last because ICNALE’s licence does not permit redistribution. The script excludes all of it by name, which is why you should use the script rather than dragging files by hand.</p>
-<p>It also <strong>tells you what is missing</strong> — no frozen predictions, no <code>PLAN.md</code>, or a report still carrying the scaffold’s italic placeholder text.</p>
+<p>It also <strong>tells you what is missing</strong> — no frozen predictions, no <code>PLAN.md</code>, no per-item predictions CSV.</p>
 </section>
 </section>
 <section id="handing-it-in" class="level2">
 <h2 class="anchored" data-anchor-id="handing-it-in">Handing it in</h2>
+<p><strong>The group’s bundle</strong>, once per group:</p>
 <ol type="1">
 <li>Run <code>make_submission.py</code>.</li>
 <li>Find <code>lda2_project_&lt;group&gt;/</code> in Drive → right-click → <strong>Download</strong> (Drive zips it).</li>
 <li>Google Classroom → <em>Final mini-project</em> → <strong>Add or create → File</strong> → upload → <strong>Turn in</strong>.</li>
 </ol>
-<p><strong>One submission per group</strong>, with every member’s name in <code>PLAN.md</code>.</p>
+<p>Every member’s name goes in <code>PLAN.md</code>.</p>
+<p><strong>Your report</strong>, once per person: upload your own file to the same assignment, named <code>report_&lt;yourname&gt;.pdf</code>. PDF, so the formatting is the formatting I see.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -333,21 +320,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="the-one-page-report" class="level2">
-<h2 class="anchored" data-anchor-id="the-one-page-report">The one-page report</h2>
-<p><code>export_results</code> fills in what it can compute — your label set, per-label counts, the F1-per-round table. Everything in <em>italics</em> is a placeholder for you.</p>
+<section id="the-two-page-report" class="level2">
+<h2 class="anchored" data-anchor-id="the-two-page-report">The two-page report</h2>
+<p><strong>Written individually.</strong> Six sections, about 900–1050 words of prose, plus your table and confusion matrix.</p>
 <ol type="1">
+<li><strong>Brief intro</strong> (150 words) — brief description of the topic and why it is important.</li>
+<li><strong>Methodology</strong> (300 words)
+<ol type="1">
+<li><strong>Data sampling strategy</strong> — what corpus, what sources, how many examples.</li>
 <li><strong>Scheme &amp; gold</strong> — your labels; how you built the gold set (size, balance); your percent agreement and κ; and <strong>what your adjudication changed</strong>.</li>
-<li><strong>Prompt iterations</strong> — the table of F1 per round, and for each round <em>what you changed and why you expected it to help</em>.</li>
-<li><strong>Evaluation</strong> — per-class precision/recall/F1, the confusion matrix, and which class did worst.</li>
-<li><strong>Error analysis</strong> — at least three concrete misses, each attributed: the <strong>model’s</strong> fault or the <strong>scheme’s</strong>, with a reason.</li>
-<li><strong>Limitations</strong> — at least two that apply to <em>your</em> run, not the generic three the scaffold ships with.</li>
+<li><strong>(Train) / Dev / Test split</strong> — which split you chose and why.</li>
+</ol></li>
+<li><strong>Prompt iterations</strong> (100–200 words) — the table of F1 per round, and for each round <em>what you changed and why you expected it to help</em>.</li>
+<li><strong>Evaluation</strong> (200 words) — per-class precision/recall/F1, the confusion matrix, and which class did worst.</li>
+<li><strong>Error analysis</strong> (100 words) — at least three concrete misses, each attributed: the <strong>model’s</strong> fault or the <strong>scheme’s</strong>, with a reason.</li>
+<li><strong>Limitations</strong> (50–100 words) — at least two that apply to <em>your</em> run, not the three generic ones everyone can write without having run anything.</li>
 </ol>
-<p>A section left as the scaffold’s own prose scores zero for that section. See the <a href="../final-project/rubric.html">rubric</a>.</p>
+<section id="length-and-format" class="level3">
+<h3 class="anchored" data-anchor-id="length-and-format">Length and format</h3>
+<p>Two pages, A4 or US Letter, 11–12pt, single-spaced, 1-inch margins. At that setting a page holds roughly 500–550 words of prose, so the word budgets above fill about one and a half pages and the table and confusion matrix take the rest.</p>
+<p>The budgets are targets, not limits. If you are well over two pages, the section to cut is usually the intro — not the error analysis, which is what the Q&amp;A goes to.</p>
+<p>Hand it in as <strong>PDF</strong>. Write it in Word, or anything else you like; nothing in the notebooks drafts it for you. Every number you need is printed on screen in <code>06_report.ipynb</code>.</p>
+<p>See the <a href="../final-project/rubric.html">rubric</a>.</p>
+</section>
 </section>
 <section id="the-presentation" class="level2">
 <h2 class="anchored" data-anchor-id="the-presentation">The presentation</h2>
-<p><strong>8 minutes + 4 minutes of Q&amp;A.</strong> Five slides, one per report section. <strong>Every member speaks</strong> — one slide each; a three-person group doubles up.</p>
+<p><strong>8 minutes + 4 minutes of Q&amp;A.</strong> Five slides: methodology, prompt iterations, evaluation, error analysis, limitations. The report’s intro section is a sentence of framing at the start, not a slide of its own. <strong>Every member speaks</strong> — one slide each; a three-person group doubles up.</p>
+<p>The presentation is the group’s shared account of the study. The report is your own.</p>
 <p>Have your <code>show_errors</code> table on screen and ready before you start, because every group gets these two questions:</p>
 <ol type="1">
 <li><strong>“Show us an item the model got wrong, and tell us whose fault it was — the model’s or your scheme’s.”</strong></li>
@@ -819,124 +819,127 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Deliverables &amp; submission"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "What to hand in, and how"</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>Three deliverables, all produced in class:</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Presentation + Q&amp;A** — the main one.</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**One-page report** — five sections. <span class="in">`export_results`</span> writes the scaffold; you write the</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  parts that need judgment.</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Completed notebook**, run top to bottom.</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## The bundle</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>One command collects everything:</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/make_submission.py <span class="at">--group</span> groupA</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>It builds <span class="in">`../lda2_project_&lt;group&gt;/`</span> next to your cloned repo, keeping the folder structure</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>intact:</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="in">lda2_project_groupA/</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="in">├── PLAN.md                                  ← signed before the first model call</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="in">├── notebooks/</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── 01_build_pool_raamove.ipynb          ← run in order, outputs visible</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── 02_sample.ipynb</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── 03_annotate.ipynb</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── 04_develop.ipynb</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── 05_test.ipynb</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── 06_report.ipynb</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="in">├── prompts/</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── raamove_v0.txt  raamove_v1.txt       ← the round-by-round trail (04)</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── raamove.txt                          ← the one you tested</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="in">├── data/gold/</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── raamove_groupA_gold.json             ← your adjudicated gold (03)</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="in">├── outputs/</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── raamove_groupA_predictions.json      ← the FROZEN held-out run (05)</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── raamove_groupA_test_log.jsonl        ← every held-out scoring, fingerprinted</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── raamove_groupA_predictions.csv</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── raamove_groupA_report.md</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="in">├── scripts/                                 ← the plumbing, unmodified</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="in">└── slides.pdf                               ← your 5 slides</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="fu">### Why the folders are kept</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>Two reasons, and neither is tidiness.</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>That <span class="in">`scripts/ · prompts/ · data/ · outputs/`</span> split **is** the reproducibility checklist from</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Session 10</span><span class="co">](../sessions/day4/session-10.md)</span>, made physical — code, prompts, data and outputs,</span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>each separately pointable-at. And practically: the notebook reads <span class="in">`../scripts`</span> and</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="in">`../data/…`</span>, so a flattened folder no longer runs.</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="fu">### What it deliberately leaves out</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="in">`.git/`</span>, <span class="in">`.venv/`</span>, **your `.env`** (it holds your API key), the full pools in <span class="in">`data/pools/`</span>,</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>and anything ICNALE-derived — the last because ICNALE's licence does not permit</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>redistribution. The script excludes all of it by name, which is why you should use the script</span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>rather than dragging files by hand.</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>It also **tells you what is missing** — no frozen predictions, no <span class="in">`PLAN.md`</span>, or a report still</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>carrying the scaffold's italic placeholder text.</span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## Handing it in</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Run <span class="in">`make_submission.py`</span>.</span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Find <span class="in">`lda2_project_&lt;group&gt;/`</span> in Drive → right-click → **Download** (Drive zips it).</span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Google Classroom → *Final mini-project* → **Add or create → File** → upload → **Turn in**.</span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>**One submission per group**, with every member's name in <span class="in">`PLAN.md`</span>.</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="fu">## Check it runs on a fresh runtime first</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>Before you submit, restart the runtime and **Run all**. If your notebook only works in the</span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>session where you built it up cell by cell, it does not reproduce — and reproducing is the</span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>claim you are making.</span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>The bundle is self-contained for the claim that matters: given your gold set and your frozen</span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>predictions, anyone can recompute your reported numbers with no API key and no network.</span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## The one-page report</span></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="in">`export_results`</span> fills in what it can compute — your label set, per-label counts, the</span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>F1-per-round table. Everything in *italics* is a placeholder for you.</span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Scheme &amp; gold** — your labels; how you built the gold set (size, balance); your percent</span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>   agreement and κ; and **what your adjudication changed**.</span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Prompt iterations** — the table of F1 per round, and for each round *what you changed and</span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>   why you expected it to help*.</span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Evaluation** — per-class precision/recall/F1, the confusion matrix, and which class did</span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>   worst.</span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Error analysis** — at least three concrete misses, each attributed: the **model's** fault</span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>   or the **scheme's**, with a reason.</span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Limitations** — at least two that apply to *your* run, not the generic three the scaffold</span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>   ships with.</span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>A section left as the scaffold's own prose scores zero for that section. See the</span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">rubric</span><span class="co">](rubric.md)</span>.</span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## The presentation</span></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>**8 minutes + 4 minutes of Q&amp;A.** Five slides, one per report section. **Every member speaks**</span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>— one slide each; a three-person group doubles up.</span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>Have your <span class="in">`show_errors`</span> table on screen and ready before you start, because every group gets</span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>these two questions:</span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**"Show us an item the model got wrong, and tell us whose fault it was — the model's or</span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>   your scheme's."**</span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**"What did your QC pass change?"**</span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>Neither is a trick. They are the two things that show you did the work rather than ran the</span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>cells.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Deliverables &amp; submission"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "What to hand in, and how"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Three deliverables, all produced in class:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Presentation + Q&amp;A** — the main one. One per group.</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Two-page report** — six sections, written and handed in **individually**.</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Completed notebook**, run top to bottom. One per group.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>The report is the one thing you do not share. Your group runs one study together, and</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>then each member writes their own account of it. Two people who ran the same pipeline</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>should still hand in two different reports, because section 5 asks what *you* make of</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>the errors and section 6 asks which limitations *you* think matter.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Submit with zipped folder</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>You work on the repository. Once you are done, you will submit a zip file that contains all the information.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>You will also share the actual google drive folder with me.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>The zip is the group's work — the plan, the notebooks, the gold set, the predictions and</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>the slides. **Your report is not in it.** You upload that separately, as your own file.</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">### Why the folders are kept</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>Two reasons, and neither is tidiness.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>That <span class="in">`scripts/ · prompts/ · data/ · outputs/`</span> split **is** the reproducibility checklist from <span class="co">[</span><span class="ot">Session 10</span><span class="co">](../sessions/day4/session-10.md)</span>, made physical — code, prompts, data and outputs,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>each separately pointable-at. And practically: the notebook reads <span class="in">`../scripts`</span> and</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="in">`../data/…`</span>, so a flattened folder no longer runs.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">### What it deliberately leaves out</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">`.git/`</span>, <span class="in">`.venv/`</span>, **your `.env`** (it holds your API key), the full pools in <span class="in">`data/pools/`</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>and anything ICNALE-derived — the last because ICNALE's licence does not permit</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>redistribution. The script excludes all of it by name, which is why you should use the script</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>rather than dragging files by hand.</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>It also **tells you what is missing** — no frozen predictions, no <span class="in">`PLAN.md`</span>, no per-item</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>predictions CSV.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Handing it in</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>**The group's bundle**, once per group:</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Run <span class="in">`make_submission.py`</span>.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Find <span class="in">`lda2_project_&lt;group&gt;/`</span> in Drive → right-click → **Download** (Drive zips it).</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Google Classroom → *Final mini-project* → **Add or create → File** → upload → **Turn in**.</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>Every member's name goes in <span class="in">`PLAN.md`</span>.</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>**Your report**, once per person: upload your own file to the same assignment, named</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="in">`report_&lt;yourname&gt;.pdf`</span>. PDF, so the formatting is the formatting I see.</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="fu">## Check it runs on a fresh runtime first</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>Before you submit, restart the runtime and **Run all**. If your notebook only works in the</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>session where you built it up cell by cell, it does not reproduce — and reproducing is the</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>claim you are making.</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>The bundle is self-contained for the claim that matters: given your gold set and your frozen</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>predictions, anyone can recompute your reported numbers with no API key and no network.</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="fu">## The two-page report</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>**Written individually.** Six sections, about 900–1050 words of prose, plus your table</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>and confusion matrix.</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Brief intro** (150 words) — brief description of the topic and why it is important.</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Methodology** (300 words)</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="ss">   1. </span>**Data sampling strategy** — what corpus, what sources, how many examples.</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="ss">   2. </span>**Scheme &amp; gold** — your labels; how you built the gold set (size, balance); your</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>      percent agreement and κ; and **what your adjudication changed**.</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="ss">   3. </span>**(Train) / Dev / Test split** — which split you chose and why.</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Prompt iterations** (100–200 words) — the table of F1 per round, and for each round</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>   *what you changed and why you expected it to help*.</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Evaluation** (200 words) — per-class precision/recall/F1, the confusion matrix, and</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>   which class did worst.</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Error analysis** (100 words) — at least three concrete misses, each attributed: the</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>   **model's** fault or the **scheme's**, with a reason.</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Limitations** (50–100 words) — at least two that apply to *your* run, not the three</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>   generic ones everyone can write without having run anything.</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="fu">### Length and format</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>Two pages, A4 or US Letter, 11–12pt, single-spaced, 1-inch margins. At that setting a page</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>holds roughly 500–550 words of prose, so the word budgets above fill about one and a half</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>pages and the table and confusion matrix take the rest.</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>The budgets are targets, not limits. If you are well over two pages, the section to cut is</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>usually the intro — not the error analysis, which is what the Q&amp;A goes to.</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>Hand it in as **PDF**. Write it in Word, or anything else you like; nothing in the</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>notebooks drafts it for you. Every number you need is printed on screen in <span class="in">`06_report.ipynb`</span>.</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>See the <span class="co">[</span><span class="ot">rubric</span><span class="co">](rubric.md)</span>.</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## The presentation</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>**8 minutes + 4 minutes of Q&amp;A.** Five slides: methodology, prompt iterations, evaluation,</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>error analysis, limitations. The report's intro section is a sentence of framing at the</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>start, not a slide of its own. **Every member speaks** — one slide each; a three-person</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>group doubles up.</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>The presentation is the group's shared account of the study. The report is your own.</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>Have your <span class="in">`show_errors`</span> table on screen and ready before you start, because every group gets</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>these two questions:</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**"Show us an item the model got wrong, and tell us whose fault it was — the model's or</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>   your scheme's."**</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**"What did your QC pass change?"**</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>Neither is a trick. They are the two things that show you did the work rather than ran the</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>cells.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

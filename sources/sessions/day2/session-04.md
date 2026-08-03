@@ -5,12 +5,6 @@ toc: true
 ---
 <!-- BEING-PREPARED-BANNER -->
 
-::: {.callout-warning appearance="simple"}
-
-## 🚧 Being prepared
-
-This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The [syllabus](/syllabus/index.md) and [readings](/syllabus/readings.md) are ready now.
-:::
 
 ## Learning objectives
 
@@ -48,6 +42,6 @@ This is the conceptual grounding for the hands-on annotation in [Session 5](sess
 
 ## Slides & Colab
 
-<!-- Slides: [Session 4 slides](../../slides/slides-session-04.html){target="_blank"} -->
+- Slides: [Session 4 slides](../../slides/slides-session-04.html){target="_blank"}
 
-<!-- Colab notebook link: to be added -->
+No notebook for this session — it is conceptual. The Day 2 notebooks come with the two sessions that follow: [Session 5](session-05.md) for building the gold standard, and [Session 6](session-06.md) for the evaluation metrics.

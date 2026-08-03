@@ -123,7 +123,7 @@ recall, F1 and κ from scratch, then checked your numbers against these very fun
 | `errors_on_disagreed(errors, disagreed)` | the errors landing where **your** coders also disagreed | Day 2 S6 Part B, written out as a loop |
 | `triage_category(line, CODER_CATEGORIES)` | reads back the triage you wrote in 03, so you can ask whether the model missed the items *you* called `scheme` | 03, if you did its optional section |
 | `triage_counts(TRIAGE, errors)` | your judgments, counted by category | new here — the four words are Day 2 S6 Part B, where you sorted errors aloud rather than writing them down |
-| `export_results(...)` | the report scaffold, the predictions CSV, your test set | new |
+| `export_results(...)` | the predictions CSV and a copy of your test set — the two files that let someone else recheck your F1 | new |
 
 ## Things that are easy to get wrong
 

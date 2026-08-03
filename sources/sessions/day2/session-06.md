@@ -3,12 +3,7 @@ title: "Session 6: Gold Standards & Evaluation Metrics"
 subtitle: "Day 2 · Annotation, Gold Standards & Metrics (2-3)"
 toc: true
 ---
-
 <!-- BEING-PREPARED-BANNER -->
-::: {.callout-warning appearance="simple"}
-## 🚧 Being prepared
-This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The [syllabus](/syllabus/index.md) and [readings](/syllabus/readings.md) are ready now.
-:::
 
 
 ## Learning objectives
@@ -43,7 +38,9 @@ The session closes with the **作戦会議** strategy huddle: turn today's mecha
 The whole session runs on **frozen predictions** — no API key, no live model — so everyone's numbers come out identical every run. You'll run the model live yourself from Day 3 onward; today the focus is *measuring* quality, not producing it.
 
 ::: {.callout-tip}
+
 ## Keep the slides and Colab open side by side
+
 The code is on the slides, line by line, next to what it prints — and you type it in Colab as we go. If you fall behind, copy the cell from the slide, run it, and rejoin.
 :::
 
@@ -53,8 +50,5 @@ No new reading for this session — see the Day 2 reading (Eguchi & Kyle, 2024) 
 
 ## Slides & Colab
 
-<!--
-- Notebook (tutorial + Corpus Lab): [`day2-s6_evaluation_metrics.ipynb`](../../notebooks/day2-s6_evaluation_metrics.ipynb) —
+- Notebook (session 6): [`day2-s6_evaluation_metrics.ipynb`](../../notebooks/day2-s6_evaluation_metrics.ipynb) —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day2-s6_evaluation_metrics.ipynb)
-- Slides: [Session 6 slides](../../slides/slides-session-06.html){target="_blank"}
--->

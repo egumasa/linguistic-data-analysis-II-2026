@@ -18,15 +18,15 @@ By the end of this session you will be able to:
 - Attribute concrete errors to the **model** or to the **scheme**, with a reason for each.
 - Write limitations that apply to *your* run rather than generic ones.
 - Assemble the submission bundle and confirm the notebook runs top to bottom on a fresh runtime.
-- Build five slides that map onto the five report sections.
+- Build five slides that map onto the report's sections.
 
 ## Agenda
 
 1. **Error analysis** — `show_errors`, then cross-reference against the rows you adjudicated in Session 12. Overlap between the two is a finding, not a failure.
-2. **Write the report** — `export_results` gives you the scaffold; you write the four things it cannot compute.
+2. **Write the report** — your own two pages, six sections, from the numbers `06_report.ipynb` prints on screen.
 3. **Build the bundle** — `python scripts/make_submission.py --group <yours>`, then check what it says is missing.
 4. **Restart and Run all** — if your notebook only works in the session you built it in, it does not reproduce.
-5. **Five slides**, one per report section.
+5. **Five slides**, one per section from methodology onward.
 
 ## Reading
 
@@ -44,8 +44,8 @@ No new reading — Day 5 is project work only (see the [Readings](../../syllabus
 - What earns marks: [Rubric](../../final-project/rubric.md).
 
 ::: {.callout-warning}
-## The placeholders are not filler
-`export_results` writes the report in *italics* where you are meant to write. A section left
-as the scaffold's own prose scores zero — and `make_submission.py` will warn you if any are
-still there.
+## The report is written individually
+Your group runs one study and hands in one bundle. Each member then writes their own
+two-page report and uploads it separately. Sections 5 and 6 — what you make of the errors,
+and which limits you think matter — are where two members of the same group should differ.
 :::

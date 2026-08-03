@@ -420,19 +420,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <!-- BEING-PREPARED-BANNER -->
-<div class="callout callout-style-simple callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>🚧 Being prepared
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This page is being finalized ahead of the course (<strong>Aug 3–7, 2026</strong>) and may be incomplete or change before your session. The <a href="../../syllabus/index.html">syllabus</a> and <a href="../../syllabus/readings.html">readings</a> are ready now.</p>
-</div>
-</div>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this session you will be able to:</p>
@@ -475,8 +462,10 @@ Note
 </section>
 <section id="slides-colab" class="level2">
 <h2 class="anchored" data-anchor-id="slides-colab">Slides &amp; Colab</h2>
-<!-- Slides: [Session 4 slides](../../slides/slides-session-04.html){target="_blank"} -->
-<!-- Colab notebook link: to be added -->
+<ul>
+<li>Slides: <a href="../../slides/slides-session-04.html" target="_blank">Session 4 slides</a></li>
+</ul>
+<p>No notebook for this session — it is conceptual. The Day 2 notebooks come with the two sessions that follow: <a href="../../sessions/day2/session-05.html">Session 5</a> for building the gold standard, and <a href="../../sessions/day2/session-06.html">Session 6</a> for the evaluation metrics.</p>
 
 
 <!-- -->
@@ -949,52 +938,46 @@ Note
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning appearance="simple"}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🚧 Being prepared</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The <span class="co">[</span><span class="ot">syllabus</span><span class="co">](/syllabus/index.md)</span> and <span class="co">[</span><span class="ot">readings</span><span class="co">](/syllabus/readings.md)</span> are ready now.</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>By the end of this session you will be able to:</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Place a linguistic annotation task in the classic NLP taxonomy — *identify · extract · categorize*, organized by **unit of analysis**.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Describe the NLP **evaluation workflow** (gold → predictions → metrics), and explain how it transfers from a trained model to a prompted **LLM**.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Operationalize a linguistic category into an **annotation scheme** with coding guidelines.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Explain **inter-annotator agreement**: percent agreement, why **Cohen's κ** corrects for chance, and when to use **quadratic weighted κ** for *ordered* labels.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Read a **confusion matrix** and compute **precision, recall, and F1** from its four cells (TP · TN · FP · FN).</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Place a linguistic annotation task in the classic NLP taxonomy — *identify · extract · categorize*, organized by **unit of analysis**.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Describe the NLP **evaluation workflow** (gold → predictions → metrics), and explain how it transfers from a trained model to a prompted **LLM**.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Operationalize a linguistic category into an **annotation scheme** with coding guidelines.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Explain **inter-annotator agreement**: percent agreement, why **Cohen's κ** corrects for chance, and when to use **quadratic weighted κ** for *ordered* labels.</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Read a **confusion matrix** and compute **precision, recall, and F1** from its four cells (TP · TN · FP · FN).</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>The message of the day: labelled data is only trustworthy if the category is **operationalized** and two coders agree **beyond chance**.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>**A · What NLP tasks are there** — what annotation is, and the task taxonomy made concrete with linguistic examples: part of speech, word sense disambiguation, syntactic dependency, stance, and discourse moves. Tasks organized by unit and output — token-level sequence labelling, span categorization, and one label per unit. This course focuses on **sentence and text categorization**, where the evaluation code is manageable and the <span class="in">`{id, text, label}`</span> shape from <span class="co">[</span><span class="ot">Session 3</span><span class="co">](../day1/session-03.md)</span> is enough; span tasks bring boundary and partial-match problems that do not fit five days.</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>The message of the day: labelled data is only trustworthy if the category is **operationalized** and two coders agree **beyond chance**.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>**B · How NLP evaluates a system — and how it transfers to LLMs** — the evaluation workflow, and what changes when you swap a trained model for a prompted LLM. The four outcomes (TP · TN · FP · FN), precision and recall, accuracy between two coders, and **Cohen's κ** as agreement beyond chance — how much κ is enough, and **quadratic weighted κ** when labels are ordered.</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>**C · The define-first workflow** — you cannot evaluate what you have not defined. The five phases, borrowed from Eguchi &amp; Kyle's (2024) model-agnostic pipeline: ① define the annotation task, ② operationalize it into a scheme and guidelines, ③ build the gold standard, ④ set the target at human agreement, ⑤ evaluate the LLM against gold.</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>**A · What NLP tasks are there** — what annotation is, and the task taxonomy made concrete with linguistic examples: part of speech, word sense disambiguation, syntactic dependency, stance, and discourse moves. Tasks organized by unit and output — token-level sequence labelling, span categorization, and one label per unit. This course focuses on **sentence and text categorization**, where the evaluation code is manageable and the <span class="in">`{id, text, label}`</span> shape from <span class="co">[</span><span class="ot">Session 3</span><span class="co">](../day1/session-03.md)</span> is enough; span tasks bring boundary and partial-match problems that do not fit five days.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>**D · The dataset for the class tutorials** — Arase, Uchida &amp; Kajiwara (2022), the **CEFR-SP** corpus: 17k English sentences, each labelled with a CEFR level. One sentence in, one level out — familiar enough to be worth doing and small enough to finish in five days.</span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>**B · How NLP evaluates a system — and how it transfers to LLMs** — the evaluation workflow, and what changes when you swap a trained model for a prompted LLM. The four outcomes (TP · TN · FP · FN), precision and recall, accuracy between two coders, and **Cohen's κ** as agreement beyond chance — how much κ is enough, and **quadratic weighted κ** when labels are ordered.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>This is the conceptual grounding for the hands-on annotation in <span class="co">[</span><span class="ot">Session 5</span><span class="co">](session-05.md)</span>, which executes phases ①–③, and the evaluation code in <span class="co">[</span><span class="ot">Session 6</span><span class="co">](session-06.md)</span>, which executes phases ④–⑤.</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>**C · The define-first workflow** — you cannot evaluate what you have not defined. The five phases, borrowed from Eguchi &amp; Kyle's (2024) model-agnostic pipeline: ① define the annotation task, ② operationalize it into a scheme and guidelines, ③ build the gold standard, ④ set the target at human agreement, ⑤ evaluate the LLM against gold.</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>**D · The dataset for the class tutorials** — Arase, Uchida &amp; Kajiwara (2022), the **CEFR-SP** corpus: 17k English sentences, each labelled with a CEFR level. One sentence in, one level out — familiar enough to be worth doing and small enough to finish in five days.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>**Before Session 5, skim §3.1 and §3.2 of Arase et al. (2022)** — about a page and a half. The afternoon session opens by asking you to pull two design decisions out of it.</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>This is the conceptual grounding for the hands-on annotation in <span class="co">[</span><span class="ot">Session 5</span><span class="co">](session-05.md)</span>, which executes phases ①–③, and the evaluation code in <span class="co">[</span><span class="ot">Session 6</span><span class="co">](session-06.md)</span>, which executes phases ④–⑤.</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>**Before Session 5, skim §3.1 and §3.2 of Arase et al. (2022)** — about a page and a half. The afternoon session opens by asking you to pull two design decisions out of it.</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>**Read** (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>, including optional Day 2 items):</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eguchi, M., &amp; Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. *Research Methods in Applied Linguistics, 3*(3), 100153. <span class="co">[</span><span class="ot">https://doi.org/10.1016/j.rmal.2024.100153</span><span class="co">](https://doi.org/10.1016/j.rmal.2024.100153)</span></span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>**Read** (see all <span class="co">[</span><span class="ot">course readings</span><span class="co">](../../syllabus/readings.md)</span>, including optional Day 2 items):</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Slides: <span class="co">[</span><span class="ot">Session 4 slides</span><span class="co">](../../slides/slides-session-04.html)</span>{target="_blank"}</span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eguchi, M., &amp; Kyle, K. (2024). Building custom NLP tools to annotate discourse-functional features for second language writing research: A tutorial. *Research Methods in Applied Linguistics, 3*(3), 100153. <span class="co">[</span><span class="ot">https://doi.org/10.1016/j.rmal.2024.100153</span><span class="co">](https://doi.org/10.1016/j.rmal.2024.100153)</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 4 slides](../../slides/slides-session-04.html){target="_blank"} --&gt;</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Colab notebook link: to be added --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>No notebook for this session — it is conceptual. The Day 2 notebooks come with the two sessions that follow: <span class="co">[</span><span class="ot">Session 5</span><span class="co">](session-05.md)</span> for building the gold standard, and <span class="co">[</span><span class="ot">Session 6</span><span class="co">](session-06.md)</span> for the evaluation metrics.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

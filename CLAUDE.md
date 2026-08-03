@@ -28,19 +28,19 @@ quarto render path/to/page.qmd   # render a single page
 
 ## Python / notebooks
 
-Quarto's jupyter engine is wired to use `uv` (see `execute` block in `_quarto.yml`: `python: uv run python`). The repo targets Python >=3.13 ([pyproject.toml](pyproject.toml), [.python-version](.python-version)) but currently declares **no dependencies** — `pyproject.toml` is a near-empty `uv` scaffold.
+Quarto's jupyter engine is wired to use `uv` (see `execute` block in `_quarto.yml`: `python: uv run python`). The repo targets Python >=3.13 ([pyproject.toml](pyproject.toml), [.python-version](.python-version)). `[project].dependencies` is deliberately empty so the Quarto render stays light; the packages the notebooks need live in the `dev` dependency group, installed with `uv sync --group dev`.
 
-Important: the example notebooks under [sources/resources/code-examples/python/](sources/resources/code-examples/python/) are written to run in **Google Colab** by students (the course assumes no local Python install — see [python-setup.md](sources/resources/tools/python-setup.md)). They import heavy NLP libraries (`spacy`, `taaled`, `pylats`, `lexical-diversity`, `pandas`, `seaborn`). These are not installed locally via `uv` and are not needed to build the site — only to execute notebooks. Do not assume they are available in this environment.
+Important: the day notebooks in [sources/notebooks/](sources/notebooks/) and the dataset download notebooks in [sources/resources/datasets/notebooks/](sources/resources/datasets/notebooks/) are written to run in **Google Colab** by students (the course assumes no local Python install — see [python-setup.md](sources/resources/tools/python-setup.md)). They use `google-genai`, `gspread`, and `scikit-learn`, among others. None of this is needed to build the site — only to execute notebooks. Do not assume these packages are available in this environment.
 
 ## Coding approach
 
-- use basic functional oriented programming ()
+- use basic function-oriented programming: plain functions over small data structures, no classes unless a library requires one.
 
 ### Notebook coding principles (MUST read before touching `sources/notebooks/`)
 
 Any work on the day notebooks MUST follow
 [planning/course_planning/notebook-coding-principles.md](planning/course_planning/notebook-coding-principles.md).
-In short: **the `.ipynb` files are the source — edit them directly.** 364 of the 382 cells
+In short: **the `.ipynb` files are the source — edit them directly.** 367 of the 385 cells
 are ordinary and stay exactly as you leave them.
 
 The 18 exceptions are the 📦 Setup cell and each 🔧 Library cell. They say so in their own
@@ -66,9 +66,13 @@ python sources/notebooks/_check_notebooks.py   # the invariants
 
 All site content lives under `sources/`:
 
-- `sources/syllabus/`, `sources/sessions/`, `sources/resources/` — the published pages (syllabus, per-day session notes, tool/corpus guides, code examples).
+- `sources/syllabus/`, `sources/sessions/`, `sources/resources/` — the published pages (syllabus, per-day session notes, tool/corpus guides).
 - `sources/resources/tools/` and `sources/resources/corpora/` — how-to guides (AntConc, BYU corpora, JASP, Python/Colab setup; corpus inventories).
-- `assets/css/` — `style.scss` (site theme, extends the `litera` Bootswatch theme) and `slides.scss`. `.scss` files are the sources; `.css` files are generated.
+- `sources/slides/` — the 15 revealjs decks (`slides-session-01.qmd` … `slides-session-15.qmd`) plus shared deck config in `_slides.yml`.
+- `sources/notebooks/` — the five day notebooks students run in Colab. See the notebook coding principles above before editing.
+- `sources/final-project/` — the group mini-project pages (plan, deliverables, rubric, pipeline cheatsheet).
+- `sources/resources/datasets/` — the gold JSON files, `prep_datasets.py`, and the download notebooks.
+- `sources/assets/css/` — `style.scss` (site theme, extends the `litera` Bootswatch theme), `slides.scss`, `slides-v2.scss`, and the variable-only flavor files `slide-forest.scss`, `slide-warm.scss`, `slide-pastel.scss`. `.scss` files are the sources; `.css` files are generated.
 
 ### Say it plainly — no metaphors
 
@@ -102,15 +106,11 @@ Writing *to* or *about* the instructor as a person is still fine ("report the re
 
 ### Course structure (drives navigation and page organization)
 
-5-day intensive course, 3 sessions per day (intro → tutorial → hands-on), plus 4 "Corpus Lab" hands-on assignments and a final group mini-project. The day/session/assignment hierarchy in `_quarto.yml`'s navbar and sidebars mirrors this. When adding session or assignment pages, keep them consistent with that hierarchy.
-
-### Known state: navigation references a not-yet-built tree
-
-`_quarto.yml` navbar and sidebar `contents` point at paths like `2025/sessions/dayN/...`, `2025/syllabus/...`, and a `metadata-files: _metadata.yml` — **most of these files do not exist yet.** Actual content currently sits under `sources/sessions/`, `sources/syllabus/`, etc. (no `2025/` prefix). The site is mid-build-out; expect to either create the referenced `2025/...` files or update the config paths to match. Verify with `quarto render` before assuming navigation links resolve.
+5-day intensive course, 15 sessions, 3 per day. Days 1–3 run intro → tutorial → hands-on; Days 4–5 are methodology and project work. Assessment is attendance and participation, the hands-on activities across Days 1–3 plus the completed notebook, the Day 5 group presentation with Q&A, and a one-page report. The day/session hierarchy in `_quarto.yml`'s navbar and sidebars mirrors this. When adding session pages, keep them consistent with that hierarchy.
 
 ## Planning docs (gitignored)
 
-`planning/` is excluded via [.gitignore](.gitignore) and holds course-design notes (mostly in Japanese) — e.g. `planning/course_planning/course-design.md` (the authoritative internal design doc — rationale, delivery plan, status, and tasks), `LDA2_syllabus.md`. These are working/reference material and are not published; treat them as the source of intent behind the course design, not as deliverables.
+`planning/` is excluded via [.gitignore](.gitignore) and holds course-design notes — e.g. `planning/course_planning/course-design.md` (the authoritative internal design doc — rationale, delivery plan, status, and tasks) and `notebook-coding-principles.md`. These are working/reference material and are not published; treat them as the source of intent behind the course design, not as deliverables.
 
 
 ## Commiting

@@ -3,11 +3,10 @@ title: "Final Project"
 subtitle: "Group Mini-Project — LLM-Based Linguistic Analysis"
 toc: true
 ---
-You run a small, end-to-end LLM-annotation study on a real annotated dataset, and report what you find. It is introduced in [Session 3](../sessions/day1/session-03.md) (track selection and
-group formation), planned in [Session 11](../sessions/day4/session-11.md), and carried out
-across Sessions [12](../sessions/day4/session-12.md)–[15](../sessions/day5/session-15.md).
+## Mini-project description
 
-Everything is produced **during the course**. There is no post-course write-up.
+You run a small, end-to-end LLM-annotation study on a real annotated dataset, and report what you find. It is introduced in [Session 3](../sessions/day1/session-03.md) (track selection and
+group formation). You will start working on it on Day 4.
 
 ## Where the work happens
 
@@ -52,7 +51,7 @@ together.
 | `03_annotate`           | the filled-in sheet →**your** gold set, split into dev and test | no model              |
 | `04_develop`            | prompt rounds, on**dev** only                                    | the model, many times |
 | `05_test`               | the held-out run, once, frozen to a file                               | the model, once       |
-| `06_report`             | the frozen run → error analysis and the report scaffold               | no model              |
+| `06_report`             | the frozen run → error analysis, and the numbers you write your report from | no model              |
 
 **04 and 05 are separate files on purpose.** "You may not look at the test set while you are
 still changing the prompt" is a rule that only holds if it is a file boundary rather than a
@@ -69,8 +68,7 @@ The model is scored against **what your group decided in `03_annotate`**, not ag
 labels. That is what makes the QC pass matter: the boundaries you argued over in `03_annotate` are
 exactly the ones you will be pointing at in `06_report` when you explain a miss.
 
-`compare_to_published` still shows you where you differ from the source corpus — and that gap
-is itself a finding worth a line in your report.
+`compare_to_published` still shows you where you differ from the source corpus — and that gap is itself a finding worth a line in your report.
 :::
 
 ::: {.callout-important}
