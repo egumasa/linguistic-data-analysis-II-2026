@@ -12,7 +12,7 @@ toc-depth: 2
 | **Credits**      | 2                                    |
 | **Format**       | Intensive 5-day course (15 sessions) |
 | **Language**     | English                              |
-| **Classroom**    | To be announced                      |
+| **Classroom**    | Room 111                             |
 
 ## Instructor Information
 
@@ -30,14 +30,14 @@ Large Language Models (LLMs) — generative AI technologies that produce human-l
 
 By the end of this course, students will be able to:
 
-| Area                               | Objective                                                                                                                                    |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Critical appraisal**       | Explain the strengths and limitations of Large Language Models for linguistic analysis, and judge when an LLM-based approach is appropriate. |
-| **Annotation scheme (adapt & operationalize)** | Adapt and operationalize an existing annotation scheme and coding guidelines for a linguistic construct.                                                    |
-| **Gold-standard datasets**   | Construct a gold-standard dataset, including operationalizing categories and assessing inter-annotator agreement.                            |
-| **Prompt design**            | Design, tune, and document prompts that elicit reliable linguistic annotations from an LLM.                                                  |
-| **Evaluation**               | Evaluate model performance using precision, recall, F1, and confusion matrices, and interpret the results critically.                        |
-| **Reproducibility**          | Communicate methods and findings transparently and reproducibly, following responsible research practices.                                   |
+| Area                                                 | Objective                                                                                                                                    |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Critical appraisal**                         | Explain the strengths and limitations of Large Language Models for linguistic analysis, and judge when an LLM-based approach is appropriate. |
+| **Annotation scheme (adapt & operationalize)** | Adapt and operationalize an existing annotation scheme and coding guidelines for a linguistic construct.                                     |
+| **Gold-standard datasets**                     | Construct a gold-standard dataset, including operationalizing categories and assessing inter-annotator agreement.                            |
+| **Prompt design**                              | Design, tune, and document prompts that elicit reliable linguistic annotations from an LLM.                                                  |
+| **Evaluation**                                 | Evaluate model performance using precision, recall, F1, and confusion matrices, and interpret the results critically.                        |
+| **Reproducibility**                            | Communicate methods and findings transparently and reproducibly, following responsible research practices.                                   |
 
 :::
 
