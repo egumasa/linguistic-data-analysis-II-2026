@@ -182,6 +182,47 @@ OR
 
 :::
 
+## My research
+
+
+::: {.columns}
+
+::: {.column}
+
+**How can computer technologies (AI, Natual Language Processing) help research and practice of language assessment?**
+
+- Large Language Models
+- Dialog System
+- Interactional Competence
+
+:::
+
+::: {.column}
+
+![](../assets/img/session1/intella.png)
+
+:::
+
+:::
+
+## My research
+
+
+::: {.columns}
+
+::: {.column}
+
+![](../assets/img/session1/MizumotoEguchi.png)
+
+:::
+
+::: {.column}
+
+![](../assets/img/session1/Eguchietal.png)
+
+:::
+
+:::
 
 
 ## Introduce yourself - Round 1
