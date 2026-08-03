@@ -153,11 +153,35 @@ OR
 
 # 2 · Self-introductions
 
-## Your instructor
+## Your instructor {.smaller}
 
-- Masaki Eguchi
+
+::: {.columns}
+
+::: {.column width = "60%"}
+
+- **Masaki Eguchi (江口 政貴)**
+
+**Position**
+
 - Research Scientist at Equmenopolis, Inc.
 - Research Associate Processor, Perceptual Computing Lab, Waseda University
+
+**Education**
+
+- Ph.D. in Linguistics, University of Oregon.
+- M.A. in Education, Waseda University
+
+:::
+
+::: {.column width = "30%"}
+
+![](../assets/img/session1/IMG_0856.PNG)
+
+:::
+
+:::
+
 
 
 ## Introduce yourself - Round 1
