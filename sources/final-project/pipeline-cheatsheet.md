@@ -84,9 +84,9 @@ over without answering it for you. You saw the six lines in Day 2 S5, step E.
 | `evaluate(dev, pred, ordered=False)` | per-class table, κ, matrix, and macro-F1 back | Day 3 |
 | `show_errors(dev, pred)` | just the rows it got wrong | Day 3 |
 
-**And the prompt itself is the other half.** S7's menu — instruction · context · input data ·
-output indicator · persona · few-shot · chain-of-thought · structured output — is the space
-you are choosing from. Few-shot is one row of that table, not the default.
+**And the prompt itself is the other half.** S7's menu — directive · additional information ·
+role · output formatting · few-shot examples · chain-of-thought · structured output — is the
+space you are choosing from. Few-shot is one row of that table, not the default.
 
 The number `evaluate` hands back is macro-F1, and here it is only something to compare round
 2 against round 1 with. The number you report comes out of `06_report`, where you write the

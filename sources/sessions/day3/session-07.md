@@ -16,22 +16,23 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 
 By the end of this session, you will be able to:
 
-- **Name the four prompt elements** — *instruction · context · input data · output indicator* — and locate each in a real prompt.
+- **Name the main classes of prompting strategies** — instruction structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism — and say which ones we run this week.
+- **Locate the components of a prompt** — *directive · examples · output formatting · style instructions · role · additional information* — in a real prompt.
 - Distinguish **zero-shot** from **few-shot** prompting and judge **when examples help**.
-- Explain **chain-of-thought** prompting and where it earns its keep.
-- Place a technique on the **run-it-this-week vs. know-it-exists** line (zero/few/CoT and structured output vs. self-consistency, RAG, and agentic prompting).
+- Explain **chain-of-thought** prompting and which tasks it improves.
 - Explain the **train/test contamination** trap and why you **tune on a validation set** but **report on a held-out test set**.
 
 The message of the day: a prompt has parts you can design, and small changes to those parts change the score.
 
 ## Agenda
 
-1. **The anatomy of a prompt** — the four elements (*instruction · context · input data · output indicator*), and how structure and persona sharpen the instruction. Worked on Huang & Mizumoto's (2025) writing-feedback prompt.
-2. **Zero-shot, few-shot, chain-of-thought** — what examples actually buy you, read off a real results table from Kim & Lu (2024), including where prompting alone stops improving and fine-tuning takes over. Then chain-of-thought, and the Example Prompt 1 → Example Prompt 2 refinement.
-3. **The wider design space** — which techniques to *run* this week and which to simply *know about* (self-consistency, RAG, agentic prompting).
-4. **Two errors to avoid before you tune** — train/test contamination, and tuning on validation while reporting on test.
+1. **A map of prompting strategies** — the many named techniques group into a few **strategy classes**, each answering a different question about the model call: instruction structuring · in-context learning · thought generation · ensembling · self-criticism · decomposition.
+2. **Instruction structuring** — the six components of a prompt (*directive · examples · output formatting · style instructions · role · additional information*), read off Huang & Mizumoto's (2025) writing-feedback prompt.
+3. **In-context learning and thought generation** — zero-shot vs. few-shot, what examples actually teach, and the results table from Kim & Lu (2024), including where prompting alone stops improving and fine-tuning takes over. Then chain-of-thought, and the Example Prompt 1 → Example Prompt 2 refinement.
+4. **Three strategy classes to know about, not run** — ensembling (self-consistency), self-criticism (and why not to use an LLM to check your own labels), decomposition (prompt chaining, RAG).
+5. **Two errors to avoid before you tune** — train/test contamination, and tuning on validation while reporting on test.
 
-The four elements return in [Session 8](session-08.md), mapped onto the CEFR classification task, and again in [Session 9](session-09.md) as the error-analysis iteration loop.
+The prompt components return in [Session 8](session-08.md), mapped onto the CEFR classification task, and again in [Session 9](session-09.md) as the error-analysis iteration loop.
 
 ## Reading
 

@@ -107,45 +107,6 @@ Even with POS, you have different choices.
 - **The tag set is a design decision** — the first one you make when you define an annotation task.
 
 
-## Applications in L2 research
-
-How do learner across proficiency level use collocations?
-
-::: {.columns}
-
-::: {.column width = "40%"}
-
-- Adjective + Noun (JN)
-- Noun + Noun (NN)
-- Verb + Noun (VN)
-
-:::
-
-::: {.column width = "60%"}
-
-![](../assets/img/session4/JN_collocation.png)
-
-
-:::
-
-:::
-
-
-::: {style="font-size: 60%"}
-Granger, S., & Bestgen, Y. (2014). The use of collocations by intermediate vs. advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011
-:::
-
-
-## Word Sense Disambiguation
-
-**Word-sense disambiguation** = decide *which meaning* a word carries in context. Same form, different sense.
-
-- *She sat on the **bank** of the river.* → **riverbank**
-- *She deposited the cheque at the **bank**.* → **financial institution**
-
-The surface form is identical — only context resolves the sense. Harder than POS: the label set is *per word*, not a fixed grammar.
-
-
 ## Syntactic Dependency
 
 **Dependency parsing** = Identifying a binary syntactic relationships between a head and its dependency.
@@ -168,6 +129,58 @@ ID   Form     Lemma   POS     TAG    MORPH                              HEAD DEP
 ```
 
 ![Dependency tree for "They buy and sell books."](../assets/img/nlp-tasks/dep-2.png)
+
+
+## Applications in L2 research {.smaller}
+
+How do learner across proficiency level use collocations?
+
+::: {.columns}
+
+::: {.column width = "27%"}
+
+- Adjective + Noun (JN)
+- Noun + Noun (NN)
+- Verb + Noun (VN)
+
+:::
+
+::: {.column width = "73%"}
+
+
+![](../assets/img/session4/col-bin.png)
+
+:::
+
+:::
+
+
+::: {style="font-size: 60%"}
+
+Eguchi, M., & Kyle, K. (2023). L2 collocation profiles and their relationship with vocabulary proficiency: A learner corpus approach. Journal of Second Language Writing, 60, 100975. https://doi.org/10.1016/j.jslw.2023.100975
+
+
+Granger, S., & Bestgen, Y. (2014). The use of collocations by intermediate vs. advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011
+
+
+:::
+
+## Collocation extraction 
+
+
+![](../assets/img/session4/collocations.png)
+
+
+## Word Sense Disambiguation
+
+**Word-sense disambiguation** = decide *which meaning* a word carries in context. Same form, different sense.
+
+- *She sat on the **bank** of the river.* → **riverbank**
+- *She deposited the cheque at the **bank**.* → **financial institution**
+
+The surface form is identical — only context resolves the sense. Harder than POS: the label set is *per word*, not a fixed grammar.
+
+
 
 ## Stance
 
@@ -199,11 +212,16 @@ Unit of analysis is a **span** - textual segments with specified beginning and e
 **Kim & Lu (2024)** had GPT annotate these moves — near-perfect when fine-tuned, though *steps* stayed hard. Unit: **sentence/clause → one label**.
 
 
-## Summary: NLP task by unit and output
+## Summary: NLP task by unit and output {.smaller}
 
-- **Token-level sequence labelling** — POS, NER (one label *per token*).
-- **Span categorization** — stance spans (label a *stretch* of text).
-- **Unit categorization → one label per unit** — a **sentence** or a **whole text**.
+| Task | Unit of analysis | Label example | Note |
+|------|-------|---------|-------------|
+| **POS tagging** | Each token | `NOUN`, `VERB`, `ADJ` | Token-level sequence labelling — one label *per token* |
+| **Dependency parsing** | A pair of tokens | `nsubj`, `obj` | One relation per head–dependent pair |
+| **Stance annotation** | A stretch of text | `hedge`, `booster`, `ATTRIBUTE` | Span categorization — the span boundaries are part of the annotation |
+| **Rhetorical move analysis** | A sentence | `Background`, `Gap`, `Method` | Unit categorization — one label *per unit* |
+| **Sentence difficulty (CEFR)** | A sentence | `B2`, `C1`, `C2` | Unit categorization — one label *per unit* |
+| **Register classification** | A whole text | `academic`, `news`, `fiction` | Unit categorization — one label *per unit* |
 
 
 ## The scope of the current course
@@ -224,15 +242,6 @@ data = {
 
 BUT you can apply the same workflow for different annotation tasks. Only the data and annotation gets complex.
 
-<!-- ## Note on the error annotation 
-
-Originally, the **AutoErrorAnalyzer** track has two routes:
-
-- **Default — sentence-level:** one label per unit; uses the same pipeline as every other track.
-- **Stretch — locate-a-span-then-categorize:** the *real* error-annotation task. It does not fit one-label-per-unit, and needs **span matching + partial-match scoring**.
-
-You can pick which route you will do. A bit more challenging but more rewarding.
-You will decide this by Day 4. -->
 
 
 ## Annotation is not the end-point, it is the beginning of the Applied work
@@ -268,7 +277,10 @@ We evaluate the machine's performance on a task, by comparing it against human-a
 
 What are reliability and validity?
 
-. . .
+![](../assets/img/session4/reliability-validity.svg){fig-alt="Four targets showing dot patterns: a tight cluster away from the center (reliable, not valid); dots spread widely around the center (low reliability, low validity); dots scattered away from the center (not reliable, not valid); a tight cluster on the center (reliable and valid)." width="90%"}
+
+
+## Reliability and Validity
 
 - **Reliability**: 
   - How consistent the annotation results are (e.g., across human or AI coders).  
@@ -364,9 +376,8 @@ In classical machine-learning experiment, we split the entire dataset into three
 
 | Split | Roughly | What it is for |
 |:--|:--:|:-----|
-| **Development** (validation) | ??% | You compare settings here and pick the one to keep. |
+| **Development** (validation) | ??% | You will change the prompt as many times as you want. |
 | **Test** | ??% | Held back until the end. Score it **once** → **Precision · Recall · F1**. |
-
 
 
 

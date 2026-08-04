@@ -231,8 +231,8 @@
 <h1>From feedback to classification</h1>
 
 </section>
-<section id="the-same-four-elements-a-new-task" class="slide level2 smaller">
-<h2>The same four elements, a new task</h2>
+<section id="the-same-components-a-new-task" class="slide level2 smaller">
+<h2>The same components, a new task</h2>
 <p>The CEFR prompt you’ll write is <strong>Huang &amp; Mizumoto’s Ex 2 structure</strong>, re-cast for classification:</p>
 <table class="caption-top">
 <colgroup>
@@ -247,11 +247,11 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Instruction:</strong> “review and give feedback”</td>
+<td><strong>Directive:</strong> “review and give feedback”</td>
 <td>“classify this sentence’s <strong>CEFR level</strong>”</td>
 </tr>
 <tr class="even">
-<td><strong>Context:</strong> the 5-item Criteria rubric</td>
+<td><strong>Additional information:</strong> the 5-item Criteria rubric</td>
 <td>the <strong>CEFR level descriptors</strong></td>
 </tr>
 <tr class="odd">
@@ -259,7 +259,7 @@
 <td>the learner <strong>sentence</strong> <code>{text}</code></td>
 </tr>
 <tr class="even">
-<td><strong>Output indicator:</strong> “only feedback, no rewrite”</td>
+<td><strong>Output formatting:</strong> “only feedback, no rewrite”</td>
 <td>“<strong>return only the label</strong>” → structured / JSON</td>
 </tr>
 </tbody>
@@ -498,7 +498,7 @@
 <p>That is the same <code>{id, text, label}</code> schema from Day 1 — <strong>JSON</strong> is just the file format it travels in.</p>
 </div>
 <div class="fragment">
-<p>Asking for JSON is an <em>output indicator</em> (S7’s fourth element). It makes the reply readable by code, instead of text you have to interpret.</p>
+<p>Asking for JSON is <em>output formatting</em> (one of S7’s prompt components). It makes the reply readable by code, instead of text you have to interpret.</p>
 </div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" font-family="Source Sans Pro, Helvetica, Arial, sans-serif">
+  <!-- target rings, repeated at four x-positions -->
+  <g stroke="#2E5D4B" stroke-width="2">
+    <g transform="translate(120,130)">
+      <circle r="100" fill="#3E6B57"/><circle r="80" fill="#F6F7F2"/><circle r="60" fill="#3E6B57"/><circle r="40" fill="#F6F7F2"/><circle r="18" fill="#3E6B57"/>
+    </g>
+    <g transform="translate(360,130)">
+      <circle r="100" fill="#3E6B57"/><circle r="80" fill="#F6F7F2"/><circle r="60" fill="#3E6B57"/><circle r="40" fill="#F6F7F2"/><circle r="18" fill="#3E6B57"/>
+    </g>
+    <g transform="translate(600,130)">
+      <circle r="100" fill="#3E6B57"/><circle r="80" fill="#F6F7F2"/><circle r="60" fill="#3E6B57"/><circle r="40" fill="#F6F7F2"/><circle r="18" fill="#3E6B57"/>
+    </g>
+    <g transform="translate(840,130)">
+      <circle r="100" fill="#3E6B57"/><circle r="80" fill="#F6F7F2"/><circle r="60" fill="#3E6B57"/><circle r="40" fill="#F6F7F2"/><circle r="18" fill="#3E6B57"/>
+    </g>
+  </g>
+
+  <!-- 1: tight cluster, off-center -->
+  <g fill="#232A26" stroke="#F6F7F2" stroke-width="1.5">
+    <g transform="translate(120,130)">
+      <circle cx="-50" cy="-52" r="6"/><circle cx="-36" cy="-46" r="6"/><circle cx="-56" cy="-38" r="6"/>
+      <circle cx="-42" cy="-60" r="6"/><circle cx="-28" cy="-56" r="6"/><circle cx="-44" cy="-32" r="6"/>
+      <circle cx="-62" cy="-50" r="6"/><circle cx="-48" cy="-45" r="6"/><circle cx="-33" cy="-36" r="6"/>
+    </g>
+
+    <!-- 2: spread widely around the center -->
+    <g transform="translate(360,130)">
+      <circle cx="0" cy="-68" r="6"/><circle cx="46" cy="-42" r="6"/><circle cx="-46" cy="-44" r="6"/>
+      <circle cx="64" cy="8" r="6"/><circle cx="-62" cy="14" r="6"/><circle cx="32" cy="56" r="6"/>
+      <circle cx="-28" cy="60" r="6"/><circle cx="-8" cy="24" r="6"/><circle cx="22" cy="-18" r="6"/>
+    </g>
+
+    <!-- 3: scattered, off-center -->
+    <g transform="translate(600,130)">
+      <circle cx="-72" cy="-58" r="6"/><circle cx="-32" cy="-76" r="6"/><circle cx="8" cy="-82" r="6"/>
+      <circle cx="48" cy="-62" r="6"/><circle cx="76" cy="-32" r="6"/><circle cx="-48" cy="-30" r="6"/>
+      <circle cx="18" cy="-42" r="6"/><circle cx="56" cy="-8" r="6"/><circle cx="-8" cy="-58" r="6"/>
+    </g>
+
+    <!-- 4: tight cluster on the center -->
+    <g transform="translate(840,130)">
+      <circle cx="-8" cy="-6" r="6"/><circle cx="6" cy="-9" r="6"/><circle cx="-3" cy="7" r="6"/>
+      <circle cx="9" cy="4" r="6"/><circle cx="0" cy="-1" r="6"/><circle cx="-11" cy="4" r="6"/>
+      <circle cx="4" cy="11" r="6"/><circle cx="-6" cy="-12" r="6"/><circle cx="11" cy="-4" r="6"/>
+    </g>
+  </g>
+
+  <g fill="#232A26" font-size="21" text-anchor="middle">
+    <text x="120" y="272" font-weight="600">Reliable</text><text x="120" y="298">Not valid</text>
+    <text x="360" y="272" font-weight="600">Low reliability</text><text x="360" y="298">Low validity</text>
+    <text x="600" y="272" font-weight="600">Not reliable</text><text x="600" y="298">Not valid</text>
+    <text x="840" y="272" font-weight="600">Reliable</text><text x="840" y="298">and valid</text>
+  </g>
+</svg>

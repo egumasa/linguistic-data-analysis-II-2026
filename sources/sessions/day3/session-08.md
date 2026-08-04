@@ -16,13 +16,13 @@ This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may b
 By the end of this session, you will be able to:
 
 - Get and store a **Gemini API key** (Colab Secrets) and make **reproducible** calls (`temperature=0`, `seed`).
-- **Map the four prompt elements onto a classification prompt** — recasting Huang & Mizumoto's *Task / Criteria / "My paragraph"* structure as the CEFR prompt (instruction = classify; context = level descriptors; input = the sentence; output indicator = return only the label).
+- **Map the prompt components onto a classification prompt** — recasting Huang & Mizumoto's *Task / Criteria / "My paragraph"* structure as the CEFR prompt (directive = classify; additional information = level descriptors; input = the sentence; output formatting = return only the label).
 - Run the **zero-shot → few-shot → chain-of-thought** progression on CEFR, re-evaluating each on a validation set, and score the final prompt **once** on the held-out test set.
 - Prompt for **structured output** and recognise **JSON** as the `{id, text, label}` data format.
 
 ## Agenda
 
-1. **From feedback to classification** — the same four prompt elements from [Session 7](session-07.md), now on a new task: instruction = classify, context = the level descriptors, input = the sentence, output indicator = return only the label.
+1. **From feedback to classification** — the same prompt components from [Session 7](session-07.md), now on a new task: directive = classify, additional information = the level descriptors, input = the sentence, output formatting = return only the label.
 2. **Your Gemini API key** — get one and store it in Colab Secrets, in four steps. Why a key is needed at all, and the two separate rate limits that govern how fast you can call.
 3. **Run classification in Colab** — two files with two purposes: tune every prompt on the 24-item validation set, and keep the 72-item test set for one final run. Then three rounds: **zero-shot**, **few-shot**, **chain-of-thought**, recording macro-F1 on validation after each.
 4. **Evaluate the outputs** — read the per-class report rather than the average alone, since one level with F1 near zero drags macro-F1 down and the report shows you which. Then the held-out run, once, on the 72 items.

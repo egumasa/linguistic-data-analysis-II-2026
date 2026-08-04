@@ -1144,7 +1144,7 @@
     "href": "slides/slides-session-04.html#applications-in-l2-research",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Applications in L2 research",
-    "text": "Applications in L2 research\nHow do learner across proficiency level use collocations?\n\n\n\nAdjective + Noun (JN)\nNoun + Noun (NN)\nVerb + Noun (VN)\n\n\n\n\n\nGranger, S., & Bestgen, Y. (2014). The use of collocations by intermediate vs. advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011"
+    "text": "Applications in L2 research\nHow do learner across proficiency level use collocations?\n\n\n\nAdjective + Noun (JN)\nNoun + Noun (NN)\nVerb + Noun (VN)\n\n\n\n\n\nEguchi, M., & Kyle, K. (2023). L2 collocation profiles and their relationship with vocabulary proficiency: A learner corpus approach. Journal of Second Language Writing, 60, 100975. https://doi.org/10.1016/j.jslw.2023.100975\nGranger, S., & Bestgen, Y. (2014). The use of collocations by intermediate vs. advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011"
   },
   {
     "objectID": "slides/slides-session-04.html#word-sense-disambiguation",
@@ -1186,7 +1186,7 @@
     "href": "slides/slides-session-04.html#summary-nlp-task-by-unit-and-output",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Summary: NLP task by unit and output",
-    "text": "Summary: NLP task by unit and output\n\nToken-level sequence labelling — POS, NER (one label per token).\nSpan categorization — stance spans (label a stretch of text).\nUnit categorization → one label per unit — a sentence or a whole text."
+    "text": "Summary: NLP task by unit and output\n\n\n\n\n\n\n\n\n\nTask\nUnit of analysis\nLabel example\nNote\n\n\n\n\nPOS tagging\nEach token\nNOUN, VERB, ADJ\nToken-level sequence labelling — one label per token\n\n\nDependency parsing\nA pair of tokens\nnsubj, obj\nOne relation per head–dependent pair\n\n\nStance annotation\nA stretch of text\nhedge, booster, ATTRIBUTE\nSpan categorization — the span boundaries are part of the annotation\n\n\nRhetorical move analysis\nA sentence\nBackground, Gap, Method\nUnit categorization — one label per unit\n\n\nSentence difficulty (CEFR)\nA sentence\nB2, C1, C2\nUnit categorization — one label per unit\n\n\nRegister classification\nA whole text\nacademic, news, fiction\nUnit categorization — one label per unit"
   },
   {
     "objectID": "slides/slides-session-04.html#the-scope-of-the-current-course",
@@ -1214,7 +1214,7 @@
     "href": "slides/slides-session-04.html#reliability-and-validity",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "Reliability and Validity",
-    "text": "Reliability and Validity\nWhat are reliability and validity?\n\n\nReliability:\n\nHow consistent the annotation results are (e.g., across human or AI coders).\n\nHow trustworthy your reported results are.\nDepends on coder, scheme, type of data, familiarity, etc.\n\n\n\n\n\nValidity:\n\nHow well the actual annotation captures what you are proposed to capture.\nDepends on the quality of your coding scheme."
+    "text": "Reliability and Validity\nWhat are reliability and validity?"
   },
   {
     "objectID": "slides/slides-session-04.html#proposed-steps",
@@ -1263,7 +1263,7 @@
     "href": "slides/slides-session-04.html#evaluate-the-llm-against-gold",
     "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
     "section": "⑤ Evaluate the LLM against gold",
-    "text": "⑤ Evaluate the LLM against gold\nFinally, we will explore and evaluate LLM against gold-standard.\nIn classical machine-learning experiment, we split the entire dataset into three parts.\n\n\n\n\n\n\n\n\nSplit\nRoughly\nWhat it is for\n\n\n\n\nTrain\n70%\nThe model learns from these items.\n\n\nDevelopment (validation)\n15%\nYou compare settings here and pick the one to keep.\n\n\nTest\n15%\nHeld back until the end. Score it once → Precision · Recall · F1.\n\n\n\nUsing LLM, we might not need Train\n\n\n\n\n\n\n\n\nSplit\nRoughly\nWhat it is for\n\n\n\n\nDevelopment (validation)\n??%\nYou compare settings here and pick the one to keep.\n\n\nTest\n??%\nHeld back until the end. Score it once → Precision · Recall · F1."
+    "text": "⑤ Evaluate the LLM against gold\nFinally, we will explore and evaluate LLM against gold-standard.\nIn classical machine-learning experiment, we split the entire dataset into three parts.\n\n\n\n\n\n\n\n\nSplit\nRoughly\nWhat it is for\n\n\n\n\nTrain\n70%\nThe model learns from these items.\n\n\nDevelopment (validation)\n15%\nYou compare settings here and pick the one to keep.\n\n\nTest\n15%\nHeld back until the end. Score it once → Precision · Recall · F1.\n\n\n\nUsing LLM, we might not need Train\n\n\n\n\n\n\n\n\nSplit\nRoughly\nWhat it is for\n\n\n\n\nDevelopment (validation)\n??%\nYou will change the prompt as many times as you want.\n\n\nTest\n??%\nHeld back until the end. Score it once → Precision · Recall · F1."
   },
   {
     "objectID": "slides/slides-session-04.html#proposed-steps-1",
@@ -2082,7 +2082,7 @@
     "href": "slides/slides-session-08.html#structured-output",
     "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
     "section": "Structured output",
-    "text": "Structured output\nSo far the model returns a bare label. For real pipelines you want it to return data:\n{\"id\": 17, \"label\": \"B2\"}\n\nThat is the same {id, text, label} schema from Day 1 — JSON is just the file format it travels in.\n\n\nAsking for JSON is an output indicator (S7’s fourth element). It makes the reply readable by code, instead of text you have to interpret."
+    "text": "Structured output\nSo far the model returns a bare label. For real pipelines you want it to return data:\n{\"id\": 17, \"label\": \"B2\"}\n\nThat is the same {id, text, label} schema from Day 1 — JSON is just the file format it travels in.\n\n\nAsking for JSON is output formatting (one of S7’s prompt components). It makes the reply readable by code, instead of text you have to interpret."
   },
   {
     "objectID": "resources/corpora/index.html",
@@ -2890,7 +2890,7 @@
     "href": "final-project/pipeline-cheatsheet.html#develop-the-prompt-rounds-on-dev-only",
     "title": "What you have to work with",
     "section": "04 · Develop — the prompt rounds, on dev only",
-    "text": "04 · Develop — the prompt rounds, on dev only\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nsetup(temperature=TEMPERATURE, seed=SEED, model=MODEL)\nthe connection, with the two settings that decide whether a run repeats\nDay 3, iteration 0\n\n\nload_prompt(path)\na prompt file, as text\nnew — your prompt is a file now\n\n\nrun_prompt(prompt, dev)\none predicted label per item\nDay 3, every iteration\n\n\nbuild_fewshot(prompt, pool, gold)\nthe prompt with worked examples in front of it\nDay 3 iteration 1 — you typed the examples by hand\n\n\nextract_label(reply, labels)\none label out of one reply\nDay 3, as the parser behind run_prompt\n\n\nevaluate(dev, pred, ordered=False)\nper-class table, κ, matrix, and macro-F1 back\nDay 3\n\n\nshow_errors(dev, pred)\njust the rows it got wrong\nDay 3\n\n\n\nAnd the prompt itself is the other half. S7’s menu — instruction · context · input data · output indicator · persona · few-shot · chain-of-thought · structured output — is the space you are choosing from. Few-shot is one row of that table, not the default.\nThe number evaluate hands back is macro-F1, and here it is only something to compare round 2 against round 1 with. The number you report comes out of 06_report, where you write the scoring call yourself.",
+    "text": "04 · Develop — the prompt rounds, on dev only\n\n\n\n\n\n\n\n\nCall\nWhat it gives you\nWhere you first ran it\n\n\n\n\nsetup(temperature=TEMPERATURE, seed=SEED, model=MODEL)\nthe connection, with the two settings that decide whether a run repeats\nDay 3, iteration 0\n\n\nload_prompt(path)\na prompt file, as text\nnew — your prompt is a file now\n\n\nrun_prompt(prompt, dev)\none predicted label per item\nDay 3, every iteration\n\n\nbuild_fewshot(prompt, pool, gold)\nthe prompt with worked examples in front of it\nDay 3 iteration 1 — you typed the examples by hand\n\n\nextract_label(reply, labels)\none label out of one reply\nDay 3, as the parser behind run_prompt\n\n\nevaluate(dev, pred, ordered=False)\nper-class table, κ, matrix, and macro-F1 back\nDay 3\n\n\nshow_errors(dev, pred)\njust the rows it got wrong\nDay 3\n\n\n\nAnd the prompt itself is the other half. S7’s menu — directive · additional information · role · output formatting · few-shot examples · chain-of-thought · structured output — is the space you are choosing from. Few-shot is one row of that table, not the default.\nThe number evaluate hands back is macro-F1, and here it is only something to compare round 2 against round 1 with. The number you report comes out of 06_report, where you write the scoring call yourself.",
     "crumbs": [
       "Final Project",
       "What you have to work with"
@@ -4379,21 +4379,21 @@
     "href": "slides/slides-session-07.html#agenda",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nThe anatomy of a prompt — four elements\nZero-shot vs. few-shot, and chain-of-thought\nThe wider design space — what to run vs. what to know about\nTwo traps: contamination and the validation/test split\n\nOur worked example all session: Huang & Mizumoto (2025) — writing-feedback prompts."
+    "text": "📋 Agenda\n\nRecap of LLM\nA map of prompting strategies — organized into classes, not technique names\nInstruction structuring — the six components of a prompt\nIn-context learning — zero-shot vs. few-shot\nThought generation — chain-of-thought\nThree strategy classes to know about, not run: ensembling · self-criticism · decomposition\nTwo traps: contamination and the validation/test split\n\nOur worked example all session: Huang & Mizumoto (2025) — writing-feedback prompts."
   },
   {
     "objectID": "slides/slides-session-07.html#learning-objectives",
     "href": "slides/slides-session-07.html#learning-objectives",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nName the four prompt elements — instruction · context · input data · output indicator — and locate each in a real prompt.\nDistinguish zero-shot from few-shot prompting, judge when examples help, and read a real results table (Kim & Lu, 2024) to see what each contributes and where prompting stops improving.\nExplain chain-of-thought and which tasks it improves.\nDecide whether a technique is one to run this week or one to know about.\nExplain the train/test contamination trap and why you tune on validation, report on test.\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: a prompt has parts you can design, and small changes to those parts change the score."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nName the main classes of prompting strategies — instruction structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism — and say which ones we run this week.\nLocate the components of a prompt — directive · examples · output formatting · style instructions · role · additional information — in a real prompt.\nDistinguish zero-shot from few-shot prompting, judge when examples help, and read a real results table (Kim & Lu, 2024) to see what each contributes and where prompting stops improving.\nExplain chain-of-thought and which tasks it improves.\nExplain the train/test contamination trap and why you tune on validation, report on test.\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: a prompt has parts you can design, and small changes to those parts change the score."
   },
   {
     "objectID": "slides/slides-session-07.html#a-prompt-has-parts-you-can-design",
     "href": "slides/slides-session-07.html#a-prompt-has-parts-you-can-design",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "A prompt has parts you can design",
-    "text": "A prompt has parts you can design\nAn LLM does what the prompt tells it to. Change the prompt and you change the output, and the score.\n\nA prompt is not a fixed phrase that you either know or do not know. It has parts you can design deliberately, and today we learn those parts on one concrete example."
+    "text": "A prompt has parts you can design\n\nAn LLM does what the prompt tells it to. Change the prompt and you change the output, and the score.\n\n\n\nA prompt is not a fixed phrase that you either know or do not know. It has parts you can design deliberately, and today we learn those parts on one concrete example."
   },
   {
     "objectID": "slides/slides-session-07.html#four-elements-of-a-prompt",
@@ -4414,7 +4414,7 @@
     "href": "slides/slides-session-07.html#the-running-example-writing-feedback",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "The running example — writing feedback",
-    "text": "The running example — writing feedback\nHuang & Mizumoto’s Example Prompt 2 — a structured paragraph-feedback prompt for an EFL class:\n\nTask — Based on the following criteria, review the following paragraph and provide specific feedback… I am not seeking rewrite, give me only feedback.\nCriteria — 1. Hook / Attention-grabber · 2. Background / Context · 3. Thesis statement · 4. Organization · 5. Clarity & coherence\nMy paragraph — (paste your paragraph here)\n\n\nRead the four elements straight off it:\n\n\n\nElement\nIn this prompt\n\n\n\n\nInstruction\n“review… and provide specific feedback”\n\n\nContext\nthe 5-item Criteria rubric\n\n\nInput data\n“My paragraph”\n\n\nOutput indicator\n“only feedback, no rewrite”"
+    "text": "The running example — writing feedback\nHuang & Mizumoto’s Example Prompt 2 — a structured paragraph-feedback prompt for an EFL class:\n\nTask — Based on the following criteria, review the following paragraph and provide specific feedback… I am not seeking rewrite, give me only feedback.\nCriteria — 1. Hook / Attention-grabber · 2. Background / Context · 3. Thesis statement · 4. Organization · 5. Clarity & coherence\nMy paragraph — (paste your paragraph here)"
   },
   {
     "objectID": "slides/slides-session-07.html#zero-shot-vs.-few-shot",
@@ -4428,21 +4428,21 @@
     "href": "slides/slides-session-07.html#what-examples-actually-buy-kim-lu-2024",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "What examples actually buy — Kim & Lu (2024)",
-    "text": "What examples actually buy — Kim & Lu (2024)\nA hard linguistic task: labelling rhetorical move-steps in research-article introductions (modified Swales CARS: 3 moves / ~17 steps) with GPT-3.5. Unit of annotation = the sentence.\n\nThey tested two independent variables:\n\nzero-shot vs. three-shot — the prompt alone vs. the prompt + 3 fully annotated introductions (38 sentences, drawn from the training set — not the gold test set).\ninitial vs. refined prompt — the instruction sharpened after reading the validation-set confusion matrix.\n\n\n\n\n\n\n\nImportant\n\n\nNotice: the few-shot examples come from training, never from the gold set you score on. (More on this shortly.)"
+    "text": "What examples actually buy — Kim & Lu (2024)\n\n\n\nKim & Lu (2024) labeled rhetorical move-steps (Swales CARS: 3 moves / ~17 steps) with GPT-3.5.\nUnit of annotation = the sentence."
   },
   {
     "objectID": "slides/slides-session-07.html#the-numbers-prompting-alone-stops-improving",
     "href": "slides/slides-session-07.html#the-numbers-prompting-alone-stops-improving",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "The numbers — prompting alone stops improving",
-    "text": "The numbers — prompting alone stops improving\nTest-set accuracy, move / step (their Table 2):\n\n\n  initial promptrefined prompt\n  zero-shot\n    42.9% / 17.0%\n    50.5% / 19.8%\n  three-shot\n    46.2% / 18.7%\n    52.7% / 25.3%\n\nFine-tuning on 80 samples → 92.3% / 80.2% — far above the best prompt (the S12 escalation).\n\nEach change helps a little, and refined + three-shot is best. But prompting alone reaches only about 53% move accuracy, well below fine-tuning."
+    "text": "The numbers — prompting alone stops improving\nTest-set accuracy, move / step (their Table 2):\n\n\nEach change helps a little, and refined + three-shot is best. But prompting alone reaches only about 53% move accuracy, well below fine-tuning."
   },
   {
     "objectID": "slides/slides-session-07.html#four-things-the-numbers-teach",
     "href": "slides/slides-session-07.html#four-things-the-numbers-teach",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "Four things the numbers teach",
-    "text": "Four things the numbers teach\n\nFew-shot helps, but modestly — adding 3 examples to the initial prompt was not significant on its own (McNemar move χ²=0.543, p=0.46).\nExamples and instructions compound — only refined + three-shot beat the zero-shot baseline significantly (move p=0.028, step p=0.018). Sharpen the instruction and add examples.\nFew-shot mainly raises recall — precision was higher than recall, and examples raised recall. (That precision/recall relationship returns in S8/S9.)\nContext-heavy tasks need more than prompting — the best prompt-only setting was still far below fine-tuning: prompt first, and consider fine-tuning when prompting stops improving.\n\n\n\n\n\n\n\nNote\n\n\nDiscuss: When would 3 well-chosen examples beat a longer instruction? How do you pick which examples to show? Why might few-shot raise recall but not precision?"
+    "text": "Four things the numbers teach\n\nFew-shot helps, but modestly — adding 3 examples to the initial prompt was not significant on its own\nExamples and instructions compound — only refined + three-shot beat the zero-shot baseline significantly (move p=0.028, step p=0.018). Sharpen the instruction and add examples.\nFew-shot mainly raises recall — precision was higher than recall, and examples raised recall. (That precision/recall relationship returns in S8/S9.)\nContext-heavy tasks need more than prompting — the best prompt-only setting was still far below fine-tuning: prompt first, and consider fine-tuning when prompting stops improving.\n\n\n\n\n\n\n\nNote\n\n\nDiscuss: When would 3 well-chosen examples beat a longer instruction? How do you pick which examples to show? Why might few-shot raise recall but not precision?"
   },
   {
     "objectID": "slides/slides-session-07.html#chain-of-thought-cot",
@@ -4456,14 +4456,14 @@
     "href": "slides/slides-session-07.html#iterating-a-prompt-ex-1-ex-2",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "Iterating a prompt: Ex 1 → Ex 2",
-    "text": "Iterating a prompt: Ex 1 → Ex 2\nThe same feedback task, tightened:\n\nEx 1 (generic) — “give feedback on this paragraph, step by step.” Works, but vague.\nEx 2 (structured) — split into Task / Criteria / My paragraph, add the output indicator “only feedback.”\n\n\nThat change — generic → structured — is prompt iteration. The data-based version is error analysis: find where the model is wrong (the confusion matrix), make the Criteria that cause those errors more precise, and the score rises. This is the same as Kim & Lu’s initial → refined change. You will do this yourself in S9."
+    "text": "Iterating a prompt: Ex 1 → Ex 2\nThe same feedback task, tightened:\n\nEx 1 (generic) — “give feedback on this paragraph, step by step.” Works, but vague.\nEx 2 (structured) — split into Task / Criteria / My paragraph, add the output-formatting line “only feedback.”\n\n\nThat change — generic → structured — is prompt iteration. The data-based version is error analysis: find where the model is wrong (the confusion matrix), make the Criteria that cause those errors more precise, and the score rises. This is the same as Kim & Lu’s initial → refined change. You will do this yourself in S9."
   },
   {
     "objectID": "slides/slides-session-07.html#run-it-this-week-vs.-know-it-exists",
     "href": "slides/slides-session-07.html#run-it-this-week-vs.-know-it-exists",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "Run it this week vs. know it exists",
-    "text": "Run it this week vs. know it exists\n\n\n\n\n\n\n\nRun it in S8\nKnow it exists (name & reason, don’t run)\n\n\n\n\nzero-shot\nself-consistency — sample N answers, take the majority (relevant to reproducibility → S10)\n\n\nfew-shot\nRAG — give the model the annotation manual / codebook to consult (≈ dynamic few-shot)\n\n\nchain-of-thought\nagentic / multi-step — the model plans → critiques its own label → revises\n\n\nstructured output\n(ReAct, Reflexion, prompt chaining…)\n\n\n\n\nA reference for all of these: promptingguide.ai/techniques."
+    "text": "Run it this week vs. know it exists\n\n\n\n\n\n\n\nRun it in S8\nKnow it exists (name & reason, don’t run)\n\n\n\n\nzero-shot\nself-consistency — N runs, majority vote (ensembling)\n\n\nfew-shot\nRAG — give the model the annotation manual / codebook to consult (≈ dynamic few-shot)\n\n\nchain-of-thought\nprompt chaining — one analytic dimension per call (decomposition)\n\n\nstructured output\nself-refine / agentic — the model critiques and revises its own label (self-criticism)\n\n\n\nLLM-as-judge — do not use it to check your own labels (Ye et al., 2024)\n\n\n\n\nA reference for all of these: promptingguide.ai/techniques."
   },
   {
     "objectID": "slides/slides-session-07.html#two-errors-to-avoid-before-you-tune",
@@ -4666,7 +4666,7 @@
     "href": "sessions/day3/session-07.html#learning-objectives",
     "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
     "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nName the four prompt elements — instruction · context · input data · output indicator — and locate each in a real prompt.\nDistinguish zero-shot from few-shot prompting and judge when examples help.\nExplain chain-of-thought prompting and where it earns its keep.\nPlace a technique on the run-it-this-week vs. know-it-exists line (zero/few/CoT and structured output vs. self-consistency, RAG, and agentic prompting).\nExplain the train/test contamination trap and why you tune on a validation set but report on a held-out test set.\n\nThe message of the day: a prompt has parts you can design, and small changes to those parts change the score.",
+    "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nName the main classes of prompting strategies — instruction structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism — and say which ones we run this week.\nLocate the components of a prompt — directive · examples · output formatting · style instructions · role · additional information — in a real prompt.\nDistinguish zero-shot from few-shot prompting and judge when examples help.\nExplain chain-of-thought prompting and which tasks it improves.\nExplain the train/test contamination trap and why you tune on a validation set but report on a held-out test set.\n\nThe message of the day: a prompt has parts you can design, and small changes to those parts change the score.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -4678,7 +4678,7 @@
     "href": "sessions/day3/session-07.html#agenda",
     "title": "Session 7: Prompt Design — Zero-shot vs Few-shot",
     "section": "Agenda",
-    "text": "Agenda\n\nThe anatomy of a prompt — the four elements (instruction · context · input data · output indicator), and how structure and persona sharpen the instruction. Worked on Huang & Mizumoto’s (2025) writing-feedback prompt.\nZero-shot, few-shot, chain-of-thought — what examples actually buy you, read off a real results table from Kim & Lu (2024), including where prompting alone stops improving and fine-tuning takes over. Then chain-of-thought, and the Example Prompt 1 → Example Prompt 2 refinement.\nThe wider design space — which techniques to run this week and which to simply know about (self-consistency, RAG, agentic prompting).\nTwo errors to avoid before you tune — train/test contamination, and tuning on validation while reporting on test.\n\nThe four elements return in Session 8, mapped onto the CEFR classification task, and again in Session 9 as the error-analysis iteration loop.",
+    "text": "Agenda\n\nA map of prompting strategies — the many named techniques group into a few strategy classes, each answering a different question about the model call: instruction structuring · in-context learning · thought generation · ensembling · self-criticism · decomposition.\nInstruction structuring — the six components of a prompt (directive · examples · output formatting · style instructions · role · additional information), read off Huang & Mizumoto’s (2025) writing-feedback prompt.\nIn-context learning and thought generation — zero-shot vs. few-shot, what examples actually teach, and the results table from Kim & Lu (2024), including where prompting alone stops improving and fine-tuning takes over. Then chain-of-thought, and the Example Prompt 1 → Example Prompt 2 refinement.\nThree strategy classes to know about, not run — ensembling (self-consistency), self-criticism (and why not to use an LLM to check your own labels), decomposition (prompt chaining, RAG).\nTwo errors to avoid before you tune — train/test contamination, and tuning on validation while reporting on test.\n\nThe prompt components return in Session 8, mapped onto the CEFR classification task, and again in Session 9 as the error-analysis iteration loop.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -4726,7 +4726,7 @@
     "href": "sessions/day3/session-08.html#learning-objectives",
     "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
     "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nGet and store a Gemini API key (Colab Secrets) and make reproducible calls (temperature=0, seed).\nMap the four prompt elements onto a classification prompt — recasting Huang & Mizumoto’s Task / Criteria / “My paragraph” structure as the CEFR prompt (instruction = classify; context = level descriptors; input = the sentence; output indicator = return only the label).\nRun the zero-shot → few-shot → chain-of-thought progression on CEFR, re-evaluating each on a validation set, and score the final prompt once on the held-out test set.\nPrompt for structured output and recognise JSON as the {id, text, label} data format.",
+    "text": "Learning objectives\nBy the end of this session, you will be able to:\n\nGet and store a Gemini API key (Colab Secrets) and make reproducible calls (temperature=0, seed).\nMap the prompt components onto a classification prompt — recasting Huang & Mizumoto’s Task / Criteria / “My paragraph” structure as the CEFR prompt (directive = classify; additional information = level descriptors; input = the sentence; output formatting = return only the label).\nRun the zero-shot → few-shot → chain-of-thought progression on CEFR, re-evaluating each on a validation set, and score the final prompt once on the held-out test set.\nPrompt for structured output and recognise JSON as the {id, text, label} data format.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -4738,7 +4738,7 @@
     "href": "sessions/day3/session-08.html#agenda",
     "title": "Session 8: Hands-on — LLM Classification & Prompt Iteration",
     "section": "Agenda",
-    "text": "Agenda\n\nFrom feedback to classification — the same four prompt elements from Session 7, now on a new task: instruction = classify, context = the level descriptors, input = the sentence, output indicator = return only the label.\nYour Gemini API key — get one and store it in Colab Secrets, in four steps. Why a key is needed at all, and the two separate rate limits that govern how fast you can call.\nRun classification in Colab — two files with two purposes: tune every prompt on the 24-item validation set, and keep the 72-item test set for one final run. Then three rounds: zero-shot, few-shot, chain-of-thought, recording macro-F1 on validation after each.\nEvaluate the outputs — read the per-class report rather than the average alone, since one level with F1 near zero drags macro-F1 down and the report shows you which. Then the held-out run, once, on the 72 items.\nStructured output — ask the model to return JSON rather than a bare label, which is the same {id, text, label} shape from Day 1 in a format code can read.\n\nExpect the held-out score to come out lower than your validation score. That gap is the expected effect of having chosen the prompt by looking at validation results, not a mistake.",
+    "text": "Agenda\n\nFrom feedback to classification — the same prompt components from Session 7, now on a new task: directive = classify, additional information = the level descriptors, input = the sentence, output formatting = return only the label.\nYour Gemini API key — get one and store it in Colab Secrets, in four steps. Why a key is needed at all, and the two separate rate limits that govern how fast you can call.\nRun classification in Colab — two files with two purposes: tune every prompt on the 24-item validation set, and keep the 72-item test set for one final run. Then three rounds: zero-shot, few-shot, chain-of-thought, recording macro-F1 on validation after each.\nEvaluate the outputs — read the per-class report rather than the average alone, since one level with F1 near zero drags macro-F1 down and the report shows you which. Then the held-out run, once, on the 72 items.\nStructured output — ask the model to return JSON rather than a bare label, which is the same {id, text, label} shape from Day 1 in a format code can read.\n\nExpect the held-out score to come out lower than your validation score. That gap is the expected effect of having chosen the prompt by looking at validation results, not a mistake.",
     "crumbs": [
       "Sessions",
       "Day 3 · Prompt Design & Iteration",
@@ -5380,5 +5380,376 @@
       "Daily notebooks",
       "Day 1 · Your first LLM call & reading its data"
     ]
+  },
+  {
+    "objectID": "slides/slides-session-04.html#collocation-extraction",
+    "href": "slides/slides-session-04.html#collocation-extraction",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Collocation extraction",
+    "text": "Collocation extraction"
+  },
+  {
+    "objectID": "slides/slides-session-04.html#reliability-and-validity-1",
+    "href": "slides/slides-session-04.html#reliability-and-validity-1",
+    "title": "Session 4: Annotation Principles & Inter-Annotator Agreement",
+    "section": "Reliability and Validity",
+    "text": "Reliability and Validity\n\nReliability:\n\nHow consistent the annotation results are (e.g., across human or AI coders).\n\nHow trustworthy your reported results are.\nDepends on coder, scheme, type of data, familiarity, etc.\n\n\n\n\nValidity:\n\nHow well the actual annotation captures what you are proposed to capture.\nDepends on the quality of your coding scheme."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#llm-autoregressive-model",
+    "href": "slides/slides-session-07.html#llm-autoregressive-model",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "LLM = autoregressive model",
+    "text": "LLM = autoregressive model\nMost LLMs are a autoregressive model:\n\nPredicts a next word given the previous sequence.\nRepeats as many times at it needs (until [EOS])\n\n\nTaken from an Article by YanAlx"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#llm-autoregression-based-on-a-huge-attention-based-network",
+    "href": "slides/slides-session-07.html#llm-autoregression-based-on-a-huge-attention-based-network",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "LLM = Autoregression based on a huge attention-based network",
+    "text": "LLM = Autoregression based on a huge attention-based network\n\n\nThe gigantic attention-weighted network will see the “context” at once.\n\n\n\n\n\n\nLLM\nProvider\nContext Window\n\n\n\n\nGPT-5.6\nOpenAI\n1,050,000 tokens\n\n\nGemini 3.1 Pro\nGoogle\n1,048,576 tokens\n\n\nGemini 3.1 Flash-Lite\nGoogle\n1,048,576 tokens\n\n\nClaude Opus 5\nAnthropic\n1,000,000 tokens\n\n\n\n\nContext window = the maximum number of tokens the model can read in one request (prompt + conversation so far). Figures from each provider’s API documentation, August 2026."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#how-does-chat-work",
+    "href": "slides/slides-session-07.html#how-does-chat-work",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "How does chat work?",
+    "text": "How does chat work?\n\n\n\n\nmessages =  [  \n{'role':'system', \n 'content':'あなたはアシスタントです、クレヨンしんちゃん風の回答をください。'},    \n{'role':'user', \n 'content':'楽しいことをテーマとして俳句を作ってください'},  \n]"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#how-does-a-chat-work-under-the-hood",
+    "href": "slides/slides-session-07.html#how-does-a-chat-work-under-the-hood",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "How does a chat work under the hood?",
+    "text": "How does a chat work under the hood?\nIn chat, you will see the message like this."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#how-does-a-chat-work-under-the-hood-1",
+    "href": "slides/slides-session-07.html#how-does-a-chat-work-under-the-hood-1",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "How does a chat work under the hood?",
+    "text": "How does a chat work under the hood?\nIn code, message is a list of dictionary!!!\nmessages =  [  \n{'role':'system', \n 'content':'XXXXX'}, # This is hidden in Chat.    \n{'role':'user', \n 'content':'I would like you to list three most important thing in life'},\n{'role':'assistant', \n 'content':'While \"importance\" changes depending on where you are in life, ...'},  \n] \n\nKeys in each message:\n\n\n\n\nrole: Whose message this is: system, user, or assistant\n\nYou cannot usually change system message in chat. Your message is always user message.\nWhen you call LLM through API, you can set system message.\n\n\n\n\n\n\n\ncontent: The actual content of the prompt."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#system-message",
+    "href": "slides/slides-session-07.html#system-message",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "System message",
+    "text": "System message\nSystem message is the core part of what you will design. In chat window this is hidden, but through API,"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#system-prompt",
+    "href": "slides/slides-session-07.html#system-prompt",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "System prompt",
+    "text": "System prompt\n\nSystem prompt (or Developer message) is the core part of what you will design.\nOpenAI explains that: “developer messages are instructions provided by the application developer, prioritized ahead of user messages.” (OpenAI, 2026)\n\nWhen we create a specialized tool using LLM, we will write a system prompt, so the user does not have to see or write the prompt.\nI use the term prompt to mean system prompt."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#system-prompt-or-developer-message",
+    "href": "slides/slides-session-07.html#system-prompt-or-developer-message",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "System prompt (or Developer message)",
+    "text": "System prompt (or Developer message)\nSystem prompt is the core part of what you will design. In chat window, this is hidden, but through API, it can dictate the model behavior. GPTs is a tool to create custom system prompts."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#a-prompt-has-parts-you-can-design-and-test",
+    "href": "slides/slides-session-07.html#a-prompt-has-parts-you-can-design-and-test",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "A prompt has parts you can design and test",
+    "text": "A prompt has parts you can design and test\n\nAn LLM does what the prompt tells it to. Change the prompt and you change the output, and the score.\n\n\n\nA prompt is not a fixed phrase that you either know or do not know. It has parts you can design deliberately, and today we learn those parts on one concrete example."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#prompt-engineering---design-test-and-iterate",
+    "href": "slides/slides-session-07.html#prompt-engineering---design-test-and-iterate",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Prompt engineering - design, test, and iterate",
+    "text": "Prompt engineering - design, test, and iterate\n\nLLM is the statistical model that attends to parts of the input.\nThe intuition is that you can embed important information in the prompt, so that it invokes the model’s relevant knowledge to complete the task."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#approaches-organized-by-principle",
+    "href": "slides/slides-session-07.html#approaches-organized-by-principle",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Approaches, organized by principle",
+    "text": "Approaches, organized by principle\nThere are many prompting techniques for example Schulhoff et al. (2024, arXiv preprint) surveyed 1,565 papers and listed 58 text-based ones.\n\nBy looking at them, we can find some principles. Each principle answers a different question about the model call:\n\n\n\nPrinciple\nThe question it answers\n\n\n\n\n\ninstruction structuring\nHow is the prompt itself organized?\n\n\n\nin-context learning\nDo you put worked examples in the prompt?\n\n\n\nthought generation\nDoes the model reason before the label?\n\n\n\nensembling\nOne run, or many runs and a vote?\n\n\n\nself-criticism\nDoes the model check its own output?\n\n\n\ndecomposition\nOne call, or several smaller ones?\n\n\n\n\n\nThe verdicts follow cost: any principle that multiplies the number of API calls does not fit our free-tier budget (15 requests/min, 500/day). We run the ones that stay at one call per item."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#instruction-structuring-four-elements-of-a-prompt",
+    "href": "slides/slides-session-07.html#instruction-structuring-four-elements-of-a-prompt",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Instruction structuring: four elements of a prompt",
+    "text": "Instruction structuring: four elements of a prompt\nOne published scheme — Huang & Mizumoto (2025): an effective prompt typically has four parts.\n\nInstruction — what the model should do (start with a verb: classify, summarize, explain).\nContext — the background, role, rubric, or level that scopes the task.\nInput data — the actual text to be processed.\nOutput indicator — the form of the answer (format, tone, “only feedback, no rewrite”)."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#in-context-learning-zero-shot-vs.-few-shot",
+    "href": "slides/slides-session-07.html#in-context-learning-zero-shot-vs.-few-shot",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "In-context learning: zero-shot vs. few-shot",
+    "text": "In-context learning: zero-shot vs. few-shot\nThe second strategy class: what the model can learn from the prompt itself, at call time.\n\nZero-shot — instruction only, no examples. The model relies on what it already knows. Great for simple, familiar tasks.\nFew-shot — you include a few examples (input → correct label) right in the prompt, so the model infers the pattern.\n\n\nWhen do examples help?:\n\nkeep a consistent format across all examples;\nmake the examples’ label space representative — don’t show only one class."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#what-examples-actually-teach",
+    "href": "slides/slides-session-07.html#what-examples-actually-teach",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "What examples actually teach",
+    "text": "What examples actually teach\nLanguage Models are Few-Shot Learners (Brown et al., 2020, NeurIPS):\n\nA large LM can pick up a new task from examples in the prompt alone — no retraining, no weight updates. They named this in-context learning.\n\n\nBut how does it work? You would think the model learns input → correct label from your examples.\n\nMin et al. (2022, EMNLP) tested this: they replaced the labels in the demonstrations with random wrong ones — and across 12 models, the score barely moved.\n\n\n\nPossible explanation on why it works:\n\nthe label space — which categories exist;\nthe input distribution — what kind of text this is;\nthe output format — how an answer should look;\nthe task type - what knowledge is relevant to complete the task."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#few-shot-is-six-decisions-not-one",
+    "href": "slides/slides-session-07.html#few-shot-is-six-decisions-not-one",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Few-shot is six decisions, not one",
+    "text": "Few-shot is six decisions, not one\n“Add examples” sounds like one choice. Schulhoff et al. (2024) separate it into six decisions, each of which can move the score:\n\n\n\n\n\n\n\nDecision\nWhat the evidence says\n\n\n\n\nHow many?\nmore helps, with diminishing returns\n\n\nIn what order?\norder alone can swing accuracy a lot\n\n\nWith what class balance?\nan unbalanced set biases predictions toward the majority label\n\n\nWith what label quality?\nsurprisingly weak effect — the previous slide\n\n\nIn what format?\nkeep one consistent format across all examples\n\n\nHow similar to the input?\nexamples similar to the current input help most"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#thought-generation-chain-of-thought-cot",
+    "href": "slides/slides-session-07.html#thought-generation-chain-of-thought-cot",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Thought generation: chain-of-thought (CoT)",
+    "text": "Thought generation: chain-of-thought (CoT)\nThe third strategy class: have the model reason in steps before it answers (Wei et al., 2022).\nHuang & Mizumoto’s Example Prompt 1 is CoT feedback:\n\nFirst, read the paragraph to understand its main idea. Next, check the structure… Then, identify grammatical errors. After that, assess clarity and coherence. Provide feedback based on these steps.\n\n\nZero-shot CoT is often just one added line — “Let’s think step by step” (Kojima et al., 2022).\n\n\n\n\n\n\nTip\n\n\nCoT helps on tasks that need several judgements in sequence, such as reviewing writing or deciding a borderline label."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#ensembling-many-runs-one-vote",
+    "href": "slides/slides-session-07.html#ensembling-many-runs-one-vote",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Ensembling — many runs, one vote",
+    "text": "Ensembling — many runs, one vote\nThe idea: run the model several times, then aggregate the answers.\n\nExample: self-consistency (Wang et al., 2023) — sample N reasoning paths, take the majority label.\nThe same model can give different labels on identical input across runs. That variation threatens reliability (→ S10); ensembling measures it and votes over it.\n\n\nThis is similar to having multiple coders and decide based on majority vote.\n\nWe do not have correct answer for how many and when to stop"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#self-criticism-the-model-checks-itself",
+    "href": "slides/slides-session-07.html#self-criticism-the-model-checks-itself",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Self-criticism — the model checks itself",
+    "text": "Self-criticism — the model checks itself\nThe idea: the model reads its own output, critiques it, and revises (e.g. Self-Refine).\n\nThe agentic version runs this as a loop: plan → label → critique → revise."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#decomposition-several-small-calls",
+    "href": "slides/slides-session-07.html#decomposition-several-small-calls",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Decomposition — several small calls",
+    "text": "Decomposition — several small calls\nThe idea: split one judgment into several calls, each using the previous call’s output (prompt chaining).\n\nThe annotation version: score analytic dimensions separately instead of one holistic label (Bannò et al., 2024) — the same operation as turning a rubric into a multi-part annotation scheme, which your final project will do.\nRelated: RAG — retrieve the relevant part of a codebook or exemplar bank and put it in the context, per item. In effect, dynamic few-shot: it supplies label space and format, the same jobs examples do.\n\n\nWhy we don’t run it: every extra step is an extra API call — at least 2× the budget."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#strategies-come-in-classes",
+    "href": "slides/slides-session-07.html#strategies-come-in-classes",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Strategies come in classes",
+    "text": "Strategies come in classes\nThere are many prompting techniques for example Schulhoff et al. (2024, arXiv preprint) surveyed 1,565 papers and listed 58 text-based ones.\n\nBy looking at them, we can group them into a few strategy classes. Each class answers a different question about the model call:\n\n\n\nStrategy class\nThe question it answers\n\n\n\n\ninstruction structuring\nHow is the prompt itself organized?\n\n\nin-context learning\nDo you put worked examples in the prompt?\n\n\nthought generation\nDoes the model reason before the label?\n\n\nensembling\nOne run, or many runs and a vote?\n\n\nself-criticism\nDoes the model check its own output?\n\n\ndecomposition\nOne call, or several smaller ones?\n\n\n\n\n\nClasses combine: one prompt can use several at once — in S8, one round is few-shot + chain-of-thought in a single prompt.\n\nWhich classes we run this week follows cost: any class that multiplies the number of API calls does not fit our free-tier budget (15 requests/min, 500/day). We run the ones that stay at one call per item."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#prompt-strategy-categories",
+    "href": "slides/slides-session-07.html#prompt-strategy-categories",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Prompt strategy categories",
+    "text": "Prompt strategy categories\nThere are many prompting techniques. Schulhoff et al. (2024, arXiv preprint) listed 58 text-based prompting approaches.\nBut these are not exhaustive list.\n\nBy looking at them, we can group them into a few strategy areas. Each area answers a different question about the model call:\n\n\n\nStrategy class\nThe question it answers\n\n\n\n\ninstruction structuring\nHow is the prompt itself organized?\n\n\nin-context learning\nDo you put worked examples in the prompt?\n\n\nthought generation\nDoes the model reason before the label?\n\n\nensembling\nOne run, or many runs and a vote?\n\n\nself-criticism\nDoes the model check its own output?\n\n\ndecomposition\nOne call, or several smaller ones?\n\n\n\n\n\nClasses combine: one prompt can use several at once."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#instruction-structuring-six-components-of-a-prompt",
+    "href": "slides/slides-session-07.html#instruction-structuring-six-components-of-a-prompt",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Instruction structuring: six components of a prompt",
+    "text": "Instruction structuring: six components of a prompt\nHuang & Mizumoto (2025) use a compact four-part version of the same idea — an effective prompt has:\n\nInstruction — what the model should do.\nContext — the background that scopes the task (role, rubric, level).\nInput data — the actual text to be processed.\nOutput indicator — the form of the answer."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#sharpening-the-directive-and-what-a-role-does",
+    "href": "slides/slides-session-07.html#sharpening-the-directive-and-what-a-role-does",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Sharpening the directive — and what a role does",
+    "text": "Sharpening the directive — and what a role does\nThe directive/instruction usually has the largest effect, so write it carefully:\n\nStart with a verb and be specific — “classify this sentence into one CEFR level (A1–C2)” is more effective than “tell me about this sentence.”\n\n\nThe role component — “You are an experienced EFL writing tutor…” — sets the tone, standards, and vocabulary of the output.\n\nA role helps, but it changes style, not knowledge. The directive and the additional information have the larger effect."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#s8-the-same-components-a-new-task",
+    "href": "slides/slides-session-07.html#s8-the-same-components-a-new-task",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "S8 — the same components, a new task",
+    "text": "S8 — the same components, a new task\nNext session you build a real classification pipeline — and the CEFR prompt uses the same components:\n\n\n\n\n\n\n\nEx 2 (feedback)\nCEFR classification (S8)\n\n\n\n\nDirective: “provide feedback”\n“classify this sentence’s CEFR level”\n\n\nAdditional information: the 5-item rubric\nthe CEFR level descriptors\n\n\nInput data: “My paragraph”\nthe learner sentence\n\n\nOutput formatting: “only feedback”\n“return only the label” → JSON\n\n\n\n\nS8 — run zero → few → CoT on CEFR, with a Gemini API key. S9 — read the errors, iterate, and benchmark against a trained model."
+  },
+  {
+    "objectID": "slides/slides-session-08.html#the-same-components-a-new-task",
+    "href": "slides/slides-session-08.html#the-same-components-a-new-task",
+    "title": "Session 8: Hands-on: LLM Classification & Prompt Iteration",
+    "section": "The same components, a new task",
+    "text": "The same components, a new task\nThe CEFR prompt you’ll write is Huang & Mizumoto’s Ex 2 structure, re-cast for classification:\n\n\n\n\n\n\n\nEx 2 — writing feedback (S7)\nCEFR classification (today)\n\n\n\n\nDirective: “review and give feedback”\n“classify this sentence’s CEFR level”\n\n\nAdditional information: the 5-item Criteria rubric\nthe CEFR level descriptors\n\n\nInput data: “My paragraph”\nthe learner sentence {text}\n\n\nOutput formatting: “only feedback, no rewrite”\n“return only the label” → structured / JSON\n\n\n\n\nAnd the few-shot examples are written by you, never taken from the set you score on (contamination, S7)."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#prompt-engineering---design-test-and-iterate-1",
+    "href": "slides/slides-session-07.html#prompt-engineering---design-test-and-iterate-1",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Prompt engineering - design, test, and iterate",
+    "text": "Prompt engineering - design, test, and iterate\n\nPrompt engineering is about designing, testing, and iterating on different prompting strategies.\n\nComing up with the good prompt takes both creativity and understanding of the LLM’s behavior.\nIteration and improvement requires a good workflow (i.e., scientific approach)."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#a-compact-version-four-elements-of-a-prompt",
+    "href": "slides/slides-session-07.html#a-compact-version-four-elements-of-a-prompt",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "A compact version: four elements of a prompt",
+    "text": "A compact version: four elements of a prompt\nHuang & Mizumoto (2025) use a compact four-part version of the same idea — an effective prompt has:\n\nInstruction — what the model should do.\nContext — the background that scopes the task (role, rubric, level).\nInput data — the actual text to be processed.\nOutput indicator — the form of the answer."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#instruction-structuring-four-components-of-version",
+    "href": "slides/slides-session-07.html#instruction-structuring-four-components-of-version",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Instruction structuring: four components of version",
+    "text": "Instruction structuring: four components of version\nHuang & Mizumoto (2025) use a compact four-part version of the same idea — an effective prompt has:\n\nInstruction — what the model should do.\nContext — the background that scopes the task (role, rubric, level).\nInput data — the actual text to be processed.\nOutput indicator — the form of the answer."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#instruction-structuring-six-components-of-version",
+    "href": "slides/slides-session-07.html#instruction-structuring-six-components-of-version",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Instruction structuring: six components of version",
+    "text": "Instruction structuring: six components of version\nSchulhoff et al. (2024) list six components a prompt can contain:\n\nRole — a persona for the model (“You are an experienced EFL writing tutor…”).\nDirective — what the model should do (start with a verb: classify, summarize, explain).\nExamples — worked input → output pairs (→ in-context learning, coming next).\nOutput formatting — the form of the answer (a list, JSON, “only feedback, no rewrite”).\nStyle instructions — the tone and register of the answer.\nAdditional information — the background the task needs: a rubric, level descriptors, definitions."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#the-running-example-writing-feedback-1",
+    "href": "slides/slides-session-07.html#the-running-example-writing-feedback-1",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "The running example — writing feedback",
+    "text": "The running example — writing feedback\nRead the components straight off it:\n\n\n\nComponent\nIn this prompt\n\n\n\n\nDirective\n“review… and provide specific feedback”\n\n\nAdditional information\nthe 5-item Criteria rubric\n\n\nOutput formatting / style\n“only feedback, no rewrite”\n\n\nRole\nnone — optional\n\n\nExamples\nnone — this prompt is zero-shot (next slide)"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#methodology---kim-lu-2024",
+    "href": "slides/slides-session-07.html#methodology---kim-lu-2024",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Methodology - Kim & Lu (2024)",
+    "text": "Methodology - Kim & Lu (2024)"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#kim-lu-2024",
+    "href": "slides/slides-session-07.html#kim-lu-2024",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Kim & Lu (2024)",
+    "text": "Kim & Lu (2024)\n\n\n\nKim & Lu (2024) labeled rhetorical move-steps (Swales CARS: 3 moves / ~17 steps) with GPT-3.5.\nUnit of annotation = the sentence."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#initial-prompt---kim-lu-2024",
+    "href": "slides/slides-session-07.html#initial-prompt---kim-lu-2024",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Initial Prompt - Kim & Lu (2024)",
+    "text": "Initial Prompt - Kim & Lu (2024)\n\nYou can see the differences between original and revised prompts\n\n\n\nOriginal\nYou are a genre analyst. Genre analysis is a method used in discourse analysis, particularly in the context of academic and professional communication, to understand how specific types of texts are structured and organized. It involves examining texts within a specific genre to identify common patterns or conventions in structure, style, and content. Move-step annotations are a common tool used in genre analysis. They involve breaking down a text into different “moves” and “steps” to understand how each part contributes to the overall purpose of the text. A ‘move’ refers to a section of a text that serves a specific function or purpose, while a ‘step’ is a more detailed part of a move, providing support or elaboration. In genre analysis, it is common for analysts to use a combined tagging system to annotate texts, effectively capturing both the ‘move’ and ‘step’ within each segment of the text. This is typically represented in a format like ‘M1_S2’, where ‘M1’ denotes ‘Move 1’, indicating the primary functional segment of the text, and ‘S2’ refers to ‘Step 2’, which is a specific element or action within that move. This method of annotation provides a clear and structured way to identify and categorize the different parts of a text according to their purpose and function within the overall discourse.\n\nMove 1 Establishing a research territory:   \nStep 1  Claiming centrality or value of research area   [M1_S1a]\nStep 1  Real-world contextualization [M1_S1b]\nStep 2  Making generalizations about the research area [M1_S2]\nStep 3  Reviewing items of previous research (one specific study) [M1_S3]\n\nMove 2 Establishing a niche:\nStep 1  Counter-claiming, theoretical (argument is problematic) [M2_S1a]\nStep 1  Indicating a gap [M2_S1b]\nStep 1  Question-raising [M2_S1c]\nStep 1  Continuing a tradition  [M2_S1d]\nStep 1  Pointing out limitations of previous research   [M2_S1e]\nStep 2  Providing justification [M2_S2]\n\nMove 3 Presenting the present work via: \nStep 1  Announcing present research descriptively and/or purposively [M3_S1]\nStep 2  Presenting research questions or hypotheses [M3_S2a]\nStep 2  Advancing new theoretical/claims/hypotheses/arguments [M3_S2b]\nStep 3  Definitional clarification [M3_S3]\nStep 4  Summarizing methods [M3_S4a]\nStep 4  Explain mathematical model design (e.g. explain parameters; for analytical purposes) [M3_S4b]\nStep 4  Describing analyzed scenario/context [M3_S4c]\nStep 5 Announcing and discussing the results [M3_S5]\nStep 6 Stating the value of the present research [M3_S6]\nStep 7 Outlining the structure of the paper (metatext) [M3_S7]\nStep 8   Rationalizing research focus and design [M3_S8]\nStep 9   Limitations of the current study [M3_S9]\n\nYou are going to be given one or a few paragraphs. Break the given paragraphs into sentences and annotate each sentence using a tag in the framework above that describes the function of the sentence. Note that question marks could signal the boundary of sentences. Some sentences could be assigned multiple tags when they perform multiple functions. \n\nYou will start your annotation with the given input text.\n\n\nRefined prompt\nYou are a genre analyst. Genre analysis is a method used in discourse analysis, particularly in the context of academic and professional communication, to understand how specific types of texts are structured and organized. It involves examining texts within a specific genre to identify common patterns or conventions in structure, style, and content. Move-step annotations are a common tool used in genre analysis. They involve breaking down a text into different ‘moves’ and ‘steps’ to understand how each part contributes to the overall purpose of the text. A ‘move’ refers to a section of a text that serves a specific function or purpose, while a ‘step’ is a more detailed part of a move, providing support or elaboration. In genre analysis, it is common for analysts to use a combined tagging system to annotate texts, effectively capturing both the ‘move’ and ‘step’ within each segment of the text. This is typically represented in a format like ‘M1_S2’, where ‘M1’ denotes ‘Move 1’, indicating the primary functional segment of the text, and ‘S2’ refers to ‘Step 2’, which is a specific element or function within that move. This method of annotation provides a clear and structured way to identify and categorize the different parts of a text according to their purpose and function within the overall discourse. Below, you’ll find the move-step annotations tags pertaining to the Introduction section of a research article genre:\n\nMove 1 Establishing the broader research territory within which the present study is situated:\nStep 1  Claiming centrality or value of the research area [M1_S1a]\nStep 1  Real-world contextualization (the real-world context of the research area, not focusing on the specific context of the present research) [M1_S1b]\nStep 2  Making generalizations about the research area without mentioning specific studies [M1_S2]\nStep 3  Reviewing a specific previous research study (reviewing one specific study, and human names typically indicate specific studies referenced within the article) [M1_S3]\n\nMove 2 Establishing a niche in previous research:\nStep 1  Counter-claiming, theoretical (argument in previous research is problematic) [M2_S1a]\n Step 1 Indicating a gap in previous research [M2_S1b]\n    Step 1  Question-raising in previous research [M2_S1c]\n    Step 1  Continuing a tradition  of previous research [M2_S1d]\n    Step 1  Pointing out limitations of previous research (something hasn’t been done) [M2_S1e]\nStep 2  Providing justification of the present research area based on previous research (there must be some research, there is something important to look at) [M2_S2]\n\nMove 3 Presenting the present research via: \n    Step 1  Announcing present research descriptively or purposively [M3_S1]\n    Step 2  Presenting research questions or hypotheses of the present research [M3_S2a]\n    Step 2  Advancing or suggesting new theoretical/claims/hypotheses/arguments [M3_S2b]\n    Step 3  Definitional clarification [M3_S3]\n    Step 4  Summarizing methods of the present research [M3_S4a]\n    Step 4  Explain mathematical model design adopted in the present research (e.g. explain parameters; for analytical purposes) [M3_S4b]\nStep 4 Describing the analyzed scenario/context of the present research [M3_S4c]\nStep 5  Announcing and discussing the results/principal outcomes of the present research [M3_S5]\n    Step 6  Stating the value of the present research [M3_S6]\n    Step 7  Outlining the structure of the paper (non-propositional meta-discourse: metatext) [M3_S7]\n    Step 8   Rationalizing the present research’s focus, design, and methods [M3_S8]\nStep 9   Limitations of the current study [M3_S9]\n\nYou are going to be given one or a few paragraphs of the Introduction section of a research article in the field of Applied Linguistics. Break the given paragraph(s) into sentences and annotate each sentence using a tag in the framework above that describes the function of the sentence. Note that question marks could signal the boundary of sentences. Some sentences could be assigned multiple tags when they perform multiple functions. \n\nYou will start your annotation with the given input text."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#refined-prompt---kim-lu-2024",
+    "href": "slides/slides-session-07.html#refined-prompt---kim-lu-2024",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Refined Prompt - Kim & Lu (2024)",
+    "text": "Refined Prompt - Kim & Lu (2024)\nYou are a genre analyst. Genre analysis is a method used in discourse analysis, particularly in the context of academic and professional communication, to understand how specific types of texts are structured and organized. It involves examining texts within a specific genre to identify common patterns or conventions in structure, style, and content. Move-step annotations are a common tool used in genre analysis. They involve breaking down a text into different ‘moves’ and ‘steps’ to understand how each part contributes to the overall purpose of the text. A ‘move’ refers to a section of a text that serves a specific function or purpose, while a ‘step’ is a more detailed part of a move, providing support or elaboration. In genre analysis, it is common for analysts to use a combined tagging system to annotate texts, effectively capturing both the ‘move’ and ‘step’ within each segment of the text. This is typically represented in a format like ‘M1_S2’, where ‘M1’ denotes ‘Move 1’, indicating the primary functional segment of the text, and ‘S2’ refers to ‘Step 2’, which is a specific element or function within that move. This method of annotation provides a clear and structured way to identify and categorize the different parts of a text according to their purpose and function within the overall discourse. Below, you’ll find the move-step annotations tags pertaining to the Introduction section of a research article genre:\nMove 1 Establishing the broader research territory within which the present study is situated: Step 1 Claiming centrality or value of the research area [M1_S1a] Step 1 Real-world contextualization (the real-world context of the research area, not focusing on the specific context of the present research) [M1_S1b] Step 2 Making generalizations about the research area without mentioning specific studies [M1_S2] Step 3 Reviewing a specific previous research study (reviewing one specific study, and human names typically indicate specific studies referenced within the article) [M1_S3]\nMove 2 Establishing a niche in previous research: Step 1 Counter-claiming, theoretical (argument in previous research is problematic) [M2_S1a] Step 1 Indicating a gap in previous research [M2_S1b] Step 1 Question-raising in previous research [M2_S1c] Step 1 Continuing a tradition of previous research [M2_S1d] Step 1 Pointing out limitations of previous research (something hasn’t been done) [M2_S1e] Step 2 Providing justification of the present research area based on previous research (there must be some research, there is something important to look at) [M2_S2]\nMove 3 Presenting the present research via: Step 1 Announcing present research descriptively or purposively [M3_S1] Step 2 Presenting research questions or hypotheses of the present research [M3_S2a] Step 2 Advancing or suggesting new theoretical/claims/hypotheses/arguments [M3_S2b] Step 3 Definitional clarification [M3_S3] Step 4 Summarizing methods of the present research [M3_S4a] Step 4 Explain mathematical model design adopted in the present research (e.g. explain parameters; for analytical purposes) [M3_S4b] Step 4 Describing the analyzed scenario/context of the present research [M3_S4c] Step 5 Announcing and discussing the results/principal outcomes of the present research [M3_S5] Step 6 Stating the value of the present research [M3_S6] Step 7 Outlining the structure of the paper (non-propositional meta-discourse: metatext) [M3_S7] Step 8 Rationalizing the present research’s focus, design, and methods [M3_S8] Step 9 Limitations of the current study [M3_S9]\nYou are going to be given one or a few paragraphs of the Introduction section of a research article in the field of Applied Linguistics. Break the given paragraph(s) into sentences and annotate each sentence using a tag in the framework above that describes the function of the sentence. Note that question marks could signal the boundary of sentences. Some sentences could be assigned multiple tags when they perform multiple functions.\nYou will start your annotation with the given input text."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#prompt-used-in-kim-lu-2024",
+    "href": "slides/slides-session-07.html#prompt-used-in-kim-lu-2024",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Prompt used in Kim & Lu (2024)",
+    "text": "Prompt used in Kim & Lu (2024)\n\nYou can see the differences between original and revised prompts\n\n\n\nOriginal\nYou are a genre analyst. Genre analysis is a method used in discourse analysis, particularly in the context of academic and professional communication, to understand how specific types of texts are structured and organized. It involves examining texts within a specific genre to identify common patterns or conventions in structure, style, and content. Move-step annotations are a common tool used in genre analysis. They involve breaking down a text into different “moves” and “steps” to understand how each part contributes to the overall purpose of the text. A ‘move’ refers to a section of a text that serves a specific function or purpose, while a ‘step’ is a more detailed part of a move, providing support or elaboration. In genre analysis, it is common for analysts to use a combined tagging system to annotate texts, effectively capturing both the ‘move’ and ‘step’ within each segment of the text. This is typically represented in a format like ‘M1_S2’, where ‘M1’ denotes ‘Move 1’, indicating the primary functional segment of the text, and ‘S2’ refers to ‘Step 2’, which is a specific element or action within that move. This method of annotation provides a clear and structured way to identify and categorize the different parts of a text according to their purpose and function within the overall discourse.\n\nMove 1 Establishing a research territory:   \nStep 1  Claiming centrality or value of research area   [M1_S1a]\nStep 1  Real-world contextualization [M1_S1b]\nStep 2  Making generalizations about the research area [M1_S2]\nStep 3  Reviewing items of previous research (one specific study) [M1_S3]\n\nMove 2 Establishing a niche:\nStep 1  Counter-claiming, theoretical (argument is problematic) [M2_S1a]\nStep 1  Indicating a gap [M2_S1b]\nStep 1  Question-raising [M2_S1c]\nStep 1  Continuing a tradition  [M2_S1d]\nStep 1  Pointing out limitations of previous research   [M2_S1e]\nStep 2  Providing justification [M2_S2]\n\nMove 3 Presenting the present work via: \nStep 1  Announcing present research descriptively and/or purposively [M3_S1]\nStep 2  Presenting research questions or hypotheses [M3_S2a]\nStep 2  Advancing new theoretical/claims/hypotheses/arguments [M3_S2b]\nStep 3  Definitional clarification [M3_S3]\nStep 4  Summarizing methods [M3_S4a]\nStep 4  Explain mathematical model design (e.g. explain parameters; for analytical purposes) [M3_S4b]\nStep 4  Describing analyzed scenario/context [M3_S4c]\nStep 5 Announcing and discussing the results [M3_S5]\nStep 6 Stating the value of the present research [M3_S6]\nStep 7 Outlining the structure of the paper (metatext) [M3_S7]\nStep 8   Rationalizing research focus and design [M3_S8]\nStep 9   Limitations of the current study [M3_S9]\n\nYou are going to be given one or a few paragraphs. Break the given paragraphs into sentences and annotate each sentence using a tag in the framework above that describes the function of the sentence. Note that question marks could signal the boundary of sentences. Some sentences could be assigned multiple tags when they perform multiple functions. \n\nYou will start your annotation with the given input text.\n\n\nRefined prompt\nYou are a genre analyst. Genre analysis is a method used in discourse analysis, particularly in the context of academic and professional communication, to understand how specific types of texts are structured and organized. It involves examining texts within a specific genre to identify common patterns or conventions in structure, style, and content. Move-step annotations are a common tool used in genre analysis. They involve breaking down a text into different ‘moves’ and ‘steps’ to understand how each part contributes to the overall purpose of the text. A ‘move’ refers to a section of a text that serves a specific function or purpose, while a ‘step’ is a more detailed part of a move, providing support or elaboration. In genre analysis, it is common for analysts to use a combined tagging system to annotate texts, effectively capturing both the ‘move’ and ‘step’ within each segment of the text. This is typically represented in a format like ‘M1_S2’, where ‘M1’ denotes ‘Move 1’, indicating the primary functional segment of the text, and ‘S2’ refers to ‘Step 2’, which is a specific element or function within that move. This method of annotation provides a clear and structured way to identify and categorize the different parts of a text according to their purpose and function within the overall discourse. Below, you’ll find the move-step annotations tags pertaining to the Introduction section of a research article genre:\n\nMove 1 Establishing the broader research territory within which the present study is situated:\nStep 1  Claiming centrality or value of the research area [M1_S1a]\nStep 1  Real-world contextualization (the real-world context of the research area, not focusing on the specific context of the present research) [M1_S1b]\nStep 2  Making generalizations about the research area without mentioning specific studies [M1_S2]\nStep 3  Reviewing a specific previous research study (reviewing one specific study, and human names typically indicate specific studies referenced within the article) [M1_S3]\n\nMove 2 Establishing a niche in previous research:\nStep 1  Counter-claiming, theoretical (argument in previous research is problematic) [M2_S1a]\n Step 1 Indicating a gap in previous research [M2_S1b]\n    Step 1  Question-raising in previous research [M2_S1c]\n    Step 1  Continuing a tradition  of previous research [M2_S1d]\n    Step 1  Pointing out limitations of previous research (something hasn’t been done) [M2_S1e]\nStep 2  Providing justification of the present research area based on previous research (there must be some research, there is something important to look at) [M2_S2]\n\nMove 3 Presenting the present research via: \n    Step 1  Announcing present research descriptively or purposively [M3_S1]\n    Step 2  Presenting research questions or hypotheses of the present research [M3_S2a]\n    Step 2  Advancing or suggesting new theoretical/claims/hypotheses/arguments [M3_S2b]\n    Step 3  Definitional clarification [M3_S3]\n    Step 4  Summarizing methods of the present research [M3_S4a]\n    Step 4  Explain mathematical model design adopted in the present research (e.g. explain parameters; for analytical purposes) [M3_S4b]\nStep 4 Describing the analyzed scenario/context of the present research [M3_S4c]\nStep 5  Announcing and discussing the results/principal outcomes of the present research [M3_S5]\n    Step 6  Stating the value of the present research [M3_S6]\n    Step 7  Outlining the structure of the paper (non-propositional meta-discourse: metatext) [M3_S7]\n    Step 8   Rationalizing the present research’s focus, design, and methods [M3_S8]\nStep 9   Limitations of the current study [M3_S9]\n\nYou are going to be given one or a few paragraphs of the Introduction section of a research article in the field of Applied Linguistics. Break the given paragraph(s) into sentences and annotate each sentence using a tag in the framework above that describes the function of the sentence. Note that question marks could signal the boundary of sentences. Some sentences could be assigned multiple tags when they perform multiple functions. \n\nYou will start your annotation with the given input text."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#kim-lu-2024-limitation-of-prompting",
+    "href": "slides/slides-session-07.html#kim-lu-2024-limitation-of-prompting",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Kim & Lu (2024) limitation of prompting",
+    "text": "Kim & Lu (2024) limitation of prompting\nTest-set accuracy, move / step (their Table 2):\n\n\n\nEach change helps a little, and refined + three-shot is best.\nBut prompting alone reaches only about 53% move accuracy, well below fine-tuning."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#decomposition-or-prompt-chaining",
+    "href": "slides/slides-session-07.html#decomposition-or-prompt-chaining",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Decomposition (or prompt chaining)",
+    "text": "Decomposition (or prompt chaining)\nThe idea: split one judgment into several calls, each using the previous call’s output (prompt chaining).\n\nThe annotation version: score analytic dimensions separately instead of one holistic label (e.g., Bannò et al., 2024).\nYou can also split annotation scheme into several parts; only annotate parts on one call\n\nGrammar analyzer\nVocab analyzer\nMechanics analyzer"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#retrive-augment-generation",
+    "href": "slides/slides-session-07.html#retrive-augment-generation",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Retrive Augment Generation",
+    "text": "Retrive Augment Generation\n\nRAG — retrieve the relevant part of a codebook or exemplar bank and put it in the context, per item. In effect, dynamic few-shot: it supplies label space and format, the same jobs examples do."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#retrieve-augment-generation",
+    "href": "slides/slides-session-07.html#retrieve-augment-generation",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Retrieve Augment Generation",
+    "text": "Retrieve Augment Generation\n\nRAG — retrieve the relevant part of a codebook or exemplar bank and put it in the context, per item. In effect, dynamic few-shot: it supplies label space and format, the same jobs examples do."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#retrieval-augmented-generation-rag",
+    "href": "slides/slides-session-07.html#retrieval-augmented-generation-rag",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Retrieval-augmented generation (RAG)",
+    "text": "Retrieval-augmented generation (RAG)\n\nRAG is a technique, where input to LLM is used to search for relevant information in the database and add that information dynamically into the prompt.\n\n\n\n  Promptthe item to annotate arrives\n  →\n  LLM querysearch for the relevant entries\n  →\n  Insert in promptretrieved text is added to the context\n  →\n  Generatethe model answers using that context\n  query ↓   ↑ relevant entries\n  Datacodebook · annotation manual · exemplar bank"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#list-of-prompting-strategies",
+    "href": "slides/slides-session-07.html#list-of-prompting-strategies",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "List of prompting strategies",
+    "text": "List of prompting strategies\n\n\n\n\n\n\n\nBasic\nMore advanced\n\n\n\n\nzero-shot\nself-consistency — N runs, majority vote (ensembling)\n\n\nfew-shot\nRAG — give the model the annotation manual / codebook to consult (≈ dynamic few-shot)\n\n\nchain-of-thought\nprompt chaining — one analytic dimension per call (decomposition)\n\n\nstructured output\nself-refine / agentic — the model critiques and revises its own label (self-criticism)\n\n\n\n\nA reference for all of these: promptingguide.ai/techniques."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#two-common-errors-to-avoid-before-you-tune",
+    "href": "slides/slides-session-07.html#two-common-errors-to-avoid-before-you-tune",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Two common errors to avoid before you tune",
+    "text": "Two common errors to avoid before you tune\n\nTrain/test contamination — never draw your few-shot examples from the gold set you score on. The model would then be given the answers to the test items.\n(Train) vs Validation vs. test\n\nYou can use Train, Validation, and Test analogy.\n\nTune prompt as much as possible on Train\nConfirm the effect on Validation. Iterate.\nFINALLY, run Test once\n\n\n\n\nBoth protect the purpose of an evaluation: an accurate estimate of how the prompt performs on text it has not seen."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#benefits-of-few-shot-learning",
+    "href": "slides/slides-session-07.html#benefits-of-few-shot-learning",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Benefits of few-shot learning",
+    "text": "Benefits of few-shot learning\nLanguage Models are Few-Shot Learners (Brown et al., 2020, NeurIPS):\n\nA large LM can pick up a new task from examples in the prompt alone — no retraining, no weight updates. They named this in-context learning.\n\n\nBut how does it work? You would think the model learns input → correct label from your examples.\n\nMin et al. (2022, EMNLP) tested this: they replaced the labels in the demonstrations with random wrong ones — and across 12 models, the score barely moved.\n\n\n\nPossible explanation on why it works:\n\nthe label space — which categories exist;\nthe input distribution — what kind of text this is;\nthe output format — how an answer should look;\nthe task type - what knowledge is relevant to complete the task."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#benefits-of-in-context-learning",
+    "href": "slides/slides-session-07.html#benefits-of-in-context-learning",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Benefits of In-context learning",
+    "text": "Benefits of In-context learning\nLanguage Models are Few-Shot Learners (Brown et al., 2020, NeurIPS):\n\nA large LM can pick up a new task from examples in the prompt alone — no retraining, no weight updates. They named this in-context learning.\n\n\nBut how does it work? You would think the model learns input → correct label from your examples.\n\nMin et al. (2022, EMNLP) tested this: they replaced the labels in the demonstrations with random wrong ones — and across 12 models, the score barely moved.\n\n\n\nPossible explanation on why it works:\n\nthe label space — which categories exist;\nthe input distribution — what kind of text this is;\nthe output format — how an answer should look;\nthe task type - what knowledge is relevant to complete the task."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#sawaki-et-al.-checklist-based-assessment-for-writing-skills",
+    "href": "slides/slides-session-07.html#sawaki-et-al.-checklist-based-assessment-for-writing-skills",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Sawaki et al. checklist-based assessment for writing skills",
+    "text": "Sawaki et al. checklist-based assessment for writing skills\nBackground:\nResearch Questions:\nMethods:"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#prompt",
+    "href": "slides/slides-session-07.html#prompt",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Prompt",
+    "text": "Prompt"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#findings",
+    "href": "slides/slides-session-07.html#findings",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Findings",
+    "text": "Findings"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#sawaki-et-al.-2025-checklist-based-assessment-of-summary-writing",
+    "href": "slides/slides-session-07.html#sawaki-et-al.-2025-checklist-based-assessment-of-summary-writing",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Sawaki et al. (2025) — checklist-based assessment of summary writing",
+    "text": "Sawaki et al. (2025) — checklist-based assessment of summary writing\nBackground:\n\nFormative feedback on L2 summary writing takes instructor time; can an LLM rate the content checklist instead?\n\nResearch question:\n\nHow consistent are instructor and LLM ratings on the checklist items — and how does prompt design change that consistency?\n\nMethods:\n\n97 first-draft summaries (~80 words) of one 391-word expository text, by L1-Japanese undergraduates (CEFR A2–low B2).\nEach summary scored 0 / 1 / 2 per checklist item — an ordinal classification task — by instructors and by GPT-4 Turbo (temperature 0, fixed seed) through the API.\nMain analyses: the 3 items on using topic sentences (Paragraphs 1, 2, 4); agreement measured with weighted κ and Krippendorff’s α."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#sawaki-et-al.-2025-the-prompt-conditions",
+    "href": "slides/slides-session-07.html#sawaki-et-al.-2025-the-prompt-conditions",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Sawaki et al. (2025) — the prompt conditions",
+    "text": "Sawaki et al. (2025) — the prompt conditions\nThey crossed two of our strategy classes — six prompts in total:\n\n\n\n\n\n\n\nDimension\nLevels\n\n\n\n\nin-context learning — how much information?\nSimple (zero-shot, minimal) · Standard (zero-shot + elaborated scoring rules) · Few-shot (3 exemplars, one per score level)\n\n\nthought generation — reason before or after?\nRate-explain (score first, then rationale) · Analyze-rate (analysis first, then score)\n\n\n\n\nAnalyze-rate is chain-of-thought: the model must write its analysis before committing to the score. Rate-explain is the reverse — the score comes first, and the rationale is written after it."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#sawaki-et-al.-2025-findings",
+    "href": "slides/slides-session-07.html#sawaki-et-al.-2025-findings",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Sawaki et al. (2025) — findings",
+    "text": "Sawaki et al. (2025) — findings\n\n\n\nSome item × prompt combinations reached agreement acceptable for low-stakes use (κ &gt; .6).\n\nfew-shot · rate-explain on Item 3 (κ = .80)\nSimple · analyze-rate on Item 5 (κ = .61).\n\nThe amount of information mattered more than the reasoning order\nMore information is not always better — on Item 5, adding the elaborated rule or the exemplars lowered agreement below the Simple prompt. Per-item validation was unavoidable.\nWhen the two disagreed, the LLM was harsher than the instructors — misclassifications sat mostly one point below the instructor rating.\n\n\nOne more detail: even at temperature 0 with a fixed seed, the output varied across runs — so every analysis was run five times and averaged."
+  },
+  {
+    "objectID": "slides/slides-session-07.html#sawaki-et-al.-2025---prompts",
+    "href": "slides/slides-session-07.html#sawaki-et-al.-2025---prompts",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Sawaki et al. (2025) - Prompts",
+    "text": "Sawaki et al. (2025) - Prompts"
   }
 ]

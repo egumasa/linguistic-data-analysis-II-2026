@@ -32,16 +32,16 @@ By the end of this session, you will be able to:
 
 # From feedback to classification
 
-## The same four elements, a new task {.smaller}
+## The same components, a new task {.smaller}
 
 The CEFR prompt you'll write is **Huang & Mizumoto's Ex 2 structure**, re-cast for classification:
 
 | Ex 2 — writing feedback (S7) | CEFR classification (today) |
 |---|---|
-| **Instruction:** "review and give feedback" | "classify this sentence's **CEFR level**" |
-| **Context:** the 5-item Criteria rubric | the **CEFR level descriptors** |
+| **Directive:** "review and give feedback" | "classify this sentence's **CEFR level**" |
+| **Additional information:** the 5-item Criteria rubric | the **CEFR level descriptors** |
 | **Input data:** "My paragraph" | the learner **sentence** `{text}` |
-| **Output indicator:** "only feedback, no rewrite" | "**return only the label**" → structured / JSON |
+| **Output formatting:** "only feedback, no rewrite" | "**return only the label**" → structured / JSON |
 
 . . .
 
@@ -220,6 +220,6 @@ That is the same `{id, text, label}` schema from Day 1 — **JSON** is just the 
 
 . . .
 
-Asking for JSON is an *output indicator* (S7's fourth element). It makes the reply readable by code, instead of text you have to interpret.
+Asking for JSON is *output formatting* (one of S7's prompt components). It makes the reply readable by code, instead of text you have to interpret.
 
 # Any questions?

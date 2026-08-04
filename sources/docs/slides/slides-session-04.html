@@ -344,32 +344,6 @@
 <li><strong>The tag set is a design decision</strong> — the first one you make when you define an annotation task.</li>
 </ul>
 </section>
-<section id="applications-in-l2-research" class="slide level2">
-<h2>Applications in L2 research</h2>
-<p>How do learner across proficiency level use collocations?</p>
-<div class="columns">
-<div class="column" style="width:40%;">
-<ul>
-<li>Adjective + Noun (JN)</li>
-<li>Noun + Noun (NN)</li>
-<li>Verb + Noun (VN)</li>
-</ul>
-</div><div class="column" style="width:60%;">
-<p><img data-src="../assets/img/session4/JN_collocation.png"></p>
-</div></div>
-<div style="font-size: 60%">
-<p>Granger, S., &amp; Bestgen, Y. (2014). The use of collocations by intermediate vs.&nbsp;advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011</p>
-</div>
-</section>
-<section id="word-sense-disambiguation" class="slide level2">
-<h2>Word Sense Disambiguation</h2>
-<p><strong>Word-sense disambiguation</strong> = decide <em>which meaning</em> a word carries in context. Same form, different sense.</p>
-<ul>
-<li><em>She sat on the <strong>bank</strong> of the river.</em> → <strong>riverbank</strong></li>
-<li><em>She deposited the cheque at the <strong>bank</strong>.</em> → <strong>financial institution</strong></li>
-</ul>
-<p>The surface form is identical — only context resolves the sense. Harder than POS: the label set is <em>per word</em>, not a fixed grammar.</p>
-</section>
 <section id="syntactic-dependency" class="slide level2">
 <h2>Syntactic Dependency</h2>
 <p><strong>Dependency parsing</strong> = Identifying a binary syntactic relationships between a head and its dependency.</p>
@@ -387,6 +361,37 @@
 <span id="cb1-7"><a></a>6    .        .       PUNCT   .      _                                  2    punct</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 <img data-src="../assets/img/nlp-tasks/dep-2.png" class="r-stretch quarto-figure-center"><p class="caption">Dependency tree for “They buy and sell books.”</p></section>
+<section id="applications-in-l2-research" class="slide level2 smaller">
+<h2>Applications in L2 research</h2>
+<p>How do learner across proficiency level use collocations?</p>
+<div class="columns">
+<div class="column" style="width:27%;">
+<ul>
+<li>Adjective + Noun (JN)</li>
+<li>Noun + Noun (NN)</li>
+<li>Verb + Noun (VN)</li>
+</ul>
+</div><div class="column" style="width:73%;">
+<p><img data-src="../assets/img/session4/col-bin.png"></p>
+</div></div>
+<div style="font-size: 60%">
+<p>Eguchi, M., &amp; Kyle, K. (2023). L2 collocation profiles and their relationship with vocabulary proficiency: A learner corpus approach. Journal of Second Language Writing, 60, 100975. https://doi.org/10.1016/j.jslw.2023.100975</p>
+<p>Granger, S., &amp; Bestgen, Y. (2014). The use of collocations by intermediate vs.&nbsp;advanced non-native writers: A bigram-based study. International Review of Applied Linguistics in Language Teaching, 52(3). https://doi.org/10.1515/iral-2014-0011</p>
+</div>
+</section>
+<section id="collocation-extraction" class="slide level2">
+<h2>Collocation extraction</h2>
+
+<img data-src="../assets/img/session4/collocations.png" class="r-stretch"></section>
+<section id="word-sense-disambiguation" class="slide level2">
+<h2>Word Sense Disambiguation</h2>
+<p><strong>Word-sense disambiguation</strong> = decide <em>which meaning</em> a word carries in context. Same form, different sense.</p>
+<ul>
+<li><em>She sat on the <strong>bank</strong> of the river.</em> → <strong>riverbank</strong></li>
+<li><em>She deposited the cheque at the <strong>bank</strong>.</em> → <strong>financial institution</strong></li>
+</ul>
+<p>The surface form is identical — only context resolves the sense. Harder than POS: the label set is <em>per word</em>, not a fixed grammar.</p>
+</section>
 <section id="stance" class="slide level2">
 <h2>Stance</h2>
 <div class="columns">
@@ -429,13 +434,62 @@
 </table>
 <p><strong>Kim &amp; Lu (2024)</strong> had GPT annotate these moves — near-perfect when fine-tuned, though <em>steps</em> stayed hard. Unit: <strong>sentence/clause → one label</strong>.</p>
 </section>
-<section id="summary-nlp-task-by-unit-and-output" class="slide level2">
+<section id="summary-nlp-task-by-unit-and-output" class="slide level2 smaller">
 <h2>Summary: NLP task by unit and output</h2>
-<ul>
-<li><strong>Token-level sequence labelling</strong> — POS, NER (one label <em>per token</em>).</li>
-<li><strong>Span categorization</strong> — stance spans (label a <em>stretch</em> of text).</li>
-<li><strong>Unit categorization → one label per unit</strong> — a <strong>sentence</strong> or a <strong>whole text</strong>.</li>
-</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 20%">
+<col style="width: 25%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Unit of analysis</th>
+<th>Label example</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>POS tagging</strong></td>
+<td>Each token</td>
+<td><code>NOUN</code>, <code>VERB</code>, <code>ADJ</code></td>
+<td>Token-level sequence labelling — one label <em>per token</em></td>
+</tr>
+<tr class="even">
+<td><strong>Dependency parsing</strong></td>
+<td>A pair of tokens</td>
+<td><code>nsubj</code>, <code>obj</code></td>
+<td>One relation per head–dependent pair</td>
+</tr>
+<tr class="odd">
+<td><strong>Stance annotation</strong></td>
+<td>A stretch of text</td>
+<td><code>hedge</code>, <code>booster</code>, <code>ATTRIBUTE</code></td>
+<td>Span categorization — the span boundaries are part of the annotation</td>
+</tr>
+<tr class="even">
+<td><strong>Rhetorical move analysis</strong></td>
+<td>A sentence</td>
+<td><code>Background</code>, <code>Gap</code>, <code>Method</code></td>
+<td>Unit categorization — one label <em>per unit</em></td>
+</tr>
+<tr class="odd">
+<td><strong>Sentence difficulty (CEFR)</strong></td>
+<td>A sentence</td>
+<td><code>B2</code>, <code>C1</code>, <code>C2</code></td>
+<td>Unit categorization — one label <em>per unit</em></td>
+</tr>
+<tr class="even">
+<td><strong>Register classification</strong></td>
+<td>A whole text</td>
+<td><code>academic</code>, <code>news</code>, <code>fiction</code></td>
+<td>Unit categorization — one label <em>per unit</em></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="the-scope-of-the-current-course" class="slide level2">
 <h2>The scope of the current course</h2>
@@ -451,15 +505,6 @@
 <span id="cb2-5"><a></a>        <span class="st">"CoderB"</span>: <span class="st">""</span> </span>
 <span id="cb2-6"><a></a>        }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>BUT you can apply the same workflow for different annotation tasks. Only the data and annotation gets complex.</p>
-<!-- ## Note on the error annotation 
-
-Originally, the **AutoErrorAnalyzer** track has two routes:
-
-- **Default — sentence-level:** one label per unit; uses the same pipeline as every other track.
-- **Stretch — locate-a-span-then-categorize:** the *real* error-annotation task. It does not fit one-label-per-unit, and needs **span matching + partial-match scoring**.
-
-You can pick which route you will do. A bit more challenging but more rewarding.
-You will decide this by Day 4. -->
 </section>
 <section id="annotation-is-not-the-end-point-it-is-the-beginning-of-the-applied-work" class="slide level2">
 <h2>Annotation is not the end-point, it is the beginning of the Applied work</h2>
@@ -513,7 +558,10 @@ You will decide this by Day 4. -->
 <section id="reliability-and-validity" class="slide level2">
 <h2>Reliability and Validity</h2>
 <p>What are reliability and validity?</p>
-<div class="fragment">
+
+<img data-src="../assets/img/session4/reliability-validity.svg" style="width:90.0%" alt="Four targets showing dot patterns: a tight cluster away from the center (reliable, not valid); dots spread widely around the center (low reliability, low validity); dots scattered away from the center (not reliable, not valid); a tight cluster on the center (reliable and valid)." class="r-stretch"></section>
+<section id="reliability-and-validity-1" class="slide level2">
+<h2>Reliability and Validity</h2>
 <ul>
 <li><strong>Reliability</strong>:
 <ul>
@@ -523,7 +571,6 @@ You will decide this by Day 4. -->
 <li>Depends on coder, scheme, type of data, familiarity, etc.</li>
 </ul></li>
 </ul>
-</div>
 <div class="fragment">
 <ul>
 <li><strong>Validity</strong>:
@@ -680,7 +727,7 @@ You will decide this by Day 4. -->
 <tr class="odd">
 <td style="text-align: left;"><strong>Development</strong> (validation)</td>
 <td style="text-align: center;">??%</td>
-<td style="text-align: left;">You compare settings here and pick the one to keep.</td>
+<td style="text-align: left;">You will change the prompt as many times as you want.</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Test</strong></td>

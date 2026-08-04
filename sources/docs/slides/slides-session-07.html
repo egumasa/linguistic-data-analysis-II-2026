@@ -28,6 +28,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-9cd7da8a39d11504fbb2f1ac3cebc7bd.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -143,17 +209,15 @@
      Huang & Mizumoto (2025), Ex 1 → Ex 2 — carried into S8 (mapped onto CEFR) and S9 (iteration).
      promptingguide.ai is the students' self-study technique map. -->
 </section>
-<section>
-<section id="session-7-prompt-design-zero-shot-vs-few-shot" class="title-slide slide level1 center">
-<h1>Session 7: Prompt Design — Zero-shot vs Few-shot</h1>
-
-</section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
 <ul>
-<li>The <strong>anatomy</strong> of a prompt — four elements</li>
-<li><strong>Zero-shot vs.&nbsp;few-shot</strong>, and <strong>chain-of-thought</strong></li>
-<li>The wider <strong>design space</strong> — what to <em>run</em> vs.&nbsp;what to <em>know about</em></li>
+<li>Recap of LLM</li>
+<li>A <strong>map of prompting strategies</strong> — organized into classes, not technique names</li>
+<li><strong>Instruction structuring</strong> — the six components of a prompt</li>
+<li><strong>In-context learning</strong> — zero-shot vs.&nbsp;few-shot</li>
+<li><strong>Thought generation</strong> — chain-of-thought</li>
+<li>Three strategy classes to <strong>know about</strong>, not run: ensembling · self-criticism · decomposition</li>
 <li>Two traps: <strong>contamination</strong> and the <strong>validation/test split</strong></li>
 </ul>
 <p>Our worked example all session: <strong>Huang &amp; Mizumoto (2025)</strong> — writing-feedback prompts.</p>
@@ -162,10 +226,10 @@
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
 <ul>
-<li><strong>Name the four prompt elements</strong> — <em>instruction · context · input data · output indicator</em> — and locate each in a real prompt.</li>
+<li><strong>Name the main classes of prompting strategies</strong> — instruction structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism — and say which ones we run this week.</li>
+<li><strong>Locate the components of a prompt</strong> — <em>directive · examples · output formatting · style instructions · role · additional information</em> — in a real prompt.</li>
 <li>Distinguish <strong>zero-shot</strong> from <strong>few-shot</strong> prompting, judge <strong>when examples help</strong>, and read a real results table (Kim &amp; Lu, 2024) to see what each contributes and where prompting stops improving.</li>
 <li>Explain <strong>chain-of-thought</strong> and which tasks it improves.</li>
-<li>Decide whether a technique is one to <strong>run this week</strong> or one to <strong>know about</strong>.</li>
 <li>Explain the <strong>train/test contamination</strong> trap and why you <strong>tune on validation, report on test</strong>.</li>
 </ul>
 <div class="callout callout-note callout-titled callout-style-default">
@@ -181,44 +245,209 @@
 </div>
 </div>
 </div>
-</section></section>
+</section>
 <section>
-<section id="the-anatomy-of-a-prompt" class="title-slide slide level1 center">
-<h1>The anatomy of a prompt</h1>
+<section id="recapping-llm-mechanics" class="title-slide slide level1 center">
+<h1>Recapping LLM mechanics</h1>
 
 </section>
-<section id="a-prompt-has-parts-you-can-design" class="slide level2">
-<h2>A prompt has parts you can design</h2>
-<p>An LLM does what the <strong>prompt</strong> tells it to. Change the prompt and you change the output, and the score.</p>
-<div class="fragment">
-<p>A prompt is not a fixed phrase that you either know or do not know. It has <strong>parts you can design deliberately</strong>, and today we learn those parts on one concrete example.</p>
+<section id="llm-autoregressive-model" class="slide level2">
+<h2>LLM = autoregressive model</h2>
+<p>Most LLMs are a <code>autoregressive</code> model:</p>
+<ul>
+<li>Predicts a next word given the previous sequence.</li>
+<li>Repeats as many times at it needs (until [EOS])</li>
+</ul>
+
+<img data-src="../assets/img/session7/gpt2.gif" class="r-stretch"><p><a href="https://medium.com/@YanAIx/step-by-step-into-gpt-70bc4a5d8714">Taken from an Article by YanAlx</a></p>
+</section>
+<section id="llm-autoregression-based-on-a-huge-attention-based-network" class="slide level2">
+<h2>LLM = Autoregression based on a huge attention-based network</h2>
+<div class="columns">
+<div class="column" style="width:75%;">
+<p>The gigantic attention-weighted network will see the “context” at once.</p>
+</div><div class="column" style="width:25%;">
+<p><img data-src="../assets/img/session7/gpt2.gif"></p>
+</div></div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>LLM</th>
+<th>Provider</th>
+<th>Context Window</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GPT-5.6</td>
+<td>OpenAI</td>
+<td>1,050,000 tokens</td>
+</tr>
+<tr class="even">
+<td>Gemini 3.1 Pro</td>
+<td>Google</td>
+<td>1,048,576 tokens</td>
+</tr>
+<tr class="odd">
+<td><strong>Gemini 3.1 Flash-Lite</strong></td>
+<td>Google</td>
+<td>1,048,576 tokens</td>
+</tr>
+<tr class="even">
+<td>Claude Opus 5</td>
+<td>Anthropic</td>
+<td>1,000,000 tokens</td>
+</tr>
+</tbody>
+</table>
+<div style="font-size: 0.65em;">
+<p>Context window = the maximum number of tokens the model can read in one request (prompt + conversation so far). Figures from each provider’s API documentation, August 2026.</p>
 </div>
 </section>
-<section id="four-elements-of-a-prompt" class="slide level2 smaller">
-<h2>Four elements of a prompt</h2>
-<p>Chen et al.&nbsp;(2023), via <strong>Huang &amp; Mizumoto (2025)</strong> — an effective prompt typically has four parts:</p>
+<section id="how-does-a-chat-work-under-the-hood" class="slide level2">
+<h2>How does a <code>chat</code> work under the hood?</h2>
+<p>In chat, you will see the message like this.</p>
+
+<img data-src="../assets/img/session7/gpt-chat.png" class="r-stretch"></section></section>
+<section>
+<section id="what-a-prompt-is-under-the-hood" class="title-slide slide level1 center">
+<h1>What a prompt is, under the hood</h1>
+
+</section>
+<section id="how-does-a-chat-work-under-the-hood-1" class="slide level2">
+<h2>How does a <code>chat</code> work under the hood?</h2>
+<p>In code, message is a list of dictionary!!!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>messages <span class="op">=</span>  [  </span>
+<span id="cb1-2"><a></a>{<span class="st">'role'</span>:<span class="st">'system'</span>, </span>
+<span id="cb1-3"><a></a> <span class="st">'content'</span>:<span class="st">'XXXXX'</span>}, <span class="co"># This is hidden in Chat.    </span></span>
+<span id="cb1-4"><a></a>{<span class="st">'role'</span>:<span class="st">'user'</span>, </span>
+<span id="cb1-5"><a></a> <span class="st">'content'</span>:<span class="st">'I would like you to list three most important thing in life'</span>},</span>
+<span id="cb1-6"><a></a>{<span class="st">'role'</span>:<span class="st">'assistant'</span>, </span>
+<span id="cb1-7"><a></a> <span class="st">'content'</span>:<span class="st">'While "importance" changes depending on where you are in life, ...'</span>},  </span>
+<span id="cb1-8"><a></a>] </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Keys in each <code>message</code>:</p>
+</div>
+<div class="fragment">
+<div style="font-size:70%">
 <ul>
-<li><strong>Instruction</strong> — what the model should <em>do</em> (start with a verb: <em>classify, summarize, explain</em>).</li>
-<li><strong>Context</strong> — the background, role, rubric, or level that scopes the task.</li>
+<li><code>role</code>: Whose message this is: <code>system</code>, <code>user</code>, or <code>assistant</code>
+<ul>
+<li>You cannot usually change <code>system</code> message in chat. Your message is always <code>user</code> message.</li>
+<li>When you call LLM through API, you can set <code>system</code> message.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size:70%">
+<ul>
+<li><code>content</code>: The actual content of the prompt.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="system-prompt" class="slide level2">
+<h2>System prompt</h2>
+<ul>
+<li><p><code>System prompt (or Developer message)</code> is the core part of what you will design.</p></li>
+<li><p>OpenAI explains that: “<code>developer</code> messages are instructions provided by the application developer, prioritized ahead of user messages.” <a href="https://developers.openai.com/api/docs/guides/prompt-engineering#message-roles-and-instruction-following">(OpenAI, 2026)</a></p>
+<ul>
+<li>When we create a specialized tool using LLM, we will write a system prompt, so the user does not have to see or write the prompt.</li>
+<li>I use the term <code>prompt</code> to mean <code>system prompt</code>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="prompt-engineering---design-test-and-iterate" class="slide level2">
+<h2>Prompt engineering - design, test, and iterate</h2>
+<ul>
+<li>LLM is the statistical model that attends to <em>parts of the input</em>.</li>
+<li>The intuition is that you can embed important information in the prompt, so that it <strong>invokes</strong> the model’s relevant knowledge to complete the task.</li>
+</ul>
+</section>
+<section id="prompt-engineering---design-test-and-iterate-1" class="slide level2">
+<h2>Prompt engineering - design, test, and iterate</h2>
+<ul>
+<li><p><strong>Prompt engineering</strong> is about designing, testing, and iterating on different prompting strategies.</p>
+<ul>
+<li>Coming up with the good prompt takes both creativity and understanding of the LLM’s behavior.</li>
+<li>Iteration and improvement requires a good workflow (i.e., scientific approach).</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="a-small-survey-of-prompting-strategies" class="title-slide slide level1 center">
+<h1>A small survey of prompting strategies</h1>
+
+</section>
+<section id="prompt-strategy-categories" class="slide level2 smaller">
+<h2>Prompt strategy categories</h2>
+<p>There are many prompting techniques. Schulhoff et al.&nbsp;(2024, arXiv preprint) listed <strong>58</strong> text-based prompting approaches.</p>
+<p>But these are not exhaustive list.</p>
+<div class="fragment">
+<p>By looking at them, we can group them into a few <strong>strategy areas</strong>. Each area answers a different question about the model call:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Strategy class</th>
+<th>The question it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>instruction structuring</code></td>
+<td>How is the prompt itself organized?</td>
+</tr>
+<tr class="even">
+<td><code>in-context learning</code></td>
+<td>Do you put worked examples in the prompt?</td>
+</tr>
+<tr class="odd">
+<td><code>thought generation</code></td>
+<td>Does the model reason before the label?</td>
+</tr>
+<tr class="even">
+<td><code>ensembling</code></td>
+<td>One run, or many runs and a vote?</td>
+</tr>
+<tr class="odd">
+<td><code>self-criticism</code></td>
+<td>Does the model check its own output?</td>
+</tr>
+<tr class="even">
+<td><code>decomposition</code></td>
+<td>One call, or several smaller ones?</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>Classes <strong>combine</strong>: one prompt can use several at once.</p>
+</div>
+</section>
+<section id="instruction-structuring-four-components-of-version" class="slide level2">
+<h2>Instruction structuring: four components of version</h2>
+<p><strong>Huang &amp; Mizumoto (2025)</strong> use a compact four-part version of the same idea — an effective prompt has:</p>
+<ul>
+<li><strong>Instruction</strong> — what the model should <em>do</em>.</li>
+<li><strong>Context</strong> — the background that scopes the task (role, rubric, level).</li>
 <li><strong>Input data</strong> — the actual text to be processed.</li>
-<li><strong>Output indicator</strong> — the <em>form</em> of the answer (format, tone, “only feedback, no rewrite”).</li>
+<li><strong>Output indicator</strong> — the <em>form</em> of the answer.</li>
 </ul>
-<div class="fragment">
-<p>If one of the four is missing, the output is usually not what you wanted.</p>
-</div>
 </section>
-<section id="sharpening-the-instruction-structure-persona" class="slide level2 smaller">
-<h2>Sharpening the instruction — structure &amp; persona</h2>
-<p>The <em>instruction</em> element has the largest effect, so write it carefully:</p>
+<section id="instruction-structuring-six-components-of-version" class="slide level2 smaller">
+<h2>Instruction structuring: six components of version</h2>
+<p>Schulhoff et al.&nbsp;(2024) list six components a prompt can contain:</p>
 <ul>
-<li><strong>Start with a verb and be specific</strong> — “classify this sentence into one CEFR level (A1–C2)” is more effective than “tell me about this sentence.”</li>
-<li><strong>Give it a persona / role</strong> — <em>“You are an experienced EFL writing tutor…”</em> sets the tone, standards, and vocabulary of the output.</li>
+<li><strong>Role</strong> — a persona for the model (<em>“You are an experienced EFL writing tutor…”</em>).</li>
+<li><strong>Directive</strong> — what the model should <em>do</em> (start with a verb: <em>classify, summarize, explain</em>).</li>
+<li><strong>Examples</strong> — worked input → output pairs (→ <code>in-context learning</code>, coming next).</li>
+<li><strong>Output formatting</strong> — the <em>form</em> of the answer (a list, JSON, “only feedback, no rewrite”).</li>
+<li><strong>Style instructions</strong> — the tone and register of the answer.</li>
+<li><strong>Additional information</strong> — the background the task needs: a rubric, level descriptors, definitions.</li>
 </ul>
-<div class="fragment">
-<p>A persona helps, but it changes <em>style</em>, not knowledge. The <strong>four elements</strong> have the larger effect.</p>
-</div>
 </section>
-<section id="the-running-example-writing-feedback" class="slide level2 smaller">
+<section id="the-running-example-writing-feedback" class="slide level2">
 <h2>The running example — writing feedback</h2>
 <p><strong>Huang &amp; Mizumoto’s Example Prompt 2</strong> — a structured paragraph-feedback prompt for an EFL class:</p>
 <blockquote>
@@ -226,113 +455,255 @@
 <p><strong>Criteria</strong> — 1. Hook / Attention-grabber · 2. Background / Context · 3. Thesis statement · 4. Organization · 5. Clarity &amp; coherence</p>
 <p><strong>My paragraph</strong> — <em>(paste your paragraph here)</em></p>
 </blockquote>
-<div class="fragment">
-<p>Read the four elements straight off it:</p>
+</section>
+<section id="the-running-example-writing-feedback-1" class="slide level2">
+<h2>The running example — writing feedback</h2>
+<p>Read the components straight off it:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Element</th>
+<th>Component</th>
 <th>In this prompt</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Instruction</strong></td>
+<td><strong>Directive</strong></td>
 <td>“review… and provide specific feedback”</td>
 </tr>
 <tr class="even">
-<td><strong>Context</strong></td>
+<td><strong>Additional information</strong></td>
 <td>the 5-item <strong>Criteria</strong> rubric</td>
 </tr>
 <tr class="odd">
-<td><strong>Input data</strong></td>
-<td>“My paragraph”</td>
+<td><strong>Output formatting / style</strong></td>
+<td>“only feedback, no rewrite”</td>
 </tr>
 <tr class="even">
-<td><strong>Output indicator</strong></td>
-<td>“only feedback, no rewrite”</td>
+<td><strong>Role</strong></td>
+<td>none — optional</td>
+</tr>
+<tr class="odd">
+<td><strong>Examples</strong></td>
+<td>none — this prompt is <code>zero-shot</code> (next slide)</td>
 </tr>
 </tbody>
 </table>
-</div>
 </section></section>
 <section>
-<section id="zero-shot-few-shot-chain-of-thought" class="title-slide slide level1 center">
-<h1>Zero-shot, few-shot, chain-of-thought</h1>
+<section id="in-context-learning" class="title-slide slide level1 center">
+<h1>In-context learning</h1>
 
 </section>
-<section id="zero-shot-vs.-few-shot" class="slide level2 smaller">
-<h2>Zero-shot vs.&nbsp;few-shot</h2>
+<section id="in-context-learning-zero-shot-vs.-few-shot" class="slide level2">
+<h2>In-context learning: zero-shot vs.&nbsp;few-shot</h2>
+<p>The second strategy class: what the model can learn <strong>from the prompt itself</strong>, at call time.</p>
 <ul>
 <li><strong>Zero-shot</strong> — instruction only, <strong>no examples</strong>. The model relies on what it already knows. Great for simple, familiar tasks.</li>
-<li><strong>Few-shot</strong> — you include <strong>a few worked examples</strong> <em>(input → correct label)</em> right in the prompt, so the model infers the pattern.</li>
+<li><strong>Few-shot</strong> — you include <strong>a few examples</strong> <em>(input → correct label)</em> right in the prompt, so the model infers the pattern.</li>
 </ul>
 <div class="fragment">
-<p><strong>When do examples help?</strong> When the task is specialized, the label set is your own, or the format must be exact. Two tips (promptingguide.ai):</p>
+<p><strong>When do examples help?</strong>:</p>
 <ul>
 <li>keep a <strong>consistent format</strong> across all examples;</li>
 <li>make the examples’ <strong>label space representative</strong> — don’t show only one class.</li>
 </ul>
 </div>
 </section>
-<section id="what-examples-actually-buy-kim-lu-2024" class="slide level2 smaller">
-<h2>What examples actually buy — Kim &amp; Lu (2024)</h2>
-<p>A hard linguistic task: labelling <strong>rhetorical move-steps</strong> in research-article introductions (modified Swales <strong>CARS</strong>: 3 moves / ~17 steps) with <strong>GPT-3.5</strong>. Unit of annotation = the <strong>sentence</strong>.</p>
-<div class="fragment">
-<p>They tested <strong>two independent variables</strong>:</p>
+<section id="benefits-of-in-context-learning" class="slide level2 smaller">
+<h2>Benefits of In-context learning</h2>
+<p><em>Language Models are Few-Shot Learners</em> (Brown et al., 2020, NeurIPS):</p>
 <ul>
-<li><strong>zero-shot vs.&nbsp;three-shot</strong> — the prompt alone vs.&nbsp;the prompt <strong>+ 3 fully annotated introductions</strong> (38 sentences, drawn from the <strong>training</strong> set — <em>not</em> the gold test set).</li>
-<li><strong>initial vs.&nbsp;refined prompt</strong> — the instruction sharpened after reading the <strong>validation-set confusion matrix</strong>.</li>
+<li>A large LM can pick up a new task <strong>from examples in the prompt alone</strong> — no retraining, no weight updates. They named this <code>in-context learning</code>.</li>
 </ul>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="fragment">
+<p>But <em>how</em> does it work? You would think the model learns <strong>input → correct label</strong> from your examples.</p>
+<ul>
+<li>Min et al.&nbsp;(2022, EMNLP) tested this: they replaced the labels in the demonstrations with <strong>random wrong ones</strong> — and across 12 models, the score barely moved.</li>
+</ul>
 </div>
-<p><strong>Important</strong></p>
-</div>
-<div class="callout-content">
-<p>Notice: the few-shot examples come from <strong>training</strong>, never from the gold set you score on. (More on this shortly.)</p>
-</div>
-</div>
-</div>
+<div class="fragment">
+<p>Possible explanation on why it works:</p>
+<ul>
+<li>the <strong>label space</strong> — which categories exist;</li>
+<li>the <strong>input distribution</strong> — what kind of text this is;</li>
+<li>the <strong>output format</strong> — how an answer should look;</li>
+<li>the <strong>task type</strong> - what knowledge is relevant to complete the task.</li>
+</ul>
 </div>
 </section>
-<section id="the-numbers-prompting-alone-stops-improving" class="slide level2 smaller">
-<h2>The numbers — prompting alone stops improving</h2>
-<p>Test-set accuracy, <strong>move / step</strong> (their Table 2):</p>
+<section id="few-shot-is-six-decisions-not-one" class="slide level2 smaller">
+<h2>Few-shot is six decisions, not one</h2>
+<p>“Add examples” sounds like one choice. Schulhoff et al.&nbsp;(2024) separate it into <strong>six decisions</strong>, each of which can move the score:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Decision</th>
+<th>What the evidence says</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>How many?</strong></td>
+<td>more helps, with diminishing returns</td>
+</tr>
+<tr class="even">
+<td><strong>In what order?</strong></td>
+<td>order alone can swing accuracy a lot</td>
+</tr>
+<tr class="odd">
+<td><strong>With what class balance?</strong></td>
+<td>an unbalanced set biases predictions toward the majority label</td>
+</tr>
+<tr class="even">
+<td><strong>With what label quality?</strong></td>
+<td>surprisingly weak effect — the previous slide</td>
+</tr>
+<tr class="odd">
+<td><strong>In what format?</strong></td>
+<td>keep one consistent format across all examples</td>
+</tr>
+<tr class="even">
+<td><strong>How similar to the input?</strong></td>
+<td>examples similar to the current input help most</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kim-lu-2024" class="slide level2">
+<h2>Kim &amp; Lu (2024)</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<ul>
+<li>Kim &amp; Lu (2024) labeled <strong>rhetorical move-steps</strong> (Swales <strong>CARS</strong>: 3 moves / ~17 steps) with <strong>GPT-3.5</strong>.</li>
+<li>Unit of annotation = the <strong>sentence</strong>.</li>
+</ul>
+</div><div class="column" style="width:70%;">
+<p><img data-src="../assets/img/session7/KimLu_CARS.png"></p>
+</div></div>
+</section>
+<section id="methodology---kim-lu-2024" class="slide level2 smaller">
+<h2>Methodology - Kim &amp; Lu (2024)</h2>
+
+<img data-src="../assets/img/session7/KimLu-method.png" class="r-stretch"></section>
+<section id="prompt-used-in-kim-lu-2024" class="slide level2 scrollable">
+<h2>Prompt used in Kim &amp; Lu (2024)</h2>
 <style>
-.kl-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:.35rem;align-items:stretch;font-size:.8rem;margin:.4rem 0}
-.kl-grid .kh{font-size:.72em;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;
-  display:flex;align-items:center;justify-content:center;text-align:center;padding:.2rem}
-.kl-grid .rl{font-weight:600;color:var(--ink);display:flex;align-items:center;padding:.2rem .5rem}
-.kl-grid .cell{background:var(--surface);border:1.5px solid var(--primary-80);border-radius:.5rem;
-  padding:.5rem .6rem;text-align:center;color:var(--ink)}
-.kl-grid .cell .big{font-weight:700;font-size:1.05em}
-.kl-grid .cell.best{border-color:var(--accent);border-width:2px}
-.kl-grid .cell.best .big{color:var(--accent)}
-.kl-ceiling{margin-top:.5rem;background:var(--warn);color:var(--white);border-radius:.5rem;
-  padding:.45rem .7rem;font-size:.8rem;font-weight:600}
+.reveal .prompt-block pre {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+.reveal .prompt-block pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: none;
+  overflow-x: visible;
+}
+.reveal .prompt-block pre code > span {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
 </style>
-<div class="kl-grid">
-  <div></div><div class="kh">initial prompt</div><div class="kh">refined prompt</div>
-  <div class="rl">zero-shot</div>
-    <div class="cell"><span class="big">42.9%</span> / 17.0%</div>
-    <div class="cell"><span class="big">50.5%</span> / 19.8%</div>
-  <div class="rl">three-shot</div>
-    <div class="cell"><span class="big">46.2%</span> / 18.7%</div>
-    <div class="cell best"><span class="big">52.7%</span> / 25.3%</div>
+<p>You can see <a href="https://www.diffchecker.com/51OQG9Xx/">the differences between original and revised prompts</a></p>
+<div class="prompt-block">
+<div class="columns">
+<div class="column">
+<h3 id="original">Original</h3>
+<pre><code>You are a genre analyst. Genre analysis is a method used in discourse analysis, particularly in the context of academic and professional communication, to understand how specific types of texts are structured and organized. It involves examining texts within a specific genre to identify common patterns or conventions in structure, style, and content. Move-step annotations are a common tool used in genre analysis. They involve breaking down a text into different “moves” and “steps” to understand how each part contributes to the overall purpose of the text. A ‘move’ refers to a section of a text that serves a specific function or purpose, while a ‘step’ is a more detailed part of a move, providing support or elaboration. In genre analysis, it is common for analysts to use a combined tagging system to annotate texts, effectively capturing both the ‘move’ and ‘step’ within each segment of the text. This is typically represented in a format like ‘M1_S2’, where ‘M1’ denotes ‘Move 1’, indicating the primary functional segment of the text, and ‘S2’ refers to ‘Step 2’, which is a specific element or action within that move. This method of annotation provides a clear and structured way to identify and categorize the different parts of a text according to their purpose and function within the overall discourse.
+
+Move 1 Establishing a research territory:   
+Step 1  Claiming centrality or value of research area   [M1_S1a]
+Step 1  Real-world contextualization [M1_S1b]
+Step 2  Making generalizations about the research area [M1_S2]
+Step 3  Reviewing items of previous research (one specific study) [M1_S3]
+
+Move 2 Establishing a niche:
+Step 1  Counter-claiming, theoretical (argument is problematic) [M2_S1a]
+Step 1  Indicating a gap [M2_S1b]
+Step 1  Question-raising [M2_S1c]
+Step 1  Continuing a tradition  [M2_S1d]
+Step 1  Pointing out limitations of previous research   [M2_S1e]
+Step 2  Providing justification [M2_S2]
+
+Move 3 Presenting the present work via: 
+Step 1  Announcing present research descriptively and/or purposively [M3_S1]
+Step 2  Presenting research questions or hypotheses [M3_S2a]
+Step 2  Advancing new theoretical/claims/hypotheses/arguments [M3_S2b]
+Step 3  Definitional clarification [M3_S3]
+Step 4  Summarizing methods [M3_S4a]
+Step 4  Explain mathematical model design (e.g. explain parameters; for analytical purposes) [M3_S4b]
+Step 4  Describing analyzed scenario/context [M3_S4c]
+Step 5 Announcing and discussing the results [M3_S5]
+Step 6 Stating the value of the present research [M3_S6]
+Step 7 Outlining the structure of the paper (metatext) [M3_S7]
+Step 8   Rationalizing research focus and design [M3_S8]
+Step 9   Limitations of the current study [M3_S9]
+
+You are going to be given one or a few paragraphs. Break the given paragraphs into sentences and annotate each sentence using a tag in the framework above that describes the function of the sentence. Note that question marks could signal the boundary of sentences. Some sentences could be assigned multiple tags when they perform multiple functions. 
+
+You will start your annotation with the given input text.
+</code></pre>
+</div><div class="column">
+<h3 id="refined-prompt">Refined prompt</h3>
+<pre><code>You are a genre analyst. Genre analysis is a method used in discourse analysis, particularly in the context of academic and professional communication, to understand how specific types of texts are structured and organized. It involves examining texts within a specific genre to identify common patterns or conventions in structure, style, and content. Move-step annotations are a common tool used in genre analysis. They involve breaking down a text into different ‘moves’ and ‘steps’ to understand how each part contributes to the overall purpose of the text. A ‘move’ refers to a section of a text that serves a specific function or purpose, while a ‘step’ is a more detailed part of a move, providing support or elaboration. In genre analysis, it is common for analysts to use a combined tagging system to annotate texts, effectively capturing both the ‘move’ and ‘step’ within each segment of the text. This is typically represented in a format like ‘M1_S2’, where ‘M1’ denotes ‘Move 1’, indicating the primary functional segment of the text, and ‘S2’ refers to ‘Step 2’, which is a specific element or function within that move. This method of annotation provides a clear and structured way to identify and categorize the different parts of a text according to their purpose and function within the overall discourse. Below, you’ll find the move-step annotations tags pertaining to the Introduction section of a research article genre:
+
+Move 1 Establishing the broader research territory within which the present study is situated:
+Step 1  Claiming centrality or value of the research area [M1_S1a]
+Step 1  Real-world contextualization (the real-world context of the research area, not focusing on the specific context of the present research) [M1_S1b]
+Step 2  Making generalizations about the research area without mentioning specific studies [M1_S2]
+Step 3  Reviewing a specific previous research study (reviewing one specific study, and human names typically indicate specific studies referenced within the article) [M1_S3]
+
+Move 2 Establishing a niche in previous research:
+Step 1  Counter-claiming, theoretical (argument in previous research is problematic) [M2_S1a]
+ Step 1 Indicating a gap in previous research [M2_S1b]
+    Step 1  Question-raising in previous research [M2_S1c]
+    Step 1  Continuing a tradition  of previous research [M2_S1d]
+    Step 1  Pointing out limitations of previous research (something hasn’t been done) [M2_S1e]
+Step 2  Providing justification of the present research area based on previous research (there must be some research, there is something important to look at) [M2_S2]
+
+Move 3 Presenting the present research via: 
+    Step 1  Announcing present research descriptively or purposively [M3_S1]
+    Step 2  Presenting research questions or hypotheses of the present research [M3_S2a]
+    Step 2  Advancing or suggesting new theoretical/claims/hypotheses/arguments [M3_S2b]
+    Step 3  Definitional clarification [M3_S3]
+    Step 4  Summarizing methods of the present research [M3_S4a]
+    Step 4  Explain mathematical model design adopted in the present research (e.g. explain parameters; for analytical purposes) [M3_S4b]
+Step 4 Describing the analyzed scenario/context of the present research [M3_S4c]
+Step 5  Announcing and discussing the results/principal outcomes of the present research [M3_S5]
+    Step 6  Stating the value of the present research [M3_S6]
+    Step 7  Outlining the structure of the paper (non-propositional meta-discourse: metatext) [M3_S7]
+    Step 8   Rationalizing the present research’s focus, design, and methods [M3_S8]
+Step 9   Limitations of the current study [M3_S9]
+
+You are going to be given one or a few paragraphs of the Introduction section of a research article in the field of Applied Linguistics. Break the given paragraph(s) into sentences and annotate each sentence using a tag in the framework above that describes the function of the sentence. Note that question marks could signal the boundary of sentences. Some sentences could be assigned multiple tags when they perform multiple functions. 
+
+You will start your annotation with the given input text.
+</code></pre>
+</div></div>
 </div>
-<div class="kl-ceiling">Fine-tuning on 80 samples → <strong>92.3% / 80.2%</strong> — far above the best prompt (the S12 escalation).</div>
-<div class="fragment">
-<p>Each change helps a little, and <strong>refined + three-shot</strong> is best. But prompting alone reaches only about <strong>53%</strong> move accuracy, well below fine-tuning.</p>
+</section>
+<section id="kim-lu-2024-limitation-of-prompting" class="slide level2 smaller">
+<h2>Kim &amp; Lu (2024) limitation of prompting</h2>
+<p>Test-set accuracy, <strong>move / step</strong> (their Table 2):</p>
+
+<img data-src="../assets/img/session7/KimLu-results.png" class="r-stretch"><div class="fragment">
+<ul>
+<li><p>Each change helps a little, and <strong>refined + three-shot</strong> is best.</p></li>
+<li><p>But prompting alone reaches only about <strong>53%</strong> move accuracy, well below fine-tuning.</p></li>
+</ul>
 </div>
 </section>
 <section id="four-things-the-numbers-teach" class="slide level2 smaller">
 <h2>Four things the numbers teach</h2>
 <ol type="1">
-<li><strong>Few-shot helps, but modestly</strong> — adding 3 examples to the <em>initial</em> prompt was <strong>not</strong> significant on its own (McNemar move χ²=0.543, <em>p</em>=0.46).</li>
+<li><strong>Few-shot helps, but modestly</strong> — adding 3 examples to the <em>initial</em> prompt was <strong>not</strong> significant on its own</li>
 <li><strong>Examples and instructions compound</strong> — only <strong>refined + three-shot</strong> beat the zero-shot baseline significantly (move <em>p</em>=0.028, step <em>p</em>=0.018). Sharpen the instruction <strong>and</strong> add examples.</li>
 <li><strong>Few-shot mainly raises recall</strong> — precision was higher than recall, and examples raised recall. (That precision/recall relationship returns in S8/S9.)</li>
 <li><strong>Context-heavy tasks need more than prompting</strong> — the best prompt-only setting was still far below fine-tuning: prompt first, and consider fine-tuning when prompting stops improving.</li>
@@ -351,9 +722,9 @@
 </div>
 </div>
 </section>
-<section id="chain-of-thought-cot" class="slide level2 smaller">
-<h2>Chain-of-thought (CoT)</h2>
-<p>Ask the model to <strong>reason in steps</strong> before answering (Wei et al., 2022).</p>
+<section id="thought-generation-chain-of-thought-cot" class="slide level2 smaller">
+<h2>Thought generation: chain-of-thought (CoT)</h2>
+<p>The third strategy class: have the model <strong>reason in steps</strong> before it answers (Wei et al., 2022).</p>
 <p><strong>Huang &amp; Mizumoto’s Example Prompt 1</strong> is CoT feedback:</p>
 <blockquote>
 <p><em>First,</em> read the paragraph to understand its main idea. <em>Next,</em> check the structure… <em>Then,</em> identify grammatical errors. <em>After that,</em> assess clarity and coherence. <strong>Provide feedback based on these steps.</strong></p>
@@ -375,51 +746,182 @@
 </div>
 </div>
 </section>
-<section id="iterating-a-prompt-ex-1-ex-2" class="slide level2 smaller">
-<h2>Iterating a prompt: Ex 1 → Ex 2</h2>
-<p>The <em>same</em> feedback task, tightened:</p>
+<section id="sawaki-et-al.-2025-checklist-based-assessment-of-summary-writing" class="slide level2 smaller">
+<h2>Sawaki et al.&nbsp;(2025) — checklist-based assessment of summary writing</h2>
+<p><strong>Background:</strong></p>
 <ul>
-<li><strong>Ex 1 (generic)</strong> — “give feedback on this paragraph, step by step.” Works, but vague.</li>
-<li><strong>Ex 2 (structured)</strong> — split into <strong>Task / Criteria / My paragraph</strong>, add the output indicator “only feedback.”</li>
+<li>Formative feedback on L2 <strong>summary writing</strong> takes instructor time; can an LLM rate the content checklist instead?</li>
 </ul>
-<div class="fragment">
-<p>That change — generic → structured — is <strong>prompt iteration</strong>. The data-based version is <strong>error analysis</strong>: find <em>where</em> the model is wrong (the confusion matrix), make the <em>Criteria</em> that cause those errors more precise, and the score rises. This is the same as Kim &amp; Lu’s <em>initial → refined</em> change. You will do this yourself in <strong>S9</strong>.</p>
-</div>
-</section></section>
-<section>
-<section id="the-wider-design-space" class="title-slide slide level1 center">
-<h1>The wider design space</h1>
-
+<p><strong>Research question:</strong></p>
+<ul>
+<li>How consistent are <strong>instructor</strong> and <strong>LLM</strong> ratings on the checklist items — and how does <strong>prompt design</strong> change that consistency?</li>
+</ul>
+<p><strong>Methods:</strong></p>
+<ul>
+<li>97 first-draft summaries (~80 words) of one 391-word expository text, by L1-Japanese undergraduates (CEFR A2–low B2).</li>
+<li>Each summary scored <strong>0 / 1 / 2</strong> per checklist item — an ordinal classification task — by instructors and by <strong>GPT-4 Turbo</strong> (temperature 0, fixed seed) through the API.</li>
+<li>Main analyses: the <strong>3 items on using topic sentences</strong> (Paragraphs 1, 2, 4); agreement measured with weighted κ and Krippendorff’s α.</li>
+</ul>
 </section>
-<section id="run-it-this-week-vs.-know-it-exists" class="slide level2 smaller">
-<h2>Run it this week vs.&nbsp;know it exists</h2>
+<section id="sawaki-et-al.-2025-the-prompt-conditions" class="slide level2">
+<h2>Sawaki et al.&nbsp;(2025) — the prompt conditions</h2>
+<p>They crossed <strong>two of our strategy classes</strong> — six prompts in total:</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 37%">
+<col style="width: 62%">
 </colgroup>
 <thead>
 <tr class="header">
-<th><strong>Run it in S8</strong></th>
-<th><strong>Know it exists</strong> (name &amp; reason, don’t run)</th>
+<th>Dimension</th>
+<th>Levels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>in-context learning</code> — how much information?</td>
+<td><strong>Simple</strong> (zero-shot, minimal) · <strong>Standard</strong> (zero-shot + elaborated scoring rules) · <strong>Few-shot</strong> (3 exemplars, one per score level)</td>
+</tr>
+<tr class="even">
+<td><code>thought generation</code> — reason before or after?</td>
+<td><strong>Rate-explain</strong> (score first, then rationale) · <strong>Analyze-rate</strong> (analysis first, then score)</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><strong>Analyze-rate is chain-of-thought</strong>: the model must write its analysis <em>before</em> committing to the score. Rate-explain is the reverse — the score comes first, and the rationale is written after it.</p>
+</div>
+</section>
+<section id="sawaki-et-al.-2025---prompts" class="slide level2">
+<h2>Sawaki et al.&nbsp;(2025) - Prompts</h2>
+
+<img data-src="../assets/img/session7/Sawaki-prompt.png" class="r-stretch"></section>
+<section id="sawaki-et-al.-2025-findings" class="slide level2 smaller">
+<h2>Sawaki et al.&nbsp;(2025) — findings</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Some item × prompt combinations reached agreement acceptable for low-stakes use</strong> (κ &gt; .6).
+<ul>
+<li><strong>few-shot · rate-explain</strong> on Item 3 (κ = .80)</li>
+<li><strong>Simple · analyze-rate</strong> on Item 5 (κ = .61).</li>
+</ul></li>
+<li><strong>The amount of information mattered more than the reasoning order</strong></li>
+<li><strong>More information is not always better</strong> — on Item 5, adding the elaborated rule or the exemplars <em>lowered</em> agreement below the Simple prompt. Per-item validation was unavoidable.</li>
+<li><strong>When the two disagreed, the LLM was harsher</strong> than the instructors — misclassifications sat mostly one point <em>below</em> the instructor rating.</li>
+</ul>
+<div style="font-size:75%">
+<p>One more detail: even at temperature 0 with a fixed seed, the output varied across runs — so every analysis was run <strong>five times</strong> and averaged.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><img data-src="../assets/img/session7/Sawaki-conf.png"></p>
+</div></div>
+</section></section>
+<section id="questions" class="title-slide slide level1 center">
+<h1>Questions?</h1>
+
+</section>
+
+<section>
+<section id="more-prompting-strategies" class="title-slide slide level1 center">
+<h1>More prompting strategies</h1>
+
+</section>
+<section id="ensembling-many-runs-one-vote" class="slide level2">
+<h2>Ensembling — many runs, one vote</h2>
+<p>The idea: run the model <strong>several times</strong>, then aggregate the answers.</p>
+<ul>
+<li>Example: <code>self-consistency</code> (Wang et al., 2023) — sample N reasoning paths, take the <strong>majority label</strong>.</li>
+<li>The same model can give <strong>different labels on identical input across runs</strong>. That variation threatens reliability (→ S10); ensembling measures it and votes over it.</li>
+</ul>
+<div class="fragment">
+<p>This is similar to having multiple coders and decide based on majority vote.</p>
+<ul>
+<li>We do not have correct answer for <strong>how many</strong> and <strong>when to stop</strong></li>
+</ul>
+</div>
+</section>
+<section id="self-criticism-the-model-checks-itself" class="slide level2">
+<h2>Self-criticism — the model checks itself</h2>
+<p>The idea: the model reads <strong>its own output</strong>, critiques it, and revises (e.g.&nbsp;<code>Self-Refine</code>).</p>
+<ul>
+<li>The <code>agentic</code> version runs this as a loop: plan → label → critique → revise.</li>
+</ul>
+</section>
+<section id="decomposition-or-prompt-chaining" class="slide level2">
+<h2>Decomposition (or <code>prompt chaining</code>)</h2>
+<p>The idea: split one judgment into <strong>several calls</strong>, each using the previous call’s output (<code>prompt chaining</code>).</p>
+<ul>
+<li>The annotation version: score <strong>analytic dimensions separately</strong> instead of one holistic label (e.g., Bannò et al., 2024).</li>
+<li>You can also split annotation scheme into several parts; only annotate parts on one call
+<ul>
+<li>Grammar analyzer</li>
+<li>Vocab analyzer</li>
+<li>Mechanics analyzer</li>
+</ul></li>
+</ul>
+</section>
+<section id="retrieval-augmented-generation-rag" class="slide level2">
+<h2>Retrieval-augmented generation (<code>RAG</code>)</h2>
+<ul>
+<li>RAG is a technique, where input to LLM is used to search for relevant information in the database and add that information dynamically into the prompt.</li>
+</ul>
+<style>
+.rag-grid{display:grid;grid-template-columns:1fr 2rem 1fr 2rem 1fr 2rem 1fr;gap:.35rem;align-items:stretch;font-size:.7em;margin:.9rem 0 .2rem}
+.rag-grid .step{background:var(--surface);border:2px solid var(--primary-80);border-radius:.6rem;padding:.55rem .5rem;text-align:center;color:var(--ink);display:flex;flex-direction:column;justify-content:center}
+.rag-grid .step .t{font-weight:700}
+.rag-grid .step .d{font-size:.78em;color:var(--ink-soft);margin-top:.2rem}
+.rag-grid .arr{display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:700;font-size:1.25em}
+.rag-grid .varr{grid-column:3;display:flex;align-items:center;justify-content:center;gap:.5rem;color:var(--accent);font-weight:600;font-size:.85em;padding:.1rem 0}
+.rag-grid .store{grid-column:3;background:var(--surface);border:2px solid var(--accent);border-radius:.6rem;padding:.5rem .5rem;text-align:center;color:var(--ink);font-weight:700}
+.rag-grid .store .d{display:block;font-weight:400;font-size:.78em;color:var(--ink-soft);margin-top:.15rem}
+</style>
+<div class="rag-grid">
+  <div class="step"><span class="t">Prompt</span><span class="d">the item to annotate arrives</span></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="t">LLM query</span><span class="d">search for the relevant entries</span></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="t">Insert in prompt</span><span class="d">retrieved text is added to the context</span></div>
+  <div class="arr">→</div>
+  <div class="step"><span class="t">Generate</span><span class="d">the model answers using that context</span></div>
+  <div class="varr">query ↓ &nbsp; ↑ relevant entries</div>
+  <div class="store">Data<span class="d">codebook · annotation manual · exemplar bank</span></div>
+</div>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
+
+</section>
+<section id="list-of-prompting-strategies" class="slide level2">
+<h2>List of prompting strategies</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 72%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Basic</strong></th>
+<th><strong>More advanced</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>zero-shot</td>
-<td><strong>self-consistency</strong> — sample N answers, take the majority (relevant to reproducibility → S10)</td>
+<td><strong>self-consistency</strong> — N runs, majority vote <em>(ensembling)</em></td>
 </tr>
 <tr class="even">
 <td>few-shot</td>
-<td><strong>RAG</strong> — give the model the annotation manual / codebook to consult (≈ <em>dynamic</em> few-shot)</td>
+<td><strong>RAG</strong> — give the model the annotation manual / codebook to consult <em>(≈ dynamic few-shot)</em></td>
 </tr>
 <tr class="odd">
 <td>chain-of-thought</td>
-<td><strong>agentic / multi-step</strong> — the model plans → critiques its own label → revises</td>
+<td><strong>prompt chaining</strong> — one analytic dimension per call <em>(decomposition)</em></td>
 </tr>
 <tr class="even">
 <td>structured output</td>
-<td>(ReAct, Reflexion, prompt chaining…)</td>
+<td><strong>self-refine / agentic</strong> — the model critiques and revises its own label <em>(self-criticism)</em></td>
 </tr>
 </tbody>
 </table>
@@ -427,11 +929,19 @@
 <p>A reference for all of these: <strong><a href="https://www.promptingguide.ai/techniques">promptingguide.ai/techniques</a></strong>.</p>
 </div>
 </section>
-<section id="two-errors-to-avoid-before-you-tune" class="slide level2 smaller">
-<h2>Two errors to avoid before you tune</h2>
+<section id="two-common-errors-to-avoid-before-you-tune" class="slide level2">
+<h2>Two common errors to avoid before you tune</h2>
 <ul>
 <li><strong>Train/test contamination</strong> — never draw your <strong>few-shot examples from the gold set</strong> you score on. The model would then be given the answers to the test items.</li>
-<li><strong>Validation vs.&nbsp;test</strong> — <strong>tune</strong> the prompt on a small <strong>validation</strong> set; <strong>report</strong> the final number <strong>once</strong> on a held-out <strong>test</strong> set.</li>
+<li><strong>(Train) vs Validation vs.&nbsp;test</strong>
+<ul>
+<li>You can use Train, Validation, and Test analogy.
+<ul>
+<li>Tune prompt as much as possible on <code>Train</code></li>
+<li>Confirm the effect on <code>Validation</code>. Iterate.</li>
+<li>FINALLY, run Test once</li>
+</ul></li>
+</ul></li>
 </ul>
 <div class="fragment">
 <p>Both protect the purpose of an evaluation: <strong>an accurate estimate of how the prompt performs on text it has not seen.</strong></p>
@@ -442,9 +952,9 @@
 <h1>Coming up</h1>
 
 </section>
-<section id="s8-the-same-four-elements-a-new-task" class="slide level2 smaller">
-<h2>S8 — the same four elements, a new task</h2>
-<p>Next session you build a real classification pipeline — and the <strong>CEFR prompt is the same four elements</strong>:</p>
+<section id="s8-the-same-components-a-new-task" class="slide level2 smaller">
+<h2>S8 — the same components, a new task</h2>
+<p>Next session you build a real classification pipeline — and the <strong>CEFR prompt uses the same components</strong>:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -458,19 +968,19 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td>Instruction: “provide feedback”</td>
+<td>Directive: “provide feedback”</td>
 <td>“classify this sentence’s CEFR level”</td>
 </tr>
 <tr class="even">
-<td>Context: the 5-item rubric</td>
+<td>Additional information: the 5-item rubric</td>
 <td>the <strong>CEFR level descriptors</strong></td>
 </tr>
 <tr class="odd">
-<td>Input: “My paragraph”</td>
+<td>Input data: “My paragraph”</td>
 <td>the learner <strong>sentence</strong></td>
 </tr>
 <tr class="even">
-<td>Output indicator: “only feedback”</td>
+<td>Output formatting: “only feedback”</td>
 <td>“<strong>return only the label</strong>” → JSON</td>
 </tr>
 </tbody>
