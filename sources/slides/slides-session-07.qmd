@@ -486,14 +486,34 @@ CoT helps on tasks that need **several judgements in sequence**, such as reviewi
 - Each summary scored **0 / 1 / 2** per checklist item — an ordinal classification task — by instructors and by **GPT-4 Turbo** (temperature 0, fixed seed) through the API.
 - Main analyses: the **3 items on using topic sentences** (Paragraphs 1, 2, 4); agreement measured with weighted κ and Krippendorff's α.
 
+## Sawaki et al. (2025) — what the checklist looks like {.smaller}
+
+13 items (written in Japanese, for self-assessment), each tied to one of five **summarization rules**: collapse lists · omit unnecessary details · use topic sentences · collapse paragraphs · polish the summary.
+
+. . .
+
+The writing topic was bicycle-powered water purifier:
+
+| Item ID | Item | Rule |
+|--|----------|----|
+| **2** | "The last sentence of Paragraph 1, *Thus, we have a mission to find ways to supply water…*, is the **thesis statement** of this passage, so I included a paraphrase of it in my summary." | use topic sentences |
+| **5** | "The last sentence of Paragraph 4, *However, this product may offer great hope…*, is the **topic sentence** of this paragraph, so I included a paraphrase of it in my summary." | use topic sentences |
+| **8** | "I **omitted proper nouns and numbers** like *UNICEF*, *2005*, *550,000 yen per unit* from my summary because they are details." | omit unnecessary details |
+
+. . .
+
+::: {style="font-size:80%"}
+Notice: the items are **customized to this one source text** — they cite the actual sentences. Each item is a small, checkable question about one gist-formation operation. This is a coding scheme in the Day 2 sense, and each item became one LLM rating task.
+:::
+
 ## Sawaki et al. (2025) — the prompt conditions
 
 They crossed **two of our strategy classes** — six prompts in total:
 
 | Dimension | Levels |
 |---|-----|
-| `in-context learning` — how much information? | **Simple** (zero-shot, minimal) · **Standard** (zero-shot + elaborated scoring rules) · **Few-shot** (3 exemplars, one per score level) |
-| `thought generation` — reason before or after? | **Rate-explain** (score first, then rationale) · **Analyze-rate** (analysis first, then score) |
+| `in-context learning` — how much information? | **Simple** (zero-shot, minimal) <br> **Standard** (zero-shot + elaborated scoring rules) <br> **Few-shot** (3 exemplars, one per score level) |
+| `thought generation` — reason before or after? | **Rate-explain** (score first, then rationale) <br> **Analyze-rate** (analysis first, then score) |
 
 . . .
 
@@ -554,11 +574,41 @@ This is similar to having multiple coders and decide based on majority vote.
 
 - We do not have correct answer for **how many** and **when to stop**
 
-## Self-criticism — the model checks itself 
+## Self-criticism — the model checks itself
 
 The idea: the model reads **its own output**, critiques it, and revises (e.g. `Self-Refine`).
 
-- The `agentic` version runs this as a loop: plan → label → critique → revise. 
+- The `agentic` version runs this as a loop: plan → label → critique → revise.
+
+```{=html}
+<style>
+.loop-wrap{position:relative;width:min(620px,92%);height:330px;margin:.6rem auto 0;font-size:.62em}
+.loop-wrap .node{position:absolute;width:34%;background:var(--surface);border:2px solid var(--primary-80);border-radius:.6rem;padding:.45rem .5rem;text-align:center;color:var(--ink)}
+.loop-wrap .node .t{font-weight:700;display:block}
+.loop-wrap .node .cue{display:block;font-style:italic;color:var(--ink-soft);font-size:.85em;margin-top:.1rem}
+.loop-wrap .n1{top:0;left:33%}
+.loop-wrap .n2{top:36%;right:0}
+.loop-wrap .n3{bottom:0;left:33%}
+.loop-wrap .n4{top:36%;left:0}
+.loop-wrap .hub{position:absolute;top:41%;left:41%;width:18%;aspect-ratio:1;border-radius:50%;background:var(--primary-80);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.4em}
+.loop-wrap .arr{position:absolute;color:var(--accent);font-weight:700;font-size:1.9em}
+.loop-wrap .a1{top:13%;right:22%}
+.loop-wrap .a2{bottom:13%;right:22%}
+.loop-wrap .a3{bottom:13%;left:22%}
+.loop-wrap .a4{top:13%;left:22%}
+</style>
+<div class="loop-wrap">
+  <div class="node n1"><span class="t">1 · Plan</span><span class="cue">“First, read the input and plan the analysis.”</span></div>
+  <div class="arr a1">↘</div>
+  <div class="node n2"><span class="t">2 · Label</span><span class="cue">“Now, write your label / feedback.”</span></div>
+  <div class="arr a2">↙</div>
+  <div class="node n3"><span class="t">3 · Critique</span><span class="cue">“Then, check your answer against the criteria.”</span></div>
+  <div class="arr a3">↖</div>
+  <div class="node n4"><span class="t">4 · Revise</span><span class="cue">“Finally, revise and give the final answer.”</span></div>
+  <div class="arr a4">↗</div>
+  <div class="hub">↻</div>
+</div>
+```
 
 
 ## Decomposition (or `prompt chaining`)
@@ -601,7 +651,9 @@ The idea: split one judgment into **several calls**, each using the previous cal
 
 # Summary
 
-## List of prompting strategies 
+## Summary of prompting strategies 
+
+
 
 | **Basic** | **More advanced**  |
 |---|--------|
@@ -613,6 +665,12 @@ The idea: split one judgment into **several calls**, each using the previous cal
 . . .
 
 A reference for all of these: **[promptingguide.ai/techniques](https://www.promptingguide.ai/techniques)**.
+
+## Discussion
+
+- Which of the prompt strategies you think is most promising for your task? Why?
+
+
 
 ## Two common errors to avoid before you tune
 
@@ -643,6 +701,8 @@ Next session you build a real classification pipeline — and the **CEFR prompt 
 
 . . .
 
-**S8** — run zero → few → CoT on CEFR, with a Gemini API key. **S9** — read the errors, iterate, and benchmark against a trained model.
+**S8** — run zero → few → CoT on CEFR, with a Gemini API key. 
+
+**S9** — read the errors, iterate, and benchmark against a trained model.
 
 # Any questions?

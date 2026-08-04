@@ -49,6 +49,6 @@ The prompt components return in [Session 8](session-08.md), mapped onto the CEFR
 
 ## Slides & Colab
 
-<!-- Slides: [Session 7 slides](../../slides/slides-session-07.html){target="_blank"} -->
+- Slides: [Session 7 slides](../../slides/slides-session-07.html){target="_blank"}
 
 <!-- Colab notebook link: to be added -->
