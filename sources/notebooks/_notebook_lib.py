@@ -79,7 +79,8 @@ def build(spec):
 REPO_RAW = ("https://raw.githubusercontent.com/egumasa/"
             "linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold")
 CEFR_GOLD_URL = f"{REPO_RAW}/cefr_sentences.json"
-# The pool Day 4 samples from. NOT cefr_pool.json — that one is 3,183 items and
+# The pool Day 3 splits into train/valid/test and Day 4 samples from. NOT
+# cefr_pool.json — that one is 3,183 items and
 # git-ignored, so fetching it by URL 404s (this is what broke the Day-4 dry run).
 # cefr_pool_demo.json is a committed 335-item draw that keeps the natural imbalance
 # (A1 12 … B1 123), because "rare levels yield fewer items" is the lesson.
@@ -151,12 +152,20 @@ def _make_api_backend(key: str) -> tuple:
     from google import genai
     from google.genai import types
     client = genai.Client(api_key=key)         # your own connection to the API
-    # temperature=0 + a fixed seed = the same prompt gives the same answer every run,
-    # which is what makes the autograded Corpus Labs reproducible.
-    cfg = types.GenerateContentConfig(temperature=0, seed=42)
-    return (lambda p: client.models.generate_content(
-                model=MODEL_ID, contents=p, config=cfg).text,   # prompt in, text out
-            f"Gemini API ({MODEL_ID}, temperature=0, seed=42)")  # a label to print
+
+    def _call(prompt: str, schema: dict | None = None) -> str:
+        # temperature=0 + a fixed seed = the same prompt gives the same answer every
+        # run, which is what makes the autograded Corpus Labs reproducible. A schema
+        # turns on structured output: the reply comes back as JSON of that shape.
+        if schema is None:
+            cfg = types.GenerateContentConfig(temperature=0, seed=42)
+        else:
+            cfg = types.GenerateContentConfig(temperature=0, seed=42,
+                                              response_mime_type="application/json",
+                                              response_schema=schema)
+        return client.models.generate_content(model=MODEL_ID, contents=prompt,
+                                              config=cfg).text   # prompt in, text out
+    return (_call, f"Gemini API ({MODEL_ID}, temperature=0, seed=42)")  # fn + a label
 
 # ---- keeps us from calling the model faster than the free tier allows ----------
 # (explained step by step in Day 3, right after this cell — the short version:
@@ -205,7 +214,7 @@ def _suggested_delay(error: Exception, fallback: float) -> float:
 ### Step 4: the one function you call all week — pace, ask, and retry if told to ###
 _last_call_time = 0.0   # generate_text remembers & updates this with `global`
 
-def generate_text(prompt: str, max_retries: int = 5) -> str:
+def generate_text(prompt: str, max_retries: int = 5, schema: dict | None = None) -> str:
     """Send a prompt to the model and give back its reply.
 
     It waits between calls so we stay under the free tier's speed limit, and tries
@@ -214,9 +223,10 @@ def generate_text(prompt: str, max_retries: int = 5) -> str:
     Args:
         prompt: the text to send to the model.
         max_retries: how many times to try again after a rate-limit message.
+        schema: the reply shape to request (structured output). None = free text.
 
     Returns:
-        The model's reply, as text.
+        The model's reply, as text — JSON text when a schema was given.
 
     Raises:
         RuntimeError: when the daily quota is used up, or after the last retry.
@@ -231,7 +241,7 @@ def generate_text(prompt: str, max_retries: int = 5) -> str:
             time.sleep(wait)                    # pause so we stay under the speed limit
         try:
             _last_call_time = time.monotonic()  # note the time of this attempt
-            return _raw_generate_text(prompt)   # success — hand the reply straight back
+            return _raw_generate_text(prompt, schema)   # success — hand the reply back
         except Exception as error:
             if not _looks_like_rate_limit(error):
                 raise                                   # a real bug — don't hide it
@@ -255,7 +265,9 @@ if _key:
 else:
     try:
         from google.colab import ai            # Colab's built-in Gemini — no key
-        _raw_generate_text, _backend = (lambda p: ai.generate_text(p)), "Colab Gemini (demo, non-reproducible)"
+        # colab.ai has no structured output, so the schema is ignored here — another
+        # reason Day 3 asks for a key: without one, replies are not guaranteed JSON.
+        _raw_generate_text, _backend = (lambda p, schema=None: ai.generate_text(p)), "Colab Gemini (demo, non-reproducible)"
         _min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively
     except ImportError:        # no key AND not in Colab — nothing to call
         raise RuntimeError(
@@ -266,31 +278,35 @@ else:
 
 
 def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
-               predictions_url=None, val_url=None, sampling=False,
-               sklearn_direct=False):
+               predictions_url=None, val_url=None, pool_url=None, pool_comment=None,
+               sampling=False, sklearn_direct=False):
     """Build a day's 📦 Setup cell, importing ONLY what that day uses.
 
     backend    : "demo" (Day 1), "api" (Day 3+), or None (Days 2 & 4 — no model).
     lib_names  : which 🔧 pipeline cells the day ships (drives which imports load).
     gold_url / predictions_url : optionally append GOLD_URL+LEVELS / PREDICTIONS_URL.
-    val_url    : Day 3 only — the validation set prompts are tuned on, so the gold
-                 set stays a held-out test set.
-    sampling   : the day draws its own sample, so it needs `random`. S5 uses this to
-                 draw a seeded sample in step A; no 🔧 helper pulls `random` in, since
-                 the draw is student-written code rather than something we hand them.
+    val_url    : the fixed validation set a day tunes prompts on, so the gold set
+                 stays a held-out test set.
+    pool_url   : the pool a day draws its own sets from (Day 3 splits it into
+                 train/valid/test with `split_pool`). Emitted as POOL_URL + LEVELS.
+    sampling   : the day draws its own sample with student-written `random` calls.
+                 S5 uses this in step A. Day 3 does NOT — its draw goes through the
+                 `split_pool` helper, which pulls `random` in via lib_names instead.
     sklearn_direct : the day calls scikit-learn in its own cells rather than through a
                  helper, so the imports cannot be read off `lib_names`. S6 Part B uses
                  this: it names classification_report, cohen_kappa_score and
                  confusion_matrix itself, having built those metrics by hand in Part A.
+                 Day 3 needs no flag for its student-built `evaluate`: the sklearn
+                 imports sit in a visible teaching cell there, not in Setup.
     """
     lib_names = set(lib_names)
     simple = []                                   # single-line `import x` modules
     if backend == "api":
         simple += ["os", "re", "time"]
-    if sampling:
+    if sampling or "split_pool" in lib_names:
         simple += ["random"]
     # backend == "demo" needs no imports at all — the colab.ai import is in DEMO_BACKEND.
-    if lib_names & {"load_gold", "predictions"} or gold_url or predictions_url:
+    if lib_names & {"load_gold", "predictions"} or gold_url or predictions_url or pool_url:
         simple += ["json", "urllib.request"]
     if "run_prompt" in lib_names:
         simple += ["re"]
@@ -308,7 +324,10 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
         lines.append("import " + ", ".join(sorted(set(simple))))
     if want_report:
         lines.append("from sklearn.metrics import (classification_report, confusion_matrix,")
-        lines.append("                             cohen_kappa_score)")
+        if "evaluate" in lib_names:   # evaluate returns macro-F1 via f1_score
+            lines.append("                             cohen_kappa_score, f1_score)")
+        else:
+            lines.append("                             cohen_kappa_score)")
     elif want_matrix:
         lines.append("from sklearn.metrics import confusion_matrix")
     if want_viz:
@@ -324,6 +343,11 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
         src += (f'\n\n# {gold_comment}\n'
                 f'GOLD_URL = "{gold_url}"\n'
                 'LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]')
+    if pool_url:
+        src += (f'\n\n# {pool_comment}\n'
+                f'POOL_URL = "{pool_url}"')
+        if not gold_url:              # LEVELS comes with whichever URL block runs first
+            src += '\nLEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]'
     if val_url:
         src += (f'\nVAL_URL  = "{val_url}"   '
                 '# 24 items to tune on, so GOLD_URL stays held out')
@@ -436,45 +460,48 @@ def load_gold(url_or_path: str) -> list[dict[str, str]]:
     return gold
 
 # === run_prompt :: run_prompt(prompt, gold) → predictions ===
-def _extract_level(text: str) -> str:
-    """Pull the first A1/A2/B1/B2/C1/C2 out of the model's reply.
+# Day 3 defines run_prompt in a visible cell, built up on screen; this section is the
+# shippable copy and must say the same thing. Edit both or neither.
+# The default reply shape: a JSON object with one "label" field (structured output).
+LABEL_SCHEMA = {"type": "OBJECT",
+                "properties": {"label": {"type": "STRING"}},
+                "required": ["label"]}
 
-    Args:
-        text: whatever the model replied.
-
-    Returns:
-        The level it found, or "??" when the reply contains none.
-    """
-    # The model may answer "B2" or "I would say B2." — search rather than assume.
-    m = re.search(r"\b([ABC][12])\b", str(text).upper())
-    return m.group(1) if m else "??"      # "??" = no level found in the reply
-
-def run_prompt(prompt: str, gold: list[dict[str, str]]) -> list[str]:
+def run_prompt(prompt: str, gold: list[dict[str, str]],
+               schema: dict = LABEL_SCHEMA) -> list[str]:
     """Send each item's `text` to the LLM via {text}, collect predicted labels.
 
     Args:
         prompt: your prompt, containing {text} where the sentence should go.
         gold: the items to label, each with a "text" key.
+        schema: the reply shape to request; the default asks for {"label": ...}.
 
     Returns:
         One predicted label per gold item, in the same order.
 
     Example:
-        >>> predictions = run_prompt(PROMPT, gold)
+        >>> predictions = run_prompt(PROMPT, valid)
     """
     predictions = []                                  # answers, in gold order
     for i, item in enumerate(gold, 1):                # i counts 1, 2, 3, ...
-        reply = generate_text(prompt.format(text=item["text"]))  # {text} <- sentence
-        predictions.append(_extract_level(reply))     # keep just the level
+        reply = generate_text(prompt.format(text=item["text"]), schema=schema)
+        answer = json.loads(reply)                    # JSON text -> a Python dict
+        label = answer.get("label", "??")             # "??" = no label in the reply
+        if label not in LEVELS:                       # not one of the six levels?
+            label = "??"
+        predictions.append(label)
         if i % 12 == 0:                               # every 12th item...
             print(f"  ...{i}/{len(gold)} done")       # ...show progress
     print(f"Got {len(predictions)} predictions.")
     return predictions
 
-# === evaluate :: evaluate(gold, predictions) → P/R/F1 + κ + confusion matrix ===
+# === evaluate :: evaluate(gold, predictions) → macro-F1 + report + κ + confusion matrix ===
+# Day 3 builds evaluate in class from a skeleton; this section is the shippable copy
+# and the completed answer. Edit both or neither. Matches the project template's
+# helpers/scoring.py, which also returns the macro-F1.
 def evaluate(gold: list[dict[str, str]],
              predictions: list[str],
-             ordered: bool = False) -> None:
+             ordered: bool = False) -> float:
     """Score predictions against gold: per-class P/R/F1 + macro, Cohen's κ, and a
     confusion-matrix heatmap.
 
@@ -488,10 +515,11 @@ def evaluate(gold: list[dict[str, str]],
         ordered: True when the labels sit on a scale.
 
     Returns:
-        Nothing. It prints the table and the κ values, and draws the matrix.
+        The macro-F1, as a number, so a round's score can be kept. The report, the
+        κ values and the matrix are printed either way.
 
     Example:
-        >>> evaluate(gold, predictions, ordered=True)
+        >>> f1_by_round["1 zero-shot"] = evaluate(valid, predictions, ordered=True)
     """
     ### Step 1: line the two label lists up, gold first ###
     y_true = []                          # the correct labels, from the gold set
@@ -516,6 +544,60 @@ def evaluate(gold: list[dict[str, str]],
                 xticklabels=LEVELS, yticklabels=LEVELS)
     plt.xlabel("Predicted"); plt.ylabel("Gold"); plt.title("Confusion matrix")
     plt.tight_layout(); plt.show()
+
+    ### Step 5: one number to keep — handed back to whoever called ###
+    macro_f1 = f1_score(y_true, y_pred, labels=LEVELS, average="macro",
+                        zero_division=0)   # the report's "macro avg" F1, as a number
+    print(f"F1 (macro)               {macro_f1:.3f}")
+    return macro_f1
+
+# === split_pool :: split_pool(pool, train_per_level, valid_per_level, test_per_level, seed) → train, valid, test ===
+def split_pool(pool: list[dict[str, str]], train_per_level: int,
+               valid_per_level: int, test_per_level: int,
+               seed: int = 42) -> tuple[list[dict[str, str]],
+                                        list[dict[str, str]],
+                                        list[dict[str, str]]]:
+    """Draw three disjoint, level-balanced sets from the pool.
+
+    Each set gets the same number of items per CEFR level, drawn without
+    replacement — no item appears in two sets. The seed makes the draw
+    repeatable: same pool, same numbers, same seed = same three sets.
+
+    Args:
+        pool: the items to draw from, each with a "label" key.
+        train_per_level: items per level for the train set (few-shot examples).
+        valid_per_level: items per level for the validation set (tune here).
+        test_per_level: items per level for the test set (scored once, at the end).
+        seed: fixes the randomness so the draw is repeatable.
+
+    Returns:
+        Three lists: train, valid, test.
+
+    Raises:
+        ValueError: when a level has fewer items than the three sizes add up to.
+
+    Example:
+        >>> train, valid, test = split_pool(pool, 2, 4, 6, seed=42)
+    """
+    rng = random.Random(seed)             # a private, seeded random-number source
+    need = train_per_level + valid_per_level + test_per_level
+    train, valid, test = [], [], []
+    for level in LEVELS:
+        stock = []                        # every pool item with this level
+        for item in pool:
+            if item["label"] == level:
+                stock.append(item)
+        if len(stock) < need:
+            raise ValueError(
+                f"Not enough {level} items: the pool has {len(stock)}, but the three "
+                f"sizes add up to {need} per level. Make one of the sets smaller.")
+        drawn = rng.sample(stock, need)   # `need` distinct items, in random order
+        train += drawn[:train_per_level]
+        valid += drawn[train_per_level:train_per_level + valid_per_level]
+        test  += drawn[train_per_level + valid_per_level:]
+    print(f"train {len(train)} · valid {len(valid)} · test {len(test)} items "
+          f"({train_per_level}/{valid_per_level}/{test_per_level} per level)")
+    return train, valid, test
 
 # === show_errors :: show_errors(gold, predictions) → misclassified table ===
 def show_errors(gold: list[dict[str, str]], predictions: list[str]) -> pd.DataFrame:
