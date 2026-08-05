@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Day 3 · Prompt design &amp; iteration – Linguistic Data Analysis II (Summer 2026)</title>
+<title>day3_prompt_design_answers – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -172,11 +172,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link active" data-scroll-target="#how-to-use-this-notebook">How to use this notebook</a></li>
+  <li><a href="#day-3-prompt-design-iteration" id="toc-day-3-prompt-design-iteration" class="nav-link active" data-scroll-target="#day-3-prompt-design-iteration">Day 3 · Prompt design &amp; iteration</a>
+  <ul class="collapse">
+  <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link" data-scroll-target="#how-to-use-this-notebook">How to use this notebook</a></li>
   <li><a href="#part-a-tutorial-build-the-pipeline-then-three-ways-to-prompt" id="toc-part-a-tutorial-build-the-pipeline-then-three-ways-to-prompt" class="nav-link" data-scroll-target="#part-a-tutorial-build-the-pipeline-then-three-ways-to-prompt">Part A · Tutorial — build the pipeline, then three ways to prompt</a>
   <ul class="collapse">
-  <li><a href="#your-first-api-call-the-minimal-versionbefore-any-course-code-make-one-call-with-nothing-around-it.-the-whole-api-is-three-parts1.-a-client-your-connection-made-from-your-key2.-a-model-name-which-model-answers3.-contents-your-text-in-reply.text-is-the-models-text-out." id="toc-your-first-api-call-the-minimal-versionbefore-any-course-code-make-one-call-with-nothing-around-it.-the-whole-api-is-three-parts1.-a-client-your-connection-made-from-your-key2.-a-model-name-which-model-answers3.-contents-your-text-in-reply.text-is-the-models-text-out." class="nav-link" data-scroll-target="#your-first-api-call-the-minimal-versionbefore-any-course-code-make-one-call-with-nothing-around-it.-the-whole-api-is-three-parts1.-a-client-your-connection-made-from-your-key2.-a-model-name-which-model-answers3.-contents-your-text-in-reply.text-is-the-models-text-out.">Your first API call — the minimal versionBefore any course code, make one call with nothing around it. The whole API is three parts:1. a <strong>client</strong> — your connection, made from your key;2. a <strong>model name</strong> — which model answers;3. <strong>contents</strong> — your text in; <code>reply.text</code> is the model’s text out.</a></li>
-  <li><a href="#setup-run-this-firstthe-setup-cell-is-collapsed-you-run-it-you-dont-edit-it.-it-connects-to-the-model-and-defines-three-functions-one-per-step-function-what-it-does-_resolve_gemini_key-finds-your-api-key-colabs-secrets-panel-first-then-the-environment.-returns-nothing-if-neither-has-one.-_raw_generate_textprompt-json_reply-schema-the-actual-model-call.-with-a-key-the-gemini-api-with-temperature0-and-seed42-so-the-same-prompt-gives-the-same-answer-json_replytrue-turns-on-json-mode-which-guarantees-the-reply-is-valid-json-in-whatever-shape-the-prompt-asks-for.-without-a-key-colabs-keyless-demo-model-non-reproducible-and-it-ignores-the-json-mode-request.-generate_textprompt-json_reply...-the-one-you-call-all-day.-it-wraps-_raw_generate_text-with-two-protections-it-waits-between-calls-so-you-stay-under-the-15-per-minute-limit-and-when-the-server-still-says-too-fast-it-waits-longer-and-tries-again-unless-the-message-names-the-per-day-cap-where-retrying-cannot-help.-both-pieces-are-walked-through-at-the-end-of-part-a.-it-also-sets-three-values-model_id-the-pinned-model-pool_url-the-sentence-pool-this-day-draws-from-and-levels-the-six-cefr-labels.when-the-cell-prints-llm-backend-gemini-api-...-your-key-was-found-colab-gemini-means-it-was-not-go-back-to-the-key-callout-above.three-more-ready-made-functions-load_gold-split_pool-show_errors-arrive-later-each-in-a-collapsed-library-cell-right-before-the-step-that-first-calls-it.-the-two-functions-you-will-call-most-run_prompt-and-evaluate-are-built-in-visible-cells-in-part-a-so-you-see-what-is-inside-them." id="toc-setup-run-this-firstthe-setup-cell-is-collapsed-you-run-it-you-dont-edit-it.-it-connects-to-the-model-and-defines-three-functions-one-per-step-function-what-it-does-_resolve_gemini_key-finds-your-api-key-colabs-secrets-panel-first-then-the-environment.-returns-nothing-if-neither-has-one.-_raw_generate_textprompt-json_reply-schema-the-actual-model-call.-with-a-key-the-gemini-api-with-temperature0-and-seed42-so-the-same-prompt-gives-the-same-answer-json_replytrue-turns-on-json-mode-which-guarantees-the-reply-is-valid-json-in-whatever-shape-the-prompt-asks-for.-without-a-key-colabs-keyless-demo-model-non-reproducible-and-it-ignores-the-json-mode-request.-generate_textprompt-json_reply...-the-one-you-call-all-day.-it-wraps-_raw_generate_text-with-two-protections-it-waits-between-calls-so-you-stay-under-the-15-per-minute-limit-and-when-the-server-still-says-too-fast-it-waits-longer-and-tries-again-unless-the-message-names-the-per-day-cap-where-retrying-cannot-help.-both-pieces-are-walked-through-at-the-end-of-part-a.-it-also-sets-three-values-model_id-the-pinned-model-pool_url-the-sentence-pool-this-day-draws-from-and-levels-the-six-cefr-labels.when-the-cell-prints-llm-backend-gemini-api-...-your-key-was-found-colab-gemini-means-it-was-not-go-back-to-the-key-callout-above.three-more-ready-made-functions-load_gold-split_pool-show_errors-arrive-later-each-in-a-collapsed-library-cell-right-before-the-step-that-first-calls-it.-the-two-functions-you-will-call-most-run_prompt-and-evaluate-are-built-in-visible-cells-in-part-a-so-you-see-what-is-inside-them." class="nav-link" data-scroll-target="#setup-run-this-firstthe-setup-cell-is-collapsed-you-run-it-you-dont-edit-it.-it-connects-to-the-model-and-defines-three-functions-one-per-step-function-what-it-does-_resolve_gemini_key-finds-your-api-key-colabs-secrets-panel-first-then-the-environment.-returns-nothing-if-neither-has-one.-_raw_generate_textprompt-json_reply-schema-the-actual-model-call.-with-a-key-the-gemini-api-with-temperature0-and-seed42-so-the-same-prompt-gives-the-same-answer-json_replytrue-turns-on-json-mode-which-guarantees-the-reply-is-valid-json-in-whatever-shape-the-prompt-asks-for.-without-a-key-colabs-keyless-demo-model-non-reproducible-and-it-ignores-the-json-mode-request.-generate_textprompt-json_reply...-the-one-you-call-all-day.-it-wraps-_raw_generate_text-with-two-protections-it-waits-between-calls-so-you-stay-under-the-15-per-minute-limit-and-when-the-server-still-says-too-fast-it-waits-longer-and-tries-again-unless-the-message-names-the-per-day-cap-where-retrying-cannot-help.-both-pieces-are-walked-through-at-the-end-of-part-a.-it-also-sets-three-values-model_id-the-pinned-model-pool_url-the-sentence-pool-this-day-draws-from-and-levels-the-six-cefr-labels.when-the-cell-prints-llm-backend-gemini-api-...-your-key-was-found-colab-gemini-means-it-was-not-go-back-to-the-key-callout-above.three-more-ready-made-functions-load_gold-split_pool-show_errors-arrive-later-each-in-a-collapsed-library-cell-right-before-the-step-that-first-calls-it.-the-two-functions-you-will-call-most-run_prompt-and-evaluate-are-built-in-visible-cells-in-part-a-so-you-see-what-is-inside-them.">Setup — run this firstThe 📦 Setup cell is collapsed: you run it, you don’t edit it. It connects to the model and defines <strong>three functions</strong>, one per step:| Function | What it does ||—|—|| <code>_resolve_gemini_key()</code> | finds your API key — Colab’s Secrets panel first, then the environment. Returns nothing if neither has one. || <code>_raw_generate_text(prompt, json_reply, schema)</code> | the actual model call. With a key: the <strong>Gemini API</strong> with <code>temperature=0</code> and <code>seed=42</code>, so the same prompt gives the same answer; <code>json_reply=True</code> turns on <strong>JSON mode</strong>, which guarantees the reply is valid JSON — in whatever shape the prompt asks for. Without a key: Colab’s keyless demo model — non-reproducible, and it ignores the JSON-mode request. || <code>generate_text(prompt, json_reply=...)</code> | <strong>the one you call all day.</strong> It wraps <code>_raw_generate_text</code> with two protections: it waits between calls so you stay under the 15-per-minute limit, and when the server still says “too fast” it waits longer and tries again — unless the message names the per-day cap, where retrying cannot help. Both pieces are walked through at the end of Part A. |It also sets three values: <code>MODEL_ID</code> (the pinned model), <code>POOL_URL</code> (the sentence pool this day draws from) and <code>LEVELS</code> (the six CEFR labels).When the cell prints <code>LLM backend: Gemini API (...)</code> your key was found; <code>Colab Gemini</code> means it was not — go back to the key callout above.Three more ready-made functions (<code>load_gold</code>, <code>split_pool</code>, <code>show_errors</code>) arrive later, each in a collapsed 🔧 Library cell right before the step that first calls it. The two functions you will call most — <code>run_prompt</code> and <code>evaluate</code> — are built in visible cells in Part A, so you see what is inside them.</a></li>
+  <li><a href="#your-first-api-call-the-minimal-version" id="toc-your-first-api-call-the-minimal-version" class="nav-link" data-scroll-target="#your-first-api-call-the-minimal-version">Your first API call — the minimal version</a></li>
+  <li><a href="#setup-run-this-first" id="toc-setup-run-this-first" class="nav-link" data-scroll-target="#setup-run-this-first">Setup — run this first</a></li>
   </ul></li>
   <li><a href="#the-data-one-pool-three-jobs" id="toc-the-data-one-pool-three-jobs" class="nav-link" data-scroll-target="#the-data-one-pool-three-jobs">The data — one pool, three jobs</a>
   <ul class="collapse">
@@ -184,14 +186,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#how-big-can-the-sets-be-estimate-the-runtime" id="toc-how-big-can-the-sets-be-estimate-the-runtime" class="nav-link" data-scroll-target="#how-big-can-the-sets-be-estimate-the-runtime">How big can the sets be? Estimate the runtime</a></li>
   <li><a href="#draw-the-three-sets-you-edit" id="toc-draw-the-three-sets-you-edit" class="nav-link" data-scroll-target="#draw-the-three-sets-you-edit">Draw the three sets ✏️ YOU EDIT</a></li>
   </ul></li>
-  <li><a href="#the-llm-run-codetwo-short-steps-json-replies-and-the-loop-that-runs-a-prompt-over-a-whole-set.you-made-the-raw-api-call-at-the-very-top-of-the-notebook-a-client-a-model-name-text-in-free-text-out.-from-here-on-every-call-goes-through-generate_text-defined-in-the-setup-cell-the-same-call-wrapped-with-the-pacing-and-retry-protections-listed-under-it.-the-last-section-of-part-a-walks-through-both.one-problem-is-still-open-the-raw-call-gave-back-free-text-maybe-a1-maybe-a-paragraph-and-your-pipeline-needs-a-label.-that-is-step-1.-step-1-ask-for-a-json-replys7-named-output-formatting-as-one-component-of-a-prompt.-two-things-work-together-here--the-prompt-says-what-shape-to-reply-in-one-line-reply-as-json-like-label-b1--json-mode-json_replytrue-guarantees-the-reply-is-valid-json-rather-than-a-paragraph.the-shape-comes-from-your-prompt-json-mode-only-guarantees-that-the-reply-parses." id="toc-the-llm-run-codetwo-short-steps-json-replies-and-the-loop-that-runs-a-prompt-over-a-whole-set.you-made-the-raw-api-call-at-the-very-top-of-the-notebook-a-client-a-model-name-text-in-free-text-out.-from-here-on-every-call-goes-through-generate_text-defined-in-the-setup-cell-the-same-call-wrapped-with-the-pacing-and-retry-protections-listed-under-it.-the-last-section-of-part-a-walks-through-both.one-problem-is-still-open-the-raw-call-gave-back-free-text-maybe-a1-maybe-a-paragraph-and-your-pipeline-needs-a-label.-that-is-step-1.-step-1-ask-for-a-json-replys7-named-output-formatting-as-one-component-of-a-prompt.-two-things-work-together-here--the-prompt-says-what-shape-to-reply-in-one-line-reply-as-json-like-label-b1--json-mode-json_replytrue-guarantees-the-reply-is-valid-json-rather-than-a-paragraph.the-shape-comes-from-your-prompt-json-mode-only-guarantees-that-the-reply-parses." class="nav-link" data-scroll-target="#the-llm-run-codetwo-short-steps-json-replies-and-the-loop-that-runs-a-prompt-over-a-whole-set.you-made-the-raw-api-call-at-the-very-top-of-the-notebook-a-client-a-model-name-text-in-free-text-out.-from-here-on-every-call-goes-through-generate_text-defined-in-the-setup-cell-the-same-call-wrapped-with-the-pacing-and-retry-protections-listed-under-it.-the-last-section-of-part-a-walks-through-both.one-problem-is-still-open-the-raw-call-gave-back-free-text-maybe-a1-maybe-a-paragraph-and-your-pipeline-needs-a-label.-that-is-step-1.-step-1-ask-for-a-json-replys7-named-output-formatting-as-one-component-of-a-prompt.-two-things-work-together-here--the-prompt-says-what-shape-to-reply-in-one-line-reply-as-json-like-label-b1--json-mode-json_replytrue-guarantees-the-reply-is-valid-json-rather-than-a-paragraph.the-shape-comes-from-your-prompt-json-mode-only-guarantees-that-the-reply-parses.">The LLM run codeTwo short steps: JSON replies, and the loop that runs a prompt over a whole set.You made the raw API call at the very top of the notebook — a client, a model name, text in, free text out. From here on, every call goes through <code>generate_text</code> (defined in the Setup cell): the <strong>same call</strong>, wrapped with the pacing and retry protections listed under it. The last section of Part A walks through both.One problem is still open: the raw call gave back <strong>free text</strong> — maybe <code>A1</code>, maybe a paragraph — and your pipeline needs <strong>a label</strong>. That is step 1.### Step 1 — ask for a JSON replyS7 named <em>output formatting</em> as one component of a prompt. Two things work together here:- the <strong>prompt</strong> says what shape to reply in — one line, <code>Reply as JSON, like: {"label": "B1"}</code>;- <strong>JSON mode</strong> (<code>json_reply=True</code>) guarantees the reply is valid JSON rather than a paragraph.The shape comes from your prompt; JSON mode only guarantees that the reply parses.</a></li>
+  <li><a href="#the-llm-run-code" id="toc-the-llm-run-code" class="nav-link" data-scroll-target="#the-llm-run-code">The LLM run code</a>
+  <ul class="collapse">
+  <li><a href="#step-1-ask-for-a-json-reply" id="toc-step-1-ask-for-a-json-reply" class="nav-link" data-scroll-target="#step-1-ask-for-a-json-reply">Step 1 — ask for a JSON reply</a></li>
+  <li><a href="#step-2-run_prompt-the-loop-you-will-run-all-day" id="toc-step-2-run_prompt-the-loop-you-will-run-all-day" class="nav-link" data-scroll-target="#step-2-run_prompt-the-loop-you-will-run-all-day">Step 2 — <code>run_prompt</code>, the loop you will run all day</a></li>
+  </ul></li>
   <li><a href="#the-evaluation-code-built-together" id="toc-the-evaluation-code-built-together" class="nav-link" data-scroll-target="#the-evaluation-code-built-together">The evaluation code — built together</a>
   <ul class="collapse">
   <li><a href="#the-skeleton-you-edit" id="toc-the-skeleton-you-edit" class="nav-link" data-scroll-target="#the-skeleton-you-edit">The skeleton ✏️ YOU EDIT</a></li>
   <li><a href="#the-score-log" id="toc-the-score-log" class="nav-link" data-scroll-target="#the-score-log">The score log</a></li>
   <li><a href="#round-1-zero-shot-you-edit" id="toc-round-1-zero-shot-you-edit" class="nav-link" data-scroll-target="#round-1-zero-shot-you-edit">Round 1 — zero-shot ✏️ YOU EDIT</a></li>
   <li><a href="#round-2-few-shot-you-edit" id="toc-round-2-few-shot-you-edit" class="nav-link" data-scroll-target="#round-2-few-shot-you-edit">Round 2 — few-shot ✏️ YOU EDIT</a></li>
-  <li><a href="#round-3-chain-of-thought-you-editask-the-model-to-reason-first-then-answer.-room-to-think-often-helps-on-borderline-items.with-free-text-replies-this-would-create-a-parsing-problem-the-reasoning-mentions-several-levels-along-the-way-which-one-is-the-answer-the-reply-shape-solves-it-ask-for-a-json-object-with-two-fields-reasoning-written-first-then-label.-the-reasoning-happens-and-run_prompt-still-reads-only-the-label-field.-edit-the-reasoning-instruction-if-you-like" id="toc-round-3-chain-of-thought-you-editask-the-model-to-reason-first-then-answer.-room-to-think-often-helps-on-borderline-items.with-free-text-replies-this-would-create-a-parsing-problem-the-reasoning-mentions-several-levels-along-the-way-which-one-is-the-answer-the-reply-shape-solves-it-ask-for-a-json-object-with-two-fields-reasoning-written-first-then-label.-the-reasoning-happens-and-run_prompt-still-reads-only-the-label-field.-edit-the-reasoning-instruction-if-you-like" class="nav-link" data-scroll-target="#round-3-chain-of-thought-you-editask-the-model-to-reason-first-then-answer.-room-to-think-often-helps-on-borderline-items.with-free-text-replies-this-would-create-a-parsing-problem-the-reasoning-mentions-several-levels-along-the-way-which-one-is-the-answer-the-reply-shape-solves-it-ask-for-a-json-object-with-two-fields-reasoning-written-first-then-label.-the-reasoning-happens-and-run_prompt-still-reads-only-the-label-field.-edit-the-reasoning-instruction-if-you-like">Round 3 — chain-of-thought ✏️ YOU EDITAsk the model to <strong>reason first, then answer</strong>. Room to think often helps on borderline items.With free-text replies this would create a parsing problem: the reasoning mentions several levels along the way — which one is the answer? The reply shape solves it — ask for a JSON object with <strong>two</strong> fields, <code>reasoning</code> written first, then <code>label</code>. The reasoning happens, and <code>run_prompt</code> still reads only the <code>label</code> field. ✏️ Edit the reasoning instruction if you like:</a></li>
+  <li><a href="#round-3-chain-of-thought-you-edit" id="toc-round-3-chain-of-thought-you-edit" class="nav-link" data-scroll-target="#round-3-chain-of-thought-you-edit">Round 3 — chain-of-thought ✏️ YOU EDIT</a></li>
+  <li><a href="#compare-the-three" id="toc-compare-the-three" class="nav-link" data-scroll-target="#compare-the-three">Compare the three</a></li>
   </ul></li>
   <li><a href="#why-your-calls-didnt-crash-the-lab-two-different-clocks" id="toc-why-your-calls-didnt-crash-the-lab-two-different-clocks" class="nav-link" data-scroll-target="#why-your-calls-didnt-crash-the-lab-two-different-clocks">Why your calls didn’t crash the lab — two different clocks</a>
   <ul class="collapse">
@@ -216,31 +223,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#optional-enforcing-the-shape-with-a-schema" id="toc-optional-enforcing-the-shape-with-a-schema" class="nav-link" data-scroll-target="#optional-enforcing-the-shape-with-a-schema">Optional — enforcing the shape with a schema</a></li>
   <li><a href="#before-you-submit" id="toc-before-you-submit" class="nav-link" data-scroll-target="#before-you-submit">✅ Before you submit</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/notebooks/day3_prompt_design_answers.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7"></h1></header><div class="quarto-title-block"><div class="quarto-title-tools-only"><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Day 3 · Prompt design &amp; iteration</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design_answers.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<figcaption>Open in Colab</figcaption>
+</figure>
 </div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
+<section id="day-3-prompt-design-iteration" class="level1">
+<h1>Day 3 · Prompt design &amp; iteration</h1>
 <p><em>Day 3 — Linguistic Data Analysis II</em></p>
 <section id="how-to-use-this-notebook" class="level3">
 <h3 class="anchored" data-anchor-id="how-to-use-this-notebook">How to use this notebook</h3>
@@ -290,19 +290,97 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>After each round, <code>evaluate</code> hands back the macro-F1 and you store it under the round’s id — so at the end the comparison table prints itself.</p>
-<p>::: {.callout-important}## From today you run the model yourself — you need a free API keyFrom Day 3 on you call the model live, so the notebook switches to the <strong>Gemini API</strong>. Get a free key and add it to Colab <strong>Secrets</strong> as <code>GEMINI_API_KEY</code> — one-time, ~2 minutes, no install. Full steps: <a href="../resources/tools/gemini-api-key.html">Get a free Gemini API key</a>.When the setup cell prints <code>LLM backend: Gemini API (...)</code> you’re set. If it still says <code>Colab Gemini</code>, your secret isn’t set or its notebook-access toggle is off — and the JSON-reply cells below are not guaranteed to work, because the keyless demo backend ignores the JSON-mode request, so <code>run_prompt</code> logs <code>??</code> for any reply it cannot read. Rate limits are handled for you, and explained at the end of Part A.:::</p>
-<section id="your-first-api-call-the-minimal-versionbefore-any-course-code-make-one-call-with-nothing-around-it.-the-whole-api-is-three-parts1.-a-client-your-connection-made-from-your-key2.-a-model-name-which-model-answers3.-contents-your-text-in-reply.text-is-the-models-text-out." class="level3">
-<h3 class="anchored" data-anchor-id="your-first-api-call-the-minimal-versionbefore-any-course-code-make-one-call-with-nothing-around-it.-the-whole-api-is-three-parts1.-a-client-your-connection-made-from-your-key2.-a-model-name-which-model-answers3.-contents-your-text-in-reply.text-is-the-models-text-out.">Your first API call — the minimal versionBefore any course code, make one call with nothing around it. The whole API is three parts:1. a <strong>client</strong> — your connection, made from your key;2. a <strong>model name</strong> — which model answers;3. <strong>contents</strong> — your text in; <code>reply.text</code> is the model’s text out.</h3>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>From today you run the model yourself — you need a free API key
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>From Day 3 on you call the model live, so the notebook switches to the <strong>Gemini API</strong>. Get a free key and add it to Colab <strong>Secrets</strong> as <code>GEMINI_API_KEY</code> — one-time, ~2 minutes, no install. Full steps: <a href="../resources/tools/gemini-api-key.html">Get a free Gemini API key</a>.</p>
+<p>When the setup cell prints <code>LLM backend: Gemini API (...)</code> you’re set. If it still says <code>Colab Gemini</code>, your secret isn’t set or its notebook-access toggle is off — and the JSON-reply cells below are not guaranteed to work, because the keyless demo backend ignores the JSON-mode request, so <code>run_prompt</code> logs <code>??</code> for any reply it cannot read. Rate limits are handled for you, and explained at the end of Part A.</p>
+</div>
+</div>
+<section id="your-first-api-call-the-minimal-version" class="level3">
+<h3 class="anchored" data-anchor-id="your-first-api-call-the-minimal-version">Your first API call — the minimal version</h3>
+<p>Before any course code, make one call with nothing around it. The whole API is three parts:</p>
+<ol type="1">
+<li>a <strong>client</strong> — your connection, made from your key;</li>
+<li>a <strong>model name</strong> — which model answers;</li>
+<li><strong>contents</strong> — your text in; <code>reply.text</code> is the model’s text out.</li>
+</ol>
 <div id="f6b16e5c" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google <span class="im">import</span> genai                 <span class="co"># the Gemini API libraryfrom google.colab import userdata        # reads your Colab SecretsMODEL_ID = "gemini-3.1-flash-lite"       # the model this course uses all weekclient = genai.Client(api_key=userdata.get("GEMINI_API_KEY"))reply = client.models.generate_content(    model=MODEL_ID,    contents="What CEFR level is this sentence? I like cats.")print(reply.text)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google <span class="im">import</span> genai                 <span class="co"># the Gemini API library</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> userdata        <span class="co"># reads your Colab Secrets</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MODEL_ID <span class="op">=</span> <span class="st">"gemini-3.1-flash-lite"</span>       <span class="co"># the model this course uses all week</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> genai.Client(api_key<span class="op">=</span>userdata.get(<span class="st">"GEMINI_API_KEY"</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> client.models.generate_content(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>MODEL_ID,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    contents<span class="op">=</span><span class="st">"What CEFR level is this sentence? I like cats."</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply.text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>You should see a short answer — maybe just <code>A1</code>, maybe a sentence or two. That is the entire API: client, model name, text in, text out.::: {.callout-note}## If the cell above fails<code>SecretNotFoundError</code> or an authentication error means your key is not in Colab’s Secrets, or the secret’s notebook-access toggle is off — the callout above has the steps. Fix it now; everything below needs the key.:::The minimal call works, but it is fragile in three ways, and each one matters once you score whole sets:- <strong>nothing slows it down</strong> — a loop over 24 sentences would pass the 15-calls-per-minute limit within seconds;- <strong>nothing retries</strong> — one “too fast” reply from the server and a run crashes halfway;- <strong>nothing pins the answer down</strong> — no <code>temperature=0</code>, no seed, so the same question can get a different answer tomorrow.The Setup cell below takes this same call and adds exactly those protections. That is all it does.</p>
+<p>You should see a short answer — maybe just <code>A1</code>, maybe a sentence or two. That is the entire API: client, model name, text in, text out.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>If the cell above fails
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>SecretNotFoundError</code> or an authentication error means your key is not in Colab’s Secrets, or the secret’s notebook-access toggle is off — the callout above has the steps. Fix it now; everything below needs the key.</p>
+</div>
+</div>
+<p>The minimal call works, but it is fragile in three ways, and each one matters once you score whole sets:</p>
+<ul>
+<li><strong>nothing slows it down</strong> — a loop over 24 sentences would pass the 15-calls-per-minute limit within seconds;</li>
+<li><strong>nothing retries</strong> — one “too fast” reply from the server and a run crashes halfway;</li>
+<li><strong>nothing pins the answer down</strong> — no <code>temperature=0</code>, no seed, so the same question can get a different answer tomorrow.</li>
+</ul>
+<p>The Setup cell below takes this same call and adds exactly those protections. That is all it does.</p>
 </section>
-<section id="setup-run-this-firstthe-setup-cell-is-collapsed-you-run-it-you-dont-edit-it.-it-connects-to-the-model-and-defines-three-functions-one-per-step-function-what-it-does-_resolve_gemini_key-finds-your-api-key-colabs-secrets-panel-first-then-the-environment.-returns-nothing-if-neither-has-one.-_raw_generate_textprompt-json_reply-schema-the-actual-model-call.-with-a-key-the-gemini-api-with-temperature0-and-seed42-so-the-same-prompt-gives-the-same-answer-json_replytrue-turns-on-json-mode-which-guarantees-the-reply-is-valid-json-in-whatever-shape-the-prompt-asks-for.-without-a-key-colabs-keyless-demo-model-non-reproducible-and-it-ignores-the-json-mode-request.-generate_textprompt-json_reply...-the-one-you-call-all-day.-it-wraps-_raw_generate_text-with-two-protections-it-waits-between-calls-so-you-stay-under-the-15-per-minute-limit-and-when-the-server-still-says-too-fast-it-waits-longer-and-tries-again-unless-the-message-names-the-per-day-cap-where-retrying-cannot-help.-both-pieces-are-walked-through-at-the-end-of-part-a.-it-also-sets-three-values-model_id-the-pinned-model-pool_url-the-sentence-pool-this-day-draws-from-and-levels-the-six-cefr-labels.when-the-cell-prints-llm-backend-gemini-api-...-your-key-was-found-colab-gemini-means-it-was-not-go-back-to-the-key-callout-above.three-more-ready-made-functions-load_gold-split_pool-show_errors-arrive-later-each-in-a-collapsed-library-cell-right-before-the-step-that-first-calls-it.-the-two-functions-you-will-call-most-run_prompt-and-evaluate-are-built-in-visible-cells-in-part-a-so-you-see-what-is-inside-them." class="level3">
-<h3 class="anchored" data-anchor-id="setup-run-this-firstthe-setup-cell-is-collapsed-you-run-it-you-dont-edit-it.-it-connects-to-the-model-and-defines-three-functions-one-per-step-function-what-it-does-_resolve_gemini_key-finds-your-api-key-colabs-secrets-panel-first-then-the-environment.-returns-nothing-if-neither-has-one.-_raw_generate_textprompt-json_reply-schema-the-actual-model-call.-with-a-key-the-gemini-api-with-temperature0-and-seed42-so-the-same-prompt-gives-the-same-answer-json_replytrue-turns-on-json-mode-which-guarantees-the-reply-is-valid-json-in-whatever-shape-the-prompt-asks-for.-without-a-key-colabs-keyless-demo-model-non-reproducible-and-it-ignores-the-json-mode-request.-generate_textprompt-json_reply...-the-one-you-call-all-day.-it-wraps-_raw_generate_text-with-two-protections-it-waits-between-calls-so-you-stay-under-the-15-per-minute-limit-and-when-the-server-still-says-too-fast-it-waits-longer-and-tries-again-unless-the-message-names-the-per-day-cap-where-retrying-cannot-help.-both-pieces-are-walked-through-at-the-end-of-part-a.-it-also-sets-three-values-model_id-the-pinned-model-pool_url-the-sentence-pool-this-day-draws-from-and-levels-the-six-cefr-labels.when-the-cell-prints-llm-backend-gemini-api-...-your-key-was-found-colab-gemini-means-it-was-not-go-back-to-the-key-callout-above.three-more-ready-made-functions-load_gold-split_pool-show_errors-arrive-later-each-in-a-collapsed-library-cell-right-before-the-step-that-first-calls-it.-the-two-functions-you-will-call-most-run_prompt-and-evaluate-are-built-in-visible-cells-in-part-a-so-you-see-what-is-inside-them.">Setup — run this firstThe 📦 Setup cell is collapsed: you run it, you don’t edit it. It connects to the model and defines <strong>three functions</strong>, one per step:| Function | What it does ||—|—|| <code>_resolve_gemini_key()</code> | finds your API key — Colab’s Secrets panel first, then the environment. Returns nothing if neither has one. || <code>_raw_generate_text(prompt, json_reply, schema)</code> | the actual model call. With a key: the <strong>Gemini API</strong> with <code>temperature=0</code> and <code>seed=42</code>, so the same prompt gives the same answer; <code>json_reply=True</code> turns on <strong>JSON mode</strong>, which guarantees the reply is valid JSON — in whatever shape the prompt asks for. Without a key: Colab’s keyless demo model — non-reproducible, and it ignores the JSON-mode request. || <code>generate_text(prompt, json_reply=...)</code> | <strong>the one you call all day.</strong> It wraps <code>_raw_generate_text</code> with two protections: it waits between calls so you stay under the 15-per-minute limit, and when the server still says “too fast” it waits longer and tries again — unless the message names the per-day cap, where retrying cannot help. Both pieces are walked through at the end of Part A. |It also sets three values: <code>MODEL_ID</code> (the pinned model), <code>POOL_URL</code> (the sentence pool this day draws from) and <code>LEVELS</code> (the six CEFR labels).When the cell prints <code>LLM backend: Gemini API (...)</code> your key was found; <code>Colab Gemini</code> means it was not — go back to the key callout above.Three more ready-made functions (<code>load_gold</code>, <code>split_pool</code>, <code>show_errors</code>) arrive later, each in a collapsed 🔧 Library cell right before the step that first calls it. The two functions you will call most — <code>run_prompt</code> and <code>evaluate</code> — are built in visible cells in Part A, so you see what is inside them.</h3>
+<section id="setup-run-this-first" class="level3">
+<h3 class="anchored" data-anchor-id="setup-run-this-first">Setup — run this first</h3>
+<p>The 📦 Setup cell is collapsed: you run it, you don’t edit it. It connects to the model and defines <strong>three functions</strong>, one per step:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>_resolve_gemini_key()</code></td>
+<td>finds your API key — Colab’s Secrets panel first, then the environment. Returns nothing if neither has one.</td>
+</tr>
+<tr class="even">
+<td><code>_raw_generate_text(prompt, json_reply, schema)</code></td>
+<td>the actual model call. With a key: the <strong>Gemini API</strong> with <code>temperature=0</code> and <code>seed=42</code>, so the same prompt gives the same answer; <code>json_reply=True</code> turns on <strong>JSON mode</strong>, which guarantees the reply is valid JSON — in whatever shape the prompt asks for. Without a key: Colab’s keyless demo model — non-reproducible, and it ignores the JSON-mode request.</td>
+</tr>
+<tr class="odd">
+<td><code>generate_text(prompt, json_reply=...)</code></td>
+<td><strong>the one you call all day.</strong> It wraps <code>_raw_generate_text</code> with two protections: it waits between calls so you stay under the 15-per-minute limit, and when the server still says “too fast” it waits longer and tries again — unless the message names the per-day cap, where retrying cannot help. Both pieces are walked through at the end of Part A.</td>
+</tr>
+</tbody>
+</table>
+<p>It also sets three values: <code>MODEL_ID</code> (the pinned model), <code>POOL_URL</code> (the sentence pool this day draws from) and <code>LEVELS</code> (the six CEFR labels).</p>
+<p>When the cell prints <code>LLM backend: Gemini API (...)</code> your key was found; <code>Colab Gemini</code> means it was not — go back to the key callout above.</p>
+<p>Three more ready-made functions (<code>load_gold</code>, <code>split_pool</code>, <code>show_errors</code>) arrive later, each in a collapsed 🔧 Library cell right before the step that first calls it. The two functions you will call most — <code>run_prompt</code> and <code>evaluate</code> — are built in visible cells in Part A, so you see what is inside them.</p>
 <div id="cell-8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;backend&quot;:&quot;api&quot;,&quot;generated&quot;:&quot;setup&quot;,&quot;gold_comment&quot;:null,&quot;gold_url&quot;:null,&quot;lib_names&quot;:[&quot;load_gold&quot;,&quot;split_pool&quot;,&quot;show_errors&quot;],&quot;pool_comment&quot;:&quot;The CEFR-SP pool (335 sentences, natural level imbalance) — Day 3 draws its train/valid/test sets from it.&quot;,&quot;pool_url&quot;:&quot;https://raw.githubusercontent.com/egumasa/linguistic-data-analysis-II-2026/main/sources/resources/datasets/gold/cefr_pool_demo.json&quot;,&quot;predictions_url&quot;:null,&quot;sampling&quot;:false,&quot;val_url&quot;:null}}">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -616,83 +694,145 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You should see <code>train 12 · valid 24 · test 36 items</code>. Three sets, three jobs — and from here on, <code>test</code> is not touched again until the last section of Part B.</p>
 </section>
 </section>
-<section id="the-llm-run-codetwo-short-steps-json-replies-and-the-loop-that-runs-a-prompt-over-a-whole-set.you-made-the-raw-api-call-at-the-very-top-of-the-notebook-a-client-a-model-name-text-in-free-text-out.-from-here-on-every-call-goes-through-generate_text-defined-in-the-setup-cell-the-same-call-wrapped-with-the-pacing-and-retry-protections-listed-under-it.-the-last-section-of-part-a-walks-through-both.one-problem-is-still-open-the-raw-call-gave-back-free-text-maybe-a1-maybe-a-paragraph-and-your-pipeline-needs-a-label.-that-is-step-1.-step-1-ask-for-a-json-replys7-named-output-formatting-as-one-component-of-a-prompt.-two-things-work-together-here--the-prompt-says-what-shape-to-reply-in-one-line-reply-as-json-like-label-b1--json-mode-json_replytrue-guarantees-the-reply-is-valid-json-rather-than-a-paragraph.the-shape-comes-from-your-prompt-json-mode-only-guarantees-that-the-reply-parses." class="level2">
-<h2 class="anchored" data-anchor-id="the-llm-run-codetwo-short-steps-json-replies-and-the-loop-that-runs-a-prompt-over-a-whole-set.you-made-the-raw-api-call-at-the-very-top-of-the-notebook-a-client-a-model-name-text-in-free-text-out.-from-here-on-every-call-goes-through-generate_text-defined-in-the-setup-cell-the-same-call-wrapped-with-the-pacing-and-retry-protections-listed-under-it.-the-last-section-of-part-a-walks-through-both.one-problem-is-still-open-the-raw-call-gave-back-free-text-maybe-a1-maybe-a-paragraph-and-your-pipeline-needs-a-label.-that-is-step-1.-step-1-ask-for-a-json-replys7-named-output-formatting-as-one-component-of-a-prompt.-two-things-work-together-here--the-prompt-says-what-shape-to-reply-in-one-line-reply-as-json-like-label-b1--json-mode-json_replytrue-guarantees-the-reply-is-valid-json-rather-than-a-paragraph.the-shape-comes-from-your-prompt-json-mode-only-guarantees-that-the-reply-parses.">The LLM run codeTwo short steps: JSON replies, and the loop that runs a prompt over a whole set.You made the raw API call at the very top of the notebook — a client, a model name, text in, free text out. From here on, every call goes through <code>generate_text</code> (defined in the Setup cell): the <strong>same call</strong>, wrapped with the pacing and retry protections listed under it. The last section of Part A walks through both.One problem is still open: the raw call gave back <strong>free text</strong> — maybe <code>A1</code>, maybe a paragraph — and your pipeline needs <strong>a label</strong>. That is step 1.### Step 1 — ask for a JSON replyS7 named <em>output formatting</em> as one component of a prompt. Two things work together here:- the <strong>prompt</strong> says what shape to reply in — one line, <code>Reply as JSON, like: {"label": "B1"}</code>;- <strong>JSON mode</strong> (<code>json_reply=True</code>) guarantees the reply is valid JSON rather than a paragraph.The shape comes from your prompt; JSON mode only guarantees that the reply parses.</h2>
-<div id="cell-21" class="cell">
+<section id="the-llm-run-code" class="level2">
+<h2 class="anchored" data-anchor-id="the-llm-run-code">The LLM run code</h2>
+<p>Two short steps: JSON replies, and the loop that runs a prompt over a whole set.</p>
+<p>You made the raw API call at the very top of the notebook — a client, a model name, text in, free text out. From here on, every call goes through <code>generate_text</code> (defined in the Setup cell): the <strong>same call</strong>, wrapped with the pacing and retry protections listed under it. The last section of Part A walks through both.</p>
+<p>One problem is still open: the raw call gave back <strong>free text</strong> — maybe <code>A1</code>, maybe a paragraph — and your pipeline needs <strong>a label</strong>. That is step 1.</p>
+<section id="step-1-ask-for-a-json-reply" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-ask-for-a-json-reply">Step 1 — ask for a JSON reply</h3>
+<p>S7 named <em>output formatting</em> as one component of a prompt. Two things work together here:</p>
+<ul>
+<li>the <strong>prompt</strong> says what shape to reply in — one line, <code>Reply as JSON, like: {"label": "B1"}</code>;</li>
+<li><strong>JSON mode</strong> (<code>json_reply=True</code>) guarantees the reply is valid JSON rather than a paragraph.</li>
+</ul>
+<p>The shape comes from your prompt; JSON mode only guarantees that the reply parses.</p>
+<div id="80eeb2c3" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The prompt names the shape; json_reply=True guarantees the reply is valid JSON.reply = generate_text('What CEFR level is this sentence? I like cats. '                      'Reply as JSON, like: {"label": "B1"}', json_reply=True)print(reply)                    # the raw reply: JSON textanswer = json.loads(reply)      # JSON text -&gt; a Python dictprint(answer["label"])          # just the level</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, call the LLM as we have been doing </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The prompt names the shape; json_reply=True guarantees the reply is valid JSON.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>raw_reply <span class="op">=</span> generate_text(<span class="st">'What CEFR level is this sentence? I like cats.'</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raw_reply)                    <span class="co"># the raw reply: JSON text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>You should see something like <code>{"label": "A1"}</code> and then <code>A1</code>. <code>json.loads</code> turns JSON text into a Python dict — the same <code>{...}</code> shape as the gold items you have worked with since Day 1 — so the label comes out with a plain <code>answer["label"]</code>. No searching through a paragraph for the level.### Step 2 — <code>run_prompt</code>, the loop you will run all dayOne prompt, one set, one list of predicted labels back. Read it top to bottom — every line is something you have now seen: <code>.format</code> fills the <code>{text}</code> slot, <code>generate_text</code> makes the paced call with <code>json_reply=True</code>, <code>json.loads</code> unpacks the reply. A reply no label can be read out of becomes <code>??</code> instead of crashing a 24-item run.</p>
-<div id="cell-23" class="cell">
+<div id="b778fd10" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_prompt(prompt: <span class="bu">str</span>, gold: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">str</span>]:    <span class="st">"""Send each item's `text` to the LLM via </span><span class="sc">{text}</span><span class="st">, collect predicted labels.    Args:        prompt: your prompt, containing </span><span class="sc">{text}</span><span class="st"> where the sentence should go. It            should ask for a JSON reply with a "label" field — see Part A, step 1.        gold: the items to label, each with a "text" key.    Returns:        One predicted label per gold item, in the same order. "??" marks a reply        no label could be read out of.    Example:        &gt;&gt;&gt; predictions = run_prompt(PROMPT, valid)    """</span>    predictions <span class="op">=</span> []                                  <span class="co"># answers, in gold order    for i, item in enumerate(gold, 1):                # i counts 1, 2, 3, ...        reply = generate_text(prompt.format(text=item["text"]), json_reply=True)        try:            answer = json.loads(reply)                # JSON text -&gt; a Python dict        except json.JSONDecodeError:                  # not JSON (keyless backend)            answer = {}        label = answer.get("label", "??")             # "??" = no label in the reply        if label not in LEVELS:                       # not one of the six levels?            label = "??"        predictions.append(label)        if i % 12 == 0:                               # every 12th item...            print(f"  ...{i}/{len(gold)} done")       # ...show progress    print(f"Got {len(predictions)} predictions.")    return predictionsprint("run_prompt defined.")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The prompt names the shape; json_reply=True guarantees the reply is valid JSON.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(<span class="st">'What CEFR level is this sentence? I like cats. '</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'Reply as JSON, like: {"label": "B1"}'</span>, json_reply<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)                    <span class="co"># the raw reply: JSON text</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>answer <span class="op">=</span> json.loads(reply)      <span class="co"># JSON text -&gt; a Python dict</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(answer[<span class="st">"label"</span>])          <span class="co"># just the level</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>You should see something like <code>{"label": "A1"}</code> and then <code>A1</code>. <code>json.loads</code> turns JSON text into a Python dict — the same <code>{...}</code> shape as the gold items you have worked with since Day 1 — so the label comes out with a plain <code>answer["label"]</code>. No searching through a paragraph for the level.</p>
+</section>
+<section id="step-2-run_prompt-the-loop-you-will-run-all-day" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-run_prompt-the-loop-you-will-run-all-day">Step 2 — <code>run_prompt</code>, the loop you will run all day</h3>
+<p>One prompt, one set, one list of predicted labels back. Read it top to bottom — every line is something you have now seen: <code>.format</code> fills the <code>{text}</code> slot, <code>generate_text</code> makes the paced call with <code>json_reply=True</code>, <code>json.loads</code> unpacks the reply. A reply no label can be read out of becomes <code>??</code> instead of crashing a 24-item run.</p>
+<div id="f579a5cb" class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_prompt(prompt: <span class="bu">str</span>, gold: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">str</span>]:</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Send each item's `text` to the LLM via {text}, collect predicted labels.</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">        prompt: your prompt, containing {text} where the sentence should go. It</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">            should ask for a JSON reply with a "label" field — see Part A, step 1.</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">        gold: the items to label, each with a "text" key.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">        One predicted label per gold item, in the same order. "??" marks a reply</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">        no label could be read out of.</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; predictions = run_prompt(PROMPT, valid)</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> []                                  <span class="co"># answers, in gold order</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(gold, <span class="dv">1</span>):                <span class="co"># i counts 1, 2, 3, ...</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        reply <span class="op">=</span> generate_text(prompt.<span class="bu">format</span>(text<span class="op">=</span>item[<span class="st">"text"</span>]), json_reply<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            answer <span class="op">=</span> json.loads(reply)                <span class="co"># JSON text -&gt; a Python dict</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> json.JSONDecodeError:                  <span class="co"># not JSON (keyless backend)</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>            answer <span class="op">=</span> {}</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>        label <span class="op">=</span> answer.get(<span class="st">"label"</span>, <span class="st">"??"</span>)             <span class="co"># "??" = no label in the reply</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> label <span class="kw">not</span> <span class="kw">in</span> LEVELS:                       <span class="co"># not one of the six levels?</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>            label <span class="op">=</span> <span class="st">"??"</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>        predictions.append(label)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">12</span> <span class="op">==</span> <span class="dv">0</span>:                               <span class="co"># every 12th item...</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  ...</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> done"</span>)       <span class="co"># ...show progress</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Got </span><span class="sc">{</span><span class="bu">len</span>(predictions)<span class="sc">}</span><span class="ss"> predictions."</span>)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"run_prompt defined."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>This is the exact call form the final project uses — <code>run_prompt(prompt, items)</code> — so everything you do with it today transfers directly.</p>
+</section>
 </section>
 <section id="the-evaluation-code-built-together" class="level2">
 <h2 class="anchored" data-anchor-id="the-evaluation-code-built-together">The evaluation code — built together</h2>
 <p><code>run_prompt</code> gives predictions; now the function that scores them. You built every measurement inside it on Day 2 (S6): the per-class precision/recall/F1 table, Cohen’s κ, the confusion matrix. Today they become one function, <code>evaluate</code>, that prints all of that <strong>and hands back the macro-F1 as a number</strong> — so a round’s score can be stored instead of copied off the screen.</p>
 <p>First the tools, by name:</p>
-<div id="cell-26" class="cell">
+<div id="3f4fca1f" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (classification_report, confusion_matrix,</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                             cohen_kappa_score, f1_score)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (classification_report, confusion_matrix,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                             cohen_kappa_score, f1_score)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="the-skeleton-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="the-skeleton-you-edit">The skeleton ✏️ YOU EDIT</h3>
 <p>The structure is in place; <strong>the five numbered measuring lines are blank</strong>. We fill them in together in class — each one is a function you used on Day 2.</p>
-<div id="cell-28" class="cell">
+<div id="286ba0a5" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the five numbered lines are filled in — this is the completed version.</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(gold: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]],</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>             predictions: <span class="bu">list</span>[<span class="bu">str</span>],</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>             ordered: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Score predictions against gold: print the full report, return macro-F1.</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">    ordered=True adds quadratic weighted kappa, for labels that sit on a scale.</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; f1_by_round["1 zero-shot"] = evaluate(valid, predictions, ordered=True)</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: line the two label lists up, gold first </span><span class="al">###</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> []                          <span class="co"># the correct labels, from the gold set</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> gold:</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        y_true.append(item[<span class="st">"label"</span>])</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> predictions                 <span class="co"># the model's labels, in the same order</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: per-class precision / recall / F1, as a text table </span><span class="al">###</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))  <span class="co"># (1)</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: one overall number — agreement corrected for chance </span><span class="al">###</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    kappa <span class="op">=</span> cohen_kappa_score(y_true, y_pred)                                     <span class="co"># (2)</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Cohen's kappa            </span><span class="sc">{</span>kappa<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ordered:                          <span class="co"># only when the labels sit on a scale</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS,</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>                                     weights<span class="op">=</span><span class="st">"quadratic"</span>)                         <span class="co"># (3)</span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Cohen's kappa (weighted) </span><span class="sc">{</span>weighted<span class="sc">:.3f}</span><span class="ss">   &lt;- labels are ordered"</span>)</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 4: draw the same information as a picture </span><span class="al">###</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)                          <span class="co"># (4)</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>                xticklabels<span class="op">=</span>LEVELS, yticklabels<span class="op">=</span>LEVELS)</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Predicted"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Gold"</span>)<span class="op">;</span> plt.title(<span class="st">"Confusion matrix"</span>)</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()<span class="op">;</span> plt.show()</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 5: one number to keep — handed back to whoever called </span><span class="al">###</span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    macro_f1 <span class="op">=</span> f1_score(y_true, y_pred, labels<span class="op">=</span>LEVELS, average<span class="op">=</span><span class="st">"macro"</span>,</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>                        zero_division<span class="op">=</span><span class="dv">0</span>)                                          <span class="co"># (5)</span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"F1 (macro)               </span><span class="sc">{</span>macro_f1<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> macro_f1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the five numbered lines are filled in — this is the completed version.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(gold: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]],</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>             predictions: <span class="bu">list</span>[<span class="bu">str</span>],</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>             ordered: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Score predictions against gold: print the full report, return macro-F1.</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">    ordered=True adds quadratic weighted kappa, for labels that sit on a scale.</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; f1_by_round["1 zero-shot"] = evaluate(valid, predictions, ordered=True)</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 1: line the two label lists up, gold first </span><span class="al">###</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> []                          <span class="co"># the correct labels, from the gold set</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> gold:</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        y_true.append(item[<span class="st">"label"</span>])</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> predictions                 <span class="co"># the model's labels, in the same order</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 2: per-class precision / recall / F1, as a text table </span><span class="al">###</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))  <span class="co"># (1)</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 3: one overall number — agreement corrected for chance </span><span class="al">###</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    kappa <span class="op">=</span> cohen_kappa_score(y_true, y_pred)                                     <span class="co"># (2)</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Cohen's kappa            </span><span class="sc">{</span>kappa<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ordered:                          <span class="co"># only when the labels sit on a scale</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS,</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>                                     weights<span class="op">=</span><span class="st">"quadratic"</span>)                         <span class="co"># (3)</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Cohen's kappa (weighted) </span><span class="sc">{</span>weighted<span class="sc">:.3f}</span><span class="ss">   &lt;- labels are ordered"</span>)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 4: draw the same information as a picture </span><span class="al">###</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)                          <span class="co"># (4)</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>                xticklabels<span class="op">=</span>LEVELS, yticklabels<span class="op">=</span>LEVELS)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Predicted"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Gold"</span>)<span class="op">;</span> plt.title(<span class="st">"Confusion matrix"</span>)</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Step 5: one number to keep — handed back to whoever called </span><span class="al">###</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    macro_f1 <span class="op">=</span> f1_score(y_true, y_pred, labels<span class="op">=</span>LEVELS, average<span class="op">=</span><span class="st">"macro"</span>,</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>                        zero_division<span class="op">=</span><span class="dv">0</span>)                                          <span class="co"># (5)</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"F1 (macro)               </span><span class="sc">{</span>macro_f1<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> macro_f1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -701,15 +841,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The five lines, as written in class — each replaces one <code>None</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))      <span class="co"># (1)</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>kappa <span class="op">=</span> cohen_kappa_score(y_true, y_pred)                                         <span class="co"># (2)</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS, weights<span class="op">=</span><span class="st">"quadratic"</span>)  <span class="co"># (3)</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)                              <span class="co"># (4)</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>macro_f1 <span class="op">=</span> f1_score(y_true, y_pred, labels<span class="op">=</span>LEVELS, average<span class="op">=</span><span class="st">"macro"</span>,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                    zero_division<span class="op">=</span><span class="dv">0</span>)                                              <span class="co"># (5)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_true, y_pred, labels<span class="op">=</span>LEVELS, zero_division<span class="op">=</span><span class="dv">0</span>))      <span class="co"># (1)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>kappa <span class="op">=</span> cohen_kappa_score(y_true, y_pred)                                         <span class="co"># (2)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>weighted <span class="op">=</span> cohen_kappa_score(y_true, y_pred, labels<span class="op">=</span>LEVELS, weights<span class="op">=</span><span class="st">"quadratic"</span>)  <span class="co"># (3)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_true, y_pred, labels<span class="op">=</span>LEVELS)                              <span class="co"># (4)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>macro_f1 <span class="op">=</span> f1_score(y_true, y_pred, labels<span class="op">=</span>LEVELS, average<span class="op">=</span><span class="st">"macro"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                    zero_division<span class="op">=</span><span class="dv">0</span>)                                              <span class="co"># (5)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -717,57 +857,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-score-log" class="level3">
 <h3 class="anchored" data-anchor-id="the-score-log">The score log</h3>
 <p>Last piece of the pipeline: one dict that collects every round’s macro-F1 under the round’s id. Storing a score is one assignment, and you will meet the same pattern, unchanged, in the final project’s <code>04_develop.ipynb</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>f1_by_round[<span class="st">"1 zero-shot"</span>] <span class="op">=</span> evaluate(valid, predictions, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="cell-30" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>f1_by_round[<span class="st">"1 zero-shot"</span>] <span class="op">=</span> evaluate(valid, predictions, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ab16cd8f" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>f1_by_round <span class="op">=</span> {}                          <span class="co"># one entry per prompt id</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"scores so far:"</span>, f1_by_round)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>f1_by_round <span class="op">=</span> {}                          <span class="co"># one entry per prompt id</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"scores so far:"</span>, f1_by_round)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="round-1-zero-shot-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="round-1-zero-shot-you-edit">Round 1 — zero-shot ✏️ YOU EDIT</h3>
 <p>Just describe the task. This is your baseline: every later round is judged against its score.</p>
-<div id="cell-32" class="cell">
+<div id="7b4a5ca3" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ everything between the triple quotes is the prompt — edit it freely.# `{text}` is the slot each sentence gets dropped into; keep it.# The doubled braces {{ }} print as single ones — that is how a literal brace# survives .format. Keep the reply-shape line: run_prompt reads the "label" field.PROMPT_ZERO = """You are an expert rater of English sentence difficulty using the CEFR scale.Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.Reply as JSON, like: {{"label": "B1"}}Sentence: {text}"""print(PROMPT_ZERO.format(text="(each sentence lands here)"))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ everything between the triple quotes is the prompt — edit it freely.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># `{text}` is the slot each sentence gets dropped into; keep it.</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The doubled braces {{ }} print as single ones — that is how a literal brace</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># survives .format. Keep the reply-shape line: run_prompt reads the "label" field.</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>PROMPT_ZERO <span class="op">=</span> <span class="st">""" YOUR PROMPT HERE  """</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(PROMPT_ZERO.<span class="bu">format</span>(text<span class="op">=</span><span class="st">"(each sentence lands here)"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Run it over the validation set — 24 items, about 2 minutes:</p>
-<div id="cell-34" class="cell">
+<div id="911dccbb" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pred_zero <span class="op">=</span> run_prompt(PROMPT_ZERO, valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>pred_zero <span class="op">=</span> run_prompt(PROMPT_ZERO, valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Score it and log it. <code>evaluate</code> prints the full report and hands back the macro-F1; the assignment stores that number under the round’s id:</p>
-<div id="cell-36" class="cell">
+<div id="a0371d58" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>f1_by_round[<span class="st">"1 zero-shot"</span>] <span class="op">=</span> evaluate(valid, pred_zero, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>f1_by_round[<span class="st">"1 zero-shot"</span>] <span class="op">=</span> evaluate(valid, pred_zero, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>You should see the per-class table, the two κ lines, the confusion matrix, and last a line <code>F1 (macro) 0.xxx</code> — that number is now sitting in <code>f1_by_round</code> under <code>"1 zero-shot"</code>.</p>
 <section id="two-settings-decide-whether-that-number-is-repeatable" class="level4">
 <h4 class="anchored" data-anchor-id="two-settings-decide-whether-that-number-is-repeatable">Two settings decide whether that number is repeatable</h4>
 <p>The Setup cell connected to the model with these two arguments:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>cfg <span class="op">=</span> types.GenerateContentConfig(temperature<span class="op">=</span><span class="dv">0</span>, seed<span class="op">=</span><span class="dv">42</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cfg <span class="op">=</span> types.GenerateContentConfig(temperature<span class="op">=</span><span class="dv">0</span>, seed<span class="op">=</span><span class="dv">42</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><strong><code>temperature</code></strong> is how much the model is allowed to vary. At <code>0</code> it takes its most likely answer every time. Higher values are useful for writing and unhelpful when you are measuring something.</li>
 <li><strong><code>seed</code></strong> fixes the randomness that is left, so a repeat of the same call starts from the same place.</li>
 </ul>
 <p>Run the same prompt over the same five items twice and see whether the answers match:</p>
-<div id="cell-38" class="cell">
+<div id="1093eb9d" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>first  <span class="op">=</span> run_prompt(PROMPT_ZERO, valid[:<span class="dv">5</span>])   <span class="co"># five items, to keep this cheap</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>second <span class="op">=</span> run_prompt(PROMPT_ZERO, valid[:<span class="dv">5</span>])   <span class="co"># the same five, the same prompt</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first run: "</span>, first)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"second run:"</span>, second)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"identical?"</span>, first <span class="op">==</span> second)   <span class="co"># two lists are == when every item matches</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>first  <span class="op">=</span> run_prompt(PROMPT_ZERO, valid[:<span class="dv">5</span>])   <span class="co"># five items, to keep this cheap</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>second <span class="op">=</span> run_prompt(PROMPT_ZERO, valid[:<span class="dv">5</span>])   <span class="co"># the same five, the same prompt</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first run: "</span>, first)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"second run:"</span>, second)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"identical?"</span>, first <span class="op">==</span> second)   <span class="co"># two lists are == when every item matches</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p><code>True</code> is what <code>temperature=0</code> is for. On the keyless Colab backend you may see fewer matches, because <code>colab.ai</code> exposes neither setting — that is the Day-1 behaviour, and why this course asks for a key from today.</p>
@@ -790,26 +936,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="round-2-few-shot-you-edit">Round 2 — few-shot ✏️ YOU EDIT</h3>
 <p>Add a few <strong>labeled examples</strong> so the model can pattern-match. This is what the <code>train</code> set exists for: examples must come from <code>train</code>, and never from <code>valid</code> or <code>test</code> — an example the model has seen cannot also measure it.</p>
 <p>Look at what <code>train</code> offers:</p>
-<div id="cell-41" class="cell">
+<div id="1ad97610" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> train:</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item[<span class="st">"label"</span>], <span class="st">"·"</span>, item[<span class="st">"text"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> train:</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item[<span class="st">"label"</span>], <span class="st">"·"</span>, item[<span class="st">"text"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Pick a few — the default prompt below uses four of them, one per level it covers. Copy the sentence text exactly, and write each example’s answer in the same JSON shape the prompt asks for — the examples demonstrate the output format as well as the labels.</p>
-<div id="cell-43" class="cell">
+<div id="cc119018" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ same prompt as round 1, plus labelled examples. Add, remove or swap them —# but only ever from `train`. Never use a sentence from `valid` or `test`.PROMPT_FEWSHOT = """You are an expert rater of English sentence difficulty using the CEFR scale.Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.Reply as JSON, like: {{"label": "B1"}}Examples:Sentence: "She died on June 9 , 2014 , at the age of 103 ." -&gt; {{"label": "A1"}}Sentence: "The experiment began late July 2009 ." -&gt; {{"label": "A2"}}Sentence: "Diamond is a well known allotrope of carbon ." -&gt; {{"label": "B2"}}Sentence: "Pharmacoepidemiology bridges pharmacology and epidemiology and borrows their methodology from both of them ." -&gt; {{"label": "C2"}}Sentence: {text}"""print("examples in the prompt:", PROMPT_FEWSHOT.count("-&gt;"))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ same prompt as round 1, plus labelled examples. Add, remove or swap them —</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but only ever from `train`. Never use a sentence from `valid` or `test`.</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>PROMPT_FEWSHOT <span class="op">=</span> <span class="st">""" YOUR PROMPT HERE  """</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"examples in the prompt:"</span>, PROMPT_FEWSHOT.count(<span class="st">"-&gt;"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Same 24 items, new prompt — run and log under the round’s id:</p>
-<div id="cell-45" class="cell">
+<div id="aeb54f19" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pred_few <span class="op">=</span> run_prompt(PROMPT_FEWSHOT, valid)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>f1_by_round[<span class="st">"2 few-shot"</span>] <span class="op">=</span> evaluate(valid, pred_few, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pred_few <span class="op">=</span> run_prompt(PROMPT_FEWSHOT, valid)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>f1_by_round[<span class="st">"2 few-shot"</span>] <span class="op">=</span> evaluate(valid, pred_few, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="which-examples-that-is-the-decision-not-whether-to-use-any" class="level4">
@@ -823,34 +973,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Two rules either way: examples come <strong>from <code>train</code> only</strong>, and <strong>cover every label</strong> if you can, or the ones you left out get under-predicted.</p>
 </section>
 </section>
-<section id="round-3-chain-of-thought-you-editask-the-model-to-reason-first-then-answer.-room-to-think-often-helps-on-borderline-items.with-free-text-replies-this-would-create-a-parsing-problem-the-reasoning-mentions-several-levels-along-the-way-which-one-is-the-answer-the-reply-shape-solves-it-ask-for-a-json-object-with-two-fields-reasoning-written-first-then-label.-the-reasoning-happens-and-run_prompt-still-reads-only-the-label-field.-edit-the-reasoning-instruction-if-you-like" class="level3">
-<h3 class="anchored" data-anchor-id="round-3-chain-of-thought-you-editask-the-model-to-reason-first-then-answer.-room-to-think-often-helps-on-borderline-items.with-free-text-replies-this-would-create-a-parsing-problem-the-reasoning-mentions-several-levels-along-the-way-which-one-is-the-answer-the-reply-shape-solves-it-ask-for-a-json-object-with-two-fields-reasoning-written-first-then-label.-the-reasoning-happens-and-run_prompt-still-reads-only-the-label-field.-edit-the-reasoning-instruction-if-you-like">Round 3 — chain-of-thought ✏️ YOU EDITAsk the model to <strong>reason first, then answer</strong>. Room to think often helps on borderline items.With free-text replies this would create a parsing problem: the reasoning mentions several levels along the way — which one is the answer? The reply shape solves it — ask for a JSON object with <strong>two</strong> fields, <code>reasoning</code> written first, then <code>label</code>. The reasoning happens, and <code>run_prompt</code> still reads only the <code>label</code> field. ✏️ Edit the reasoning instruction if you like:</h3>
-<div id="cell-48" class="cell">
+<section id="round-3-chain-of-thought-you-edit" class="level3">
+<h3 class="anchored" data-anchor-id="round-3-chain-of-thought-you-edit">Round 3 — chain-of-thought ✏️ YOU EDIT</h3>
+<p>Ask the model to <strong>reason first, then answer</strong>. Room to think often helps on borderline items.</p>
+<p>With free-text replies this would create a parsing problem: the reasoning mentions several levels along the way — which one is the answer? The reply shape solves it — ask for a JSON object with <strong>two</strong> fields, <code>reasoning</code> written first, then <code>label</code>. The reasoning happens, and <code>run_prompt</code> still reads only the <code>label</code> field. ✏️ Edit the reasoning instruction if you like:</p>
+<div id="d3707ca0" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ this prompt asks the model to reason before deciding.PROMPT_COT = """You are an expert rater of English sentence difficulty using the CEFR scale.First reason step by step about the sentence's vocabulary and grammar.Then decide the level: exactly one of A1, A2, B1, B2, C1, C2.Reply as JSON with the reasoning first, like:{{"reasoning": "...", "label": "B1"}}Sentence: {text}"""print(PROMPT_COT.format(text="(each sentence lands here)"))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ this prompt asks the model to reason before deciding.</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>PROMPT_COT <span class="op">=</span> <span class="st">""" YOUR PROMPT HERE  """</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(PROMPT_COT.<span class="bu">format</span>(text<span class="op">=</span><span class="st">"(each sentence lands here)"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Run and log — the same call as every round; only the prompt changed. This round is slower than the others, because the model writes its reasoning for every item:</p>
-<div id="cell-50" class="cell">
+<div id="3f6c0557" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>pred_cot <span class="op">=</span> run_prompt(PROMPT_COT, valid)f1_by_round[<span class="st">"3 chain-of-thought"</span>] <span class="op">=</span> evaluate(valid, pred_cot, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pred_cot <span class="op">=</span> run_prompt(PROMPT_COT, valid)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>f1_by_round[<span class="st">"3 chain-of-thought"</span>] <span class="op">=</span> evaluate(valid, pred_cot, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>What did that reasoning actually look like? Read one full reply:</p>
-<div id="cell-52" class="cell">
+<div id="4a7331dd" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(PROMPT_COT.<span class="bu">format</span>(text<span class="op">=</span>valid[<span class="dv">0</span>][<span class="st">"text"</span>]), json_reply<span class="op">=</span><span class="va">True</span>)<span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(PROMPT_COT.<span class="bu">format</span>(text<span class="op">=</span>valid[<span class="dv">0</span>][<span class="st">"text"</span>]), json_reply<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>A JSON object with the model’s <code>reasoning</code> first and its <code>label</code> after — the order the prompt asked for. <code>run_prompt</code> read the <code>label</code> field and ignored the rest. Whether the reasoning <em>helped</em> is what the score says, not the reasoning itself.### Compare the threeThe log has been collecting all along — print it:</p>
-<div id="cell-54" class="cell">
+<p>A JSON object with the model’s <code>reasoning</code> first and its <code>label</code> after — the order the prompt asked for. <code>run_prompt</code> read the <code>label</code> field and ignored the rest. Whether the reasoning <em>helped</em> is what the score says, not the reasoning itself.</p>
+</section>
+<section id="compare-the-three" class="level3">
+<h3 class="anchored" data-anchor-id="compare-the-three">Compare the three</h3>
+<p>The log has been collecting all along — print it:</p>
+<div id="c96acf39" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name <span class="kw">in</span> f1_by_round:</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="bu">round</span>(f1_by_round[name], <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name <span class="kw">in</span> f1_by_round:</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="bu">round</span>(f1_by_round[name], <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Three rounds, three numbers, all on <code>valid</code>. This table is what Part B iterates on — and the <code>test</code> set has still never been scored. It stays that way until the end of Part B.</p>
@@ -870,29 +1031,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Never call the model faster than the limit allows. At 15 calls per minute that is one call every <code>60 / 15 = 4</code> seconds, so before each call, check how long it has been since the last one and wait out the difference.</p>
 <p>That means the function has to <strong>remember</strong> when the last call happened. The <code>global</code> keyword tells Python to keep one variable and share it across every call.</p>
 <p>Try it below — no model, no internet, just pacing:</p>
-<div id="cell-58" class="cell">
+<div id="62bac8f2" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: two things to remember — when we last called, and how long to wait </span><span class="al">###</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>_demo_last_call <span class="op">=</span> <span class="fl">0.0</span>        <span class="co"># remembered BETWEEN calls, thanks to `global`</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>DEMO_INTERVAL <span class="op">=</span> <span class="dv">2</span>            <span class="co"># seconds (the real guard uses 4.4s or 13.2s)</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: before each call, wait out whatever time is still owed </span><span class="al">###</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> wait_your_turn() <span class="op">-&gt;</span> <span class="va">None</span>:</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Wait out whatever time is still owed, then say we are calling."""</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> _demo_last_call   <span class="co"># "remember this one, and share it across calls"</span></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    wait <span class="op">=</span> DEMO_INTERVAL <span class="op">-</span> (time.monotonic() <span class="op">-</span> _demo_last_call)   <span class="co"># time still owed</span></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:                                     <span class="co"># too soon — sit it out</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  waiting </span><span class="sc">{</span>wait<span class="sc">:.1f}</span><span class="ss">s so we don't call too often..."</span>)</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>        time.sleep(wait)</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    _demo_last_call <span class="op">=</span> time.monotonic()               <span class="co"># note when this call happened</span></span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  → calling now!"</span>)</span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: three calls in a row — watch the gap appear between them </span><span class="al">###</span></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    wait_your_turn()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: two things to remember — when we last called, and how long to wait </span><span class="al">###</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>_demo_last_call <span class="op">=</span> <span class="fl">0.0</span>        <span class="co"># remembered BETWEEN calls, thanks to `global`</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>DEMO_INTERVAL <span class="op">=</span> <span class="dv">2</span>            <span class="co"># seconds (the real guard uses 4.4s or 13.2s)</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: before each call, wait out whatever time is still owed </span><span class="al">###</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> wait_your_turn() <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Wait out whatever time is still owed, then say we are calling."""</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> _demo_last_call   <span class="co"># "remember this one, and share it across calls"</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    wait <span class="op">=</span> DEMO_INTERVAL <span class="op">-</span> (time.monotonic() <span class="op">-</span> _demo_last_call)   <span class="co"># time still owed</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> wait <span class="op">&gt;</span> <span class="dv">0</span>:                                     <span class="co"># too soon — sit it out</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  waiting </span><span class="sc">{</span>wait<span class="sc">:.1f}</span><span class="ss">s so we don't call too often..."</span>)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        time.sleep(wait)</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    _demo_last_call <span class="op">=</span> time.monotonic()               <span class="co"># note when this call happened</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  → calling now!"</span>)</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 3: three calls in a row — watch the gap appear between them </span><span class="al">###</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    wait_your_turn()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -905,28 +1066,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Per-day limit</strong> — retrying is pointless. The guard gives up at once with a clear message.</li>
 </ul>
 <p>A demo — no model, just the <code>try</code>/<code>except</code> shape, retrying until it works:</p>
-<div id="cell-60" class="cell">
+<div id="2780ef8a" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: a stand-in for the real model — it fails twice, then works </span><span class="al">###</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>attempt_count <span class="op">=</span> <span class="dv">0</span>            <span class="co"># how many times we have called it so far</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> unreliable_call() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fails on the first two calls, then succeeds — like a real rate-limited API call."""</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> attempt_count     <span class="co"># keep the count between calls</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    attempt_count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> attempt_count <span class="op">&lt;=</span> <span class="dv">2</span>:                                   <span class="co"># the first two tries</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">"429 rate limit — please slow down"</span>)  <span class="co"># ...blow up</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"success!"</span>                                        <span class="co"># the third works</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: try it, and if it breaks, go round again instead of crashing </span><span class="al">###</span></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):     <span class="co"># up to three goes</span></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> unreliable_call()</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Got:"</span>, result)</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span>                <span class="co"># it worked — stop looping</span></span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> error:   <span class="co"># it broke — `error` holds the message</span></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  attempt </span><span class="sc">{</span>attempt<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> failed (</span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">) — trying again..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 1: a stand-in for the real model — it fails twice, then works </span><span class="al">###</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>attempt_count <span class="op">=</span> <span class="dv">0</span>            <span class="co"># how many times we have called it so far</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> unreliable_call() <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fails on the first two calls, then succeeds — like a real rate-limited API call."""</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> attempt_count     <span class="co"># keep the count between calls</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    attempt_count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> attempt_count <span class="op">&lt;=</span> <span class="dv">2</span>:                                   <span class="co"># the first two tries</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">"429 rate limit — please slow down"</span>)  <span class="co"># ...blow up</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"success!"</span>                                        <span class="co"># the third works</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="co">### Step 2: try it, and if it breaks, go round again instead of crashing </span><span class="al">###</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):     <span class="co"># up to three goes</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> unreliable_call()</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Got:"</span>, result)</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span>                <span class="co"># it worked — stop looping</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> error:   <span class="co"># it broke — `error` holds the message</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  attempt </span><span class="sc">{</span>attempt<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> failed (</span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">) — trying again..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -952,60 +1113,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="round-4-step-1-find-the-worst-class">Round 4 · Step 1 — find the worst class</h3>
 <p>No new code needed — <code>evaluate</code> already printed it. Scroll back to your best round’s report and read <strong>down the F1 column</strong>: one or two levels will be far below the rest.</p>
 <p>Then run the cell below and <strong>read three of the actual sentences</strong> for that level. The counts tell you where the misses are; only the sentences tell you why. Two cases to tell apart: the sentences are genuinely borderline between two levels · your prompt never described that level. The first is a property of the data; only the second is fixable by prompting.</p>
-<div id="cell-64" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;generated&quot;:&quot;libs&quot;,&quot;names&quot;:[&quot;show_errors&quot;]}}">
+<div id="cell-65" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lda2&quot;,&quot;value&quot;:{&quot;generated&quot;:&quot;libs&quot;,&quot;names&quot;:[&quot;show_errors&quot;]}}">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: show_errors { display-mode: "form" }</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generated from _notebook_lib.py — edit there, not here; changes to this cell are replaced.</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_errors(gold, predictions) → misclassified table</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_errors(gold: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]], predictions: <span class="bu">list</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The items the model got wrong, as a table you can read and argue about.</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co">        gold: the gold items, each with "id", "text" and "label".</span></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co">        predictions: one predicted label per gold item, in the same order.</span></span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="co">        A table with one row per mistake: id, gold, pred, text.</span></span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; show_errors(gold, predictions)</span></span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
-<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):   <span class="co"># walk gold and predictions side by side</span></span>
-<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="op">!=</span> p:               <span class="co"># keep only the disagreements</span></span>
-<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>            rows.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"gold"</span>: g[<span class="st">"label"</span>], <span class="st">"pred"</span>: p, <span class="st">"text"</span>: g[<span class="st">"text"</span>]})</span>
-<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> wrong."</span>)</span>
-<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Name the columns even when there are no rows. A table built from an empty list has</span></span>
-<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># no columns at all, and then errors["gold"] fails for a student whose prompt got</span></span>
-<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># everything right.</span></span>
-<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows, columns<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"gold"</span>, <span class="st">"pred"</span>, <span class="st">"text"</span>])   <span class="co"># Colab shows a table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#@title 🔧 Library cell: show_errors { display-mode: "form" }</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper — you don't need to read this. Run it and move on.</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generated from _notebook_lib.py — edit there, not here; changes to this cell are replaced.</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_errors(gold, predictions) → misclassified table</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_errors(gold: <span class="bu">list</span>[<span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]], predictions: <span class="bu">list</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The items the model got wrong, as a table you can read and argue about.</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">        gold: the gold items, each with "id", "text" and "label".</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">        predictions: one predicted label per gold item, in the same order.</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="co">        A table with one row per mistake: id, gold, pred, text.</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="co">        &gt;&gt;&gt; show_errors(gold, predictions)</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> g, p <span class="kw">in</span> <span class="bu">zip</span>(gold, predictions):   <span class="co"># walk gold and predictions side by side</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> g[<span class="st">"label"</span>] <span class="op">!=</span> p:               <span class="co"># keep only the disagreements</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>            rows.append({<span class="st">"id"</span>: g[<span class="st">"id"</span>], <span class="st">"gold"</span>: g[<span class="st">"label"</span>], <span class="st">"pred"</span>: p, <span class="st">"text"</span>: g[<span class="st">"text"</span>]})</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(gold)<span class="sc">}</span><span class="ss"> wrong."</span>)</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Name the columns even when there are no rows. A table built from an empty list has</span></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># no columns at all, and then errors["gold"] fails for a student whose prompt got</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># everything right.</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows, columns<span class="op">=</span>[<span class="st">"id"</span>, <span class="st">"gold"</span>, <span class="st">"pred"</span>, <span class="st">"text"</span>])   <span class="co"># Colab shows a table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-65" class="cell">
+<div id="cell-66" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(valid, pred_cot)   <span class="co"># swap pred_cot for your best round's predictions</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> show_errors(valid, pred_cot)   <span class="co"># swap pred_cot for your best round's predictions</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>errors.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-2-declare-the-round-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-declare-the-round-you-edit">Step 2 · Declare the round ✏️ YOU EDIT</h3>
 <p>Fill in all four strings <strong>before</strong> you touch the prompt. This is the cell that turns the next step from tinkering into an experiment.</p>
-<div id="cell-67" class="cell">
+<div id="cell-68" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a worked example of the declare cell — one possible round 4.</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>PROMPT_ID   <span class="op">=</span> <span class="st">"4 describe C1 explicitly"</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>WORST_CLASS <span class="op">=</span> <span class="st">"C1"</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>MY_CHANGE   <span class="op">=</span> <span class="st">"add one line describing what makes a sentence C1"</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>I_PREDICT   <span class="op">=</span> <span class="st">"C1 recall goes up, because the prompt now says what to look for; B2 and C2 may lose a little to it"</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Round </span><span class="sc">{</span>PROMPT_ID<span class="sc">}</span><span class="ss"> — targeting </span><span class="sc">{</span>WORST_CLASS<span class="sc">}</span><span class="ss">. Change: </span><span class="sc">{</span>MY_CHANGE<span class="sc">}</span><span class="ss">."</span>)</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Prediction: </span><span class="sc">{</span>I_PREDICT<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a worked example of the declare cell — one possible round 4.</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>PROMPT_ID   <span class="op">=</span> <span class="st">"4 describe C1 explicitly"</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>WORST_CLASS <span class="op">=</span> <span class="st">"C1"</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>MY_CHANGE   <span class="op">=</span> <span class="st">"add one line describing what makes a sentence C1"</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>I_PREDICT   <span class="op">=</span> <span class="st">"C1 recall goes up, because the prompt now says what to look for; B2 and C2 may lose a little to it"</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Round </span><span class="sc">{</span>PROMPT_ID<span class="sc">}</span><span class="ss"> — targeting </span><span class="sc">{</span>WORST_CLASS<span class="sc">}</span><span class="ss">. Change: </span><span class="sc">{</span>MY_CHANGE<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Prediction: </span><span class="sc">{</span>I_PREDICT<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1026,41 +1187,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-3-make-the-change-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-make-the-change-you-edit">Step 3 · Make the change ✏️ YOU EDIT</h3>
 <p>Start from your best Part-A prompt and make the one change you just declared.</p>
-<div id="cell-69" class="cell">
+<div id="cell-70" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the worked round-4 prompt: the zero-shot prompt plus the ONE declared change.</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>PROMPT_MINE <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="st">C1 sentences use precise, lower-frequency vocabulary and complex noun phrases,</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="st">but still read as ordinary prose rather than technical writing.</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="st">Reply as JSON, like: </span><span class="sc">{{</span><span class="st">"label": "B1"</span><span class="sc">}}</span></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(PROMPT_MINE.<span class="bu">format</span>(text<span class="op">=</span><span class="st">"(each sentence lands here)"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the worked round-4 prompt: the zero-shot prompt plus the ONE declared change.</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>PROMPT_MINE <span class="op">=</span> <span class="st">"""You are an expert rater of English sentence difficulty using the CEFR scale.</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="st">Classify the sentence into exactly one of: A1, A2, B1, B2, C1, C2.</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="st">C1 sentences use precise, lower-frequency vocabulary and complex noun phrases,</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="st">but still read as ordinary prose rather than technical writing.</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="st">Reply as JSON, like: </span><span class="sc">{{</span><span class="st">"label": "B1"</span><span class="sc">}}</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="st">Sentence: </span><span class="sc">{text}</span><span class="st">"""</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(PROMPT_MINE.<span class="bu">format</span>(text<span class="op">=</span><span class="st">"(each sentence lands here)"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-4-run-and-log" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-run-and-log">Step 4 · Run and log</h3>
 <p>Same call as every round — the score lands under the id you declared:</p>
-<div id="cell-71" class="cell">
+<div id="cell-72" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pred_mine <span class="op">=</span> run_prompt(PROMPT_MINE, valid)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>f1_by_round[PROMPT_ID] <span class="op">=</span> evaluate(valid, pred_mine, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pred_mine <span class="op">=</span> run_prompt(PROMPT_MINE, valid)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>f1_by_round[PROMPT_ID] <span class="op">=</span> evaluate(valid, pred_mine, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="step-5-inspect-check-the-class-you-actually-targeted" class="level3">
 <h3 class="anchored" data-anchor-id="step-5-inspect-check-the-class-you-actually-targeted">Step 5 · Inspect — check the class you actually targeted</h3>
 <p>Compare the <strong>F1 row for <code>WORST_CLASS</code></strong> in the report you just printed against the same row in step 1’s report. Macro-F1 can rise while the level you aimed at gets <em>worse</em>, because another level carried the average — so check the row you predicted, not the headline number. Then read what is still wrong:</p>
-<div id="cell-73" class="cell">
+<div id="cell-74" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>errors_mine <span class="op">=</span> show_errors(valid, pred_mine)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>errors_mine.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>errors_mine <span class="op">=</span> show_errors(valid, pred_mine)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>errors_mine.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Was your prediction right? A “no” costs you nothing — a wrong prediction you can explain teaches more than a right one you cannot.</p>
@@ -1068,33 +1229,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="round-5-a-template-to-copy-you-edit" class="level3">
 <h3 class="anchored" data-anchor-id="round-5-a-template-to-copy-you-edit">Round 5 — a template to copy ✏️ YOU EDIT</h3>
 <p>This round is ready-made: it adds a tie-break rule to your round-4 prompt. <strong>Keep it, change it, or replace it</strong> — either way, give the round its own id and write your prediction before running. For round 6 and beyond, copy this round’s three code cells (and the markdown between them), change the id, and go again.</p>
-<div id="cell-75" class="cell">
+<div id="cell-76" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the ready-made round, with the prediction written out as an example.</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>PROMPT_ID <span class="op">=</span> <span class="st">"5 tie-break rule"</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>I_PREDICT <span class="op">=</span> <span class="st">"fewer far misses upward: when the model hesitates between two adjacent levels it now takes the lower one, so weighted kappa should improve even if macro-F1 barely moves"</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>PROMPT_R5 <span class="op">=</span> PROMPT_MINE <span class="op">+</span> <span class="st">"""</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="st">If you are unsure between two adjacent levels, choose the lower one."""</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Round </span><span class="sc">{</span>PROMPT_ID<span class="sc">}</span><span class="ss">. Prediction: </span><span class="sc">{</span>I_PREDICT<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the ready-made round, with the prediction written out as an example.</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>PROMPT_ID <span class="op">=</span> <span class="st">"5 tie-break rule"</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>I_PREDICT <span class="op">=</span> <span class="st">"fewer far misses upward: when the model hesitates between two adjacent levels it now takes the lower one, so weighted kappa should improve even if macro-F1 barely moves"</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>PROMPT_R5 <span class="op">=</span> PROMPT_MINE <span class="op">+</span> <span class="st">"""</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="st">If you are unsure between two adjacent levels, choose the lower one."""</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Round </span><span class="sc">{</span>PROMPT_ID<span class="sc">}</span><span class="ss">. Prediction: </span><span class="sc">{</span>I_PREDICT<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Run and log:</p>
-<div id="cell-77" class="cell">
+<div id="cell-78" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>pred_r5 <span class="op">=</span> run_prompt(PROMPT_R5, valid)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>f1_by_round[PROMPT_ID] <span class="op">=</span> evaluate(valid, pred_r5, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pred_r5 <span class="op">=</span> run_prompt(PROMPT_R5, valid)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>f1_by_round[PROMPT_ID] <span class="op">=</span> evaluate(valid, pred_r5, ordered<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>And inspect, feeding the next round if you run one:</p>
-<div id="cell-79" class="cell">
+<div id="cell-80" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>errors_r5 <span class="op">=</span> show_errors(valid, pred_r5)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>errors_r5.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>errors_r5 <span class="op">=</span> show_errors(valid, pred_r5)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>errors_r5.head(<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -1105,11 +1266,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-whole-log" class="level3">
 <h3 class="anchored" data-anchor-id="the-whole-log">The whole log</h3>
 <p>Every round you ran, one line each:</p>
-<div id="cell-81" class="cell">
+<div id="cell-82" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name <span class="kw">in</span> f1_by_round:</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="bu">round</span>(f1_by_round[name], <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name <span class="kw">in</span> f1_by_round:</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="bu">round</span>(f1_by_round[name], <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -1119,15 +1280,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Pick the best prompt from the log and score it on <code>test</code> — the 36 sentences drawn at the top of Part A and never touched since. <strong>This is the number you report.</strong></p>
 <p>Expect it to be lower than the validation score. That gap is the cost of having chosen a prompt by looking at results, and reporting it honestly is the point of having a held-out set.</p>
 <p><strong>If you run this cell, then go back and edit a prompt, <code>test</code> has stopped being held out.</strong> In the final project this is a file boundary: <code>04_develop.ipynb</code> cannot reach the test items and <code>05_test.ipynb</code> opens them once.</p>
-<div id="cell-83" class="cell">
+<div id="cell-84" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ swap in whichever prompt the log says is best (PROMPT_ZERO / PROMPT_FEWSHOT /</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># PROMPT_COT / PROMPT_MINE / PROMPT_R5 / ...).</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>BEST_PROMPT <span class="op">=</span> PROMPT_FEWSHOT</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>pred_test <span class="op">=</span> run_prompt(BEST_PROMPT, test)             <span class="co"># the 36 held-out sentences</span></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>f1_test   <span class="op">=</span> evaluate(test, pred_test, ordered<span class="op">=</span><span class="va">True</span>)   <span class="co"># &lt;- report THIS macro-F1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ swap in whichever prompt the log says is best (PROMPT_ZERO / PROMPT_FEWSHOT /</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># PROMPT_COT / PROMPT_MINE / PROMPT_R5 / ...).</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>BEST_PROMPT <span class="op">=</span> PROMPT_FEWSHOT</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>pred_test <span class="op">=</span> run_prompt(BEST_PROMPT, test)             <span class="co"># the 36 held-out sentences</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>f1_test   <span class="op">=</span> evaluate(test, pred_test, ordered<span class="op">=</span><span class="va">True</span>)   <span class="co"># &lt;- report THIS macro-F1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="your-report-a-completed-example" class="level3">
@@ -1147,27 +1308,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>(If we have time — this section is not part of the submission, and it costs two model calls.)</em></p>
 <p>Everything above asked for the reply shape <strong>in the prompt</strong> and turned on JSON mode. JSON mode guarantees the reply is <em>valid JSON</em> — not that it has any particular fields. A model could answer <code>{"level": "B1"}</code> and <code>run_prompt</code> would log <code>??</code>. The API can also <strong>enforce</strong> the fields: describe the shape you want as a <strong>schema</strong> and pass it as <code>response_schema</code>; the reply then has exactly those fields.</p>
 <p>First, the call you have made all day:</p>
-<div id="cell-86" class="cell">
+<div id="cell-87" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The way every round above worked: shape in the prompt, JSON mode on.</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(<span class="st">'What CEFR level is this sentence? I like cats. '</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'Reply as JSON, like: {"label": "B1"}'</span>, json_reply<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The way every round above worked: shape in the prompt, JSON mode on.</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(<span class="st">'What CEFR level is this sentence? I like cats. '</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'Reply as JSON, like: {"label": "B1"}'</span>, json_reply<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Now the enforced version. The schema below describes the same shape the prompt was asking for — an object with one required string field, <code>label</code> — and goes to the API as <code>response_schema</code>. The prompt no longer needs the shape line:</p>
-<div id="cell-88" class="cell">
+<div id="cell-89" class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The enforced version: the same shape, described as a schema.</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>LABEL_SCHEMA <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"OBJECT"</span>,</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">"properties"</span>: {<span class="st">"label"</span>: {<span class="st">"type"</span>: <span class="st">"STRING"</span>}},</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">"required"</span>: [<span class="st">"label"</span>]}</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(<span class="st">"What CEFR level is this sentence? I like cats."</span>,</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>                      schema<span class="op">=</span>LABEL_SCHEMA)</span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The enforced version: the same shape, described as a schema.</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>LABEL_SCHEMA <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"OBJECT"</span>,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">"properties"</span>: {<span class="st">"label"</span>: {<span class="st">"type"</span>: <span class="st">"STRING"</span>}},</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">"required"</span>: [<span class="st">"label"</span>]}</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>reply <span class="op">=</span> generate_text(<span class="st">"What CEFR level is this sentence? I like cats."</span>,</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>                      schema<span class="op">=</span>LABEL_SCHEMA)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reply)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Same reply, two routes. When to prefer which:</p>
@@ -1189,6 +1350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

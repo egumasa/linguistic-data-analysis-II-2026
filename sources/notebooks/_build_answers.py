@@ -115,7 +115,10 @@ The numbers below are from one example run; yours will differ. What should match
 - On the held-out `test` set the same prompt scored macro-F1 = `0.36`.
 - The gap between the two scores is `0.06`, which we read as the cost of tuning: the prompt was chosen because it suited the 24 validation items, and new sentences pay that back."""
 
+COLAB_BADGE_ANSWERS = "[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design_answers.ipynb)"
+
 REPLACEMENTS = [
+    ("replace", "colab-badge.svg", COLAB_BADGE_ANSWERS),
     ("append", "# Day 3 · Prompt design & iteration", TITLE_NOTE),
     ("replace", "# ✏️ we fill the five numbered lines together in class", EVALUATE_DONE),
     ("replace", 'PROMPT_ID   = "4 …"', DECLARE_DONE),

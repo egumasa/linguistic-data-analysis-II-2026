@@ -464,9 +464,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 - Notebook (tutorial + Corpus Lab): [`day3_prompt_design.ipynb`](../../notebooks/day3_prompt_design.ipynb) — zero-shot → few-shot → chain-of-thought on the CEFR task —
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design.ipynb)
 -->
-<ul>
-<li>Further reading: <a href="../../resources/datasets/mini-project-tracks.html">Mini-project starter tracks</a> (including the discourse-move / Kim &amp; Lu replication track) <!-- Slides: [Session 8 slides](../../slides/slides-session-08.html){target="_blank"} --></li>
-</ul>
+<p>Notebook (Session 8): <a href="../../notebooks/sources/notebooks/day3_prompt_design.ipynb"><code>day2-s5_gold_standard_construction.ipynb</code></a> — <a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/sources/notebooks/day3_prompt_design.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open In Colab"></a></p>
+<!-- Slides: [Session 8 slides](../../slides/slides-session-08.html){target="_blank"} -->
 
 
 <!-- -->
@@ -937,45 +936,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Day 3 · Prompt Design &amp; Iteration (3-2)"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- BEING-PREPARED-BANNER --&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning appearance="simple"}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🚧 Being prepared</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The <span class="co">[</span><span class="ot">syllabus</span><span class="co">](/syllabus/index.md)</span> and <span class="co">[</span><span class="ot">readings</span><span class="co">](/syllabus/readings.md)</span> are ready now.</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>By the end of this session, you will be able to:</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Get and store a **Gemini API key** (Colab Secrets) and make **reproducible** calls (<span class="in">`temperature=0`</span>, <span class="in">`seed`</span>).</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Map the prompt components onto a classification prompt** — recasting Huang &amp; Mizumoto's *Task / Criteria / "My paragraph"* structure as the CEFR prompt (directive = classify; additional information = level descriptors; input = the sentence; output formatting = return only the label).</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Run the **zero-shot → few-shot → chain-of-thought** progression on CEFR, re-evaluating each on a validation set, and score the final prompt **once** on the held-out test set.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Prompt for **structured output** and recognise **JSON** as the <span class="in">`{id, text, label}`</span> data format.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**From feedback to classification** — the same prompt components from <span class="co">[</span><span class="ot">Session 7</span><span class="co">](session-07.md)</span>, now on a new task: directive = classify, additional information = the level descriptors, input = the sentence, output formatting = return only the label.</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Your Gemini API key** — get one and store it in Colab Secrets, in four steps. Why a key is needed at all, and the two separate rate limits that govern how fast you can call.</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Run classification in Colab** — two files with two purposes: tune every prompt on the 24-item validation set, and keep the 72-item test set for one final run. Then three rounds: **zero-shot**, **few-shot**, **chain-of-thought**, recording macro-F1 on validation after each.</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Evaluate the outputs** — read the per-class report rather than the average alone, since one level with F1 near zero drags macro-F1 down and the report shows you which. Then the held-out run, once, on the 72 items.</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Structured output** — ask the model to return JSON rather than a bare label, which is the same <span class="in">`{id, text, label}`</span> shape from Day 1 in a format code can read.</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>Expect the held-out score to come out **lower** than your validation score. That gap is the expected effect of having chosen the prompt by looking at validation results, not a mistake.</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 3 reading (Huang &amp; Mizumoto, 2025; Kim &amp; Lu, 2024) in <span class="co">[</span><span class="ot">Session 7</span><span class="co">](session-07.md)</span> and on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Notebook not yet finalized:</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">- Notebook (tutorial + Corpus Lab): [`day3_prompt_design.ipynb`](../../notebooks/day3_prompt_design.ipynb) — zero-shot → few-shot → chain-of-thought on the CEFR task —</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design.ipynb)</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Further reading: <span class="co">[</span><span class="ot">Mini-project starter tracks</span><span class="co">](../../resources/datasets/mini-project-tracks.md)</span> (including the discourse-move / Kim &amp; Lu replication track)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 8 slides](../../slides/slides-session-08.html){target="_blank"} --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🚧 Being prepared</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>This page is being finalized ahead of the course (**Aug 3–7, 2026**) and may be incomplete or change before your session. The <span class="co">[</span><span class="ot">syllabus</span><span class="co">](/syllabus/index.md)</span> and <span class="co">[</span><span class="ot">readings</span><span class="co">](/syllabus/readings.md)</span> are ready now.</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Learning objectives</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>By the end of this session, you will be able to:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Get and store a **Gemini API key** (Colab Secrets) and make **reproducible** calls (<span class="in">`temperature=0`</span>, <span class="in">`seed`</span>).</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Map the prompt components onto a classification prompt** — recasting Huang &amp; Mizumoto's *Task / Criteria / "My paragraph"* structure as the CEFR prompt (directive = classify; additional information = level descriptors; input = the sentence; output formatting = return only the label).</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Run the **zero-shot → few-shot → chain-of-thought** progression on CEFR, re-evaluating each on a validation set, and score the final prompt **once** on the held-out test set.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Prompt for **structured output** and recognise **JSON** as the <span class="in">`{id, text, label}`</span> data format.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agenda</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**From feedback to classification** — the same prompt components from <span class="co">[</span><span class="ot">Session 7</span><span class="co">](session-07.md)</span>, now on a new task: directive = classify, additional information = the level descriptors, input = the sentence, output formatting = return only the label.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Your Gemini API key** — get one and store it in Colab Secrets, in four steps. Why a key is needed at all, and the two separate rate limits that govern how fast you can call.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Run classification in Colab** — two files with two purposes: tune every prompt on the 24-item validation set, and keep the 72-item test set for one final run. Then three rounds: **zero-shot**, **few-shot**, **chain-of-thought**, recording macro-F1 on validation after each.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Evaluate the outputs** — read the per-class report rather than the average alone, since one level with F1 near zero drags macro-F1 down and the report shows you which. Then the held-out run, once, on the 72 items.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Structured output** — ask the model to return JSON rather than a bare label, which is the same <span class="in">`{id, text, label}`</span> shape from Day 1 in a format code can read.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>Expect the held-out score to come out **lower** than your validation score. That gap is the expected effect of having chosen the prompt by looking at validation results, not a mistake.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>No new reading for this session — see the Day 3 reading (Huang &amp; Mizumoto, 2025; Kim &amp; Lu, 2024) in <span class="co">[</span><span class="ot">Session 7</span><span class="co">](session-07.md)</span> and on the <span class="co">[</span><span class="ot">Readings</span><span class="co">](../../syllabus/readings.md)</span> page.</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slides &amp; Colab</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Notebook not yet finalized:</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">- Notebook (tutorial + Corpus Lab): [`day3_prompt_design.ipynb`](../../notebooks/day3_prompt_design.ipynb) — zero-shot → few-shot → chain-of-thought on the CEFR task —</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design.ipynb)</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>Notebook (Session 8): <span class="co">[</span><span class="ot">`day2-s5_gold_standard_construction.ipynb`</span><span class="co">](../../notebooks/sources/notebooks/day3_prompt_design.ipynb)</span> —</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/sources/notebooks/day3_prompt_design.ipynb)</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Slides: [Session 8 slides](../../slides/slides-session-08.html){target="_blank"} --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

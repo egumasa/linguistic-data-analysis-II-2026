@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Day 3 · Prompt design &amp; iteration – Linguistic Data Analysis II (Summer 2026)</title>
+<title>day3_prompt_design – Linguistic Data Analysis II (Summer 2026)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -389,7 +389,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link active" data-scroll-target="#how-to-use-this-notebook">How to use this notebook</a></li>
+  <li><a href="#day-3-prompt-design-iteration" id="toc-day-3-prompt-design-iteration" class="nav-link active" data-scroll-target="#day-3-prompt-design-iteration">Day 3 · Prompt design &amp; iteration</a>
+  <ul class="collapse">
+  <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link" data-scroll-target="#how-to-use-this-notebook">How to use this notebook</a></li>
   <li><a href="#part-a-tutorial-build-the-pipeline-then-three-ways-to-prompt" id="toc-part-a-tutorial-build-the-pipeline-then-three-ways-to-prompt" class="nav-link" data-scroll-target="#part-a-tutorial-build-the-pipeline-then-three-ways-to-prompt">Part A · Tutorial — build the pipeline, then three ways to prompt</a>
   <ul class="collapse">
   <li><a href="#your-first-api-call-the-minimal-version" id="toc-your-first-api-call-the-minimal-version" class="nav-link" data-scroll-target="#your-first-api-call-the-minimal-version">Your first API call — the minimal version</a></li>
@@ -438,31 +440,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#optional-enforcing-the-shape-with-a-schema" id="toc-optional-enforcing-the-shape-with-a-schema" class="nav-link" data-scroll-target="#optional-enforcing-the-shape-with-a-schema">Optional — enforcing the shape with a schema</a></li>
   <li><a href="#before-you-submit" id="toc-before-you-submit" class="nav-link" data-scroll-target="#before-you-submit">✅ Before you submit</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/egumasa/linguistic-data-analysis-II-2026/blob/main/notebooks/day3_prompt_design.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/egumasa/linguistic-data-analysis-II-2026/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day3_prompt_design.html">Day 3 · Prompt design &amp; iteration</a></li></ol></nav><h1 class="title display-7"></h1></header><div class="quarto-title-block"><div class="quarto-title-tools-only"><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/index.html">Daily notebooks</a></li><li class="breadcrumb-item"><a href="../notebooks/day3_prompt_design.html">Day 3 · Prompt design &amp; iteration</a></li></ol></nav>
-<div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Day 3 · Prompt design &amp; iteration</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<figcaption>Open in Colab</figcaption>
+</figure>
 </div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
+<section id="day-3-prompt-design-iteration" class="level1">
+<h1>Day 3 · Prompt design &amp; iteration</h1>
 <p><em>Day 3 — Linguistic Data Analysis II</em></p>
 <section id="how-to-use-this-notebook" class="level3">
 <h3 class="anchored" data-anchor-id="how-to-use-this-notebook">How to use this notebook</h3>
@@ -1567,6 +1562,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
