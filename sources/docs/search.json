@@ -4393,14 +4393,14 @@
     "href": "slides/slides-session-07.html#agenda",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nRecap of LLM\nA map of prompting strategies — organized into classes, not technique names\nInstruction structuring — the six components of a prompt\nIn-context learning — zero-shot vs. few-shot\nThought generation — chain-of-thought\nThree strategy classes to know about, not run: ensembling · self-criticism · decomposition\nTwo traps: contamination and the validation/test split\n\nOur worked example all session: Huang & Mizumoto (2025) — writing-feedback prompts."
+    "text": "📋 Agenda\n\nRecap of LLM\nA map of prompting strategies — organized into classes, not technique names\nInstruction structuring — the six components of a prompt\nIn-context learning — zero-shot vs. few-shot\nThought generation — chain-of-thought\nThree strategy classes to know about, not run: ensembling · self-criticism · decomposition\nTwo traps: contamination and the validation/test split"
   },
   {
     "objectID": "slides/slides-session-07.html#learning-objectives",
     "href": "slides/slides-session-07.html#learning-objectives",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nName the main classes of prompting strategies — instruction structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism — and say which ones we run this week.\nLocate the components of a prompt — directive · examples · output formatting · style instructions · role · additional information — in a real prompt.\nDistinguish zero-shot from few-shot prompting, judge when examples help, and read a real results table (Kim & Lu, 2024) to see what each contributes and where prompting stops improving.\nExplain chain-of-thought and which tasks it improves.\nExplain the train/test contamination trap and why you tune on validation, report on test.\n\n\n\n\n\n\n\nNote\n\n\nThe message of the day: a prompt has parts you can design, and small changes to those parts change the score."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nName the main classes of prompting strategies — prompt structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism\nLocate the components of a prompt — directive · examples · output formatting · style instructions · role · additional information — in a real prompt.\nCombine the components and strategoies and propose an prompt approach to test.\nDistinguish zero-shot from few-shot prompting, judge when examples help, and read a real results table (Kim & Lu, 2024) to see what each contributes and where prompting stops improving.\nExplain chain-of-thought and which tasks it improves.\nExplain the train/test contamination trap and why you tune on validation, report on test.\n\n\n\n\n\n\n\nNote\n\n\nWe will cover designs of the prompt: Prompt Engineering."
   },
   {
     "objectID": "slides/slides-session-07.html#llm-autoregressive-model",
@@ -4624,7 +4624,7 @@
     "href": "slides/slides-session-07.html#discussion",
     "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
     "section": "Discussion",
-    "text": "Discussion\n\nWhich of the prompt strategies you think is most promising for your task? Why?"
+    "text": "Discussion\n\nWhich of the prompt strategies you think is most promising for your task? Why?\nWhen it comes to annotation, what information do you think is necessary to provide to LLM?"
   },
   {
     "objectID": "slides/slides-session-07.html#two-common-errors-to-avoid-before-you-tune",
@@ -5541,5 +5541,26 @@
       "Daily notebooks",
       "Day 1 · Your first LLM call & reading its data"
     ]
+  },
+  {
+    "objectID": "slides/slides-session-07.html#question",
+    "href": "slides/slides-session-07.html#question",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Question",
+    "text": "Question\n\nWhen do you chat with an AI, how do you instruct it?\nAny format you use?\nAny pattern that you notice working well?"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#warm-up-question",
+    "href": "slides/slides-session-07.html#warm-up-question",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Warm-up Question",
+    "text": "Warm-up Question\n\nWhen do you chat with an AI, how do you instruct it?\n\nAny format you use?\nAny pattern that you notice working well?"
+  },
+  {
+    "objectID": "slides/slides-session-07.html#ensembling-many-runs-and-get-majority-vote",
+    "href": "slides/slides-session-07.html#ensembling-many-runs-and-get-majority-vote",
+    "title": "Session 7: Prompt Design: Zero-shot vs Few-shot",
+    "section": "Ensembling — many runs, and get majority vote",
+    "text": "Ensembling — many runs, and get majority vote\nThe idea: run the model several times, then aggregate the answers.\n\nExample: self-consistency (Wang et al., 2023) — sample N reasoning paths, take the majority label.\nThe same model can give different labels on identical input across runs. That variation threatens reliability (→ S10); ensembling measures it and votes over it.\n\n\nThis is similar to having multiple coders and decide based on majority vote.\n\nWe do not have correct answer for how many and when to stop"
   }
 ]

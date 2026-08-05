@@ -40,10 +40,13 @@ Important: the day notebooks in [sources/notebooks/](sources/notebooks/) and the
 
 Any work on the day notebooks MUST follow
 [planning/course_planning/notebook-coding-principles.md](planning/course_planning/notebook-coding-principles.md).
-In short: **the `.ipynb` files are the source — edit them directly.** 411 of the 430 cells
-are ordinary and stay exactly as you leave them.
+In short: **the `.ipynb` files are the source — edit them directly.** 495 of the 518 cells
+are ordinary and stay exactly as you leave them. One whole file is the further exception:
+`day3_prompt_design_answers.ipynb` is derived from `day3_prompt_design.ipynb` by
+`_build_answers.py` — never edit it directly; edit the fill-in notebook and re-run that
+script.
 
-The 19 exceptions are the 📦 Setup cell and each 🔧 Library cell. They say so in their own
+The 23 generated cells are the 📦 Setup cell and each 🔧 Library cell. They say so in their own
 second line, and `_sync_notebooks.py` rewrites them, so an edit typed into one is
 replaced. They exist because `load_gold` appears in four notebooks (`split_pool` /
 `show_errors` are Day 3 only), and because the Setup cell's import line is computed from

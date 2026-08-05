@@ -120,6 +120,9 @@ from google.colab import ai      # Colab's built-in Gemini — nothing to set up
 
 # The reproducible API backend (Day 3+): key preferred, colab.ai fallback, plus a
 # rate-limit guard (pacing + retry) — walked through piece by piece in Day 3.
+# Three defs on purpose: _resolve_gemini_key, _raw_generate_text (one per backend
+# branch), and generate_text. The error checks are inline, so the whole path from
+# "run the cell" to "call the model" reads top to bottom.
 API_BACKEND = '''# --- LLM backend: Gemini API when a key is set, else colab.ai demo ------------
 MODEL_ID = "gemini-3.1-flash-lite"   # pinned model for the reproducible (API) backend
 
@@ -139,82 +142,56 @@ def _resolve_gemini_key() -> str | None:
         pass                                    # not in Colab, or secret not set
     return os.environ.get("GEMINI_API_KEY")     # last resort: an environment variable
 
-### Step 2: build the reproducible backend around that key ###
-def _make_api_backend(key: str) -> tuple:
-    """Reproducible backend: Gemini API with temperature=0 + a fixed seed.
-
-    Args:
-        key: your Gemini API key.
-
-    Returns:
-        Two things: the function that calls the model, and a label to print.
-    """
+### Step 2: pick a backend — your API key if you have one, else Colab's demo model ###
+_key = _resolve_gemini_key()
+if _key:
     from google import genai
     from google.genai import types
-    client = genai.Client(api_key=key)         # your own connection to the API
+    _client = genai.Client(api_key=_key)       # your own connection to the API
 
-    def _call(prompt: str, schema: dict | None = None) -> str:
+    def _raw_generate_text(prompt: str, json_reply: bool = False,
+                           schema: dict | None = None) -> str:
         # temperature=0 + a fixed seed = the same prompt gives the same answer every
-        # run, which is what makes the autograded Corpus Labs reproducible. A schema
-        # turns on structured output: the reply comes back as JSON of that shape.
-        if schema is None:
-            cfg = types.GenerateContentConfig(temperature=0, seed=42)
-        else:
+        # run, which is what makes the autograded Corpus Labs reproducible.
+        # json_reply=True turns on JSON mode: the reply is valid JSON, in whatever
+        # shape the prompt asks for. A schema goes further and enforces one shape.
+        if schema is not None:
             cfg = types.GenerateContentConfig(temperature=0, seed=42,
                                               response_mime_type="application/json",
                                               response_schema=schema)
-        return client.models.generate_content(model=MODEL_ID, contents=prompt,
-                                              config=cfg).text   # prompt in, text out
-    return (_call, f"Gemini API ({MODEL_ID}, temperature=0, seed=42)")  # fn + a label
+        elif json_reply:
+            cfg = types.GenerateContentConfig(temperature=0, seed=42,
+                                              response_mime_type="application/json")
+        else:
+            cfg = types.GenerateContentConfig(temperature=0, seed=42)
+        return _client.models.generate_content(model=MODEL_ID, contents=prompt,
+                                               config=cfg).text  # prompt in, text out
+    _backend = f"Gemini API ({MODEL_ID}, temperature=0, seed=42)"
+    _min_interval = 4.4    # keeps us under gemini-3.1-flash-lite's 15-per-minute cap
+else:
+    try:
+        from google.colab import ai            # Colab's built-in Gemini — no key
 
-# ---- keeps us from calling the model faster than the free tier allows ----------
-# (explained step by step in Day 3, right after this cell — the short version:
-#  wait a bit between calls, and if we still get told to slow down, wait longer
-#  and try again, unless the message says we are out of quota for the whole day.)
+        def _raw_generate_text(prompt: str, json_reply: bool = False,
+                               schema: dict | None = None) -> str:
+            # colab.ai has no JSON mode and no schemas — both requests are ignored
+            # here, so replies are not guaranteed JSON and run_prompt logs "??" for
+            # ones it cannot read. Another reason Day 3 asks for a key.
+            return ai.generate_text(prompt)
+        _backend = "Colab Gemini (demo, non-reproducible)"
+        _min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively
+    except ImportError:        # no key AND not in Colab — nothing to call
+        raise RuntimeError(
+            "No LLM backend found. Run this notebook in Google Colab (free built-in "
+            "Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets "
+            "panel, or as an environment variable when running locally. "
+            "See resources/tools/gemini-api-key.md.")
 
-### Step 3: read the error message to work out WHICH kind of failure this is ###
-def _looks_like_rate_limit(error: Exception) -> bool:
-    """Does this error mean "you are going too fast", rather than a real bug?
-
-    Args:
-        error: the exception the API call raised.
-
-    Returns:
-        True when the message looks like a rate limit.
-    """
-    text = str(error).lower()                   # the error, as lowercase text
-    return any(s in text for s in               # true if ANY of these phrases appear
-               ["429", "resource_exhausted", "rate limit", "quota", "too many requests"])
-
-def _looks_like_daily_quota(error: Exception) -> bool:
-    """Is this the PER-DAY cap? Those don't clear by waiting a few seconds.
-
-    Args:
-        error: the exception the API call raised.
-
-    Returns:
-        True when the message names a per-day limit.
-    """
-    text = str(error).lower()
-    return "per day" in text or "perday" in text.replace(" ", "")
-
-def _suggested_delay(error: Exception, fallback: float) -> float:
-    """The server often says "please retry in 7.2s" — obey it if it did.
-
-    Args:
-        error: the exception the API call raised.
-        fallback: how long to wait when the server named no delay.
-
-    Returns:
-        Seconds to wait before trying again.
-    """
-    m = re.search(r"retry in ([0-9]+(?:\\.[0-9]+)?)s", str(error).lower())
-    return float(m.group(1)) + 1.0 if m else fallback   # +1s cushion, else our guess
-
-### Step 4: the one function you call all week — pace, ask, and retry if told to ###
+### Step 3: the one function you call all week — pace, ask, and retry if told to ###
 _last_call_time = 0.0   # generate_text remembers & updates this with `global`
 
-def generate_text(prompt: str, max_retries: int = 5, schema: dict | None = None) -> str:
+def generate_text(prompt: str, max_retries: int = 5, json_reply: bool = False,
+                  schema: dict | None = None) -> str:
     """Send a prompt to the model and give back its reply.
 
     It waits between calls so we stay under the free tier's speed limit, and tries
@@ -223,10 +200,14 @@ def generate_text(prompt: str, max_retries: int = 5, schema: dict | None = None)
     Args:
         prompt: the text to send to the model.
         max_retries: how many times to try again after a rate-limit message.
-        schema: the reply shape to request (structured output). None = free text.
+        json_reply: True asks for JSON mode — the reply is valid JSON; say the
+            shape you want in the prompt itself.
+        schema: a reply shape to enforce (the optional last section of Day 3).
+            None = nothing enforced.
 
     Returns:
-        The model's reply, as text — JSON text when a schema was given.
+        The model's reply, as text — JSON text when json_reply is True or a
+        schema was given.
 
     Raises:
         RuntimeError: when the daily quota is used up, or after the last retry.
@@ -241,40 +222,20 @@ def generate_text(prompt: str, max_retries: int = 5, schema: dict | None = None)
             time.sleep(wait)                    # pause so we stay under the speed limit
         try:
             _last_call_time = time.monotonic()  # note the time of this attempt
-            return _raw_generate_text(prompt, schema)   # success — hand the reply back
+            return _raw_generate_text(prompt, json_reply, schema)   # success — hand the reply back
         except Exception as error:
-            if not _looks_like_rate_limit(error):
-                raise                                   # a real bug — don't hide it
-            if _looks_like_daily_quota(error):          # out of fuel for today
+            text = str(error).lower()           # the error message, as lowercase text
+            if not ("429" in text or "quota" in text or "rate limit" in text):
+                raise                           # a real bug — don't hide it
+            if "per day" in text:               # the PER-DAY cap — waiting won't help
                 raise RuntimeError(
                     "Daily quota used up for today — waiting won't help until it "
                     "resets. Come back tomorrow, or ask your instructor.") from error
             if attempt == max_retries:
-                raise                                   # we've been patient enough
+                raise                           # we've been patient enough
             print(f"  (rate limited — waiting before trying again, attempt {attempt+1})")
-            # wait longer each time round (attempt+2), unless the server named a delay
-            time.sleep(_suggested_delay(error, _min_interval * (attempt + 2)))
-    raise RuntimeError("Still rate-limited after several tries.")
-
-### Step 5: pick a backend — your API key if you have one, else Colab's demo model ###
-# Prefer the API key when set (reproducible); else fall back to colab.ai (demo).
-_key = _resolve_gemini_key()
-if _key:
-    _raw_generate_text, _backend = _make_api_backend(_key)   # reproducible: key + seed
-    _min_interval = 4.4     # keeps us under gemini-3.1-flash-lite's 15-requests/minute cap
-else:
-    try:
-        from google.colab import ai            # Colab's built-in Gemini — no key
-        # colab.ai has no structured output, so the schema is ignored here — another
-        # reason Day 3 asks for a key: without one, replies are not guaranteed JSON.
-        _raw_generate_text, _backend = (lambda p, schema=None: ai.generate_text(p)), "Colab Gemini (demo, non-reproducible)"
-        _min_interval = 13.2   # colab.ai publishes no rate limit — pace conservatively
-    except ImportError:        # no key AND not in Colab — nothing to call
-        raise RuntimeError(
-            "No LLM backend found. Run this notebook in Google Colab (free built-in "
-            "Gemini, no key needed), or set GEMINI_API_KEY — in Colab via the Secrets "
-            "panel, or as an environment variable when running locally. "
-            "See resources/tools/gemini-api-key.md.")'''
+            time.sleep(_min_interval * (attempt + 2))   # wait longer each time round
+    raise RuntimeError("Still rate-limited after several tries.")'''
 
 
 def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
@@ -302,7 +263,7 @@ def setup_cell(backend=None, lib_names=(), gold_url=None, gold_comment=None,
     lib_names = set(lib_names)
     simple = []                                   # single-line `import x` modules
     if backend == "api":
-        simple += ["os", "re", "time"]
+        simple += ["os", "time"]   # no `re`: the backend's error checks are substring tests
     if sampling or "split_pool" in lib_names:
         simple += ["random"]
     # backend == "demo" needs no imports at all — the colab.ai import is in DEMO_BACKEND.
@@ -462,30 +423,30 @@ def load_gold(url_or_path: str) -> list[dict[str, str]]:
 # === run_prompt :: run_prompt(prompt, gold) → predictions ===
 # Day 3 defines run_prompt in a visible cell, built up on screen; this section is the
 # shippable copy and must say the same thing. Edit both or neither.
-# The default reply shape: a JSON object with one "label" field (structured output).
-LABEL_SCHEMA = {"type": "OBJECT",
-                "properties": {"label": {"type": "STRING"}},
-                "required": ["label"]}
-
-def run_prompt(prompt: str, gold: list[dict[str, str]],
-               schema: dict = LABEL_SCHEMA) -> list[str]:
+# The reply shape is asked for in the prompt itself (a line like
+# `Reply as JSON, like: {{"label": "B1"}}`); json_reply=True guarantees it parses.
+def run_prompt(prompt: str, gold: list[dict[str, str]]) -> list[str]:
     """Send each item's `text` to the LLM via {text}, collect predicted labels.
 
     Args:
-        prompt: your prompt, containing {text} where the sentence should go.
+        prompt: your prompt, containing {text} where the sentence should go. It
+            should ask for a JSON reply with a "label" field — see Part A, step 1.
         gold: the items to label, each with a "text" key.
-        schema: the reply shape to request; the default asks for {"label": ...}.
 
     Returns:
-        One predicted label per gold item, in the same order.
+        One predicted label per gold item, in the same order. "??" marks a reply
+        no label could be read out of.
 
     Example:
         >>> predictions = run_prompt(PROMPT, valid)
     """
     predictions = []                                  # answers, in gold order
     for i, item in enumerate(gold, 1):                # i counts 1, 2, 3, ...
-        reply = generate_text(prompt.format(text=item["text"]), schema=schema)
-        answer = json.loads(reply)                    # JSON text -> a Python dict
+        reply = generate_text(prompt.format(text=item["text"]), json_reply=True)
+        try:
+            answer = json.loads(reply)                # JSON text -> a Python dict
+        except json.JSONDecodeError:                  # not JSON (keyless backend)
+            answer = {}
         label = answer.get("label", "??")             # "??" = no label in the reply
         if label not in LEVELS:                       # not one of the six levels?
             label = "??"
