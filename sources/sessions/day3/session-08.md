@@ -42,7 +42,7 @@ No new reading for this session — see the Day 3 reading (Huang & Mizumoto, 202
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design.ipynb)
 -->
 
-Notebook (Session 8): [`day2-s5_gold_standard_construction.ipynb`](../../notebooks/sources/notebooks/day3_prompt_design.ipynb) —
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/sources/notebooks/day3_prompt_design.ipynb)
+Notebook (Session 8): [`day3_prompt_design.ipynb`](../../notebooks/day3_prompt_design.ipynb) —
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day3_prompt_design.ipynb)
 
 <!-- Slides: [Session 8 slides](../../slides/slides-session-08.html){target="_blank"} -->
