@@ -220,14 +220,24 @@
 <li>Three strategy classes to <strong>know about</strong>, not run: ensembling · self-criticism · decomposition</li>
 <li>Two traps: <strong>contamination</strong> and the <strong>validation/test split</strong></li>
 </ul>
-<p>Our worked example all session: <strong>Huang &amp; Mizumoto (2025)</strong> — writing-feedback prompts.</p>
 </section>
-<section id="learning-objectives" class="slide level2">
+<section id="warm-up-question" class="slide level2">
+<h2>Warm-up Question</h2>
+<ul>
+<li><p>When do you chat with an AI, how do you instruct it?</p>
+<ul>
+<li>Any format you use?</li>
+<li>Any pattern that you notice working well?</li>
+</ul></li>
+</ul>
+</section>
+<section id="learning-objectives" class="slide level2 smaller">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
 <ul>
-<li><strong>Name the main classes of prompting strategies</strong> — instruction structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism — and say which ones we run this week.</li>
+<li><strong>Name the main classes of prompting strategies</strong> — prompt structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism</li>
 <li><strong>Locate the components of a prompt</strong> — <em>directive · examples · output formatting · style instructions · role · additional information</em> — in a real prompt.</li>
+<li><strong>Combine the components and strategoies and propose an prompt approach to test</strong>.</li>
 <li>Distinguish <strong>zero-shot</strong> from <strong>few-shot</strong> prompting, judge <strong>when examples help</strong>, and read a real results table (Kim &amp; Lu, 2024) to see what each contributes and where prompting stops improving.</li>
 <li>Explain <strong>chain-of-thought</strong> and which tasks it improves.</li>
 <li>Explain the <strong>train/test contamination</strong> trap and why you <strong>tune on validation, report on test</strong>.</li>
@@ -241,7 +251,7 @@
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>The message of the day: <em>a prompt has parts you can design, and small changes to those parts change the score.</em></p>
+<p>We will cover designs of the prompt: <code>Prompt Engineering</code>.</p>
 </div>
 </div>
 </div>
@@ -870,8 +880,8 @@ You will start your annotation with the given input text.
 <h1>More prompting strategies</h1>
 
 </section>
-<section id="ensembling-many-runs-one-vote" class="slide level2">
-<h2>Ensembling — many runs, one vote</h2>
+<section id="ensembling-many-runs-and-get-majority-vote" class="slide level2">
+<h2>Ensembling — many runs, and get majority vote</h2>
 <p>The idea: run the model <strong>several times</strong>, then aggregate the answers.</p>
 <ul>
 <li>Example: <code>self-consistency</code> (Wang et al., 2023) — sample N reasoning paths, take the <strong>majority label</strong>.</li>
@@ -1002,7 +1012,8 @@ You will start your annotation with the given input text.
 <section id="discussion" class="slide level2">
 <h2>Discussion</h2>
 <ul>
-<li>Which of the prompt strategies you think is most promising for your task? Why?</li>
+<li><p>Which of the prompt strategies you think is most promising for your task? Why?</p></li>
+<li><p>When it comes to annotation, what information do you think is necessary to provide to LLM?</p></li>
 </ul>
 </section>
 <section id="two-common-errors-to-avoid-before-you-tune" class="slide level2">

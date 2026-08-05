@@ -27,21 +27,29 @@ metadata-files:
 - Three strategy classes to **know about**, not run: ensembling · self-criticism · decomposition
 - Two traps: **contamination** and the **validation/test split**
 
-Our worked example all session: **Huang & Mizumoto (2025)** — writing-feedback prompts.
+## Warm-up Question
 
-## 🎯 Learning Objectives
+- When do you chat with an AI, how do you instruct it?
+
+  - Any format you use?
+  - Any pattern that you notice working well?
+
+
+## 🎯 Learning Objectives {.smaller}
 
 By the end of this session, you will be able to:
 
-- **Name the main classes of prompting strategies** — instruction structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism — and say which ones we run this week.
+- **Name the main classes of prompting strategies** — prompt structuring · in-context learning · thought generation · decomposition · ensembling · self-criticism 
 - **Locate the components of a prompt** — *directive · examples · output formatting · style instructions · role · additional information* — in a real prompt.
+- **Combine the components and strategoies and propose an prompt approach to test**.
 - Distinguish **zero-shot** from **few-shot** prompting, judge **when examples help**, and read a real results table (Kim & Lu, 2024) to see what each contributes and where prompting stops improving.
 - Explain **chain-of-thought** and which tasks it improves.
 - Explain the **train/test contamination** trap and why you **tune on validation, report on test**.
 
 ::: {.callout-note}
-The message of the day: *a prompt has parts you can design, and small changes to those parts change the score.*
+We will cover designs of the prompt: `Prompt Engineering`.
 :::
+
 
 
 # Recapping LLM mechanics
@@ -561,7 +569,7 @@ One more detail: even at temperature 0 with a fixed seed, the output varied acro
 
 # More prompting strategies 
 
-## Ensembling — many runs, one vote
+## Ensembling — many runs, and get majority vote
 
 The idea: run the model **several times**, then aggregate the answers.
 
@@ -670,7 +678,7 @@ A reference for all of these: **[promptingguide.ai/techniques](https://www.promp
 
 - Which of the prompt strategies you think is most promising for your task? Why?
 
-
+- When it comes to annotation, what information do you think is necessary to provide to LLM? 
 
 ## Two common errors to avoid before you tune
 
