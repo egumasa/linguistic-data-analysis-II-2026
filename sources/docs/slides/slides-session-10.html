@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Masaki EGUCHI, Ph.D.">
-  <title>Linguistic Data Analysis II (Summer 2026) – Session 10: Methodology — Reproducibility, LLM Limits &amp; Ethics</title>
+  <title>Linguistic Data Analysis II (Summer 2026) – Session 10: Using LLM in your research</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,72 +28,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-      }
-    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-    div.sourceCode
-      { color: #24292e;  }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #24292e; } /* Normal */
-    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
-    code span.an { color: #6a737d; } /* Annotation */
-    code span.at { color: #d73a49; } /* Attribute */
-    code span.bn { color: #005cc5; } /* BaseN */
-    code span.bu { color: #d73a49; } /* BuiltIn */
-    code span.cf { color: #d73a49; } /* ControlFlow */
-    code span.ch { color: #032f62; } /* Char */
-    code span.cn { color: #005cc5; } /* Constant */
-    code span.co { color: #6a737d; } /* Comment */
-    code span.cv { color: #6a737d; } /* CommentVar */
-    code span.do { color: #6a737d; } /* Documentation */
-    code span.dt { color: #d73a49; } /* DataType */
-    code span.dv { color: #005cc5; } /* DecVal */
-    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
-    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
-    code span.fl { color: #005cc5; } /* Float */
-    code span.fu { color: #6f42c1; } /* Function */
-    code span.im { color: #032f62; } /* Import */
-    code span.in { color: #6a737d; } /* Information */
-    code span.kw { color: #d73a49; } /* Keyword */
-    code span.op { color: #24292e; } /* Operator */
-    code span.ot { color: #6f42c1; } /* Other */
-    code span.pp { color: #d73a49; } /* Preprocessor */
-    code span.re { color: #6a737d; } /* RegionMarker */
-    code span.sc { color: #005cc5; } /* SpecialChar */
-    code span.ss { color: #032f62; } /* SpecialString */
-    code span.st { color: #032f62; } /* String */
-    code span.va { color: #e36209; } /* Variable */
-    code span.vs { color: #032f62; } /* VerbatimString */
-    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-9cd7da8a39d11504fbb2f1ac3cebc7bd.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -196,104 +130,74 @@
 
 <section id="title-slide" class="center quarto-title-block">
   <p class="kicker">Linguistic Data Analysis II · Day 4</p>
-  <h1 class="title">Session 10: Methodology — Reproducibility, LLM Limits &amp; Ethics</h1>
+  <h1 class="title">Session 10: Using LLM in your research</h1>
   <p class="subtitle">Day 4 · Methodology &amp; Pipeline Assembly (4-1)</p>
   <div class="title-meta">
     <p class="author">Masaki EGUCHI, Ph.D.</p>
     <p class="institute">Tohoku University · Summer 2026</p>
   </div>
 </section>
-<section>
-<section id="session-10-reproducibility-limits-ethics" class="title-slide slide level1 center">
-<h1>Session 10: Reproducibility, Limits &amp; Ethics</h1>
-
-</section>
 <section id="agenda" class="slide level2">
 <h2>📋 Agenda</h2>
-<p>For three days you have checked an LLM’s output against a gold standard. Today: <strong>how to report the result honestly.</strong></p>
-<ul>
-<li><strong>Reproducibility</strong> — pin · log · <code>temperature=0</code> + seed · <strong>freeze</strong></li>
-<li><strong>Limits</strong> — hallucination, data contamination, stochasticity</li>
-<li><strong>Ethics</strong> — privacy, authorship, and what a licence actually asks of you</li>
-<li><strong>The reporting checklist</strong> — the six sections you will hand in</li>
-</ul>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>This is the switch from tutorial mode to <strong>project mode</strong>. Everything after this session is your own study.</p>
-</div>
-</div>
-</div>
+<ol type="1">
+<li><strong>Abdurahman et al.&nbsp;(2025)</strong> — principles for evaluating LLM research</li>
+<li><strong>Mizumoto (2025)</strong> — critical in-class reading</li>
+<li><strong>Your mini-project</strong> — make and report defensible decisions</li>
+</ol>
 </section>
 <section id="learning-objectives" class="slide level2 smaller">
 <h2>🎯 Learning Objectives</h2>
 <p>By the end of this session, you will be able to:</p>
 <ul>
-<li>Name the four practices that make an LLM result reproducible, and apply them to your own run.</li>
-<li>Explain why <code>temperature=0</code> is <strong>not sufficient</strong>, and what freezing your predictions adds.</li>
-<li>Say which of hallucination, contamination and stochasticity your own track is exposed to.</li>
-<li>Apply the five-section reporting checklist — including saying what your numbers do <strong>not</strong> show.</li>
+<li>Distinguish <strong>reproducibility</strong>, <strong>robustness</strong>, and <strong>validity</strong>.</li>
+<li>Critically evaluate the methodology of an LLM-based annotation study.</li>
+<li>Apply the evaluation principles to your mini-project.</li>
 </ul>
-</section></section>
-<section>
-<section id="reproducibility" class="title-slide slide level1 center">
-<h1>Reproducibility</h1>
-
 </section>
-<section id="the-problem-stated-plainly" class="slide level2">
-<h2>The problem, stated plainly</h2>
-<p>You run your prompt and get F1 = 0.62. Tomorrow you run the same prompt and get <strong>0.58</strong>.</p>
-<div class="fragment">
-<p>Which number goes in the report?</p>
-</div>
-<div class="fragment">
-<p>Neither, until you can say <em>why they differ</em>. A result you cannot reproduce is not yet a finding.</p>
-</div>
+<section id="four-principles-for-using-llms-in-research" class="slide level2">
+<h2>Four principles for using LLMs in research</h2>
+<ol type="1">
+<li><strong>Document the process</strong>
+<ul>
+<li>model, version, access date, parameters, prompt, code, and data</li>
+</ul></li>
+<li><strong>Validate against appropriate evidence</strong>
+<ul>
+<li>compare LLM outputs with independently produced human judgments</li>
+</ul></li>
+<li><strong>Test robustness</strong>
+<ul>
+<li>examine reasonable changes in prompts, examples, settings, and samples</li>
+</ul></li>
+<li><strong>Limit the claim</strong>
+<ul>
+<li>state exactly what the evidence supports—and what it does not</li>
+</ul></li>
+</ol>
 </section>
-<section id="four-practices" class="slide level2">
-<h2>Four practices</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Practice</th>
-<th>Why</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td><strong>Pin the model + version</strong></td>
-<td><code>gemini-3.1-flash-lite</code> ≠ <code>gemini-2.5-flash</code>. Models are silently retired and replaced.</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td><strong>Log the prompt</strong></td>
-<td>as a <em>file</em>, versioned — not a string you overwrote</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td><strong><code>temperature=0</code> + a fixed seed</strong></td>
-<td>removes the sampling randomness you control</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td><strong>Save the predictions to a file</strong></td>
-<td>removes the variation you <em>cannot</em> control</td>
-</tr>
-</tbody>
-</table>
+<section id="quality-of-studies" class="slide level2">
+<h2>Quality of studies</h2>
+<ul>
+<li><strong>Reproducibility</strong>: can the exact analysis be reconstructed?</li>
+<li><strong>Robustness</strong>: does the conclusion survive reasonable changes?</li>
+<li><strong>Validity</strong>: does the output measure the intended construct?</li>
+</ul>
+</section>
+<section id="reproducibility" class="slide level2">
+<h2>Reproducibility</h2>
+<p>What is reproducibility?</p>
+<div class="fragment">
+<p>Record and preserve:</p>
+<ul>
+<li>exact model and version</li>
+<li>date of access</li>
+<li>complete prompt and examples</li>
+<li>model parameters</li>
+<li>sampling procedure and seed</li>
+<li>code and data-processing decisions</li>
+<li>original, unedited model outputs</li>
+</ul>
+</div>
 </section>
 <section id="why-temperature0-is-not-enough" class="slide level2">
 <h2>Why <code>temperature=0</code> is not enough</h2>
@@ -310,128 +214,233 @@
 <p>So a hosted LLM is only <strong><em>best-effort</em> reproducible</strong>. You cannot fix this; it is a property of using a hosted service.</p>
 </div>
 </section>
-<section id="the-solution-run-once-then-save-the-output" class="slide level2">
-<h2>The solution: run once, then save the output</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>predictions <span class="op">=</span> run_prompt(PROMPT, gold)          <span class="co"># ← the ONE run</span></span>
-<span id="cb1-2"><a></a>save_predictions(predictions, <span class="st">"outputs/cefr_groupA_predictions.json"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>From then on, every number comes out of <strong>that file</strong>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>pred_final <span class="op">=</span> load_predictions(<span class="st">"outputs/cefr_groupA_predictions.json"</span>)</span>
-<span id="cb2-2"><a></a>evaluate(gold, pred_final, ordered<span class="op">=</span><span class="va">True</span>)        <span class="co"># the same answer every time</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>You did this on <strong>Day 2</strong> — you loaded a frozen predictions file we made for you, which is why the whole class got identical numbers. Now you make your own.</p>
-</div>
-</section>
-<section id="what-freezing-gives-you" class="slide level2">
-<h2>What freezing gives you</h2>
+<section id="robustness" class="slide level2">
+<h2>Robustness</h2>
+<p>Does the conclusion survive <strong>methods effect</strong>?</p>
+<p>Possible changes include:</p>
 <ul>
-<li><strong>A stable number</strong> — your reported F1 does not change while you write the report.</li>
-<li><strong>No quota use</strong> — re-running the analysis makes no further model calls.</li>
-<li><strong>Recomputable by others</strong> — anyone, including whoever grades it, can recompute your numbers <em>from exactly the outputs you saw</em>.</li>
-</ul>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Important</strong></p>
-</div>
-<div class="callout-content">
-<p>The third point is the important one. “Reproducible” does not mean <em>you</em> can get the number again. It means <strong>someone else can.</strong></p>
-</div>
-</div>
-</div>
-</section></section>
-<section>
-<section id="llm-limitations" class="title-slide slide level1 center">
-<h1>LLM limitations</h1>
-
-</section>
-<section id="three-failure-modes" class="slide level2">
-<h2>Three failure modes</h2>
-<p><strong>Hallucination</strong> — the model produces fluent output that is incorrect.</p>
-<p><strong>Data contamination</strong> — the model may have seen your test data in training.</p>
-<p><strong>Stochasticity</strong> — the same input gives different outputs.</p>
-<div class="fragment">
-<p>For a <em>classification</em> task like yours, the first is limited because the label set is closed, and you have just handled the third. <strong>The second is the one that affects your claims.</strong></p>
-</div>
-</section>
-<section id="contamination-why-it-matters-here" class="slide level2">
-<h2>Contamination: why it matters here</h2>
-<p>Every track you can pick uses a <strong>published</strong> dataset.</p>
-<ul>
-<li>CEFR-SP is on GitHub. RAAMove is on GitHub. CaRS-50 is on Mendeley. AutoErrorAnalyzer is on OSF.</li>
-<li>These were all published <em>before</em> the model’s training cutoff.</li>
+<li>prompt wording</li>
+<li>few-shot examples and their order</li>
+<li>model parameters</li>
+<li>repeated runs</li>
+<li>model or model version</li>
+<li>validation sample</li>
 </ul>
 <div class="fragment">
-<p>So when the model labels a sentence correctly, there are two explanations:</p>
+<p>A high score from <strong>one selected configuration</strong> does not show that the result is robust.</p>
+</div>
+</section>
+<section id="what-would-you-vary" class="slide level2">
+<h2>What would you vary?</h2>
+<p>Choose one result from Day 3.</p>
+<p>Discuss which might affect the result most?</p>
 <ol type="1">
-<li>it understands the construct</li>
-<li><strong>it has seen this sentence with this label before</strong></li>
+<li>Prompt wording</li>
+<li>Few-shot examples</li>
+<li>Model run</li>
+<li>Validation sample</li>
 </ol>
-</div>
-<div class="fragment">
-<p>You cannot distinguish these two explanations from your F1 alone. State this in your report.</p>
-</div>
+<p>What result would increase your confidence about robustness?</p>
 </section>
-<section id="what-you-can-honestly-claim" class="slide level2">
-<h2>What you can honestly claim</h2>
+<section id="validity" class="slide level2">
+<h2>Validity</h2>
+<p>Does the evidence support the interpretation we want to make?</p>
+<p>Ask:</p>
+<ul>
+<li>Is the construct clearly defined?</li>
+<li>Does the gold standard represent that construct?</li>
+<li>Are the human judgments sufficiently trustworthy?</li>
+<li>Does the metric answer the research question?</li>
+<li>Are errors systematic for particular categories or texts?</li>
+<li>How far can the result be generalized?</li>
+</ul>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Not claimable</strong></p>
+<p><strong>Warning</strong></p>
 </div>
 <div class="callout-content">
-<p>“Gemini can annotate CEFR level with F1 = 0.62.”</p>
+<p>A reproducible result can still be <strong>invalid</strong>.</p>
 </div>
 </div>
 </div>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Claimable</strong></p>
-</div>
-<div class="callout-content">
-<p>“On 42 items from CEFR-SP, with this prompt and this model version, macro-F1 was 0.62. The corpus is public and predates the model’s training cutoff, so contamination cannot be ruled out.”</p>
-</div>
-</div>
-</div>
-<p>The second sentence is <em>easier to defend</em> and <em>more useful to a reader</em>.</p>
-</section></section>
+</section>
 <section>
 <section id="ethics" class="title-slide slide level1 center">
 <h1>Ethics</h1>
 
 </section>
-<section id="three-things-worth-ten-minutes" class="slide level2">
-<h2>Three things worth ten minutes</h2>
+<section id="ethical-consideration" class="slide level2">
+<h2>Ethical consideration</h2>
 <p><strong>Privacy.</strong> Learner data is people’s writing. ICNALE is licensed for research use only and may not be redistributed — which is why it is excluded from git and from your submission bundle by name.</p>
 <p><strong>Authorship.</strong> The model is a tool, not a co-author. But <em>what it did</em> belongs in your methods: which model, which prompt, which parameters.</p>
 <p><strong>Licences have practical consequences.</strong> CEFR-SP is CC BY-<strong>SA</strong>: anything you redistribute from it inherits share-alike. That is why the template’s data folder carries its own <code>LICENSE</code> file.</p>
 </section>
-<section id="a-limitation-of-your-own-study" class="slide level2">
-<h2>A limitation of your own study</h2>
-<p>You are about to measure a model against a gold standard built by <strong>two of you</strong>, on <strong>40 items</strong>, in <strong>25 minutes</strong>.</p>
-<div class="fragment">
-<p>That is a small gold standard, built quickly, and it contains errors.</p>
-</div>
-<div class="fragment">
-<p>So is most of the published literature. The difference between good and bad work here is not the size of the gold set — it is <strong>whether you say what it was.</strong></p>
-</div>
+<section id="responsible-use-of-learner-data" class="slide level2">
+<h2>Responsible use of learner data</h2>
+<p>Before sharing your project:</p>
+<ul>
+<li>protect private learner writing</li>
+<li>follow the dataset licence</li>
+<li>report how the LLM was used</li>
+<li>do not redistribute restricted data</li>
+</ul>
 </section></section>
-<section>
-<section id="the-reporting-checklist" class="title-slide slide level1 center">
-<h1>The reporting checklist</h1>
+<section id="question" class="title-slide slide level1 center">
+<h1>Question?</h1>
 
 </section>
-<section id="six-sections" class="slide level2">
-<h2>Six sections</h2>
+
+<section>
+<section id="mizumoto-2025---auto-error-analyzer" class="title-slide slide level1 center">
+<h1>Mizumoto (2025) - Auto Error Analyzer</h1>
+
+</section>
+<section id="mizumoto-2025-what-does-the-tool-do" class="slide level2">
+<h2>Mizumoto (2025): What does the tool do?</h2>
+<p><strong>Input:</strong> L2 learner writing</p>
+<p><strong>LLM operations:</strong></p>
+<ol type="1">
+<li>Produce a corrected sentence</li>
+<li>Compare the original and corrected versions</li>
+<li>Identify error instances</li>
+<li>Assign errors to 23 categories</li>
+</ol>
+<p><strong>Output:</strong></p>
+<ul>
+<li>Number and type of errors</li>
+<li>Errors per 100 words</li>
+<li>Errors per T-unit or clause</li>
+</ul>
+</section>
+<section id="the-reported-results" class="slide level2">
+<h2>The reported results</h2>
+<ul>
+<li>Human–tool error-count correlation: <strong>r = .94</strong></li>
+<li>Micro-precision: <strong>.96</strong></li>
+<li>Micro-recall: <strong>.94</strong></li>
+<li>Micro-F1: <strong>.95</strong></li>
+</ul>
+<blockquote>
+<p>How much confidence should we place in these results?</p>
+</blockquote>
+</section>
+<section id="in-class-reading-20-minutes" class="slide level2">
+<h2>In-class reading — 20 minutes</h2>
+<p>Focus on:</p>
+<ul>
+<li><strong>pp.&nbsp;7–11:</strong> tool, prompt, and error-analysis pipeline</li>
+<li><strong>pp.&nbsp;11–13:</strong> validation design and results</li>
+<li><strong>pp.&nbsp;14–15:</strong> limitations and conclusions</li>
+</ul>
+<p>You do not need to read every sentence.</p>
+<p>Prepare to explain your assigned section to the class.</p>
+</section>
+<section id="read-as-a-methodological-reviewer" class="slide level2">
+<h2>Read as a methodological reviewer</h2>
+<h3 id="pair-a-pipeline-pp.-711">Pair A — Pipeline · pp.&nbsp;7–11</h3>
+<p>How does the tool turn corrections into error instances and categories?</p>
+<h3 id="pair-b-human-reference-pp.-1112">Pair B — Human reference · pp.&nbsp;11–12</h3>
+<p>How were human judgments created, compared, and adjudicated?</p>
+<h3 id="pair-c-evaluation-pp.-1213">Pair C — Evaluation · pp.&nbsp;12–13</h3>
+<p>What do <code>r = .94</code> and micro-F1 = <code>.95</code> each demonstrate?</p>
+<h3 id="pair-d-limitations-pp.-1415">Pair D — Limitations · pp.&nbsp;14–15</h3>
+<p>How does the author limit the interpretation and generalizability?</p>
+</section>
+<section id="audit-1-validity" class="slide level2">
+<h2>Audit 1: Validity</h2>
+<ul>
+<li>What counts as an “error”?</li>
+<li>What counts as the same error for humans and the tool?</li>
+<li>Who created the human reference annotations?</li>
+<li>How were disagreements resolved?</li>
+<li>Does aggregate F1 establish accuracy for all 23 categories?</li>
+<li>Does the evaluation distinguish detection from categorization?</li>
+</ul>
+</section>
+<section id="audit-2-robustness" class="slide level2">
+<h2>Audit 2: Robustness</h2>
+<p>Would the conclusion remain similar with:</p>
+<ul>
+<li>another reasonable prompt?</li>
+<li>a different order or choice of examples?</li>
+<li>another model or model version?</li>
+<li>repeated LLM runs?</li>
+<li>another sample of essays?</li>
+<li>writers with other L1s or proficiency levels?</li>
+</ul>
+</section>
+<section id="audit-3-reproducibility" class="slide level2">
+<h2>Audit 3: Reproducibility</h2>
+<p>Can we identify and recover:</p>
+<ul>
+<li>the exact model and hosted endpoint?</li>
+<li>the access date?</li>
+<li>all prompts?</li>
+<li>model parameters?</li>
+<li>the validation sample?</li>
+<li>the sampling seed?</li>
+<li>the output-processing rules?</li>
+<li>the analysis code?</li>
+<li>frozen model outputs?</li>
+</ul>
+</section>
+<section id="our-evaluation-of-mizumoto-2025" class="slide level2">
+<h2>Our evaluation of Mizumoto (2025)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Strength</th>
+<th>Remaining uncertainty</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reproducibility</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Robustness</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Validity</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Generalizability</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>We will complete this table together.</p>
+</section></section>
+<section>
+<section id="apply-the-audit-to-your-project" class="title-slide slide level1 center">
+<h1>Apply the audit to your project</h1>
+
+</section>
+<section id="make-five-decisions" class="slide level2">
+<h2>Make five decisions</h2>
+<p>Discuss and record:</p>
+<ol type="1">
+<li>What exactly counts as an <strong>error match</strong>?</li>
+<li>How will you construct and adjudicate the <strong>human reference</strong>?</li>
+<li>Which metrics will you report, and <strong>why</strong>?</li>
+<li>What will you save so the analysis can be reconstructed?</li>
+<li>What is the strongest limitation on your final claim?</li>
+</ol>
+</section>
+<section id="six-sections-i-expect-in-your-report" class="slide level2">
+<h2>Six sections I expect in your report</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -479,28 +488,6 @@
 </tbody>
 </table>
 <p>Two pages, written <strong>individually</strong>. One study per group, one report per person.</p>
-</section>
-<section id="how-the-report-is-graded" class="slide level2">
-<h2>How the report is graded</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Your F1 is not graded</strong></p>
-</div>
-<div class="callout-content">
-<p>A careful study reporting <strong>F1 = 0.31</strong> with a clear account of <em>why</em> scores higher than a sloppy one reporting <strong>0.82</strong>.</p>
-</div>
-</div>
-</div>
-<div class="fragment">
-<p>The reason is that a number you cannot explain is not a finding, and that distinction is what the whole course is about.</p>
-</div>
-<div class="fragment">
-<p>So pick the track that will teach you something, not the one that will produce a high score. <code>cars50</code> is the hardest track <em>because</em> its own annotators only reached κ ≈ 0.43, which makes it the best track for showing that you can distinguish “the model is wrong” from “the scheme is unclear”.</p>
-</div>
 </section></section>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>

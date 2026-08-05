@@ -1,5 +1,5 @@
 ---
-title: "Session 10: Methodology — Reproducibility, LLM Limits & Ethics"
+title: "Session 10: Using LLM in your research"
 subtitle: "Day 4 · Methodology & Pipeline Assembly (4-1)"
 kicker: "Linguistic Data Analysis II · Day 4"
 format:
@@ -13,52 +13,57 @@ metadata-files:
   - _slides.yml
 ---
 
-# Session 10: Reproducibility, Limits & Ethics
 
 ## 📋 Agenda
 
-For three days you have checked an LLM's output against a gold standard. Today: **how to report the result honestly.**
-
-- **Reproducibility** — pin · log · `temperature=0` + seed · **freeze**
-- **Limits** — hallucination, data contamination, stochasticity
-- **Ethics** — privacy, authorship, and what a licence actually asks of you
-- **The reporting checklist** — the six sections you will hand in
-
-::: {.callout-note}
-This is the switch from tutorial mode to **project mode**. Everything after this session is your own study.
-:::
+1. **Abdurahman et al. (2025)** — principles for evaluating LLM research
+2. **Mizumoto (2025)** — critical in-class reading
+3. **Your mini-project** — make and report defensible decisions
 
 ## 🎯 Learning Objectives {.smaller}
 
 By the end of this session, you will be able to:
 
-- Name the four practices that make an LLM result reproducible, and apply them to your own run.
-- Explain why `temperature=0` is **not sufficient**, and what freezing your predictions adds.
-- Say which of hallucination, contamination and stochasticity your own track is exposed to.
-- Apply the five-section reporting checklist — including saying what your numbers do **not** show.
+- Distinguish **reproducibility**, **robustness**, and **validity**.
+- Critically evaluate the methodology of an LLM-based annotation study.
+- Apply the evaluation principles to your mini-project.
 
-# Reproducibility
+## Four principles for using LLMs in research
 
-## The problem, stated plainly
+1. **Document the process**
+   - model, version, access date, parameters, prompt, code, and data
 
-You run your prompt and get F1 = 0.62. Tomorrow you run the same prompt and get **0.58**.
+2. **Validate against appropriate evidence**
+   - compare LLM outputs with independently produced human judgments
+
+3. **Test robustness**
+   - examine reasonable changes in prompts, examples, settings, and samples
+
+4. **Limit the claim**
+   - state exactly what the evidence supports—and what it does not
+
+## Quality of studies
+
+- **Reproducibility**: can the exact analysis be reconstructed?
+- **Robustness**: does the conclusion survive reasonable changes?
+- **Validity**: does the output measure the intended construct?
+
+## Reproducibility
+
+What is reproducibility?
 
 . . .
 
-Which number goes in the report?
+Record and preserve:
 
-. . .
+- exact model and version
+- date of access
+- complete prompt and examples
+- model parameters
+- sampling procedure and seed
+- code and data-processing decisions
+- original, unedited model outputs
 
-Neither, until you can say *why they differ*. A result you cannot reproduce is not yet a finding.
-
-## Four practices
-
-| | Practice | Why |
-|---|---|---|
-| 1 | **Pin the model + version** | `gemini-3.1-flash-lite` ≠ `gemini-2.5-flash`. Models are silently retired and replaced. |
-| 2 | **Log the prompt** | as a *file*, versioned — not a string you overwrote |
-| 3 | **`temperature=0` + a fixed seed** | removes the sampling randomness you control |
-| 4 | **Save the predictions to a file** | removes the variation you *cannot* control |
 
 ## Why `temperature=0` is not enough
 
@@ -76,83 +81,60 @@ It mostly is. But you are calling a **hosted service**:
 
 So a hosted LLM is only ***best-effort* reproducible**. You cannot fix this; it is a property of using a hosted service.
 
-## The solution: run once, then save the output
 
-```{.python}
-predictions = run_prompt(PROMPT, gold)          # ← the ONE run
-save_predictions(predictions, "outputs/cefr_groupA_predictions.json")
-```
+## Robustness
 
-From then on, every number comes out of **that file**:
+Does the conclusion survive **methods effect**?
 
-```{.python}
-pred_final = load_predictions("outputs/cefr_groupA_predictions.json")
-evaluate(gold, pred_final, ordered=True)        # the same answer every time
-```
+Possible changes include:
 
-. . .
-
-You did this on **Day 2** — you loaded a frozen predictions file we made for you, which is why the whole class got identical numbers. Now you make your own.
-
-## What freezing gives you
-
-- **A stable number** — your reported F1 does not change while you write the report.
-- **No quota use** — re-running the analysis makes no further model calls.
-- **Recomputable by others** — anyone, including whoever grades it, can recompute your numbers *from exactly the outputs you saw*.
-
-::: {.callout-important}
-The third point is the important one. "Reproducible" does not mean *you* can get the number again. It means **someone else can.**
-:::
-
-# LLM limitations
-
-## Three failure modes
-
-**Hallucination** — the model produces fluent output that is incorrect.
-
-**Data contamination** — the model may have seen your test data in training.
-
-**Stochasticity** — the same input gives different outputs.
+- prompt wording
+- few-shot examples and their order
+- model parameters
+- repeated runs
+- model or model version
+- validation sample
 
 . . .
 
-For a *classification* task like yours, the first is limited because the label set is closed, and you have just handled the third. **The second is the one that affects your claims.**
+A high score from **one selected configuration** does not show that the result is robust.
 
-## Contamination: why it matters here
+## What would you vary?
 
-Every track you can pick uses a **published** dataset.
+Choose one result from Day 3.
 
-- CEFR-SP is on GitHub. RAAMove is on GitHub. CaRS-50 is on Mendeley. AutoErrorAnalyzer is on OSF.
-- These were all published *before* the model's training cutoff.
+Discuss which might affect the result most?
 
-. . .
+1. Prompt wording
+2. Few-shot examples
+3. Model run
+4. Validation sample
 
-So when the model labels a sentence correctly, there are two explanations:
+What result would increase your confidence about robustness?
 
-1. it understands the construct
-2. **it has seen this sentence with this label before**
 
-. . .
+## Validity
 
-You cannot distinguish these two explanations from your F1 alone. State this in your report.
+Does the evidence support the interpretation we want to make?
 
-## What you can honestly claim
+Ask:
+
+- Is the construct clearly defined?
+- Does the gold standard represent that construct?
+- Are the human judgments sufficiently trustworthy?
+- Does the metric answer the research question?
+- Are errors systematic for particular categories or texts?
+- How far can the result be generalized?
 
 ::: {.callout-warning}
-## Not claimable
-"Gemini can annotate CEFR level with F1 = 0.62."
+A reproducible result can still be **invalid**.
 :::
 
-::: {.callout-tip}
-## Claimable
-"On 42 items from CEFR-SP, with this prompt and this model version, macro-F1 was 0.62. The corpus is public and predates the model's training cutoff, so contamination cannot be ruled out."
-:::
 
-The second sentence is *easier to defend* and *more useful to a reader*.
 
 # Ethics
 
-## Three things worth ten minutes
+## Ethical consideration
 
 **Privacy.** Learner data is people's writing. ICNALE is licensed for research use only and may not be redistributed — which is why it is excluded from git and from your submission bundle by name.
 
@@ -160,21 +142,131 @@ The second sentence is *easier to defend* and *more useful to a reader*.
 
 **Licences have practical consequences.** CEFR-SP is CC BY-**SA**: anything you redistribute from it inherits share-alike. That is why the template's data folder carries its own `LICENSE` file.
 
-## A limitation of your own study
+## Responsible use of learner data
 
-You are about to measure a model against a gold standard built by **two of you**, on **40 items**, in **25 minutes**.
+Before sharing your project:
 
-. . .
+- protect private learner writing
+- follow the dataset licence
+- report how the LLM was used
+- do not redistribute restricted data
 
-That is a small gold standard, built quickly, and it contains errors.
+# Question?
 
-. . .
+# Mizumoto (2025) - Auto Error Analyzer
 
-So is most of the published literature. The difference between good and bad work here is not the size of the gold set — it is **whether you say what it was.**
 
-# The reporting checklist
+## Mizumoto (2025): What does the tool do?
 
-## Six sections
+**Input:** L2 learner writing
+
+**LLM operations:**
+
+1. Produce a corrected sentence
+2. Compare the original and corrected versions
+3. Identify error instances
+4. Assign errors to 23 categories
+
+**Output:**
+
+- Number and type of errors
+- Errors per 100 words
+- Errors per T-unit or clause
+
+## The reported results
+
+- Human–tool error-count correlation: **r = .94**
+- Micro-precision: **.96**
+- Micro-recall: **.94**
+- Micro-F1: **.95**
+
+> How much confidence should we place in these results?
+
+## In-class reading — 20 minutes
+
+Focus on:
+
+- **pp. 7–11:** tool, prompt, and error-analysis pipeline
+- **pp. 11–13:** validation design and results
+- **pp. 14–15:** limitations and conclusions
+
+You do not need to read every sentence.
+
+Prepare to explain your assigned section to the class.
+
+## Read as a methodological reviewer
+
+### Pair A — Pipeline · pp. 7–11
+How does the tool turn corrections into error instances and categories?
+
+### Pair B — Human reference · pp. 11–12
+How were human judgments created, compared, and adjudicated?
+
+### Pair C — Evaluation · pp. 12–13
+What do `r = .94` and micro-F1 = `.95` each demonstrate?
+
+### Pair D — Limitations · pp. 14–15
+How does the author limit the interpretation and generalizability?
+
+
+## Audit 1: Validity
+
+- What counts as an “error”?
+- What counts as the same error for humans and the tool?
+- Who created the human reference annotations?
+- How were disagreements resolved?
+- Does aggregate F1 establish accuracy for all 23 categories?
+- Does the evaluation distinguish detection from categorization?
+
+## Audit 2: Robustness
+
+Would the conclusion remain similar with:
+
+- another reasonable prompt?
+- a different order or choice of examples?
+- another model or model version?
+- repeated LLM runs?
+- another sample of essays?
+- writers with other L1s or proficiency levels?
+
+## Audit 3: Reproducibility
+
+Can we identify and recover:
+
+- the exact model and hosted endpoint?
+- the access date?
+- all prompts?
+- model parameters?
+- the validation sample?
+- the sampling seed?
+- the output-processing rules?
+- the analysis code?
+- frozen model outputs?
+
+## Our evaluation of Mizumoto (2025)
+
+| Dimension | Strength | Remaining uncertainty |
+|---|---|---|
+| Reproducibility |  |  |
+| Robustness |  |  |
+| Validity |  |  |
+| Generalizability |  |  |
+
+We will complete this table together.
+
+# Apply the audit to your project
+
+## Make five decisions
+
+Discuss and record:
+
+1. What exactly counts as an **error match**?
+2. How will you construct and adjudicate the **human reference**?
+3. Which metrics will you report, and **why**?
+4. What will you save so the analysis can be reconstructed?
+5. What is the strongest limitation on your final claim?
+
+## Six sections I expect in your report
 
 | | Section | The thing that makes it good |
 |---|---|---|
@@ -187,20 +279,6 @@ So is most of the published literature. The difference between good and bad work
 
 Two pages, written **individually**. One study per group, one report per person.
 
-## How the report is graded
-
-::: {.callout-important}
-## Your F1 is not graded
-A careful study reporting **F1 = 0.31** with a clear account of *why* scores higher than a sloppy one reporting **0.82**.
-:::
-
-. . .
-
-The reason is that a number you cannot explain is not a finding, and that distinction is what the whole course is about.
-
-. . .
-
-So pick the track that will teach you something, not the one that will produce a high score. `cars50` is the hardest track *because* its own annotators only reached κ ≈ 0.43, which makes it the best track for showing that you can distinguish "the model is wrong" from "the scheme is unclear".
 
 # Any questions?
 

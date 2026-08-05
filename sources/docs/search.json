@@ -1379,100 +1379,149 @@
   {
     "objectID": "slides/slides-session-10.html#agenda",
     "href": "slides/slides-session-10.html#agenda",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
+    "title": "Session 10: Using LLM in your research",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\nFor three days you have checked an LLM’s output against a gold standard. Today: how to report the result honestly.\n\nReproducibility — pin · log · temperature=0 + seed · freeze\nLimits — hallucination, data contamination, stochasticity\nEthics — privacy, authorship, and what a licence actually asks of you\nThe reporting checklist — the six sections you will hand in\n\n\n\n\n\n\n\nNote\n\n\nThis is the switch from tutorial mode to project mode. Everything after this session is your own study."
+    "text": "📋 Agenda\n\nAbdurahman et al. (2025) — principles for evaluating LLM research\nMizumoto (2025) — critical in-class reading\nYour mini-project — make and report defensible decisions"
   },
   {
     "objectID": "slides/slides-session-10.html#learning-objectives",
     "href": "slides/slides-session-10.html#learning-objectives",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
+    "title": "Session 10: Using LLM in your research",
     "section": "🎯 Learning Objectives",
-    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nName the four practices that make an LLM result reproducible, and apply them to your own run.\nExplain why temperature=0 is not sufficient, and what freezing your predictions adds.\nSay which of hallucination, contamination and stochasticity your own track is exposed to.\nApply the five-section reporting checklist — including saying what your numbers do not show."
+    "text": "🎯 Learning Objectives\nBy the end of this session, you will be able to:\n\nDistinguish reproducibility, robustness, and validity.\nCritically evaluate the methodology of an LLM-based annotation study.\nApply the evaluation principles to your mini-project."
   },
   {
-    "objectID": "slides/slides-session-10.html#the-problem-stated-plainly",
-    "href": "slides/slides-session-10.html#the-problem-stated-plainly",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "The problem, stated plainly",
-    "text": "The problem, stated plainly\nYou run your prompt and get F1 = 0.62. Tomorrow you run the same prompt and get 0.58.\n\nWhich number goes in the report?\n\n\nNeither, until you can say why they differ. A result you cannot reproduce is not yet a finding."
+    "objectID": "slides/slides-session-10.html#four-principles-for-using-llms-in-research",
+    "href": "slides/slides-session-10.html#four-principles-for-using-llms-in-research",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Four principles for using LLMs in research",
+    "text": "Four principles for using LLMs in research\n\nDocument the process\n\nmodel, version, access date, parameters, prompt, code, and data\n\nValidate against appropriate evidence\n\ncompare LLM outputs with independently produced human judgments\n\nTest robustness\n\nexamine reasonable changes in prompts, examples, settings, and samples\n\nLimit the claim\n\nstate exactly what the evidence supports—and what it does not"
   },
   {
-    "objectID": "slides/slides-session-10.html#four-practices",
-    "href": "slides/slides-session-10.html#four-practices",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "Four practices",
-    "text": "Four practices\n\n\n\n\n\n\n\n\n\nPractice\nWhy\n\n\n\n\n1\nPin the model + version\ngemini-3.1-flash-lite ≠ gemini-2.5-flash. Models are silently retired and replaced.\n\n\n2\nLog the prompt\nas a file, versioned — not a string you overwrote\n\n\n3\ntemperature=0 + a fixed seed\nremoves the sampling randomness you control\n\n\n4\nSave the predictions to a file\nremoves the variation you cannot control"
+    "objectID": "slides/slides-session-10.html#quality-of-studies",
+    "href": "slides/slides-session-10.html#quality-of-studies",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Quality of studies",
+    "text": "Quality of studies\n\nReproducibility: can the exact analysis be reconstructed?\nRobustness: does the conclusion survive reasonable changes?\nValidity: does the output measure the intended construct?"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#reproducibility",
+    "href": "slides/slides-session-10.html#reproducibility",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Reproducibility",
+    "text": "Reproducibility\nWhat is reproducibility?\n\nRecord and preserve:\n\nexact model and version\ndate of access\ncomplete prompt and examples\nmodel parameters\nsampling procedure and seed\ncode and data-processing decisions\noriginal, unedited model outputs"
   },
   {
     "objectID": "slides/slides-session-10.html#why-temperature0-is-not-enough",
     "href": "slides/slides-session-10.html#why-temperature0-is-not-enough",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
+    "title": "Session 10: Using LLM in your research",
     "section": "Why temperature=0 is not enough",
     "text": "Why temperature=0 is not enough\ntemperature=0 says “always take the most likely next token.” That should be deterministic.\n\nIt mostly is. But you are calling a hosted service:\n\nthe model behind the name can be updated underneath you\nbatching and hardware differences perturb floating-point arithmetic\nthe endpoint may silently fall back to another region\n\n\n\nSo a hosted LLM is only best-effort reproducible. You cannot fix this; it is a property of using a hosted service."
   },
   {
-    "objectID": "slides/slides-session-10.html#the-solution-run-once-then-save-the-output",
-    "href": "slides/slides-session-10.html#the-solution-run-once-then-save-the-output",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "The solution: run once, then save the output",
-    "text": "The solution: run once, then save the output\npredictions = run_prompt(PROMPT, gold)          # ← the ONE run\nsave_predictions(predictions, \"outputs/cefr_groupA_predictions.json\")\nFrom then on, every number comes out of that file:\npred_final = load_predictions(\"outputs/cefr_groupA_predictions.json\")\nevaluate(gold, pred_final, ordered=True)        # the same answer every time\n\nYou did this on Day 2 — you loaded a frozen predictions file we made for you, which is why the whole class got identical numbers. Now you make your own."
+    "objectID": "slides/slides-session-10.html#robustness",
+    "href": "slides/slides-session-10.html#robustness",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Robustness",
+    "text": "Robustness\nDoes the conclusion survive methods effect?\nPossible changes include:\n\nprompt wording\nfew-shot examples and their order\nmodel parameters\nrepeated runs\nmodel or model version\nvalidation sample\n\n\nA high score from one selected configuration does not show that the result is robust."
   },
   {
-    "objectID": "slides/slides-session-10.html#what-freezing-gives-you",
-    "href": "slides/slides-session-10.html#what-freezing-gives-you",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "What freezing gives you",
-    "text": "What freezing gives you\n\nA stable number — your reported F1 does not change while you write the report.\nNo quota use — re-running the analysis makes no further model calls.\nRecomputable by others — anyone, including whoever grades it, can recompute your numbers from exactly the outputs you saw.\n\n\n\n\n\n\n\nImportant\n\n\nThe third point is the important one. “Reproducible” does not mean you can get the number again. It means someone else can."
+    "objectID": "slides/slides-session-10.html#what-would-you-vary",
+    "href": "slides/slides-session-10.html#what-would-you-vary",
+    "title": "Session 10: Using LLM in your research",
+    "section": "What would you vary?",
+    "text": "What would you vary?\nChoose one result from Day 3.\nDiscuss which might affect the result most?\n\nPrompt wording\nFew-shot examples\nModel run\nValidation sample\n\nWhat result would increase your confidence about robustness?"
   },
   {
-    "objectID": "slides/slides-session-10.html#three-failure-modes",
-    "href": "slides/slides-session-10.html#three-failure-modes",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "Three failure modes",
-    "text": "Three failure modes\nHallucination — the model produces fluent output that is incorrect.\nData contamination — the model may have seen your test data in training.\nStochasticity — the same input gives different outputs.\n\nFor a classification task like yours, the first is limited because the label set is closed, and you have just handled the third. The second is the one that affects your claims."
+    "objectID": "slides/slides-session-10.html#validity",
+    "href": "slides/slides-session-10.html#validity",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Validity",
+    "text": "Validity\nDoes the evidence support the interpretation we want to make?\nAsk:\n\nIs the construct clearly defined?\nDoes the gold standard represent that construct?\nAre the human judgments sufficiently trustworthy?\nDoes the metric answer the research question?\nAre errors systematic for particular categories or texts?\nHow far can the result be generalized?\n\n\n\n\n\n\n\nWarning\n\n\nA reproducible result can still be invalid."
   },
   {
-    "objectID": "slides/slides-session-10.html#contamination-why-it-matters-here",
-    "href": "slides/slides-session-10.html#contamination-why-it-matters-here",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "Contamination: why it matters here",
-    "text": "Contamination: why it matters here\nEvery track you can pick uses a published dataset.\n\nCEFR-SP is on GitHub. RAAMove is on GitHub. CaRS-50 is on Mendeley. AutoErrorAnalyzer is on OSF.\nThese were all published before the model’s training cutoff.\n\n\nSo when the model labels a sentence correctly, there are two explanations:\n\nit understands the construct\nit has seen this sentence with this label before\n\n\n\nYou cannot distinguish these two explanations from your F1 alone. State this in your report."
+    "objectID": "slides/slides-session-10.html#ethical-consideration",
+    "href": "slides/slides-session-10.html#ethical-consideration",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Ethical consideration",
+    "text": "Ethical consideration\nPrivacy. Learner data is people’s writing. ICNALE is licensed for research use only and may not be redistributed — which is why it is excluded from git and from your submission bundle by name.\nAuthorship. The model is a tool, not a co-author. But what it did belongs in your methods: which model, which prompt, which parameters.\nLicences have practical consequences. CEFR-SP is CC BY-SA: anything you redistribute from it inherits share-alike. That is why the template’s data folder carries its own LICENSE file."
   },
   {
-    "objectID": "slides/slides-session-10.html#what-you-can-honestly-claim",
-    "href": "slides/slides-session-10.html#what-you-can-honestly-claim",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "What you can honestly claim",
-    "text": "What you can honestly claim\n\n\n\n\n\n\nNot claimable\n\n\n“Gemini can annotate CEFR level with F1 = 0.62.”\n\n\n\n\n\n\n\n\n\nClaimable\n\n\n“On 42 items from CEFR-SP, with this prompt and this model version, macro-F1 was 0.62. The corpus is public and predates the model’s training cutoff, so contamination cannot be ruled out.”\n\n\n\nThe second sentence is easier to defend and more useful to a reader."
+    "objectID": "slides/slides-session-10.html#responsible-use-of-learner-data",
+    "href": "slides/slides-session-10.html#responsible-use-of-learner-data",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Responsible use of learner data",
+    "text": "Responsible use of learner data\nBefore sharing your project:\n\nprotect private learner writing\nfollow the dataset licence\nreport how the LLM was used\ndo not redistribute restricted data"
   },
   {
-    "objectID": "slides/slides-session-10.html#three-things-worth-ten-minutes",
-    "href": "slides/slides-session-10.html#three-things-worth-ten-minutes",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "Three things worth ten minutes",
-    "text": "Three things worth ten minutes\nPrivacy. Learner data is people’s writing. ICNALE is licensed for research use only and may not be redistributed — which is why it is excluded from git and from your submission bundle by name.\nAuthorship. The model is a tool, not a co-author. But what it did belongs in your methods: which model, which prompt, which parameters.\nLicences have practical consequences. CEFR-SP is CC BY-SA: anything you redistribute from it inherits share-alike. That is why the template’s data folder carries its own LICENSE file."
+    "objectID": "slides/slides-session-10.html#mizumoto-2025-what-does-the-tool-do",
+    "href": "slides/slides-session-10.html#mizumoto-2025-what-does-the-tool-do",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Mizumoto (2025): What does the tool do?",
+    "text": "Mizumoto (2025): What does the tool do?\nInput: L2 learner writing\nLLM operations:\n\nProduce a corrected sentence\nCompare the original and corrected versions\nIdentify error instances\nAssign errors to 23 categories\n\nOutput:\n\nNumber and type of errors\nErrors per 100 words\nErrors per T-unit or clause"
   },
   {
-    "objectID": "slides/slides-session-10.html#a-limitation-of-your-own-study",
-    "href": "slides/slides-session-10.html#a-limitation-of-your-own-study",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "A limitation of your own study",
-    "text": "A limitation of your own study\nYou are about to measure a model against a gold standard built by two of you, on 40 items, in 25 minutes.\n\nThat is a small gold standard, built quickly, and it contains errors.\n\n\nSo is most of the published literature. The difference between good and bad work here is not the size of the gold set — it is whether you say what it was."
+    "objectID": "slides/slides-session-10.html#the-reported-results",
+    "href": "slides/slides-session-10.html#the-reported-results",
+    "title": "Session 10: Using LLM in your research",
+    "section": "The reported results",
+    "text": "The reported results\n\nHuman–tool error-count correlation: r = .94\nMicro-precision: .96\nMicro-recall: .94\nMicro-F1: .95\n\n\nHow much confidence should we place in these results?"
   },
   {
-    "objectID": "slides/slides-session-10.html#six-sections",
-    "href": "slides/slides-session-10.html#six-sections",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "Six sections",
-    "text": "Six sections\n\n\n\n\n\n\n\n\n\nSection\nThe thing that makes it good\n\n\n\n\n1\nIntro\nwhy this topic matters\n\n\n2\nMethodology\nsampling · scheme & gold · split — and what adjudication changed\n\n\n3\nPrompt iterations\na reason per round, not just an F1\n\n\n4\nEvaluation\nwhich class did worst, and what it got confused with\n\n\n5\nError analysis\nmodel error or unclear scheme — with evidence\n\n\n6\nLimitations\n≥2 that apply to your run\n\n\n\nTwo pages, written individually. One study per group, one report per person."
+    "objectID": "slides/slides-session-10.html#in-class-reading-20-minutes",
+    "href": "slides/slides-session-10.html#in-class-reading-20-minutes",
+    "title": "Session 10: Using LLM in your research",
+    "section": "In-class reading — 20 minutes",
+    "text": "In-class reading — 20 minutes\nFocus on:\n\npp. 7–11: tool, prompt, and error-analysis pipeline\npp. 11–13: validation design and results\npp. 14–15: limitations and conclusions\n\nYou do not need to read every sentence.\nPrepare to explain your assigned section to the class."
   },
   {
-    "objectID": "slides/slides-session-10.html#how-the-report-is-graded",
-    "href": "slides/slides-session-10.html#how-the-report-is-graded",
-    "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
-    "section": "How the report is graded",
-    "text": "How the report is graded\n\n\n\n\n\n\nYour F1 is not graded\n\n\nA careful study reporting F1 = 0.31 with a clear account of why scores higher than a sloppy one reporting 0.82.\n\n\n\n\nThe reason is that a number you cannot explain is not a finding, and that distinction is what the whole course is about.\n\n\nSo pick the track that will teach you something, not the one that will produce a high score. cars50 is the hardest track because its own annotators only reached κ ≈ 0.43, which makes it the best track for showing that you can distinguish “the model is wrong” from “the scheme is unclear”."
+    "objectID": "slides/slides-session-10.html#read-as-a-methodological-reviewer",
+    "href": "slides/slides-session-10.html#read-as-a-methodological-reviewer",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Read as a methodological reviewer",
+    "text": "Read as a methodological reviewer\nPair A — Pipeline · pp. 7–11\nHow does the tool turn corrections into error instances and categories?\nPair B — Human reference · pp. 11–12\nHow were human judgments created, compared, and adjudicated?\nPair C — Evaluation · pp. 12–13\nWhat do r = .94 and micro-F1 = .95 each demonstrate?\nPair D — Limitations · pp. 14–15\nHow does the author limit the interpretation and generalizability?"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#audit-1-validity",
+    "href": "slides/slides-session-10.html#audit-1-validity",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Audit 1: Validity",
+    "text": "Audit 1: Validity\n\nWhat counts as an “error”?\nWhat counts as the same error for humans and the tool?\nWho created the human reference annotations?\nHow were disagreements resolved?\nDoes aggregate F1 establish accuracy for all 23 categories?\nDoes the evaluation distinguish detection from categorization?"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#audit-2-robustness",
+    "href": "slides/slides-session-10.html#audit-2-robustness",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Audit 2: Robustness",
+    "text": "Audit 2: Robustness\nWould the conclusion remain similar with:\n\nanother reasonable prompt?\na different order or choice of examples?\nanother model or model version?\nrepeated LLM runs?\nanother sample of essays?\nwriters with other L1s or proficiency levels?"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#audit-3-reproducibility",
+    "href": "slides/slides-session-10.html#audit-3-reproducibility",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Audit 3: Reproducibility",
+    "text": "Audit 3: Reproducibility\nCan we identify and recover:\n\nthe exact model and hosted endpoint?\nthe access date?\nall prompts?\nmodel parameters?\nthe validation sample?\nthe sampling seed?\nthe output-processing rules?\nthe analysis code?\nfrozen model outputs?"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#our-evaluation-of-mizumoto-2025",
+    "href": "slides/slides-session-10.html#our-evaluation-of-mizumoto-2025",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Our evaluation of Mizumoto (2025)",
+    "text": "Our evaluation of Mizumoto (2025)\n\n\n\nDimension\nStrength\nRemaining uncertainty\n\n\n\n\nReproducibility\n\n\n\n\nRobustness\n\n\n\n\nValidity\n\n\n\n\nGeneralizability\n\n\n\n\n\nWe will complete this table together."
+  },
+  {
+    "objectID": "slides/slides-session-10.html#make-five-decisions",
+    "href": "slides/slides-session-10.html#make-five-decisions",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Make five decisions",
+    "text": "Make five decisions\nDiscuss and record:\n\nWhat exactly counts as an error match?\nHow will you construct and adjudicate the human reference?\nWhich metrics will you report, and why?\nWhat will you save so the analysis can be reconstructed?\nWhat is the strongest limitation on your final claim?"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#six-sections-i-expect-in-your-report",
+    "href": "slides/slides-session-10.html#six-sections-i-expect-in-your-report",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Six sections I expect in your report",
+    "text": "Six sections I expect in your report\n\n\n\n\n\n\n\n\n\nSection\nThe thing that makes it good\n\n\n\n\n1\nIntro\nwhy this topic matters\n\n\n2\nMethodology\nsampling · scheme & gold · split — and what adjudication changed\n\n\n3\nPrompt iterations\na reason per round, not just an F1\n\n\n4\nEvaluation\nwhich class did worst, and what it got confused with\n\n\n5\nError analysis\nmodel error or unclear scheme — with evidence\n\n\n6\nLimitations\n≥2 that apply to your run\n\n\n\nTwo pages, written individually. One study per group, one report per person."
   },
   {
     "objectID": "slides/slides-session-05.html#agenda",
