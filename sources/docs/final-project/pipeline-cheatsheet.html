@@ -559,7 +559,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="things-that-are-easy-to-get-wrong" class="level2">
 <h2 class="anchored" data-anchor-id="things-that-are-easy-to-get-wrong">Things that are easy to get wrong</h2>
 <p><strong><code>compare_to_published(gold, sampled)</code> — not <code>pool</code>.</strong> Sampling renumbers the ids from 1, so comparing against the whole pool would pair <em>your</em> item 7 with <em>pool</em> item 7: two unrelated sentences.</p>
-<p><strong>Weighted κ needs the order.</strong> If your labels are ordered but not alphabetical — <code>Low</code>/<code>Mid</code>/<code>High</code> — set <code>labels_order</code> in <code>config.yaml</code>. Otherwise the weighting is computed over <code>High &lt; Low &lt; Mid</code>, and the number reported to three decimal places means nothing.</p>
+<p><strong>Weighted κ needs the order.</strong> If your labels are ordered but not alphabetical — <code>Low</code>/<code>Mid</code>/<code>High</code> — set <code>LABELS_ORDER</code> in the Methodological decisions cell at the top of notebooks 03–06. Otherwise the weighting is computed over <code>High &lt; Low &lt; Mid</code>, and the number reported to three decimal places means nothing.</p>
 <p><strong>dev is the fast set.</strong> One round on a dozen dev items is about a minute of enforced pacing, so your sample stays at full size throughout — you do not shrink it to iterate.</p>
 <p><strong>The κ in 03 and the κ in 06 are different claims.</strong> One compares two annotators, the other compares your gold against a model. Same statistic, and swapping them in the report is a mistake a reader cannot catch.</p>
 </section>
@@ -1166,26 +1166,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>sentences.</span>
 <span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>**Weighted κ needs the order.** If your labels are ordered but not alphabetical —</span>
-<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a><span class="in">`Low`</span>/<span class="in">`Mid`</span>/<span class="in">`High`</span> — set <span class="in">`labels_order`</span> in <span class="in">`config.yaml`</span>. Otherwise the weighting is computed</span>
-<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>over <span class="in">`High &lt; Low &lt; Mid`</span>, and the number reported to three decimal places means nothing.</span>
-<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>**dev is the fast set.** One round on a dozen dev items is about a minute of enforced pacing,</span>
-<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>so your sample stays at full size throughout — you do not shrink it to iterate.</span>
-<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>**The κ in 03 and the κ in 06 are different claims.** One compares two annotators, the other</span>
-<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>compares your gold against a model. Same statistic, and swapping them in the report is a</span>
-<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>mistake a reader cannot catch.</span>
-<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading the code</span></span>
-<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a>Everything imported lives in <span class="in">`scripts/`</span>. <span class="in">`help(split_dev_test)`</span> prints what to pass in;</span>
-<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a><span class="in">`split_dev_test??`</span> prints the source of any function, imported or not; and the Files panel on</span>
-<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a>the left of Colab lists every function in a file, so you can click straight to one.</span>
-<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>Some of what you call is not imported at all — it is written out in the notebook cell in</span>
-<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a>front of you, because reading it is part of knowing what you did. Those you can edit in</span>
-<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a>place, and your edited version is in the notebook you hand in, which is where a change of</span>
-<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>method should be visible.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a><span class="in">`Low`</span>/<span class="in">`Mid`</span>/<span class="in">`High`</span> — set <span class="in">`LABELS_ORDER`</span> in the Methodological decisions cell at the top of</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>notebooks 03–06. Otherwise the weighting is computed over <span class="in">`High &lt; Low &lt; Mid`</span>, and the number</span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>reported to three decimal places means nothing.</span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>**dev is the fast set.** One round on a dozen dev items is about a minute of enforced pacing,</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>so your sample stays at full size throughout — you do not shrink it to iterate.</span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>**The κ in 03 and the κ in 06 are different claims.** One compares two annotators, the other</span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>compares your gold against a model. Same statistic, and swapping them in the report is a</span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a>mistake a reader cannot catch.</span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading the code</span></span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>Everything imported lives in <span class="in">`scripts/`</span>. <span class="in">`help(split_dev_test)`</span> prints what to pass in;</span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a><span class="in">`split_dev_test??`</span> prints the source of any function, imported or not; and the Files panel on</span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>the left of Colab lists every function in a file, so you can click straight to one.</span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a>Some of what you call is not imported at all — it is written out in the notebook cell in</span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a>front of you, because reading it is part of knowing what you did. Those you can edit in</span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>place, and your edited version is in the notebook you hand in, which is where a change of</span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>method should be visible.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -1367,7 +1367,7 @@
     "href": "slides/slides-session-12.html#the-split",
     "title": "Session 12: Project Work — Sample & QC the Gold Set",
     "section": "The split",
-    "text": "The split\ndev, test = split_dev_test(gold, DEV, seed=SEED)\n\nsave_json(dev,  DEV_PATH,  what=\"dev items\")\nsave_json(test, TEST_PATH, what=\"test items\")\nRead the per-label counts it prints before you save. A label that lands in dev but not in test cannot appear in the score you report, and this is the last cheap moment to change dev: in config.yaml and draw the line again.\n\n\n\n\n\n\nNote\n\n\nThis is the loop you wrote by hand this morning, in Day 4 Part B — bucket by label, take some of each. One call now."
+    "text": "The split\ndev, test = split_dev_test(gold, DEV, seed=SEED)\n\nsave_json(dev,  DEV_PATH,  what=\"dev items\")\nsave_json(test, TEST_PATH, what=\"test items\")\nRead the per-label counts it prints before you save. A label that lands in dev but not in test cannot appear in the score you report, and this is the last cheap moment to change DEV at the top of notebook 03 and draw the line again.\n\n\n\n\n\n\nNote\n\n\nThis is the loop you wrote by hand this morning, in Day 4 Part B — bucket by label, take some of each. One call now."
   },
   {
     "objectID": "slides/slides-session-12.html#dev-is-the-fast-set",
@@ -1381,7 +1381,7 @@
     "href": "slides/slides-session-10.html#agenda",
     "title": "Session 10: Using LLM in your research",
     "section": "📋 Agenda",
-    "text": "📋 Agenda\n\nAbdurahman et al. (2025) — principles for evaluating LLM research\nMizumoto (2025) — critical in-class reading\nYour mini-project — make and report defensible decisions"
+    "text": "📋 Agenda\n\nAbdurahman et al. (2025) — principles for evaluating LLM research\nMizumoto et al. (2024) — reviewing the paper using principles\nYour mini-project — make and report defensible decisions"
   },
   {
     "objectID": "slides/slides-session-10.html#learning-objectives",
@@ -1412,32 +1412,46 @@
     "text": "Reproducibility\nWhat is reproducibility?\n\nRecord and preserve:\n\nexact model and version\ndate of access\ncomplete prompt and examples\nmodel parameters\nsampling procedure and seed\ncode and data-processing decisions\noriginal, unedited model outputs"
   },
   {
+    "objectID": "slides/slides-session-10.html#how-can-llm-threaten-preproducibility",
+    "href": "slides/slides-session-10.html#how-can-llm-threaten-preproducibility",
+    "title": "Session 10: Using LLM in your research",
+    "section": "How can LLM threaten preproducibility?",
+    "text": "How can LLM threaten preproducibility?\n\nAny ideas?\n\n\n\nNon-determinism\nModel change / Model retire."
+  },
+  {
     "objectID": "slides/slides-session-10.html#why-temperature0-is-not-enough",
     "href": "slides/slides-session-10.html#why-temperature0-is-not-enough",
     "title": "Session 10: Using LLM in your research",
     "section": "Why temperature=0 is not enough",
-    "text": "Why temperature=0 is not enough\ntemperature=0 says “always take the most likely next token.” That should be deterministic.\n\nIt mostly is. But you are calling a hosted service:\n\nthe model behind the name can be updated underneath you\nbatching and hardware differences perturb floating-point arithmetic\nthe endpoint may silently fall back to another region\n\n\n\nSo a hosted LLM is only best-effort reproducible. You cannot fix this; it is a property of using a hosted service."
+    "text": "Why temperature=0 is not enough\ntemperature=0 says “always take the most likely next token.” That should be deterministic.\n\nIt mostly is. But you are calling a hosted service:\n\nthe model behind the name can be updated underneath\nbatching and hardware differences perturb floating-point arithmetic\nthe endpoint may silently fall back to another region\n\nThere are choices to use open-source local LLM, but we need to have a good computer to run."
   },
   {
     "objectID": "slides/slides-session-10.html#robustness",
     "href": "slides/slides-session-10.html#robustness",
     "title": "Session 10: Using LLM in your research",
     "section": "Robustness",
-    "text": "Robustness\nDoes the conclusion survive methods effect?\nPossible changes include:\n\nprompt wording\nfew-shot examples and their order\nmodel parameters\nrepeated runs\nmodel or model version\nvalidation sample\n\n\nA high score from one selected configuration does not show that the result is robust."
+    "text": "Robustness\nWhat is robustness in research findings in your workds?\n\nHow does methodological choice influence the results?"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#robustness-1",
+    "href": "slides/slides-session-10.html#robustness-1",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Robustness",
+    "text": "Robustness\nPossible changes include:\n\nprompt wording\nfew-shot examples and their order\nmodel parameters\nrepeated runs\nmodel or model version\nvalidation sample\n\n\nA high score from one selected configuration does not show that the result is robust."
   },
   {
     "objectID": "slides/slides-session-10.html#what-would-you-vary",
     "href": "slides/slides-session-10.html#what-would-you-vary",
     "title": "Session 10: Using LLM in your research",
     "section": "What would you vary?",
-    "text": "What would you vary?\nChoose one result from Day 3.\nDiscuss which might affect the result most?\n\nPrompt wording\nFew-shot examples\nModel run\nValidation sample\n\nWhat result would increase your confidence about robustness?"
+    "text": "What would you vary?\nDiscuss which might affect the result most?\n\nPrompt wording\nFew-shot examples\nModel run\nValidation sample\n\nWhat result would increase your confidence about robustness?"
   },
   {
     "objectID": "slides/slides-session-10.html#validity",
     "href": "slides/slides-session-10.html#validity",
     "title": "Session 10: Using LLM in your research",
     "section": "Validity",
-    "text": "Validity\nDoes the evidence support the interpretation we want to make?\nAsk:\n\nIs the construct clearly defined?\nDoes the gold standard represent that construct?\nAre the human judgments sufficiently trustworthy?\nDoes the metric answer the research question?\nAre errors systematic for particular categories or texts?\nHow far can the result be generalized?\n\n\n\n\n\n\n\nWarning\n\n\nA reproducible result can still be invalid."
+    "text": "Validity\nDoes the evidence support the interpretation we want to make?\n\nAsk:\n\nIs the construct clearly defined?\nDoes the gold standard represent that construct?\nAre the human judgments sufficiently trustworthy?\nDoes the metric answer the research question?\nAre errors systematic for particular categories or texts?\nHow far can the result be generalized?"
   },
   {
     "objectID": "slides/slides-session-10.html#ethical-consideration",
@@ -1454,39 +1468,32 @@
     "text": "Responsible use of learner data\nBefore sharing your project:\n\nprotect private learner writing\nfollow the dataset licence\nreport how the LLM was used\ndo not redistribute restricted data"
   },
   {
-    "objectID": "slides/slides-session-10.html#mizumoto-2025-what-does-the-tool-do",
-    "href": "slides/slides-session-10.html#mizumoto-2025-what-does-the-tool-do",
+    "objectID": "slides/slides-session-10.html#mizumoto-et-al.-2024-what-does-the-tool-do",
+    "href": "slides/slides-session-10.html#mizumoto-et-al.-2024-what-does-the-tool-do",
     "title": "Session 10: Using LLM in your research",
-    "section": "Mizumoto (2025): What does the tool do?",
-    "text": "Mizumoto (2025): What does the tool do?\nInput: L2 learner writing\nLLM operations:\n\nProduce a corrected sentence\nCompare the original and corrected versions\nIdentify error instances\nAssign errors to 23 categories\n\nOutput:\n\nNumber and type of errors\nErrors per 100 words\nErrors per T-unit or clause"
-  },
-  {
-    "objectID": "slides/slides-session-10.html#the-reported-results",
-    "href": "slides/slides-session-10.html#the-reported-results",
-    "title": "Session 10: Using LLM in your research",
-    "section": "The reported results",
-    "text": "The reported results\n\nHuman–tool error-count correlation: r = .94\nMicro-precision: .96\nMicro-recall: .94\nMicro-F1: .95\n\n\nHow much confidence should we place in these results?"
+    "section": "Mizumoto et al. (2024): What does the tool do?",
+    "text": "Mizumoto et al. (2024): What does the tool do?\nIntroduces Auto Error Analyzer.\nInput: L2 learner writing\nOutput:\n\nNumber and type of errors\nErrors per 100 words\nErrors per T-unit or clause\netc.\n\nThe data and codes are available at Open Science Framework."
   },
   {
     "objectID": "slides/slides-session-10.html#in-class-reading-20-minutes",
     "href": "slides/slides-session-10.html#in-class-reading-20-minutes",
     "title": "Session 10: Using LLM in your research",
     "section": "In-class reading — 20 minutes",
-    "text": "In-class reading — 20 minutes\nFocus on:\n\npp. 7–11: tool, prompt, and error-analysis pipeline\npp. 11–13: validation design and results\npp. 14–15: limitations and conclusions\n\nYou do not need to read every sentence.\nPrepare to explain your assigned section to the class."
+    "text": "In-class reading — 20 minutes\nFocus on:\n\npp. 6–11: tool, prompt, and error-analysis pipeline\npp. 11–13: validation design and results\npp. 14–15: limitations and conclusions\n\nYou do not need to read every sentence.\nPrepare to explain your assigned section to the class."
   },
   {
     "objectID": "slides/slides-session-10.html#read-as-a-methodological-reviewer",
     "href": "slides/slides-session-10.html#read-as-a-methodological-reviewer",
     "title": "Session 10: Using LLM in your research",
     "section": "Read as a methodological reviewer",
-    "text": "Read as a methodological reviewer\nPair A — Pipeline · pp. 7–11\nHow does the tool turn corrections into error instances and categories?\nPair B — Human reference · pp. 11–12\nHow were human judgments created, compared, and adjudicated?\nPair C — Evaluation · pp. 12–13\nWhat do r = .94 and micro-F1 = .95 each demonstrate?\nPair D — Limitations · pp. 14–15\nHow does the author limit the interpretation and generalizability?"
+    "text": "Read as a methodological reviewer\nPipeline · pp. 6–11\nHow does the tool turn corrections into error instances and categories?\nHuman reference · pp. 11–12\nHow were human judgments created, compared, and adjudicated?\nEvaluation · pp. 12–13\nWhat do r = .94 and micro-F1 = .95 each demonstrate?\nLimitations · pp. 14–15\nHow does the author limit the interpretation and generalizability?"
   },
   {
     "objectID": "slides/slides-session-10.html#audit-1-validity",
     "href": "slides/slides-session-10.html#audit-1-validity",
     "title": "Session 10: Using LLM in your research",
     "section": "Audit 1: Validity",
-    "text": "Audit 1: Validity\n\nWhat counts as an “error”?\nWhat counts as the same error for humans and the tool?\nWho created the human reference annotations?\nHow were disagreements resolved?\nDoes aggregate F1 establish accuracy for all 23 categories?\nDoes the evaluation distinguish detection from categorization?"
+    "text": "Audit 1: Validity\n\nWhat counts as an “error”?\nWho created the human reference annotations?\nHow were disagreements resolved?\nDoes aggregate F1 establish accuracy for all 23 categories?"
   },
   {
     "objectID": "slides/slides-session-10.html#audit-2-robustness",
@@ -2656,7 +2663,7 @@
     "href": "final-project/plan.html#the-template",
     "title": "The PLAN.md gate",
     "section": "The template",
-    "text": "The template\nPLAN.md is already in the template you cloned, at the repo root, with every question laid out and a note under each explaining what turns on it. You fill it in there — it travels in your submission bundle as evidence the gate was passed.\nNine questions, in two groups.\nWhat you are annotating — settled by the end of Session 11.\n\nUnit of analysis — sentence or whole text, and why.\nLabel set — exactly the strings that appear in your gold file.\nAre the labels ordered? If yes, in what order. This decides labels_order in config.yaml, and it is the one question that exists purely to catch a silent bug: labels that are ordered but not alphabetical (Low/Mid/High) otherwise get a weighted κ computed over High &lt; Low &lt; Mid, reported to three decimal places, and wrong.\nThe decisions you made building the pool — the ✏️ cells notebook 01 left blank, what you put in them, and what it cost you.\nSampling — which strategy, the one-sentence defence, N_PER_CLASS, SEED.\nThe dev / test split — the ratio, and why that one.\n\nWhat you will report — the questions this page exists for.\n\nQC — who codes which column, who adjudicates, which agreement statistics you will report, and what counts as a disagreement.\nPrompt plan — your baseline, the moves you will try and in what order, how many prompts you will test on the held-out set, and how you pick the winner.\nThe one number you lead with — macro, micro or weighted F1, or a κ.",
+    "text": "The template\nPLAN.md is already in the template you cloned, at the repo root, with every question laid out and a note under each explaining what turns on it. You fill it in there — it travels in your submission bundle as evidence the gate was passed.\nNine questions, in two groups.\nWhat you are annotating — settled by the end of Session 11.\n\nUnit of analysis — sentence or whole text, and why.\nLabel set — exactly the strings that appear in your gold file.\nAre the labels ordered? If yes, in what order. This decides LABELS_ORDER, set at the top of notebooks 03–06, and it is the one question that exists purely to catch a silent bug: labels that are ordered but not alphabetical (Low/Mid/High) otherwise get a weighted κ computed over High &lt; Low &lt; Mid, reported to three decimal places, and wrong.\nThe decisions you made building the pool — the ✏️ cells notebook 01 left blank, what you put in them, and what it cost you.\nSampling — which strategy, the one-sentence defence, N_PER_CLASS, SEED.\nThe dev / test split — the ratio, and why that one.\n\nWhat you will report — the questions this page exists for.\n\nQC — who codes which column, who adjudicates, which agreement statistics you will report, and what counts as a disagreement.\nPrompt plan — your baseline, the moves you will try and in what order, how many prompts you will test on the held-out set, and how you pick the winner.\nThe one number you lead with — macro, micro or weighted F1, or a κ.",
     "crumbs": [
       "Final Project",
       "The PLAN.md gate"
@@ -2832,7 +2839,7 @@
     "href": "final-project/pipeline-cheatsheet.html#things-that-are-easy-to-get-wrong",
     "title": "What you have to work with",
     "section": "Things that are easy to get wrong",
-    "text": "Things that are easy to get wrong\ncompare_to_published(gold, sampled) — not pool. Sampling renumbers the ids from 1, so comparing against the whole pool would pair your item 7 with pool item 7: two unrelated sentences.\nWeighted κ needs the order. If your labels are ordered but not alphabetical — Low/Mid/High — set labels_order in config.yaml. Otherwise the weighting is computed over High &lt; Low &lt; Mid, and the number reported to three decimal places means nothing.\ndev is the fast set. One round on a dozen dev items is about a minute of enforced pacing, so your sample stays at full size throughout — you do not shrink it to iterate.\nThe κ in 03 and the κ in 06 are different claims. One compares two annotators, the other compares your gold against a model. Same statistic, and swapping them in the report is a mistake a reader cannot catch.",
+    "text": "Things that are easy to get wrong\ncompare_to_published(gold, sampled) — not pool. Sampling renumbers the ids from 1, so comparing against the whole pool would pair your item 7 with pool item 7: two unrelated sentences.\nWeighted κ needs the order. If your labels are ordered but not alphabetical — Low/Mid/High — set LABELS_ORDER in the Methodological decisions cell at the top of notebooks 03–06. Otherwise the weighting is computed over High &lt; Low &lt; Mid, and the number reported to three decimal places means nothing.\ndev is the fast set. One round on a dozen dev items is about a minute of enforced pacing, so your sample stays at full size throughout — you do not shrink it to iterate.\nThe κ in 03 and the κ in 06 are different claims. One compares two annotators, the other compares your gold against a model. Same statistic, and swapping them in the report is a mistake a reader cannot catch.",
     "crumbs": [
       "Final Project",
       "What you have to work with"
@@ -2876,7 +2883,7 @@
     "href": "final-project/index.html#where-the-work-happens",
     "title": "Final Project",
     "section": "Where the work happens",
-    "text": "Where the work happens\nAll of it in one repository, which you clone into your group’s Google Drive:\ngithub.com/egumasa/lda2-final-template\nnotebooks/ holds six numbered notebooks, run in order. They carry the mechanics — the paths, the file names, the Google Sheets round-trip, the pacing between API calls, and what each one hands to the next — so that a real study fits in two days.\nWhat they do not carry is the method. Which agreement statistic your design owes, what counts as a disagreement, which prompt move to try next, which number your report leads with: those you choose, and they are what the Q&A and the rubric ask about.\nEach decision point gives you an inventory of what is available, what each call gives you, and where you first ran it — every one of them has an ancestor in Days 1–4. The inventory page has the full list.\n\n\n\n\n\n\nTipOne clone, shared by the group\n\n\n\nOne member clones the repo into their Google Drive and shares the folder with the team. Nobody pushes — git is just how you get the code onto the machine.\nColab syncs notebook edits live, like a Google Doc, so you can all work in it at once. But runtimes are per-person, and ordinary files in the folder are last-write-wins — so let one person be the driver for any cell that runs the model or writes a file. Your final run has to be one run by one person anyway.\nThe annotation Sheet 02_sample makes is the exception: that is a real Google Sheet, so annotate it together.",
+    "text": "Where the work happens\nAll of it in one repository, which you clone into your group’s Google Drive:\ngithub.com/egumasa/lda2-proj-template\nnotebooks/ holds six numbered notebooks, run in order. They carry the mechanics — the paths, the file names, the Google Sheets round-trip, the pacing between API calls, and what each one hands to the next — so that a real study fits in two days.\nWhat they do not carry is the method. Which agreement statistic your design owes, what counts as a disagreement, which prompt move to try next, which number your report leads with: those you choose, and they are what the Q&A and the rubric ask about.\nEach decision point gives you an inventory of what is available, what each call gives you, and where you first ran it — every one of them has an ancestor in Days 1–4. The inventory page has the full list.\n\n\n\n\n\n\nTipOne clone, shared by the group\n\n\n\nOne member clones the repo into their Google Drive and shares the folder with the team. Nobody pushes — git is just how you get the code onto the machine.\nColab syncs notebook edits live, like a Google Doc, so you can all work in it at once. But runtimes are per-person, and ordinary files in the folder are last-write-wins — so let one person be the driver for any cell that runs the model or writes a file. Your final run has to be one run by one person anyway.\nThe annotation Sheet 02_sample makes is the exception: that is a real Google Sheet, so annotate it together.",
     "crumbs": [
       "Final Project",
       "Overview"
@@ -2898,7 +2905,7 @@
     "href": "final-project/index.html#choose-a-track",
     "title": "Final Project",
     "section": "Choose a track",
-    "text": "Choose a track\nFour, easy to hard. Details, licences and provenance: Replication Datasets and Mini-Project Starter Tracks.\n\n\n\n\n\n\n\n\nTrack\nTask\nDifficulty\n\n\n\n\nraamove\nRhetorical moves in RA abstracts (8)\n★★☆\n\n\ncars50\nCARS moves in RA introductions\n★★★ the annotators themselves got κ ≈ 0.43\n\n\nl2_errors\nL2 error type, or error detection\n★★★ also benchmarkable against the published tool\n\n\nicnale\nHolistic essay score band\n★★☆ needs a registered download",
+    "text": "Choose a track\nEasy to hard. Details, licences and provenance: Replication Datasets and Mini-Project Starter Tracks.\n\n\n\n\n\n\n\n\nTrack\nTask\nDifficulty\n\n\n\n\nraamove\nRhetorical moves in RA abstracts (8)\n★★☆\n\n\ncars50\nCARS moves in RA introductions\n★★★ the annotators themselves got κ ≈ 0.43\n\n\nl2_errors\nEvery error family in the sentence, multi-label (3 families), or error detection\n★★★ also benchmarkable against the published tool\n\n\nl2_errors_full\nEvery error type in the sentence, multi-label (24 codes)\n★★★+ the heaviest annotation; agreement and scoring are per code, matching how the published tool evaluates itself\n\n\nicnale\nHolistic essay score band\n★★☆ needs a registered download",
     "crumbs": [
       "Final Project",
       "Overview"
@@ -3251,7 +3258,7 @@
     "href": "resources/datasets/mini-project-tracks.html",
     "title": "Mini-Project Starter Tracks",
     "section": "",
-    "text": "This page is about choosing a track. The workflow, the deliverables and the rubric are on the Final Project pages, and the work itself happens in the project template.\nWhichever track you pick, the shape is the same:\nEvery track ships a small demo file so it runs the moment you clone, plus a builder for the full pool you sample from:\nProvenance & licences: SOURCES.md · the helpers you will call: pipeline cheat-sheet.",
+    "text": "This page is about choosing a track. The workflow, the deliverables and the rubric are on the Final Project pages, and the work itself happens in the project template.\nWhichever track you pick, the shape is the same:\nEvery track ships a builder notebook for the pool you sample from: run notebooks/01_build_pool_&lt;track&gt;.ipynb once in Colab and it downloads the raw corpus and reshapes it into the shared item format. No pool data is committed — your group builds its own.\nProvenance & licences: SOURCES.md · the helpers you will call: pipeline cheat-sheet.",
     "crumbs": [
       "Final Project",
       "Starter tracks"
@@ -3262,7 +3269,7 @@
     "href": "resources/datasets/mini-project-tracks.html#tracks",
     "title": "Mini-Project Starter Tracks",
     "section": "Tracks",
-    "text": "Tracks\n\n★★★ Discourse moves (RAAMove / CaRS-50)\nAnnotate rhetorical moves. This track replicates the idea of Kim & Lu (2024), who tested how well ChatGPT can annotate move-steps in research-article introductions, and how prompt refinement and few-shot examples change its accuracy. Their corpus is not public, so CaRS-50 stands in.\n\nKim, M., & Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. Journal of English for Academic Purposes, 71, 101422.\n\nTracks: raamove (8 moves, abstracts) or cars50 (CARS Moves, introductions). Pools built by prep_datasets.py: raamove_pool.json (3,069), cars50_pool.json (1,297), and cars50_step_pool.json for the 11-class stretch version. Extensions: compare abstracts vs. introductions; move-only vs. move+step; few-shot vs. definitions.\nRAAMove ships as tidy JSON and is the gentler start; CaRS-50 is harder because judging moves in introductions needs more context. Expect lower F1 than the Day 2–3 CEFR tutorials — the CaRS-50 annotators themselves reached only κ ≈ 0.43, so “the model is wrong” and “the scheme is fuzzy” are both live explanations, and telling them apart is the interesting part of your analysis.\n\n\n★★★ L2 error annotation (AutoErrorAnalyzer)\nClassify the error type in a learner sentence (Grammatical / Lexical / Mechanical / No error), or do binary error detection. Track: l2_errors. Pools: l2_errors_pool.json (1,038, 4 classes) and l2_error_detection_pool.json (1,485, yes/no). Special feature: the source also has the published tool’s predictions, so you can benchmark your LLM against both the human gold and the original system. (Mizumoto, 2025, SSLA.) Extensions: try the finer 23-code taxonomy; analyze which error types the LLM over-/under-predicts.\n\n\n★★☆ Automated writing evaluation (ICNALE GRA)\nPredict a holistic essay score band (Low / Mid / High). Track: icnale. Requires registering for the ICNALE GRA and exporting a text,score CSV yourself — the builder tells you exactly where to put it. The data is research-use only, so nothing derived from it may be committed or submitted.\n⚠️ These labels are ordered but not alphabetical, so set LABELS_ORDER = [\"Low\", \"Mid\", \"High\"] in CONFIG — otherwise the weighted κ is computed over High &lt; Low &lt; Mid and means nothing. (That is what question 3 of your PLAN.md is for.)\nExtensions: compare holistic vs. a single analytic dimension; check whether the LLM rewards length.",
+    "text": "Tracks\n\n★★★ Discourse moves (RAAMove / CaRS-50)\nAnnotate rhetorical moves. This track replicates the idea of Kim & Lu (2024), who tested how well ChatGPT can annotate move-steps in research-article introductions, and how prompt refinement and few-shot examples change its accuracy. Their corpus is not public, so CaRS-50 stands in.\n\nKim, M., & Lu, X. (2024). Exploring the potential of using ChatGPT for rhetorical move-step analysis: The impact of prompt refinement, few-shot learning, and fine-tuning. Journal of English for Academic Purposes, 71, 101422.\n\nTracks: raamove (8 moves, abstracts) or cars50 (CARS Moves, introductions). Pools built by prep_datasets.py: raamove_pool.json (3,069), cars50_pool.json (1,297), and cars50_step_pool.json for the 11-class stretch version. Extensions: compare abstracts vs. introductions; move-only vs. move+step; few-shot vs. definitions.\nRAAMove ships as tidy JSON and is the gentler start; CaRS-50 is harder because judging moves in introductions needs more context. Expect lower F1 than the Day 2–3 CEFR tutorials — the CaRS-50 annotators themselves reached only κ ≈ 0.43, so “the model is wrong” and “the scheme is fuzzy” are both live explanations, and telling them apart is the interesting part of your analysis.\n\n\n★★★ L2 error annotation (AutoErrorAnalyzer)\nAnnotate the error families present in a learner sentence — Grammatical, Lexical, Mechanical — or do binary error detection. The family track is multi-label: a sentence with an article error and a spelling error is Grammatical, Mechanical, and a clean sentence is No error, so nothing is dropped for having errors of more than one kind. Agreement is measured per family (exact-set agreement, mean Jaccard, per-family κ) and scoring is per-family precision, recall and F1 with micro F1 as the headline. Track: l2_errors. Pools: l2_errors_pool.json (~1,483, family sets) and l2_error_detection_pool.json (~1,485, yes/no). Special feature: the source also has the published tool’s predictions, so you can benchmark your LLM against both the human gold and the original system. (Mizumoto, 2025, SSLA.)\nFull analysis: l2_errors_full. For groups who want to annotate all the error types, not the three-family grouping. An item’s annotation is the set of codes present in the sentence — the paper’s 23 codes plus COLL (collocation), which the published annotations also use — written as one comma-separated string (ART, SP), or No error. The pipeline is the same as the family track’s; what changes is the size of the code list. Be clear about the cost before choosing it: each coder checks 24 possibilities per sentence, so annotation is markedly slower. The per-code scoring is exactly how the AutoErrorAnalyzer paper evaluates itself, so your run and the published tool’s aea_label predictions are directly comparable on the same sentences. This is the heaviest track in the project. Pool: l2_errors_full_pool.json (~1,483 items).\n\n\n★★☆ Automated writing evaluation (ICNALE GRA)\nPredict a holistic essay score band (Low / Mid / High). Track: icnale. Requires registering for the ICNALE GRA and exporting a text,score CSV yourself — the builder tells you exactly where to put it. The data is research-use only, so nothing derived from it may be committed or submitted.\n⚠️ These labels are ordered but not alphabetical, so set LABELS_ORDER = [\"Low\", \"Mid\", \"High\"] in CONFIG — otherwise the weighted κ is computed over High &lt; Low &lt; Mid and means nothing. (That is what question 3 of your PLAN.md is for.)\nExtensions: compare holistic vs. a single analytic dimension; check whether the LLM rewards length.",
     "crumbs": [
       "Final Project",
       "Starter tracks"
@@ -4308,7 +4315,7 @@
     "href": "slides/slides-session-11.html#nine-questions",
     "title": "Session 11: Plenary Pipeline Assembly",
     "section": "Nine questions",
-    "text": "Nine questions\nWhat you are annotating:\n1. Unit of analysis: sentence or whole text — and why\n2. Label set: exactly the strings in your gold file\n3. Are the labels ORDERED? In what order?  → labels_order\n4. The ✏️ decisions you made building the pool, and what they cost\n5. Sampling: which strategy, and the one-sentence defence\n6. The dev / test split — and why that ratio\nWhat you will report — and this is the half that is new:\n7. QC: who codes what · WHICH agreement statistics, and why\n      · what counts as a disagreement\n8. Prompt plan: the moves, in order · how many prompts you will\n      test on the held-out set · how you pick the winner\n9. The ONE number you lead with: macro / micro / weighted F1, or κ"
+    "text": "Nine questions\nWhat you are annotating:\n1. Unit of analysis: sentence or whole text — and why\n2. Label set: exactly the strings in your gold file\n3. Are the labels ORDERED? In what order?  → LABELS_ORDER\n4. The ✏️ decisions you made building the pool, and what they cost\n5. Sampling: which strategy, and the one-sentence defence\n6. The dev / test split — and why that ratio\nWhat you will report — and this is the half that is new:\n7. QC: who codes what · WHICH agreement statistics, and why\n      · what counts as a disagreement\n8. Prompt plan: the moves, in order · how many prompts you will\n      test on the held-out set · how you pick the winner\n9. The ONE number you lead with: macro / micro / weighted F1, or κ"
   },
   {
     "objectID": "slides/slides-session-11.html#why-79-are-on-this-page-and-not-in-a-notebook",
@@ -5149,7 +5156,7 @@
     "href": "sessions/day4/session-10.html#slides-colab",
     "title": "Session 10: Methodology — Reproducibility, LLM Limits & Ethics",
     "section": "Slides & Colab",
-    "text": "Slides & Colab",
+    "text": "Slides & Colab\n\nSlides: Session 10 slides",
     "crumbs": [
       "Sessions",
       "Day 4 · Methodology & Pipeline Assembly",

@@ -271,7 +271,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="where-the-work-happens" class="level2">
 <h2 class="anchored" data-anchor-id="where-the-work-happens">Where the work happens</h2>
 <p>All of it in one repository, which you clone into your group’s Google Drive:</p>
-<p><strong><a href="https://github.com/egumasa/lda2-final-template">github.com/egumasa/lda2-final-template</a></strong></p>
+<p><strong><a href="https://github.com/egumasa/lda2-proj-template">github.com/egumasa/lda2-proj-template</a></strong></p>
 <p><code>notebooks/</code> holds six numbered notebooks, run in order. They carry the <strong>mechanics</strong> — the paths, the file names, the Google Sheets round-trip, the pacing between API calls, and what each one hands to the next — so that a real study fits in two days.</p>
 <p>What they do not carry is the <strong>method</strong>. Which agreement statistic your design owes, what counts as a disagreement, which prompt move to try next, which number your report leads with: those you choose, and they are what the Q&amp;A and the rubric ask about.</p>
 <p>Each decision point gives you an inventory of what is available, what each call gives you, and where you first ran it — every one of them has an ancestor in Days 1–4. The <a href="../final-project/pipeline-cheatsheet.html">inventory page</a> has the full list.</p>
@@ -365,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="choose-a-track" class="level2">
 <h2 class="anchored" data-anchor-id="choose-a-track">Choose a track</h2>
-<p>Four, easy to hard. Details, licences and provenance: <a href="../resources/datasets/index.html">Replication Datasets</a> and <a href="../resources/datasets/mini-project-tracks.html">Mini-Project Starter Tracks</a>.</p>
+<p>Easy to hard. Details, licences and provenance: <a href="../resources/datasets/index.html">Replication Datasets</a> and <a href="../resources/datasets/mini-project-tracks.html">Mini-Project Starter Tracks</a>.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 12%">
@@ -392,10 +392,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><code>l2_errors</code></td>
-<td>L2 error type, or error detection</td>
+<td>Every error family in the sentence, multi-label (3 families), or error detection</td>
 <td>★★★ also benchmarkable against the published tool</td>
 </tr>
 <tr class="even">
+<td><code>l2_errors_full</code></td>
+<td>Every error type in the sentence, multi-label (24 codes)</td>
+<td>★★★+ the heaviest annotation; agreement and scoring are per code, matching how the published tool evaluates itself</td>
+</tr>
+<tr class="odd">
 <td><code>icnale</code></td>
 <td>Holistic essay score band</td>
 <td>★★☆ needs a registered download</td>
@@ -890,7 +895,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>All of it in one repository, which you clone into your group's Google Drive:</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>**[github.com/egumasa/lda2-final-template](https://github.com/egumasa/lda2-final-template)**</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>**[github.com/egumasa/lda2-proj-template](https://github.com/egumasa/lda2-proj-template)**</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="in">`notebooks/`</span> holds six numbered notebooks, run in order. They carry the **mechanics** — the</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>paths, the file names, the Google Sheets round-trip, the pacing between API calls, and what</span>
@@ -963,7 +968,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## Choose a track</span></span>
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>Four, easy to hard. Details, licences and provenance: [Replication</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>Easy to hard. Details, licences and provenance: [Replication</span>
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>Datasets](../resources/datasets/index.md) and [Mini-Project Starter</span>
 <span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>Tracks](../resources/datasets/mini-project-tracks.md).</span>
 <span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
@@ -971,15 +976,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="pp">| -------------</span> <span class="pp">| ------------------------------------</span> <span class="pp">| ----------------------------------------------------</span> <span class="pp">|</span></span>
 <span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`raamove`</span>   <span class="pp">|</span> Rhetorical moves in RA abstracts (8) <span class="pp">|</span> ★★☆                                               <span class="pp">|</span></span>
 <span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`cars50`</span>    <span class="pp">|</span> CARS moves in RA introductions       <span class="pp">|</span> ★★★ the annotators themselves got κ ≈ 0.43      <span class="pp">|</span></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`l2_errors`</span> <span class="pp">|</span> L2 error type, or error detection    <span class="pp">|</span> ★★★ also benchmarkable against the published tool <span class="pp">|</span></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`icnale`</span>    <span class="pp">|</span> Holistic essay score band            <span class="pp">|</span> ★★☆ needs a registered download                   <span class="pp">|</span></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to read next</span></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[The `PLAN.md` gate](plan.md)** — the one page you write *before* you call the model.</span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Deliverables &amp;amp; submission](deliverables.md)** — exactly what to hand in, and how.</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Rubric](rubric.md)** — what is graded. (Not your F1.)</span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[What you have to work with](pipeline-cheatsheet.md)** — every call the notebooks offer, and where you first ran it.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`l2_errors`</span> <span class="pp">|</span> Every error family in the sentence, multi-label (3 families), or error detection <span class="pp">|</span> ★★★ also benchmarkable against the published tool <span class="pp">|</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`l2_errors_full`</span> <span class="pp">|</span> Every error type in the sentence, multi-label (24 codes) <span class="pp">|</span> ★★★+ the heaviest annotation; agreement and scoring are per code, matching how the published tool evaluates itself <span class="pp">|</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`icnale`</span>    <span class="pp">|</span> Holistic essay score band            <span class="pp">|</span> ★★☆ needs a registered download                   <span class="pp">|</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to read next</span></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[The `PLAN.md` gate](plan.md)** — the one page you write *before* you call the model.</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Deliverables &amp;amp; submission](deliverables.md)** — exactly what to hand in, and how.</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Rubric](rubric.md)** — what is graded. (Not your F1.)</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[What you have to work with](pipeline-cheatsheet.md)** — every call the notebooks offer, and where you first ran it.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

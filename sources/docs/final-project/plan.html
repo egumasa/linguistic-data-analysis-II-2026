@@ -285,7 +285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li><strong>Unit of analysis</strong> — sentence or whole text, and why.</li>
 <li><strong>Label set</strong> — exactly the strings that appear in your gold file.</li>
-<li><strong>Are the labels ordered?</strong> If yes, in what order. This decides <code>labels_order</code> in <code>config.yaml</code>, and it is the one question that exists purely to catch a silent bug: labels that are ordered but not alphabetical (<code>Low</code>/<code>Mid</code>/<code>High</code>) otherwise get a weighted κ computed over <code>High &lt; Low &lt; Mid</code>, reported to three decimal places, and wrong.</li>
+<li><strong>Are the labels ordered?</strong> If yes, in what order. This decides <code>LABELS_ORDER</code>, set at the top of notebooks 03–06, and it is the one question that exists purely to catch a silent bug: labels that are ordered but not alphabetical (<code>Low</code>/<code>Mid</code>/<code>High</code>) otherwise get a weighted κ computed over <code>High &lt; Low &lt; Mid</code>, reported to three decimal places, and wrong.</li>
 <li><strong>The decisions you made building the pool</strong> — the ✏️ cells notebook 01 left blank, what you put in them, and what it cost you.</li>
 <li><strong>Sampling</strong> — which strategy, the one-sentence defence, <code>N_PER_CLASS</code>, <code>SEED</code>.</li>
 <li><strong>The dev / test split</strong> — the ratio, and why that one.</li>
@@ -822,8 +822,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Unit of analysis** — sentence or whole text, and why.</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Label set** — exactly the strings that appear in your gold file.</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Are the labels ordered?** If yes, in what order. This decides <span class="in">`labels_order`</span> in</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>   <span class="in">`config.yaml`</span>, and it is the one question that exists purely to catch a silent bug: labels</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Are the labels ordered?** If yes, in what order. This decides <span class="in">`LABELS_ORDER`</span>, set at</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>   the top of notebooks 03–06, and it is the one question that exists purely to catch a silent bug: labels</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>   that are ordered but not alphabetical (<span class="in">`Low`</span>/<span class="in">`Mid`</span>/<span class="in">`High`</span>) otherwise get a weighted κ</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>   computed over <span class="in">`High &lt; Low &lt; Mid`</span>, reported to three decimal places, and wrong.</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**The decisions you made building the pool** — the ✏️ cells notebook 01 left blank, what</span>

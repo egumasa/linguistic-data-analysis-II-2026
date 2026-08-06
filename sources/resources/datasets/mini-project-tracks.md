@@ -6,7 +6,7 @@ toc: true
 
 This page is about **choosing a track**. The workflow, the deliverables and the rubric are on
 the [Final Project](../../final-project/index.md) pages, and the work itself happens in the
-[project template](https://github.com/egumasa/lda2-final-template).
+[project template](https://github.com/egumasa/lda2-proj-template).
 
 Whichever track you pick, the shape is the same:
 
@@ -25,12 +25,9 @@ Whichever track you pick, the shape is the same:
 5. **Report** precision / recall / F1 + a confusion matrix, with an honest discussion of
    limitations.
 
-Every track ships a small **demo** file so it runs the moment you clone, plus a builder for the
-full **pool** you sample from:
-
-```bash
-python scripts/prep_datasets.py raamove     # raamove · cars50 · l2_errors · icnale
-```
+Every track ships a builder notebook for the **pool** you sample from: run
+`notebooks/01_build_pool_<track>.ipynb` once in Colab and it downloads the raw corpus and
+reshapes it into the shared item format. No pool data is committed — your group builds its own.
 
 Provenance & licences: [`SOURCES.md`](./SOURCES.md) · the helpers you will call:
 [pipeline cheat-sheet](../../final-project/pipeline-cheatsheet.md).
@@ -67,13 +64,29 @@ explanations, and telling them apart is the interesting part of your analysis.
 
 ### ★★★ L2 error annotation (AutoErrorAnalyzer)
 
-Classify the error type in a learner sentence (Grammatical / Lexical / Mechanical / No error), or do
-binary **error detection**.
-Track: `l2_errors`. Pools: `l2_errors_pool.json` (1,038, 4 classes) and
-`l2_error_detection_pool.json` (1,485, yes/no).
+Annotate the **error families** present in a learner sentence — Grammatical, Lexical,
+Mechanical — or do binary **error detection**. The family track is **multi-label**: a
+sentence with an article error and a spelling error is `Grammatical, Mechanical`, and a
+clean sentence is `No error`, so nothing is dropped for having errors of more than one
+kind. Agreement is measured per family (exact-set agreement, mean Jaccard, per-family
+κ) and scoring is per-family precision, recall and F1 with **micro F1** as the
+headline.
+Track: `l2_errors`. Pools: `l2_errors_pool.json` (~1,483, family sets) and
+`l2_error_detection_pool.json` (~1,485, yes/no).
 Special feature: the source also has the **published tool's predictions**, so you can benchmark your
 LLM against both the human gold *and* the original system. (Mizumoto, 2025, *SSLA*.)
-Extensions: try the finer 23-code taxonomy; analyze which error types the LLM over-/under-predicts.
+
+**Full analysis: `l2_errors_full`.** For groups who want to annotate **all** the error
+types, not the three-family grouping. An item's annotation is the **set** of codes
+present in the sentence — the paper's 23 codes plus `COLL` (collocation), which the
+published annotations also use — written as one comma-separated string (`ART, SP`), or
+`No error`. The pipeline is the same as the family track's; what changes is the size
+of the code list. Be clear about the cost before choosing it: each coder checks 24
+possibilities per sentence, so annotation is markedly slower. The per-code scoring is
+exactly how the AutoErrorAnalyzer paper evaluates itself, so your run and the
+published tool's `aea_label` predictions are directly comparable on the same
+sentences. This is the heaviest track in the project.
+Pool: `l2_errors_full_pool.json` (~1,483 items).
 
 ### ★★☆ Automated writing evaluation (ICNALE GRA)
 

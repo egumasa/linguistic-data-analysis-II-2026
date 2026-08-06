@@ -35,8 +35,8 @@ Nine questions, in two groups.
 
 1. **Unit of analysis** — sentence or whole text, and why.
 2. **Label set** — exactly the strings that appear in your gold file.
-3. **Are the labels ordered?** If yes, in what order. This decides `labels_order` in
-   `config.yaml`, and it is the one question that exists purely to catch a silent bug: labels
+3. **Are the labels ordered?** If yes, in what order. This decides `LABELS_ORDER`, set at
+   the top of notebooks 03–06, and it is the one question that exists purely to catch a silent bug: labels
    that are ordered but not alphabetical (`Low`/`Mid`/`High`) otherwise get a weighted κ
    computed over `High < Low < Mid`, reported to three decimal places, and wrong.
 4. **The decisions you made building the pool** — the ✏️ cells notebook 01 left blank, what

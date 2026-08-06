@@ -197,7 +197,7 @@ save_json(dev,  DEV_PATH,  what="dev items")
 save_json(test, TEST_PATH, what="test items")
 ```
 
-**Read the per-label counts it prints before you save.** A label that lands in dev but not in test cannot appear in the score you report, and this is the last cheap moment to change `dev:` in `config.yaml` and draw the line again.
+**Read the per-label counts it prints before you save.** A label that lands in dev but not in test cannot appear in the score you report, and this is the last cheap moment to change `DEV` at the top of notebook 03 and draw the line again.
 
 ::: {.callout-note}
 This is the loop you wrote by hand this morning, in Day 4 Part B — bucket by label, take some of each. One call now.

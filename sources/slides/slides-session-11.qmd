@@ -151,7 +151,7 @@ Two minutes of writing prevents problems that otherwise take an hour to find, *a
 ```markdown
 1. Unit of analysis: sentence or whole text — and why
 2. Label set: exactly the strings in your gold file
-3. Are the labels ORDERED? In what order?  → labels_order
+3. Are the labels ORDERED? In what order?  → LABELS_ORDER
 4. The ✏️ decisions you made building the pool, and what they cost
 5. Sampling: which strategy, and the one-sentence defence
 6. The dev / test split — and why that ratio

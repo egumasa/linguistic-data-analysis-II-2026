@@ -12,7 +12,7 @@ group formation). You will start working on it on Day 4.
 
 All of it in one repository, which you clone into your group's Google Drive:
 
-**[github.com/egumasa/lda2-final-template](https://github.com/egumasa/lda2-final-template)**
+**[github.com/egumasa/lda2-proj-template](https://github.com/egumasa/lda2-proj-template)**
 
 `notebooks/` holds six numbered notebooks, run in order. They carry the **mechanics** — the
 paths, the file names, the Google Sheets round-trip, the pacing between API calls, and what
@@ -85,7 +85,7 @@ Your F1 is then stable, and anyone can re-run your analysis on exactly the outpu
 
 ## Choose a track
 
-Four, easy to hard. Details, licences and provenance: [Replication
+Easy to hard. Details, licences and provenance: [Replication
 Datasets](../resources/datasets/index.md) and [Mini-Project Starter
 Tracks](../resources/datasets/mini-project-tracks.md).
 
@@ -93,7 +93,8 @@ Tracks](../resources/datasets/mini-project-tracks.md).
 | ------------- | ------------------------------------ | ---------------------------------------------------- |
 | `raamove`   | Rhetorical moves in RA abstracts (8) | ★★☆                                               |
 | `cars50`    | CARS moves in RA introductions       | ★★★ the annotators themselves got κ ≈ 0.43      |
-| `l2_errors` | L2 error type, or error detection    | ★★★ also benchmarkable against the published tool |
+| `l2_errors` | Every error family in the sentence, multi-label (3 families), or error detection | ★★★ also benchmarkable against the published tool |
+| `l2_errors_full` | Every error type in the sentence, multi-label (24 codes) | ★★★+ the heaviest annotation; agreement and scoring are per code, matching how the published tool evaluates itself |
 | `icnale`    | Holistic essay score band            | ★★☆ needs a registered download                   |
 
 ## What to read next

@@ -132,8 +132,9 @@ comparing against the whole pool would pair *your* item 7 with *pool* item 7: tw
 sentences.
 
 **Weighted κ needs the order.** If your labels are ordered but not alphabetical —
-`Low`/`Mid`/`High` — set `labels_order` in `config.yaml`. Otherwise the weighting is computed
-over `High < Low < Mid`, and the number reported to three decimal places means nothing.
+`Low`/`Mid`/`High` — set `LABELS_ORDER` in the Methodological decisions cell at the top of
+notebooks 03–06. Otherwise the weighting is computed over `High < Low < Mid`, and the number
+reported to three decimal places means nothing.
 
 **dev is the fast set.** One round on a dozen dev items is about a minute of enforced pacing,
 so your sample stays at full size throughout — you do not shrink it to iterate.

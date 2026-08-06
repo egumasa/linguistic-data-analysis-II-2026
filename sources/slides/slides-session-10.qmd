@@ -17,7 +17,7 @@ metadata-files:
 ## 📋 Agenda
 
 1. **Abdurahman et al. (2025)** — principles for evaluating LLM research
-2. **Mizumoto (2025)** — critical in-class reading
+2. **Mizumoto et al. (2024)** — reviewing the paper using principles
 3. **Your mini-project** — make and report defensible decisions
 
 ## 🎯 Learning Objectives {.smaller}
@@ -65,6 +65,15 @@ Record and preserve:
 - original, unedited model outputs
 
 
+## How can LLM threaten preproducibility?
+
+- Any ideas?
+
+. . .
+
+- Non-determinism
+- Model change / Model retire.
+
 ## Why `temperature=0` is not enough
 
 `temperature=0` says *"always take the most likely next token."* That should be deterministic.
@@ -73,18 +82,24 @@ Record and preserve:
 
 It mostly is. But you are calling a **hosted service**:
 
-- the model behind the name can be updated underneath you
+- the model behind the name can be updated underneath
 - batching and hardware differences perturb floating-point arithmetic
 - the endpoint may silently fall back to another region
 
-. . .
-
-So a hosted LLM is only ***best-effort* reproducible**. You cannot fix this; it is a property of using a hosted service.
+There are choices to use open-source local LLM, but we need to have a good computer to run.
 
 
 ## Robustness
 
-Does the conclusion survive **methods effect**?
+What is robustness in research findings in your workds?
+
+. . .
+
+How does methodological choice influence the results?
+
+
+
+## Robustness
 
 Possible changes include:
 
@@ -101,8 +116,6 @@ A high score from **one selected configuration** does not show that the result i
 
 ## What would you vary?
 
-Choose one result from Day 3.
-
 Discuss which might affect the result most?
 
 1. Prompt wording
@@ -117,6 +130,8 @@ What result would increase your confidence about robustness?
 
 Does the evidence support the interpretation we want to make?
 
+. . .
+
 Ask:
 
 - Is the construct clearly defined?
@@ -126,11 +141,7 @@ Ask:
 - Are errors systematic for particular categories or texts?
 - How far can the result be generalized?
 
-::: {.callout-warning}
-A reproducible result can still be **invalid**.
-:::
-
-
+# Any questions?
 
 # Ethics
 
@@ -153,40 +164,29 @@ Before sharing your project:
 
 # Question?
 
-# Mizumoto (2025) - Auto Error Analyzer
+# Mizumoto et al. (2024) 
 
 
-## Mizumoto (2025): What does the tool do?
+## Mizumoto et al. (2024): What does the tool do?
+
+Introduces Auto Error Analyzer. 
 
 **Input:** L2 learner writing
-
-**LLM operations:**
-
-1. Produce a corrected sentence
-2. Compare the original and corrected versions
-3. Identify error instances
-4. Assign errors to 23 categories
 
 **Output:**
 
 - Number and type of errors
 - Errors per 100 words
 - Errors per T-unit or clause
+- etc.
 
-## The reported results
-
-- Human–tool error-count correlation: **r = .94**
-- Micro-precision: **.96**
-- Micro-recall: **.94**
-- Micro-F1: **.95**
-
-> How much confidence should we place in these results?
+The data and codes are available at [Open Science Framework](https://osf.io/jyf3r/overview).
 
 ## In-class reading — 20 minutes
 
 Focus on:
 
-- **pp. 7–11:** tool, prompt, and error-analysis pipeline
+- **pp. 6–11:** tool, prompt, and error-analysis pipeline
 - **pp. 11–13:** validation design and results
 - **pp. 14–15:** limitations and conclusions
 
@@ -196,27 +196,25 @@ Prepare to explain your assigned section to the class.
 
 ## Read as a methodological reviewer
 
-### Pair A — Pipeline · pp. 7–11
+### Pipeline · pp. 6–11
 How does the tool turn corrections into error instances and categories?
 
-### Pair B — Human reference · pp. 11–12
+### Human reference · pp. 11–12
 How were human judgments created, compared, and adjudicated?
 
-### Pair C — Evaluation · pp. 12–13
+### Evaluation · pp. 12–13
 What do `r = .94` and micro-F1 = `.95` each demonstrate?
 
-### Pair D — Limitations · pp. 14–15
+### Limitations · pp. 14–15
 How does the author limit the interpretation and generalizability?
 
 
 ## Audit 1: Validity
 
 - What counts as an “error”?
-- What counts as the same error for humans and the tool?
 - Who created the human reference annotations?
 - How were disagreements resolved?
 - Does aggregate F1 establish accuracy for all 23 categories?
-- Does the evaluation distinguish detection from categorization?
 
 ## Audit 2: Robustness
 
@@ -282,4 +280,4 @@ Two pages, written **individually**. One study per group, one report per person.
 
 # Any questions?
 
-Next: **S11 — we assemble the pipeline and you write your `PLAN.md`.**
+Next: **S11 — we assemble the pipeline and you write your**

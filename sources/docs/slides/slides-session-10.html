@@ -141,7 +141,7 @@
 <h2>📋 Agenda</h2>
 <ol type="1">
 <li><strong>Abdurahman et al.&nbsp;(2025)</strong> — principles for evaluating LLM research</li>
-<li><strong>Mizumoto (2025)</strong> — critical in-class reading</li>
+<li><strong>Mizumoto et al.&nbsp;(2024)</strong> — reviewing the paper using principles</li>
 <li><strong>Your mini-project</strong> — make and report defensible decisions</li>
 </ol>
 </section>
@@ -199,24 +199,40 @@
 </ul>
 </div>
 </section>
+<section id="how-can-llm-threaten-preproducibility" class="slide level2">
+<h2>How can LLM threaten preproducibility?</h2>
+<ul>
+<li>Any ideas?</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Non-determinism</li>
+<li>Model change / Model retire.</li>
+</ul>
+</div>
+</section>
 <section id="why-temperature0-is-not-enough" class="slide level2">
 <h2>Why <code>temperature=0</code> is not enough</h2>
 <p><code>temperature=0</code> says <em>“always take the most likely next token.”</em> That should be deterministic.</p>
 <div class="fragment">
 <p>It mostly is. But you are calling a <strong>hosted service</strong>:</p>
 <ul>
-<li>the model behind the name can be updated underneath you</li>
+<li>the model behind the name can be updated underneath</li>
 <li>batching and hardware differences perturb floating-point arithmetic</li>
 <li>the endpoint may silently fall back to another region</li>
 </ul>
-</div>
-<div class="fragment">
-<p>So a hosted LLM is only <strong><em>best-effort</em> reproducible</strong>. You cannot fix this; it is a property of using a hosted service.</p>
+<p>There are choices to use open-source local LLM, but we need to have a good computer to run.</p>
 </div>
 </section>
 <section id="robustness" class="slide level2">
 <h2>Robustness</h2>
-<p>Does the conclusion survive <strong>methods effect</strong>?</p>
+<p>What is robustness in research findings in your workds?</p>
+<div class="fragment">
+<p>How does methodological choice influence the results?</p>
+</div>
+</section>
+<section id="robustness-1" class="slide level2">
+<h2>Robustness</h2>
 <p>Possible changes include:</p>
 <ul>
 <li>prompt wording</li>
@@ -232,7 +248,6 @@
 </section>
 <section id="what-would-you-vary" class="slide level2">
 <h2>What would you vary?</h2>
-<p>Choose one result from Day 3.</p>
 <p>Discuss which might affect the result most?</p>
 <ol type="1">
 <li>Prompt wording</li>
@@ -245,6 +260,7 @@
 <section id="validity" class="slide level2">
 <h2>Validity</h2>
 <p>Does the evidence support the interpretation we want to make?</p>
+<div class="fragment">
 <p>Ask:</p>
 <ul>
 <li>Is the construct clearly defined?</li>
@@ -254,20 +270,13 @@
 <li>Are errors systematic for particular categories or texts?</li>
 <li>How far can the result be generalized?</li>
 </ul>
-<div class="callout callout-warning callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Warning</strong></p>
-</div>
-<div class="callout-content">
-<p>A reproducible result can still be <strong>invalid</strong>.</p>
-</div>
-</div>
 </div>
 </section>
+<section id="any-questions" class="title-slide slide level1 center">
+<h1>Any questions?</h1>
+
+</section>
+
 <section>
 <section id="ethics" class="title-slide slide level1 center">
 <h1>Ethics</h1>
@@ -295,44 +304,28 @@
 </section>
 
 <section>
-<section id="mizumoto-2025---auto-error-analyzer" class="title-slide slide level1 center">
-<h1>Mizumoto (2025) - Auto Error Analyzer</h1>
+<section id="mizumoto-et-al.-2024" class="title-slide slide level1 center">
+<h1>Mizumoto et al.&nbsp;(2024)</h1>
 
 </section>
-<section id="mizumoto-2025-what-does-the-tool-do" class="slide level2">
-<h2>Mizumoto (2025): What does the tool do?</h2>
+<section id="mizumoto-et-al.-2024-what-does-the-tool-do" class="slide level2">
+<h2>Mizumoto et al.&nbsp;(2024): What does the tool do?</h2>
+<p>Introduces Auto Error Analyzer.</p>
 <p><strong>Input:</strong> L2 learner writing</p>
-<p><strong>LLM operations:</strong></p>
-<ol type="1">
-<li>Produce a corrected sentence</li>
-<li>Compare the original and corrected versions</li>
-<li>Identify error instances</li>
-<li>Assign errors to 23 categories</li>
-</ol>
 <p><strong>Output:</strong></p>
 <ul>
 <li>Number and type of errors</li>
 <li>Errors per 100 words</li>
 <li>Errors per T-unit or clause</li>
+<li>etc.</li>
 </ul>
-</section>
-<section id="the-reported-results" class="slide level2">
-<h2>The reported results</h2>
-<ul>
-<li>Human–tool error-count correlation: <strong>r = .94</strong></li>
-<li>Micro-precision: <strong>.96</strong></li>
-<li>Micro-recall: <strong>.94</strong></li>
-<li>Micro-F1: <strong>.95</strong></li>
-</ul>
-<blockquote>
-<p>How much confidence should we place in these results?</p>
-</blockquote>
+<p>The data and codes are available at <a href="https://osf.io/jyf3r/overview">Open Science Framework</a>.</p>
 </section>
 <section id="in-class-reading-20-minutes" class="slide level2">
 <h2>In-class reading — 20 minutes</h2>
 <p>Focus on:</p>
 <ul>
-<li><strong>pp.&nbsp;7–11:</strong> tool, prompt, and error-analysis pipeline</li>
+<li><strong>pp.&nbsp;6–11:</strong> tool, prompt, and error-analysis pipeline</li>
 <li><strong>pp.&nbsp;11–13:</strong> validation design and results</li>
 <li><strong>pp.&nbsp;14–15:</strong> limitations and conclusions</li>
 </ul>
@@ -341,24 +334,22 @@
 </section>
 <section id="read-as-a-methodological-reviewer" class="slide level2">
 <h2>Read as a methodological reviewer</h2>
-<h3 id="pair-a-pipeline-pp.-711">Pair A — Pipeline · pp.&nbsp;7–11</h3>
+<h3 id="pipeline-pp.-611">Pipeline · pp.&nbsp;6–11</h3>
 <p>How does the tool turn corrections into error instances and categories?</p>
-<h3 id="pair-b-human-reference-pp.-1112">Pair B — Human reference · pp.&nbsp;11–12</h3>
+<h3 id="human-reference-pp.-1112">Human reference · pp.&nbsp;11–12</h3>
 <p>How were human judgments created, compared, and adjudicated?</p>
-<h3 id="pair-c-evaluation-pp.-1213">Pair C — Evaluation · pp.&nbsp;12–13</h3>
+<h3 id="evaluation-pp.-1213">Evaluation · pp.&nbsp;12–13</h3>
 <p>What do <code>r = .94</code> and micro-F1 = <code>.95</code> each demonstrate?</p>
-<h3 id="pair-d-limitations-pp.-1415">Pair D — Limitations · pp.&nbsp;14–15</h3>
+<h3 id="limitations-pp.-1415">Limitations · pp.&nbsp;14–15</h3>
 <p>How does the author limit the interpretation and generalizability?</p>
 </section>
 <section id="audit-1-validity" class="slide level2">
 <h2>Audit 1: Validity</h2>
 <ul>
 <li>What counts as an “error”?</li>
-<li>What counts as the same error for humans and the tool?</li>
 <li>Who created the human reference annotations?</li>
 <li>How were disagreements resolved?</li>
 <li>Does aggregate F1 establish accuracy for all 23 categories?</li>
-<li>Does the evaluation distinguish detection from categorization?</li>
 </ul>
 </section>
 <section id="audit-2-robustness" class="slide level2">
@@ -489,9 +480,9 @@
 </table>
 <p>Two pages, written <strong>individually</strong>. One study per group, one report per person.</p>
 </section></section>
-<section id="any-questions" class="title-slide slide level1 center">
+<section id="any-questions-1" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
-<p>Next: <strong>S11 — we assemble the pipeline and you write your <code>PLAN.md</code>.</strong></p>
+<p>Next: <strong>S11 — we assemble the pipeline and you write your</strong></p>
 
 
 

@@ -38,7 +38,7 @@ This session is the switch from tutorial mode to project mode. Everything after 
 
 ## Slides & Colab
 
-<!-- Slides: [Session 10 slides](../../slides/slides-session-10.html){target="_blank"} -->
+- Slides: [Session 10 slides](../../slides/slides-session-10.html){target="_blank"}
 
 ## Mini-project
 
