@@ -47,6 +47,35 @@ By the end of this session, you will be able to:
 ![](../assets/img/nlp-tasks/LLM_research_practice.png)
 
 
+## Your questions
+
+
+::: {.columns}
+
+::: {.column width="70%"}
+
+- Which model to use? How can we use a appropriate model?
+   - Use basic models
+   - Follow literature
+   - Try different models and report highest
+   - Report all (robust)
+- Stability: 
+   - Stabilities 
+   - Model availability & Temperature
+- how do we know that our gold is gold?
+
+:::
+
+::: {.column width="30%"}
+
+![](../assets/img/nlp-tasks/LLM_research_practice.png)
+
+:::
+
+:::
+
+
+
 ## Reproducibility
 
 What is reproducibility?
@@ -163,10 +192,10 @@ Before sharing your project:
 
 # Question?
 
-# Mizumoto et al. (2024) 
+# Mizumoto (2025) 
 
 
-## Mizumoto et al. (2024): What does the tool do?
+## Mizumoto (2025) : What does the tool do?
 
 Introduces Auto Error Analyzer. 
 

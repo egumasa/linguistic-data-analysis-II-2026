@@ -5697,5 +5697,19 @@
       "Sessions",
       "Daily notebooks"
     ]
+  },
+  {
+    "objectID": "slides/slides-session-10.html#your-questions",
+    "href": "slides/slides-session-10.html#your-questions",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Your questions",
+    "text": "Your questions\n\n\n\nWhich model to use? How can we use a appropriate model?\n\nUse basic models\nFollow literature\nTry different models and report highest\nReport all (robust)\n\nStability:\n\nStabilities\nModel availability & Temperature\n\nhow do we know that our gold is gold?"
+  },
+  {
+    "objectID": "slides/slides-session-10.html#mizumoto-2025-what-does-the-tool-do",
+    "href": "slides/slides-session-10.html#mizumoto-2025-what-does-the-tool-do",
+    "title": "Session 10: Using LLM in your research",
+    "section": "Mizumoto (2025) : What does the tool do?",
+    "text": "Mizumoto (2025) : What does the tool do?\nIntroduces Auto Error Analyzer.\nInput: L2 learner writing\nOutput:\n\nNumber and type of errors\nErrors per 100 words\nErrors per T-unit or clause\netc.\n\nThe data and codes are available at Open Science Framework."
   }
 ]
