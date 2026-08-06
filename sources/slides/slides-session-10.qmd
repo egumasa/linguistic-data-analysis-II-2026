@@ -42,11 +42,10 @@ By the end of this session, you will be able to:
 4. **Limit the claim**
    - state exactly what the evidence supports—and what it does not
 
-## Quality of studies
+## Research Practices
 
-- **Reproducibility**: can the exact analysis be reconstructed?
-- **Robustness**: does the conclusion survive reasonable changes?
-- **Validity**: does the output measure the intended construct?
+![](../assets/img/nlp-tasks/LLM_research_practice.png)
+
 
 ## Reproducibility
 

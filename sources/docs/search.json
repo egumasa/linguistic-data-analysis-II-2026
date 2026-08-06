@@ -1398,11 +1398,11 @@
     "text": "Four principles for using LLMs in research\n\nDocument the process\n\nmodel, version, access date, parameters, prompt, code, and data\n\nValidate against appropriate evidence\n\ncompare LLM outputs with independently produced human judgments\n\nTest robustness\n\nexamine reasonable changes in prompts, examples, settings, and samples\n\nLimit the claim\n\nstate exactly what the evidence supports—and what it does not"
   },
   {
-    "objectID": "slides/slides-session-10.html#quality-of-studies",
-    "href": "slides/slides-session-10.html#quality-of-studies",
+    "objectID": "slides/slides-session-10.html#research-practices",
+    "href": "slides/slides-session-10.html#research-practices",
     "title": "Session 10: Using LLM in your research",
-    "section": "Quality of studies",
-    "text": "Quality of studies\n\nReproducibility: can the exact analysis be reconstructed?\nRobustness: does the conclusion survive reasonable changes?\nValidity: does the output measure the intended construct?"
+    "section": "Research Practices",
+    "text": "Research Practices"
   },
   {
     "objectID": "slides/slides-session-10.html#reproducibility",
