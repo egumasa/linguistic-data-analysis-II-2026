@@ -74,7 +74,6 @@ website:
             - notebooks/day2-s5_gold_standard_construction.ipynb
             - notebooks/day2-s6_evaluation_metrics.ipynb
             - notebooks/day3_prompt_design.ipynb
-            - notebooks/day4_pipeline_and_sampling.ipynb
 
     - title: "Final Project"
       style: docked

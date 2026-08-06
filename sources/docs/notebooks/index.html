@@ -371,12 +371,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Day 3 · Prompt design &amp; iteration</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../notebooks/day4_pipeline_and_sampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Day 4 · Pipeline assembly &amp; sampling your gold set</span></a>
-  </div>
-</li>
       </ul>
   </li>
     </ul>
@@ -503,16 +497,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><em>Tutorial</em> — draw your own train/valid/test sets from the pool, define the run code, build <code>evaluate</code> in class, then zero-shot → few-shot → chain-of-thought</td>
 <td><em>Corpus Lab</em> — your own prompt-iteration rounds, then <strong>one</strong> run on the held-out test set</td>
 </tr>
-<tr class="odd">
-<td>4</td>
-<td><a href="../notebooks/day4_pipeline_and_sampling.html"><code>day4_pipeline_and_sampling.ipynb</code></a></td>
-<td><em>Tutorial</em> — sample a balanced gold subset from a pool</td>
-<td>draw the dev/test line, then hand off to the project template</td>
-</tr>
 </tbody>
 </table>
 <p><a href="../notebooks/day3_prompt_design_answers.html"><code>day3_prompt_design_answers.ipynb</code></a> is the Day-3 notebook with every fill-in completed — the five <code>evaluate</code> lines and one worked example per fill-in string. Try the fill-in notebook first; open this one to check your work.</p>
-<p><strong>There is no Day-5 notebook.</strong> From the end of Day 4 the work moves to your own study, in the six numbered notebooks of the <a href="https://github.com/egumasa/lda2-final-template">project template</a> — your track, your gold set, your prompt. Start at the <a href="../final-project/index.html">Final Project</a> pages.</p>
+<p><strong>There is no Day-4 or Day-5 notebook.</strong> From Day 4 the work moves to your own study, in the six numbered notebooks of the <a href="https://github.com/egumasa/lda2-proj-template">project template</a> — your track, your gold set, your prompt. Start at the <a href="../final-project/index.html">Final Project</a> pages.</p>
 </section>
 <section id="editing-these-notebooks" class="level2">
 <h2 class="anchored" data-anchor-id="editing-these-notebooks">Editing these notebooks</h2>
@@ -1044,52 +1032,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · S5 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2-s5_gold_standard_construction.ipynb`</span><span class="co">](./day2-s5_gold_standard_construction.ipynb)</span> <span class="pp">|</span> *(no parts — one lab, steps A–F)* — annotate a gold set by hand in a Google Sheet: agreement → κ → refine &amp; re-annotate → adjudication → canonical JSON <span class="pp">||</span></span>
 <span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 · S6 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day2-s6_evaluation_metrics.ipynb`</span><span class="co">](./day2-s6_evaluation_metrics.ipynb)</span> <span class="pp">|</span> *Corpus Lab* — build the metrics yourself on one yes/no question: TP/FP/FN/TN → confusion matrix → precision, recall, F1, κ → checked against scikit-learn | *Tutorial* — the same job with scikit-learn on all six CEFR levels: <span class="in">`classification_report`</span>, confusion matrix, plain vs. weighted κ, error analysis <span class="pp">|</span></span>
 <span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day3_prompt_design.ipynb`</span><span class="co">](./day3_prompt_design.ipynb)</span> <span class="pp">|</span> *Tutorial* — draw your own train/valid/test sets from the pool, define the run code, build `evaluate` in class, then zero-shot → few-shot → chain-of-thought | *Corpus Lab* — your own prompt-iteration rounds, then **one** run on the held-out test set <span class="pp">|</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> <span class="co">[</span><span class="ot">`day4_pipeline_and_sampling.ipynb`</span><span class="co">](./day4_pipeline_and_sampling.ipynb)</span> <span class="pp">|</span> *Tutorial* — sample a balanced gold subset from a pool <span class="pp">|</span> draw the dev/test line, then hand off to the project template <span class="pp">|</span></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`day3_prompt_design_answers.ipynb`</span><span class="co">](./day3_prompt_design_answers.ipynb)</span> is the Day-3 notebook with every fill-in completed — the five <span class="in">`evaluate`</span> lines and one worked example per fill-in string. Try the fill-in notebook first; open this one to check your work.</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>**There is no Day-5 notebook.** From the end of Day 4 the work moves to your own study, in</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>the six numbered notebooks of the</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">project template</span><span class="co">](https://github.com/egumasa/lda2-final-template)</span> — your track, your gold</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>set, your prompt. Start at the <span class="co">[</span><span class="ot">Final Project</span><span class="co">](../final-project/index.md)</span> pages.</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## Editing these notebooks</span></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>The <span class="in">`.ipynb`</span> files are edited directly — open one, change a cell, run it, save. Two kinds</span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>of cell are the exception: the 📦 **Setup** cell and each 🔧 **Library** cell are built from</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="in">`_notebook_lib.py`</span>, so that a helper used on several days has one definition and a day</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>imports only what it uses. Those cells say so in their own second line, and editing them</span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>by hand does not last. To change a helper's code, edit <span class="in">`_notebook_lib.py`</span>; to change which</span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>helpers a cell ships, edit that cell's <span class="in">`lda2`</span> metadata. Then run the sync below.</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>The helpers sit at the end of <span class="in">`_notebook_lib.py`</span> as ordinary Python, one</span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="in">`# === name :: caption ===`</span> section each. Edit one the way you would edit any function —</span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>nothing there is quoted text, and nothing runs it locally.</span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>Three scripts sit next to the notebooks:</span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> sources/notebooks/_sync_notebooks.py    <span class="co"># rebuild those cells, clear outputs</span></span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> sources/notebooks/_check_notebooks.py   <span class="co"># every cell compiles, fits a screen, is introduced</span></span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> sources/notebooks/_build_answers.py    <span class="co"># rebuild the Day-3 answers notebook from the fill-in one</span></span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>Run both before committing. <span class="in">`_sync_notebooks.py --check`</span> reports what would change without</span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>writing anything, and <span class="in">`--notebook day3`</span> limits it to one file.</span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>Notebooks are committed **without outputs**, so their diffs stay readable. A git filter</span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>takes the outputs out on the way into a commit and leaves your working copy untouched.</span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>Filters are per-clone configuration, so turn it on once in a fresh clone:</span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config filter.nbstrip.clean <span class="st">"uv run python sources/notebooks/_sync_notebooks.py --stdin-strip"</span></span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>To search the prose across all five notebooks, read the cell sources rather than the JSON:</span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="at">-r</span> <span class="st">'.cells[].source | add'</span> sources/notebooks/<span class="pp">*</span>.ipynb <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-i</span> <span class="st">"confusion matrix"</span></span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`day3_prompt_design_answers.ipynb`</span><span class="co">](./day3_prompt_design_answers.ipynb)</span> is the Day-3 notebook with every fill-in completed — the five <span class="in">`evaluate`</span> lines and one worked example per fill-in string. Try the fill-in notebook first; open this one to check your work.</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>**There is no Day-4 or Day-5 notebook.** From Day 4 the work moves to your own study, in</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>the six numbered notebooks of the</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">project template</span><span class="co">](https://github.com/egumasa/lda2-proj-template)</span> — your track, your gold</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>set, your prompt. Start at the <span class="co">[</span><span class="ot">Final Project</span><span class="co">](../final-project/index.md)</span> pages.</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="fu">## Editing these notebooks</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>The <span class="in">`.ipynb`</span> files are edited directly — open one, change a cell, run it, save. Two kinds</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>of cell are the exception: the 📦 **Setup** cell and each 🔧 **Library** cell are built from</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="in">`_notebook_lib.py`</span>, so that a helper used on several days has one definition and a day</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>imports only what it uses. Those cells say so in their own second line, and editing them</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>by hand does not last. To change a helper's code, edit <span class="in">`_notebook_lib.py`</span>; to change which</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>helpers a cell ships, edit that cell's <span class="in">`lda2`</span> metadata. Then run the sync below.</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>The helpers sit at the end of <span class="in">`_notebook_lib.py`</span> as ordinary Python, one</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="in">`# === name :: caption ===`</span> section each. Edit one the way you would edit any function —</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>nothing there is quoted text, and nothing runs it locally.</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>Three scripts sit next to the notebooks:</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> sources/notebooks/_sync_notebooks.py    <span class="co"># rebuild those cells, clear outputs</span></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> sources/notebooks/_check_notebooks.py   <span class="co"># every cell compiles, fits a screen, is introduced</span></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> sources/notebooks/_build_answers.py    <span class="co"># rebuild the Day-3 answers notebook from the fill-in one</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>Run both before committing. <span class="in">`_sync_notebooks.py --check`</span> reports what would change without</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>writing anything, and <span class="in">`--notebook day3`</span> limits it to one file.</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>Notebooks are committed **without outputs**, so their diffs stay readable. A git filter</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>takes the outputs out on the way into a commit and leaves your working copy untouched.</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>Filters are per-clone configuration, so turn it on once in a fresh clone:</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config filter.nbstrip.clean <span class="st">"uv run python sources/notebooks/_sync_notebooks.py --stdin-strip"</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>To search the prose across all five notebooks, read the cell sources rather than the JSON:</span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="at">-r</span> <span class="st">'.cells[].source | add'</span> sources/notebooks/<span class="pp">*</span>.ipynb <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-i</span> <span class="st">"confusion matrix"</span></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

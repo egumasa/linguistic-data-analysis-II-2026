@@ -38,16 +38,14 @@ No new reading for this session — see the Day 4 reading (Abdurahman et al., 20
 
 ## Slides & Colab
 
-- Notebook: [`day4_pipeline_and_sampling.ipynb`](../../notebooks/day4_pipeline_and_sampling.ipynb) — sample a balanced subset, then hand off to the project template —
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/egumasa/linguistic-data-analysis-II-2026/blob/main/sources/notebooks/day4_pipeline_and_sampling.ipynb)
-- Project notebooks: [`lda2-final-template/notebooks/`](https://github.com/egumasa/lda2-final-template/tree/main/notebooks) —
+- Project notebooks: [`lda2-proj-template/notebooks/`](https://github.com/egumasa/lda2-proj-template/tree/main/notebooks) —
   open them from your group's Drive folder, not from GitHub, so you are working on your own copy.
 
 <!-- Slides: [Session 12 slides](../../slides/slides-session-12.html){target="_blank"} -->
 
 ## Mini-project
 
-Work in the [project template](https://github.com/egumasa/lda2-final-template) —
+Work in the [project template](https://github.com/egumasa/lda2-proj-template) —
 **`01_build_pool_<track>`, `02_sample` and `03_annotate`**. None of the three calls the model,
 so nothing here waits on the `PLAN.md` gate.
 

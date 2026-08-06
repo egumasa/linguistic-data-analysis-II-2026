@@ -39,7 +39,7 @@ No new reading for this session — see the Day 4 reading (Abdurahman et al., 20
 
 - The inventory: [what you have to work with](../../final-project/pipeline-cheatsheet.md).
 - What you write today: [the `PLAN.md` gate](../../final-project/plan.md).
-- Where the work happens: [`lda2-final-template`](https://github.com/egumasa/lda2-final-template).
+- Where the work happens: [`lda2-proj-template`](https://github.com/egumasa/lda2-proj-template).
 
 ::: {.callout-important}
 ## No group calls the model until `PLAN.md` is signed
